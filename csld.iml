@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="lib1" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="file://$APPLICATION_HOME_DIR$/apache-tomcat-7.0.34" />
+          <root url="jar://$APPLICATION_HOME_DIR$/apache-tomcat-7.0.34/lib/servlet-api.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="file://$APPLICATION_HOME_DIR$/apache-tomcat-7.0.34/webapps/docs/appdev/sample/src" />
+          <root url="file://$APPLICATION_HOME_DIR$/apache-tomcat-7.0.34/webapps/examples/jsp/plugin/applet" />
+          <root url="file://$APPLICATION_HOME_DIR$/apache-tomcat-7.0.34/webapps/examples/WEB-INF/classes" />
+          <root url="file://$APPLICATION_HOME_DIR$/apache-tomcat-7.0.34/webapps/examples/WEB-INF/jsp/applet" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+  </component>
+</module>
+

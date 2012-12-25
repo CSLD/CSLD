@@ -28,7 +28,7 @@ $(document).ready(function() {
                   boxCols:8,
                   boxRows:4,
                   animSpeed:500,
-                  pauseTime:5000,
+                  pauseTime:6000,
                   startSlide: rand,
                   directionNav:true,
                   controlNav:false,

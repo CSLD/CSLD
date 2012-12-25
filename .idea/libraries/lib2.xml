@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/out/artifacts/Projekty_war_exploded/WEB-INF/lib/joda-time-2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/out/artifacts/Projekty_war_exploded/WEB-INF/lib/postgresql-9.1-901.jdbc3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/out/artifacts/Projekty_war_exploded/WEB-INF/lib/junit-4.8.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/out/artifacts/Projekty_war_exploded/WEB-INF/lib/mail.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

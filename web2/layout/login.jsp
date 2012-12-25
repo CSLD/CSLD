@@ -42,7 +42,7 @@
 <div id="loginBox">
 
     <div class="overflowDiv">
-        <div id="prihlaseniObalovaciVnitrni"><a id="odkazRozjizdeni" href="\">Přihlášení</a>
+        <div id="prihlaseniObalovaciVnitrni"><span id="odkazRozjizdeni">Přihlášení</span>
 
             <div id="prihlaseniObalovaci">
                 <form action="/handlers/prihlaseni.jsp" method="post">
@@ -65,7 +65,7 @@
                 $("#prihlaseniObalovaciVnitrni").animate({top:'50px'});
                 console.log("pri zavirani");
             } else {
-                $("#prihlaseniObalovaciVnitrni").animate({top:'0px'});
+                $("#prihlaseniObalovaciVnitrni").animate({top:'20px'});
                 console.log("pri otevirani");
             }
             opened = opened ? false : true;

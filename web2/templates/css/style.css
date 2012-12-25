@@ -3,9 +3,11 @@
 
 /* Barvy */
 /*
+nadpis přechod - 2a89b6 -> 34abe3
+logo přechod - 2a89b6 -> 35b1eb
 menu světle modrá - 37b2f0
-nadpisy tmavě modrá - 206687
-hodnocení černošdá - 535353
+nadpisy tmavě modrá - 214c61
+hodnocení černošedá - 535353
 hodnocení modrá - 0072bc
 hodnocení červená - c1001f
 pozadí přechod skorobílá - f8f8f8
@@ -19,7 +21,7 @@ světle šedá (popisky) - 666
 /* Body */ 
 body { background-image: url(../../img/background.png); background-repeat: repeat; font-family: Arial; font-size: 10pt;}
 .page {width: 1000px; left:50%; margin-left: -500px; position: absolute; }
-.nadpisStranky { font-family: Arial; font-size: 20pt; padding-bottom: 12px; padding-top: 10px; margin-left: -6px; text-align: center; color: #206687; vertical-align: middle; }
+.nadpisStranky { font-family: Arial; font-size: 20pt; padding-bottom: 12px; padding-top: 10px; margin-left: -6px; text-align: center; color: #214c61; vertical-align: middle; }
 .ikonaStranky {  margin-right: 6px; margin-bottom: 1px;}
 
 .levaCast { float: left; width: 650px;}
@@ -28,7 +30,7 @@ body { background-image: url(../../img/background.png); background-repeat: repea
 img {border: 0px;}
 
 /* Header */
-#logoNadpis { margin-top: 50px; height: 50px; width: 50px; margin-left: 30px; margin-bottom: 10px; float: left;  }
+#logoNadpis { margin-top: 51px; height: 43px; width: 43px; margin-left: 30px; margin-bottom: 10px; float: left;  }
 #nadpisHlavni { margin-top: 24px; float: left; }
 #loginBox { position: absolute; right: 0px; top: 24px; font-size: 10pt; width: 450px; text-align: right; }
 #loginBoxPrihlaseny { position: absolute; right: 0px; top: 28px; font-size: 10pt; text-align: right; }
@@ -42,13 +44,15 @@ img {border: 0px;}
 #loginBoxPrihlaseny .popisek a:visited { color: #666; font-style: normal; }
 #loginBox a { text-decoration: none; color: grey;}
 #loginBox a:hover { color: black; }
+#odkazRozjizdeni { cursor: pointer; color: #666;}
+#odkazRozjizdeni:hover { cursor: pointer; color: black;}
 #prihlaseniObalovaciVnitrni { position: absolute; top: 50px; right: 0px; }
 #prihlaseniObalovaci { margin-top: -4px; }
 .overflowDiv { overflow: hidden; height: 66px; width: 450px; position: relative; }
 .menu { width: 1000px; height: 50px; background-image: url(../../img/menu_zip_pozadi.png); background-repeat: repeat-x;  position: relative;}
   .menu .polozky { margin-top: 17px; width: 1000px; height: 30px; display: inline-block; }
   .menu .mezera { margin-left: 25px; }
-  .menu a { text-decoration: none; margin-left: 80px; color: #206687; font-weight: bold; font-size: 11pt; }
+  .menu a { text-decoration: none; margin-left: 80px; color: #214c61; font-weight: bold; font-size: 11pt; }
   .menu #divProHledani { position: absolute; width: 171px;  left: 800px; top: 13px;}
     #divProHledani .hledatBox { width: 150px; color: grey; }
     #divProHledani .glass { background-image: url(../../img/glass.png); border: 0; margin: 0; padding: 0; width: 21px; height: 21px; position: absolute; top:2px; 
@@ -80,7 +84,7 @@ img {border: 0px;}
 .viceOdkaz a:hover { text-decoration: underline; }
 
 .praveMenu { width: 328px; height: 50px; background-image: url(../../img/menu_zip_pozadi.png); background-repeat: repeat-x; text-align: center;  }
-.praveMenu .nadpisMenu { margin-top: 17px; width: 200px; height: 30px; display: inline-block; color: #206687; font-weight: bold; font-size: 11pt; }
+.praveMenu .nadpisMenu { margin-top: 17px; width: 200px; height: 30px; display: inline-block; color: #214c61; font-weight: bold; font-size: 11pt; }
 /* .sekce {  padding-left: 6px; padding-bottom: 12px; margin-top: 10px; position: relative; background-image: url(../../img/prechod-pozadi.png); background-position: left bottom; background-repeat: repeat-x; background-color: #f8f8f8; }  */
 
 
@@ -194,7 +198,7 @@ zoom:1; /* Bez zoomu se přechod v IE nezobrazí */}
 a.stitekNapoveda span{	display: none; z-index: 9999; }
 a.stitekNapoveda:hover span { display: block; position: absolute; left:0px; top: 22px; width: 300px; background-color: #eee; color: #000; padding: 10px; text-decoration: none; z-index: 9999;   font-size: 8pt; box-shadow: 3px 3px 10px rgba(0,0,0,0.5); }
 .textbox {color: #000; border: 1px; border-style: solid; border-color: #bbb #ddd #ddd #bbb; border-radius: 4px; padding: 2px; margin: 6px 0px 0px 0px; background-image:url("../../img/textbox-background.png"); background-repeat:repeat-x; width: 128px;}
-.textbox.blur { color: #206687 }
+.textbox.blur { color: #214c61 }
 .textarea {font-family: Arial; font-size: 10pt; color: #444; border: 1px; border-style: solid; border-color: #bbb #ddd #ddd #bbb; border-radius: 4px; padding: 2px; margin: 6px 0px 0px 4px; background-image:url("../../img/textarea-background.png"); background-repeat:repeat-x; resize: none}
 .pridatStitek { margin-left: 6px; margin-top: 4px; }
 .pridatStitek a:hover { text-decoration: underline; }
@@ -224,7 +228,7 @@ a.stitekNapoveda:hover span { display: block; position: absolute; left:0px; top:
 .checklist li.selected {  font-size: 10pt;  font-weight: normal;  float: left;	margin-right: 6px;  margin-bottom: 6px;  background-color: #37b2f0;	height: 20px;	position: relative;  border-radius: 5px;  vertical-align: middle;   border: 1px; }
 .checklist li.selected .checkbox-select { display: none; }
 .checklist li.selected .checkbox-deselect { display: block; }
-.checkbox-select { color: #206687 !important; display: block;	text-decoration: none;  width: 100%;  height: 100%;  background-color: #cccccc;  border-radius: 5px; border: 1px; }
+.checkbox-select { color: #214c61 !important; display: block;	text-decoration: none;  width: 100%;  height: 100%;  background-color: #cccccc;  border-radius: 5px; border: 1px; }
 .checklist li input {	display: none; }
 .checkbox-deselect { color: #000 !important; display: none;	color: white;	text-decoration: none; width: 100%; height: 100%;  background-color: #37b2f0;  border-radius: 5px; }
 
@@ -239,7 +243,7 @@ a.stitekNapoveda:hover span { display: block; position: absolute; left:0px; top:
 .levaCast#Zebricky td:last-child { text-align: right; }
 .levaCast#Zebricky .poradi { text-align: right;  }
 .levaCast#Zebricky .larp { width: 370px; }
-.levaCast#Zebricky .larpOdkaz { color: #206687; font-weight: bold;  }
+.levaCast#Zebricky .larpOdkaz { color: #214c61; font-weight: bold;  }
 .levaCast#Zebricky .hodnoceni { text-align: center; }
 .levaCast#Zebricky .pocet_hodnoceni { text-align: center; position: relative; vertical-align: middle;  }
 .levaCast#Zebricky .pocet_hodnoceni span { display: block; }
@@ -259,7 +263,7 @@ a.stitekNapoveda:hover span { display: block; position: absolute; left:0px; top:
 .levaCast#Autori table { border: 0; padding: 0; margin:0; border-spacing: 0px; width: 630px;}
 .levaCast#Autori tr { border: 1px; border-color: #bbb; border-style: solid; }
 .levaCast#Autori td { border-bottom-width: 1px; border-left-width: 0px; border-right-width: 0px; border-top-width: 0px; padding: 2px; padding-top: 4px; padding-bottom: 4px; margin:0; border-color: #bbb; border-style: solid; }
-.levaCast#Autori .autorPrezdivka { color: #206687; font-weight: bold; }
+.levaCast#Autori .autorPrezdivka { color: #214c61; font-weight: bold; }
 .levaCast#Autori .autorJmeno { color: #535353; }
 .levaCast#Autori .nejlepsiHraAutor { text-align: right; }
 
@@ -277,7 +281,7 @@ a.stitekNapoveda:hover span { display: block; position: absolute; left:0px; top:
 .levaCast#Uzivatele tr { border: 1px; border-color: #bbb; border-style: solid; }
 .levaCast#Uzivatele td { border-bottom-width: 1px; border-left-width: 0px; border-right-width: 0px; border-top-width: 0px; padding: 2px; padding-top: 4px; padding-bottom: 4px; margin:0; border-color: #bbb; border-style: solid; }
 .levaCast#Uzivatele .pocetherUzivatel { text-align: right; width: 250px; }
-.levaCast#Uzivatele .uzivatelPrezdivka { color: #206687; font-weight: bold; }
+.levaCast#Uzivatele .uzivatelPrezdivka { color: #214c61; font-weight: bold; }
 .levaCast#Uzivatele .uzivatelJmeno { color: black; }
 
 .pravaCast#Uzivatele { float: left; margin-left: 20px; width: 330px; }
@@ -290,7 +294,7 @@ a.stitekNapoveda:hover span { display: block; position: absolute; left:0px; top:
 /* o databazi */
 #levaCastOdatabazi { float: left; width: 650px; }
 #levaCastOdatabazi p { text-align: justify; }
-#levaCastOdatabazi a { line-height: 1.5; text-decoration: none; color: #206687; }
+#levaCastOdatabazi a { line-height: 1.5; text-decoration: none; color: #214c61; }
 #levaCastOdatabazi ol { padding-left: 20px; }
 #levaCastOdatabazi .skryty { display: none; color: black; text-align: justify; }
 
@@ -313,7 +317,7 @@ a.stitekNapoveda:hover span { display: block; position: absolute; left:0px; top:
 #vyhledavani .levaCastVyhledavani { width: 312px; margin-right: 20px; float: left; }
 #vyhledavani .pravaCastVyhledavani { width: 312px; float: left; }
 #vyhledavani .pravaCastVyhledavani { width: 312px; float: left; }
-#vyhledavani .nick { font-weight: bold; color: #206687; }
+#vyhledavani .nick { font-weight: bold; color: #214c61; }
 #vyhledavani .jmeno { color: black; }
 #vyhledavani .popisek { height: 64px; }
 #vyhledavani .prvniTabulka { border: 0; padding: 0; margin:0; border-spacing: 0px; width: 100%; }
@@ -327,8 +331,8 @@ a.stitekNapoveda:hover span { display: block; position: absolute; left:0px; top:
 #vyhledavani .dalsiVysledky { font-weight: bold; margin-top: 10px; margin-left: 30px;}
 #vyhledavani .druhaTabulka { margin-top: 10px; border-spacing: 0px; }
 #vyhledavani .druhaTabulka td { padding: 0px; }
-#vyhledavani .druhaTabulka .hraStrucna { color: #206687; }
-#vyhledavani .druhaTabulka .nick { font-weight: bold; color: #206687; }
+#vyhledavani .druhaTabulka .hraStrucna { color: #214c61; }
+#vyhledavani .druhaTabulka .nick { font-weight: bold; color: #214c61; }
 
 .pravaCast #vyhledavani { float: left; margin-left: 20px; width: 330px; }
 #vyhledavani .fieldset { width: 322px; }
