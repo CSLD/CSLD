@@ -84,11 +84,11 @@
                 </div>
                 <div class="popisek">
                     Autoři:
-                        <div id="authors">
+                        <span id="authors">
                         <%
                             out.println(game.getAuthorsText());
                         %>
-                        </div>
+                        </span>
                 </div>
             </td>
         </tr>
