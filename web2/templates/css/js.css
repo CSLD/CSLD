@@ -1,0 +1,40 @@
+#chooser{
+    width: 300px;
+    height: 300px;
+}
+
+#chooser>.column{
+    position: relative;
+    width: 50%;
+    height: 100%;
+    float: left;
+}
+
+.column .content{
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    overflow: visible;
+}
+
+.column .content span, .column .content a{
+    width: 100%;
+}
+
+#chooser .clicked {
+    background-color: red;
+}
+
+.hidden {
+    display: none;
+}
+
+.user{
+    cursor: pointer;
+}
+
+.obsah>#description{
+    width: 100%;
+}

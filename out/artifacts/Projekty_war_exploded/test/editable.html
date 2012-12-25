@@ -1,0 +1,23 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+    <script type="text/javascript" src="/templates/js/jquery-1.8.3.js"></script>
+    <script type="text/javascript" src="/templates/js/jquery-ui-1.9.2.custom.js"></script>
+    <link rel="stylesheet" type="text/css" href="/templates/css/js.css"/>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#editable").each(function(idx, elm){
+                elm.contentEditable = true
+            });
+            $("#editable").change(function(){
+                console.log("Changed");
+            });
+        });
+    </script>
+</head>
+<body>
+    <div id="editable">Testovací div</div>
+</body>
+</html>
