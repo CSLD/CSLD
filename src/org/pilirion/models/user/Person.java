@@ -89,7 +89,8 @@ public class Person {
     }
 
     public String getName() {
-        return getFirstName() + " \"" + getNickName() + "\" " + getLastName();  //To change body of created methods use File | Settings | File Templates.
+        return getNameDiff();
+        // return getFirstName() + " \"" + getNickName() + "\" " + getLastName();  //To change body of created methods use File | Settings | File Templates.
     }
 
     public String getNameDiff() {
