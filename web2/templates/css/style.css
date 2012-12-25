@@ -139,6 +139,8 @@ zoom:1; /* Bez zoomu se přechod v IE nezobrazí */}
     .levaCast#game .popisek{ color: #666; font-size: 10pt; font-style: normal; margin-bottom: 6px; }
     .levaCast#game .popisek a { color: #666; font-size: 10pt; font-style: normal; text-decoration: none; margin-bottom: 6px; }
     .levaCast#game .popisek a:hover { color: #666; font-size: 10pt; font-style: normal; text-decoration: underline; margin-bottom: 6px; }
+.levaCast#game #authors { float:left;}
+.levaCast#game .napisAutori { float: left;}
 .levaCast#game .obsah { color: #666; font-size: 10pt; font-style: italic; margin-bottom: 6px; margin-top: 6px; line-height: 1.4;}
 .levaCast#game .menuHra { height: 24px; border: 0px; border-bottom: 2px; border-style: solid;}
   .menuHra .vybranaPolozka { float:left; font-weight: bold; padding: 4px; 

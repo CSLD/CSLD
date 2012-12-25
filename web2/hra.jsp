@@ -83,12 +83,12 @@
                     <span id="year"><%=game.getYear()%></span>
                 </div>
                 <div class="popisek">
-                    Autoři:
-                        <span id="authors">
+                    <div class="napisAutori"> Autoři:</div>
+                        <div id="authors">
                         <%
                             out.println(game.getAuthorsText());
                         %>
-                        </span>
+                        </div>
                 </div>
             </td>
         </tr>
