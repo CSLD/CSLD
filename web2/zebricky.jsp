@@ -1,6 +1,12 @@
 <%@ page import="java.util.List" %>
 <%@ page import="org.pilirion.models.game.*" %>
+<%@ page import="org.pilirion.models.game.Game" %>
 <%@ page import="org.pilirion.models.game.Rating" %>
+<%@ page import="org.pilirion.models.game.Ratings" %>
+<%@ page import="org.pilirion.models.game.Comment" %>
+<%@ page import="org.pilirion.models.game.Comments" %>
+<%@ page import="org.pilirion.models.user.Users" %>
+<%@ page import="org.pilirion.models.user.User" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="layout/header.jsp" %>
@@ -43,7 +49,16 @@
                 for(Game game: topGames){
                     List<Rating> ratings = game.getRatings();
                     List<Comment> comments = game.getComments();
-
+                    int idGame = game.getId();
+                    Ratings ratingsUser = new Ratings(conn);
+                    Rating ratingUser = null;
+                    Comments commentsUser = new Comments(conn);
+                    Comment commentUser = null;
+                    if (loggedUser != null) {
+                    int idUser = loggedUser.getId();
+                    ratingUser = ratingsUser.getRatingGameUser(idGame, loggedUser.getId());
+                    commentUser = commentsUser.getCommentGameUser(idUser,idGame);
+                    }
             %>
             <tr class="polozkaZebricek">
                 <td class="poradi"><%=place%></td>
@@ -55,8 +70,34 @@
                 out.print("?&thinsp;%");
                 }
                 %></td>
-                <td class="pocet_hodnoceni"><%=ratings.size()%> <img src="img/icon/star_icon.png" style="position:relative; top:2px;"> 
-                  <%=comments.size()%> <img src="img/icon/comment_icon.png" style="position:relative; top:3px;">
+                <td class="pocet_hodnoceni"><%=ratings.size()%>
+                 <%
+                    // zobrazovani cervenych a modrych ikon u hodnocenych her
+                          if (ratingUser != null) {
+                          %>
+                          <img src="img/icon/star_icon_red.png" style="position:relative; top:2px;">
+                          <%
+                          }
+                          else {
+                          %><img src="img/icon/star_icon.png" style="position:relative; top:2px;">
+                          <%
+                          }
+                          %>
+                          <%=comments.size()%>
+                          <%
+                     // zobrazovani cervenych a modrych ikon u komentovanych her
+                          if ( commentUser != null ) {
+                          %>
+                          <img src="img/icon/comment_icon_red.png" style="position:relative; top:3px;">
+                          <%
+                          }
+                          else {
+                          %>
+                          <img src="img/icon/comment_icon.png" style="position:relative; top:3px;">
+                          <%
+                          }
+                          %>
+
                 </td>
             </tr>
             <%

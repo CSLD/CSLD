@@ -2,9 +2,6 @@
 <%@ page import="java.util.Collections" %>
 <%@ page import="org.pilirion.models.game.*" %>
 <%@ page import="org.pilirion.models.game.Game" %>
-<%@ page import="org.pilirion.models.game.Game" %>
-<%@ page import="org.pilirion.models.game.Games" %>
-<%@ page import="org.pilirion.models.game.Comment" %>
 <%@ page import="org.pilirion.models.game.Ratings" %>
 <%@ page import="org.pilirion.models.game.Rating" %>
 <%@ page import="org.pilirion.models.user.Users" %>
@@ -89,7 +86,7 @@
                     <span id="year"><%=game.getYear()%></span>
                 </div>
                 <div class="popisek">
-                    <div class="napisAutori"> Autoři:</div>
+                    Autoři:
                         <div id="authors">
                         <%
                             out.println(game.getAuthorsText());
