@@ -37,13 +37,15 @@
                 %>
                 <tr class="polozkaAutor">
                     <td class="larp"><a href="/autor.jsp?id=<%=author.getId()%>"><span class="autorPrezdivka"><%=nickName%></span><span class="AutorJmeno"> <%=name%></span></a></td>
+                    <td class="nejlepsiHraAutor">
                     <%
                         if(game != null) {
                     %>
-                    <td class="nejlepsiHraAutor"><a href="/hra.jsp?id=<%=game.getId()%>"><%=game.getName()%> (<%=game.getRatingPercents()%>%)</a></td>
+                   <a href="/hra.jsp?id=<%=game.getId()%>"><%=game.getName()%> (<%=game.getRatingPercents()%>%)</a>
                     <%
                         }
                     %>
+                    </td>
                 </tr>
                 <%
                     }
