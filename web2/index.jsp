@@ -41,6 +41,52 @@ $(document).ready(function() {
         
 </script>
 
+<script type="text/javascript">
+jQuery(document).ready(function() {
+jQuery.getJSON('http://devel.larp.cz/misc/api/kalendar-beta.php', function(data){ //vyžádáme si data z api, zpracujeme je jako JSON a uložíme do proměnné "data" s kterou budeme dál pracovat
+  var maxAkci=3; //ruční limit počtu vypsaných akcí - databázový je 30 (více se ani tak nevypíše)
+  if(data.chyba)  //pokud nastala chyba php, měla by nám být předána v parametru chyba, vypsat
+  {
+    alert(data.chyba.popis);
+  }
+  else if(!data.larpy) //pokud neexistuje parametr larpy (ale nebyla chyba), něco je kardinálně špatně
+  {
+    alert('Špatný formát přijatých dat');
+  }
+  else //zřejmě je vše v pořádku
+  {
+    var larpy=data.larpy; //do proměnné larpy si uložíme pole larpů, které se nám načetlo z JSONu
+    var text=''; //výstupní buffer, do kterého si budeme ukládat html připravované tabulky
+    var temp=0;
+    var randomIndex=0;
+    var random=0;
+    var pool= new Array(0,1,2,3,4,5,6,7,8,9);
+    var k=new Array();
+    for( var i=0; i<larpy.length && i<maxAkci; i++ ) {
+      randomIndex=Math.floor( Math.random()*pool.length );
+      random=pool[randomIndex];
+      pool.splice(randomIndex,1); //odstraní prvek z pole
+      k[i]=random;
+    }
+    k.sort();
+    for(var i=0; i<larpy.length && i<maxAkci; i++) //projdeme polem larpů
+    {
+      temp=k[i];
+      var larp=larpy[temp]; //aktuální larp si uložíme do proměnné larp
+      //začátek (konec) larpu jsou uvedeny v javascriptem zpracovatelném formátu, vytvoříme si z nich tedy objekty typu Date (datum)
+      var z=new Date(larp.zacatek);
+      text+='<div class="polickoSekce">'; //postupně si vytváříme řádek budoucí tabulky a ukládáme do proměnné text
+      text+='<div class="nadpisKalendar">'+z.getDate()+'.'+(z.getMonth()+1)+'.'+z.getFullYear()+'<b> '+larp.nazev+'</b></div>';
+      text+='<div class="popisek">'+larp.obec+', '+larp.kraj+'</div><div class="popisekNormal">pořádá '+larp.poradatel+'</div>';
+      text+='</div>';
+    }
+    //nakonec přepíšeme celý obsah elementu tbody proměnnou text
+    jQuery('#kalendarObsah').html(text);
+  }
+});
+});
+</script>
+
 <div class="levaCast">
     <div id="nivoSlider" class="nivoSlider">
         <img src="/img/slider/panprstenu650.jpg" alt=""
@@ -230,7 +276,7 @@ $(document).ready(function() {
 
 </div>
 
-<!-- PRAVE MENU -->
+                                    <!-- PRAVE MENU -->
 
 <div class="pravaCast">
     <div class="praveMenu">
@@ -260,23 +306,12 @@ $(document).ready(function() {
     <%
         }
     %>
-    <!--
     <div class="sekce">
         <div class="nadpisSekce">Kalendář akcí</div>
-        <div class="obsah">
-            <a href="">
-                <div class="polickoSekce">
-                    <div class="nadpisKalendar">14.12.2012 <b>Setkání larp.cz</b></div>
-            </a>
-
-            <div class="popisek">
-                Brno, Jihomoravský kraj<br/>
-                pořádá Moravian larp
-            </div>
-                </div>
+        <div id="kalendarObsah">
+        <!-- obsah z javascriptu v "hlavicce" -->
         </div>
     </div>
-    -->
 
     <div class="sekce">
         <div class="nadpisSekce">Náhodný larp</div>

@@ -95,7 +95,8 @@ img {border: 0px;}
 
 .sekce a {text-decoration: none; color: black; }
 .nadpisSekce { font-size: 12pt; font-weight: bold; margin-bottom: 6px; margin-top: 10px; margin-left: 6px; }
-.popisek{ color: #535353; font-size: 10pt; text-align: left; font-style: italic; }
+.popisek { color: #535353; font-size: 10pt; text-align: left; font-style: italic; }
+.popisekNormal { color: #535353; font-size: 10pt; text-align: left; font-style: normal; }
 .nadpisKalendar{ margin-top: 10px; }
 
 .nadpisHra { font-size: 10pt; font-weight: bold; }
