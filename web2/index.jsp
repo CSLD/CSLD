@@ -76,7 +76,7 @@ jQuery.getJSON('http://devel.larp.cz/misc/api/kalendar-beta.php', function(data)
       //začátek (konec) larpu jsou uvedeny v javascriptem zpracovatelném formátu, vytvoříme si z nich tedy objekty typu Date (datum)
       var z=new Date(larp.zacatek);
       text+='<div class="polickoSekce">'; //postupně si vytváříme řádek budoucí tabulky a ukládáme do proměnné text
-      text+='<div class="nadpisKalendar">'+z.getDate()+'.'+(z.getMonth()+1)+'.'+z.getFullYear()+'<b> '+larp.nazev+'</b></div>';
+      text+='<a href="'+larp.link+'" target="_blank"><div class="nadpisKalendar">'+z.getDate()+'.'+(z.getMonth()+1)+'.'+z.getFullYear()+'<b> '+larp.nazev+'</b></div></a>';
       text+='<div class="popisek">'+larp.obec+', '+larp.kraj+'</div><div class="popisekNormal">pořádá '+larp.poradatel+'</div>';
       text+='</div>';
     }
