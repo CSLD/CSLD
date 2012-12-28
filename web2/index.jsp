@@ -311,6 +311,7 @@ jQuery.getJSON('http://devel.larp.cz/misc/api/kalendar-beta.php', function(data)
         <div id="kalendarObsah">
         <!-- obsah z javascriptu v "hlavicce" -->
         </div>
+        <div class="viceOdkazKalendar"><a href="http://kalendar.larp.cz" target="_blank"> více ...</a></div>
     </div>
 
     <div class="sekce">

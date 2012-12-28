@@ -79,7 +79,7 @@ img {border: 0px;}
 .ctverecek { width: 12px; height: 12px; margin-right: 4px; vertical-align: -5%; }
 #dalsiPridaneHry { display: none; }
 #dalsiKomentare { display: none; }
-.viceOdkaz { text-align: right; margin-bottom: 6px; margin-top: -6px !important; }
+.viceOdkaz { text-align: right; margin-bottom: 6px; margin-top: -6px !important; margin-right:6px; }
 .viceOdkaz a { text-align: right; color: #666; text-decoration: none; }
 .viceOdkaz a:hover { text-decoration: underline; }
 
@@ -101,6 +101,9 @@ img {border: 0px;}
 
 .nadpisHra { font-size: 10pt; font-weight: bold; }
 .obsah { padding-left: 6px; }
+.viceOdkazKalendar { text-align: right; margin-top: 6px; margin-right: 6px; }
+.viceOdkazKalendar a { text-align: right; color: #666; text-decoration: none; }
+.viceOdkazKalendar a:hover { text-decoration: underline; }
 .obrazekHra { width: 70px; height: 70px; box-shadow: 4px 4px 4px #444; border-collapse: separate; border: 0px; }
 .pruhStatistika { font-size: 10pt; color: #000; font-weight: bold; background-color: #37b2f0; background-image: -webkit-gradient(linear, right 0, left 0, from(#6dceff), to(#2882af));}
 
