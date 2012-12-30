@@ -263,8 +263,7 @@
             %>
             <div class="obsahPolozka"><img src="img/ctverecek.png" class="ctverecek"
                                            style="background-color: <%=authorGame.getRatingColor()%>" alt="">
-                <a href="/hra.jsp?id=<%=authorGame.getId()%>"><%=authorGame.getName()%> (<%=authorGame.getYear()%>
-                    )</a></div>
+                <a href="/hra.jsp?id=<%=authorGame.getId()%>"><%=authorGame.getName()%> (<%=authorGame.getYear()%>)</a></div>
             <%
                 }
             %>
