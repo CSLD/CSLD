@@ -148,8 +148,8 @@
                         </div>
                     </td>
                     <td class="bunkaKomentar">
-                        <span class="nick"><%=user.getPerson().getNickName()%></span>
-                        <span class="jmeno"><%=user.getPerson().getFirstName() + " " + user.getPerson().getLastName()%></span>
+                        <a href="/uzivatel.jsp?id=<%=user.getPerson().getId()%>"><span class="nick"><%=user.getPerson().getNickName()%></span>
+                        <span class="jmeno"><%=user.getPerson().getFirstName() + " " + user.getPerson().getLastName()%></span></a>
 
                         <div class="obsahKomentar"><%=comment.getText()%>
                         </div>

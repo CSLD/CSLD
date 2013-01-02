@@ -52,8 +52,8 @@ public class Comment {
     }
 
     public String getShortenedText() {
-        if(text.length() > 100){
-            return text.substring(0,100) + " ...";
+        if(text.length() > 146){
+            return text.substring(0,146) + " ...";
         }
         return text;
     }

@@ -154,6 +154,8 @@ zoom:1; /* Bez zoomu se přechod v IE nezobrazí */}
 /* Chrome, Safari */ background-image: -webkit-linear-gradient(#f8f8f8, #cccccc); background-image: -webkit-gradient(linear, 0 0, 0 bottom, from(#f8f8f8), to(#cccccc)); 
 /* Mozilla */ background-image: -moz-linear-gradient(#f8f8f8, #cccccc); background-image: -moz-gradient(linear, 0 0, 0 bottom, from(#f8f8f8), to(#cccccc));
 /* IE */ filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8f8f8',endColorstr='#cccccc'); zoom:1; }
+.levaCast#game  .komentar a { text-decoration: none; color: black; }
+.levaCast#game  .komentar a:hover { text-decoration: underline; color: black; }
 .levaCast#game  .komentar .bunkaObrazek {  vertical-align: top; padding: 0px;}
 .levaCast#game  .komentar .obrazekUziv { vertical-align: top; margin-left: -2px; margin-top:-2px; width: 75px; height: 75px;}
 .levaCast#game  .komentar .nick { font-size: 10pt; font-weight: bold;}

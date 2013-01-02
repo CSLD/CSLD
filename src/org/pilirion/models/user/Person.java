@@ -105,6 +105,9 @@ public class Person {
     }
 
     public String getImage() {
+        if (image.equals("") || image == null) {
+        image = "/img/icon/default_avatar.png";
+        }
         return image;
     }
 

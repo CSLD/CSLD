@@ -182,6 +182,9 @@ public class Game {
     }
 
     public String getImage() {
+        if (image.contains(".") || image == null) {
+            image = "/img/icon/question_icon_game.png";
+        }
         return image;
     }
 
