@@ -108,7 +108,6 @@ jQuery.getJSON('http://devel.larp.cz/misc/api/kalendar-beta.php', function(data)
         <div class="sloupecLevy">
             <div class="nadpis">Naposledy přidáno</div>
             <%
-                System.out.println("test");
                 Games games = new Games(conn);
                 List<Game> last = games.getLastAdded(20);
                 List<Game> firstTwo = new ArrayList<Game>();

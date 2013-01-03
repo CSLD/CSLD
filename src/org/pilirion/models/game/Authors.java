@@ -163,6 +163,7 @@ public class Authors {
         nickName = nickName.replaceAll("\"","");
         String sql = "select * from author where person_id in (select id from person where " +
                 "first_name='"+firstName+"' and last_name='"+lastName+"' and nickname ilike'%"+nickName+"%')";
+        System.out.println(sql);
         return getAuthorsFromDB(sql);
     }
 
@@ -175,8 +176,8 @@ public class Authors {
             nameParts = author.trim().replaceAll(" +", " ").split(" ");
             if(nameParts.length == 4 ){
                 firstName = nameParts[0];
-                if(nameParts[1].indexOf("\"") != -1){
-                    nickName = nameParts[1].replaceAll("\"","");
+                if(nameParts[1].indexOf("\"") != -1 || nameParts[1].indexOf("&quot;") != -1){
+                    nickName = nameParts[1].replaceAll("\"","").replaceAll("&quot;","");
                     lastName = nameParts[2];
                 } else {
                     firstName += " " + nameParts[1];
@@ -185,8 +186,8 @@ public class Authors {
                 lastName += nameParts[3];
             } else if(nameParts.length == 3 ){
                 firstName = nameParts[0];
-                if(nameParts[1].indexOf("\"") != -1){
-                    nickName = nameParts[1].replaceAll("\"","");
+                if(nameParts[1].indexOf("\"") != -1 || nameParts[1].indexOf("&quot;") != -1){
+                    nickName = nameParts[1].replaceAll("\"","").replaceAll("&quot;","");
                 } else {
                     firstName += " " + nameParts[1];
                     nickName = "";
@@ -197,7 +198,6 @@ public class Authors {
                 nickName = "";
                 lastName = nameParts[1];
             }
-            System.out.println(firstName + " " + nickName + " " + lastName);
             allAuthors.addAll(getAuthorsByName(firstName, nickName, lastName));
         }
         return allAuthors;

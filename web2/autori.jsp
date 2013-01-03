@@ -90,10 +90,8 @@
 
         <%
             Author bestAuthor = authors.getBestAuthor();
-            System.out.println(bestAuthor);
             if(bestAuthor != null){
                 Game bestGame = games.getBestGameOfAuthor(bestAuthor.getId());
-                System.out.println(bestGame);
                 if(bestGame != null){
         %>
         <div class="sekce">

@@ -66,7 +66,6 @@ public class Search {
                 Statement stmt = db.createStatement();
                 ResultSet rs = stmt.executeQuery(sql);
                 while(rs.next()){
-                    System.out.println(rs.getDouble(1));
                     game.setRatingZebricek(rs.getDouble(1));
                 }
             } catch (SQLException e) {
@@ -88,7 +87,6 @@ public class Search {
                 Statement stmt = db.createStatement();
                 ResultSet rs = stmt.executeQuery(sql);
                 while(rs.next()){
-                    System.out.println(rs.getDouble(1));
                     game.setRatingZebricek(rs.getDouble(1));
                 }
             } catch (SQLException e) {

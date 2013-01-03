@@ -4,8 +4,6 @@
 <%
     String authorId = request.getParameter("authorId");
     String userId = request.getParameter("userId");
-    System.out.println("AuthorId " + authorId);
-    System.out.println("UserId " + userId);
 
     if(userId == null || userId.equals("") || authorId == null || authorId.equals("")){
         out.print("{\"status\": \"err\",\"message\":\"Nebyly zadané všechny údaje.\"}");

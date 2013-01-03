@@ -20,7 +20,6 @@
     Role_Has_Resources roleHasResource = new Role_Has_Resources(conn);
     Resources resources = new Resources(conn);
     String url = request.getServletPath();
-    System.out.println("Url " + url);
     Url uUrl = new Url(url);
     String baseUrl = uUrl.getBasePathStripped();
     Resource resource = resources.getResourceByPath(baseUrl);

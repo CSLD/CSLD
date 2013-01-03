@@ -1,5 +1,6 @@
 package org.pilirion.models.game;
 
+import org.pilirion.exceptions.ItemDoesNotExists;
 import org.pilirion.models.user.Group;
 import org.pilirion.models.user.Groups;
 import org.pilirion.utils.Strings;
@@ -77,6 +78,16 @@ public class Games {
             return games.get(0);
         }
         return null;
+    }
+
+    public Game getByName(String name) throws ItemDoesNotExists {
+        String sql = "select * from game where name ilike '" + name + "'";
+        List<Game> games = getFromDb(sql);
+        if(games != null && games.size() > 0){
+            return games.get(0);
+        } else {
+            throw new ItemDoesNotExists();
+        }
     }
 
     public boolean insertGame(Game game){

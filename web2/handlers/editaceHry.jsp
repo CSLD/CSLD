@@ -5,7 +5,6 @@
 <%@include file="/layout/header.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    System.out.println("Got here");
     String name = request.getParameter("nazevHry");
     String labels = request.getParameter("labels");
     String menRole = request.getParameter("menRole");
