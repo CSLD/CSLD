@@ -8,9 +8,9 @@ package org.pilirion.utils;
  */
 public class FileUtils {
     public static String getFileType(String fileName){
-        String[] fileParts = fileName.trim().split(".");
+        String[] fileParts = fileName.trim().split("\\.");
         if(fileParts.length > 0){
-            return "." + fileParts[fileParts.length - 1];
+            return fileParts[fileParts.length - 1];
         } else {
             return "";
         }

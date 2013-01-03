@@ -1,22 +1,21 @@
+<%@ page import="com.mortennobel.imagescaling.ResampleOp" %>
 <%@ page import="org.apache.tomcat.util.http.fileupload.DiskFileUpload" %>
 <%@ page import="org.apache.tomcat.util.http.fileupload.FileItem" %>
 <%@ page import="org.apache.tomcat.util.http.fileupload.FileUploadException" %>
-<%@ page import="org.pilirion.models.game.Authors" %>
-<%@ page import="org.pilirion.models.game.Author" %>
-<%@ page import="org.pilirion.models.game.Games" %>
-<%@ page import="org.pilirion.models.game.Game" %>
-<%@ page import="org.pilirion.models.game.Label" %>
-<%@ page import="org.pilirion.models.game.Labels" %>
+<%@ page import="org.pilirion.exceptions.ItemDoesNotExists" %>
+<%@ page import="org.pilirion.models.game.*" %>
 <%@ page import="org.pilirion.utils.FileUtils" %>
 <%@ page import="org.pilirion.utils.Pwd" %>
 <%@ page import="org.pilirion.utils.Strings" %>
+<%@ page import="javax.imageio.ImageIO" %>
+<%@ page import="java.awt.image.BufferedImage" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Calendar" %>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="java.util.List" %>
-<%@ page import="org.pilirion.exceptions.ItemDoesNotExists" %>
+<%@ page import="org.pilirion.img.DimensionConstrain" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="../templates/header.jsp" %>
 <%
@@ -99,24 +98,21 @@
         while (itr.hasNext()) {
             FileItem fi = (FileItem) itr.next();
 
-            System.out.println("FileName " + fi.getName());
             if (!fi.isFormField() && !fi.getName().equals("")) {
                 String fileType = FileUtils.getFileType(fi.getName());
                 String filePath = Pwd.getMD5(gameName);
-                System.out.println("FilePath " + filePath);
-                System.out.println("FileType " + fileType);
-                gameImage = "/img/games/" + filePath + fileType;
-                File fNew = new File(application.getRealPath("/img/games/"), filePath + fileType);
-                System.out.println("Final Path " + fNew.getAbsolutePath());
-                try {
-                    System.out.println("Fi " + fi);
-                    fi.write(fNew);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    response.sendRedirect("/pridatHru.jsp?error=" +
-                            URLEncoder.encode("Hru se nepovedlo přidat. Chyba při nahrávání souboru", "UTF-8"));
-                    return;
+                ResampleOp resampleOp = new ResampleOp(new DimensionConstrain(120, 120));
+                BufferedImage imageGame = ImageIO.read(fi.getInputStream());
+                BufferedImage imageGameSized = resampleOp.filter(imageGame, null);
+
+                String fileTypeFull = fileType;
+                if(!fileType.equals("")){
+                    fileTypeFull = "." + fileType;
                 }
+                gameImage = "/img/games/" + filePath + fileTypeFull;
+
+                File fNew = new File(application.getRealPath("/img/games/"), filePath + fileTypeFull);
+                ImageIO.write(imageGameSized ,fileType, fNew);
             }
         }
 

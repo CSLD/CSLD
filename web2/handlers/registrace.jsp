@@ -1,16 +1,22 @@
+<%@ page import="com.mortennobel.imagescaling.ResampleOp" %>
 <%@ page import="org.apache.tomcat.util.http.fileupload.DiskFileUpload" %>
 <%@ page import="org.apache.tomcat.util.http.fileupload.FileItem" %>
 <%@ page import="org.apache.tomcat.util.http.fileupload.FileUploadException" %>
+<%@ page import="org.pilirion.img.DimensionConstrain" %>
+<%@ page import="org.pilirion.models.user.Person" %>
+<%@ page import="org.pilirion.models.user.User" %>
+<%@ page import="org.pilirion.models.user.Users" %>
 <%@ page import="org.pilirion.utils.DateCsld" %>
+<%@ page import="org.pilirion.utils.FileUtils" %>
+<%@ page import="org.pilirion.utils.Pwd" %>
+<%@ page import="org.pilirion.utils.Strings" %>
+<%@ page import="javax.imageio.ImageIO" %>
+<%@ page import="java.awt.image.BufferedImage" %>
 <%@ page import="java.io.File" %>
-<%@ page import="java.security.MessageDigest" %>
+<%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="java.util.List" %>
-<%@ page import="org.pilirion.utils.Pwd" %>
-<%@ page import="org.pilirion.utils.FileUtils" %>
-<%@ page import="org.pilirion.utils.Strings" %>
-<%@ page import="java.net.URLEncoder" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="../templates/header.jsp" %>
 <%
@@ -85,9 +91,18 @@
                 if(fi.getSize() > 0) {
                     String fileType = FileUtils.getFileType(fi.getName());
                     String filePath = Pwd.getMD5(mail);
-                    imagePath = "/img/users/" + filePath + fileType;
-                    File fNew = new File(application.getRealPath("/img/users/"), filePath + fileType);
-                    fi.write(fNew);
+                    ResampleOp resampleOp = new ResampleOp(new DimensionConstrain(120, 120));
+                    BufferedImage imageGame = ImageIO.read(fi.getInputStream());
+                    BufferedImage imageGameSized = resampleOp.filter(imageGame, null);
+
+                    String fileTypeFull = fileType;
+                    if(!fileType.equals("")){
+                        fileTypeFull = "." + fileType;
+                    }
+                    imagePath = "/img/users/" + filePath + fileTypeFull;
+
+                    File fNew = new File(application.getRealPath("/img/users/"), filePath + fileTypeFull);
+                    ImageIO.write(imageGameSized ,fileType, fNew);
                 }
             }
         }
