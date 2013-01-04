@@ -5,6 +5,7 @@
 <%@ page import="org.pilirion.models.game.Games" %>
 <%@ page import="org.pilirion.models.game.Game" %>
 <%@ page import="org.pilirion.models.game.Label" %>
+<%@ page import="org.pilirion.models.game.Author" %>
 <%@ page import="org.pilirion.models.game.Ratings" %>
 <%@ page import="org.pilirion.models.game.Rating" %>
 <%@ page import="org.pilirion.models.user.Users" %>
@@ -63,7 +64,23 @@
                 <img src="<%=game.getImage()%>" class="obrazekHra" alt="">
                 </div>
                 <%
-                    if (loggedUser != null && loggedUser.getRole().getId() > 2) {
+                    boolean isAuthor = false;
+                    boolean insertedGame = false;
+                    boolean isModerator = false;
+                    if(loggedUser != null){
+                        isModerator = loggedUser.getRole().getId() > 2;
+                        List<Author> allAuthors = game.getAuthors();
+                        for(Author author: allAuthors){
+                            if(author.getPerson().getId() == loggedUser.getPerson().getId()){
+                                isAuthor = true;
+                            }
+                        }
+                        System.out.println("Added " + game.getUserWhoAddedGame());
+                        if(game.getUserWhoAddedGame() == loggedUser.getId()){
+                            insertedGame = true;
+                        }
+                    }
+                    if (isModerator || isAuthor || insertedGame) {
                 %>
                     <input type="button" class="below" id="editovatHru" value="Editovat" />
                 <%

@@ -52,7 +52,7 @@ public class Games {
                 players = rsGames.getInt("players");
                 premier = rsGames.getDate("premier");
                 bothRoles = rsGames.getInt("both_role");
-                //userWhoAddGame = rsGames.getInt("user_who_added");
+                userWhoAddGame = rsGames.getInt("user_who_added");
 
                 authors = objAuthors.getAuthorsOfGame(id);
                 comments = objComments.getCommentsByGame(id);
@@ -61,7 +61,7 @@ public class Games {
 
                 game = new Game(id, name, image, menRoles, womenRoles, bothRoles, hours, days, year, description, premier, players,
                     authors, comments, ratings, labels);
-                //game.setUserWhoAddedGame(userWhoAddGame);
+                game.setUserWhoAddedGame(userWhoAddGame);
                 games.add(game);
             }
         } catch (SQLException ex){
@@ -141,7 +141,7 @@ public class Games {
 
     public Game getBestGameOfAuthor(int authorId){
         String sql = "select id, csld_countRating(id)as ratings, year, name, image, description, " +
-                "men_role, women_role, both_role, hours, days, players, premier from game where " +
+                "men_role, women_role, both_role, user_who_added, hours, days, players, premier from game where " +
                 "id in (select game_id from game_has_authors where author_id = " + authorId + ") " +
                 "order by ratings desc limit 1";
         List<Game> games = getFromDb(sql);
@@ -168,7 +168,7 @@ public class Games {
     public List<Game> getGamesOrderByRating(int iActualPage, int iGamesPerPage) {
         int iOffset = (iActualPage - 1) * iGamesPerPage;
         String sSql = "select id, csld_countRating(id)as ratings, year, name, image, description, " +
-                "men_role, women_role, both_role, hours, days, players, premier from game " +
+                "men_role, women_role, both_role, user_who_added, hours, days, players, premier from game " +
                 "order by ratings desc " +
                 "limit "+String.valueOf(iGamesPerPage) + " offset " + String.valueOf(iOffset);
         return getFromDb(sSql);
@@ -177,7 +177,7 @@ public class Games {
     public List<Game> getGamesMostCommented(int iActualPage, int iGamesPerPage) {
         int iOffset = (iActualPage - 1) * iGamesPerPage;
         String sSql = "select id, csld_countComments(id)as comments, year, name, image, description, " +
-                "men_role, women_role, both_role, hours, days, players, premier from game " +
+                "men_role, women_role, both_role, user_who_added, hours, days, players, premier from game " +
                 "order by comments " +
                 "limit "+String.valueOf(iGamesPerPage) + " offset " + String.valueOf(iOffset);
         return getFromDb(sSql);
