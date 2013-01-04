@@ -1,6 +1,9 @@
 <%@ page import="org.pilirion.models.game.Comment" %>
 <%@ page import="org.pilirion.models.game.Comments" %>
+<%@ page import="org.pilirion.models.user.Rating" %>
+<%@ page import="org.pilirion.models.user.Ratings" %>
 <%@ page import="org.pilirion.utils.Strings" %>
+<%@ page import="java.net.URLEncoder" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/templates/header.jsp" %>
 <%

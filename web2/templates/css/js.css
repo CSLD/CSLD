@@ -27,6 +27,10 @@
     background-color: red;
 }
 
+.red {
+    color: red;
+}
+
 .hidden {
     display: none;
 }

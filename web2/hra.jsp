@@ -1,6 +1,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Collections" %>
-<%@ page import="org.pilirion.models.game.*" %>
+<%@ page import="org.pilirion.models.game.Comments" %>
+<%@ page import="org.pilirion.models.game.Comment" %>
+<%@ page import="org.pilirion.models.game.Games" %>
 <%@ page import="org.pilirion.models.game.Game" %>
 <%@ page import="org.pilirion.models.game.Ratings" %>
 <%@ page import="org.pilirion.models.game.Rating" %>
@@ -107,6 +109,18 @@
 
     <% if (loggedUser != null) {%>
     <table class="pridatKomentarTabulka">
+        <%
+            Comments commentsObj = new Comments(conn);
+            boolean alreadyCommented = commentsObj.getCommentGameUser(loggedUser.getId(), gameId) != null;
+        %>
+        <tr>
+            <td <%if(!alreadyCommented){%>colspan="2"<%}%>>
+                <div id="komentarZprava" class="<% if(!alreadyCommented){%> hidden<%}%>">Tuto hru už jste komentoval.</div>
+            </td>
+        </tr>
+        <%
+            if(!alreadyCommented){
+        %>
         <tr>
             <td><a href="\" onclick="$('#pridatKomentar').slideToggle('slow'); return false;"><img
                     src="img/icon/comment_icon.png"></a>
@@ -116,6 +130,9 @@
                 komentář</a>
             </td>
         </tr>
+        <%
+            }
+        %>
     </table>
 
     <div id="pridatKomentar">
