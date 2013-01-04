@@ -3,6 +3,8 @@
 <%@ page import="org.apache.tomcat.util.http.fileupload.FileItem" %>
 <%@ page import="org.apache.tomcat.util.http.fileupload.FileUploadException" %>
 <%@ page import="org.pilirion.img.DimensionConstrain" %>
+<%@ page import="org.pilirion.models.game.Author" %>
+<%@ page import="org.pilirion.models.game.Authors" %>
 <%@ page import="org.pilirion.models.user.Person" %>
 <%@ page import="org.pilirion.models.user.User" %>
 <%@ page import="org.pilirion.models.user.Users" %>
@@ -120,6 +122,11 @@
             User user;
             if (users.insertUser(userToAdd)) {
                 user = users.authenticate(mail, pwd);
+                Authors authors = new Authors(conn);
+                List<Author> listOfAuthors = authors.getAuthorsByName(firstName, "", lastName);
+                if(listOfAuthors.size() == 1){
+                    authors.editUser(user.getId(), listOfAuthors.get(0).getId());
+                }
                 session.setAttribute("csld_user", user);
                 redirectURL = "/index.jsp";
             } else {
