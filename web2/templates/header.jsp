@@ -6,7 +6,7 @@
 <%
     Connection conn = (Connection) session.getAttribute("csld_dbConn");
     if(conn == null){
-        String dbString = "jdbc:postgresql://localhost/csld";
+        String dbString = "jdbc:postgresql://localhost/csld_test";
         String userName = "csld";
         String password = "hesloKDbCsldTxt";
 
@@ -34,9 +34,15 @@
     }
 
     if(!roleHasResource.hasRoleResource(role, baseUrl)){
-        RequestDispatcher request_Dispatcher=request.getRequestDispatcher(resource.getDefault());
-        request_Dispatcher.forward(request, response);
-        return;
+        if(resource == null){
+            RequestDispatcher request_Dispatcher=request.getRequestDispatcher("/");
+            request_Dispatcher.forward(request, response);
+            return;
+        } else {
+            RequestDispatcher request_Dispatcher=request.getRequestDispatcher(resource.getDefault());
+            request_Dispatcher.forward(request, response);
+            return;
+        }
     }
 
 %>

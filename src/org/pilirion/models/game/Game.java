@@ -182,7 +182,7 @@ public class Game {
     }
 
     public String getImage() {
-        if (image.contains(".") || image == null) {
+        if (image == null || image.equals("")) {
             image = "/img/icon/question_icon_game.png";
         }
         return image;
@@ -242,6 +242,10 @@ public class Game {
     public void setUserWhoAddedGame(int userId) {
         this.userAdded = userId;
         //To change body of created methods use File | Settings | File Templates.
+    }
+
+    public void setImage(String path){
+        this.image = path;
     }
 
     public int getUserWhoAddedGame() {

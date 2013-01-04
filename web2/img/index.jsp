@@ -6,13 +6,13 @@
 <%@ page import="org.pilirion.models.game.Ratings" %>
 <%@ page import="org.pilirion.models.game.Rating" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="layout/header.jsp" %>
+<%@include file="/layout/header.jsp" %>
 <body>
 <div class="page">
 
 <!-- HEADER -->
 
-<%@include file="layout/head.jsp" %>
+<%@include file="/layout/head.jsp" %>
 
 <!-- HOMEPAGE -->
 

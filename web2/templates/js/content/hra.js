@@ -120,6 +120,10 @@ $(document).ready(function () {
                 actButton.before(emptyAuthor);
             });
 
+            $('img.obrazekHra').bind('click', function(){
+                window.open("/editaceObrazku.jsp?gameId=" + $("#gameIdComment").val(), "_blank", "width=300,height=300,left=200,top=200")
+            });
+
             $.ajax({
                 url: '/ajax/getLabels.jsp',
                 method: 'post',
@@ -179,6 +183,7 @@ $(document).ready(function () {
             $("#labels").html(labels);
             $("#authors").empty();
             $("#authors").html(authors);
+            $("img.obrazekHra").unbind();
             $.ajax({
                 url:'/ajax/editGame.jsp',
                 method: 'post',
@@ -201,7 +206,6 @@ $(document).ready(function () {
                     response = JSON.parse(response.trim());
                     if (response.status == "ok") {
                         alert("Hra byla úspěšně upravena");
-                        location.reload();
                     } else {
                         alert("Hru se nepodařilo uložit. " + response.message);
                     }
