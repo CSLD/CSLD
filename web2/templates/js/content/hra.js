@@ -70,6 +70,7 @@ $(document).ready(function () {
                 $(element).css({
                     cursor: 'pointer'
                 });
+                $(element).addClass("editable");
             }
         }
 
@@ -79,61 +80,111 @@ $(document).ready(function () {
                 $(element).css({
                     cursor: 'auto'
                 });
+                $(element).removeClass("editable");
             }
         }
 
+        function addOneLabel(labels, elm, existingLabels){
+            var actualLabel = $("<div></div>");
+            actualLabel.html(elm);
+            actualLabel.addClass("label");
+            labels.append(actualLabel);
+            if(existingLabels.indexOf(elm) != -1){
+                actualLabel.addClass("checked");
+            }
+            actualLabel.bind("click", function(event){
+                if($(this).hasClass("checked")){
+                    $(this).removeClass("checked");
+                } else {
+                    $(this).addClass("checked");
+                }
+            });
+        }
+
         function addEditable() {
-            $(["#nazevHry", "#labels", "#menRole", "#womenRole", "#bothRole", "#playersAmount", "#hours",
-                "#days", "#authors", "#description","#year"]).each(function (idx, element) {
+            $(["#nazevHry", "#menRole", "#womenRole", "#bothRole", "#playersAmount", "#hours",
+                "#days", "#description","#year"]).each(function (idx, element) {
                     setAsEditable(element);
                 });
-            if($('#labels').height() < 18){
-                $('#labels').css({
-                    height: 18,
-                    width: "100%"
-                });
-            }
-            if($('#authors').height() < 18){
-                $('#authors').css({
-                    height: 18,
-                    width: "100%"
-                });
-            }
+            var authors = [];
+            var allAuthors = $("#authors").find("a");
+            $("#authors").empty();
+            allAuthors.each(function(idx, elm){
+                $("#authors").append("<input class='author' value='"+$(elm).html()+"' />");
+            });
+            var emptyAuthor = "<input class='author' value='' />";
+            $("#authors").append(emptyAuthor);
+            var actButton = $("<input type='button' value='Další autor'/>");
+            $("#authors").append(actButton);
+            actButton.bind('click', function(evt){
+                actButton.before(emptyAuthor);
+            });
+
             $.ajax({
                 url: '/ajax/getLabels.jsp',
                 method: 'post',
                 success: function(response){
                     response = JSON.parse(response.trim());
-                    var stringLabels = "";
-                    var requiredLabels = "";
+                    var existingLabels = [];
+                    $("#labels").find("span").each(function(idx, element){
+                        existingLabels.push($(element).html());
+                    });
+                    $("#labels").empty();
+
+                    var labels = $("#labels");
+                    labels.append("<div>Povinné:</div>");
                     $(response.required).each(function(idx, elm){
-                        requiredLabels += elm + ", "
+                        addOneLabel(labels, elm, existingLabels);
                     });
-                    if(response.required.length > 0){
-                        requiredLabels = requiredLabels.substring(0, requiredLabels.length - 2);
-                    }
+                    labels.append("<div style=\"clear:both;\" class=\"empty\"></div>");
                     $(response.labels).each(function(idx, elm){
-                        stringLabels += elm + ", "
+                        addOneLabel(labels, elm, existingLabels);
                     });
-                    if(response.labels.length > 0){
-                        stringLabels = stringLabels.substring(0, stringLabels.length - 2);
-                    }
-                    $('#game').prepend("<div id='allLabels' style='width: 80%'>" +
-                        "<div id='required'><b>Požadovaný: </b>" + requiredLabels + "</div>" +
-                        "<div id='optional'><b>Volitelné: </b>" + stringLabels + "</div></div>");
+                }
+            });
+
+            $.ajax({
+                url: '/ajax/getAuthors.jsp',
+                method: 'post',
+                success: function(response){
+                    response = JSON.parse(response.trim());
+                    $(".author").autocomplete({
+                        source: response.authors
+                    });
                 }
             });
         }
 
         function saveGameInfo() {
             var info;
-            var authors = $("#authors").text().trim();
+            var labels = "";
+            $("#labels").find("div.checked").each(function(idx, elm){
+                labels += $(elm).html() + " / ";
+            });
+            if(labels.length > 0){
+                labels = labels.substring(0, labels.length - 3);
+            }
+
+            var authors = "";
+            $("#authors").find("input.author").each(function(idx, elm){
+                if($(elm).val() != ""){
+                    authors += $(elm).val() +", "
+                }
+            });
+            if(authors.length > 0){
+                authors = authors.substring(0, authors.length - 2);
+            }
+
+            $("#labels").empty();
+            $("#labels").html(labels);
+            $("#authors").empty();
+            $("#authors").html(authors);
             $.ajax({
                 url:'/ajax/editGame.jsp',
                 method: 'post',
                 data:{
                     "nazevHry":$("#nazevHry").html(),
-                    "labels":$("#labels").html(),
+                    "labels": labels,
                     "menRole":$("#menRole").html(),
                     "womenRole":$("#womenRole").html(),
                     "bothRole":$("#bothRole").html(),
@@ -148,9 +199,9 @@ $(document).ready(function () {
                 },
                 success:function (response) {
                     response = JSON.parse(response.trim());
-                    console.log(response);
                     if (response.status == "ok") {
                         alert("Hra byla úspěšně upravena");
+                        location.reload();
                     } else {
                         alert("Hru se nepodařilo uložit. " + response.message);
                     }
@@ -159,14 +210,10 @@ $(document).ready(function () {
         }
 
         function removeEditable() {
-            $(["#nazevHry", "#labels", "#menRole", "#womenRole", "#bothRole", "#playersAmount", "#hours",
-                "#days", "#authors", "#description","#year"]).each(function (idx, element) {
+            $(["#nazevHry", "#menRole", "#womenRole", "#bothRole", "#playersAmount", "#hours",
+                "#days", "#description","#year"]).each(function (idx, element) {
                     setAsNonEditable(element);
                 });
-
-            $("#authors").unbind('focus');
-            $("#labels").unbind('focus');
-            $("#allLabels").remove();
         }
 
         if(role > 1){
@@ -174,10 +221,10 @@ $(document).ready(function () {
             $('#editovatHru').bind('click', function (event) {
                 edited = !edited;
                 if (edited) {
-                    $("#editovatHru").html('<b>Uložit</b>');
+                    $("#editovatHru").val('Uložit');
                     addEditable();
                 } else {
-                    $("#editovatHru").html('<b>Editovat</b>');
+                    $("#editovatHru").val('Editovat');
                     saveGameInfo();
                     removeEditable();
                 }

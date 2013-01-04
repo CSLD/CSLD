@@ -60,7 +60,7 @@
 
     List<String> labelsList = new ArrayList<String>();
     List<String> authorList = new ArrayList<String>();
-    String[] labelsNames = labels.split("/");
+    String[] labelsNames = labels.split(" / ");
     for(String label: labelsNames){
         if(label.trim().length() > 0){
             labelsList.add(label.trim());

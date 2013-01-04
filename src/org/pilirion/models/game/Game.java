@@ -108,7 +108,7 @@ public class Game {
         List<Label> gameLabels = getLabels();
         String labelsText = "";
         for(Label label: gameLabels){
-            labelsText += label.getName() + " / ";
+            labelsText += "<span>" + label.getName() + "</span> / ";
         }
         if(!labelsText.equals("")){
             labelsText = labelsText.substring(0, labelsText.length() - 3);
@@ -120,7 +120,7 @@ public class Game {
         List<Author> authors = getAuthors();
         String authorsText = "";
         for(Author author: authors){
-            authorsText += "<a href='autor.jsp?id="+author.getId()+"'>" + author.getPerson().getName() + "<a>, ";
+            authorsText += "<a href='autor.jsp?id="+author.getId()+"'>" + author.getPerson().getName() + "</a>, ";
         }
         if(!authorsText.equals("")){
             authorsText = authorsText.substring(0, authorsText.length() - 2);

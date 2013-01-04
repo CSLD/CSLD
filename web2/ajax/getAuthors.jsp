@@ -9,10 +9,11 @@
     List<Author> allAuthors = authors.getAllAuthors();
     String result = "{\"authors\": [";
     for(Author author: allAuthors){
-        result += "\"" + author.getPerson().getName() + "\",";
+        result += "\"" + author.getPerson().getName().replaceAll("\"","\\\\\"") + "\",";
     }
     if(result != null && !result.equals("")){
-        result += Strings.removeLast(result);
+        result = Strings.removeLast(result);
     }
     result += "]}";
+    out.print(result);
 %>

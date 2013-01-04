@@ -4,6 +4,7 @@
 <%@ page import="org.pilirion.models.game.Comment" %>
 <%@ page import="org.pilirion.models.game.Games" %>
 <%@ page import="org.pilirion.models.game.Game" %>
+<%@ page import="org.pilirion.models.game.Label" %>
 <%@ page import="org.pilirion.models.game.Ratings" %>
 <%@ page import="org.pilirion.models.game.Rating" %>
 <%@ page import="org.pilirion.models.user.Users" %>
@@ -34,13 +35,6 @@
     %>
 <div class="levaCast" id="game">
     <%
-        if (loggedUser != null && loggedUser.getRole().getId() > 2) {
-    %>
-    <div class="button" id="editovatHru" style="cursor: pointer;"><b>Editovat</b></div>
-    <%
-        }
-    %>
-    <%
         if (loggedUser != null) {
             int userId = loggedUser.getId();
             String checked = "";
@@ -65,7 +59,17 @@
     <table>
         <tr>
             <td class="obrazekHraBunka">
+                <div>
                 <img src="<%=game.getImage()%>" class="obrazekHra" alt="">
+                </div>
+                <%
+                    if (loggedUser != null && loggedUser.getRole().getId() > 2) {
+                %>
+                    <input type="button" class="below" id="editovatHru" value="Editovat" />
+                <%
+                    }
+                %>
+
             </td>
             <td class="bunkaHra">
                 <div class="nadpisHra"><span id="nazevHry"><%=game.getName()%></span>
@@ -73,9 +77,10 @@
                 <div class="popisek">
                         <div id="labels">
                         <%
-                            out.println(game.getLabelsText());
+                            out.print(game.getLabelsText());
                         %>
                         </div>
+                        <div style="clear:both;"></div>
                 </div>
                 <div class="popisek">
                     <span id="playersAmount"><%=game.getPlayersAmount()%></span> hráčů, <span
