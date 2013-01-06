@@ -5,7 +5,7 @@
 <%@ page import="java.sql.Connection" %>
 <%@ page import="org.pilirion.exceptions.WrongCookie" %>
 <%
-    Connection conn = (Connection) session.getAttribute("csld_dbConn");
+    Connection conn = null;
     if(conn == null){
         String dbString = "jdbc:postgresql://localhost/csld_test";
         String userName = "csld";
