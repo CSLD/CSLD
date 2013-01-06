@@ -12,12 +12,16 @@
 <script type="text/javascript">
     $(document).ready(function(){
         $("#prihlaseniButton").click(function(event){
+            var dataToSend = {
+                "e-mail": $("#e-mail").val(),
+                heslo: $("#heslo").val()
+            };
+            if($("#storeCsld").is(":checked")){
+                dataToSend.storeCsld = "on";
+            }
             $.ajax({
                 url: "/handlers/prihlaseni.jsp",
-                data: {
-                    "e-mail": $("#e-mail").val(),
-                    heslo: $("#heslo").val()
-                },
+                data: dataToSend,
                 success: function(response){
                     response = JSON.parse(response.trim());
                     if(response.status == "ok"){
@@ -50,6 +54,8 @@
                            style="width: 80px;">
                     <input class="textbox" type="password" name="heslo" id="heslo" title="heslo" value=""
                            style="width: 80px;">
+                    <label for="storeCsld">Zapamatovat si přihlášení: </label>
+                    <input type="checkbox" name="storeCsld" id="storeCsld" >
                     <button class="prihlaseniButton" id="prihlaseniButton" type="submit" name="prihlasit"
                             title="Přihlásit">Přihlásit
                     </button>

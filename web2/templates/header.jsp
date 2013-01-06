@@ -3,6 +3,7 @@
 <%@ page import="org.pilirion.models.user.*" %>
 <%@ page import="org.pilirion.url.Url" %>
 <%@ page import="java.sql.Connection" %>
+<%@ page import="org.pilirion.exceptions.WrongCookie" %>
 <%
     Connection conn = (Connection) session.getAttribute("csld_dbConn");
     if(conn == null){
@@ -15,6 +16,25 @@
     }
 
     User loggedUser = (User) session.getAttribute("csld_user");
+    if(loggedUser == null){
+        Login login = new Login(conn);
+        Cookie[] allCookies = request.getCookies();
+        if(allCookies != null){
+            for(Cookie cookie: allCookies){
+                if(cookie.getName().equals("csldUserLoginCookie")) {
+                    try{
+                        User user = login.getUserByCookie(cookie.getValue());
+                        if(user != null){
+                            loggedUser = user;
+                            session.setAttribute("csld_user", user);
+                        }
+                    } catch (WrongCookie ex){}
+                }
+            }
+        }
+    }
+
+
     Role role;
     Roles roles = new Roles(conn);
     Role_Has_Resources roleHasResource = new Role_Has_Resources(conn);

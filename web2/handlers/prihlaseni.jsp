@@ -1,9 +1,13 @@
+<%@ page import="org.pilirion.models.user.Login" %>
+<%@ page import="org.pilirion.models.user.User" %>
+<%@ page import="org.pilirion.models.user.Users" %>
 <%@ page import="org.pilirion.utils.Pwd" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/templates/header.jsp" %>
 <%
     String mail = request.getParameter("e-mail");
     String pwd = request.getParameter("heslo");
+    String store = request.getParameter("storeCsld");
 
     pwd = Pwd.getMD5(pwd);
 
@@ -12,6 +16,15 @@
         User user = users.authenticate(mail, pwd);
         if (user != null) {
             session.setAttribute("csld_user", user);
+            if(store != null) {
+                Login login = new Login(conn);
+                String cookieVal = login.getCookieVal(user.getId(), user.getUserName());
+                Cookie userCookie = new Cookie("csldUserLoginCookie",cookieVal);
+                userCookie.setMaxAge(3 * 30 * 24 * 60 * 60);
+                userCookie.setPath("/");
+                login.storeCookie(String.valueOf(user.getId()), cookieVal);
+                response.addCookie(userCookie);
+            }
             out.println("{\"status\": \"ok\"}");
             return;
         }
