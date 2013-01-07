@@ -137,9 +137,9 @@ jQuery.getJSON('http://devel.larp.cz/misc/api/kalendar-beta.php', function(data)
                                 <span class="nadpisHra"><a href="/hra.jsp?id=<%=game.getId()%>"><%=game.getName()%>
                                 </a></span>
 
-                            <div class="popisek"><%=requiredName%>, <%=game.getPlayersAmount()%> hráčů<br/>
+                            <div class="HraKomentarPopisek"><%=requiredName%>, <%=game.getPlayersAmount()%> hráčů<br/>
                                 <%=game.getShortenedDescription()%><a
-                                        href="/hra.jsp?id=<%=game.getId()%>"> více</a></div>
+                                        href="/hra.jsp?id=<%=game.getId()%>"><div class="HraKomentarVice"> více</div></a></div>
                         </td>
                     </tr>
                 </table>
@@ -170,9 +170,9 @@ jQuery.getJSON('http://devel.larp.cz/misc/api/kalendar-beta.php', function(data)
                                     <span class="nadpisHra"><a href="/hra.jsp?id=<%=game.getId()%>"><%=game.getName()%>
                                     </a></span>
 
-                                <div class="popisek"><%=requiredName%>, <%=game.getPlayersAmount()%> hráčů<br/>
+                                <div class="HraKomentarPopisek"><%=requiredName%>, <%=game.getPlayersAmount()%> hráčů<br/>
                                     <%=game.getShortenedDescription()%><a
-                                            href="/hra.jsp?id=<%=game.getId()%>"> více</a></div>
+                                            href="/hra.jsp?id=<%=game.getId()%>"><div class="HraKomentarVice"> více</div></a></div>
                             </td>
                         </tr>
                     </table>
@@ -258,7 +258,7 @@ jQuery.getJSON('http://devel.larp.cz/misc/api/kalendar-beta.php', function(data)
                                 <a href="/hra.jsp?id=<%=game.getId()%>"><%=game.getName()%>
                                 </a></span>
 
-                            <div class="popisek"><%=comment.getShortenedText()%> <a
+                            <div class="popisekVice"><%=comment.getShortenedText()%> <a
                                     href="/hra.jsp?id=<%=game.getId()%>">více</a></div>
                         </td>
                     </tr>

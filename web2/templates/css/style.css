@@ -71,7 +71,9 @@ img {border: 0px;}
 /* IE */ filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8f8f8',endColorstr='#cccccc'); zoom:1;}
 .pridanaHra .datum { font-size: 8pt; color: #535353; margin-left: 14px; margin-top: 4px;}
 .pridanaHra .obsah { padding-left: 6px;   }
-.pridanaHra .popisek{ color: #535353; font-size: 10pt; text-align: justify; }
+.pridanaHra .popisek { color: #535353; font-size: 10pt; text-align: justify; }
+.pridanaHra .HraKomentarPopisek { color: #535353; font-size: 10pt; text-align: justify; overflow: hidden; }
+.pridanaHra .HraKomentarVice { color: #535353; font-size: 10pt; text-align: justify; z-index: 10; position: absolute; }
 .pridanaHra .nadpisHra{ font-size: 10pt;  }
 .pridanaHra a { text-decoration: none; color: black; }
 .pridanaHra .obrazekPopis { vertical-align: top; margin-left: -1px;  }
