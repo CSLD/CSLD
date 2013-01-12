@@ -12,7 +12,6 @@
         String password = "hesloKDbCsldTxt";
 
         conn = DbConnection.create(dbString, userName, password);
-        session.setAttribute("csld_dbConn", conn);
     }
 
     User loggedUser = (User) session.getAttribute("csld_user");
