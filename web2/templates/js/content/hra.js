@@ -103,7 +103,7 @@ $(document).ready(function () {
 
         function addEditable() {
             $(["#nazevHry", "#menRole", "#womenRole", "#bothRole", "#playersAmount", "#hours",
-                "#days", "#description","#year"]).each(function (idx, element) {
+                "#days", "#description","#year", "#web"]).each(function (idx, element) {
                     setAsEditable(element);
                 });
             var authors = [];
@@ -200,7 +200,8 @@ $(document).ready(function () {
                     "authors":authors,
                     "description":$("#description").html(),
                     "gameId": $("#gameIdComment").val(),
-                    "imageSrc": $("img.obrazekHra").attr("src")
+                    "imageSrc": $("img.obrazekHra").attr("src"),
+                    "gameWeb": $("#web").html()
                 },
                 success:function (response) {
                     response = JSON.parse(response.trim());
@@ -215,7 +216,7 @@ $(document).ready(function () {
 
         function removeEditable() {
             $(["#nazevHry", "#menRole", "#womenRole", "#bothRole", "#playersAmount", "#hours",
-                "#days", "#description","#year"]).each(function (idx, element) {
+                "#days", "#description","#year", "#web"]).each(function (idx, element) {
                     setAsNonEditable(element);
                 });
         }

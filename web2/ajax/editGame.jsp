@@ -17,6 +17,7 @@
     String description = request.getParameter("description");
     String gameId = request.getParameter("gameId");
     String imageSrc = request.getParameter("imageSrc");
+    String gameWeb = request.getParameter("gameWeb");
 
     int menRoleInt = 0;
     try{
@@ -91,7 +92,7 @@
     }
 
     Game game = new Game(id, name, imageSrc, menRoleInt, womenRoleInt, bothRoleInt, hoursInt, daysInt, yearInt,
-            description, null, playersAmountInt, allAuthors, null, null, allLabels);
+            description, null, playersAmountInt, gameWeb, allAuthors, null, null, allLabels);
     Games games = new Games(conn);
     if(games.editGame(game)){
         out.println("{\"status\": \"ok\"}");

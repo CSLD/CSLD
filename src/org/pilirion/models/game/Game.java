@@ -25,6 +25,7 @@ public class Game {
     private int bothRole = -1;
     private int userAdded = -1;
     private double ratingZebricek;
+    private String web;
 
     private List<Label> labels;
     private List<Author> authors;
@@ -32,7 +33,7 @@ public class Game {
     private List<Rating> ratings;
 
     public Game(int id, String name, String image, int menRoles, int womenRoles, int bothRole, int hours, int days, int year,
-                String description, Date premier, int players,
+                String description, Date premier, int players, String web,
                 List<Author> authors, List<Comment> comments, List<Rating> ratings, List<Label> labels){
         this.name = name;
         this.authors = authors;
@@ -50,6 +51,10 @@ public class Game {
         this.premier = premier;
         this.players = players;
         this.bothRole = bothRole;
+        this.web = web;
+        if(web == null){
+            this.web = "";
+        }
     }
 
     public void setRatingZebricek(double ratingZebricek){
@@ -186,6 +191,18 @@ public class Game {
             image = "/img/icon/question_icon_game.png";
         }
         return image;
+    }
+
+    public String getWeb(){
+        return web;
+    }
+
+    public String getWebHref(){
+        String result = web;
+        if(!result.startsWith("http://") && !result.startsWith("https://")){
+            result = "http://" + result;
+        }
+        return result;
     }
 
     public List<Label> getLabels() {

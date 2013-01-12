@@ -26,7 +26,7 @@ public class Games {
         try{
             Statement stmt = db.createStatement();
             ResultSet rsGames = stmt.executeQuery(sql);
-            String name, image, description;
+            String name, image, description, gameWeb;
             int id, year, menRoles, womenRoles, hours, days, players, bothRoles, userWhoAddGame;
             Date premier;
             Authors objAuthors = new Authors(db);
@@ -53,13 +53,14 @@ public class Games {
                 premier = rsGames.getDate("premier");
                 bothRoles = rsGames.getInt("both_role");
                 userWhoAddGame = rsGames.getInt("user_who_added");
+                gameWeb = rsGames.getString("web");
 
                 authors = objAuthors.getAuthorsOfGame(id);
                 comments = objComments.getCommentsByGame(id);
                 ratings = objRatings.getAllRatingsForGame(id);
                 labels = objLabels.getLabelsForGame(id);
 
-                game = new Game(id, name, image, menRoles, womenRoles, bothRoles, hours, days, year, description, premier, players,
+                game = new Game(id, name, image, menRoles, womenRoles, bothRoles, hours, days, year, description, premier, players, gameWeb,
                     authors, comments, ratings, labels);
                 game.setUserWhoAddedGame(userWhoAddGame);
                 games.add(game);
@@ -95,10 +96,10 @@ public class Games {
             String premier = (game.getPremier() != null) ? "'" + game.getPremier().toString() + "'" : null;
 
             String sql = "insert into game (id, name, year, description, image, men_role, women_role, both_role, hours, days, players, " +
-                    "premier, user_who_added) values (DEFAULT, '"+game.getName()+"',"+String.valueOf(game.getYear())+",'"+game.getDescription()+"'," +
+                    "premier, user_who_added, web) values (DEFAULT, '"+game.getName()+"',"+String.valueOf(game.getYear())+",'"+game.getDescription()+"'," +
                     "'"+game.getImage()+"',"+String.valueOf(game.getMenRoles())+","+String.valueOf(game.getWomenRoles())+","+String.valueOf(game.getBothRole())+"," +
                     ""+String.valueOf(game.getHours())+","+String.valueOf(game.getDays())+","+String.valueOf(game.getPlayers())+"," +
-                    ""+premier+","+game.getUserWhoAddedGame()+") " +
+                    ""+premier+","+game.getUserWhoAddedGame()+",'"+game.getWeb()+"') " +
                     "returning id";
             try{
                 Statement stmt = db.createStatement();
@@ -141,7 +142,7 @@ public class Games {
 
     public Game getBestGameOfAuthor(int authorId){
         String sql = "select id, csld_countRating(id)as ratings, year, name, image, description, " +
-                "men_role, women_role, both_role, user_who_added, hours, days, players, premier from game where " +
+                "men_role, women_role, both_role, user_who_added, hours, days, players, premier, web from game where " +
                 "id in (select game_id from game_has_authors where author_id = " + authorId + ") " +
                 "order by ratings desc limit 1";
         List<Game> games = getFromDb(sql);
@@ -168,7 +169,7 @@ public class Games {
     public List<Game> getGamesOrderByRating(int iActualPage, int iGamesPerPage) {
         int iOffset = (iActualPage - 1) * iGamesPerPage;
         String sSql = "select id, csld_countRating(id)as ratings, year, name, image, description, " +
-                "men_role, women_role, both_role, user_who_added, hours, days, players, premier from game " +
+                "men_role, women_role, both_role, user_who_added, hours, days, players, premier, web from game " +
                 "order by ratings desc " +
                 "limit "+String.valueOf(iGamesPerPage) + " offset " + String.valueOf(iOffset);
         return getFromDb(sSql);
@@ -177,7 +178,7 @@ public class Games {
     public List<Game> getGamesMostCommented(int iActualPage, int iGamesPerPage) {
         int iOffset = (iActualPage - 1) * iGamesPerPage;
         String sSql = "select id, csld_countComments(id)as comments, year, name, image, description, " +
-                "men_role, women_role, both_role, user_who_added, hours, days, players, premier from game " +
+                "men_role, women_role, both_role, user_who_added, hours, days, players, premier, web from game " +
                 "order by comments " +
                 "limit "+String.valueOf(iGamesPerPage) + " offset " + String.valueOf(iOffset);
         return getFromDb(sSql);
@@ -261,7 +262,11 @@ public class Games {
 
     public List<Game> getLastAdded(int amount) {
         String sql = "select * from game order by added desc limit " + String.valueOf(amount);
-        System.out.println(sql);
+        return getFromDb(sql);
+    }
+
+    public List<Game> getLastAdded() {
+        String sql = "select * from game order by added desc";
         return getFromDb(sql);
     }
 
@@ -310,7 +315,8 @@ public class Games {
 
         try{
             PreparedStatement pstmt = db.prepareStatement("update game set name = ?, year = ?, description = ?," +
-                    "image = ?, men_role = ?, women_role = ?, hours = ?, days = ?, players = ?, both_role = ? where id = ?");
+                    "image = ?, men_role = ?, women_role = ?, hours = ?, days = ?, players = ?, both_role = ?, " +
+                    "web = ? where id = ?");
             pstmt.setString(1, game.getName());
             pstmt.setInt(2, game.getYear());
             pstmt.setString(3, game.getDescription());
@@ -321,7 +327,8 @@ public class Games {
             pstmt.setInt(8, game.getDays());
             pstmt.setInt(9, game.getPlayersAmount());
             pstmt.setInt(10, game.getBothRole());
-            pstmt.setInt(11, game.getId());
+            pstmt.setString(11, game.getWeb());
+            pstmt.setInt(12, game.getId());
             pstmt.execute();
 
             Statement stmt = db.createStatement();

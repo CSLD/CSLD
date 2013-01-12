@@ -22,7 +22,8 @@
     try {
         request.setCharacterEncoding("UTF-8");
         String gameName = "", gameImage = "", playersAmount = "0", men = "0", women = "0",
-                hours = "0", days = "0", gameDescription = "", year = "", amountBoth = "";
+                hours = "0", days = "0", gameDescription = "", year = "", amountBoth = "",
+                gameWeb = "";
         List<String> labelsList = new ArrayList<String>();
         DiskFileUpload fu = new DiskFileUpload();
         // If file size exceeds, a FileUploadException will be thrown
@@ -59,6 +60,8 @@
                     year = Strings.stringToHTMLString(fi.getString());
                 } else if (fi.getFieldName().equals("pocet_obojetne")) {
                     amountBoth = Strings.stringToHTMLString(fi.getString());
+                } else if (fi.getFieldName().equals("web_hry")) {
+                    gameWeb = Strings.stringToHTMLString(fi.getString());
                 } else if (fi.getFieldName().equals("jmeno_autora")) {
                 } else if (fi.getFieldName().equals("prijmeni_autora")) {
                 } else if (fi.getFieldName().equals("prezdivka_autora")) {
@@ -159,7 +162,7 @@
 
             Game game = new Game(-1, gameName, gameImage, menInt, womenInt, amountBothInt,
                     hoursInt, daysInt, yearInt, gameDescription,
-                    null, players, authorsList, null, null, labelListLabel);
+                    null, players, gameWeb, authorsList, null, null, labelListLabel);
             game.setUserWhoAddedGame(loggedUser.getId());
             if (games.insertGame(game)) {
                 response.sendRedirect("/pridatHru.jsp?message=" + URLEncoder.encode("Hra byla úspěšně přidána.", "UTF-8"));

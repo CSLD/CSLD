@@ -255,6 +255,11 @@
                         <td class="popis">Zadejte alespoň přibližnou délku celé hry</td>
                     </tr>
                     <tr>
+                        <td><input class="textbox" type="text" name="web_hry" id="web_hry" title="Web"
+                                   value=""></td>
+                        <td class="popis">Zadejte webovou stránku hry</td>
+                    </tr>
+                    <tr>
                         <td class="stitky popis" colspan="2">Označte štítky, které vystihují Váš larp. Pokud nespadá
                             jednoznačně pod jednu kategorii, vyberte jich více.
                         </td>

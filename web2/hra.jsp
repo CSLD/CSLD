@@ -110,6 +110,9 @@
                     <span id="year"><%=game.getYear()%></span>
                 </div>
                 <div class="popisek">
+                    Web: <a id="web" href="<%=game.getWebHref()%>" ><%=game.getWeb()%></a>
+                </div>
+                <div class="popisek">
                     Autoři:
                         <div id="authors">
                         <%
