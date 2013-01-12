@@ -136,14 +136,9 @@
     <table class="pridatKomentarTabulka">
         <%
             Comments commentsObj = new Comments(conn);
-            boolean alreadyCommented = commentsObj.getCommentGameUser(loggedUser.getId(), gameId) != null;
-        %>
-        <tr>
-            <td <%if(!alreadyCommented){%>colspan="2"<%}%>>
-                <div id="komentarZprava" class="<% if(!alreadyCommented){%> hidden<%}%>">Tuto hru už jste komentoval.</div>
-            </td>
-        </tr>
-        <%
+            Comment myComment = commentsObj.getCommentGameUser(loggedUser.getId(), gameId);
+            String textToEdit = (myComment == null) ? "" : myComment.getText().replaceAll("<br/>","\n");
+            boolean alreadyCommented = myComment != null;
             if(!alreadyCommented){
         %>
         <tr>
@@ -156,6 +151,19 @@
             </td>
         </tr>
         <%
+            } else {
+        %>
+        <tr>
+            <td><a href="\" onclick="$('#pridatKomentar').slideToggle('slow'); return false;"><img
+                    src="img/icon/comment_icon.png"></a>
+            </td>
+            <td class="pridatKomentarNadpis"><a href="\"
+                                                onclick="$('#pridatKomentar').slideToggle('slow'); return false;">Upravit
+                komentář</a>
+            </td>
+        </tr>
+
+        <%
             }
         %>
     </table>
@@ -165,7 +173,7 @@
             <input type="hidden" name="gameId" id="gameIdComment" value="<%=gameId%>"/>
 
             <textarea class="textarea" name="comment_text" id="komentar" title="komentar" value=""
-                      style="width: 90%;height: 100%;" rows="4"></textarea>
+                      style="width: 90%;height: 100%;" rows="4"><%=textToEdit%></textarea>
             <button class="pridatKomentarButton" type="submit" name="pridatKomentarButton" title="pridatKomentarButton">
                 Odeslat komentář
             </button>

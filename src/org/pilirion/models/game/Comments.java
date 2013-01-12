@@ -78,6 +78,21 @@ public class Comments {
         return false;
     }
 
+    public void editComment(Comment comment){
+        if(comment.isValid()){
+            try {
+                PreparedStatement pstmt = db.prepareStatement("update comment set time=now(), text=? where " +
+                        "user_id = ? and game_id = ?");
+                pstmt.setString(1, comment.getText());
+                pstmt.setInt(2, comment.getUserId());
+                pstmt.setInt(3, comment.getGameId());
+                pstmt.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public Comment getCommentGameUser(int userId, int gameId) {
         String sql = "select * from comment where game_id = " + gameId +" and user_id = " + userId;
         List<Comment> comments = getFromDb(sql);

@@ -15,7 +15,8 @@
         Comments comments = new Comments(conn);
         Comment comment = new Comment(-1, new java.sql.Date(new java.util.Date().getTime()), commentText,
                 loggedUser.getId(), Integer.parseInt(sGameId));
-        if (comments.getCommentGameUser(loggedUser.getId(), Integer.parseInt(sGameId)) == null) {
+        Comment previousComment = comments.getCommentGameUser(loggedUser.getId(), Integer.parseInt(sGameId));
+        if (previousComment == null) {
             if (comments.insertComment(comment)) {
                 Ratings ratings = new Ratings(conn);
                 Rating rating = ratings.getByType("Comment", loggedUser.getId());
@@ -25,6 +26,7 @@
                 redirectURL = "/hra.jsp?id=" + sGameId;
             }
         } else {
+            comments.editComment(comment);
             redirectURL = "/hra.jsp?id=" + sGameId;
         }
     }
