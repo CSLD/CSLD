@@ -79,6 +79,8 @@
                 response.sendRedirect("/registrace.jsp?error=" + URLEncoder.encode("Uživatele se nepodařilo vytvořit. Zadané uživatelské jméno již existuje.","UTF-8"));
                 return;
             }
+        }  else {
+            imagePath = loggedUser.getPerson().getImage();
         }
 
         if(loggedUser == null || (!pwd.equals("") && pwd != null)){
