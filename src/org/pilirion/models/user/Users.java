@@ -105,7 +105,6 @@ public class Users {
             }
             sql = Strings.removeLast(sql);
             sql += " where id = "+toEdit.getId();
-            System.out.println(sql);
             try{
                 Statement stmt = db.createStatement();
                 stmt.execute(sql);
@@ -136,6 +135,12 @@ public class Users {
         return null;
     }
 
+    public List<User> getUsersOrderedByComments(){
+        String sql = "select * from csld_user order by " +
+                "(select count(id) from comment where user_id=csld_user.id) desc";
+        return getUsersSql(sql);
+    }
+
     public List<User> getUsersOrderedByRating(int actualPage, int usersPerPage){
         int offset = (actualPage -1) * usersPerPage;
         String sql = "select first_name, last_name, nickname, birth_date, user_name, email, person.id as id, role_id, password, " +
@@ -161,5 +166,14 @@ public class Users {
             return usersList.get(0);
         }
         return null;
+    }
+
+    public User getKingCommenter() {
+        List<User> byComment = getUsersOrderedByComments();
+        if(byComment.size() > 0){
+            return byComment.get(0);
+        } else {
+            return null;
+        }
     }
 }

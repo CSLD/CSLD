@@ -22,13 +22,15 @@
                 <%
                     Users users = new Users(conn);
                     Games games = new Games(conn);
-                    List<User> allUsers = users.getAllUsers();
+                    List<User> allUsers = users.getUsersOrderedByComments();
                     for(User user: allUsers){
                         int attendedGames = games.getAttendedGames(user.getId()).size();
+                        int commentedGames = games.getCommentedGames(user.getId()).size();
                         Person person = user.getPerson();
                 %>
                 <tr class="polozkaUzivatel">
                     <td class="larp"><a href="uzivatel.jsp?id=<%=user.getId()%>"><span class="uzivatelPrezdivka"><%=person.getNickName()%></span><span class="uzivatelJmeno"> <%=person.getFullName()%></span></a></td>
+                    <td class="pocetherUzivatel komentare"><%=commentedGames%> komentovaných her</td>
                     <td class="pocetherUzivatel"><%=attendedGames%> odehraných her</td>
                 </tr>
                 <%
@@ -75,6 +77,30 @@
                         <a href="uzivatel.jsp?id=<%=larpKing.getId()%>"><span class="nick"><%=person.getNickName()%></span> <span class="jmeno"><%=person.getFullName()%></span></a>
                         <div class="popisekUzivatel">ocenění za největší počet odehraných larpů</div>
                         <div class="popisekUzivatel"><%=kingGames.size()%> odehraných her</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <%
+            }
+        %>
+        <%
+            User kingCommenter = users.getKingCommenter();
+            if(kingCommenter != null){
+                Person person = kingCommenter.getPerson();
+                int commentedGames = games.getCommentedGames(kingCommenter.getId()).size();
+        %>
+        <div class="sekce">
+            <div class="nadpisSekce"><a href="uzivatel.jsp?id=<%=kingCommenter.getId()%>">Nejaktivnější komentátor</a></div>
+            <table>
+                <tr>
+                    <td>
+                        <a href="uzivatel.jsp?id=<%=kingCommenter.getId()%>"><img src="<%=person.getImage()%>" class="obrazekUzivatel"></a>
+                    </td>
+                    <td class="obsah">
+                        <a href="uzivatel.jsp?id=<%=kingCommenter.getId()%>"><span class="nick"><%=person.getNickName()%></span> <span class="jmeno"><%=person.getFullName()%></span></a>
+                        <div class="popisekUzivatel">ocenění za největší počet komentářů</div>
+                        <div class="popisekUzivatel"><%=commentedGames%> komentovaných her</div>
                     </td>
                 </tr>
             </table>
