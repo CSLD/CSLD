@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>
+        Česko-slovenská larpová databáze
+    </title>
+    <link rel="shortcut icon" href="/files/img/logo16.ico">
+    <link rel="image_src" href="/files/img/logo512.png"/>
+    <meta name="keywords" content="larp, databáze, čr, česko, slovensko">
+    <meta name="description" content="Všechny larpy na jednom místě. Larpová databáze.">
+    <meta property="og:image" content="/files/img/logo512.png"/>
+</head>
+
+<body>
+<div class="page">
+
+<!-- HEADER -->
+
+<img src="/files/img/logo50.png" id="logoNadpis">
+<a href="/">
+    <img src="/files/img/nadpis.png" id="nadpisHlavni">
+</a>
+
+<div wicket:id="login" id="loginBox"></div>
+<div wicket:id="loggedInfo" id="loginBoxPrihlaseny"></div>
+
+<div style="clear: both"></div>
+
+<div class="menu">
+    <span class="polozky">
+        <span class="mezera"></span>
+        <a wicket:id="list-game">žebříčky</a>
+        <a wicket:id="list-authors">autoři</a>
+        <a wicket:id="list-users">uživatelé</a>
+        <a wicket:id="list-groups">skupiny</a>
+        <a wicket:id="about">o databázi</a>
+    </span>
+    <span id="divProHledani" wicket:id="searchBox"></span>
+</div>
+<div style="margin-top: 20px;"></div>
+
+<wicket:child/>
+
+
+<!-- FOOTER -->
+<div class="footer">
+    &copy; larpovadatabaze.cz, 2012 | database coding: Jakub Balhar | design coding: <a href="http://hrajularpy.cz">Michal
+    Havelka</a> <br/>
+    layout: Jakub Siegel | PR: Petr Kuběnský | HR: Filip Appl <br/>
+    Thanks to all of you!
+</div>
+
+</div>
+</body>
+</html>

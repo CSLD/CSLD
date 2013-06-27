@@ -1,0 +1,49 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+    <table>
+        <tr>
+            <td class="obrazekHraBunka">
+                <div>
+                    <img wicket:id="gameImage" class="obrazekHra" alt="">
+                </div>
+
+            </td>
+            <td class="bunkaHra">
+                <div class="nadpisHra">
+                    <span id="nazevHry" wicket:id="gameName">Doriathské války</span>
+                </div>
+                <div class="popisek">
+                    <div wicket:id="labels" id="labels">
+                        <span wicket:id="label">fantasy</span>
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+                <div class="popisek">
+                    <span wicket:id="players" id="playersAmount">80</span> hráčů,
+                    <span wicket:id="men" id="menRole">0</span> mužů,
+                    <span wicket:id="women" id="womenRole">0</span> žen,
+                    <span wicket:id="both" id="bothRole">0</span> obojetných
+                </div>
+                <div class="popisek">
+                    <span wicket:id="hours" id="hours">5</span> hodin,
+                    <span wicket:id="days" id="days">0</span> dnů,
+                    <span wicket:id="year" id="year">2012</span>
+                </div>
+                <div class="popisek">
+                    Web: <a wicket:id="webGameLink"></a>
+                </div>
+                <div class="popisek">
+                    Autoři:
+                    <div wicket:id="authors" id="authors">
+                        <a wicket:id="authorDetailLink">
+                            <span wicket:id="authorName"></span>
+                        </a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <div class="obsah">
+        <div wicket:id="description" id="description">Popis hry</div>
+    </div>
+</wicket:panel>

@@ -1,0 +1,1349 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>
+        Česko-slovenská larpová databáze</title>
+    <link rel="shortcut icon" href="/img/logo16.ico">
+    <link rel="image_src" href="/img/logo512.png" />
+    <meta name="keywords" content="larp, databáze, čr, česko, slovensko">
+    <meta name="description" content="Všechny larpy na jednom místě. Larpová databáze.">
+    <meta property="og:image" content="img/logo512.png" />
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="/templates/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="/templates/css/nivo-slider.css"/>
+    <link rel="stylesheet" type="text/css" href="/templates/css/smoothness/jquery-ui-1.8.24.custom.css"/>
+    <!-- JavaScripts -->
+    <script type="text/javascript" src="/templates/js/md5.js"></script>
+    <script type="text/javascript" src="/templates/js/jquery-1.8.3.js"></script>
+    <script type="text/javascript" src="/templates/js/jquery-ui-1.9.2.custom.js"></script>
+    <script type="text/javascript" src="/templates/js/jquery.hint.js"></script>
+    <script type="text/javascript" src="/templates/js/jquery.nivo.slider.pack.js"></script>
+    <script type="text/javascript" src="/templates/js/jquery.nivo.slider.js"></script>
+    <script type="text/javascript" src="/templates/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="/templates/js/additional-methods.min.js"></script>
+    <script type="text/javascript" src="/templates/js/checkboxes.js"></script>
+    <script type="text/javascript">
+
+        jQuery(function(){
+            // find all the input elements with title attributes - hinter fn to textbox
+            $('input[title!=""]').hint();
+        });
+        /* $(document).ready(function() { // funkce pro spuštění Slideru
+         $('#slider').s3Slider({
+         timeOut: 3000
+         });
+         }); */
+
+
+    </script>
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-37900730-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+
+    </script>
+</head>
+
+<body>
+<div class="page">
+
+<!-- HEADER -->
+
+<img src="/img/logo50.png" id="logoNadpis">
+<a href="index.jsp"><img src="/img/nadpis.png" id="nadpisHlavni"></a>
+
+
+
+
+<div id="loginBoxPrihlaseny">
+    <table>
+        <tr>
+            <td>
+                <a href="uzivatel.jsp?id=1"><img src="/img/users/d9dbea6372e0dc3bea5e73e31e8bacf8.jpg" class="obrazekUzivatel"></a>
+            </td>
+            <td class="obsah">
+                <a href="uzivatel.jsp?id=1">
+                    <div class="nick">Balda
+                    </div>
+                    <div class="jmeno">Jakub Balhar
+                    </div>
+                </a>
+
+                <div class="popisek"><a href="/registrace.jsp">Nastavení</a></div>
+                <div class="popisek"><a href="/handlers/odhlasit.jsp">Odhlásit se</a></div>
+
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<div style="clear: both"></div>
+
+
+<div class="menu">
+    <span class="polozky">
+        <span class="mezera"></span>
+        <a href="/index.jsp">home</a>
+        <a href="/zebricky.jsp">žebříčky</a>
+        <a href="/autori.jsp">autoři</a>
+        <a href="/uzivatele.jsp">uživatelé</a>
+        <a href="/oDatabazi.jsp">o databázi</a>
+    </span>
+        <span id="divProHledani">
+            <form method="get" action="/hledani.jsp">
+                <input type="text" class="hledatBox" id="search_pwd" name="searchGame" title="Hledat">
+                <a href="#" style="margin:0;"><input type="submit" class="glass" value=""></a>
+            </form>
+        </span>
+</div>
+<div style="margin-top: 20px;"></div>
+
+<!-- HOMEPAGE -->
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        var total = $('#nivoSlider img').length;
+        var rand = Math.floor(Math.random()*total);
+        jQuery(window).load(function(){
+            jQuery("#nivoSlider").nivoSlider({
+                effect:'boxRainGrow',
+                slices:15,
+                boxCols:8,
+                boxRows:4,
+                animSpeed:500,
+                pauseTime:6000,
+                startSlide: rand,
+                directionNav:true,
+                controlNav:false,
+                controlNavThumbs:false,
+                pauseOnHover:false,
+                manualAdvance:false
+            });
+        });
+    });
+
+</script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        jQuery.getJSON('http://devel.larp.cz/misc/api/kalendar-beta.php', function(data){ //vyžádáme si data z api, zpracujeme je jako JSON a uložíme do proměnné "data" s kterou budeme dál pracovat
+            var maxAkci=3; //ruční limit počtu vypsaných akcí - databázový je 30 (více se ani tak nevypíše)
+            if(data.chyba)  //pokud nastala chyba php, měla by nám být předána v parametru chyba, vypsat
+            {
+                alert(data.chyba.popis);
+            }
+            else if(!data.larpy) //pokud neexistuje parametr larpy (ale nebyla chyba), něco je kardinálně špatně
+            {
+                alert('Špatný formát přijatých dat');
+            }
+            else //zřejmě je vše v pořádku
+            {
+                var larpy=data.larpy; //do proměnné larpy si uložíme pole larpů, které se nám načetlo z JSONu
+                var text=''; //výstupní buffer, do kterého si budeme ukládat html připravované tabulky
+                var temp=0;
+                var randomIndex=0;
+                var random=0;
+                var pool= new Array(0,1,2,3,4,5,6,7,8,9);
+                var k=new Array();
+                for( var i=0; i<larpy.length && i<maxAkci; i++ ) {
+                    randomIndex=Math.floor( Math.random()*pool.length );
+                    random=pool[randomIndex];
+                    pool.splice(randomIndex,1); //odstraní prvek z pole
+                    k[i]=random;
+                }
+                k.sort();
+                for(var i=0; i<larpy.length && i<maxAkci; i++) //projdeme polem larpů
+                {
+                    temp=k[i];
+                    var larp=larpy[temp]; //aktuální larp si uložíme do proměnné larp
+                    //začátek (konec) larpu jsou uvedeny v javascriptem zpracovatelném formátu, vytvoříme si z nich tedy objekty typu Date (datum)
+                    var z=new Date(larp.zacatek);
+                    text+='<div class="polickoSekce">'; //postupně si vytváříme řádek budoucí tabulky a ukládáme do proměnné text
+                    text+='<a href="'+larp.link+'" target="_blank"><div class="nadpisKalendar">'+z.getDate()+'.'+(z.getMonth()+1)+'.'+z.getFullYear()+'<b> '+larp.nazev+'</b></div></a>';
+                    text+='<div class="popisek">'+larp.obec+', '+larp.kraj+'</div><div class="popisekNormal">pořádá '+larp.poradatel+'</div>';
+                    text+='</div>';
+                }
+                //nakonec přepíšeme celý obsah elementu tbody proměnnou text
+                jQuery('#kalendarObsah').html(text);
+            }
+        });
+    });
+</script>
+
+<div class="levaCast">
+<div id="nivoSlider" class="nivoSlider">
+    <img src="/img/slider/panprstenu650.jpg" alt=""
+         title="Dřevárny jsou hry v přírodě a znamenají hlavně adrenalin a souboje armád bezpečnými zbraněmi."/>
+    <img src="/img/slider/santiago650.jpg" alt=""
+         title="Komorní larpy kladou důraz na hlubší ztvárnění role a hrají se jen pár hodin."/>
+    <img src="/img/slider/pass650.jpg" alt=""
+         title="Postapokalyptické larpy simulují přežití po světové katastrofě."/>
+    <img src="/img/slider/borograv650.jpg" alt=""
+         title="Dramatické larpy disponují silným, obvykle řízeným příběhem a jsou pro větší počet hráčů."/>
+    <img src="/img/slider/thief650.jpg" alt=""
+         title="Městské larpy se hrají ve městech a kombinují roli s akčními prvky."/>
+    <img src="/img/slider/bezkrali650.jpg" alt="" title="Larpy typu svět se hrají v přírodě a usilují o reálnou simulaci obchodních a politických vztahů."/>
+    <img src="/img/slider/gangy650.jpg" alt=""
+         title="Městské larpy se hrají ve městech a kombinují roli s akčními prvky."/>
+</div>
+
+<div id="vypisy">
+<div class="sloupecLevy">
+<div class="nadpis">Naposledy přidáno</div>
+
+<div class="pridanaHra">
+    <div class="HraIkonka">
+        <a href="/hra.jsp?id=308"><img style='width: 75px; height: 75px;' src="/img/icon/question_icon_game.png" class="obrazekPopis"
+                                       alt=""></a><br/>
+
+    </div>
+    <div class="obsah">
+        <img alt="" src="/img/ctverecek.png" class="ctverecek"
+             style="background-color: #aaa"/></span>
+                                <span class="nadpisHra"><a href="/hra.jsp?id=308">The Strings
+                                </a></span>
+
+        <div class="HraKomentarPopisek">komorní, 8 hráčů<br/>
+            Svět, ve kterém jsou všichni loutkami. Každý visí na provázcích, které ovlivňují celý život. Jaké to je umírat, jak vypadá obyčejné setkání, když se do sebe můžete zaplést. K posledním okamžikům života nejdůležitějšího představitele města, se sejde podle plánu rodina, ale neočekávaně se dostaví i městští představitelé. Každý chce dostat něco z jeho majetku a vlivu. Komu se podaří získat jeho místo a majetek?<a
+                href="/hra.jsp?id=308"><div class="HraKomentarVice"> ... více</div></a></div>
+    </div>
+</div>
+
+<div class="pridanaHra">
+    <div class="HraIkonka">
+        <a href="/hra.jsp?id=307"><img style='width: 75px; height: 75px;' src="/img/games/7557cce6b03a0dbec8d3f3552c148b9b.jpg" class="obrazekPopis"
+                                       alt=""></a><br/>
+
+    </div>
+    <div class="obsah">
+        <img alt="" src="/img/ctverecek.png" class="ctverecek"
+             style="background-color: #aaa"/></span>
+                                <span class="nadpisHra"><a href="/hra.jsp?id=307">Přechod
+                                </a></span>
+
+        <div class="HraKomentarPopisek">dramatický, 20 hráčů<br/>
+            Nikdo mi neřekl, že je mým úkolem pamatovat si tyhle věci. Ale připadalo mi, že když si je nebudu pamatovat já, upadnou prostě v zapomnění. Nejenom to, jací jsme byli, ale i starý svět z doby Předtím. Teď už jsou všichni mrtví, ti První. Někteří jsou mrtví už tak dlouho nebo byli nakaženi tak dávno, že už si nikdo nepamatuje jejich jména. Když si vzpomínám na ty dny, necítím smutek. Trochu stesku, ano, po lidech, kteří odešli příliš brzy. Už tu nezůstal nikdo, kdo zná moje jméno. Lidé mi říkají Teta.
+            <br>
+            <br>Staňte se jedním z obyvatelů Poslední kolonie. Poznejte svět, ve kterém tma znamená smrt, kde konec dětství přichází příliš brzy a kde se málokdo dožije vnoučat. Zažijte Přechod.
+            <br>
+            <br>Larp Přechod se odehrává ve 22. století, v postapokalyptickém světě na motivy knihy Justina Cronina. Potomci lidí, kteří přežili události roku Nula, roku, kdy svět ovládli nakažení, obývají Poslední kolonii kdesi v bývalé Kalifornii. Musí svádět svůj boj o přežití nejen s virály, s přírodou, s nemocemi, s ubývajícími zdroji, ale zejména s beznadějí, které je tak snadno podlehnout. Je možné vůbec tento boj vyhrát?<a
+                href="/hra.jsp?id=307"><div class="HraKomentarVice"> ... více</div></a></div>
+    </div>
+</div>
+
+<div class="pridanaHra">
+    <div class="HraIkonka">
+        <a href="/hra.jsp?id=306"><img style='width: 75px; height: 75px;' src="/img/games/b997773d3d3b7934463c666df16545f7.jpg" class="obrazekPopis"
+                                       alt=""></a><br/>
+
+    </div>
+    <div class="obsah">
+        <img alt="" src="/img/ctverecek.png" class="ctverecek"
+             style="background-color: #c1001f"/></span>
+                                <span class="nadpisHra"><a href="/hra.jsp?id=306">The Kick Inside
+                                </a></span>
+
+        <div class="HraKomentarPopisek">komorní, 12 hráčů<br/>
+            Kick Inside je larp o rozdílných stadiích života a o tom, jak se s nimi vyrovnáváme. Hlavními tématy jsou identita, rozhodnutí a přijetí.
+            <br/>Poznáte čtyři osoby – Agnes, Markuse, Olivii a Thomase – a to ve třech obdobích jejich života. Čekají vás tři paralelní, oddělené příběhy, z nichž každý probíhá ve čtyřech aktech. Všechny příběhy se odehrávají v chatách, které jsou si podivuhodně podobné.
+            <br/>Český překlad tohoto volně dostupného švédského larpu má k dispozici Crex, www.crex.eu<a
+                href="/hra.jsp?id=306"><div class="HraKomentarVice"> ... více</div></a></div>
+    </div>
+</div>
+
+<div class="viceOdkaz"><a href="/" onclick="$('#dalsiPridaneHry').slideToggle('slow'); return false;">více ...</a></div>
+<div id="dalsiPridaneHry">
+
+
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/hra.jsp?id=305"><img style='width: 75px; height: 75px;' src="/img/games/7ee9162a64d487385d406285d1c42836.jpg" class="obrazekPopis"
+                                               alt=""></a><br/>
+
+            </td>
+            <td class="obsah">
+                <img alt="" src="/img/ctverecek.png" class="ctverecek"
+                     style="background-color: #c1001f"/></span>
+                                    <span class="nadpisHra"><a href="/hra.jsp?id=305">Dark Tower III.
+                                    </a></span>
+
+                <div class="HraKomentarPopisek">družinovka, 24 hráčů<br/>
+                    Dark Tower. Velkolepě se vzpíná k nebi. Proklínaná a nenáviděná. Bolestné výkřiky do noci. Byla symbolem azadské moci a nadvlády nad celou naší sevanskou říší. Pak jsme se vzbouřili a zmocnili věže. A to byl začátek otevřené války. Azadové zaútočili jako blesk. Zpočátku to pro Sevanii vypadalo nadějně. Avšak technologické převaze Azadů se nemůžeme rovnat. &nbsp;Naše Podzemní hnutí postupně ztrácí své pozice a zdá se, že vítězství nepřítele je na dosah. Nic ale není tak jednoduché a přímočaré, jak se na první pohled zdá. Do hry totiž vstupují další nečekané síly, které mohou pohnout miskami vah na obě strany. A boj není jedinou cestou k vítězství.
+                    <br>
+                    <br>Staré legendy a proroctví ožívají, dávno zapomenutá tajemství se derou na světlo a uvádí do pohybu koloběh nečekaných událostí.
+                    <br>
+                    <br>Dark Tower III. je zážitkovou příběhovou hrou z alternativního fantasy světa, která završuje trilogii příběhu Sevanie a Azadské říše. Kombinuje v sobě prvky outdoorové akce (boje ve stylu dřeváren), role-play, komunikační části, řešení questů, intriky, strategii a plánování, pátrání a odhalování tajemství. Ve hře je několik skupin postav, z nichž každá má dominantní určitý styl hraní (akce / strategie / příběh / komunikace / ...). Postavy však nejsou svázány jen jedním stylem hraní (např. boj), ale jsou kombinací více herních stylů. Neexistuje jediná cesta k cíli, ale záleží jen na hráčích, pro jaký způsob se rozhodnou.<a
+                        href="/hra.jsp?id=305"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/hra.jsp?id=304"><img style='width: 75px; height: 75px;' src="/img/games/e459b503264ab218dbecab3162d122ab.gif" class="obrazekPopis"
+                                               alt=""></a><br/>
+
+            </td>
+            <td class="obsah">
+                <img alt="" src="/img/ctverecek.png" class="ctverecek"
+                     style="background-color: #aaa"/></span>
+                                    <span class="nadpisHra"><a href="/hra.jsp?id=304">Holičství
+                                    </a></span>
+
+                <div class="HraKomentarPopisek">komorní, 4 hráčů<br/>
+                    Spousta larpů slibuje spoustu věcí. V našem Holičství však budete mít zaručený výsledek: účes.
+                    <br/>Hra vychází z tvorby postav pro BR-Cz, kde si hráči náhodně vylosují charakter své postavy (veřejný a skrytý rys) a ten nejodvážnější se stane zákazníkem.
+                    <br/>Interakcí všech postav pak vzniká výsledný účes.
+                    <br/>Hra se dá cyklovat tak dlouho, dokud je co stříhat.<a
+                        href="/hra.jsp?id=304"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/hra.jsp?id=303"><img style='width: 75px; height: 75px;' src="/img/games/1452cb776d88ad9aec4c34302e6c500e.jpg" class="obrazekPopis"
+                                               alt=""></a><br/>
+
+            </td>
+            <td class="obsah">
+                <img alt="" src="/img/ctverecek.png" class="ctverecek"
+                     style="background-color: #aaa"/></span>
+                                    <span class="nadpisHra"><a href="/hra.jsp?id=303">Bitvy o Divočinu 9: Střed světa
+                                    </a></span>
+
+                <div class="HraKomentarPopisek">bitva, 78 hráčů<br/>
+                    Po dlouhých letech zmatených a ničivých válek, které z Divočiny udělaly ještě větší Divočinu, nastala rovnováha mezi dvěma mocnostmi.
+                    <br>Proti sobě už dlouhá desetiletí bez přestání válčí přívrženci krvelačného boha míru Pacifixe a uctívači šíleného boha války Warixe.
+                    <br>Znamení ale praví, že již brzy bude možné vstoupit do svatyně Quëntr, do mystického středu světa, o kterém se traduje, že kdo ho má v moci, má v moci celý svět. Schyluje se k bitvě.<br><br>A po bitvě...<br><br>Válka skončila!<br>
+                    <b>Armáda Warixova císařství sice zaznamenala slavná vítězství, ale
+                        nakonec podlehla spojenému vojsku Svaté aliance Pacifixovy, odštěpených
+                        ateistů a zastánců boha Jauvajse. Quëntru a symbolické koruny Vládce
+                        světa se zmocnili její tři velitelé a Hortugas Třináctý, Pacifixův
+                        Velkněz, byl zabit.</b><br>
+                    A dál?<br>
+                    Udrží si generál Pacifixovy armády moc, nebo se po smrti velekněze
+                    Pacifixova Aliance rozpadne? Využije toho Vladiválka Šílený, velekněz
+                    Warixův? A jak obstojí staří bohové proti nebezpečné nákaze ateismu?<br>
+                    Odpovědi přinese jen budoucnost...
+
+                    <br><a
+                        href="/hra.jsp?id=303"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/hra.jsp?id=302"><img style='width: 75px; height: 75px;' src="/img/games/99199ea881400bd7f51579ec9fd67e45.jpg" class="obrazekPopis"
+                                               alt=""></a><br/>
+
+            </td>
+            <td class="obsah">
+                <img alt="" src="/img/ctverecek.png" class="ctverecek"
+                     style="background-color: #aaa"/></span>
+                                    <span class="nadpisHra"><a href="/hra.jsp?id=302">Letův žal (Awain VI)
+                                    </a></span>
+
+                <div class="HraKomentarPopisek">družinovka, 14 hráčů<br/>
+                    Dvoudenní hra pro jednu družinu. Konalo se v červenci 2005 ve Vápenkách u Letohradu.
+                    <br/>
+                    <br/>Syn knížete zemřel a hrdinové zjišťovali, kdo za jeho smrtí stojí. Nakonec vstoupili do minulosti a zjistili, že vrahy jsou oni sami.
+                    <br/>
+                    <br/>
+                    <br/><a
+                        href="/hra.jsp?id=302"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/hra.jsp?id=301"><img style='width: 75px; height: 75px;' src="/img/games/ba73c7ef66b7050e0c6e2b7240f67733.jpg" class="obrazekPopis"
+                                               alt=""></a><br/>
+
+            </td>
+            <td class="obsah">
+                <img alt="" src="/img/ctverecek.png" class="ctverecek"
+                     style="background-color: #aaa"/></span>
+                                    <span class="nadpisHra"><a href="/hra.jsp?id=301">Tři úkoly pro prince (Awain III)
+                                    </a></span>
+
+                <div class="HraKomentarPopisek">družinovka, 12 hráčů<br/>
+                    Jednodenní hra pro jednu družinu. Konala se v listopadu 2004 na Kejkole u Slaného.
+                    <br>
+                    <br>Princ se přišel ucházet o ruku princezny. Ta ale před svatbou vyžadovala splnění tří hrdinských úkolů. Princi při nich notně pomáhal Bystrozraký, ale na samém konci odhalil svou pravou zákeřnou část. Jen díky ohnivému praseti nakonec dobro zvítězilo a princezna zůstala na ocet.
+                    <br>
+                    <br>Komorní pohádková hra, kde v družině začínal nejprve sám princ s panošem a postupem se k němu přidávali různé další bytosti.<a
+                        href="/hra.jsp?id=301"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/hra.jsp?id=300"><img style='width: 75px; height: 75px;' src="/img/games/f31eb3ca74fad6aeeecb9190bb1fc920.JPG" class="obrazekPopis"
+                                               alt=""></a><br/>
+
+            </td>
+            <td class="obsah">
+                <img alt="" src="/img/ctverecek.png" class="ctverecek"
+                     style="background-color: #aaa"/></span>
+                                    <span class="nadpisHra"><a href="/hra.jsp?id=300">Izmaelův návrat (Awain II)
+                                    </a></span>
+
+                <div class="HraKomentarPopisek">družinovka, 29 hráčů<br/>
+                    Víkendová hra pro tři družiny. Konala se v září 2004 na Suchém vrchu u Jablonného v Orlických horách.
+                    <br>
+                    <br>Příběh o anděli Izmaelovi, který byl zapovězen a osvobodil se z vězení. Hrdiny nejprve ošálil a využil, ale nakonec musel čelit svému osudu.
+                    <br>
+                    <br>První větší Awain. Objevilo se v něm mnoho nástrojů, které se využívaly i v budoucnu - časový elementál, tahový souboj, školy magie atd.<a
+                        href="/hra.jsp?id=300"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/hra.jsp?id=299"><img style='width: 75px; height: 75px;' src="/img/games/211d22fa74a90817e10547de43842205.jpg" class="obrazekPopis"
+                                               alt=""></a><br/>
+
+            </td>
+            <td class="obsah">
+                <img alt="" src="/img/ctverecek.png" class="ctverecek"
+                     style="background-color: #aaa"/></span>
+                                    <span class="nadpisHra"><a href="/hra.jsp?id=299">Nolchean a Tirian (Awain I)
+                                    </a></span>
+
+                <div class="HraKomentarPopisek">družinovka, 17 hráčů<br/>
+                    Víkendová hra pro dvě družiny. Konala se v dubnu 2004 na Kejkole u Slaného.<br>
+                    <br>Milostný příběh o démonovi a knížecí dceři. Démon Nolchean bojoval mezi láskou k ženě a oddaností k otci, aby na konci ztratil oba.
+                    <br>
+                    <br>I když je hra počítána jako první Awain, jednalo se spíše o hybrid Gawainu, v té době nazvaný Gadam.<a
+                        href="/hra.jsp?id=299"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/hra.jsp?id=298"><img style='width: 75px; height: 75px;' src="/img/games/0a2dfadf352a05466c7bb55d0c157138.JPG" class="obrazekPopis"
+                                               alt=""></a><br/>
+
+            </td>
+            <td class="obsah">
+                <img alt="" src="/img/ctverecek.png" class="ctverecek"
+                     style="background-color: #aaa"/></span>
+                                    <span class="nadpisHra"><a href="/hra.jsp?id=298">Pravda: Oči studené (Gawain)
+                                    </a></span>
+
+                <div class="HraKomentarPopisek">družinovka, 50 hráčů<br/>
+                    Týdenní hra pro pět družin. Konala se srpnu 2008 na hradě Pravda u Domoušic a v přilehlých lesích.
+                    <br/>
+                    <br/>Hrad Pravda a jeho obyvatelé byli ohroženi démony. Aby jim mohli čelit, museli cestovat do jiných světů a hledat pomoc. Nejprve navštívili starověký Egypt, poté Řecko. Nakonec vstoupili do světa starých slovanů a pomocí jejich bohů démony porazili.
+                    <br/>
+                    <br/><a
+                        href="/hra.jsp?id=298"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/hra.jsp?id=297"><img style='width: 75px; height: 75px;' src="/img/games/b3d6dba03e4d5cec83df2a18ee8ac411.jpg" class="obrazekPopis"
+                                               alt=""></a><br/>
+
+            </td>
+            <td class="obsah">
+                <img alt="" src="/img/ctverecek.png" class="ctverecek"
+                     style="background-color: #0072bc"/></span>
+                                    <span class="nadpisHra"><a href="/hra.jsp?id=297">Plán 8 z Vnějšího vesmíru / Plan Eight From Outer Space
+                                    </a></span>
+
+                <div class="HraKomentarPopisek">komorní, 8 hráčů<br/>
+                    Vítejte v komorním larpu "Plan 8 from Outer Space", v němž máte šanci hrát za mimozemšťana. Ocitnete se na palubě vaší mimozemské lodě z filmu "Plan Nine From Outer Space" od Eda Wooda, který vznikl již v roce 1959. Znalost filmu ke hře není nutná. Stručně lze říci, že mimozemšťané se snaží zastavit lidstvo před sestavením zbraně schopné zničit svět - a jak vidno, osm plánů již selhalo.
+                    <br>Tato konkrétní hra se odehrává před filmem, krátce poté, co jste zkusili "Plán 8". Larp zobrazuje setkání protagonistů při rozboru selhání Plánu 8 a strategická porada nad Plánem 9, ať už to bude cokoliv.
+                    <br>Celá hra je nastavena na odlehčený, humorný styl.
+                    <br>Larp vznikl v roce 2005 v zahraničí, přeložil Daniel "Khelben" Bohovic.<a
+                        href="/hra.jsp?id=297"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/hra.jsp?id=296"><img style='width: 75px; height: 75px;' src="/img/games/5309e79cd2e5152ceb57d63d438b0cd6.jpg" class="obrazekPopis"
+                                               alt=""></a><br/>
+
+            </td>
+            <td class="obsah">
+                <img alt="" src="/img/ctverecek.png" class="ctverecek"
+                     style="background-color: #aaa"/></span>
+                                    <span class="nadpisHra"><a href="/hra.jsp?id=296">Zlodružství (Gawain XXV)
+                                    </a></span>
+
+                <div class="HraKomentarPopisek">družinovka, 20 hráčů<br/>
+                    Víkendová hra pro dvě družiny. Konala se v červenci 2001 na Kejkole u Slaného.<br>
+                    <br><div>Hrdinové se střetli s kancléřem Bělobrkem a se členy tajné organizace Maska. Více se o hře již neví.</div><a
+                        href="/hra.jsp?id=296"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/hra.jsp?id=295"><img style='width: 75px; height: 75px;' src="/img/games/7fd5f6e08bfad0bb691e8961c0462f1d.jpg" class="obrazekPopis"
+                                               alt=""></a><br/>
+
+            </td>
+            <td class="obsah">
+                <img alt="" src="/img/ctverecek.png" class="ctverecek"
+                     style="background-color: #aaa"/></span>
+                                    <span class="nadpisHra"><a href="/hra.jsp?id=295">Svatba Luny (Gawain XV)
+                                    </a></span>
+
+                <div class="HraKomentarPopisek">družinovka, 23 hráčů<br/>
+                    Víkendová hra pro dvě družiny. Konala se v červnu 1998 nedaleko obce Neřežín v Brdech.<br>
+                    <br>Chystala se svatba krále Gawaina a elfí kněžky Luny. Obřad ale narušil Lovec, jehož jméno není známo. Družiny se vydaly pomstít pohanu. Nic však nebylo tak, jak zprvu vypadalo. Lovec nebyl démon, jak Luna prohlásila, ale naopak posel dobra. A z elfky samotné se vyklubal padlý anděl.
+                    <br>Po boji s jejími mocnými výtvory se hrdinové střetli se samotnou kněžkou.<a
+                        href="/hra.jsp?id=295"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/hra.jsp?id=294"><img style='width: 75px; height: 75px;' src="/img/games/d362d3ba41c2913b14d0769f17e0125d.jpg" class="obrazekPopis"
+                                               alt=""></a><br/>
+
+            </td>
+            <td class="obsah">
+                <img alt="" src="/img/ctverecek.png" class="ctverecek"
+                     style="background-color: #aaa"/></span>
+                                    <span class="nadpisHra"><a href="/hra.jsp?id=294">Lék pro krále (Gawain XII)
+                                    </a></span>
+
+                <div class="HraKomentarPopisek">družinovka, 26 hráčů<br/>
+                    Víkendová hra pro dvě družiny. Konala se v listopadu 1997 na Kejkole u Slaného.<br>
+                    <br>Král byl zákeřně otráven. Arcidruid zpomalil čas, ale i tak je ho na sehnání protiléku žalostně málo. Radu by mohli znát Sluneční mniši, cesta je však pečlivě střežená nepřáteli.
+                    <br>Dvě družiny vedli Kris a Lucias. Hrálo se na Kejkole mezi cáry mlhy, paprsky slunce a posledními zbytky listů na stromech.<a
+                        href="/hra.jsp?id=294"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/hra.jsp?id=293"><img style='width: 75px; height: 75px;' src="/img/games/d68d518b8e8b1ff7e7ac956c7aa91960.jpg" class="obrazekPopis"
+                                               alt=""></a><br/>
+
+            </td>
+            <td class="obsah">
+                <img alt="" src="/img/ctverecek.png" class="ctverecek"
+                     style="background-color: #aaa"/></span>
+                                    <span class="nadpisHra"><a href="/hra.jsp?id=293">Návrat za nekromantkou (Gawain X)
+                                    </a></span>
+
+                <div class="HraKomentarPopisek">družinovka, 16 hráčů<br/>
+                    Víkendová hra pro jednu družinu. Konala se v červnu 1997 nedaleko obce Neřežín v Brdech.<br>
+                    <br>Noví hrdinové se vydali na hrad Valdek, osvobodit zajatce nekromantky Rillwig, bývalé princezny. Za cenu těžkých ztrát se záchrana zdařila. Nakonec se podařilo i nekromantku odeklít a vrátit ji na královský dvůr.<a
+                        href="/hra.jsp?id=293"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/hra.jsp?id=292"><img style='width: 75px; height: 75px;' src="/img/games/9517e84c2ce7c72056a5cfce5871505f.jpg" class="obrazekPopis"
+                                               alt=""></a><br/>
+
+            </td>
+            <td class="obsah">
+                <img alt="" src="/img/ctverecek.png" class="ctverecek"
+                     style="background-color: #aaa"/></span>
+                                    <span class="nadpisHra"><a href="/hra.jsp?id=292">Záchrana princezny Rillwig (Gawain V)
+                                    </a></span>
+
+                <div class="HraKomentarPopisek">družinovka, 11 hráčů<br/>
+                    Víkendová hra pro jednu družinu. Konala se v září 1996 nedaleko obce Neřežín v Brdech.<br>
+                    <br>Hrozivý nekromant unesl královu dceru. Družina pod vedením statečného Lucia z Qercu se vydala ji zachránit. Po mnoha těžkých úkolech se jim podařilo nekromanta zabít a princeznu zachránit. Zjistili však, že nekromantův vliv nad princeznou převládl a místo vděku Rillwig družinu ochromila svými kletbami a uvrhla do kobky.<a
+                        href="/hra.jsp?id=292"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/hra.jsp?id=291"><img style='width: 75px; height: 75px;' src="/img/games/1189ac330359fe1e230c51c20c44484d.jpg" class="obrazekPopis"
+                                               alt=""></a><br/>
+
+            </td>
+            <td class="obsah">
+                <img alt="" src="/img/ctverecek.png" class="ctverecek"
+                     style="background-color: #aaa"/></span>
+                                    <span class="nadpisHra"><a href="/hra.jsp?id=291">Pravda: Duše noci (Awain XXXI)
+                                    </a></span>
+
+                <div class="HraKomentarPopisek">družinovka, 60 hráčů<br/>
+                    <div>Týdenní hra pro šest družin. Konala se&nbsp;<span style="font-size: 10pt; line-height: 1.4;">7. do 11. srpna 2012 na hradě Pravda u Domoušic a v přilehlých lesích. Úvod ke hře byl:</span></div>
+                    <br>"Bůh Bán byl poražen a vzpomínka na něj vymizela z paměti. Staří dobrodruzi se odebrali na odpočinek. Ale na jejich místo nastoupí noví, mladí. Protože jich bude potřeba.
+                    <br>
+                    <br>Pod vládou nového krále se začíná Černá bašta stabilizovat. Jsou obnoveny diplomatické kontakty a ověřena spojenectví. Ale vydrží? Na západě si mocné království Orst brousí zuby na své slabší sousedy. Starší lid je po vyhnání krále Mirala ještě nedůvěřivější a jeho vládce opevňuje hranice. A objevili se noví sousedé - trpaslíci a jejich permoničtí a obří otroci. Budou za svoji pomoc něco chtít?
+                    <br>
+                    <br>Uctívání Triglava bylo postaveno mimo zákon. Ale změní nedávná Triglavova intervence královo nařízení? Objeví se Varin Eris zpět na královském dvoře, nebo se bude muset stále držet mimo dohled krále Charáče? Začnou se o království více zajímat arcipreláti církve ve svém sídle v Tristarisu?"<a
+                        href="/hra.jsp?id=291"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/hra.jsp?id=290"><img style='width: 75px; height: 75px;' src="/img/games/95451b390c4b05f03e0be26749de7fcd.png" class="obrazekPopis"
+                                               alt=""></a><br/>
+
+            </td>
+            <td class="obsah">
+                <img alt="" src="/img/ctverecek.png" class="ctverecek"
+                     style="background-color: #c1001f"/></span>
+                                    <span class="nadpisHra"><a href="/hra.jsp?id=290">Trhlinové Války 8
+                                    </a></span>
+
+                <div class="HraKomentarPopisek">bitva, 200 hráčů<br/>
+
+                    "Oldschool" jednodenní fantasy bitva velmi volně na motivy příběhu R. E. Feista<br>
+                    <br>Králi Lyamovi se už už zdálo, že se štěstí obrátilo na jeho stranu. Ač byly jeho armády ve Zlaté zemi zpočátku tlačeny nepřáteli, nakonec se mu za pomoci bratra Aruthy podařilo se před Seveřany a Baverby ubránit a dovést královské bojovníky zpět domů, na Midkemii.
+                    <br>
+                    Doba klidu a míru však skončila ještě dřív, než mohla vůbec začít. Jak už se tak stává, když panovník načas opustí svou zemi, vojenskému veliteli Cecilu Brumovi, pověřenému spravováním Království v době královy nepřítomnosti, se správcovství až příliš zalíbilo. Ač jej neochotně předal zpět do královských rukou, šušká se, že má na vládnutí zcela jiný názor a nenechá se jen tak odsunout na druhou kolej...
+                    <br>
+                    Navíc Baverbům, Seveřanům a Peklomorům nic kromě zdatnosti královských vojáků nebrání projít obnovenou trhlinou do Království. A baverbský vládce Htea'gme je přesvědčen, že teď přišel čas, kdy jeho lid setřese Seveřany i cizí nepřátele a získá nové území. Zkrátka, po společně prohrané bitvě mezi Seveřany a Baverby opět ožilo odvěké nepřátelství. Htea'gme chce v dobývání pokračovat bez Seveřanů. To raději využije obnovené nenávisti Peklomorů k Lesním elfům, tradičním obyvatelům království.
+                    <br>
+                    Zdá se, že staré pořádky se hroutí a dějí se věci dosud nevídané. Následnice peklomorského trůnu utekla s Lesním elfem, což v očích Peklomorů vyžaduje drtivou odvetu. Cecil Brumus se prý neštítí ničeho a je ke svým mocenským plánům ochoten využít nejen velké oči baverbského náčelníka, ale dokonce i Peklomory. Bude zrazený Lyam, na jehož straně zůstává kromě bratra už snad jen Elfové, nucen spojit se se Sveřany?
+                    <br><a
+                        href="/hra.jsp?id=290"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/hra.jsp?id=289"><img style='width: 75px; height: 75px;' src="/img/games/3c4be9afa2e05ff83462d9d1cf1919ce.jpg" class="obrazekPopis"
+                                               alt=""></a><br/>
+
+            </td>
+            <td class="obsah">
+                <img alt="" src="/img/ctverecek.png" class="ctverecek"
+                     style="background-color: #aaa"/></span>
+                                    <span class="nadpisHra"><a href="/hra.jsp?id=289">Bůh s.r.o.
+                                    </a></span>
+
+                <div class="HraKomentarPopisek">komorní, 8 hráčů<br/>
+                    Svět v novém tisíciletí? Všichni ho známe. Zbraně, drogy, ekonomická a morální krize, náboženské konflikty. Někteří z nás si proto stále častěji pokládají otázku: Jak věci změnit? Jak společnost natočit správným směrem? Odpověď je jednoduchá: vírou.
+                    <br>
+                    <br>Vítejte na přísně utajeném výběrovém řízení na firmu, která se bude spolupodílet na stvoření nového boha (bohyně, bohů) v rámci projektu Bůh s.r.o. . Největší světové velmoci vytvořily v tichosti tři instituce, které budou dohlížet na stvoření a zavádění nového náboženství. Chybí však poslední partner. Ten soukromý, který zajistí hlavní část kapitálu na vytvoření, rozšíření a udržení nového náboženství.
+                    <br>
+                    <br>Bůh s.r.o. je komorní larp v týmech, v reprezentativním prostředí a odění, kde si můžete vyzkoušet nejen své argumentační a prezentační dovednosti, ale zamyslet se nad potřebami společnosti a mechanismy vládnutí. Hra je pro 3-4 dvojice (plus tři porotci) a trvá 3-4 hodiny. Hráči hrají pouze rámcové role zástupců společnosti, nechávají si svůj charakter a schopnosti vymyslet, odprezentovat a vyargumentovat svůj projekt. Nouze ale není ani o špinavé praktiky v podobě úplatků, vydírání a vytahování špíny na ostatní.<a
+                        href="/hra.jsp?id=289"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+</div>
+</div>
+
+<div class="sloupecPravy">
+<div class="nadpis">Poslední komentáře</div>
+
+<div class="pridanaHra">
+    <div class="HraIkonka">
+        <a href="/uzivatel.jsp?id=687"><img style='width: 75px; height: 75px;' src="/img/users/aa65e638ddfe962df9734732fca17627.jpg"
+                                            class="obrazekPopis" alt=""></a><br/>
+
+        <div class="datum">2013-04-29
+        </div>
+    </div>
+    <div class="obsah">
+                  <span class="nadpisHra"><a
+                      href="/uzivatel.jsp?id=687">Sergej
+                  </a></span> o hře <span
+        class="nadpisHra"><img src="img/ctverecek.png" class="ctverecek"
+                               style="background-color: #0072bc" alt="">
+                  <a href="/hra.jsp?id=255">STALKER VI - Zřídla
+                  </a></span>
+
+        <div class="popisek komentar">STALKER je akcí s výbornou atmosférou, v zajímavém prostředí a se spoustou herních a technických &quot;vychytávek&quot;, které vás dostanou :).
+            <br/>
+            <br/>Jinak též sdílím názor, že prodloužení akce STALKERovi moc neprospělo a důvody tu již byly zmíněny. Já věřím, že organizátoři se z minulého roku poučili, a že tento ročník bude mnohem lepší.
+            <br/>
+            <br/>@Elvis: Vzhledem k tomu, že Vlci byli kdysi také skupinou svobodných stalkerů, nemáme problém se s ostatními stalkery domluvit na spolupráci. Tak příště nehleďte na naši palebnou sílu a oslovte nás ;). <a href="/hra.jsp?id=255"><div class="HraKomentarVice"> ... více</div></a></div>
+    </div>
+</div>
+
+<div class="pridanaHra">
+    <div class="HraIkonka">
+        <a href="/uzivatel.jsp?id=107"><img style='width: 75px; height: 75px;' src="/img/users/119979be9ff4402d524e83e0a88fd51b.jpg"
+                                            class="obrazekPopis" alt=""></a><br/>
+
+        <div class="datum">2013-04-28
+        </div>
+    </div>
+    <div class="obsah">
+                  <span class="nadpisHra"><a
+                      href="/uzivatel.jsp?id=107">Monty
+                  </a></span> o hře <span
+        class="nadpisHra"><img src="img/ctverecek.png" class="ctverecek"
+                               style="background-color: #aaa" alt="">
+                  <a href="/hra.jsp?id=308">The Strings
+                  </a></span>
+
+        <div class="popisek komentar">Hrál jsem první betatest. Bylo poznat hodně práce na postrojích, které díky tomu byly až překvapivě funkční a umožňovaly zajímavě se zamotávat, když jsme se začali pohybovat. Bohužel bylo poznat, že to sebralo hodně času samotné hře, která díky tomu nefungovala pro všechny postavy tak jak bylo zamýšleno.
+            <br/>Na samotné hře ale bylo uděláno hodně práce, takže věřím že až se dostane z betatestů na plnou verzi, tak to bude dobrá hra s velmi zajímavým ozvláštněním v podobě postrojů loutek. Zatím to je ale můj předpoklad a ne realita, takže si netroufám hodnotit. <a href="/hra.jsp?id=308"><div class="HraKomentarVice"> ... více</div></a></div>
+    </div>
+</div>
+
+<div class="pridanaHra">
+    <div class="HraIkonka">
+        <a href="/uzivatel.jsp?id=560"><img style='width: 75px; height: 75px;' src="/img/users/a1673ad30f5a8d74495f249a9d23e8bf.jpg"
+                                            class="obrazekPopis" alt=""></a><br/>
+
+        <div class="datum">2013-04-26
+        </div>
+    </div>
+    <div class="obsah">
+                  <span class="nadpisHra"><a
+                      href="/uzivatel.jsp?id=560">Władysław
+                  </a></span> o hře <span
+        class="nadpisHra"><img src="img/ctverecek.png" class="ctverecek"
+                               style="background-color: #c1001f" alt="">
+                  <a href="/hra.jsp?id=305">Dark Tower III.
+                  </a></span>
+
+        <div class="popisek komentar">Výborná hra. Mohla být 2x delší :-) Užil jsem si svou roli obchodníka - netušil jsem jak skvělý je to pocit mít někoho ve své moci :-), intrikovat, kut pikle, ... Rovněž jsem rád, že jsem v této hře nebyl pěšák :-)
+            <br/>Jinak ... atmosféra a příběh byly zcela bravurní. Gratulace orgům. Už se těším na DT I. - ta mi utekla :)
+            <br/>  <a href="/hra.jsp?id=305"><div class="HraKomentarVice"> ... více</div></a></div>
+    </div>
+</div>
+
+<div class="viceOdkaz"><a href="/" onclick="$('#dalsiKomentare').slideToggle('slow'); return false;">více ...</a></div>
+<div id="dalsiKomentare">
+
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/uzivatel.jsp?id=490"><img style='width: 75px; height: 75px;' src="/img/icon/default_avatar.png"
+                                                    class="obrazekPopis" alt=""></a><br/>
+
+                <div class="datum">2013-04-25
+                </div>
+            </td>
+            <td class="obsah">
+                            <span class="nadpisHra"><a href="/uzivatel.jsp?id=490">honorka
+                            </a></span> o hře <span class="nadpisHra"><img src="img/ctverecek.png" class="ctverecek" style="background-color: #c1001f" alt="">
+                            <a href="/hra.jsp?id=306">The Kick Inside
+                            </a></span>
+                <div class="popisek komentar">Při seznámení s principem hry jsem si nejprve nedovedla představit, že by se to mohlo nějak rozvinou, a pak jsem už jen hrála a žasla. Bylo to jedinečné, plné emocí, úchvatných scén a určitě opakovatelné. Ráda bych si někdy zahrála třeba první generaci :)) <a href="/hra.jsp?id=306"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/uzivatel.jsp?id=307"><img style='width: 75px; height: 75px;' src="/img/users/a7794ae49c685b6e5ba09194385cd1c5.jpg"
+                                                    class="obrazekPopis" alt=""></a><br/>
+
+                <div class="datum">2013-04-24
+                </div>
+            </td>
+            <td class="obsah">
+                            <span class="nadpisHra"><a href="/uzivatel.jsp?id=307">Mivka
+                            </a></span> o hře <span class="nadpisHra"><img src="img/ctverecek.png" class="ctverecek" style="background-color: #c1001f" alt="">
+                            <a href="/hra.jsp?id=138">Never Let Me Go
+                            </a></span>
+                <div class="popisek komentar">Zajímavá, silná a dobře propracovaná hra s uvěřitelnými postavami a morálními dilematy. Mně osobně chvíli trvalo se do hry dostat, ale od poloviny se mě to začalo docela osobně dotýkat a měla jsem ze hry takový ten nepříjemný pocit, který má člověk z dobrého pochmurného larpu. 9/10 <a href="/hra.jsp?id=138"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/uzivatel.jsp?id=107"><img style='width: 75px; height: 75px;' src="/img/users/119979be9ff4402d524e83e0a88fd51b.jpg"
+                                                    class="obrazekPopis" alt=""></a><br/>
+
+                <div class="datum">2013-04-12
+                </div>
+            </td>
+            <td class="obsah">
+                            <span class="nadpisHra"><a href="/uzivatel.jsp?id=107">Monty
+                            </a></span> o hře <span class="nadpisHra"><img src="img/ctverecek.png" class="ctverecek" style="background-color: #c1001f" alt="">
+                            <a href="/hra.jsp?id=138">Never Let Me Go
+                            </a></span>
+                <div class="popisek komentar">Pravděpodobně díky hrané postavě jsem celou hru nevnímal jaký je to vlastně svět a co to znamená. Někde uvnitř mě hlodalo, že celou dobu obhajuji postoje, se kterými jako hráč nesouhlasím. Možná tím to bylo zajímavější, rozhodně mě to donutilo pořádně se do postavy ponořit a uchopit jí, což se podařilo a přineslo to díky tomu několik velmi silných okamžiků. Čistě směrem do postavy mi tam pro mě chybělo nějaká katarze nebo výsledný okamžik, což pak působilo delší dobu než jsem se z postavy zvládl dostat. Nevím jestli to považuji za mínus nebo plus. Samotný setting světa a všechny jeho důsledky mi dochází až vlastně dnes, druhý den po hraní. A je to zajímavý dozvuk.
+                    <br/>Čistě objektivně nelze mít moc výhrad. Doporučil bych udělání nějaké časové osy aspoň zhruba, aby bylo jasné, co se kdy stalo a nebyl v tom chaos. Postavy mi nepřijdou nijak extrémně dlouhé, ale stejně bych na konci ocenil pár bodů toho hlavního, co si pamatovat. Upozorňování hudbou na průběh času je hodně dobrý koncept, ale chce to mít hudbu v tu chvíli dost hlasitě, aby si každý vždy všiml, že se blíží konec. Já třeba sledoval hodiny i pro jistotu.
+                    <br/>Celkově jsem si larp hodně užil a považuji ho za hodně nadprůměrný. Nemůžu hodnotit maximem, protože subjektivně to tak necítím, i když nedokážu přesně popsat důvody. 9/10
+                    <br/>Po několika týdnech po hře zvedám na 10/10 <a href="/hra.jsp?id=138"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/uzivatel.jsp?id=107"><img style='width: 75px; height: 75px;' src="/img/users/119979be9ff4402d524e83e0a88fd51b.jpg"
+                                                    class="obrazekPopis" alt=""></a><br/>
+
+                <div class="datum">2013-04-23
+                </div>
+            </td>
+            <td class="obsah">
+                            <span class="nadpisHra"><a href="/uzivatel.jsp?id=107">Monty
+                            </a></span> o hře <span class="nadpisHra"><img src="img/ctverecek.png" class="ctverecek" style="background-color: #aaa" alt="">
+                            <a href="/hra.jsp?id=307">Přechod
+                            </a></span>
+                <div class="popisek komentar">První a zatím jediný larp, na kterém jsem nefalšovaně brečel několik minut v kuse, sice to byla především postava, kdo brečel, ale tragédie pro mojí postavu krásná. Navíc postavu jsem dostal zase jednou hodně přímo pro sebe s tím, že já to zvládnu a dobře to odehraju a skvěle jsem si to užil a bavil jsem se jako hráč.
+                    <br/>Prostředí bylo velmi krásné, staré stany, takže dost místa v nich na sezení a řešení věcí a zároveň se díky tomu dalo odposlouchávat, co kdo kde řeší. Navíc úžasné světla kolem celé kolonie, která opravdu svítila a vytvářela v noci opravdu hodně hustou atmosféru.
+                    <br/>Do toho prakticky neustále nějaké vstupy a program, takže já za víc než 24 hodin hry jsem měl zhruba hodinu, kdy jsem neměl, co přímo dělat a rozhodně to bylo spíš pozitivní, že jsem měl chvíli na oddech.
+                    <br/>Jinak jsem sepsal dokument hned po akci o tuším 6 wordovských stranách, takže hafo textu, kde jsem to rozebíral do detailů, ale snad tohle stačí pro prvotní představu. Pokud prostě Lucka bude někdy dělat další běh, tak doporučuji se zúčastnit a nebát se žádné z postav. <a href="/hra.jsp?id=307"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/uzivatel.jsp?id=484"><img style='width: 75px; height: 75px;' src="/img/users/5cb24120abb2d028483a93d335ca3361.jpg"
+                                                    class="obrazekPopis" alt=""></a><br/>
+
+                <div class="datum">2013-04-23
+                </div>
+            </td>
+            <td class="obsah">
+                            <span class="nadpisHra"><a href="/uzivatel.jsp?id=484">Diké
+                            </a></span> o hře <span class="nadpisHra"><img src="img/ctverecek.png" class="ctverecek" style="background-color: #c1001f" alt="">
+                            <a href="/hra.jsp?id=305">Dark Tower III.
+                            </a></span>
+                <div class="popisek komentar">Nemůžu dodat nic víc, že je to snad nejúžasnější zážitkovka, jakou jsem kdy hrála... Cítila jsem se jako štvaná zvěř, měla jsem opravdový strach, a když se nás deset lidí semklo kolem dvou, o kterých jsme nevěděli, na čí stojí straně, uvědomovala jsem si tu zodpovědnost, tu moc, to, že my teď rozhodneme o tom, zda budou žít nebo ne. Je pravda, že závěr celé hry jsme si poněkud upravili podle svého, ale to neubralo na kouzlu. Vřele doporučuji naprosto každému! <a href="/hra.jsp?id=305"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/uzivatel.jsp?id=94"><img style='width: 75px; height: 75px;' src="/img/icon/default_avatar.png.jpg"
+                                                   class="obrazekPopis" alt=""></a><br/>
+
+                <div class="datum">2013-04-21
+                </div>
+            </td>
+            <td class="obsah">
+                            <span class="nadpisHra"><a href="/uzivatel.jsp?id=94">Gordhart
+                            </a></span> o hře <span class="nadpisHra"><img src="img/ctverecek.png" class="ctverecek" style="background-color: #c1001f" alt="">
+                            <a href="/hra.jsp?id=23">Odznak
+                            </a></span>
+                <div class="popisek komentar">Chtěl jsem dát méně, ale přiznám se, že mi hra neuvěřitelně sedla. Je to larp o drsných policajtech, vyšetřování, hádek a nějaký výsleších. A člověk si tam vážně přijde jak v seriálu, kterým je larp inspirován.
+                    <br/>
+                    <br/>Někoho můžou trápit starší mechanismy a to, že se některé věci musí řešit trochu gamisticky, ale přišlo mi to tady hodně přirozené a nenásilné.
+                    <br/>
+                    <br/>Rozložení postav je vcelku veliké, od lehce sociopatických introvertních detektivů po drsné kovboje ze zásahovky.
+                    <br/>
+                    <br/>Subjektivně 9/10, objektivně kolem sedmi. <a href="/hra.jsp?id=23"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/uzivatel.jsp?id=6"><img style='width: 75px; height: 75px;' src="/img/users/459edb8beb1761151e28d3335aef5c91.jpg"
+                                                  class="obrazekPopis" alt=""></a><br/>
+
+                <div class="datum">2013-03-29
+                </div>
+            </td>
+            <td class="obsah">
+                            <span class="nadpisHra"><a href="/uzivatel.jsp?id=6">Drirr
+                            </a></span> o hře <span class="nadpisHra"><img src="img/ctverecek.png" class="ctverecek" style="background-color: #0072bc" alt="">
+                            <a href="/hra.jsp?id=268">Klub Felis
+                            </a></span>
+                <div class="popisek komentar">Tuhle hru pro mě vytáhli čistě a jen spoluhráči, kteří byli skvělí, role koček si užívali a tu energii částečně přenesli i na mě. Až tak, že jsem dokonce usiloval a intrikoval, abych získal titul kočky roku! Oceňuji zařazení prvků, díky kterým se ve hře i něco děje. Když si to zpětně přemítám, přestože to byla celkem zábava, smíchy jsem se nezboural a nic moc si z toho už nepamatuju (krom těch spoluhráčů :-D). Larp (ani v této verzi) nepovažuji za nijak zvlášť dobrý a neumím si představit, že bych hrál tu původní free verzi. Celkově - takové lehké vyblbnutí s fajn lidmi, nic moc zajímavého, do paměti se to nevrylo.
+                    <br/>Podotýkám, že jsem hrál verzi od Court of Moravia (Komorní Třebíč 2012). 4/10 <a href="/hra.jsp?id=268"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/uzivatel.jsp?id=6"><img style='width: 75px; height: 75px;' src="/img/users/459edb8beb1761151e28d3335aef5c91.jpg"
+                                                  class="obrazekPopis" alt=""></a><br/>
+
+                <div class="datum">2013-03-29
+                </div>
+            </td>
+            <td class="obsah">
+                            <span class="nadpisHra"><a href="/uzivatel.jsp?id=6">Drirr
+                            </a></span> o hře <span class="nadpisHra"><img src="img/ctverecek.png" class="ctverecek" style="background-color: #aaa" alt="">
+                            <a href="/hra.jsp?id=240">Prokletí panství Whately
+                            </a></span>
+                <div class="popisek komentar">Jeden z prvních komoráků, co jsem hrál. Recenze z roku 2009 (zkrácená a upravená):
+                    <br/>
+                    <br/>Nebudu zde rozebírat dějové události a příběh a přejdu raději hned k hodnocení hry jako takové. Můj pohled je ovlivněn poměrně nešťastnou smrtí mé postavy hned po skončení aukce, tedy téměř v úvodu hry. Docela mě to zamrzelo, protože se mi moje postava líbila a měl jsem s ní velké plány. Nicméně nedalo se nic dělat. Dostal jsem náhradní postavu novináře a v jeho kůži jsem se několik desítek minut snažil marně dostat do místnosti což mě taktéž trochu popudilo (nicméně z logiky situace to bylo pochopitelné). Nakonec jsem se dovnitř dostal a mohl se naplno zapojit do vyšetřování vraždy a dalších událostí v místnosti.
+                    <br/>Pokud mám zhodnotit hru jedním slovem, bude to zřejmě: rozpačitá.
+                    <br/>Skutečně. Hra měla velmi zajímavý nápad. Měla těžit z hororové atmosféry povídek HP Lovecrafta, ale bohužel se ukázalo, že z děl HPL tam vyjma Necronomiconu a nějakých jmen nebylo nic. Trochu škoda nicméně ani to nemuselo znamenat špatnou hru. Nakonec místo hororu si hráči prožili solidní detektivku s několika zajímavými momenty. Bohužel však nic víc.
+                    <br/>Ve hře bylo naneštěstí příliš míst, které byly duté jak hlava notorika po oslavě. Velmi často se stávalo, že hráči jen posedávali po místnosti a občas prohodili několik slov, nikam dál se však neposunuli a tyto situace byly trochu cítit nudou. Nicméně na druhou stranu v některých situacích bylo cítit i napětí (když někdo na něco přišel, když se zhaslo atd.) a ty pozvedávaly LARP na hratelnou úroveň.
+                    <br/>Jako největší problém však neshledávám malou dějovost hry bez časových událostí, nýbrž špatné provedení postav. Ty byly totiž nevyvážené s často nepřesnými či nelogickými informacemi. Některé byly navíc příliš pasivní a proto v podstatě mohly celý larp pouze sedět a nic nedělat. Díky velmi dobrý hráčům se to však nestávalo a myslím, že hry se zúčastnili vcelku rovnoměrně až na výjimky snad všechny postavy.
+                    <br/>Konkrétně u mé postavy nejvíc zamrzela bezmoc při své smrti. Ta vyplynula opět z nepřesného popisu, kdy jsem byl přesvědčen, že osoba, která mě nesnášela a měla mě zabít, mě má vlastně vcelku ráda. Obecně věty typu : &quot;zabij tohoto hráče&quot; v popisech postav u takovýchto LARPů musí být dělány velmi pečlivě a s rozvahou, protože někoho zabít je skutečně velmi jednoduché (zvlášť, když za to postava musí nést jen skutečně minimální zodpovědnost - což je také jedna z chyb hry).
+                    <br/>Co si jistě zaslouží pochvalu je technický servis celého LARPu (včetně výborného občerstvení a většiny rekvizit) a celkový organizační přístup Darien. Také všichni hráči se (alespon se mi zdálo) na hru připravili dobře a díky tomu se všichni víceméně dobře bavili.
+                    <br/>Pokud tedy mam shrnout největší problémy hry, musím zmínit malou atmosféričnost, nedokonale propracované postavy a především malou dějovost. S tím souvisí zakončení, které chybělo. Protože právě konec (a to je stará pravda) zanechá největší dojem z celého LARPu.
+                    <br/>4/10
+                    <br/>
+                    <br/>
+                    <br/> <a href="/hra.jsp?id=240"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/uzivatel.jsp?id=6"><img style='width: 75px; height: 75px;' src="/img/users/459edb8beb1761151e28d3335aef5c91.jpg"
+                                                  class="obrazekPopis" alt=""></a><br/>
+
+                <div class="datum">2013-03-01
+                </div>
+            </td>
+            <td class="obsah">
+                            <span class="nadpisHra"><a href="/uzivatel.jsp?id=6">Drirr
+                            </a></span> o hře <span class="nadpisHra"><img src="img/ctverecek.png" class="ctverecek" style="background-color: #0072bc" alt="">
+                            <a href="/hra.jsp?id=237">Čest rodu Dolciů
+                            </a></span>
+                <div class="popisek komentar">Řemeslně vcelku pěkně udělaná hra, která nabízí příjemně neotřelé prostředí a v dobré sestavě hráčů to může být pěkná diskusní přestřelka. Přiznám se ale, že se mi hra nevryla do paměti zas tak výrazně a nedokázala na mě hlouběji zapůsobit a dneska jen matně vzpomínám, jak to vlastně probíhalo a jak to skončilo. Tuším, že jsem měl také pocit z mírného nevyvážení postav, kdy některé byly jasně v popředí a jiné spíše přicmrndávaly. Ale to asi pro nějaký typ hráčů nemusí být na škodu. Takže hluboký zářez to nezanechalo, ale mělo to napětí a gradaci, bavilo mě to. A to se počítá, pánové. 6,4/10 <a href="/hra.jsp?id=237"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/uzivatel.jsp?id=6"><img style='width: 75px; height: 75px;' src="/img/users/459edb8beb1761151e28d3335aef5c91.jpg"
+                                                  class="obrazekPopis" alt=""></a><br/>
+
+                <div class="datum">2013-02-18
+                </div>
+            </td>
+            <td class="obsah">
+                            <span class="nadpisHra"><a href="/uzivatel.jsp?id=6">Drirr
+                            </a></span> o hře <span class="nadpisHra"><img src="img/ctverecek.png" class="ctverecek" style="background-color: #c1001f" alt="">
+                            <a href="/hra.jsp?id=9">Lunapark život
+                            </a></span>
+                <div class="popisek komentar">Hra jejíž největší devizou je silný příběh z originálního prostředí. Jeepová jízda pro zkušené hráče, kteří jsou schopní hrát náročné role, improvizovat a přemýšlet. Díky několika silným momentům se hra vryje do paměti. Pokud bych se měl pokusit o nějakou konstruktivní kritiku: Problémem mohou být občasné nejasnosti v postavách, jejichž popisy i situace jsou opravdu hodně stručně popsané. Snové scény mi úplně neseděly a bylo nutné je trochu osvětlit po hře. Co bych doporučil asi nejvíc - zařadit před hrou nějaká cvičení na divadelní mluvu (hlasitost, artikulaci) - příběhu (a poezii obzvlášť) velmi ubližuje pokud někdo nemluví dost nahlas a špatně artikuluje. Celkově ale rozhodně doporučuji (samozřejmě těm, kterým tato divadelní strukturovaná forma sedí). 7/10 <a href="/hra.jsp?id=9"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/uzivatel.jsp?id=6"><img style='width: 75px; height: 75px;' src="/img/users/459edb8beb1761151e28d3335aef5c91.jpg"
+                                                  class="obrazekPopis" alt=""></a><br/>
+
+                <div class="datum">2012-12-15
+                </div>
+            </td>
+            <td class="obsah">
+                            <span class="nadpisHra"><a href="/uzivatel.jsp?id=6">Drirr
+                            </a></span> o hře <span class="nadpisHra"><img src="img/ctverecek.png" class="ctverecek" style="background-color: #c1001f" alt="">
+                            <a href="/hra.jsp?id=6">Pika-don
+                            </a></span>
+                <div class="popisek komentar">Pika-don mě už od začátku zaujal svým tématem. Fiktivní schůzka a diskuse o použití jaderných zbraní? Jasně to nemusí být téma pro každého, ale mně to zatraceně sedlo. Z pozice reprezentanta USA jsem měl zdánlivě snadný úkol - přesvědčit o tom, že svržení jaderné pumy je jedinou možností, jak ukončit válku. Jinak čistě diskusní hru ozvláštňují přidané originální (a rozhodně jedny z nejzajímavějších) mechanismy získávání informací a vojenské síly. Jen ten poslední se střelbou bohužel nemohu ocenit, protože jde o náhodu, která (alespoň v mém běhu) udělal z předchozích jednání z pohledu hráče zbytečně strávený čas. Oceňuji herecké výkony všech zúčastněných (hlavně pro Eridora za Japonsko to muselo být hodně silný). Závěr byl možná trochu citově vyděračský a možná až moc tlačil do jednoznačného názoru na jinak otevřený problém. Až na tyhle věci jde ale o vynikající konverzačku na těžké téma. PS. Závěrečná reflexe hodně povedená a přitom ne zdlouhavá. GJ! 7,5/10 <a href="/hra.jsp?id=6"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/uzivatel.jsp?id=6"><img style='width: 75px; height: 75px;' src="/img/users/459edb8beb1761151e28d3335aef5c91.jpg"
+                                                  class="obrazekPopis" alt=""></a><br/>
+
+                <div class="datum">2012-12-16
+                </div>
+            </td>
+            <td class="obsah">
+                            <span class="nadpisHra"><a href="/uzivatel.jsp?id=6">Drirr
+                            </a></span> o hře <span class="nadpisHra"><img src="img/ctverecek.png" class="ctverecek" style="background-color: #c1001f" alt="">
+                            <a href="/hra.jsp?id=20">Moon
+                            </a></span>
+                <div class="popisek komentar">Přidávám se k pochvalným hodnocením. Roli guvernéra jsem si prožil opravdu silně a musím říct, že jde o jeden z největších larpových zážitků. Hra je jinak veskrze jednoduchá a těží z mistrně napsaných postav a několika detailů (projevy, rádio, oděvní doplňky...), které ji posunují nad většinu ostatní produkce. Přiznám se, že závěrečná reflexe na mě byla až moc dlouhá a až moc podrobná. Raději bych si hru promyslel, sám se s ní vypořádal a až pak ji třeba rozebíral. Takhle, byť se orgové snažili nijak netlačit, jsem cítil, že se ode mě očekává ke všemu se nějak vyjádřit. Jinak ale klobouky dolů. 9/10 <a href="/hra.jsp?id=20"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/uzivatel.jsp?id=6"><img style='width: 75px; height: 75px;' src="/img/users/459edb8beb1761151e28d3335aef5c91.jpg"
+                                                  class="obrazekPopis" alt=""></a><br/>
+
+                <div class="datum">2012-12-16
+                </div>
+            </td>
+            <td class="obsah">
+                            <span class="nadpisHra"><a href="/uzivatel.jsp?id=6">Drirr
+                            </a></span> o hře <span class="nadpisHra"><img src="img/ctverecek.png" class="ctverecek" style="background-color: #0072bc" alt="">
+                            <a href="/hra.jsp?id=32">Proklatě dobré kuře
+                            </a></span>
+                <div class="popisek komentar">Larp z novinářského prostředí, který sází na neotřelé téma a celkově docela zdařile simuluje novinářskou poradu, která pěkně graduje. Pro mě, navzdory nastoleným dilematům, moc o dilemata nešlo, protože novinář jsem a podobné otázky už mám vnitřně zodpovězené. Postavy jsou navíc poměrně stručně vymezené a je zjevné (teda hrál jsem první běh, tak nevím, zda se to nezměnilo), že některé jsou výraznější a významnější (mluvčí) a jiné naopak. Jde tak spíše o zapojení hráče do daného světa než o hraní nějakých silných charakterů. Ale to asi není výtka, je to tak prostě nastavené. Hra navíc nenudí, pěkně využívá mobilních telefonů a k závěru velmi dobře graduje, což zanechává příznivý dojem. Tak či tak, nemohu říct, že by šlo o nějaký silný a intenzivní zážitek. 5/10 <a href="/hra.jsp?id=32"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/uzivatel.jsp?id=6"><img style='width: 75px; height: 75px;' src="/img/users/459edb8beb1761151e28d3335aef5c91.jpg"
+                                                  class="obrazekPopis" alt=""></a><br/>
+
+                <div class="datum">2012-12-16
+                </div>
+            </td>
+            <td class="obsah">
+                            <span class="nadpisHra"><a href="/uzivatel.jsp?id=6">Drirr
+                            </a></span> o hře <span class="nadpisHra"><img src="img/ctverecek.png" class="ctverecek" style="background-color: #0072bc" alt="">
+                            <a href="/hra.jsp?id=1">Bodlák
+                            </a></span>
+                <div class="popisek komentar">Pro mě mírně nadprůměrný larp s pěkně propracovanými a propojenými postavami a vcelku zdařile dávkovanými konflikty. Pro mě bylo místy těžké nějakým způsobem stále podporovat hru a občas se mi zdálo, že je to jen o pendlování mezi lidmi, s nimiž si člověk vždy prohodí nějakou tu konverzaci (bohužel často nijak zajímavou). Každopádně závěr jsem si hodně užil a moje postava byla hodně zajímavá. Přínos toho, že je to celé v abstraktním prostředí bez ukotvení moc nevidím a ani nemám pocit, že by se to na hře projevilo. Naopak oceňuji hromadné dávkování informací, které byť se zdá, že je příliš triviální, tak funguje. V jednoduchosti je síla :) 6/10 <a href="/hra.jsp?id=1"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/uzivatel.jsp?id=6"><img style='width: 75px; height: 75px;' src="/img/users/459edb8beb1761151e28d3335aef5c91.jpg"
+                                                  class="obrazekPopis" alt=""></a><br/>
+
+                <div class="datum">2012-12-16
+                </div>
+            </td>
+            <td class="obsah">
+                            <span class="nadpisHra"><a href="/uzivatel.jsp?id=6">Drirr
+                            </a></span> o hře <span class="nadpisHra"><img src="img/ctverecek.png" class="ctverecek" style="background-color: #0072bc" alt="">
+                            <a href="/hra.jsp?id=21">Vražda v sídle Lancasterů
+                            </a></span>
+                <div class="popisek komentar">Spojení okultna a detektivky je vždycky trochu ošemetné. Protože pro detektiva, který se snaží hledat stopy, rozplétat zápletky a odhalovat skryté, je nadpřirozený motiv trochu problémem. Detektiv se totiž najednou stává pozorovatelem, který je jen vláčen dějem. To se mi tak trochu stalo. Nevím nakolik byla hra od prvních běhů odladěná, ale v tom mém jsem neměl pocit, že mohu dění nějak výrazněji ovlivnit, což by mi nevadilo, kdybych to čekal. Navíc závěr vyšel tak nějak prapodivně a obecně musím říct, že tato hra je dost náchylná k tomu, aby buď skvěle vyšla nebo spíš moc nevyšla. Navíc se nám ve hře tvořila hluchá místa, kdy půlka lidí pročítala knihy (tento mechanismus se mi na krátký prostor moc nepozdává) a druhá půlka moc nevěděla co. Hlavně já jako detektiv jsem cítil, že bych to měl nějak nakopnout, ale zoufale jsem nevěděl jak (co řešit, jak vést vyšetřování?) Tím ale nechci říct, že by šlo o nějak špatný kousek. Oceňuji velmi pečlivě propracované pozadí hry včetně rekvizit (ten deník! wow!) a zajímavé postavy. S dobrou atmosférou (kterou měli třeba v Pardubicích) a dobrou konstelací to může vyjít peckovně. 5/10 <a href="/hra.jsp?id=21"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/uzivatel.jsp?id=6"><img style='width: 75px; height: 75px;' src="/img/users/459edb8beb1761151e28d3335aef5c91.jpg"
+                                                  class="obrazekPopis" alt=""></a><br/>
+
+                <div class="datum">2012-12-16
+                </div>
+            </td>
+            <td class="obsah">
+                            <span class="nadpisHra"><a href="/uzivatel.jsp?id=6">Drirr
+                            </a></span> o hře <span class="nadpisHra"><img src="img/ctverecek.png" class="ctverecek" style="background-color: #0072bc" alt="">
+                            <a href="/hra.jsp?id=40">Kladivo na čarodějnice
+                            </a></span>
+                <div class="popisek komentar">Hrál jsem vlastně jeden z prvních běhů, kdy hra ještě nebyla odladěná. Moje relativně vysoké hodnocení tak nevychází ze samotné hry, kterou jsem hrál, jako spíš z potenciálu, který jsem v ní viděl. Pro mě ohromně zajímavé prostředí a zajímavá zápletka. Super pozadí a byť jsem tehdy měl výhrady a bylo zřejmé, jaké chyby v tom jsou, tak si myslím, že to Eridor určitě vychytal a že je to dneska super diskusní (soudní) historická hra. A takových moc není. 7/10 <a href="/hra.jsp?id=40"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="pridanaHra">
+    <table class="HraTabulka">
+        <tr>
+            <td>
+                <a href="/uzivatel.jsp?id=6"><img style='width: 75px; height: 75px;' src="/img/users/459edb8beb1761151e28d3335aef5c91.jpg"
+                                                  class="obrazekPopis" alt=""></a><br/>
+
+                <div class="datum">2012-12-18
+                </div>
+            </td>
+            <td class="obsah">
+                            <span class="nadpisHra"><a href="/uzivatel.jsp?id=6">Drirr
+                            </a></span> o hře <span class="nadpisHra"><img src="img/ctverecek.png" class="ctverecek" style="background-color: #0072bc" alt="">
+                            <a href="/hra.jsp?id=38">Projekt Exodus
+                            </a></span>
+                <div class="popisek komentar">Jednoduchá hra se silným tématem a zápletkou kolem které je možné vést velmi zajímavé debaty. Jde víceméně o hru diskusní a poměrně závislou na schopnosti komunikace všech zúčastněných. Trochu nejasně se zde prolíná postava s hráčem, ale v konečné fázi nemám pocit, že by to mému zážitku ublížilo. Larp má dobrou gradaci a jeden vypečený nápad, kvůli kterému na tuto hru asi nezapomenu. I proto bych hru celkově doporučil a to hlavně těm, kteří rádi intelektuálně diskutují o politických systémech, náboženství či hodnotách. 6/10  <a href="/hra.jsp?id=38"><div class="HraKomentarVice"> ... více</div></a></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- PRAVE MENU -->
+
+<div class="pravaCast">
+    <div class="praveMenu">
+        <div class="nadpisMenu">rychlá navigace</div>
+    </div>
+
+    <div class="sekce">
+        <table>
+            <tr>
+                <td>
+                    <a href="/pridatHru.jsp"><img src="/img/icon/plus_icon.png" class="pridatIkona"></a>
+                </td>
+                <td class="pridatPopis">
+                    <a href="/pridatHru.jsp">Přidat hru</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="sekce">
+        <div class="nadpisSekce">Kalendář akcí</div>
+        <div id="kalendarObsah">
+            <!-- obsah z javascriptu v "hlavicce" -->
+        </div>
+        <div class="viceOdkazKalendar"><a href="http://kalendar.larp.cz" target="_blank"> více ...</a></div>
+    </div>
+
+    <div class="sekce">
+        <div class="nadpisSekce">Náhodný larp</div>
+
+        <table>
+            <tr>
+                <td>
+                    <a href="/hra.jsp?id=56"><img alt="" src="/img/icon/question_icon_game.png" class="obrazekHra"></a>
+                </td>
+                <td class="obsah">
+                    <a href="/hra.jsp?id=56"><img src="/img/ctverecek.png" class="ctverecek"
+                                                  style="background-color: #c1001f"
+                                                  alt=""/></span><span
+                        class="nadpisHra">StarGate-Universe LARP</span></a>
+
+                    <div class="popisek"><span>sci-fi</span> / <span>dramatický</span> / <span>střelné zbraně (airsoft)</span>, 20 hráčů<br/>
+                        2012<br/>
+                        Hodnocení: 85%
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+
+    <div class="sekce">
+
+        <div class="nadpisSekce">Statistiky</div>
+        <table>
+            <tr>
+                <td>
+                    <div style="width: 60px" class="pruhStatistika">498
+                    </div>
+                </td>
+                <td class="obsah">
+                    <div class="popisek">uživatelů</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div style="width: 18px" class="pruhStatistika">263
+                    </div>
+                </td>
+                <td class="obsah">
+                    <div class="popisek">autorů</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div style="width: 81px" class="pruhStatistika">956
+                    </div>
+                </td>
+                <td class="obsah">
+                    <div class="popisek">komentářů</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div style="width: 35px" class="pruhStatistika">303
+                    </div>
+                </td>
+                <td class="obsah">
+                    <div class="popisek">larpů</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div style="width: 100px" class="pruhStatistika">3035
+                    </div>
+                </td>
+                <td class="obsah">
+                    <div class="popisek">hodnocení</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div style="width: 81px" class="pruhStatistika">73%</div>
+                </td>
+                <td class="obsah">
+                    <div class="popisek">průměrné hodnocení</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="sekce">
+        <div class="nadpisSekce">Sponzoři</div>
+        <a href="http://fantasyobchod.cz" target="_blank" onclick="_gaq.push(['_trackEvent', 'Reklama', 'fantasyobchod']);"><img src="img/banner_fantasyobchod.png" style="margin-left: 68px;"></a>
+    </div>
+</div>
+<div style="clear: both"></div>
+
+<!-- FOOTER -->
+
+<div class="footer">
+    &copy; larpovadatabaze.cz, 2012 | database coding: Jakub Balhar | design coding: <a href="http://hrajularpy.cz">Michal Havelka</a> <br />
+    layout: Jakub Siegel | PR: Petr Kuběnský | HR: Filip Appl <br />
+    Thanks to all of you!
+</div>
+
+</div>
+</body>
+</html>

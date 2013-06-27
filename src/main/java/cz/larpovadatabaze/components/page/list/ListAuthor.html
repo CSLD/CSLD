@@ -1,0 +1,31 @@
+<wicket:extend xmlns:wicket="http://wicket.apache.org">
+    <div class="levaCast" id="Autori">
+        <div class="nadpisStranky">
+            <img src="/files/img/icon/light_icon.png" class="ikonaStranky">Autoři
+        </div>
+        <table>
+            <thead>
+            <th wicket:id="orderByName">Name</th>
+            <th wicket:id="orderByBestGame">Nejlepší hra autora</th>
+            </thead>
+            <tr class="polozkaAutor" wicket:id="listAuthor">
+                <td class="larp">
+                    <a wicket:id="authorName">
+                        <span class="autorPrezdivka" wicket:id="authorNicknameContent"></span>
+                        <span class="AutorJmeno" wicket:id="authorNameContent"></span>
+                    </a>
+                </td>
+                <td class="nejlepsiHraAutor">
+                    <a wicket:id="gameName">
+                        <span wicket:id="bestGameName"></span>
+                        (<span wicket:id="bestGame"></span>%)
+                    </a>
+                </td>
+            </tr>
+        </table>
+        <span wicket:id="navigator">[dataview navigator]</span>
+    </div>
+
+    <div class="pravaCast" id="Autori" wicket:id="addAuthorPanel">
+    </div>
+</wicket:extend>

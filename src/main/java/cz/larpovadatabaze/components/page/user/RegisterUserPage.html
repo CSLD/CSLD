@@ -1,0 +1,58 @@
+<wicket:extend xmlns:wicket="http://wicket.apache.org">
+    <form wicket:id="addUser">
+        <fieldset>
+            <div class="feedback" wicket:id="feedback"></div>
+
+            <div>
+                <label for="email">Přihlašovací jméno (Platný email)</label>
+                <input type="email" wicket:id="person.email"/>
+            </div>
+
+            <div>
+                <label for="name">Celé jméno</label>
+                <input type="text" wicket:id="person.name"/>
+            </div>
+
+            <div>
+                <label for="nickname">Přezdívka</label>
+                <input type="text" wicket:id="person.nickname"/>
+            </div>
+
+            <div>
+                <label for="birthDate">Datum narození</label>
+                <input type="text" wicket:id="person.birthDate"/>
+            </div>
+
+            <div>
+                <label for="city">Město</label>
+                <input type="text" wicket:id="person.city"/>
+            </div>
+
+            <div>
+                <label for="description">Popis</label>
+                <input type="text" wicket:id="person.description"/>
+            </div>
+
+
+            <div>
+                <label for="password">Heslo</label>
+                <input type="password" wicket:id="password"/>
+            </div>
+
+            <div>
+                <label for="passwordAgain">Heslo znovu</label>
+                <input type="password" wicket:id="passwordAgain"/>
+            </div>
+
+            <div>
+                <label for="image">Obrázek</label>
+                <input type="file" wicket:id="image"/>
+            </div>
+
+            <div>
+                <input type="submit" value="Uložit" wicket:id="submit"/>
+            </div>
+
+        </fieldset>
+    </form>
+</wicket:extend>

@@ -1,0 +1,32 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+    <form wicket:id="filterForm">
+    <div class="sekce">
+        <div class="nadpisFiltr">Počty hráčů</div>
+        <div class="hraciFiltr">
+            <input wicket:id="minPlayers" class="textbox blur" type="number" title="min" value="" style="width: 60px;">
+            <input wicket:id="maxPlayers" class="textbox blur" type="number" title="max" value="" style="width: 60px;"></div>
+        <div class="nadpisFiltr">Délka hry</div>
+        <div class="delkaFiltr">
+            <input wicket:id="minHours" class="textbox blur" type="number" title="min hod" value="" style="width: 60px;">
+            <input wicket:id="maxHours" class="textbox blur" type="number" title="max hod" value="" style="width: 60px;">
+            <input wicket:id="minDays" class="textbox blur" type="number" title="min dnů" value="" style="width: 60px;">
+            <input wicket:id="maxDays" class="textbox blur" type="number" title="max dnů" value="" style="width: 60px;">
+        </div>
+    </div>
+    <div class="sekce">
+    <div class="nadpisFiltr">Štítky</div>
+
+    <fieldset class="fieldset">
+        <ul class="checklist" wicket:id="listLabels">
+
+        <li>
+            <label wicket:id="labelName"></label>
+            <input type="checkbox" wicket:id="labelCheck">
+        </li>
+
+        </ul>
+    </fieldset>
+    <input wicket:id="submit" type="submit" class="filtrovatButton" title="filtrovat" value="Filtrovat">
+    </div>
+    </form>
+</wicket:panel>

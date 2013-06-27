@@ -1,0 +1,23 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+    <table>
+        <tr>
+            <td>
+                <img wicket:id="userImage" class="obrazekUzivatel">
+            </td>
+            <td class="bunkaUzivatel">
+                <div class="jmenoUzivatel">
+                    <span wicket:id="nickname" class="strong"></span> <span wicket:id="name"></span>
+                </div>
+                <div class="popisek"><span wicket:id="age"></span> let</div>
+                <div class="popisek">
+                    <span wicket:id="city"></span>
+                </div>
+                <div class="popisek">
+                    Hráč <span wicket:id="played"></span> larpů, tvůrce <span wicket:id="organized"></span> larpů
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <div class="obsah" wicket:id="description"></div>
+</wicket:panel>
