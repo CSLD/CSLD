@@ -8,5 +8,6 @@
         <property name="hibernate.cache.provider_class">
             org.hibernate.cache.NoCacheProvider
         </property>
+
     </session-factory>
 </hibernate-configuration>
