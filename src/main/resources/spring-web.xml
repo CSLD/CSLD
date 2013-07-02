@@ -39,7 +39,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
         <property name="hibernateProperties">
 			<props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
-				<prop key="hibernate.hbm2ddl.auto">create</prop>
+				<prop key="hibernate.hbm2ddl.auto">validate</prop>
                 <prop key="autocommmit">true</prop>
                 <prop key="hibernate.cfgfile">/hibernate.cfg.xml</prop>
 			</props>
