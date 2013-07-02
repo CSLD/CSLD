@@ -20,16 +20,17 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
         <property name="transactionManager" ref="transactionManager"/>
     </bean>
 
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
-        <property name="driverClassName" value="org.postgresql.Driver" />
-        <!--<property name="url" value="jdbc:postgresql://students.kiv.zcu.cz:5432/db2_vyuka" />
-        <property name="username" value="db2_vyuka" />
-        <property name="password" value="db2_vyuka" /> -->
-        <property name="url" value="jdbc:postgresql://ec2-54-217-215-71.eu-west-1.compute.amazonaws.com:5432/d35acpk365ek1i" />
-        <property name="username" value="spajmwntjfkmvz" />
-        <property name="password" value="uVnxBEcavIJ5CUM4Rn_FEbX5vN" />
+        <property name="driverClassName" value="${database.driverClassName}"/>
+        <property name="url" value="#{ 'jdbc:postgresql://' + @dbUrl.getHost() + ':' + @dbUrl.getPort() + @dbUrl.getPath() }"/>
+        <property name="username" value="#{ @dbUrl.getUserInfo().split(':')[0] }"/>
+        <property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }"/>
 	</bean>
+
+    <bean class="java.net.URI" id="dbUrl">
+        <constructor-arg value="${DATABASE_URL}"/>
+    </bean>
 
 	<!-- Hibernate session factory -->
 	<bean id="sessionFactory"
