@@ -1,1 +1,1 @@
-web:    java -cp target/classes:target/dependency/* CSLD
+web:    sh target/bin/webapp

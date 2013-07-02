@@ -26,7 +26,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
         <!--<property name="url" value="jdbc:postgresql://students.kiv.zcu.cz:5432/db2_vyuka" />
         <property name="username" value="db2_vyuka" />
         <property name="password" value="db2_vyuka" /> -->
-        <property name="url" value="jdbc:postgresql://ec2-54-217-215-71.eu-west-1.compute.amazonaws.com:5432/d35acpk365ek1i?ssl=true" />
+        <property name="url" value="jdbc:postgresql://ec2-54-217-215-71.eu-west-1.compute.amazonaws.com:5432/d35acpk365ek1i" />
         <property name="username" value="spajmwntjfkmvz" />
         <property name="password" value="uVnxBEcavIJ5CUM4Rn_FEbX5vN" />
 	</bean>
