@@ -20,6 +20,10 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
         <property name="transactionManager" ref="transactionManager"/>
     </bean>
 
+    <bean class="java.net.URI" id="dbUrl">
+        <constructor-arg value="${DATABASE_URL}"/>
+    </bean>
+
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
         <property name="driverClassName" value="${database.driverClassName}"/>
@@ -27,10 +31,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
         <property name="username" value="#{ @dbUrl.getUserInfo().split(':')[0] }"/>
         <property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }"/>
 	</bean>
-
-    <bean class="java.net.URI" id="dbUrl">
-        <constructor-arg value="${DATABASE_URL}"/>
-    </bean>
 
 	<!-- Hibernate session factory -->
 	<bean id="sessionFactory"
