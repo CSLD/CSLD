@@ -21,12 +21,12 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     </bean>
 
     <bean class="java.net.URI" id="dbUrl">
-        <constructor-arg value="${DATABASE_URL}"/>
+        <constructor-arg value="#{systemEnvironment['DATABASE_URL']}"/>
     </bean>
 
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
-        <property name="driverClassName" value="${database.driverClassName}"/>
+        <property name="driverClassName" value="org.postgresql.Driver"/>
         <property name="url" value="#{ 'jdbc:postgresql://' + @dbUrl.getHost() + ':' + @dbUrl.getPort() + @dbUrl.getPath() }"/>
         <property name="username" value="#{ @dbUrl.getUserInfo().split(':')[0] }"/>
         <property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }"/>
