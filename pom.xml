@@ -7,7 +7,7 @@
 	<packaging>war</packaging>
 	<version>1.0</version>
 	<!-- TODO project name -->
-	<name>quickstart</name>
+	<name>ČSLD</name>
 	<repositories>
 		<repository>
 			<id>jboss-repo</id>
