@@ -23,9 +23,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
           destroy-method="close">
         <property name="driverClassName" value="org.postgresql.Driver" />
-        <property name="url" value="jdbc:postgresql://ec2-54-217-215-71.eu-west-1.compute.amazonaws.com:5432/d35acpk365ek1i?username=spajmwntjfkmvz&amp;password=uVnxBEcavIJ5CUM4Rn_FEbX5vN&amp;ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory" />
-        <property name="username" value="spajmwntjfkmvz" />
-        <property name="password" value="uVnxBEcavIJ5CUM4Rn_FEbX5vN" />
+        <property name="url" value="jdbc:postgresql://ec2-54-217-215-81.eu-west-1.compute.amazonaws.com:5432/d45qrl0lpia00t?username=tohgiywmquxuia&amp;password=WTAdF1fWSN9pGMAqiPInAqGjz0&amp;ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory" />
+        <property name="username" value="tohgiywmquxuia" />
+        <property name="password" value="WTAdF1fWSN9pGMAqiPInAqGjz0" />
     </bean>
 
 	<!-- Hibernate session factory -->
