@@ -32,7 +32,7 @@ public class Image implements Serializable {
     @Column(name = "path", nullable = false, insertable = true, updatable = true, length = 2147483647, precision = 0)
     @Basic
     public String getPath() {
-        return path;
+        return path != null ? path : null;
     }
 
     public void setPath(String path) {

@@ -6,7 +6,6 @@
 	<artifactId>CSLD</artifactId>
 	<packaging>war</packaging>
 	<version>1.0</version>
-	<!-- TODO project name -->
 	<name>ČSLD</name>
 	<repositories>
 		<repository>
