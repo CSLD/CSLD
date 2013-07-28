@@ -14,4 +14,6 @@ public interface GroupService extends GenericService<CsldGroup> {
     public void insert(CsldGroup group);
 
     List<CsldGroup> orderedByName();
+
+    CsldGroup getById(Integer id);
 }

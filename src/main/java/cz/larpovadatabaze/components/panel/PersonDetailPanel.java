@@ -14,7 +14,6 @@ import org.apache.wicket.request.resource.ContextRelativeResource;
  * Time: 9:57
  */
 public class PersonDetailPanel extends Panel {
-
     public PersonDetailPanel(String id, CsldUser user) {
         super(id);
 

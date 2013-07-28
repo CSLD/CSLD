@@ -32,7 +32,7 @@ public class Image implements Serializable {
     @Column(name = "path", nullable = false, insertable = true, updatable = true, length = 2147483647, precision = 0)
     @Basic
     public String getPath() {
-        return path != null ? path : "files/img/author_icon.png";
+        return path;
     }
 
     public void setPath(String path) {
@@ -101,5 +101,17 @@ public class Image implements Serializable {
 
     public void setUsers(List<CsldUser> users) {
         this.users = users;
+    }
+
+    public static Image getDefaultGroup() {
+        Image groupImage = new Image();
+        groupImage.setPath("files/img/author_icon.png");
+        return groupImage;
+    }
+
+    public static Image getDefaultUser() {
+        Image userImage = new Image();
+        userImage.setPath("files/img/author_icon.png");
+        return userImage;
     }
 }

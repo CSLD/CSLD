@@ -1,13 +1,18 @@
 package cz.larpovadatabaze.components.page.list;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.page.detail.AuthorDetail;
+import cz.larpovadatabaze.components.page.detail.GroupDetail;
 import cz.larpovadatabaze.components.panel.group.AddGroupPanel;
 import cz.larpovadatabaze.entities.CsldGroup;
+import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.providers.SortableGroupProvider;
 import cz.larpovadatabaze.services.GroupService;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -28,8 +33,15 @@ public class ListGroup extends CsldBasePage {
             @Override
             protected void populateItem(Item<CsldGroup> item) {
                 CsldGroup group = item.getModelObject();
+                PageParameters params = new PageParameters();
+                params.add("id", group.getId());
+
+                final BookmarkablePageLink<CsldUser> groupDetail =
+                        new BookmarkablePageLink<CsldUser>("groupDetail", GroupDetail.class, params);
+
                 final Label label = new Label("groupName", group.getName());
-                item.add(label);
+                groupDetail.add(label);
+                item.add(groupDetail);
             }
         };
         groupList.setOutputMarkupId(true);
