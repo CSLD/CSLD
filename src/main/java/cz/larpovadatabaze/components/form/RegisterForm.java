@@ -75,7 +75,7 @@ public class RegisterForm extends Form<CsldUser> {
 
         add(new TextField<String>("person.city"));
 
-        add(new TextField<String>("person.description"));
+        add(new TextArea<String>("person.description"));
 
         add(new PasswordTextField("password"));
 
