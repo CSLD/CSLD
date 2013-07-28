@@ -44,4 +44,9 @@ public class GroupServiceImpl implements GroupService {
     public void remove(CsldGroup toRemove) {
         groupDAO.makeTransient(toRemove);
     }
+
+    @Override
+    public CsldGroup getById(Integer id){
+        return groupDAO.findById(id, false);
+    }
 }

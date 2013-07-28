@@ -234,7 +234,7 @@ public class CsldUser implements Serializable, Identifiable {
     @ManyToOne
     @JoinColumn(name = "image", referencedColumnName = "id", insertable = false, updatable = false)
     public Image getImage() {
-        return image;
+        return image != null ? image : Image.getDefaultUser();
     }
 
     public void setImage(Image image) {

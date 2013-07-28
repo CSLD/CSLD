@@ -101,7 +101,7 @@ public class CsldGroup implements Serializable {
     @ManyToOne
     @JoinColumn(name = "image", referencedColumnName = "id", insertable = false, updatable = false)
     public Image getImage() {
-        return image;
+        return image != null ? image : Image.getDefaultGroup();
     }
 
     public void setImage(Image image) {

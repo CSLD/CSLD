@@ -102,4 +102,16 @@ public class Image implements Serializable {
     public void setUsers(List<CsldUser> users) {
         this.users = users;
     }
+
+    public static Image getDefaultGroup() {
+        Image groupImage = new Image();
+        groupImage.setPath("files/img/author_icon.png");
+        return groupImage;
+    }
+
+    public static Image getDefaultUser() {
+        Image userImage = new Image();
+        userImage.setPath("files/img/author_icon.png");
+        return userImage;
+    }
 }

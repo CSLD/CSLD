@@ -8,6 +8,7 @@ import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.Application;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
@@ -48,7 +49,7 @@ public class AddGameForm extends Form<Game> {
 
         add(new TextField<String>("name").setRequired(true));
 
-        add(new TextField<String>("description").setRequired(true));
+        add(new TextArea<String>("description").setRequired(true));
 
         add(new TextField<Integer>("year"));
 

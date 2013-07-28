@@ -1,0 +1,28 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+    <table>
+        <tr>
+            <td>
+                <img wicket:id="groupImage" class="obrazekUzivatel">
+            </td>
+            <td class="bunkaUzivatel">
+                <div class="jmenoUzivatel">
+                    <span wicket:id="name"></span>
+                </div>
+                <div class="popisek">
+                    Tvůrci <span wicket:id="organized"></span> larpů
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <div class="obsah">
+        <h2>Autoři ve skupině</h2>
+        <table wicket:id="groupAuthors">
+            <tr>
+                <td>
+                    <a wicket:id="groupAuthor"><span wicket:id="groupAuthorNickname"></span> <span wicket:id="groupAuthorName"></span></a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</wicket:panel>
