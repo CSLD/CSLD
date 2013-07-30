@@ -145,7 +145,7 @@ public class Person implements Serializable, IAutoCompletable {
     @Override
     @Transient
     public String getAutoCompleteData() {
-        return getEmail();
+        return String.format("%s %s, %s", getNickname(), getName(), getEmail());
     }
 
     @Transient

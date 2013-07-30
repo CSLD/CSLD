@@ -1,7 +1,7 @@
 package cz.larpovadatabaze.components.panel.game;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.add.AddGamePage;
+import cz.larpovadatabaze.components.page.game.AddGamePage;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import org.apache.wicket.markup.html.basic.Label;

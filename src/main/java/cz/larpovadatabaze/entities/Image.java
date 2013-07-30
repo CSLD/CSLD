@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Entity
 @Table(schema = "public", name="csld_image")
-public class Image implements Serializable, IAutoCompletable {
+public class Image implements Serializable {
     private Integer id;
 
     @Column(name = "id", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)

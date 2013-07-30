@@ -1,7 +1,7 @@
 package cz.larpovadatabaze.components.panel.author;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.detail.GameDetail;
+import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.services.GameService;
 import org.apache.wicket.markup.html.basic.Label;

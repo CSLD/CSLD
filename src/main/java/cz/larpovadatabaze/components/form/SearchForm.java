@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.components.form;
 
-import cz.larpovadatabaze.components.page.list.SearchResults;
+import cz.larpovadatabaze.components.page.search.SearchResults;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;

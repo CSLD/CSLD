@@ -1,16 +1,16 @@
 package cz.larpovadatabaze;
 
-import cz.larpovadatabaze.components.page.AboutDatabase;
-import cz.larpovadatabaze.components.page.add.AddGamePage;
-import cz.larpovadatabaze.components.page.add.AddGroupPage;
-import cz.larpovadatabaze.components.page.detail.AuthorDetail;
-import cz.larpovadatabaze.components.page.detail.GameDetail;
-import cz.larpovadatabaze.components.page.detail.UserDetail;
-import cz.larpovadatabaze.components.page.edit.EditUser;
-import cz.larpovadatabaze.components.page.list.ListAuthor;
-import cz.larpovadatabaze.components.page.list.ListGame;
-import cz.larpovadatabaze.components.page.list.ListGroup;
-import cz.larpovadatabaze.components.page.list.ListUser;
+import cz.larpovadatabaze.components.page.about.AboutDatabase;
+import cz.larpovadatabaze.components.page.game.AddGamePage;
+import cz.larpovadatabaze.components.page.group.AddGroupPage;
+import cz.larpovadatabaze.components.page.author.AuthorDetail;
+import cz.larpovadatabaze.components.page.game.GameDetail;
+import cz.larpovadatabaze.components.page.user.UserDetail;
+import cz.larpovadatabaze.components.page.user.EditUser;
+import cz.larpovadatabaze.components.page.author.ListAuthor;
+import cz.larpovadatabaze.components.page.game.ListGame;
+import cz.larpovadatabaze.components.page.group.ListGroup;
+import cz.larpovadatabaze.components.page.user.ListUser;
 import cz.larpovadatabaze.components.page.user.CsldSignInPage;
 import cz.larpovadatabaze.components.page.user.RegisterUserPage;
 import cz.larpovadatabaze.components.page.user.SignOut;

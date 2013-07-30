@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.components.panel.group;
 
-import cz.larpovadatabaze.components.page.detail.AuthorDetail;
+import cz.larpovadatabaze.components.page.author.AuthorDetail;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.GroupHasMember;

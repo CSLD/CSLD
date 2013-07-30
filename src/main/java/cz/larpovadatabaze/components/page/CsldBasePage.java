@@ -1,12 +1,13 @@
 package cz.larpovadatabaze.components.page;
 
-import cz.larpovadatabaze.components.page.list.ListAuthor;
-import cz.larpovadatabaze.components.page.list.ListGame;
-import cz.larpovadatabaze.components.page.list.ListGroup;
-import cz.larpovadatabaze.components.page.list.ListUser;
-import cz.larpovadatabaze.components.panel.LoggedBoxPanel;
-import cz.larpovadatabaze.components.panel.LoginBoxPanel;
-import cz.larpovadatabaze.components.panel.SearchBoxPanel;
+import cz.larpovadatabaze.components.page.about.AboutDatabase;
+import cz.larpovadatabaze.components.page.author.ListAuthor;
+import cz.larpovadatabaze.components.page.game.ListGame;
+import cz.larpovadatabaze.components.page.group.ListGroup;
+import cz.larpovadatabaze.components.page.user.ListUser;
+import cz.larpovadatabaze.components.panel.user.LoggedBoxPanel;
+import cz.larpovadatabaze.components.panel.user.LoginBoxPanel;
+import cz.larpovadatabaze.components.panel.search.SearchBoxPanel;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import org.apache.wicket.authentication.IAuthenticationStrategy;
 import org.apache.wicket.markup.head.CssHeaderItem;
