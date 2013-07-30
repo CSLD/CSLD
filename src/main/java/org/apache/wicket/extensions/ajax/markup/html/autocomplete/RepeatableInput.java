@@ -19,8 +19,10 @@ public class RepeatableInput<T extends IAutoCompletable> extends AutoCompleteTex
     protected GenericService<T> service;
 
     public RepeatableInput(String id,
+
                            IModel<T> model,
                            Class<T> type,
+
                            GenericService<T> service) {
         super(id, model, type, new AbstractAutoCompleteTextRenderer<T>() {
             @Override
@@ -42,7 +44,8 @@ public class RepeatableInput<T extends IAutoCompletable> extends AutoCompleteTex
         List<T> allChoices = service.getAll();
         List<T> choices = new ArrayList<T>(AUTO_COMPLETE_CHOICES);
         for(T t: allChoices) {
-            if(t.getAutoCompleteData().startsWith(input)){
+            if((t.getAutoCompleteData() != null) &&
+                    t.getAutoCompleteData().toLowerCase().contains(input.toLowerCase())){
                 choices.add(t);
             }
             if(choices.size() >= AUTO_COMPLETE_CHOICES) {

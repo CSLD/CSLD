@@ -35,6 +35,7 @@ public class GroupConverter implements IConverter<CsldGroup> {
 
     @Override
     public String convertToString(CsldGroup csldGroup, Locale locale) {
-        return csldGroup.getAutoCompleteData();
+        String stringRepresentation = csldGroup.getAutoCompleteData();
+        return stringRepresentation != null ? stringRepresentation : "";
     }
 }

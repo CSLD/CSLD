@@ -37,6 +37,7 @@ public class PersonConverter implements IConverter<Person> {
 
     @Override
     public String convertToString(Person person, Locale locale) {
-        return person.getAutoCompleteData();
+        String stringRepresentation = person.getAutoCompleteData();
+        return stringRepresentation != null ? stringRepresentation : "";
     }
 }

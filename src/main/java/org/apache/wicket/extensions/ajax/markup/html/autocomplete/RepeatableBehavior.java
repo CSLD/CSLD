@@ -12,12 +12,9 @@ import org.apache.wicket.resource.CoreLibrariesContributor;
 import org.apache.wicket.util.string.Strings;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 11.5.13
- * Time: 9:37
+ *
  */
-abstract public class RepeatableBehavior<T> extends AutoCompleteBehavior<T>  {
+abstract public class RepeatableBehavior<T> extends AutoCompleteBehavior<T> {
     private static final ResourceReference AUTOCOMPLETE_JS = new JavaScriptResourceReference(
             RepeatableBehavior.class, "wicket-autocomplete.js");
 

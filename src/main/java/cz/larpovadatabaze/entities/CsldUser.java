@@ -288,7 +288,12 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable {
     @Override
     @Transient
     public String getAutoCompleteData() {
-        Person person = getPerson() != null ? getPerson() : new Person();
+        if(getPerson() == null) {
+            return null;
+        }
+        if(getPerson().getEmail() == null) {
+            return null;
+        }
         return String.format("%s %s, %s", person.getNickname(), person.getName(),  person.getEmail());
     }
 }

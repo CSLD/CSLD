@@ -67,9 +67,11 @@ public class RepeatableInputPanel<T extends IAutoCompletable> extends Panel {
         protected List<GenericModel<T>> modelsInner;
 
         public RepeatableListView(String id,
+
                                   List<T> data,
                                   IFactory<T> factory,
                                   IValidator<T> validator,
+
                                   GenericService<T> service) {
             super(id, data);
 

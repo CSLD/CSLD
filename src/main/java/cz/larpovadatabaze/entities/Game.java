@@ -10,6 +10,8 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
+import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
+
 
 /**
  * Name of every game must be unique. Or at least I expect it to be.

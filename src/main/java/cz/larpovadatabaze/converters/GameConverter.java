@@ -35,6 +35,7 @@ public class GameConverter implements IConverter<Game> {
 
     @Override
     public String convertToString(Game game, Locale locale) {
-        return game.getAutoCompleteData();
+        String stringRepresentation = game.getAutoCompleteData();
+        return stringRepresentation != null ? stringRepresentation : "";
     }
 }

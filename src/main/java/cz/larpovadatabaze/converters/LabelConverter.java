@@ -35,6 +35,7 @@ public class LabelConverter implements IConverter<Label> {
 
     @Override
     public String convertToString(Label label, Locale locale) {
-        return label.getAutoCompleteData();
+        String stringRepresentation = label.getAutoCompleteData();
+        return stringRepresentation != null ? stringRepresentation : "";
     }
 }

@@ -8,10 +8,7 @@ import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.Application;
-import org.apache.wicket.extensions.ajax.markup.html.autocomplete.GenericFactory;
-import org.apache.wicket.extensions.ajax.markup.html.autocomplete.GenericValidator;
-import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IFactory;
-import org.apache.wicket.extensions.ajax.markup.html.autocomplete.RepeatableInputPanel;
+import org.apache.wicket.extensions.ajax.markup.html.autocomplete.*;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -29,6 +26,7 @@ import org.apache.wicket.validation.IValidator;
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -47,6 +45,7 @@ public class AddGameForm extends Form<Game> {
     private FileUploadField fileUploadField;
     private String videoPath;
     private List<FileUpload> uploads;
+    private List<GenericModel<CsldUser>> authorsOfGame;
 
     public AddGameForm(String id, Game game) {
         super(id, new CompoundPropertyModel<Game>(game));
@@ -91,6 +90,7 @@ public class AddGameForm extends Form<Game> {
         RepeatableInputPanel<CsldUser> authors = new RepeatableInputPanel<CsldUser>("authors", userIFactory,
                 userIValidator, csldUserService);
         add(authors);
+        authorsOfGame = authors.getData();
 
         add(new Button("submit"));
 
@@ -100,6 +100,12 @@ public class AddGameForm extends Form<Game> {
     protected void onSubmit() {
         Game game = getModelObject();
         game.setAdded(new Timestamp(new Date().getTime()));
+
+        List<CsldUser> authors = new ArrayList<CsldUser>();
+        for(GenericModel<CsldUser> authorModel: authorsOfGame){
+            authors.add(authorModel.getObject());
+        }
+        game.setAuthors(authors);
         validate();
 
         if(!hasError()){
@@ -120,6 +126,7 @@ public class AddGameForm extends Form<Game> {
                     try
                     {
                         // Save to new file
+                        newFile.mkdirs();
                         newFile.createNewFile();
                         upload.writeTo(newFile);
 

@@ -34,7 +34,7 @@ public class GenericValidator<T> implements INullAcceptingValidator<T>, Serializ
         if(list == null){
             if(object == null && validatableEntity == null){
                 if(required)
-                    error(validatable, "NonExistingEntity");
+                    error(validatable, "NonExistingEntity"); //TODO get text from resource file
                 return;
             }
             if(validatableEntity == null) {
@@ -52,7 +52,7 @@ public class GenericValidator<T> implements INullAcceptingValidator<T>, Serializ
             if(resultEntitites.size() == 1) {
                 // It is valid
             } else if(resultEntitites.size() > 1) {
-                error(validatable, "error.ThereAreMoreEntitiesWithSameName");
+                error(validatable, "error.ThereAreMoreEntitiesWithSameName"); //TODO get text from resource file
             } else if(resultEntitites.size() == 0) {
                 // The entity does not exists and input object is null (not empty)
                 errorNonExisting(validatable);
@@ -64,9 +64,9 @@ public class GenericValidator<T> implements INullAcceptingValidator<T>, Serializ
 
     private void errorNonExisting(IValidatable<T> validatable){
         if (required)
-            error(validatable, "error.ExistingEntityRequired");
+            error(validatable, "error.ExistingEntityRequired"); //TODO get text from resource file
         else
-            error(validatable, "error.nonexistingEntity");
+            error(validatable, "error.nonexistingEntity"); //TODO get text from resource file
     }
 
 

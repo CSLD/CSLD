@@ -22,7 +22,6 @@ import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
-import org.apache.wicket.extensions.ajax.markup.html.autocomplete.RepeatablePage;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,8 +117,6 @@ public class Csld extends AuthenticatedWebApplication
         mountPage("/detail-user", UserDetail.class);
 
         mountPage("/oDatabazi", AboutDatabase.class);
-
-        mountPage("/repeat", RepeatablePage.class);
     }
 
     public ApplicationContext getApplicationContext(){

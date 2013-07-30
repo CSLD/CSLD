@@ -36,6 +36,7 @@ public class CsldUserConverter implements IConverter<CsldUser> {
 
     @Override
     public String convertToString(CsldUser user, Locale locale) {
-        return user.getAutoCompleteData();
+        String stringRepresentation = user.getAutoCompleteData();
+        return stringRepresentation != null ? stringRepresentation : "";
     }
 }
