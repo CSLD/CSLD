@@ -90,6 +90,14 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
         return allGames;
     }
 
+    @SuppressWarnings("unchecked")
+    public double getRatingOfGame(Game game) {
+        Session session = sessionFactory.getCurrentSession();
+        String sqlQuery = String.format("select csld_count_rating(%s)",game.getId());
+        Query query = session.createSQLQuery(sqlQuery);
+        return (Double)query.uniqueResult();
+    }
+
     /**
      * Used when autoCompletable field is used.
      *

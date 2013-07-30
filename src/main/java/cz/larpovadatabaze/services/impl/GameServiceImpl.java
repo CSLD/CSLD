@@ -106,4 +106,9 @@ public class GameServiceImpl implements GameService {
     public List<Game> getByAutoCompletable(String gameName) throws WrongParameterException {
         return gameDAO.getByAutoCompletable(gameName);
     }
+
+    @Override
+    public double getRatingOfGame(Game game) {
+        return gameDAO.getRatingOfGame(game);
+    }
 }

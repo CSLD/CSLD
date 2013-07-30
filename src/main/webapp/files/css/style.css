@@ -78,12 +78,15 @@ img {border: 0px;}
 .pridanaHra a { text-decoration: none; color: black; }
 .pridanaHra .obrazekPopis { vertical-align: top; margin-left: -1px;  }
 .pridanaHra td { vertical-align: top; padding: 0px; }
-.ctverecek { width: 12px; height: 12px; margin-right: 4px; vertical-align: -5%; }
+.ctverecek { width: 12px; height: 12px; margin-right: 4px; vertical-align: -5%;display: inline-block; }
 #dalsiPridaneHry { display: none; }
 #dalsiKomentare { display: none; }
 .viceOdkaz { text-align: right; margin-bottom: 6px; margin-top: -6px !important; margin-right:6px; }
 .viceOdkaz a { text-align: right; color: #666; text-decoration: none; }
 .viceOdkaz a:hover { text-decoration: underline; }
+.mediocre{background-color: #535353}
+.great{background-color: #c1001f}
+.average{background-color: #0072bc}
 
 .praveMenu { width: 328px; height: 50px; background-image: url(../img/menu_zip_pozadi.png); background-repeat: repeat-x; text-align: center;  }
 .praveMenu .nadpisMenu { margin-top: 17px; width: 200px; height: 30px; display: inline-block; color: #214c61; font-weight: bold; font-size: 11pt; }
