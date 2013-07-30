@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.components.form;
 
-import cz.larpovadatabaze.WicketApplication;
+import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Image;
 import cz.larpovadatabaze.entities.Person;
@@ -27,7 +27,8 @@ import java.io.File;
 import java.util.List;
 
 /**
- *
+ *¨This form is used when you want to register new User of the database.
+ * // TODO make it part of RegisterUserPanel.
  */
 public class RegisterForm extends Form<CsldUser> {
     @SpringBean
@@ -92,7 +93,7 @@ public class RegisterForm extends Form<CsldUser> {
             final List<FileUpload> uploads = fileUpload.getFileUploads();
             if (uploads != null) {
                 for (FileUpload upload : uploads) {
-                    ServletContext context = ((WicketApplication) Application.get()).getServletContext();
+                    ServletContext context = ((Csld) Application.get()).getServletContext();
                     String realPath = context.getRealPath("/files/upload/");
                     File baseFile = new File(realPath);
 

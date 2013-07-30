@@ -3,7 +3,6 @@ package cz.larpovadatabaze;
 import cz.larpovadatabaze.components.page.AboutDatabase;
 import cz.larpovadatabaze.components.page.add.AddGamePage;
 import cz.larpovadatabaze.components.page.add.AddGroupPage;
-import cz.larpovadatabaze.components.page.add.AddPersonPage;
 import cz.larpovadatabaze.components.page.detail.AuthorDetail;
 import cz.larpovadatabaze.components.page.detail.GameDetail;
 import cz.larpovadatabaze.components.page.detail.UserDetail;
@@ -15,13 +14,10 @@ import cz.larpovadatabaze.components.page.list.ListUser;
 import cz.larpovadatabaze.components.page.user.CsldSignInPage;
 import cz.larpovadatabaze.components.page.user.RegisterUserPage;
 import cz.larpovadatabaze.components.page.user.SignOut;
-import cz.larpovadatabaze.converters.CsldUserConverter;
-import cz.larpovadatabaze.converters.PersonConverter;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Person;
+import cz.larpovadatabaze.converters.*;
+import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.PersonService;
+import cz.larpovadatabaze.services.*;
 import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
@@ -39,19 +35,25 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
  * 
  */
 @Component(value = "wicketApplication")
-public class WicketApplication extends AuthenticatedWebApplication
+public class Csld extends AuthenticatedWebApplication
 {
     @Autowired
     private PersonService personService;
     @Autowired
     private CsldUserService csldUserService;
+    @Autowired
+    private GameService gameService;
+    @Autowired
+    private GroupService groupService;
+    @Autowired
+    private LabelService labelService;
 
     private static final String DEFAULT_ENCODING = "UTF-8";
 
     /**
      * Constructor
      */
-	public WicketApplication()
+	public Csld()
 	{
 	}
 	
@@ -88,6 +90,9 @@ public class WicketApplication extends AuthenticatedWebApplication
 
         locator.set(Person.class, new PersonConverter(personService));
         locator.set(CsldUser.class, new CsldUserConverter(csldUserService));
+        locator.set(Game.class, new GameConverter(gameService));
+        locator.set(CsldGroup.class, new GroupConverter(groupService));
+        locator.set(Label.class, new LabelConverter(labelService));
 
         return locator;
 
@@ -100,7 +105,6 @@ public class WicketApplication extends AuthenticatedWebApplication
 
         mountPage("/add-group", AddGroupPage.class);
         mountPage("/add-game", AddGamePage.class);
-        mountPage("/add-author", AddPersonPage.class);
 
         mountPage("/edit-user", EditUser.class);
 

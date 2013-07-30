@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.services;
 
 import cz.larpovadatabaze.entities.Person;
+import cz.larpovadatabaze.exceptions.WrongParameterException;
 
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface PersonService extends GenericService<Person> {
     List<Person> getAll();
 
     Person getByEmail(String email);
+
+    List<Person> getByAutoCompletable(String autoCompletable) throws WrongParameterException;
 }

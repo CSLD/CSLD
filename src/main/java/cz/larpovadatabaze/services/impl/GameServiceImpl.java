@@ -3,6 +3,7 @@ package cz.larpovadatabaze.services.impl;
 import cz.larpovadatabaze.dao.GameDAO;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.services.GameService;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
@@ -47,6 +48,7 @@ public class GameServiceImpl implements GameService {
     public List<Game> getUnique(Game example) {
         return gameDAO.findByExample(example, new String[]{});
     }
+
 
     @Override
     public void addGame(Game game) {
@@ -98,5 +100,10 @@ public class GameServiceImpl implements GameService {
             games.addAll(author.getAuthorOf());
         };
         return games;
+    }
+
+    @Override
+    public List<Game> getByAutoCompletable(String gameName) throws WrongParameterException {
+        return gameDAO.getByAutoCompletable(gameName);
     }
 }

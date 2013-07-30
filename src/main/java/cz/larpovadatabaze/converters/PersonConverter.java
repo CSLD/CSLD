@@ -1,16 +1,17 @@
 package cz.larpovadatabaze.converters;
 
+import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Person;
+import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.services.PersonService;
 import org.apache.wicket.util.convert.IConverter;
 
+import java.util.List;
 import java.util.Locale;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 11.5.13
- * Time: 15:23
+ * It converts String to Person and Person to String
+ * Unique for Person is email.
  */
 public class PersonConverter implements IConverter<Person> {
     private PersonService personService;
@@ -20,12 +21,22 @@ public class PersonConverter implements IConverter<Person> {
     }
 
     @Override
-    public Person convertToObject(String s, Locale locale) {
-        return personService.getByEmail(s);
+    public Person convertToObject(String autoCompletable, Locale locale) {
+        try {
+            List<Person> foundPersons = personService.getByAutoCompletable(autoCompletable);
+            int amountOfGames = foundPersons.size();
+            if(amountOfGames == 1) {
+                return foundPersons.get(0);
+            } else {
+                return null;
+            }
+        } catch(WrongParameterException ex) {
+            return null;
+        }
     }
 
     @Override
     public String convertToString(Person person, Locale locale) {
-        return person.getEmail();
+        return person.getAutoCompleteData();
     }
 }

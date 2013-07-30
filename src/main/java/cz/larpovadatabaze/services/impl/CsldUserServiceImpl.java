@@ -2,6 +2,7 @@ package cz.larpovadatabaze.services.impl;
 
 import cz.larpovadatabaze.dao.CsldUserDAO;
 import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.services.CsldUserService;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
@@ -100,6 +101,11 @@ public class CsldUserServiceImpl implements CsldUserService {
     @Override
     public List<CsldUser> getOrderedByPlayed() {
         return csldUserDao.getOrderedByPlayed();
+    }
+
+    @Override
+    public List<CsldUser> getByAutoCompletable(String autoCompletable) throws WrongParameterException {
+        return csldUserDao.getByAutoCompletable(autoCompletable);
     }
 
 }

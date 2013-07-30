@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.components.form;
 
-import cz.larpovadatabaze.WicketApplication;
+import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.Image;
 import cz.larpovadatabaze.services.GroupService;
@@ -67,7 +67,7 @@ public class AddGroupForm extends Form<CsldGroup> {
             {
                 for (FileUpload upload : uploads)
                 {
-                    ServletContext context = ((WicketApplication) Application.get()).getServletContext();
+                    ServletContext context = ((Csld) Application.get()).getServletContext();
                     String baseContext = "/files/upload/";
                     String realPath = context.getRealPath(baseContext);
                     File baseFile = new File(realPath);

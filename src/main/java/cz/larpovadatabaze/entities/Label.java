@@ -1,5 +1,7 @@
 package cz.larpovadatabaze.entities;
 
+import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -12,7 +14,7 @@ import java.util.List;
  */
 @Entity
 @Table(schema = "public", name="csld_label")
-public class Label implements Serializable {
+public class Label implements Serializable, IAutoCompletable {
     private Integer id;
 
     @Column(name = "id", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
@@ -134,5 +136,11 @@ public class Label implements Serializable {
 
     public void setAddedBy(CsldUser addedBy) {
         this.addedBy = addedBy;
+    }
+
+    @Override
+    @Transient
+    public String getAutoCompleteData() {
+        return getName();
     }
 }

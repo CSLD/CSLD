@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.services;
 
 import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.exceptions.WrongParameterException;
 
 import java.util.List;
 
@@ -36,4 +37,6 @@ public interface CsldUserService extends GenericService<CsldUser> {
     List<CsldUser> getOrderedByComments();
 
     List<CsldUser> getOrderedByPlayed();
+
+    List<CsldUser> getByAutoCompletable(String autoCompletable) throws WrongParameterException;
 }

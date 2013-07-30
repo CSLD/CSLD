@@ -2,6 +2,7 @@ package cz.larpovadatabaze.services.impl;
 
 import cz.larpovadatabaze.dao.PersonDAO;
 import cz.larpovadatabaze.entities.Person;
+import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.services.PersonService;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
@@ -45,6 +46,18 @@ public class PersonServiceImpl implements PersonService {
         Person uniqueResult = personDAO.findSingleByCriteria(criterion);
         personDAO.flush();
         return uniqueResult;
+    }
+
+    /**
+     * Used when autoCompletable field is used.
+     *
+     * @param autoCompletable Expected format is {Name, Email} Email is unique identifier of person.
+     * @return It should return only single person or no person if none belongs to given data.
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Person> getByAutoCompletable(String autoCompletable) throws WrongParameterException {
+        return personDAO.getByAutoCompletable(autoCompletable);
     }
 
     @Override

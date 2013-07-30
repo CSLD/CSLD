@@ -2,6 +2,7 @@ package cz.larpovadatabaze.services.impl;
 
 import cz.larpovadatabaze.dao.LabelDAO;
 import cz.larpovadatabaze.entities.Label;
+import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.services.LabelService;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
@@ -45,6 +46,11 @@ public class LabelServiceImpl implements LabelService {
     @Override
     public void update(Label label) {
         labelDAO.saveOrUpdate(label);
+    }
+
+    @Override
+    public List<Label> getByAutoCompletable(String labelName) throws WrongParameterException {
+        return labelDAO.getByAutoCompletable(labelName);
     }
 
     @Override

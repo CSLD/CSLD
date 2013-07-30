@@ -1,7 +1,7 @@
 package cz.larpovadatabaze.converters;
 
 import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Person;
+import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.services.CsldUserService;
 import org.apache.wicket.util.convert.IConverter;
 
@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- *
+ * It converts String to CsldUser and CsldUser to String.
+ * Email of user is unique identifier.
  */
 public class CsldUserConverter implements IConverter<CsldUser> {
     private CsldUserService csldUserService;
@@ -19,16 +20,18 @@ public class CsldUserConverter implements IConverter<CsldUser> {
     }
 
     @Override
-    public CsldUser convertToObject(String value, Locale locale) {
-        String[] personInfo = value.split(", ");
-
-        CsldUser csldUser = new CsldUser();
-        Person person = new Person();
-        person.setEmail(personInfo[0]);
-        csldUser.setPerson(person);
-
-        List<CsldUser> correctUser = csldUserService.getUnique(csldUser);
-        return correctUser.get(0);
+    public CsldUser convertToObject(String autoCompletable, Locale locale) {
+        try {
+            List<CsldUser> foundUsers = csldUserService.getByAutoCompletable(autoCompletable);
+            int amountOfUsers = foundUsers.size();
+            if(amountOfUsers == 1) {
+                return foundUsers.get(0);
+            } else {
+                return null;
+            }
+        } catch(WrongParameterException ex) {
+            return null;
+        }
     }
 
     @Override

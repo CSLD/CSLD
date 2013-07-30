@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.entities;
 
 import cz.larpovadatabaze.api.Identifiable;
+import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -11,14 +12,11 @@ import java.util.List;
 
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 27.3.13
- * Time: 14:01
+ * Name of every game must be unique. Or at least I expect it to be.
  */
 @Entity
 @Table(schema = "public", name="csld_game")
-public class Game implements Serializable, Identifiable {
+public class Game implements Serializable, Identifiable, IAutoCompletable {
     public Game(){}
 
     private Integer id;
@@ -355,5 +353,11 @@ public class Game implements Serializable, Identifiable {
             averageRating += rating.getRating();
         }
         return averageRating / (double) ratings.size();
+    }
+
+    @Override
+    @Transient
+    public String getAutoCompleteData() {
+        return getName();
     }
 }

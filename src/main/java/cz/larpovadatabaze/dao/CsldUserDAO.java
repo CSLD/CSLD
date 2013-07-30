@@ -3,10 +3,10 @@ package cz.larpovadatabaze.dao;
 import cz.larpovadatabaze.api.GenericHibernateDAO;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import cz.larpovadatabaze.entities.Person;
+import cz.larpovadatabaze.exceptions.WrongParameterException;
+import org.hibernate.*;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -21,9 +21,6 @@ import java.util.*;
  */
 @Repository
 public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
-    @Qualifier("sessionFactory")
-    @Autowired
-    private SessionFactory sessionFactory;
     @Autowired
     private GameDAO gameDao;
 
@@ -142,5 +139,25 @@ public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
                 "group by user.fbUser, user.id, user.imageId, user.password, user.personId, user.role " +
                 "order by count(played) desc");
         return query.list();
+    }
+
+    /**
+     * Used when autoCompletable field is used.
+     *
+     * @param autoCompletable Expected format is {Name, Email} Email is unique identifier of person as well as user.
+     * @return It should return only single user or no user if none belongs to given data.
+     */
+    @SuppressWarnings("unchecked")
+    public List<CsldUser> getByAutoCompletable(String autoCompletable) throws WrongParameterException {
+        String[] personData = autoCompletable.split(", ");
+        if(personData.length < 2) {
+            throw new WrongParameterException();
+        }
+        String email = personData[1];
+        Criteria uniqueUser = sessionFactory.getCurrentSession().createCriteria(CsldUser.class).
+                createCriteria("person").add(
+                    Restrictions.eq("email", email)
+                );
+        return uniqueUser.list();
     }
 }

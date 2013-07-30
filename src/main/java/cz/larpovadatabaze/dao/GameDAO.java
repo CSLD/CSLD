@@ -1,10 +1,15 @@
 package cz.larpovadatabaze.dao;
 
 import cz.larpovadatabaze.api.GenericHibernateDAO;
+import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.Person;
+import cz.larpovadatabaze.exceptions.WrongParameterException;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -83,5 +88,19 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
         });
 
         return allGames;
+    }
+
+    /**
+     * Used when autoCompletable field is used.
+     *
+     * @param gameName Expected format is {Name} Name is unique identifier of game.
+     * @return It should return only single game or no game if none belongs to given data.
+     */
+    @SuppressWarnings("unchecked")
+    public List<Game> getByAutoCompletable(String gameName) throws WrongParameterException {
+        Criteria uniqueGame = sessionFactory.getCurrentSession().createCriteria(Game.class).add(
+                Restrictions.eq("name", gameName)
+        );
+        return uniqueGame.list();
     }
 }

@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.components.form;
 
-import cz.larpovadatabaze.WicketApplication;
+import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.entities.Image;
 import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.Application;
@@ -56,7 +56,7 @@ public class AddImageForm extends Form<Void> {
             {
                 for (FileUpload upload : uploads)
                 {
-                    ServletContext context = ((WicketApplication)Application.get()).getServletContext();
+                    ServletContext context = ((Csld)Application.get()).getServletContext();
                     String realPath = context.getRealPath("/files/upload/");
                     File baseFile = new File(realPath);
 

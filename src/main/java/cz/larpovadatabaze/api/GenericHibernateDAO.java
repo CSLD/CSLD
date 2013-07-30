@@ -17,7 +17,7 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 
 	private Class<T> persistentClass;
 	@Autowired
-	private SessionFactory sessionFactory;
+	protected SessionFactory sessionFactory;
 
 	public GenericHibernateDAO() {
 		this.persistentClass = (Class<T>) ((ParameterizedType) getClass()

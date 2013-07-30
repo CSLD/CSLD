@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.components.form;
 
-import cz.larpovadatabaze.WicketApplication;
+import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Image;
@@ -108,7 +108,7 @@ public class AddGameForm extends Form<Game> {
             {
                 for (FileUpload upload : uploads)
                 {
-                    ServletContext context = ((WicketApplication) Application.get()).getServletContext();
+                    ServletContext context = ((Csld) Application.get()).getServletContext();
                     String realPath = context.getRealPath("/files/upload/");
                     File baseFile = new File(realPath);
 

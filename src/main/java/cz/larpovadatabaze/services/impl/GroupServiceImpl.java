@@ -2,6 +2,7 @@ package cz.larpovadatabaze.services.impl;
 
 import cz.larpovadatabaze.dao.GroupDAO;
 import cz.larpovadatabaze.entities.CsldGroup;
+import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.services.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -48,5 +49,10 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public CsldGroup getById(Integer id){
         return groupDAO.findById(id, false);
+    }
+
+    @Override
+    public List<CsldGroup> getByAutoCompletable(String groupName) throws WrongParameterException {
+        return groupDAO.getByAutoCompletable(groupName);
     }
 }
