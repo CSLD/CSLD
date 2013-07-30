@@ -17,23 +17,69 @@ import java.util.List;
 public class GenericValidator<T> implements INullAcceptingValidator<T>, Serializable {
     protected GenericService<T> service;
 
+    List list = null;
+    T object = null;
+
+    boolean required = false;
+
     public GenericValidator(GenericService<T> service){
         this.service = service;
     }
 
     @Override
     public void validate(IValidatable<T> validatable) {
+
         T validatableEntity = validatable.getValue();
-        if(validatableEntity == null) {
-            error(validatable, "You are trying to add nonexisting Entity.");
+
+        if(list == null){
+            if(object == null && validatableEntity == null){
+                if(required)
+                    error(validatable, "NonExistingEntity");
+                return;
+            }
+            if(validatableEntity == null) {
+                validatableEntity = object;
+            }
+        }
+        else if((list.size() < 2) && validatableEntity == null){
+            if(required)
+                errorNonExisting(validatable);
             return;
         }
-        List<T> resultEntitites = service.getUnique(validatableEntity);
-        if(resultEntitites.size() == 1) {
-            // It is valid
-        } else {
-            error(validatable, "You are trying to add nonexisting Entity.");
+
+        if(validatableEntity != null){
+            List<T> resultEntitites = service.getUnique(validatableEntity);
+            if(resultEntitites.size() == 1) {
+                // It is valid
+            } else if(resultEntitites.size() > 1) {
+                error(validatable, "error.ThereAreMoreEntitiesWithSameName");
+            } else if(resultEntitites.size() == 0) {
+                // The entity does not exists and input object is null (not empty)
+                errorNonExisting(validatable);
+            } else if ((list == null || list.isEmpty())) {
+                errorNonExisting(validatable);
+            }
         }
+    }
+
+    private void errorNonExisting(IValidatable<T> validatable){
+        if (required)
+            error(validatable, "error.ExistingEntityRequired");
+        else
+            error(validatable, "error.nonexistingEntity");
+    }
+
+
+    public void setList(List list){
+        this.list = list;
+    }
+
+    public void setAutocompleteObject(T object){
+        this.object = object;
+    }
+
+    public void setRequired(boolean isRequired){
+        this.required = isRequired;
     }
 
     private void error(IValidatable<T> validatable, String message) {

@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.entities;
 
 import cz.larpovadatabaze.api.Identifiable;
+import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,7 +15,7 @@ import java.util.List;
  */
 @Table(name = "csld_csld_user", schema = "public", catalog = "")
 @Entity
-public class CsldUser implements Serializable, Identifiable {
+public class CsldUser implements Serializable, Identifiable, IAutoCompletable {
     private Integer id;
 
     @Column(name = "id", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
@@ -282,5 +283,12 @@ public class CsldUser implements Serializable, Identifiable {
             }
         }
         return null;
+    }
+
+    @Override
+    @Transient
+    public String getAutoCompleteData() {
+        Person person = getPerson() != null ? getPerson() : new Person();
+        return String.format("%s, %s", person.getEmail(), person.getName());
     }
 }

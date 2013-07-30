@@ -20,12 +20,11 @@ public class RepeatableForm extends Form {
         super(id);
 
         Person person = new Person();
-        GenericModel<Person> model = new GenericModel<Person>(person);
         GenericFactory<Person> factory = new GenericFactory<Person>(Person.class);
         GenericValidator<Person> validator = new GenericValidator<Person>(personService);
 
         RepeatableInputPanel repeatable =
-                new RepeatableInputPanel<Person>("repeatablePanel", model, factory,
+                new RepeatableInputPanel<Person>("repeatablePanel", factory,
                         validator, personService);
         repeatable.setOutputMarkupId(true);
         add(repeatable);

@@ -15,9 +15,12 @@ import cz.larpovadatabaze.components.page.list.ListUser;
 import cz.larpovadatabaze.components.page.user.CsldSignInPage;
 import cz.larpovadatabaze.components.page.user.RegisterUserPage;
 import cz.larpovadatabaze.components.page.user.SignOut;
+import cz.larpovadatabaze.converters.CsldUserConverter;
 import cz.larpovadatabaze.converters.PersonConverter;
+import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Person;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.PersonService;
 import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
@@ -40,6 +43,8 @@ public class WicketApplication extends AuthenticatedWebApplication
 {
     @Autowired
     private PersonService personService;
+    @Autowired
+    private CsldUserService csldUserService;
 
     private static final String DEFAULT_ENCODING = "UTF-8";
 
@@ -82,6 +87,7 @@ public class WicketApplication extends AuthenticatedWebApplication
         ConverterLocator locator = (ConverterLocator) super.newConverterLocator();
 
         locator.set(Person.class, new PersonConverter(personService));
+        locator.set(CsldUser.class, new CsldUserConverter(csldUserService));
 
         return locator;
 

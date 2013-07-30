@@ -27,10 +27,7 @@ import java.io.File;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 26.4.13
- * Time: 9:32
+ *
  */
 public class RegisterForm extends Form<CsldUser> {
     @SpringBean

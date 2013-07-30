@@ -1,11 +1,17 @@
 package cz.larpovadatabaze.components.form;
 
 import cz.larpovadatabaze.WicketApplication;
+import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Image;
+import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.Application;
+import org.apache.wicket.extensions.ajax.markup.html.autocomplete.GenericFactory;
+import org.apache.wicket.extensions.ajax.markup.html.autocomplete.GenericValidator;
+import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IFactory;
+import org.apache.wicket.extensions.ajax.markup.html.autocomplete.RepeatableInputPanel;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -18,6 +24,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.file.Files;
 import org.apache.wicket.util.lang.Bytes;
+import org.apache.wicket.validation.IValidator;
 
 import javax.servlet.ServletContext;
 import java.io.File;
@@ -26,10 +33,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 25.4.13
- * Time: 16:18
+ *
  */
 public class AddGameForm extends Form<Game> {
     @SpringBean
@@ -37,6 +41,8 @@ public class AddGameForm extends Form<Game> {
 
     @SpringBean
     ImageService imageService;
+    @SpringBean
+    CsldUserService csldUserService;
 
     private FileUploadField fileUploadField;
     private String videoPath;
@@ -78,6 +84,13 @@ public class AddGameForm extends Form<Game> {
 
         // Set maximum size to 100K for demo purposes
         setMaxSize(Bytes.kilobytes(1024));
+
+        IFactory<CsldUser> userIFactory = new GenericFactory<CsldUser>(CsldUser.class);
+        IValidator<CsldUser> userIValidator = new GenericValidator<CsldUser>(csldUserService);
+
+        RepeatableInputPanel<CsldUser> authors = new RepeatableInputPanel<CsldUser>("authors", userIFactory,
+                userIValidator, csldUserService);
+        add(authors);
 
         add(new Button("submit"));
 
