@@ -27,9 +27,7 @@ public class GameDetail extends CsldBasePage {
             game = HbUtils.deproxy(game);
         }
 
-        /*PlayedPanel played = new PlayedPanel("playedPanel");
-        add(played);*/
-
+        add(new PlayedPanel("playedPanel", game));
         add(new GameDetailPanel("gameDetail", game));
         add(new CommentsPanel("addComment", game));
         add(new CommentsListPanel("commentsList", game));

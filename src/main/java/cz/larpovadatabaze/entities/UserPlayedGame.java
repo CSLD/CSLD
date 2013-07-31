@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.entities;
 
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
+import org.springframework.context.support.StaticApplicationContext;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -98,5 +99,28 @@ public class UserPlayedGame implements Serializable {
 
     public void setPlayedBy(Game playedBy) {
         this.playedBy = playedBy;
+    }
+
+    public static Integer getStateForDb(String state){
+        if(state.equals("Nehrál jsem")) {
+            return 0;
+        }
+        if(state.equals("Chci hrát")) {
+            return 1;
+        }
+        if(state.equals("Hrál jsem")) {
+            return 2;
+        }
+        return 0;
+    }
+
+    public static String getStateFromDb(int state){
+        if(state == 2) {
+            return "Hrál jsem";
+        } else if(state == 1) {
+            return "Chci hrát";
+        } else {
+            return "Nehrál jsem";
+        }
     }
 }
