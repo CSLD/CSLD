@@ -20,21 +20,25 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
     private GameService gameService;
     public SortableGameProvider(GameService gameService){
         this.gameService = gameService;
-        setSort("name", SortOrder.ASCENDING);
+        setSort("rating", SortOrder.ASCENDING);
     }
 
     @Override
-    public Iterator<? extends Game> iterator(long l, long l1) {
+    public Iterator<? extends Game> iterator(long first, long last) {
         SortParam<String> sortings = getSort();
         String property = sortings.getProperty();
+        int amountOfGames = gameService.getAll().size();
+        if(amountOfGames > last) {
+            last = amountOfGames;
+        }
         if(property.equals("name")){
-            return gameService.getOrderedByName().iterator();
+            return gameService.getOrderedByName().subList((int)first,(int)last).iterator();
         } else if(property.equals("rating")) {
-            return gameService.getRated().iterator();
+            return gameService.getRated().subList((int)first,(int)last).iterator();
         } else if(property.equals("ratingAmount")) {
-            return gameService.getRatedAmount().iterator();
+            return gameService.getRatedAmount().subList((int)first,(int)last).iterator();
         } else {
-            return gameService.getCommentedAmount().iterator();
+            return gameService.getCommentedAmount().subList((int)first,(int)last).iterator();
         }
     }
 

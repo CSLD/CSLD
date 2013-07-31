@@ -20,18 +20,22 @@ public class SortableUserProvider extends SortableDataProvider<CsldUser, String>
     private CsldUserService csldUserService;
     public SortableUserProvider(CsldUserService csldUserService){
         this.csldUserService = csldUserService;
-        setSort("name", SortOrder.ASCENDING);
+        setSort("comments", SortOrder.ASCENDING);
     }
 
     @Override
-    public Iterator<? extends CsldUser> iterator(long first, long count) {
+    public Iterator<? extends CsldUser> iterator(long first, long last) {
         SortParam<String> props = getSort();
+        int amountOfUsers = csldUserService.getAll().size();
+        if(amountOfUsers > last) {
+            last = amountOfUsers;
+        }
         if(props.getProperty().equals("name")) {
-            return csldUserService.getOrderedByName().iterator();
+            return csldUserService.getOrderedByName().subList((int)first,(int)last).iterator();
         } else if(props.getProperty().equals("comments")) {
-            return csldUserService.getOrderedByComments().iterator();
+            return csldUserService.getOrderedByComments().subList((int)first,(int)last).iterator();
         } else {
-            return csldUserService.getOrderedByPlayed().iterator();
+            return csldUserService.getOrderedByPlayed().subList((int)first,(int)last).iterator();
         }
     }
 

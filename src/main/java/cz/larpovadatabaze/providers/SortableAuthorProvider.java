@@ -24,13 +24,17 @@ public class SortableAuthorProvider extends SortableDataProvider<CsldUser, Strin
     }
 
     @Override
-    public Iterator<? extends CsldUser> iterator(long first, long count) {
+    public Iterator<? extends CsldUser> iterator(long first, long last) {
         SortParam<String> sortings = getSort();
         String property = sortings.getProperty();
+        int amountOfAuthors = csldUserService.getAuthorsByGames().size();
+        if(amountOfAuthors > last) {
+            last = amountOfAuthors;
+        }
         if(property.equals("name")){
-            return csldUserService.getAuthorsByGames().iterator();
+            return csldUserService.getAuthorsByGames().subList((int)first,(int)last).iterator();
         } else {
-            return csldUserService.getAuthorsByBestGame().iterator();
+            return csldUserService.getAuthorsByBestGame().subList((int)first,(int)last).iterator();
         }
     }
 
