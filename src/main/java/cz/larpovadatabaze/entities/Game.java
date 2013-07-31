@@ -344,19 +344,6 @@ public class Game implements Serializable, Identifiable, IAutoCompletable {
         this.played = played;
     }
 
-    @Transient
-    public double getAverageRating() {
-        if(ratings.size() == 0) {
-            return 0;
-        }
-
-        double averageRating = 0;
-        for(Rating rating: ratings){
-            averageRating += rating.getRating();
-        }
-        return averageRating / (double) ratings.size();
-    }
-
     @Override
     @Transient
     public String getAutoCompleteData() {

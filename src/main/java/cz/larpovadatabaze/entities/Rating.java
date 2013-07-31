@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.entities;
 
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
+import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -95,5 +96,16 @@ public class Rating implements Serializable {
 
     public void setUser(CsldUser user) {
         this.user = user;
+    }
+
+    public static String getColorOf(double gameAsAverageRating){
+        String gameRatingColor = "mediocre";
+        if(gameAsAverageRating > 70) {
+            gameRatingColor = "great";
+        }
+        if(gameAsAverageRating > 40) {
+            gameRatingColor = "average";
+        }
+        return gameRatingColor;
     }
 }

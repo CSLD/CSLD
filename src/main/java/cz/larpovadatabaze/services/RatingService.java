@@ -13,4 +13,6 @@ public interface RatingService extends GenericService<Rating> {
     public Rating getUserRatingOfGame(Integer userId, Integer gameId) throws WrongParameterException;
 
     double getAverageRating();
+
+    void saveOrUpdate(Rating actualRating);
 }

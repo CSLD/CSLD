@@ -243,39 +243,6 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable {
     }
 
     @Transient
-    private Game bestGame;
-
-    @Transient
-    public Game getBestGame(int amountOfRatings, double averageRating){
-        double bestRating = 0;
-        Game bestGame = null;
-        for(Game game: authorOf){
-            int amountOfRatingsSingle = game.getRatings().size();
-            double averageRatingForGame = game.getAverageRating();
-
-            if(amountOfRatingsSingle > 0){
-                double actualBestRating = (averageRatingForGame + (averageRating/ amountOfRatings * 8)) /
-                    (amountOfRatingsSingle + 12);
-                if(actualBestRating > bestRating){
-                    bestRating = actualBestRating;
-                    bestGame = game;
-                }
-            } else {
-                if(bestRating == 0){
-                    bestGame = game;
-                }
-            }
-
-        }
-        return bestGame;
-    }
-
-    @Transient
-    public void setBestGame(Game bestGame){
-        this.bestGame = bestGame;
-    }
-
-    @Transient
     public Rating getRatingOfGame(Integer gameId){
         for(Rating rating: rated){
             if(rating.getGameId() == gameId){

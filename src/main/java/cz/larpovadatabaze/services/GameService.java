@@ -1,15 +1,13 @@
 package cz.larpovadatabaze.services;
 
+import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 9.4.13
- * Time: 11:19
+ *
  */
 public interface GameService extends GenericService<Game> {
     public Game getById(Integer id);
@@ -37,4 +35,6 @@ public interface GameService extends GenericService<Game> {
     List<Game> getByAutoCompletable(String gameName) throws WrongParameterException;
 
     public double getRatingOfGame(Game game);
+
+    Game getBestGame(CsldUser actualAuthor);
 }

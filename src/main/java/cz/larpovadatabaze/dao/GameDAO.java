@@ -2,6 +2,7 @@ package cz.larpovadatabaze.dao;
 
 import cz.larpovadatabaze.api.GenericHibernateDAO;
 import cz.larpovadatabaze.entities.CsldGroup;
+import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Person;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
@@ -30,6 +31,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     @Autowired
     private SessionFactory sessionFactory;
 
+
     public List<Game> getRated() {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("from Game game order by csld_count_rating(game.id) desc");
@@ -44,6 +46,11 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
         return allGames;
     }
 
+    /**
+     * It returns Games sorted by amount of Ratings.
+     *
+     * @return
+     */
     public List<Game> getRatedAmount() {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("from Game game");
@@ -67,6 +74,11 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
         return allGames;
     }
 
+    /**
+     * It returns games sorted by the amount of Comments.
+     *
+     * @return games sorted by amount of comments.
+     */
     public List<Game> getCommentedAmount() {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("from Game game");
@@ -90,6 +102,12 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
         return allGames;
     }
 
+    /**
+     * It returns rating of the game. Only place where rating is counted is in the database function csld_count_rating
+     *
+     * @param game
+     * @return If game has no rating, it returns 0
+     */
     @SuppressWarnings("unchecked")
     public double getRatingOfGame(Game game) {
         Session session = sessionFactory.getCurrentSession();
@@ -110,5 +128,21 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
                 Restrictions.eq("name", gameName)
         );
         return uniqueGame.list();
+    }
+
+    /**
+     * It returns best game of given author.
+     *
+     * @param actualAuthor Any of CsldUser that created at least one game.
+     * @return Best Game, Every author has at least one game as definition.
+     */
+    public Game getBestGame(CsldUser actualAuthor) {
+        List<Game> gamesSortedByRating = getRated();
+        for(Game game: gamesSortedByRating) {
+            if(game.getAuthors().contains(actualAuthor)){
+                return game;
+            }
+        }
+        throw new RuntimeException("Trying to get Best Game of someone who is not author.");
     }
 }

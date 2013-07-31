@@ -1,18 +1,18 @@
-CREATE OR REPLACE FUNCTION public.csld_count_rating(gameid integer)
+;CREATE OR REPLACE FUNCTION public.csld_count_rating(gameid integer)
   RETURNS double precision
 LANGUAGE plpgsql
 AS $function$
 DECLARE
-  ratingsRow RECORD;
+  gameRatings RECORD;
   result double precision;
-  average RECORD;
+  mostRatedGame RECORD;
 BEGIN
-  select into ratingsRow sum(rating) as ratingCount, count(*) as ratingAmount from rating where game_id = gameId;
-  if ratingsRow.ratingAmount = 0 THEN
+  select into gameRatings sum(rating) as sumOf, count(*) as amountOf from csld_rating where game_id = gameId;
+  if gameRatings.amountOf = 0 THEN
         return 0;
   END IF;
-  select into average sum(rating) as ratingCount, count(*) as ratingAmount from rating;
-  result = (ratingsRow.ratingCount + (average.ratingCount / average.ratingAmount * 8) / (ratingsRow.ratingAmount + 12));
-  return result;
+  select into mostRatedGame max(t.ratingsOfGames) as amountOfRatings from (select count(*) as ratingsOfGames from csld_rating group by game_id) as t;
+  result = 0.3 * (10 * (gameRatings.amountOf / mostRatedGame.amountOfRatings)) + 0.7 * (gameRatings.sumOf / gameRatings.amountOf);
+  return (result * 10);
 END
 $function$;

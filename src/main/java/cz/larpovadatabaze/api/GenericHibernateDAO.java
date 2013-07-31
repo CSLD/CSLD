@@ -72,6 +72,7 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 
     public void saveOrUpdate(T entity) {
         sessionFactory.getCurrentSession().saveOrUpdate(entity);
+        flush();
     }
 
 	public void flush() {

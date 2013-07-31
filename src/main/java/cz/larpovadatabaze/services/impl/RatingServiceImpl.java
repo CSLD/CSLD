@@ -61,4 +61,9 @@ public class RatingServiceImpl implements RatingService {
         averageRating /= ratings.size();
         return averageRating;
     }
+
+    @Override
+    public void saveOrUpdate(Rating actualRating) {
+        ratingDAO.saveOrUpdate(actualRating);
+    }
 }

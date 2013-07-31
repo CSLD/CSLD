@@ -43,7 +43,7 @@ public class MostActiveCreators extends Panel {
         }
 
         PageParameters params = new PageParameters();
-        params.add("userId", commenter.getId());
+        params.add("id", commenter.getId());
         final BookmarkablePageLink<CsldBasePage> mostActiveCommenterHead =
                 new BookmarkablePageLink<CsldBasePage>("mostActiveCommenterHead", AuthorDetail.class, params);
         add(mostActiveCommenterHead);

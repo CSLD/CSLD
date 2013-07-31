@@ -8,6 +8,7 @@ import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.providers.SortableAuthorProvider;
 import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.RatingService;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.OrderByBorder;
 import org.apache.wicket.markup.html.basic.Label;
@@ -30,7 +31,7 @@ public class ListAuthor extends CsldBasePage {
     @SpringBean
     CsldUserService csldUserService;
     @SpringBean
-    RatingService ratingService;
+    GameService gameService;
 
     public ListAuthor(){
 
@@ -38,29 +39,27 @@ public class ListAuthor extends CsldBasePage {
         final DataView<CsldUser> propertyList = new DataView<CsldUser>("listAuthor",sap) {
             @Override
             protected void populateItem(Item<CsldUser> item) {
-                CsldUser csldUser = item.getModelObject();
-
-                List<Rating> ratings = ratingService.getAll();
+                CsldUser actualAuthor = item.getModelObject();
 
                 PageParameters params = new PageParameters();
-                params.add("id", csldUser.getId());
+                params.add("id", actualAuthor.getId());
 
                 final BookmarkablePageLink<CsldUser> authorName =
                         new BookmarkablePageLink<CsldUser>("authorName", AuthorDetail.class, params);
-                final Label nicknameLabel = new Label("authorNicknameContent", csldUser.getPerson().getNickname());
-                final Label nameLabel = new Label("authorNameContent", csldUser.getPerson().getName());
+                final Label nicknameLabel = new Label("authorNicknameContent", actualAuthor.getPerson().getNickname());
+                final Label nameLabel = new Label("authorNameContent", actualAuthor.getPerson().getName());
                 authorName.add(nameLabel);
                 authorName.add(nicknameLabel);
                 item.add(authorName);
 
-                Game bestGame = csldUser.getBestGame(ratings.size(), ratingService.getAverageRating());
+                Game bestGame = gameService.getBestGame(actualAuthor);
                 PageParameters gameParams = new PageParameters();
                 gameParams.add("id", bestGame.getId());
 
                 final BookmarkablePageLink<CsldUser> gameName =
                         new BookmarkablePageLink<CsldUser>("gameName", GameDetail.class, gameParams);
                 final Label bestGameName = new Label("bestGameName", bestGame.getName());
-                final Label bestGameRating = new Label("bestGame", bestGame.getAverageRating());
+                final Label bestGameRating = new Label("bestGame", gameService.getRatingOfGame(bestGame));
                 gameName.add(bestGameName);
                 gameName.add(bestGameRating);
                 item.add(gameName);

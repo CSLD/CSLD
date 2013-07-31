@@ -1,9 +1,7 @@
 package cz.larpovadatabaze.components.page.game;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.panel.game.GameDetailPanel;
-import cz.larpovadatabaze.components.panel.game.EditGamePanel;
-import cz.larpovadatabaze.components.panel.game.GameListPanel;
+import cz.larpovadatabaze.components.panel.game.*;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.utils.HbUtils;
@@ -33,16 +31,9 @@ public class GameDetail extends CsldBasePage {
         add(played);*/
 
         add(new GameDetailPanel("gameDetail", game));
-
-        /*
-        ResultsRatingsPanel resultsRatingsPanel = new ResultsRatingsPanel("resultRatingsPanel");
-        add(resultsRatingsPanel);
-
-        if(CsldAuthenticatedWebSession.get().isSignedIn()){
-            add(new RatingsPanel("ratingsPanel", game.getId()));
-        } else {
-            add(new CanNotRatePanel("ratingsPanel"));
-        }*/
+        add(new RatingsResultPanel("ratingsResults", game));
+        add(new CanNotRatePanel("canNotRatePanel"));
+        add(new RatingsPanel("ratingsPanel", game.getId()));
 
         EditGamePanel editGamePanel = new EditGamePanel("editGamePanel", game);
         add(editGamePanel);

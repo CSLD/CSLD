@@ -3,10 +3,7 @@ package cz.larpovadatabaze.services;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 11.5.13
- * Time: 8:51
+ * Necessary minimum every Service must be able to handle.
  */
 public interface GenericService<T> {
     List<T> getAll();

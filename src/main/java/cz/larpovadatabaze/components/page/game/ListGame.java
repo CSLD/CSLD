@@ -13,6 +13,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -20,10 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 25.4.13
- * Time: 15:59
+ *
  */
 public class ListGame extends CsldBasePage {
     @SpringBean
@@ -43,14 +41,14 @@ public class ListGame extends CsldBasePage {
                 params.add("id",game.getId());
                 final BookmarkablePageLink<CsldBasePage> gameLink =
                         new BookmarkablePageLink<CsldBasePage>("gameLink", GameDetail.class, params);
-                final Label nameLabel = new Label("gameName", game.getName());
+                final Label nameLabel = new Label("gameName", Model.of(game.getName()));
                 gameLink.add(nameLabel);
                 item.add(gameLink);
 
-                final Label gameYear = new Label("gameYear", game.getYear());
+                final Label gameYear = new Label("gameYear", Model.of(game.getYear()));
                 item.add(gameYear);
 
-                final Label gameRating = new Label("rating", (int)game.getAverageRating());
+                final Label gameRating = new Label("rating", Model.of(gameService.getRatingOfGame(game)));
                 item.add(gameRating);
 
                 List<Rating> ratings = (game.getRatings() != null) ?

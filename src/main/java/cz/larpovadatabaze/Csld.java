@@ -69,6 +69,7 @@ public class Csld extends AuthenticatedWebApplication
 		super.init();
         getComponentInstantiationListeners().add(new SpringComponentInjector(this));
         getMarkupSettings().setDefaultMarkupEncoding(DEFAULT_ENCODING);
+        getMarkupSettings().setStripWicketTags(true);
         getRequestCycleSettings().setResponseRequestEncoding(DEFAULT_ENCODING);
 
         mountPages();

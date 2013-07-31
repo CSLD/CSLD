@@ -10,14 +10,10 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 9.4.13
- * Time: 11:19
+ *
  */
 @Repository
 public class GameServiceImpl implements GameService {
@@ -90,16 +86,22 @@ public class GameServiceImpl implements GameService {
     public List<Game> getSimilar(Game game) {
         Game exampleGame = new Game();
         exampleGame.setLabels(game.getLabels());
+        // TODO decide what actually does similarity means. I propose that larp is more similar if it had similar players
+        // and if it has same labels. The more labels are same the better. Similarity 1 means labels and players are the same.
+        // Similarity 0 means no player and no label were the same.
         return gameDAO.findByExample(exampleGame, new String[]{});
     }
 
     @Override
     public List<Game> gamesOfAuthors(Game game) {
-        List<Game> games = new ArrayList<Game>();
+        // TODO sort games by rating.
+        Set<Game> games = new HashSet<Game>();
         for(CsldUser author: game.getAuthors()){
             games.addAll(author.getAuthorOf());
         };
-        return games;
+        List<Game> gamesOfAuthors = new ArrayList<Game>();
+        gamesOfAuthors.addAll(games);
+        return gamesOfAuthors;
     }
 
     @Override
@@ -110,5 +112,10 @@ public class GameServiceImpl implements GameService {
     @Override
     public double getRatingOfGame(Game game) {
         return gameDAO.getRatingOfGame(game);
+    }
+
+    @Override
+    public Game getBestGame(CsldUser actualAuthor) {
+        return gameDAO.getBestGame(actualAuthor);
     }
 }
