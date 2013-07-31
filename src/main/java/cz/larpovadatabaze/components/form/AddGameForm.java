@@ -1,11 +1,13 @@
 package cz.larpovadatabaze.components.form;
 
 import cz.larpovadatabaze.Csld;
+import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Image;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.GroupService;
 import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.Application;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.*;
@@ -41,11 +43,14 @@ public class AddGameForm extends Form<Game> {
     ImageService imageService;
     @SpringBean
     CsldUserService csldUserService;
+    @SpringBean
+    GroupService groupService;
 
     private FileUploadField fileUploadField;
     private String videoPath;
     private List<FileUpload> uploads;
     private List<GenericModel<CsldUser>> authorsOfGame;
+    private List<GenericModel<CsldGroup>> groupsOfGame;
 
     public AddGameForm(String id, Game game) {
         super(id, new CompoundPropertyModel<Game>(game));
@@ -92,6 +97,14 @@ public class AddGameForm extends Form<Game> {
         add(authors);
         authorsOfGame = authors.getData();
 
+        IFactory<CsldGroup> groupIFactory = new GenericFactory<CsldGroup>(CsldGroup.class);
+        IValidator<CsldGroup> groupIValidator = new GenericValidator<CsldGroup>(groupService);
+
+        RepeatableInputPanel<CsldGroup> groups = new RepeatableInputPanel<CsldGroup>("groups", groupIFactory,
+                groupIValidator, groupService);
+        add(groups);
+        groupsOfGame = groups.getData();
+
         add(new Button("submit"));
 
         setOutputMarkupId(true);
@@ -106,6 +119,11 @@ public class AddGameForm extends Form<Game> {
             authors.add(authorModel.getObject());
         }
         game.setAuthors(authors);
+        List<CsldGroup> groups = new ArrayList<CsldGroup>();
+        for(GenericModel<CsldGroup> authorModel: groupsOfGame){
+            groups.add(authorModel.getObject());
+        }
+        game.setGroupAuthor(groups);
         validate();
 
         if(!hasError()){
