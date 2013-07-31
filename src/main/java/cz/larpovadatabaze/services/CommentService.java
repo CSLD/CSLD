@@ -10,4 +10,7 @@ import org.springframework.stereotype.Repository;
  * Time: 21:42
  */
 public interface CommentService extends GenericService<Comment> {
+    Comment getCommentOnGameFromUser(int userId, int gameId);
+
+    void saveOrUpdate(Comment actualComment);
 }

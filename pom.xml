@@ -16,6 +16,13 @@
 			<id>spring-repo</id>
 			<url>http://maven.springframework.org</url>
 		</repository>
+        <repository>
+            <id>wicketstuff-core-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
 	</repositories>
 	<dependencies>
 		<!-- WICKET DEPENDENCIES -->
@@ -35,8 +42,28 @@
             <version>6.7.0</version> <!-- or 1.5.10 -->
         </dependency>
         <dependency>
+            <groupId>org.wicketstuff</groupId>
+            <artifactId>wicketstuff-tinymce</artifactId>
+            <version>6.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wicketstuff</groupId>
+            <artifactId>tinymce-examples</artifactId>
+            <version>6.7.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.wicket</groupId>
             <artifactId>wicket-ioc</artifactId>
+            <version>${wicket.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.wicket</groupId>
+            <artifactId>wicket-datetime</artifactId>
+            <version>6.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.wicket</groupId>
+            <artifactId>wicket-auth-roles</artifactId>
             <version>${wicket.version}</version>
         </dependency>
 		<dependency>
@@ -137,16 +164,6 @@
 			<version>${jetty.version}</version>
 			<scope>provided</scope>
 		</dependency>
-        <dependency>
-            <groupId>org.apache.wicket</groupId>
-            <artifactId>wicket-datetime</artifactId>
-            <version>6.5.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.wicket</groupId>
-            <artifactId>wicket-auth-roles</artifactId>
-            <version>6.6.0</version>
-        </dependency>
     </dependencies>
 	<build>
 		<resources>

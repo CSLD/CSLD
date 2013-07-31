@@ -31,6 +31,8 @@ public class GameDetail extends CsldBasePage {
         add(played);*/
 
         add(new GameDetailPanel("gameDetail", game));
+        add(new CommentsPanel("addComment", game));
+
         add(new RatingsResultPanel("ratingsResults", game));
         add(new CanNotRatePanel("canNotRatePanel"));
         add(new RatingsPanel("ratingsPanel", game.getId()));

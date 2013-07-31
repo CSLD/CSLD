@@ -35,4 +35,14 @@ public class CommentServiceImpl implements CommentService {
     public void remove(Comment toRemove) {
         commentDAO.makeTransient(toRemove);
     }
+
+    @Override
+    public Comment getCommentOnGameFromUser(int userId, int gameId) {
+        return commentDAO.getCommentOnGameFromUser(userId, gameId);
+    }
+
+    @Override
+    public void saveOrUpdate(Comment actualComment) {
+        commentDAO.saveOrUpdate(actualComment);
+    }
 }

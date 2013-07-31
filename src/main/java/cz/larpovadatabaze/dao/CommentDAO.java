@@ -2,6 +2,8 @@ package cz.larpovadatabaze.dao;
 
 import cz.larpovadatabaze.api.GenericHibernateDAO;
 import cz.larpovadatabaze.entities.Comment;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -12,5 +14,17 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class CommentDAO extends GenericHibernateDAO<Comment, Integer>{
-
+    /**
+     * It return comment of user on given game.
+     *
+     * @param userId
+     * @param gameId
+     * @return existing comment or null.
+     */
+    public Comment getCommentOnGameFromUser(int userId, int gameId) {
+        Criteria uniqueComment = sessionFactory.getCurrentSession().createCriteria(Comment.class).
+                add(Restrictions.eq("userId", userId)).
+                add(Restrictions.eq("gameId", gameId));
+        return (Comment) uniqueComment.uniqueResult();
+    }
 }
