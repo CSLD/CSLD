@@ -32,6 +32,7 @@ public class GameDetail extends CsldBasePage {
 
         add(new GameDetailPanel("gameDetail", game));
         add(new CommentsPanel("addComment", game));
+        add(new CommentsListPanel("commentsList", game));
 
         add(new RatingsResultPanel("ratingsResults", game));
         add(new CanNotRatePanel("canNotRatePanel"));
