@@ -1,7 +1,5 @@
 package cz.larpovadatabaze.entities;
 
-import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
-
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Id;

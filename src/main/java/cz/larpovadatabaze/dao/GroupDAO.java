@@ -2,7 +2,6 @@ package cz.larpovadatabaze.dao;
 
 import cz.larpovadatabaze.api.GenericHibernateDAO;
 import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.entities.Person;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import org.hibernate.Criteria;
 import org.hibernate.Query;

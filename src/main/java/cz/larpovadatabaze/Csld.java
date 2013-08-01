@@ -1,19 +1,14 @@
 package cz.larpovadatabaze;
 
 import cz.larpovadatabaze.components.page.about.AboutDatabase;
-import cz.larpovadatabaze.components.page.game.AddGamePage;
-import cz.larpovadatabaze.components.page.group.AddGroupPage;
 import cz.larpovadatabaze.components.page.author.AuthorDetail;
-import cz.larpovadatabaze.components.page.game.GameDetail;
-import cz.larpovadatabaze.components.page.user.UserDetail;
-import cz.larpovadatabaze.components.page.user.EditUser;
 import cz.larpovadatabaze.components.page.author.ListAuthor;
+import cz.larpovadatabaze.components.page.game.AddGamePage;
+import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.components.page.game.ListGame;
+import cz.larpovadatabaze.components.page.group.AddGroupPage;
 import cz.larpovadatabaze.components.page.group.ListGroup;
-import cz.larpovadatabaze.components.page.user.ListUser;
-import cz.larpovadatabaze.components.page.user.CsldSignInPage;
-import cz.larpovadatabaze.components.page.user.RegisterUserPage;
-import cz.larpovadatabaze.components.page.user.SignOut;
+import cz.larpovadatabaze.components.page.user.*;
 import cz.larpovadatabaze.converters.*;
 import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
@@ -101,7 +96,7 @@ public class Csld extends AuthenticatedWebApplication
     private void mountPages() {
         mountPage("/sign-out", SignOut.class);
         mountPage("/sign-in", CsldSignInPage.class);
-        mountPage("/register", RegisterUserPage.class);
+        mountPage("/register", CreateOrUpdateUserPage.class);
 
         mountPage("/add-group", AddGroupPage.class);
         mountPage("/add-game", AddGamePage.class);
@@ -122,5 +117,9 @@ public class Csld extends AuthenticatedWebApplication
 
     public ApplicationContext getApplicationContext(){
         return WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+    }
+
+    public static String getBaseContext(){
+        return "/files/upload/";
     }
 }

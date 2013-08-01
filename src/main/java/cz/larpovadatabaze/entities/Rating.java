@@ -1,8 +1,5 @@
 package cz.larpovadatabaze.entities;
 
-import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
-import org.hibernate.annotations.Fetch;
-
 import javax.persistence.*;
 import java.io.Serializable;
 

@@ -3,7 +3,6 @@ package cz.larpovadatabaze.components.panel.game;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.services.GameService;
-import cz.larpovadatabaze.services.RatingService;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;

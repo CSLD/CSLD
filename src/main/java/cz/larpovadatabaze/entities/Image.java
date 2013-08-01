@@ -1,7 +1,5 @@
 package cz.larpovadatabaze.entities;
 
-import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -115,5 +113,11 @@ public class Image implements Serializable {
         Image userImage = new Image();
         userImage.setPath("files/img/author_icon.png");
         return userImage;
+    }
+
+    public static Image getDefaultGame() {
+        Image gameImage = new Image();
+        gameImage.setPath("files/img/author_icon.png");
+        return gameImage;
     }
 }

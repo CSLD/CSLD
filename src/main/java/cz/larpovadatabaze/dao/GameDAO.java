@@ -1,10 +1,8 @@
 package cz.larpovadatabaze.dao;
 
 import cz.larpovadatabaze.api.GenericHibernateDAO;
-import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Person;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -111,7 +109,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     @SuppressWarnings("unchecked")
     public double getRatingOfGame(Game game) {
         Session session = sessionFactory.getCurrentSession();
-        String sqlQuery = String.format("select csld_count_rating(%s)",game.getId());
+        String sqlQuery = String.format("select csld_count_rating(%s)", game.getId());
         Query query = session.createSQLQuery(sqlQuery);
         return (Double)query.uniqueResult();
     }

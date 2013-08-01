@@ -1,9 +1,9 @@
 package cz.larpovadatabaze.components.panel.user;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.user.UserDetail;
-import cz.larpovadatabaze.components.page.user.RegisterUserPage;
+import cz.larpovadatabaze.components.page.user.CreateOrUpdateUserPage;
 import cz.larpovadatabaze.components.page.user.SignOut;
+import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.CsldUserService;
@@ -58,7 +58,7 @@ public class LoggedBoxPanel extends Panel {
                 add(moderatorLinkContent);
 
                 final BookmarkablePageLink<CsldBasePage> editConfiguration =
-                        new BookmarkablePageLink<CsldBasePage>("editConfiguration", RegisterUserPage.class, params);
+                        new BookmarkablePageLink<CsldBasePage>("editConfiguration", CreateOrUpdateUserPage.class, params);
                 final BookmarkablePageLink<CsldBasePage> logout =
                         new BookmarkablePageLink<CsldBasePage>("logout", SignOut.class);
                 add(editConfiguration);

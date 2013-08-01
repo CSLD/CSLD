@@ -1,6 +1,5 @@
 package cz.larpovadatabaze.converters;
 
-import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Person;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.services.PersonService;

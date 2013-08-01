@@ -1,8 +1,8 @@
 package cz.larpovadatabaze.components.page.author;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.panel.user.PersonDetailPanel;
 import cz.larpovadatabaze.components.panel.game.GameListPanel;
+import cz.larpovadatabaze.components.panel.user.PersonDetailPanel;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.services.CsldUserService;
 import org.apache.wicket.request.mapper.parameter.PageParameters;

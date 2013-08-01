@@ -1,7 +1,5 @@
 package cz.larpovadatabaze.components.panel.game;
 
-import cz.larpovadatabaze.components.panel.game.AddGamePanel;
-import cz.larpovadatabaze.components.panel.game.FilterGamesPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 
 /**

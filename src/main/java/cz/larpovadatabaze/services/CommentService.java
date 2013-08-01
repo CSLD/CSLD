@@ -1,7 +1,6 @@
 package cz.larpovadatabaze.services;
 
 import cz.larpovadatabaze.entities.Comment;
-import org.springframework.stereotype.Repository;
 
 /**
  * Created by IntelliJ IDEA.

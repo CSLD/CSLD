@@ -3,15 +3,17 @@ package cz.larpovadatabaze.dao;
 import cz.larpovadatabaze.api.GenericHibernateDAO;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Person;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
-import org.hibernate.*;
+import org.hibernate.Criteria;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -156,8 +158,8 @@ public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
         String email = personData[1];
         Criteria uniqueUser = sessionFactory.getCurrentSession().createCriteria(CsldUser.class).
                 createCriteria("person").add(
-                    Restrictions.eq("email", email)
-                );
+                Restrictions.eq("email", email)
+        );
         return uniqueUser.list();
     }
 }

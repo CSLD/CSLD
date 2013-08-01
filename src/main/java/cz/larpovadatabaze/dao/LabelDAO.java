@@ -1,9 +1,7 @@
 package cz.larpovadatabaze.dao;
 
 import cz.larpovadatabaze.api.GenericHibernateDAO;
-import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Label;
-import cz.larpovadatabaze.entities.Person;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;

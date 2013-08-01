@@ -1,10 +1,12 @@
 package cz.larpovadatabaze.entities;
 
 import cz.larpovadatabaze.api.Identifiable;
+import cz.larpovadatabaze.security.CsldRoles;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -262,5 +264,21 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable {
             return null;
         }
         return String.format("%s %s, %s", person.getNickname(), person.getName(),  person.getEmail());
+    }
+
+    public static CsldUser getEmptyUser() {
+        CsldUser emptyUser = new CsldUser();
+        emptyUser.setAdministersGroups(new ArrayList<CsldGroup>());
+        emptyUser.setAuthorOf(new ArrayList<Game>());
+        emptyUser.setCommented(new ArrayList<Comment>());
+        emptyUser.setEmailAuthentications(new ArrayList<EmailAuthentication>());
+        emptyUser.setGroupMembers(new ArrayList<GroupHasMember>());
+        emptyUser.setImage(Image.getDefaultUser());
+        emptyUser.setLabelsAuthor(new ArrayList<Label>());
+        emptyUser.setPerson(Person.getEmptyPerson());
+        emptyUser.setPlayedGames(new ArrayList<UserPlayedGame>());
+        emptyUser.setRated(new ArrayList<Rating>());
+        emptyUser.setRole(CsldRoles.USER.getRole());
+        return emptyUser;
     }
 }

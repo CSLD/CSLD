@@ -4,6 +4,7 @@ import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletab
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -125,5 +126,20 @@ public class CsldGroup implements Serializable, IAutoCompletable {
     @Transient
     public String getAutoCompleteData() {
         return getName();
+    }
+
+    /**
+     * It creates correctly initialized empty group
+     * No surprises included.
+     *
+     * @return
+     */
+    public static CsldGroup getEmptyGroup() {
+        CsldGroup emptyGroup = new CsldGroup();
+        emptyGroup.setAdministrators(new ArrayList<CsldUser>());
+        emptyGroup.setAuthorsOf(new ArrayList<Game>());
+        emptyGroup.setMembers(new ArrayList<GroupHasMember>());
+        emptyGroup.setImage(Image.getDefaultGroup());
+        return emptyGroup;
     }
 }

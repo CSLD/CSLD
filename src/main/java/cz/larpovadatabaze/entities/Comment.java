@@ -1,7 +1,5 @@
 package cz.larpovadatabaze.entities;
 
-import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;

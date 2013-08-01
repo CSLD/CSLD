@@ -14,8 +14,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.util.List;
-
 /**
  * This panel contains Slider which allows user to rate game. It also has info about rating the game, if the game was
  * not rated by the user previously.

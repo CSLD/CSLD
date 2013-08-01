@@ -1,5 +1,9 @@
 package cz.larpovadatabaze.utils;
 
+import org.apache.wicket.util.file.Files;
+
+import java.io.File;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Jakub Balhar
@@ -13,6 +17,23 @@ public class FileUtils {
             return fileParts[fileParts.length - 1];
         } else {
             return "";
+        }
+    }
+
+    /**
+     * It cleans space of the file given as parameter, if anything with the same name already existed.
+     *
+     * @param newFile
+     */
+    public static void cleanFileIfExists(File newFile)
+    {
+        if (newFile.exists())
+        {
+            // Try to delete the file
+            if (!Files.remove(newFile))
+            {
+                throw new IllegalStateException("Unable to overwrite " + newFile.getAbsolutePath());
+            }
         }
     }
 }

@@ -5,11 +5,9 @@ import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.components.panel.author.AuthorsPanel;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.providers.SortableAuthorProvider;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.GameService;
-import cz.larpovadatabaze.services.RatingService;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.OrderByBorder;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -18,8 +16,6 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.

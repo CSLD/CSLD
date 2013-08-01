@@ -1,7 +1,6 @@
 package cz.larpovadatabaze.components.page.group;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.group.GroupDetail;
 import cz.larpovadatabaze.components.panel.group.AddGroupPanel;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;

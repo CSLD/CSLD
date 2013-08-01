@@ -5,6 +5,7 @@ import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletab
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -160,5 +161,11 @@ public class Person implements Serializable, IAutoCompletable {
 
         Integer age = now.get(Calendar.YEAR) - birthDateCal.get(Calendar.YEAR);
         return age;
+    }
+
+    public static Person getEmptyPerson() {
+        Person emptyPerson = new Person();
+        emptyPerson.setUsers(new ArrayList<CsldUser>());
+        return emptyPerson;
     }
 }

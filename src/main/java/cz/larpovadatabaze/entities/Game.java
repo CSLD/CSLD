@@ -2,15 +2,12 @@ package cz.larpovadatabaze.entities;
 
 import cz.larpovadatabaze.api.Identifiable;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
-
-import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
 
 
 /**
@@ -349,4 +346,27 @@ public class Game implements Serializable, Identifiable, IAutoCompletable {
     public String getAutoCompleteData() {
         return getName();
     }
+
+    public static Game getEmptyGame() {
+        Game emptyGame = new Game();
+        emptyGame.setGroupAuthor(new ArrayList<CsldGroup>());
+        emptyGame.setAuthors(new ArrayList<CsldUser>());
+        emptyGame.setComments(new ArrayList<Comment>());
+        emptyGame.setLabels(new ArrayList<Label>());
+        emptyGame.setImage(Image.getDefaultGame());
+        emptyGame.setPhotos(new ArrayList<Photo>());
+        emptyGame.setPlayed(new ArrayList<UserPlayedGame>());
+        emptyGame.setRatings(new ArrayList<Rating>());
+        return emptyGame;
+    }
 }
+
+
+
+
+
+
+
+
+
+
