@@ -7,6 +7,8 @@ import cz.larpovadatabaze.services.GroupService;
 import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.FileUtils;
 import org.apache.wicket.Application;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
@@ -62,8 +64,6 @@ public class CreateOrUpdateGroupPanel extends Panel {
 
         // Add one file input field
         createGroup.add(fileUploadField = new FileUploadField("image"));
-
-        createGroup.add(new Button("submit"));
 
         add(createGroup);
     }

@@ -1,6 +1,8 @@
 package cz.larpovadatabaze.components.panel.game;
 
 import cz.larpovadatabaze.Csld;
+import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
+import cz.larpovadatabaze.components.panel.group.CreateOrUpdateGroupPanel;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
@@ -11,7 +13,12 @@ import cz.larpovadatabaze.services.GroupService;
 import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.FileUtils;
 import org.apache.wicket.Application;
+import org.apache.wicket.ajax.AjaxEventBehavior;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.*;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -24,6 +31,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Bytes;
+import org.apache.wicket.util.time.Duration;
 import org.apache.wicket.validation.IValidator;
 
 import javax.servlet.ServletContext;
@@ -73,7 +81,9 @@ public class CreateOrUpdateGamePanel extends Panel {
         createOrUpdateGame.setMultiPart(true);
         createOrUpdateGame.setMaxSize(Bytes.kilobytes(1024));
 
-        createOrUpdateGame.add(new FeedbackPanel("feedback"));
+        FeedbackPanel feedback = new FeedbackPanel("feedback");
+        feedback.setOutputMarkupId(true);
+        createOrUpdateGame.add(feedback);
         createOrUpdateGame.add(new TextField<String>("name").setRequired(true));
         createOrUpdateGame.add(new TextArea<String>("description").setRequired(true));
         createOrUpdateGame.add(new TextField<Integer>("year"));
@@ -91,9 +101,46 @@ public class CreateOrUpdateGamePanel extends Panel {
         addAuthorsInput(createOrUpdateGame);
         addGroupsInput(createOrUpdateGame);
 
+        addCreateGroupButton(createOrUpdateGame);
+        addCreateAuthorButton(createOrUpdateGame);
+
         createOrUpdateGame.add(new Button("submit"));
 
+        AjaxFormValidatingBehavior.addToAllFormComponents(createOrUpdateGame, "keydown", Duration.ONE_SECOND);
+
         add(createOrUpdateGame);
+    }
+
+    private void addCreateGroupButton(Form<Game> createOrUpdateGame) {
+        final ModalWindow createGroupModal;
+        add(createGroupModal = new ModalWindow("createGroup"));
+
+        createGroupModal.setContent(new CreateOrUpdateGroupPanel(createGroupModal.getContentId(), null));
+        createGroupModal.setTitle("Vytvořit skupinu.");
+        createGroupModal.setCookieName("create-group");
+
+        createOrUpdateGame.add(new AjaxButton("createGroup"){}.setOutputMarkupId(true).add(new AjaxEventBehavior("click") {
+            @Override
+            protected void onEvent(AjaxRequestTarget target) {
+                createGroupModal.show(target);
+            }
+        }));
+    }
+
+    private void addCreateAuthorButton(Form<Game> createOrUpdateGame) {
+        final ModalWindow createAuthorModal;
+        add(createAuthorModal = new ModalWindow("createAuthor"));
+
+        createAuthorModal.setContent(new CreateOrUpdateAuthorPanel(createAuthorModal.getContentId(), null));
+        createAuthorModal.setTitle("Vytvořit autora.");
+        createAuthorModal.setCookieName("create-author");
+
+        createOrUpdateGame.add(new AjaxButton("createAuthor"){}.setOutputMarkupId(true).add(new AjaxEventBehavior("click") {
+            @Override
+            protected void onEvent(AjaxRequestTarget target) {
+                createAuthorModal.show(target);
+            }
+        }));
     }
 
     private void addGroupsInput(Form<Game> createOrUpdateGame) {

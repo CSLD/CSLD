@@ -1,4 +1,7 @@
 <wicket:panel xmlns:wicket="http://wicket.apache.org">
+    <div wicket:id="createGroup"></div>
+    <div wicket:id="createAuthor"></div>
+
     <form wicket:id="addGame">
         <fieldset>
             <div class="feedback" wicket:id="feedback"></div>
@@ -66,13 +69,13 @@
             <div>
                 <label for="authors">Autoři</label>
                 <div wicket:id="authors"></div>
-                <!-- <input type="button" value="Nový autor" wicket:id="createAuthor"/> -->
+                <input type="button" value="Nový autor" wicket:id="createAuthor"/>
             </div>
 
             <div>
                 <label for="groups">Autorské skupiny</label>
                 <div wicket:id="groups"></div>
-                <!-- <input type="button" value="Nová skupina" wicket:id="createGroup"/>-->
+                <input type="button" value="Nová skupina" wicket:id="createGroup"/>
             </div>
 
             <!--

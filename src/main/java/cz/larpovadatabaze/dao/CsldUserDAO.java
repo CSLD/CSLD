@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -128,19 +130,25 @@ public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
     }
 
     public List<CsldUser> getOrderedByComments() {
-        Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("select user from CsldUser user join user.commented commented " +
-                "group by user.fbUser, user.id, user.imageId, user.password, user.personId, user.role    " +
-                "order by count(commented) desc");
-        return query.list();
+        List<CsldUser> allUsers = findAll();
+        Collections.sort(allUsers, new Comparator<CsldUser>() {
+            @Override
+            public int compare(CsldUser o1, CsldUser o2) {
+                return o2.getCommented().size() - o1.getCommented().size();
+            }
+        });
+        return allUsers;
     }
 
     public List<CsldUser> getOrderedByPlayed() {
-        Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("select user from CsldUser user join user.playedGames played " +
-                "group by user.fbUser, user.id, user.imageId, user.password, user.personId, user.role " +
-                "order by count(played) desc");
-        return query.list();
+        List<CsldUser> allUsers = findAll();
+        Collections.sort(allUsers, new Comparator<CsldUser>() {
+            @Override
+            public int compare(CsldUser o1, CsldUser o2) {
+                return o2.getPlayedGames().size() - o1.getPlayedGames().size();
+            }
+        });
+        return allUsers;
     }
 
     /**
