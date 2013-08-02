@@ -1,0 +1,25 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+    <div class="nadpisSekce">
+        <a wicket:id="mostActiveCommenterHead">Nejaktivnější komentátor</a>
+    </div>
+    <table>
+        <tbody>
+        <tr>
+            <td>
+                <a wicket:id="mostActiveCommenter">
+                    <img wicket:id="mostActiveCommenterImage" class="obrazekUzivatel">
+                </a>
+            </td>
+            <td class="obsah">
+                <a wicket:id="mostActiveCommenterContent">
+                    <span class="nick" wicket:id="mostActiveCommenterNick"></span>
+                    <span class="jmeno" wicket:id="mostActiveCommenterName"></span>
+                </a>
+
+                <div class="popisekUzivatel">ocenění za největší počet komentářů</div>
+                <div class="popisekUzivatel"><span wicket:id="ammountCommented">38</span> komentovaných her</div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</wicket:panel>

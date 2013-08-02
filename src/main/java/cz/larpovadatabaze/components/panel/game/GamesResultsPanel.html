@@ -1,0 +1,49 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+
+<div class="levaCastVyhledavani">
+    <table class="prvniTabulka">
+
+        <tbody>
+        <tr wicket:id="fullGames">
+            <td>
+                <a wicket:id="gameLink">
+                    <img wicket:id="gameLinkImage" class="obrazekVyhledavani">
+                </a>
+                <br>
+            </td>
+            <td class="obsah">
+                <img src="img/ctverecek.png" class="ctverecek" style="background-color: #aaa">
+                <span class="nadpisHra">
+                    <a wicket:id="gameLinkContent">Bitvy o Divočinu: Dary bohů</a>
+                </span>
+                <div class="popisek">
+                    <div wicket:id="labels">
+                        <span wicket:id="labelName">fantasy</span> /
+                    </div>
+                    <a wicket:id="gameMoreLink">více</a>
+                </div>
+            </td>
+        </tr>
+
+        </tbody></table>
+
+    <div class="dalsiVysledky">Další výsledky:</div>
+
+    <table class="druhaTabulka">
+
+        <tbody>
+
+        <tr wicket:id="shortGames">
+            <td>
+                <a wicket:id="shortGameLink" class="hraStrucna">
+                    <span wicket:id="shortGameName">Posel boží (2004) - Velká válka</span>
+                </a> (<span wicket:id="shortGameYear">2004</span>)
+            </td>
+        </tr>
+
+
+        </tbody>
+    </table>
+</div>
+
+</wicket:panel>

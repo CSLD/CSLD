@@ -1,0 +1,23 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+    <div>
+        <form wicket:id="addGroup">
+            <h2>Add group</h2>
+
+            <div class="feedback" wicket:id="feedback"></div>
+
+            <div>
+                <label for="name">Jméno</label>
+                <input type="text" wicket:id="name"/>
+            </div>
+
+            <div>
+                <label for="image">Obrázek</label>
+                <input type="file" wicket:id="image"/>
+            </div>
+
+            <div>
+                <input type="submit" value="Uložit" wicket:id="submit"/>
+            </div>
+        </form>
+    </div>
+</wicket:panel>

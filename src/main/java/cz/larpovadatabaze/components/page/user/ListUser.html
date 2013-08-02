@@ -1,0 +1,35 @@
+<wicket:extend xmlns:wicket="http://wicket.apache.org">
+    <div class="levaCast" id="Uzivatele">
+        <div class="sekce sekceUzivatele">
+            <div class="nadpisStranky">
+                <img src="/files/img/icon/user_icon.png" class="ikonaStranky">Uživatelé
+            </div>
+            <table>
+                <thead>
+                    <th wicket:id="orderByName">Name</th>
+                    <th wicket:id="orderByCommented">Komentovaných</th>
+                    <th wicket:id="orderByPlayed">Hraných</th>
+                </thead>
+                <tr wicket:id="listAuthor" class="polozkaUzivatel">
+                    <td class="larp">
+                        <a wicket:id="userLink">
+                            <span wicket:id="userNickname" class="uzivatelPrezdivka">Monty</span>
+                            <span wicket:id="userName" class="uzivatelJmeno"> Martin Bezdíček</span>
+                        </a>
+                    </td>
+                    <td class="pocetherUzivatel komentare">
+                        <span wicket:id="commentedGames">38</span> komentovaných her
+                    </td>
+                    <td class="pocetherUzivatel">
+                        <span wicket:id="playedGames">38</span> odehraných her
+                    </td>
+                </tr>
+            </table>
+            <span wicket:id="navigator">[dataview navigator]</span>
+        </div>
+    </div>
+
+    <div class="pravaCast" id="Uzivatele" wicket:id="userPanel">
+
+    </div>
+</wicket:extend>

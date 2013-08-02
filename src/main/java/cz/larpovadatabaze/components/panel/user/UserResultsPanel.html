@@ -1,0 +1,39 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+        <table class="prvniTabulka">
+            <tbody>
+
+            <tr wicket:id="fullResults">
+                <td>
+                    <a wicket:id="authorLink">
+                        <img wicket:id="authorLinkImage" class="obrazekVyhledavani">
+                    </a>
+                </td>
+                <td class="obsah">
+                    <a wicket:id="authorLinkContent">
+                        <span class="nick" wicket:id="authorNick"></span>
+                        <span class="jmeno" wicket:id="authorName"></span>
+                    </a>
+                    <div class="popisek" wicket:id="years"></div>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+
+        <div class="dalsiVysledky">Další výsledky:</div>
+
+        <table class="druhaTabulka">
+            <tbody>
+
+            <tr wicket:id="shortResults">
+                <td>
+                    <a wicket:id="authorShortLink">
+                        <span class="nick" wicket:id="authorShortNick">Vanda</span>
+                        <span class="jmeno" wicket:id="authorShortName">Šárka Boudníková</span>
+                    </a>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+</wicket:panel>

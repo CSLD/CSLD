@@ -1,0 +1,92 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+    <div wicket:id="createGroup"></div>
+    <div wicket:id="createAuthor"></div>
+    <div wicket:id="createLabel"></div>
+
+    <form wicket:id="addGame">
+        <fieldset>
+            <div class="feedback" wicket:id="feedback"></div>
+
+            <div>
+                <label for="name">Jméno</label>
+                <input type="text" wicket:id="name"/>
+            </div>
+
+            <div>
+                <label for="description">Popis</label>
+                <textarea wicket:id="description"></textarea>
+            </div>
+
+            <div>
+                <label for="year">Rok</label>
+                <input type="text" wicket:id="year"/>
+            </div>
+
+            <div>
+                <label for="web">Web</label>
+                <input type="text" wicket:id="web"/>
+            </div>
+
+            <div>
+                <label for="hours">Hodiny</label>
+                <input type="text" wicket:id="hours"/>
+            </div>
+
+            <div>
+                <label for="days">Dny</label>
+                <input type="text" wicket:id="days"/>
+            </div>
+
+            <div>
+                <label for="players">Hráči</label>
+                <input type="text" wicket:id="players"/>
+            </div>
+
+            <div>
+                <label for="menRole">Mužské role</label>
+                <input type="text" wicket:id="menRole"/>
+            </div>
+
+            <div>
+                <label for="womenRole">Ženské role</label>
+                <input type="text" wicket:id="womenRole"/>
+            </div>
+
+            <div>
+                <label for="bothRole">Obojetné role</label>
+                <input type="text" wicket:id="bothRole"/>
+            </div>
+
+            <div>
+                <label for="videoPath">Video</label>
+                <input type="text" wicket:id="videoPath"/>
+            </div>
+
+            <div>
+                <label for="image">Obrázek</label>
+                <input type="file" wicket:id="image"/>
+            </div>
+
+            <div>
+                <label for="authors">Autoři</label>
+                <div wicket:id="authors"></div>
+                <input type="button" value="Nový autor" wicket:id="createAuthor"/>
+            </div>
+
+            <div>
+                <label for="groups">Autorské skupiny</label>
+                <div wicket:id="groups"></div>
+                <input type="button" value="Nová skupina" wicket:id="createGroup"/>
+            </div>
+
+            <div>
+                <!-- <div wicket:id=chooseLabels></div> -->
+                <input type="button" value="Nový štítek" wicket:id="createLabel"/>
+            </div>
+
+            <div>
+                <input type="submit" value="Uložit" wicket:id="submit"/>
+            </div>
+        </fieldset>
+    </form>
+</wicket:panel>

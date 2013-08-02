@@ -1,0 +1,32 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+    <form wicket:id="addUser">
+        <fieldset>
+            <div class="feedback" wicket:id="feedback"></div>
+
+            <div>
+                <label for="email">Email</label>
+                <input type="email" wicket:id="email"/>
+            </div>
+
+            <div>
+                <label for="name">Celé jméno</label>
+                <input type="text" wicket:id="name"/>
+            </div>
+
+            <div>
+                <label for="nickname">Přezdívka</label>
+                <input type="text" wicket:id="nickname"/>
+            </div>
+
+            <div>
+                <label for="description">Popis</label>
+                <textarea wicket:id="description"></textarea>
+            </div>
+
+            <div>
+                <input type="submit" value="Uložit" wicket:id="submit"/>
+            </div>
+
+        </fieldset>
+    </form>
+</wicket:panel>

@@ -1,0 +1,97 @@
+#chooser {
+    width: 300px;
+    height: 300px;
+}
+
+#chooser>.column {
+    position: relative;
+    width: 50%;
+    height: 100%;
+    float: left;
+}
+
+.column .content {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    overflow: visible;
+}
+
+.column .content span, .column .content a {
+    width: 100%;
+}
+
+#chooser .clicked {
+    background-color: red;
+}
+
+.red {
+    color: red;
+}
+
+.hidden {
+    display: none;
+}
+
+.user {
+    cursor: pointer;
+}
+
+.obsah>#description {
+    width: 100%;
+}
+
+#labels div.label {
+    padding: 3px;
+    margin: 3px 3px 5px;
+    border: 1px;
+    border-radius: 5px;
+    background-color: #CCC;
+    color: #214C61;
+    cursor: pointer;
+    float: left;
+}
+
+#labels div.checked {
+    background-color: #37B2F0;
+}
+
+#labels div{
+    padding: 3px;
+    margin: 4px 3px 5px;
+    float: left;
+}
+
+#labels div.empty{
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+}
+
+#labels {
+    width: 100%;
+}
+
+#authors input.author, .editable {
+    color: #000;
+    border: 1px;
+    border-style: solid;
+    border-color: #bbb #ddd #ddd #bbb;
+    border-radius: 4px;
+    padding: 2px;
+    margin: 6px 2px 0px 2px;
+    background: url("../../img/textbox-background.png") repeat-x;
+    width: 128px;
+}
+
+input.below {
+    position: relative;
+    top: 10px;
+}
+
+.obrazekHraBunka form{
+    position: relative;
+    top: 10px;
+}
