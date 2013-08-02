@@ -19,4 +19,6 @@ public interface LabelService extends GenericService<Label>{
     void update(Label label);
 
     List<Label> getByAutoCompletable(String labelName) throws WrongParameterException;
+
+    void saveOrUpdate(Label label);
 }

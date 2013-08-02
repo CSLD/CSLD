@@ -4,13 +4,11 @@ import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletab
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 27.3.13
- * Time: 14:01
+ *
  */
 @Entity
 @Table(schema = "public", name="csld_label")
@@ -19,6 +17,8 @@ public class Label implements Serializable, IAutoCompletable {
 
     @Column(name = "id", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_key_gen")
+    @SequenceGenerator(name = "id_key_gen", sequenceName = "csld_label_id_seq", allocationSize = 1)
     public Integer getId() {
         return id;
     }
@@ -142,5 +142,11 @@ public class Label implements Serializable, IAutoCompletable {
     @Transient
     public String getAutoCompleteData() {
         return getName();
+    }
+
+    public static Label getEmptyLabel() {
+        Label emptyLabel = new Label();
+        emptyLabel.setGames(new ArrayList<Game>());
+        return emptyLabel;
     }
 }

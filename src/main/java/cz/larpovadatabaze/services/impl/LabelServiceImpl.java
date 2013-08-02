@@ -54,6 +54,11 @@ public class LabelServiceImpl implements LabelService {
     }
 
     @Override
+    public void saveOrUpdate(Label label) {
+        labelDAO.saveOrUpdate(label);
+    }
+
+    @Override
     public void remove(Label toRemove) {
         labelDAO.makeTransient(toRemove);
     }

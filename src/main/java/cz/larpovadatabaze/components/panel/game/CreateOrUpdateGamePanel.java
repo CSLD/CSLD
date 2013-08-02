@@ -103,12 +103,29 @@ public class CreateOrUpdateGamePanel extends Panel {
 
         addCreateGroupButton(createOrUpdateGame);
         addCreateAuthorButton(createOrUpdateGame);
+        addCreateLabelButton(createOrUpdateGame);
 
         createOrUpdateGame.add(new Button("submit"));
 
         AjaxFormValidatingBehavior.addToAllFormComponents(createOrUpdateGame, "keydown", Duration.ONE_SECOND);
 
         add(createOrUpdateGame);
+    }
+
+    private void addCreateLabelButton(Form<Game> createOrUpdateGame) {
+        final ModalWindow createlabelModal;
+        add(createlabelModal = new ModalWindow("createLabel"));
+
+        createlabelModal.setContent(new CreateOrUpdateLabelPanel(createlabelModal.getContentId()));
+        createlabelModal.setTitle("Vytvořit štítek.");
+        createlabelModal.setCookieName("create-label");
+
+        createOrUpdateGame.add(new AjaxButton("createLabel"){}.setOutputMarkupId(true).add(new AjaxEventBehavior("click") {
+            @Override
+            protected void onEvent(AjaxRequestTarget target) {
+                createlabelModal.show(target);
+            }
+        }));
     }
 
     private void addCreateGroupButton(Form<Game> createOrUpdateGame) {
