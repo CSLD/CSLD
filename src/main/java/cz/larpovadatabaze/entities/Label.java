@@ -144,6 +144,21 @@ public class Label implements Serializable, IAutoCompletable {
         return getName();
     }
 
+    @Transient
+    private boolean selected;
+
+    @Transient
+    public void select(){
+        selected = !selected;
+    }
+
+    @Transient
+    public boolean isSelected(){
+        return selected;
+    }
+
+
+
     public static Label getEmptyLabel() {
         Label emptyLabel = new Label();
         emptyLabel.setGames(new ArrayList<Game>());

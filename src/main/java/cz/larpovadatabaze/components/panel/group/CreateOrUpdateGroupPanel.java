@@ -59,7 +59,9 @@ public class CreateOrUpdateGroupPanel extends Panel {
         // Set maximum size to 1024K for demo purposes
         createGroup.setMaxSize(Bytes.kilobytes(1024));
 
-        createGroup.add(new FeedbackPanel("feedback"));
+        FeedbackPanel feedback = new FeedbackPanel("feedback");
+        feedback.setOutputMarkupId(true);
+        createGroup.add(feedback);
         createGroup.add(new TextField<String>("name").setRequired(true));
 
         // Add one file input field

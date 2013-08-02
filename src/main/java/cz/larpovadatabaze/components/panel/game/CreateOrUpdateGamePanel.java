@@ -59,6 +59,7 @@ public class CreateOrUpdateGamePanel extends Panel {
     private List<GenericModel<CsldUser>> authorsOfGame;
     private List<GenericModel<CsldGroup>> groupsOfGame;
     private String videoPath; // Used by model.
+    private ChooseLabelsPanel chooseLabels;
 
     public CreateOrUpdateGamePanel(String id, Game game) {
         super(id);
@@ -100,6 +101,8 @@ public class CreateOrUpdateGamePanel extends Panel {
 
         addAuthorsInput(createOrUpdateGame);
         addGroupsInput(createOrUpdateGame);
+        chooseLabels = new ChooseLabelsPanel("chooseLabels");
+        createOrUpdateGame.add(chooseLabels);
 
         addCreateGroupButton(createOrUpdateGame);
         addCreateAuthorButton(createOrUpdateGame);
@@ -182,6 +185,7 @@ public class CreateOrUpdateGamePanel extends Panel {
 
     private void saveOrUpdateGame(Game game) {
         game.setAdded(new Timestamp(new Date().getTime()));
+        game.setLabels(chooseLabels.getSelected());
 
         List<CsldUser> authors = new ArrayList<CsldUser>();
         for (GenericModel<CsldUser> authorModel : authorsOfGame) {
