@@ -1,26 +1,28 @@
 <wicket:panel xmlns:wicket="http://wicket.apache.org">
     <form wicket:id="addUser">
         <fieldset>
-            <div class="feedback" wicket:id="feedback"></div>
-
             <div>
                 <label for="email"><wicket:message key="form.email">Email</wicket:message></label>
                 <input type="email" wicket:id="email"/>
+                <span class="feedback" wicket:id="emailFeedback"></span>
             </div>
 
             <div>
                 <label for="name"><wicket:message key="form.wholeName">Celé jméno</wicket:message></label>
                 <input type="text" wicket:id="name"/>
+                <span class="feedback" wicket:id="nameFeedback"></span>
             </div>
 
             <div>
                 <label for="nickname"><wicket:message key="form.nickname">Přezdívka</wicket:message></label>
                 <input type="text" wicket:id="nickname"/>
+                <span class="feedback" wicket:id="nicknameFeedback"></span>
             </div>
 
             <div>
                 <label for="description"><wicket:message key="form.description">Popis</wicket:message></label>
                 <textarea wicket:id="description"></textarea>
+                <span class="feedback" wicket:id="descriptionFeedback"></span>
             </div>
 
             <div>

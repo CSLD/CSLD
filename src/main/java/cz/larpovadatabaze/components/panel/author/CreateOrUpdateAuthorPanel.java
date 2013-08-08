@@ -1,11 +1,13 @@
 package cz.larpovadatabaze.components.panel.author;
 
+import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Person;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.PersonService;
 import cz.larpovadatabaze.utils.Pwd;
 import cz.larpovadatabaze.validator.UniqueUserValidator;
+import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -45,16 +47,41 @@ public class CreateOrUpdateAuthorPanel extends Panel {
         createOrUpdateUser.setMultiPart(true);
         createOrUpdateUser.setOutputMarkupId(true);
 
-        final FeedbackPanel feedback = new FeedbackPanel("feedback");
-        feedback.setOutputMarkupId(true);
-        createOrUpdateUser.add(feedback);
+        TextField<String> name = new TextField<String>("name");
+        name.setRequired(true);
+        ComponentFeedbackMessageFilter nameFilter = new ComponentFeedbackMessageFilter(name);
+        final FeedbackPanel nameFeedback = new FeedbackPanel("nameFeedback", nameFilter);
+        nameFeedback.setOutputMarkupId(true);
+        createOrUpdateUser.add(nameFeedback);
+        name.add(new AjaxFeedbackUpdatingBehavior("blur", nameFeedback));
+        createOrUpdateUser.add(name);
 
-        createOrUpdateUser.add(new TextField<String>("name").setRequired(true));
-        createOrUpdateUser.add(new TextField<String>("nickname"));
-        createOrUpdateUser.add(new EmailTextField("email").
-                setRequired(true).
-                add(new UniqueUserValidator(isEdit, personService)));
-        createOrUpdateUser.add(new TextArea<String>("description"));
+
+        TextField<String> nickname = new TextField<String>("nickname");
+        ComponentFeedbackMessageFilter nicknameFilter = new ComponentFeedbackMessageFilter(nickname);
+        final FeedbackPanel nicknameFeedback = new FeedbackPanel("nicknameFeedback", nicknameFilter);
+        nicknameFeedback.setOutputMarkupId(true);
+        createOrUpdateUser.add(nicknameFeedback);
+        nickname.add(new AjaxFeedbackUpdatingBehavior("blur", nicknameFeedback));
+        createOrUpdateUser.add(nickname);
+
+        EmailTextField email = new EmailTextField("email");
+        email.setRequired(true);
+        email.add(new UniqueUserValidator(isEdit, personService));
+        ComponentFeedbackMessageFilter emailFilter = new ComponentFeedbackMessageFilter(email);
+        final FeedbackPanel emailFeedback = new FeedbackPanel("emailFeedback", emailFilter);
+        emailFeedback.setOutputMarkupId(true);
+        createOrUpdateUser.add(emailFeedback);
+        email.add(new AjaxFeedbackUpdatingBehavior("blur", emailFeedback));
+        createOrUpdateUser.add(email);
+
+        TextArea<String> description = new TextArea<String>("description");
+        ComponentFeedbackMessageFilter descriptionFilter = new ComponentFeedbackMessageFilter(description);
+        final FeedbackPanel descriptionFeedback = new FeedbackPanel("descriptionFeedback", descriptionFilter);
+        descriptionFeedback.setOutputMarkupId(true);
+        createOrUpdateUser.add(descriptionFeedback);
+        description.add(new AjaxFeedbackUpdatingBehavior("blur", descriptionFeedback));
+        createOrUpdateUser.add(description);
 
         createOrUpdateUser.add(new Button("submit"));
 
