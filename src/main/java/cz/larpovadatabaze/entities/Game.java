@@ -347,6 +347,11 @@ public class Game implements Serializable, Identifiable, IAutoCompletable {
         return getName();
     }
 
+    @Transient
+    public Integer getRatedBy(){
+        return getRatings().size();
+    }
+
     public static Game getEmptyGame() {
         Game emptyGame = new Game();
         emptyGame.setGroupAuthor(new ArrayList<CsldGroup>());

@@ -8,84 +8,84 @@
             <div class="feedback" wicket:id="feedback"></div>
 
             <div>
-                <label for="name">Jméno</label>
+                <label for="name"><wicket:message key="form.name">Jméno</wicket:message></label>
                 <input type="text" wicket:id="name"/>
             </div>
 
             <div>
-                <label for="description">Popis</label>
+                <label for="description"><wicket:message key="form.description">Popis</wicket:message></label>
                 <textarea wicket:id="description"></textarea>
             </div>
 
             <div>
-                <label for="year">Rok</label>
+                <label for="year"><wicket:message key="form.year">Rok</wicket:message></label>
                 <input type="text" wicket:id="year"/>
             </div>
 
             <div>
-                <label for="web">Web</label>
+                <label for="web"><wicket:message key="form.web">Web</wicket:message></label>
                 <input type="text" wicket:id="web"/>
             </div>
 
             <div>
-                <label for="hours">Hodiny</label>
+                <label for="hours"><wicket:message key="form.hours">Hodiny</wicket:message></label>
                 <input type="text" wicket:id="hours"/>
             </div>
 
             <div>
-                <label for="days">Dny</label>
+                <label for="days"><wicket:message key="form.days">Dny</wicket:message></label>
                 <input type="text" wicket:id="days"/>
             </div>
 
             <div>
-                <label for="players">Hráči</label>
+                <label for="players"><wicket:message key="form.players">Hráči</wicket:message></label>
                 <input type="text" wicket:id="players"/>
             </div>
 
             <div>
-                <label for="menRole">Mužské role</label>
+                <label for="menRole"><wicket:message key="form.menRole">Mužské role</wicket:message></label>
                 <input type="text" wicket:id="menRole"/>
             </div>
 
             <div>
-                <label for="womenRole">Ženské role</label>
+                <label for="womenRole"><wicket:message key="form.womenRole">Ženské role</wicket:message></label>
                 <input type="text" wicket:id="womenRole"/>
             </div>
 
             <div>
-                <label for="bothRole">Obojetné role</label>
+                <label for="bothRole"><wicket:message key="form.anyRole">Obojetné role</wicket:message></label>
                 <input type="text" wicket:id="bothRole"/>
             </div>
 
             <div>
-                <label for="videoPath">Video</label>
+                <label for="videoPath"><wicket:message key="form.video">Video</wicket:message></label>
                 <input type="text" wicket:id="videoPath"/>
             </div>
 
             <div>
-                <label for="image">Obrázek</label>
+                <label for="image"><wicket:message key="form.image">Obrázek</wicket:message></label>
                 <input type="file" wicket:id="image"/>
             </div>
 
             <div>
-                <label for="authors">Autoři</label>
+                <label for="authors"><wicket:message key="authorsCapitalized">Autoři</wicket:message></label>
                 <div wicket:id="authors"></div>
-                <input type="button" value="Nový autor" wicket:id="createAuthor"/>
+                <input type="button" value="Nový autor" wicket:message="value:form.newAuthor" wicket:id="createAuthor"/>
             </div>
 
             <div>
-                <label for="groups">Autorské skupiny</label>
+                <label for="groups"><wicket:message key="form.authorGroups">Autorské skupiny</wicket:message></label>
                 <div wicket:id="groups"></div>
-                <input type="button" value="Nová skupina" wicket:id="createGroup"/>
+                <input type="button" value="Nová skupina" wicket:messsage="value:form.newGroup" wicket:id="createGroup"/>
             </div>
 
             <div>
-                <!-- <div wicket:id=chooseLabels></div> -->
-                <input type="button" value="Nový štítek" wicket:id="createLabel"/>
+                <div wicket:id="chooseLabels"></div>
+                <input type="button" value="Nový štítek" wicket:message="value:form.newLabel" wicket:id="createLabel"/>
             </div>
 
             <div>
-                <input type="submit" value="Uložit" wicket:id="submit"/>
+                <input type="submit" value="Uložit" wicket:message="value:form.save" wicket:id="submit"/>
             </div>
         </fieldset>
     </form>

@@ -1,6 +1,6 @@
 <wicket:panel xmlns:wicket="http://wicket.apache.org">
     <div class="nadpisSekce">
-        <a wicket:id="mostActiveCommenterHead">Nejaktivnější tvůrce</a>
+        <a wicket:id="mostActiveCommenterHead"><wicket:message key="mostActiveCreator">Nejaktivnější</wicket:message></a>
     </div>
     <table>
         <tbody>
@@ -16,8 +16,8 @@
                     <span class="jmeno" wicket:id="mostActiveCommenterName"></span>
                 </a>
 
-                <div class="popisekUzivatel">ocenění za největší počet vytvořených her</div>
-                <div class="popisekUzivatel"><span wicket:id="ammountCommented">38</span> vytvořených her</div>
+                <div class="popisekUzivatel"><wicket:message key="mostCreatedGamesPrize">Ocenění</wicket:message></div>
+                <div class="popisekUzivatel"><span wicket:id="ammountCommented">38 vytvořených her</span></div>
             </td>
         </tr>
         </tbody>

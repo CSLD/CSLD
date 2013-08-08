@@ -23,7 +23,7 @@ public class LabelDAO extends GenericHibernateDAO<Label, Integer> {
     @SuppressWarnings("unchecked")
     public List<Label> getByAutoCompletable(String labelName) throws WrongParameterException {
         Criteria uniqueLabel = sessionFactory.getCurrentSession().createCriteria(Label.class).add(
-                Restrictions.eq("name", labelName)
+                Restrictions.eq("form.wholeName", labelName)
         );
         return uniqueLabel.list();
     }

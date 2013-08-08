@@ -2,13 +2,13 @@
     <div class="levaCast" id="Uzivatele">
         <div class="sekce sekceUzivatele">
             <div class="nadpisStranky">
-                <img src="/files/img/icon/user_icon.png" class="ikonaStranky">Uživatelé
+                <img wicket:id="usersIcon" class="ikonaStranky"><wicket:message key="user.users">Uživatelé</wicket:message>
             </div>
             <table>
                 <thead>
-                    <th wicket:id="orderByName">Name</th>
-                    <th wicket:id="orderByCommented">Komentovaných</th>
-                    <th wicket:id="orderByPlayed">Hraných</th>
+                    <th wicket:id="orderByName"><wicket:message key="form.name">Jméno</wicket:message></th>
+                    <th wicket:id="orderByCommented"><wicket:message key="user.commented">Komentovaných</wicket:message></th>
+                    <th wicket:id="orderByPlayed"><wicket:message key="user.played">Hraných</wicket:message></th>
                 </thead>
                 <tr wicket:id="listAuthor" class="polozkaUzivatel">
                     <td class="larp">
@@ -18,10 +18,10 @@
                         </a>
                     </td>
                     <td class="pocetherUzivatel komentare">
-                        <span wicket:id="commentedGames">38</span> komentovaných her
+                        <span wicket:id="commentedGames">38</span><wicket:message key="user.commentedGames"> komentovaných her</wicket:message>
                     </td>
                     <td class="pocetherUzivatel">
-                        <span wicket:id="playedGames">38</span> odehraných her
+                        <span wicket:id="playedGames">38</span><wicket:message key="user.playedGames"> odehraných her</wicket:message>
                     </td>
                 </tr>
             </table>

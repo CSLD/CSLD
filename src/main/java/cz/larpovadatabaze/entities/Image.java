@@ -105,7 +105,7 @@ public class Image implements Serializable {
 
     public static Image getDefaultGroup() {
         Image groupImage = new Image();
-        groupImage.setPath("files/img/author_icon.png");
+        groupImage.setPath("files/img/group_icon.png");
         return groupImage;
     }
 
@@ -119,5 +119,33 @@ public class Image implements Serializable {
         Image gameImage = new Image();
         gameImage.setPath("files/img/author_icon.png");
         return gameImage;
+    }
+
+    public static String getPlusIconPath() {
+        return "/files/img/icon/plus_icon.png";
+    }
+
+    public static String getQuestionIconPath() {
+        return "/files/img/icon/question_icon.png";
+    }
+
+    public static String getLightBulbIconPath() {
+        return "/files/img/icon/light_icon.png";
+    }
+
+    public static String getChartsIconPath() {
+        return "/files/img/icon/charts_icon.png";
+    }
+
+    public static String getRatingsIconPath() {
+        return "/files/img/icon/star_icon.png";
+    }
+
+    public static String getCommentsIconPath() {
+        return "/files/img/icon/comment_icon.png";
+    }
+
+    public static String getUserIconPath() {
+        return "/files/img/icon/user_icon.png";
     }
 }

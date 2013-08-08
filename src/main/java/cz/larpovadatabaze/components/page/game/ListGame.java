@@ -9,12 +9,14 @@ import cz.larpovadatabaze.providers.SortableGameProvider;
 import cz.larpovadatabaze.services.GameService;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.OrderByBorder;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.ContextRelativeResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
@@ -28,6 +30,9 @@ public class ListGame extends CsldBasePage {
     GameService gameService;
 
     public ListGame() {
+        Image chartsIcon = new Image("chartsIcon", new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getChartsIconPath()));
+        add(chartsIcon);
+
         SortableGameProvider sgp = new SortableGameProvider(gameService);
         final DataView<Game> propertyList = new DataView<Game>("listGames", sgp) {
             @Override
@@ -55,17 +60,21 @@ public class ListGame extends CsldBasePage {
                         game.getRatings() : new ArrayList<Rating>();
                 final Label gameRatings = new Label("ratings", ratings.size());
                 item.add(gameRatings);
+                final Image ratingsIcon = new Image("ratingsIcon", new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getRatingsIconPath()));
+                item.add(ratingsIcon);
 
                 List<Comment> comments = (game.getComments() != null) ?
                         game.getComments() : new ArrayList<Comment>();
                 final Label gameComments = new Label("comments", comments.size());
                 item.add(gameComments);
+                final Image commentsIcon = new Image("commentsIcon", new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getCommentsIconPath()));
+                item.add(commentsIcon);
             }
         };
         propertyList.setOutputMarkupId(true);
         propertyList.setItemsPerPage(25L);
 
-        add(new OrderByBorder("orderByName", "name", sgp)
+        add(new OrderByBorder("orderByName", "form.wholeName", sgp)
         {
             private static final long serialVersionUID = 1L;
 

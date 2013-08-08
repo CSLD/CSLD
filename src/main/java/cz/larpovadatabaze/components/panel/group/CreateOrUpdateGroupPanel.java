@@ -7,8 +7,6 @@ import cz.larpovadatabaze.services.GroupService;
 import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.FileUtils;
 import org.apache.wicket.Application;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
@@ -17,7 +15,6 @@ import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Bytes;
 
@@ -59,12 +56,15 @@ public class CreateOrUpdateGroupPanel extends Panel {
         // Set maximum size to 1024K for demo purposes
         createGroup.setMaxSize(Bytes.kilobytes(1024));
 
-        createGroup.add(new FeedbackPanel("feedback"));
+        FeedbackPanel feedback = new FeedbackPanel("feedback");
+        feedback.setOutputMarkupId(true);
+        createGroup.add(feedback);
         createGroup.add(new TextField<String>("name").setRequired(true));
 
         // Add one file input field
         createGroup.add(fileUploadField = new FileUploadField("image"));
 
+        createGroup.add(new Button("submit"));
         add(createGroup);
     }
 

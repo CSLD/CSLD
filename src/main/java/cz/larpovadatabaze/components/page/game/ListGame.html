@@ -1,16 +1,16 @@
 <wicket:extend xmlns:wicket="http://wicket.apache.org">
     <div class="levaCast" id="Zebricky">
         <div class="nadpisStranky">
-            <img src="/files/img/icon/charts_icon.png" class="ikonaStranky">Žebříčky
+            <img wicket:id="chartsIcon" class="ikonaStranky"><wicket:message key="game.charts">Žebříčky</wicket:message>
         </div>
         <table>
             <thead>
             <tr>
                 <td></td>
-                <td wicket:id="orderByName">Jméno</td>
-                <td wicket:id="orderByRating">Hodnocení</td>
-                <td wicket:id="orderByRatingAmount">Počet hodnocení</td>
-                <td wicket:id="orderByCommentAmount">Počet komentářů</td>
+                <td wicket:id="orderByName"><wicket:message key="form.name">Jméno</wicket:message></td>
+                <td wicket:id="orderByRating"><wicket:message key="game.rating">Hodnocení</wicket:message></td>
+                <td wicket:id="orderByRatingAmount"><wicket:message key="game.amountOfRatings">Počet hodnocení</wicket:message></td>
+                <td wicket:id="orderByCommentAmount"><wicket:message key="game.amountOfComments">Počet komentářů</wicket:message></td>
             </tr>
             </thead>
             <tbody>
@@ -26,10 +26,10 @@
                 </td>
                 <td class="hodnoceni"><span wicket:id="rating">94</span> %</td>
                 <td class="pocet_hodnoceni">
-                    <span wicket:id="ratings"></span><img src="/files/img/icon/star_icon.png" style="position:relative; top:2px;">
+                    <span wicket:id="ratings"></span><img wicket:id="ratingsIcon" style="position:relative; top:2px;">
                 </td>
                 <td class="pocet_hodnoceni">
-                    <span wicket:id="comments"></span><img src="/files/img/icon/comment_icon.png" style="position:relative; top:3px;">
+                    <span wicket:id="comments"></span><img wicket:id="commentsIcon" style="position:relative; top:3px;">
                 </td>
             </tr>
             </tbody>

@@ -4,27 +4,27 @@
             <div class="feedback" wicket:id="feedback"></div>
 
             <div>
-                <label for="email">Email</label>
+                <label for="email"><wicket:message key="form.email">Email</wicket:message></label>
                 <input type="email" wicket:id="email"/>
             </div>
 
             <div>
-                <label for="name">Celé jméno</label>
+                <label for="name"><wicket:message key="form.wholeName">Celé jméno</wicket:message></label>
                 <input type="text" wicket:id="name"/>
             </div>
 
             <div>
-                <label for="nickname">Přezdívka</label>
+                <label for="nickname"><wicket:message key="form.nickname">Přezdívka</wicket:message></label>
                 <input type="text" wicket:id="nickname"/>
             </div>
 
             <div>
-                <label for="description">Popis</label>
+                <label for="description"><wicket:message key="form.description">Popis</wicket:message></label>
                 <textarea wicket:id="description"></textarea>
             </div>
 
             <div>
-                <input type="submit" value="Uložit" wicket:id="submit"/>
+                <input type="submit" value="Uložit" wicket:message="value:save" wicket:id="submit"/>
             </div>
 
         </fieldset>

@@ -3,11 +3,13 @@ package cz.larpovadatabaze.components.panel.game;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.services.GameService;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -25,10 +27,10 @@ public class RatingsResultPanel extends Panel {
         String ratingColor = Rating.getColorOf(ratingOfGame);
 
         WebMarkupContainer finalRating = new WebMarkupContainer("resultsOfRating");
-        finalRating.add(new AttributeAppender("class",Model.of(ratingColor)));
+        finalRating.add(new AttributeModifier("class",Model.of(ratingColor)));
 
         Label rating = new Label("rating", Model.of(ratingOfGame));
-        Label raters = new Label("raters", Model.of(game.getRatings().size()));
+        Label raters = new Label("raters", new StringResourceModel("game.ratedBy",this,new Model<Game>(game)));
 
         finalRating.add(rating);
         finalRating.add(raters);
