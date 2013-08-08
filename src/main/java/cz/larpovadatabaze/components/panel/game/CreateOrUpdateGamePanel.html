@@ -5,66 +5,76 @@
 
     <form wicket:id="addGame">
         <fieldset>
-            <div class="feedback" wicket:id="feedback"></div>
-
             <div>
                 <label for="name"><wicket:message key="form.name">Jméno</wicket:message></label>
                 <input type="text" wicket:id="name"/>
+                <span wicket:id="nameFeedback"></span>
             </div>
 
             <div>
                 <label for="description"><wicket:message key="form.description">Popis</wicket:message></label>
                 <textarea wicket:id="description"></textarea>
+                <span wicket:id="descriptionFeedback"></span>
             </div>
 
             <div>
                 <label for="year"><wicket:message key="form.year">Rok</wicket:message></label>
                 <input type="text" wicket:id="year"/>
+                <span wicket:id="yearFeedback"></span>
             </div>
 
             <div>
                 <label for="web"><wicket:message key="form.web">Web</wicket:message></label>
                 <input type="text" wicket:id="web"/>
+                <span wicket:id="webFeedback"></span>
             </div>
 
             <div>
                 <label for="hours"><wicket:message key="form.hours">Hodiny</wicket:message></label>
                 <input type="text" wicket:id="hours"/>
+                <span wicket:id="hoursFeedback"></span>
             </div>
 
             <div>
                 <label for="days"><wicket:message key="form.days">Dny</wicket:message></label>
                 <input type="text" wicket:id="days"/>
+                <span wicket:id="daysFeedback"></span>
             </div>
 
             <div>
                 <label for="players"><wicket:message key="form.players">Hráči</wicket:message></label>
                 <input type="text" wicket:id="players"/>
+                <span wicket:id="playersFeedback"></span>
             </div>
 
             <div>
                 <label for="menRole"><wicket:message key="form.menRole">Mužské role</wicket:message></label>
                 <input type="text" wicket:id="menRole"/>
+                <span wicket:id="menRoleFeedback"></span>
             </div>
 
             <div>
                 <label for="womenRole"><wicket:message key="form.womenRole">Ženské role</wicket:message></label>
                 <input type="text" wicket:id="womenRole"/>
+                <span wicket:id="womenRoleFeedback"></span>
             </div>
 
             <div>
                 <label for="bothRole"><wicket:message key="form.anyRole">Obojetné role</wicket:message></label>
                 <input type="text" wicket:id="bothRole"/>
+                <span wicket:id="bothRoleFeedback"></span>
             </div>
 
             <div>
                 <label for="videoPath"><wicket:message key="form.video">Video</wicket:message></label>
                 <input type="text" wicket:id="videoPath"/>
+                <span wicket:id="videoPathFeedback"></span>
             </div>
 
             <div>
                 <label for="image"><wicket:message key="form.image">Obrázek</wicket:message></label>
                 <input type="file" wicket:id="image"/>
+                <span wicket:id="imageFeedback"></span>
             </div>
 
             <div>

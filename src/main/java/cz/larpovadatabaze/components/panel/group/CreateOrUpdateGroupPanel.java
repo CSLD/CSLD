@@ -1,12 +1,14 @@
 package cz.larpovadatabaze.components.panel.group;
 
 import cz.larpovadatabaze.Csld;
+import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.Image;
 import cz.larpovadatabaze.services.GroupService;
 import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.FileUtils;
 import org.apache.wicket.Application;
+import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
@@ -55,14 +57,26 @@ public class CreateOrUpdateGroupPanel extends Panel {
         createGroup.setMultiPart(true);
         // Set maximum size to 1024K for demo purposes
         createGroup.setMaxSize(Bytes.kilobytes(1024));
+        createGroup.setOutputMarkupId(true);
 
-        FeedbackPanel feedback = new FeedbackPanel("feedback");
-        feedback.setOutputMarkupId(true);
-        createGroup.add(feedback);
-        createGroup.add(new TextField<String>("name").setRequired(true));
+        TextField<String> name = new TextField<String>("name");
+        name.setRequired(true);
+        ComponentFeedbackMessageFilter nameFilter = new ComponentFeedbackMessageFilter(name);
+        final FeedbackPanel nameFeedback = new FeedbackPanel("nameFeedback", nameFilter);
+        nameFeedback.setOutputMarkupId(true);
+        createGroup.add(nameFeedback);
+        name.add(new AjaxFeedbackUpdatingBehavior("blur", nameFeedback));
+        createGroup.add(name);
 
         // Add one file input field
-        createGroup.add(fileUploadField = new FileUploadField("image"));
+
+        fileUploadField = new FileUploadField("image");
+        ComponentFeedbackMessageFilter imageFilter = new ComponentFeedbackMessageFilter(fileUploadField);
+        final FeedbackPanel imageFeedback = new FeedbackPanel("imageFeedback", imageFilter);
+        imageFeedback.setOutputMarkupId(true);
+        createGroup.add(imageFeedback);
+        name.add(new AjaxFeedbackUpdatingBehavior("blur", imageFeedback));
+        createGroup.add(fileUploadField);
 
         createGroup.add(new Button("submit"));
         add(createGroup);

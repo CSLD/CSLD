@@ -3,16 +3,16 @@
         <form wicket:id="addGroup">
             <h2><wicket:message key="group.create">Přidat skupinu</wicket:message></h2>
 
-            <div class="feedback" wicket:id="feedback"></div>
-
             <div>
                 <label for="name"><wicket:message key="form.name">Jméno</wicket:message></label>
                 <input type="text" wicket:id="name"/>
+                <span wicket:id="nameFeedback"></span>
             </div>
 
             <div>
                 <label for="image"><wicket:message key="form.image">Obrázek</wicket:message></label>
                 <input type="file" wicket:id="image"/>
+                <span wicket:id="imageFeedback"></span>
             </div>
 
             <div>

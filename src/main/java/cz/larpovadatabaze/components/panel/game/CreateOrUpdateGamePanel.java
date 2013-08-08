@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.components.panel.game;
 
 import cz.larpovadatabaze.Csld;
+import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
 import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
 import cz.larpovadatabaze.components.panel.group.CreateOrUpdateGroupPanel;
 import cz.larpovadatabaze.entities.CsldGroup;
@@ -13,16 +14,15 @@ import cz.larpovadatabaze.services.GroupService;
 import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.FileUtils;
 import org.apache.wicket.Application;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.*;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.markup.html.form.Button;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
+import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
@@ -82,22 +82,20 @@ public class CreateOrUpdateGamePanel extends Panel {
         createOrUpdateGame.setMultiPart(true);
         createOrUpdateGame.setMaxSize(Bytes.kilobytes(1024));
 
-        FeedbackPanel feedback = new FeedbackPanel("feedback");
-        feedback.setOutputMarkupId(true);
-        createOrUpdateGame.add(feedback);
-        createOrUpdateGame.add(new TextField<String>("name").setRequired(true));
-        createOrUpdateGame.add(new TextArea<String>("description").setRequired(true));
-        createOrUpdateGame.add(new TextField<Integer>("year"));
-        createOrUpdateGame.add(new TextField<String>("web"));
-        createOrUpdateGame.add(new TextField<Integer>("hours"));
-        createOrUpdateGame.add(new TextField<Integer>("days"));
-        createOrUpdateGame.add(new TextField<Integer>("players"));
-        createOrUpdateGame.add(new TextField<Integer>("menRole"));
-        createOrUpdateGame.add(new TextField<Integer>("womenRole"));
-        createOrUpdateGame.add(new TextField<Integer>("bothRole"));
-        createOrUpdateGame.add(new TextField<String>("videoPath", new PropertyModel<String>(this, "videoPath")));
+        createOrUpdateGame.add(addFeedbackPanel(new TextField<String>("name").setRequired(true), createOrUpdateGame, "nameFeedback"));
+        createOrUpdateGame.add(addFeedbackPanel(new TextArea<String>("description").setRequired(true), createOrUpdateGame, "descriptionFeedback"));
+        createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("year"), createOrUpdateGame, "yearFeedback"));
+        createOrUpdateGame.add(addFeedbackPanel(new TextField<String>("web"), createOrUpdateGame, "webFeedback"));
+        createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("hours"), createOrUpdateGame, "hoursFeedback"));
+        createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("days"), createOrUpdateGame, "daysFeedback"));
+        createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("players"), createOrUpdateGame, "playersFeedback"));
+        createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("menRole"), createOrUpdateGame, "menRoleFeedback"));
+        createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("womenRole"), createOrUpdateGame, "womenRoleFeedback"));
+        createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("bothRole"), createOrUpdateGame, "bothRoleFeedback"));
+        createOrUpdateGame.add(addFeedbackPanel(new TextField<String>("videoPath", new PropertyModel<String>(this, "videoPath")), createOrUpdateGame, "videoPathFeedback"));
 
-        createOrUpdateGame.add(fileUploadField = new FileUploadField("image"));
+        fileUploadField = new FileUploadField("image");
+        createOrUpdateGame.add(addFeedbackPanel(fileUploadField, createOrUpdateGame, "imageFeedback"));
 
         addAuthorsInput(createOrUpdateGame);
         addGroupsInput(createOrUpdateGame);
@@ -110,9 +108,16 @@ public class CreateOrUpdateGamePanel extends Panel {
 
         createOrUpdateGame.add(new Button("submit"));
 
-        AjaxFormValidatingBehavior.addToAllFormComponents(createOrUpdateGame, "keydown", Duration.ONE_SECOND);
-
         add(createOrUpdateGame);
+    }
+
+    private FormComponent addFeedbackPanel(FormComponent addFeedbackTo, Form addingFeedbackTo, String nameOfFeedbackPanel){
+        ComponentFeedbackMessageFilter filter = new ComponentFeedbackMessageFilter(addFeedbackTo);
+        final FeedbackPanel feedbackPanel = new FeedbackPanel(nameOfFeedbackPanel, filter);
+        feedbackPanel.setOutputMarkupId(true);
+        addingFeedbackTo.add(feedbackPanel);
+        addFeedbackTo.add(new AjaxFeedbackUpdatingBehavior("blur", feedbackPanel));
+        return addFeedbackTo;
     }
 
     private void addCreateLabelButton(Form<Game> createOrUpdateGame) {

@@ -2,6 +2,7 @@ package cz.larpovadatabaze.components.panel.author;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.author.AuthorDetail;
+import cz.larpovadatabaze.components.page.author.CreateOrUpdateAuthorPage;
 import cz.larpovadatabaze.components.page.user.CreateOrUpdateUserPage;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
@@ -20,12 +21,12 @@ public class AddAuthorPanel extends Panel {
 
         Image createAuthorImage = new Image("createAuthorImage", new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getPlusIconPath()));
         BookmarkablePageLink<CsldBasePage> createAuthor =
-                new BookmarkablePageLink<CsldBasePage>("createAuthorIcon", CreateOrUpdateUserPage.class);
+                new BookmarkablePageLink<CsldBasePage>("createAuthorIcon", CreateOrUpdateAuthorPage.class);
         createAuthor.add(createAuthorImage);
         add(createAuthor);
 
         BookmarkablePageLink<CsldBasePage> createAuthorLink =
-                new BookmarkablePageLink<CsldBasePage>("createAuthor", CreateOrUpdateUserPage.class);
+                new BookmarkablePageLink<CsldBasePage>("createAuthor", CreateOrUpdateAuthorPage.class);
         add(createAuthorLink);
     }
 
