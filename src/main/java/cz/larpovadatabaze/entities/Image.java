@@ -117,7 +117,7 @@ public class Image implements Serializable {
 
     public static Image getDefaultGame() {
         Image gameImage = new Image();
-        gameImage.setPath("files/img/author_icon.png");
+        gameImage.setPath("files/img/question_icon.png");
         return gameImage;
     }
 
@@ -147,5 +147,9 @@ public class Image implements Serializable {
 
     public static String getUserIconPath() {
         return "/files/img/icon/user_icon.png";
+    }
+
+    public static String getSearchResultsIconPath() {
+        return "/files/img/icon/glass_icon.png";
     }
 }

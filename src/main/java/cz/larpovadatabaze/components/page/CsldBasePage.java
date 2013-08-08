@@ -17,10 +17,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.request.http.WebResponse;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 9.4.13
- * Time: 10:18
+ * Base page from which all other pages are derived.
  */
 public class CsldBasePage extends WebPage {
     public CsldBasePage(){
