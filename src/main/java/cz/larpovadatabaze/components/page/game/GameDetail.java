@@ -11,10 +11,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 28.4.13
- * Time: 11:31
+ *
  */
 public class GameDetail extends CsldBasePage {
     @SpringBean

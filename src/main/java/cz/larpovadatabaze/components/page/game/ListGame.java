@@ -29,7 +29,8 @@ public class ListGame extends CsldBasePage {
     @SpringBean
     GameService gameService;
 
-    public ListGame() {
+    public ListGame(PageParameters params) {
+        // TODO params may contain information about filters applied on this page.
         Image chartsIcon = new Image("chartsIcon", new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getChartsIconPath()));
         add(chartsIcon);
 

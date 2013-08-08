@@ -117,7 +117,7 @@ public class Image implements Serializable {
 
     public static Image getDefaultGame() {
         Image gameImage = new Image();
-        gameImage.setPath("files/img/question_icon.png");
+        gameImage.setPath("files/img/icon/question_icon_game.png");
         return gameImage;
     }
 
