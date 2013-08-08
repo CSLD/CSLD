@@ -31,7 +31,7 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
         if(amountOfGames > last) {
             last = amountOfGames;
         }
-        if(property.equals("name")){
+        if(property.equals("form.wholeName")){
             return gameService.getOrderedByName().subList((int)first,(int)last).iterator();
         } else if(property.equals("rating")) {
             return gameService.getRated().subList((int)first,(int)last).iterator();

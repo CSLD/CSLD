@@ -1,8 +1,13 @@
 package cz.larpovadatabaze.components.page.user;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.page.author.AuthorDetail;
+import cz.larpovadatabaze.components.page.game.ListGame;
+import cz.larpovadatabaze.components.panel.game.GameListPanel;
+import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import org.apache.wicket.authentication.IAuthenticationStrategy;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 /**
@@ -18,10 +23,9 @@ public class SignOut extends CsldBasePage {
         IAuthenticationStrategy strategy = getApplication().getSecuritySettings()
                 .getAuthenticationStrategy();
         strategy.remove();
-        //getSession().invalidate();
 
-        /*throw new RestartResponseException(
-                ListGame.class
-        );*/
+        final BookmarkablePageLink<CsldUser> homePageLink =
+                new BookmarkablePageLink<CsldUser>("homePageLink", ListGame.class);
+        add(homePageLink);
     }
 }

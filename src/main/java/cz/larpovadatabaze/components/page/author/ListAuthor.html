@@ -1,12 +1,12 @@
 <wicket:extend xmlns:wicket="http://wicket.apache.org">
     <div class="levaCast" id="Autori">
         <div class="nadpisStranky">
-            <img src="/files/img/icon/light_icon.png" class="ikonaStranky">Autoři
+            <img wicket:id="authorsIcon" class="ikonaStranky" /><wicket:message key="authorsCapitalized">Autoři</wicket:message>
         </div>
         <table>
             <thead>
-            <th wicket:id="orderByName">Name</th>
-            <th wicket:id="orderByBestGame">Nejlepší hra autora</th>
+            <th wicket:id="orderByName"><wicket:message key="form.name">Jméno</wicket:message></th>
+            <th wicket:id="orderByBestGame"><wicket:message key="author.bestGames">Nejlepší hra autora</wicket:message></th>
             </thead>
             <tr class="polozkaAutor" wicket:id="listAuthor">
                 <td class="larp">

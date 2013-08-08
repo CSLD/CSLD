@@ -10,10 +10,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 13.5.13
- * Time: 22:32
+ *
  */
 public class EditGamePanel extends Panel {
     public EditGamePanel(String id, Game toEdit) {

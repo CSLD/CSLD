@@ -14,7 +14,6 @@ public class AboutDbPanel extends Panel
     public AboutDbPanel(String id) {
         super(id);
 
-        add(new AddAuthorPanel("addAuthor"));
         add(new AdministratorPanel("administrators"));
         add(new EditorPanel("moderators"));
     }

@@ -1,12 +1,12 @@
 <wicket:extend xmlns:wicket="http://wicket.apache.org">
     <div class="levaCast" id="Skupiny">
         <div class="nadpisStranky">
-            <img src="/files/img/icon/light_icon.png" class="ikonaStranky">Skupiny
+            <img wicket:id="groupsIcon" class="ikonaStranky"><wicket:message key="group.group">Skupiny</wicket:message>
         </div>
         <table>
             <tr>
                 <td></td>
-                <td>Jméno</td>
+                <td><wicket:message key="form.name">Jméno</wicket:message></td>
             </tr>
             <tr wicket:id="listGroups">
                 <td></td>
@@ -17,7 +17,7 @@
 
     <div class="pravaCast" id="Skupiny">
         <div class="praveMenu">
-            <div class="nadpisMenu">Skupiny</div>
+            <div class="nadpisMenu"><wicket:message key="group.group">Skupiny</wicket:message></div>
         </div>
 
         <div class="sekce" wicket:id="addGroup"></div>

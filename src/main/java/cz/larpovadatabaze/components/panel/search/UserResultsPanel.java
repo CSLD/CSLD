@@ -1,4 +1,4 @@
-package cz.larpovadatabaze.components.panel.user;
+package cz.larpovadatabaze.components.panel.search;
 
 import org.apache.wicket.markup.html.panel.Panel;
 

@@ -42,7 +42,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Person getByEmail(String email) {
-        Criterion criterion = Restrictions.eq("email", email);
+        Criterion criterion = Restrictions.eq("form.email", email);
         Person uniqueResult = personDAO.findSingleByCriteria(criterion);
         personDAO.flush();
         return uniqueResult;

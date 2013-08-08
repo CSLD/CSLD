@@ -13,6 +13,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -50,9 +51,9 @@ public class PlayedPanel extends Panel {
             }
         };
         Select states = new Select("stateOfGame", new PropertyModel(this, "selected"));
-        states.add(new SelectOption<String>("didntPlay", new Model<String>("Nehrál jsem")));
-        states.add(new SelectOption<String>("played", new Model<String>("Hrál jsem")));
-        states.add(new SelectOption<String>("wantToPlay", new Model<String>("Chci hrát")));
+        states.add(new SelectOption<String>("didntPlay", new StringResourceModel("game.notPlayed", this, null)));
+        states.add(new SelectOption<String>("played", new StringResourceModel("game.played", this, null)));
+        states.add(new SelectOption<String>("wantToPlay", new StringResourceModel("game.wishToPlay", this, null)));
         states.setOutputMarkupId(true);
         states.add(new AjaxFormComponentUpdatingBehavior("change") {
             @Override

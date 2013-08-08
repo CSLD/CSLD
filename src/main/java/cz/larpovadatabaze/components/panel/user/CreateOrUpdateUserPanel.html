@@ -4,52 +4,52 @@
             <div class="feedback" wicket:id="feedback"></div>
 
             <div>
-                <label for="email">Přihlašovací jméno (Platný email)</label>
+                <label for="email"><wicket:message key="form.loginMail">Přihlašovací jméno (Platný email)</wicket:message></label>
                 <input type="email" wicket:id="person.email"/>
             </div>
 
             <div>
-                <label for="name">Celé jméno</label>
+                <label for="name"><wicket:message key="form.wholeName">Celé jméno</wicket:message></label>
                 <input type="text" wicket:id="person.name"/>
             </div>
 
             <div>
-                <label for="nickname">Přezdívka</label>
+                <label for="nickname"><wicket:message key="form.nickname">Přezdívka</wicket:message></label>
                 <input type="text" wicket:id="person.nickname"/>
             </div>
 
             <div>
-                <label for="birthDate">Datum narození</label>
+                <label for="birthDate"><wicket:message key="form.dateOfBirth">Datum narození</wicket:message></label>
                 <input type="text" wicket:id="person.birthDate"/>
             </div>
 
             <div>
-                <label for="city">Město</label>
+                <label for="city"><wicket:message key="form.city">Město</wicket:message></label>
                 <input type="text" wicket:id="person.city"/>
             </div>
 
             <div>
-                <label for="description">Popis</label>
+                <label for="description"><wicket:message key="form.description">Popis</wicket:message></label>
                 <textarea wicket:id="person.description"></textarea>
             </div>
 
             <div>
-                <label for="password">Heslo</label>
+                <label for="password"><wicket:message key="form.password">Heslo</wicket:message></label>
                 <input type="password" wicket:id="password"/>
             </div>
 
             <div>
-                <label for="passwordAgain">Heslo znovu</label>
+                <label for="passwordAgain"><wicket:message key="form.passwordAgain">Heslo znovu</wicket:message></label>
                 <input type="password" wicket:id="passwordAgain"/>
             </div>
 
             <div>
-                <label for="image">Obrázek</label>
+                <label for="image"><wicket:message key="form.image">Obrázek</wicket:message></label>
                 <input type="file" wicket:id="image"/>
             </div>
 
             <div>
-                <input type="submit" value="Uložit" wicket:id="submit"/>
+                <input type="submit" value="Uložit" wicket:message="value:form.save" wicket:id="submit"/>
             </div>
 
         </fieldset>

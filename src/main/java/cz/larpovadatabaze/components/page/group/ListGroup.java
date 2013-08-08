@@ -7,10 +7,12 @@ import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.providers.SortableGroupProvider;
 import cz.larpovadatabaze.services.GroupService;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.ContextRelativeResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -24,8 +26,10 @@ public class ListGroup extends CsldBasePage {
     private GroupService groupService;
 
     public ListGroup() {
-        SortableGroupProvider sgp = new SortableGroupProvider(groupService);
+        Image authorsIcon = new Image("groupsIcon", new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getLightBulbIconPath()));
+        add(authorsIcon);
 
+        SortableGroupProvider sgp = new SortableGroupProvider(groupService);
         final DataView<CsldGroup> groupList = new DataView<CsldGroup>("listGroups", sgp) {
 
             @Override

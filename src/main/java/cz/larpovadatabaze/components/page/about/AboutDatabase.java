@@ -1,16 +1,21 @@
 package cz.larpovadatabaze.components.page.about;
 
+import com.googlecode.wicket.jquery.core.JQueryBehavior;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.panel.about.AboutDbPanel;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.request.resource.ContextRelativeResource;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 28.4.13
- * Time: 19:15
+ *
  */
 public class AboutDatabase extends CsldBasePage {
     public AboutDatabase(){
+        Image questionImage = new Image("questionIcon", new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getQuestionIconPath()));
+        add(questionImage);
+
+        add(new JQueryBehavior("#accordion","accordion"));
+
         add(new AboutDbPanel("rightPartAboutDb"));
     }
 }

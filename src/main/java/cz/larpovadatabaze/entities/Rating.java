@@ -96,12 +96,15 @@ public class Rating implements Serializable {
     }
 
     public static String getColorOf(double gameAsAverageRating){
-        String gameRatingColor = "mediocre";
-        if(gameAsAverageRating > 70) {
-            gameRatingColor = "great";
+        String gameRatingColor = "notrated";
+        if(gameAsAverageRating > 0){
+            gameRatingColor = "mediocre";
         }
         if(gameAsAverageRating > 40) {
             gameRatingColor = "average";
+        }
+        if(gameAsAverageRating > 70) {
+            gameRatingColor = "great";
         }
         return gameRatingColor;
     }

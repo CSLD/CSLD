@@ -28,7 +28,7 @@ public class PersonDAO extends GenericHibernateDAO<Person, Integer> {
         }
         String email = personData[1];
         Criteria uniquePerson = sessionFactory.getCurrentSession().createCriteria(Person.class).add(
-                Restrictions.eq("email",email)
+                Restrictions.eq("form.email",email)
         );
         return uniquePerson.list();
     }

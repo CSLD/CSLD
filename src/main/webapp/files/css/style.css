@@ -87,6 +87,7 @@ img {border: 0px;}
 .mediocre{background-color: #535353}
 .great{background-color: #c1001f}
 .average{background-color: #0072bc}
+.notrated{background-color: grey}
 
 .praveMenu { width: 328px; height: 50p; width: 200px; height: 30px; display: inline-block; color: #214c61; font-weight: bold; font-size: 11pt; }
 /* .sekce {  padding-left: 6px; padding-bx; background-image: url(../img/menu_zip_pozadi.png); background-repeat: repeat-x; text-align: center;  }

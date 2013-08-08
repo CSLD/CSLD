@@ -266,6 +266,16 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable {
         return String.format("%s %s, %s", person.getNickname(), person.getName(),  person.getEmail());
     }
 
+    /**
+     * It is used in localiyation and allows us to get amount of games this author created.
+     *
+     * @return
+     */
+    @Transient
+    public int getCreatedGamesAmount(){
+        return authorOf.size();
+    }
+
     public static CsldUser getEmptyUser() {
         CsldUser emptyUser = new CsldUser();
         emptyUser.setAdministersGroups(new ArrayList<CsldGroup>());

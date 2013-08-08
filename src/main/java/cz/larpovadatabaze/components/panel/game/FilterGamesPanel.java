@@ -9,7 +9,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 
 /**
- *
+ *  //TODO finish this panel.
  */
 public class FilterGamesPanel extends Panel {
     public FilterGamesPanel(String id) {

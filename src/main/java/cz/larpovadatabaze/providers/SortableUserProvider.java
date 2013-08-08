@@ -30,7 +30,7 @@ public class SortableUserProvider extends SortableDataProvider<CsldUser, String>
         if(amountOfUsers > last) {
             last = amountOfUsers;
         }
-        if(props.getProperty().equals("name")) {
+        if(props.getProperty().equals("form.wholeName")) {
             return csldUserService.getOrderedByName().subList((int)first,(int)last).iterator();
         } else if(props.getProperty().equals("comments")) {
             return csldUserService.getOrderedByComments().subList((int)first,(int)last).iterator();

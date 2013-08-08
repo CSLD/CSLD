@@ -1,6 +1,5 @@
 package cz.larpovadatabaze.components.panel.game;
 
-import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;

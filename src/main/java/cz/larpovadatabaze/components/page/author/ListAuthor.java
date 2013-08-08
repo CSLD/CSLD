@@ -10,18 +10,17 @@ import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.GameService;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.OrderByBorder;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.ContextRelativeResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 27.4.13
- * Time: 15:03
+ *
  */
 public class ListAuthor extends CsldBasePage {
     @SpringBean
@@ -30,6 +29,8 @@ public class ListAuthor extends CsldBasePage {
     GameService gameService;
 
     public ListAuthor(){
+        Image authorsIcon = new Image("authorsIcon", new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getLightBulbIconPath()));
+        add(authorsIcon);
 
         SortableAuthorProvider sap = new SortableAuthorProvider(csldUserService);
         final DataView<CsldUser> propertyList = new DataView<CsldUser>("listAuthor",sap) {
@@ -67,7 +68,7 @@ public class ListAuthor extends CsldBasePage {
         add(propertyList);
         add(new PagingNavigator("navigator", propertyList));
 
-        add(new OrderByBorder("orderByName", "name", sap)
+        add(new OrderByBorder("orderByName", "form.wholeName", sap)
         {
             private static final long serialVersionUID = 1L;
 

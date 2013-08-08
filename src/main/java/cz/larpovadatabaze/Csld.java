@@ -100,8 +100,7 @@ public class Csld extends AuthenticatedWebApplication
 
         mountPage("/add-group", AddGroupPage.class);
         mountPage("/add-game", AddGamePage.class);
-
-        mountPage("/edit-user", EditUser.class);
+        mountPage("/add-user", CreateOrUpdateUserPage.class);
 
         mountPage("/zebricky", ListGame.class);
         mountPage("/autori", ListAuthor.class);

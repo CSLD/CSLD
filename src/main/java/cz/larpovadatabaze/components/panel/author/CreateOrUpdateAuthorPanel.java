@@ -6,13 +6,11 @@ import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.PersonService;
 import cz.larpovadatabaze.utils.Pwd;
 import cz.larpovadatabaze.validator.UniqueUserValidator;
-import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.time.Duration;
 
 /**
  * Panel used for registering new author or adding new Author into the database.

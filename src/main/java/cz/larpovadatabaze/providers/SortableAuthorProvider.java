@@ -20,7 +20,7 @@ public class SortableAuthorProvider extends SortableDataProvider<CsldUser, Strin
     private CsldUserService csldUserService;
     public SortableAuthorProvider(CsldUserService csldUserService){
         this.csldUserService = csldUserService;
-        setSort("name", SortOrder.ASCENDING);
+        setSort("form.wholeName", SortOrder.ASCENDING);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class SortableAuthorProvider extends SortableDataProvider<CsldUser, Strin
         if(amountOfAuthors > last) {
             last = amountOfAuthors;
         }
-        if(property.equals("name")){
+        if(property.equals("form.wholeName")){
             return csldUserService.getAuthorsByGames().subList((int)first,(int)last).iterator();
         } else {
             return csldUserService.getAuthorsByBestGame().subList((int)first,(int)last).iterator();
