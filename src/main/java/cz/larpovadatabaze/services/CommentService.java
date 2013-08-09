@@ -2,6 +2,8 @@ package cz.larpovadatabaze.services;
 
 import cz.larpovadatabaze.entities.Comment;
 
+import java.util.List;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Jakub Balhar
@@ -12,4 +14,6 @@ public interface CommentService extends GenericService<Comment> {
     Comment getCommentOnGameFromUser(int userId, int gameId);
 
     void saveOrUpdate(Comment actualComment);
+
+    List<Comment> getLastComments();
 }

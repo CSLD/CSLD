@@ -3,8 +3,12 @@ package cz.larpovadatabaze.dao;
 import cz.larpovadatabaze.api.GenericHibernateDAO;
 import cz.larpovadatabaze.entities.Comment;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -26,5 +30,16 @@ public class CommentDAO extends GenericHibernateDAO<Comment, Integer>{
                 add(Restrictions.eq("userId", userId)).
                 add(Restrictions.eq("gameId", gameId));
         return (Comment) uniqueComment.uniqueResult();
+    }
+
+    /**
+     * It return comments ordered from the last added.
+     *
+     * @return
+     */
+    public List<Comment> getLastComments() {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from Comment order by added desc");
+        return query.list();
     }
 }

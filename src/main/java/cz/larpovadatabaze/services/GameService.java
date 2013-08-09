@@ -37,4 +37,8 @@ public interface GameService extends GenericService<Game> {
     public double getRatingOfGame(Game game);
 
     Game getBestGame(CsldUser actualAuthor);
+
+    Game getRandomGame();
+
+    List<Game> getLastGames();
 }

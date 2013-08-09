@@ -45,4 +45,9 @@ public class CommentServiceImpl implements CommentService {
     public void saveOrUpdate(Comment actualComment) {
         commentDAO.saveOrUpdate(actualComment);
     }
+
+    @Override
+    public List<Comment> getLastComments() {
+        return commentDAO.getLastComments();
+    }
 }

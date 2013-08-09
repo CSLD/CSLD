@@ -26,7 +26,7 @@ public class GameDetailPanel extends Panel {
 
 
         final Image adminImage = new Image("gameImage",
-                new ContextRelativeResource((game.getImage() != null) ? game.getImage().getPath(): ""));
+                new ContextRelativeResource((game.getImage() != null) ? game.getImage().getPath(): cz.larpovadatabaze.entities.Image.getDefaultGame().getPath()));
         add(adminImage);
         Label gameName =
                 new Label("gameName", game.getName());

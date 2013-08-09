@@ -1,0 +1,25 @@
+<wicket:extend xmlns:wicket="http://wicket.apache.org">
+    <div class="levaCast">
+        <div id="vypisy">
+            <div class="sloupecLevy">
+                <div wicket:id="lastGames"></div>
+            </div>
+            <div class="sloupecPravy">
+                <div wicket:id="lastComments"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pravaCast">
+        <div class="praveMenu">
+            <div class="nadpisMenu"><wicket:message key="home.navigation">rychlá navigace</wicket:message></div>
+        </div>
+
+        <div class="sekce" wicket:id="createGamePanel"></div>
+
+        <div class="sekce" wicket:id="randomLarpPanel"></div>
+
+        <div class="sekce" wicket:id="statisticsPanel"></div>
+    </div>
+
+</wicket:extend>

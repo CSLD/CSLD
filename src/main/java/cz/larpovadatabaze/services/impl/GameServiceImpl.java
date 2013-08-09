@@ -10,10 +10,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  *
@@ -120,5 +117,17 @@ public class GameServiceImpl implements GameService {
     @Override
     public Game getBestGame(CsldUser actualAuthor) {
         return gameDAO.getBestGame(actualAuthor);
+    }
+
+    @Override
+    public Game getRandomGame() {
+        List<Game> all = getAll();
+        int randomGame = new Random().nextInt(all.size());
+        return all.get(randomGame);
+    }
+
+    @Override
+    public List<Game> getLastGames() {
+        return gameDAO.getLastGames();
     }
 }
