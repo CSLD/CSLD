@@ -1,13 +1,13 @@
 <wicket:panel xmlns:wicket="http://wicket.apache.org">
     <form wicket:id="filterForm">
         <div class="sekce">
-            <div class="nadpisFiltr">Počty hráčů</div>
+            <div class="nadpisFiltr"><wicket:message key="game.amountOfPlayers">Počty hráčů</wicket:message></div>
             <div class="hraciFiltr">
                 <input wicket:id="minPlayers" class="textbox blur" type="number" title="min" value=""
                        style="width: 60px;">
                 <input wicket:id="maxPlayers" class="textbox blur" type="number" title="max" value=""
                        style="width: 60px;"></div>
-            <div class="nadpisFiltr">Délka hry</div>
+            <div class="nadpisFiltr"><wicket:message key="game.length">Délka hry</wicket:message></div>
             <div class="delkaFiltr">
                 <input wicket:id="minHours" class="textbox blur" type="number" title="min hod" value=""
                        style="width: 60px;">

@@ -1,5 +1,6 @@
 package cz.larpovadatabaze;
 
+import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.components.page.about.AboutDatabase;
 import cz.larpovadatabaze.components.page.author.AuthorDetail;
 import cz.larpovadatabaze.components.page.author.ListAuthor;
@@ -54,9 +55,9 @@ public class Csld extends AuthenticatedWebApplication
 	/**
 	 * @see org.apache.wicket.Application#getHomePage()
 	 */
-	public Class<ListGame> getHomePage()
+	public Class<HomePage> getHomePage()
 	{
-		return ListGame.class;
+		return HomePage.class;
 	}
 
 	@Override

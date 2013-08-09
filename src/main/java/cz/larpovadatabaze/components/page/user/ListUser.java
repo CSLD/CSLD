@@ -29,7 +29,7 @@ public class ListUser extends CsldBasePage {
     CsldUserService csldUserService;
 
     public ListUser(){
-        Image usersIcon = new Image("usersIcon", new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getLightBulbIconPath()));
+        Image usersIcon = new Image("usersIcon", new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getUserIconPath()));
         add(usersIcon);
 
         SortableUserProvider sup = new SortableUserProvider(csldUserService);

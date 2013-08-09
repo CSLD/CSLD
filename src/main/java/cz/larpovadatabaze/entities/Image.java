@@ -105,19 +105,19 @@ public class Image implements Serializable {
 
     public static Image getDefaultGroup() {
         Image groupImage = new Image();
-        groupImage.setPath("files/img/group_icon.png");
+        groupImage.setPath("/files/img/group_icon.png");
         return groupImage;
     }
 
     public static Image getDefaultUser() {
         Image userImage = new Image();
-        userImage.setPath("files/img/author_icon.png");
+        userImage.setPath("/files/img/author_icon.png");
         return userImage;
     }
 
     public static Image getDefaultGame() {
         Image gameImage = new Image();
-        gameImage.setPath("files/img/author_icon.png");
+        gameImage.setPath("/files/img/icon/question_icon_game.png");
         return gameImage;
     }
 
@@ -147,5 +147,17 @@ public class Image implements Serializable {
 
     public static String getUserIconPath() {
         return "/files/img/icon/user_icon.png";
+    }
+
+    public static String getSearchResultsIconPath() {
+        return "/files/img/icon/glass_icon.png";
+    }
+
+    public static String getTopLogoPath() {
+        return "/files/img/nadpis.png";
+    }
+
+    public static String getMainLogoPath() {
+        return "/files/img/logo50.png";
     }
 }

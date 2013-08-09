@@ -143,4 +143,16 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
         }
         throw new RuntimeException("Trying to get Best Game of someone who is not author.");
     }
+
+    /**
+     * It returns games ordered from the last added games.
+     *
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public List<Game> getLastGames() {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from Game game order by added desc");
+        return query.list();
+    }
 }
