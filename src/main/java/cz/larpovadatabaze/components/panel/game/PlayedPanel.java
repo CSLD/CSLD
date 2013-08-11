@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.UserPlayedGame;
@@ -14,6 +15,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -28,7 +30,7 @@ public class PlayedPanel extends Panel {
     private String selected = "Nehrál jsem";
     private UserPlayedGame stateOfGame;
 
-    public PlayedPanel(String id, Game game) {
+    public PlayedPanel(String id, final Game game) {
         super(id);
 
         CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
@@ -48,6 +50,9 @@ public class PlayedPanel extends Panel {
             protected void onSubmit() {
                 super.onSubmit();
                 saveState();
+                PageParameters params = new PageParameters();
+                params.add("id",game.getId());
+                setResponsePage(GameDetail.class, params);
             }
         };
         Select states = new Select("stateOfGame", new PropertyModel(this, "selected"));
@@ -59,6 +64,9 @@ public class PlayedPanel extends Panel {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 saveState();
+                PageParameters params = new PageParameters();
+                params.add("id",game.getId());
+                setResponsePage(GameDetail.class, params);
             }
         });
 

@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.components.panel.user;
 
 import cz.larpovadatabaze.Csld;
+import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Image;
@@ -10,7 +11,8 @@ import cz.larpovadatabaze.services.PersonService;
 import cz.larpovadatabaze.utils.FileUtils;
 import cz.larpovadatabaze.validator.UniqueUserValidator;
 import org.apache.wicket.Application;
-import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
 import org.apache.wicket.markup.html.form.*;
@@ -21,7 +23,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.time.Duration;
 
 import javax.servlet.ServletContext;
 import java.io.File;
@@ -30,7 +31,7 @@ import java.util.List;
 /**
  * Panel used for registering new user or adding new Author into the database.
  */
-public class CreateOrUpdateUserPanel extends Panel {
+public abstract class CreateOrUpdateUserPanel extends Panel {
     @SpringBean
     CsldUserService csldUserService;
     @SpringBean
@@ -50,18 +51,8 @@ public class CreateOrUpdateUserPanel extends Panel {
             user = CsldUser.getEmptyUser();
         }
 
-        Form<CsldUser> createOrUpdateUser = new Form<CsldUser>("addUser", new CompoundPropertyModel<CsldUser>(user)){
-            @Override
-            protected void onSubmit() {
-                super.onSubmit();
-                validate();
-
-                if(!hasError()) {
-                    CsldUser user = getModelObject();
-                    saveOrUpdateUserSubmit(user);
-                }
-            }
-        };
+        final ValidatableForm<CsldUser> createOrUpdateUser =
+                new ValidatableForm<CsldUser>("addUser", new CompoundPropertyModel<CsldUser>(user));
         createOrUpdateUser.setMultiPart(true);
         createOrUpdateUser.setOutputMarkupId(true);
 
@@ -137,7 +128,8 @@ public class CreateOrUpdateUserPanel extends Panel {
         createOrUpdateUser.add(password);
 
 
-        PasswordTextField passwordAgain = new PasswordTextField("passwordAgain", new PropertyModel<String>(this, "passwordAgain"));
+        PasswordTextField passwordAgain =
+                new PasswordTextField("passwordAgain", new PropertyModel<String>(this, "passwordAgain"));
         passwordAgain.setRequired(true);
         ComponentFeedbackMessageFilter passwordAgainFilter = new ComponentFeedbackMessageFilter(passwordAgain);
         final FeedbackPanel passwordAgainFeedback = new FeedbackPanel("passwordAgainFeedback", passwordAgainFilter);
@@ -146,12 +138,23 @@ public class CreateOrUpdateUserPanel extends Panel {
         passwordAgain.add(new AjaxFeedbackUpdatingBehavior("blur", passwordAgainFeedback));
         createOrUpdateUser.add(passwordAgain);
 
-        createOrUpdateUser.add(new Button("submit"));
+        createOrUpdateUser.add(new AjaxButton("submit"){
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                super.onSubmit(target, form);
+
+                if(createOrUpdateUser.isValid()){
+                    CsldUser user = createOrUpdateUser.getModelObject();
+                    saveOrUpdateUserAndImage(user);
+                    onCsldAction(target, form);
+                }
+            }
+        });
 
         add(createOrUpdateUser);
     }
 
-    private void saveOrUpdateUserSubmit(CsldUser user){
+    private void saveOrUpdateUserAndImage(CsldUser user){
         final List<FileUpload> uploads = fileUpload.getFileUploads();
         if (uploads != null) {
             for (FileUpload upload : uploads) {
@@ -193,4 +196,6 @@ public class CreateOrUpdateUserPanel extends Panel {
         csldUserService.insert(user);
         csldUserService.flush();
     }
+
+    protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}
 }

@@ -40,7 +40,7 @@ public class GroupDAO extends GenericHibernateDAO<CsldGroup, Integer> {
     @SuppressWarnings("unchecked")
     public List<CsldGroup> getByAutoCompletable(String groupName) throws WrongParameterException {
         Criteria uniqueGroup = sessionFactory.getCurrentSession().createCriteria(CsldGroup.class).add(
-                Restrictions.eq("form.wholeName", groupName)
+                Restrictions.eq("name", groupName)
         );
         return uniqueGroup.list();
     }

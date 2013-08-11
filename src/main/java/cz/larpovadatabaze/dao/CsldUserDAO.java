@@ -166,7 +166,7 @@ public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
         String email = personData[1];
         Criteria uniqueUser = sessionFactory.getCurrentSession().createCriteria(CsldUser.class).
                 createCriteria("person").add(
-                Restrictions.eq("form.email", email)
+                Restrictions.eq("email", email)
         );
         return uniqueUser.list();
     }

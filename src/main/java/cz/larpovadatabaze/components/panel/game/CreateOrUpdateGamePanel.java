@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.components.panel.game;
 
 import cz.larpovadatabaze.Csld;
+import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
 import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
 import cz.larpovadatabaze.components.panel.group.CreateOrUpdateGroupPanel;
@@ -14,10 +15,8 @@ import cz.larpovadatabaze.services.GroupService;
 import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.FileUtils;
 import org.apache.wicket.Application;
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.AjaxFormValidatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.*;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -31,9 +30,9 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Bytes;
-import org.apache.wicket.util.time.Duration;
 import org.apache.wicket.validation.IValidator;
 
+import javax.persistence.criteria.From;
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.sql.Timestamp;
@@ -45,7 +44,7 @@ import java.util.List;
  * This panel is used when zou want to create or update game in the database. It encapsulates relevnat createOrUpdateGame with
  * associated HTML markup.
  */
-public class CreateOrUpdateGamePanel extends Panel {
+public abstract class CreateOrUpdateGamePanel extends Panel {
     @SpringBean
     GameService gameService;
     @SpringBean
@@ -67,17 +66,7 @@ public class CreateOrUpdateGamePanel extends Panel {
         if (game == null) {
             game = Game.getEmptyGame();
         }
-        Form<Game> createOrUpdateGame = new Form<Game>("addGame", new CompoundPropertyModel<Game>(game)) {
-            @Override
-            protected void onSubmit() {
-                super.onSubmit();
-                validate();
-                if (!hasError()) {
-                    Game game = getModelObject();
-                    saveOrUpdateGame(game);
-                }
-            }
-        };
+        final ValidatableForm<Game> createOrUpdateGame = new ValidatableForm<Game>("addGame", new CompoundPropertyModel<Game>(game));
         createOrUpdateGame.setOutputMarkupId(true);
         createOrUpdateGame.setMultiPart(true);
         createOrUpdateGame.setMaxSize(Bytes.kilobytes(1024));
@@ -106,7 +95,18 @@ public class CreateOrUpdateGamePanel extends Panel {
         addCreateAuthorButton(createOrUpdateGame);
         addCreateLabelButton(createOrUpdateGame);
 
-        createOrUpdateGame.add(new Button("submit"));
+        createOrUpdateGame.add(new AjaxButton("submit"){
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                super.onSubmit(target, form);
+
+                if(createOrUpdateGame.isValid()){
+                    Game game = createOrUpdateGame.getModelObject();
+                    saveOrUpdateGame(game);
+                    onCsldAction(target, form);
+                }
+            }
+        });
 
         add(createOrUpdateGame);
     }
@@ -124,7 +124,13 @@ public class CreateOrUpdateGamePanel extends Panel {
         final ModalWindow createlabelModal;
         add(createlabelModal = new ModalWindow("createLabel"));
 
-        createlabelModal.setContent(new CreateOrUpdateLabelPanel(createlabelModal.getContentId()));
+        createlabelModal.setContent(new CreateOrUpdateLabelPanel(createlabelModal.getContentId()){
+            @Override
+            protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
+                super.onCsldAction(target, form);
+                createlabelModal.close(target);
+            }
+        });
         createlabelModal.setTitle("Vytvořit štítek.");
         createlabelModal.setCookieName("create-label");
 
@@ -140,7 +146,13 @@ public class CreateOrUpdateGamePanel extends Panel {
         final ModalWindow createGroupModal;
         add(createGroupModal = new ModalWindow("createGroup"));
 
-        createGroupModal.setContent(new CreateOrUpdateGroupPanel(createGroupModal.getContentId(), null));
+        createGroupModal.setContent(new CreateOrUpdateGroupPanel(createGroupModal.getContentId()){
+            @Override
+            protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
+                super.onCsldAction(target, form);
+                createGroupModal.close(target);
+            }
+        });
         createGroupModal.setTitle("Vytvořit skupinu.");
         createGroupModal.setCookieName("create-group");
 
@@ -156,7 +168,14 @@ public class CreateOrUpdateGamePanel extends Panel {
         final ModalWindow createAuthorModal;
         add(createAuthorModal = new ModalWindow("createAuthor"));
 
-        createAuthorModal.setContent(new CreateOrUpdateAuthorPanel(createAuthorModal.getContentId(), null));
+        CreateOrUpdateAuthorPanel createAuthor = new CreateOrUpdateAuthorPanel(createAuthorModal.getContentId(), null){
+            @Override
+            protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
+                super.onCsldAction(target, form);
+                createAuthorModal.close(target);
+            }
+        };
+        createAuthorModal.setContent(createAuthor);
         createAuthorModal.setTitle("Vytvořit autora.");
         createAuthorModal.setCookieName("create-author");
 
@@ -236,4 +255,6 @@ public class CreateOrUpdateGamePanel extends Panel {
             gameService.addGame(game);
         }
     }
+
+    protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}
 }

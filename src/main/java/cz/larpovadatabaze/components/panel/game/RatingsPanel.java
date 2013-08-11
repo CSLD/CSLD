@@ -2,16 +2,19 @@ package cz.larpovadatabaze.components.panel.game;
 
 import com.googlecode.wicket.jquery.ui.form.slider.AjaxSlider;
 import com.googlecode.wicket.jquery.ui.form.slider.Slider;
+import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.RatingService;
+import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -24,7 +27,7 @@ public class RatingsPanel extends Panel {
 
     private Rating actualRating;
 
-    public RatingsPanel(String id, Integer gameId) {
+    public RatingsPanel(String id, final Integer gameId) {
         super(id);
 
         Form form = new Form("ratingForm");
@@ -59,6 +62,10 @@ public class RatingsPanel extends Panel {
             public void onValueChanged(AjaxRequestTarget target)
             {
                 saveOrUpdateRating(ratingOfGame);
+
+                PageParameters params = new PageParameters();
+                params.add("id", gameId);
+                throw new RestartResponseException(GameDetail.class, params);
             }
         };
         slider.setRange(Slider.Range.MIN).setMax(10);

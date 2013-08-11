@@ -2,6 +2,7 @@ package cz.larpovadatabaze.components.panel.game;
 
 import cz.larpovadatabaze.api.IListener;
 import cz.larpovadatabaze.api.IPublisher;
+import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
@@ -14,6 +15,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.sql.Timestamp;
@@ -37,7 +39,7 @@ public class CommentsPanel extends Panel implements IPublisher {
      * @param id
      * @param game This value can not be null.
      */
-    public CommentsPanel(String id, Game game) {
+    public CommentsPanel(String id, final Game game) {
         super(id);
         listeners = new ArrayList<IListener>();
 
@@ -60,6 +62,10 @@ public class CommentsPanel extends Panel implements IPublisher {
             @Override
             protected void onSubmit() {
                 saveComment();
+
+                PageParameters params = new PageParameters();
+                params.add("id", game.getId());
+                setResponsePage(GameDetail.class,params);
             }
         };
         comment.setOutputMarkupId(true);

@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.components.panel.group;
 
 import cz.larpovadatabaze.Csld;
+import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.Image;
@@ -8,8 +9,9 @@ import cz.larpovadatabaze.services.GroupService;
 import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.FileUtils;
 import org.apache.wicket.Application;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
-import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
@@ -28,7 +30,7 @@ import java.util.List;
  * Encapsulation of form used for creating groups. It may be used on more than one place. It can also be used for
  * editing group if group is given as parameter. If it isn't it gets empty one as a model.
  */
-public class CreateOrUpdateGroupPanel extends Panel {
+public abstract class CreateOrUpdateGroupPanel extends Panel {
     @SpringBean
     GroupService groupService;
     @SpringBean
@@ -36,24 +38,17 @@ public class CreateOrUpdateGroupPanel extends Panel {
 
     private FileUploadField fileUploadField;
 
+    public CreateOrUpdateGroupPanel(String id) {
+        this(id, null);
+    }
+
     public CreateOrUpdateGroupPanel(String id, CsldGroup group) {
         super(id);
 
         if(group == null) {
             group = CsldGroup.getEmptyGroup();
         }
-        Form createGroup = new Form<CsldGroup>("addGroup", new CompoundPropertyModel<CsldGroup>(group)) {
-            @Override
-            protected void onSubmit() {
-                super.onSubmit();
-                validate();
-
-                if (!hasError()) {
-                    CsldGroup group = getModelObject();
-                    saveGroupAndImage(group);
-                }
-            }
-        };
+        final ValidatableForm<CsldGroup> createGroup = new ValidatableForm<CsldGroup>("addGroup", new CompoundPropertyModel<CsldGroup>(group)) {};
         createGroup.setMultiPart(true);
         // Set maximum size to 1024K for demo purposes
         createGroup.setMaxSize(Bytes.kilobytes(1024));
@@ -78,7 +73,18 @@ public class CreateOrUpdateGroupPanel extends Panel {
         name.add(new AjaxFeedbackUpdatingBehavior("blur", imageFeedback));
         createGroup.add(fileUploadField);
 
-        createGroup.add(new Button("submit"));
+        createGroup.add(new AjaxButton("submit"){
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                super.onSubmit(target, form);
+
+                if(createGroup.isValid()){
+                    CsldGroup group = createGroup.getModelObject();
+                    saveGroupAndImage(group);
+                    onCsldAction(target, form);
+                }
+            }
+        });
         add(createGroup);
     }
 
@@ -117,4 +123,6 @@ public class CreateOrUpdateGroupPanel extends Panel {
             groupService.insert(group);
         }
     }
+
+    protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}
 }

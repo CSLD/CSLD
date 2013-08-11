@@ -16,10 +16,7 @@ import org.apache.wicket.request.resource.ContextRelativeResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 9.4.13
- * Time: 14:16
+ *
  */
 public class LoggedBoxPanel extends Panel {
     private boolean initiated = false;

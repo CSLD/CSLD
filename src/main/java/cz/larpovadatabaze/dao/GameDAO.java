@@ -123,7 +123,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     @SuppressWarnings("unchecked")
     public List<Game> getByAutoCompletable(String gameName) throws WrongParameterException {
         Criteria uniqueGame = sessionFactory.getCurrentSession().createCriteria(Game.class).add(
-                Restrictions.eq("form.wholeName", gameName)
+                Restrictions.eq("name", gameName)
         );
         return uniqueGame.list();
     }

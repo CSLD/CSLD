@@ -4,10 +4,10 @@ import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.components.page.about.AboutDatabase;
 import cz.larpovadatabaze.components.page.author.AuthorDetail;
 import cz.larpovadatabaze.components.page.author.ListAuthor;
-import cz.larpovadatabaze.components.page.game.AddGamePage;
+import cz.larpovadatabaze.components.page.game.CreateOrUpdateGamePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.components.page.game.ListGame;
-import cz.larpovadatabaze.components.page.group.AddGroupPage;
+import cz.larpovadatabaze.components.page.group.CreateOrUpdateGroupPage;
 import cz.larpovadatabaze.components.page.group.ListGroup;
 import cz.larpovadatabaze.components.page.user.*;
 import cz.larpovadatabaze.converters.*;
@@ -99,8 +99,8 @@ public class Csld extends AuthenticatedWebApplication
         mountPage("/sign-in", CsldSignInPage.class);
         mountPage("/register", CreateOrUpdateUserPage.class);
 
-        mountPage("/add-group", AddGroupPage.class);
-        mountPage("/add-game", AddGamePage.class);
+        mountPage("/add-group", CreateOrUpdateGroupPage.class);
+        mountPage("/add-game", CreateOrUpdateGamePage.class);
         mountPage("/add-user", CreateOrUpdateUserPage.class);
 
         mountPage("/zebricky", ListGame.class);

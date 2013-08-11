@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.panel.author;
 
+import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Person;
@@ -7,6 +8,8 @@ import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.PersonService;
 import cz.larpovadatabaze.utils.Pwd;
 import cz.larpovadatabaze.validator.UniqueUserValidator;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
@@ -17,7 +20,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 /**
  * Panel used for registering new author or adding new Author into the database.
  */
-public class CreateOrUpdateAuthorPanel extends Panel {
+public abstract class CreateOrUpdateAuthorPanel extends Panel {
     @SpringBean
     PersonService personService;
     @SpringBean
@@ -32,18 +35,7 @@ public class CreateOrUpdateAuthorPanel extends Panel {
             author = Person.getEmptyPerson();
         }
 
-        Form<Person> createOrUpdateUser = new Form<Person>("addUser", new CompoundPropertyModel<Person>(author)){
-            @Override
-            protected void onSubmit() {
-                super.onSubmit();
-                validate();
-
-                if(!hasError()) {
-                    Person author = getModelObject();
-                    saveOrUpdateUser(author);
-                }
-            }
-        };
+        final ValidatableForm<Person> createOrUpdateUser = new ValidatableForm<Person>("addUser", new CompoundPropertyModel<Person>(author));
         createOrUpdateUser.setMultiPart(true);
         createOrUpdateUser.setOutputMarkupId(true);
 
@@ -83,7 +75,17 @@ public class CreateOrUpdateAuthorPanel extends Panel {
         description.add(new AjaxFeedbackUpdatingBehavior("blur", descriptionFeedback));
         createOrUpdateUser.add(description);
 
-        createOrUpdateUser.add(new Button("submit"));
+        createOrUpdateUser.add(new AjaxButton("submit"){
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                super.onSubmit(target, form);
+                if(createOrUpdateUser.isValid()){
+                    Person author = createOrUpdateUser.getModelObject();
+                    saveOrUpdateUser(author);
+                    onCsldAction(target, form);
+                }
+            }
+        });
 
         add(createOrUpdateUser);
     }
@@ -96,4 +98,6 @@ public class CreateOrUpdateAuthorPanel extends Panel {
         authorUser.setPassword(Pwd.getMD5("defaultPWD")); // TODO get Random String for password.
         csldUserService.insert(authorUser);
     }
+
+    protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}
 }

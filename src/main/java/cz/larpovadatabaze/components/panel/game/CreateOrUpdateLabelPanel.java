@@ -1,10 +1,12 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.LabelService;
-import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
@@ -15,7 +17,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 /**
  * It is used for creating and updating Labels for games.
  */
-public class CreateOrUpdateLabelPanel extends Panel {
+public abstract class CreateOrUpdateLabelPanel extends Panel {
     @SpringBean
     private LabelService labelService;
 
@@ -26,7 +28,7 @@ public class CreateOrUpdateLabelPanel extends Panel {
     public CreateOrUpdateLabelPanel(String id, Label label) {
         super(id);
 
-        Form<Label> createOrUpdateLabel = new Form<Label>("createOrUpdateLabel", new CompoundPropertyModel<Label>(label)){
+        final ValidatableForm<Label> createOrUpdateLabel = new ValidatableForm<Label>("createOrUpdateLabel", new CompoundPropertyModel<Label>(label)){
             @Override
             protected void onSubmit() {
                 super.onSubmit();
@@ -40,7 +42,18 @@ public class CreateOrUpdateLabelPanel extends Panel {
 
         createOrUpdateLabel.add(new TextField<String>("name"));
         createOrUpdateLabel.add(new TextArea<String>("description"));
-        createOrUpdateLabel.add(new Button("submit"));
+        createOrUpdateLabel.add(new AjaxButton("submit"){
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                super.onSubmit(target, form);
+
+                if(createOrUpdateLabel.isValid()){
+                    Label label = createOrUpdateLabel.getModelObject();
+                    saveOrUpdateLabel(label);
+                    onCsldAction(target, form);
+                }
+            }
+        });
 
         add(createOrUpdateLabel);
     }
@@ -57,4 +70,6 @@ public class CreateOrUpdateLabelPanel extends Panel {
         super.onConfigure();
         setVisibilityAllowed(CsldAuthenticatedWebSession.get().isSignedIn());
     }
+
+    protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}
 }
