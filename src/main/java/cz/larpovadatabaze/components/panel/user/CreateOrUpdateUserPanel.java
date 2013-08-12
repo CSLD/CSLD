@@ -26,6 +26,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import javax.servlet.ServletContext;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,6 +42,7 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
 
     private FileUploadField fileUpload;
     private String passwordAgain;
+    private List<FileUpload> images = new ArrayList<FileUpload>();
 
     public CreateOrUpdateUserPanel(String id, CsldUser user) {
         super(id);
@@ -73,7 +75,7 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
         createOrUpdateUser.add(addFeedbackPanel(new TextField<String>("person.city"), createOrUpdateUser,"cityFeedback"));
         createOrUpdateUser.add(addFeedbackPanel(new TextArea<String>("person.description"), createOrUpdateUser,"descriptionFeedback"));
 
-        fileUpload = new FileUploadField("image");
+        fileUpload = new FileUploadField("image", new PropertyModel<List<FileUpload>>(this,"images"));
         createOrUpdateUser.add(addFeedbackPanel(fileUpload, createOrUpdateUser,"imageFeedback"));
 
         PasswordTextField password = new PasswordTextField("password");
@@ -125,12 +127,15 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
                 FileUtils.cleanFileIfExists(newFile);
                 try
                 {
+                    baseFile.mkdirs();
                     // Save to new file
-                    newFile.createNewFile();
+                    if(!newFile.createNewFile()) {
+                        throw new IllegalStateException("Unable to write file " + newFile.getAbsolutePath());
+                    }
                     upload.writeTo(newFile);
 
                     Image image = new Image();
-                    image.setPath(newFile.getAbsolutePath());
+                    image.setPath(Csld.getBaseContext() + upload.getClientFileName());
                     imageService.insert(image);
                     user.setImage(image);
                     user.setImageId(image.getId());

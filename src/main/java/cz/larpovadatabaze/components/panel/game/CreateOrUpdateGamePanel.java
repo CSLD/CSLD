@@ -21,7 +21,10 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.*;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
-import org.apache.wicket.markup.html.form.*;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
@@ -32,7 +35,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Bytes;
 import org.apache.wicket.validation.IValidator;
 
-import javax.persistence.criteria.From;
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.sql.Timestamp;
@@ -59,6 +61,7 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
     private List<GenericModel<CsldGroup>> groupsOfGame;
     private String videoPath; // Used by model.
     private ChooseLabelsPanel chooseLabels;
+    private List<FileUpload> images;
 
     public CreateOrUpdateGamePanel(String id, Game game) {
         super(id);
@@ -83,7 +86,7 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
         createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("bothRole"), createOrUpdateGame, "bothRoleFeedback"));
         createOrUpdateGame.add(addFeedbackPanel(new TextField<String>("videoPath", new PropertyModel<String>(this, "videoPath")), createOrUpdateGame, "videoPathFeedback"));
 
-        fileUploadField = new FileUploadField("image");
+        fileUploadField = new FileUploadField("image", new PropertyModel<List<FileUpload>>(this,"images"));
         createOrUpdateGame.add(addFeedbackPanel(fileUploadField, createOrUpdateGame, "imageFeedback"));
 
         addAuthorsInput(createOrUpdateGame, game);
@@ -235,17 +238,19 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
                 // Check new file, delete if it already existed
                 FileUtils.cleanFileIfExists(newFile);
                 try {
+                    baseFile.mkdirs();
                     // Save to new file
-                    if(!newFile.mkdirs() || !newFile.createNewFile()){
+                    if(!newFile.createNewFile()){
                         throw new IllegalStateException("Unable to write file " + newFile.getAbsolutePath());
                     }
                     upload.writeTo(newFile);
 
                     Image image = new Image();
-                    image.setPath(realPath);
+                    image.setPath(Csld.getBaseContext() + upload.getClientFileName());
                     imageService.insert(image);
 
                     game.setImage(image);
+                    game.setImageId(image.getId());
                     gameService.addGame(game);
                 } catch (Exception e) {
                     throw new IllegalStateException("Unable to write file", e);

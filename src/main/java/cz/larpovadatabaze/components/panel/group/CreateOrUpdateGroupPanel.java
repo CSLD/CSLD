@@ -19,11 +19,13 @@ import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Bytes;
 
 import javax.servlet.ServletContext;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,6 +39,7 @@ public abstract class CreateOrUpdateGroupPanel extends Panel {
     ImageService imageService;
 
     private FileUploadField fileUploadField;
+    private List<FileUpload> images = new ArrayList<FileUpload>();
 
     public CreateOrUpdateGroupPanel(String id) {
         this(id, null);
@@ -65,7 +68,7 @@ public abstract class CreateOrUpdateGroupPanel extends Panel {
 
         // Add one file input field
 
-        fileUploadField = new FileUploadField("image");
+        fileUploadField = new FileUploadField("image", new PropertyModel<List<FileUpload>>(this, "images"));
         ComponentFeedbackMessageFilter imageFilter = new ComponentFeedbackMessageFilter(fileUploadField);
         final FeedbackPanel imageFeedback = new FeedbackPanel("imageFeedback", imageFilter);
         imageFeedback.setOutputMarkupId(true);
@@ -102,6 +105,7 @@ public abstract class CreateOrUpdateGroupPanel extends Panel {
                 // Check new file, delete if it already existed
                 FileUtils.cleanFileIfExists(newFile);
                 try {
+                    baseFile.mkdirs();
                     // Save to new file
                     if(!newFile.createNewFile()) {
                         throw new IllegalStateException("Unable to write file " + newFile.getAbsolutePath());
