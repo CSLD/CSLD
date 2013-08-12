@@ -9,10 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 27.3.13
- * Time: 14:01
+ *
  */
 @javax.persistence.IdClass(GroupHasMemberPK.class)
 @javax.persistence.Table(name = "csld_group_has_members", schema = "public", catalog = "")
@@ -56,7 +53,7 @@ public class GroupHasMember implements Serializable {
 
     private Date end;
 
-    @javax.persistence.Column(name="to_date", nullable=false, insertable= true, updatable=true, length = 10, precision = 0)
+    @javax.persistence.Column(name="to_date", nullable=true, insertable= true, updatable=true, length = 10, precision = 0)
     @Type(type="date")
     public Date getEnd() {
         return end;

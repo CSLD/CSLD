@@ -1,0 +1,19 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+    <div>
+        <form wicket:id="administerGroup">
+            <div>
+                <label for="authors"><wicket:message key="authorsCapitalized">Autoři</wicket:message></label>
+                <div wicket:id="authors"></div>
+            </div>
+
+            <div>
+                <label for="administrators"><wicket:message key="form.administrators">Administrátoři</wicket:message></label>
+                <div wicket:id="administrators"></div>
+            </div>
+
+            <div>
+                <input type="button" value="Uložit" wicket:message="value:form.save" wicket:id="submit"/>
+            </div>
+        </form>
+    </div>
+</wicket:panel>

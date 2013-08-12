@@ -19,4 +19,6 @@ public interface GroupService extends GenericService<CsldGroup> {
     CsldGroup getById(Integer id);
 
     List<CsldGroup> getByAutoCompletable(String groupName) throws WrongParameterException;
+
+    void saveOrUpdate(CsldGroup group);
 }

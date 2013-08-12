@@ -88,7 +88,7 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
 
         addAuthorsInput(createOrUpdateGame, game);
         addGroupsInput(createOrUpdateGame, game);
-        chooseLabels = new ChooseLabelsPanel("chooseLabels");
+        chooseLabels = new ChooseLabelsPanel("chooseLabels", game.getLabels());
         createOrUpdateGame.add(chooseLabels);
 
         addCreateGroupButton(createOrUpdateGame);

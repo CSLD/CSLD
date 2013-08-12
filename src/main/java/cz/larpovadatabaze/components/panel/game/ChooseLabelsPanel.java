@@ -25,7 +25,7 @@ public class ChooseLabelsPanel extends Panel {
     private LabelService labelService;
     private List<Label> allLabels;
 
-    public ChooseLabelsPanel(String id) {
+    public ChooseLabelsPanel(String id, final List<Label> chosen){
         super(id);
 
         allLabels = labelService.getAll();
@@ -45,11 +45,19 @@ public class ChooseLabelsPanel extends Panel {
                         target.add(nameOfLabel);
                     }
                 });
+                if(chosen.contains(actualLabel)){
+                    classContent.select();
+                    actualLabel.select();
+                }
                 nameOfLabel.setOutputMarkupId(true);
                 item.add(nameOfLabel);
             }
         };
         add(labelsChooser);
+    }
+
+    public ChooseLabelsPanel(String id) {
+        this(id, new ArrayList<Label>());
     }
 
     public List<Label> getSelected() {

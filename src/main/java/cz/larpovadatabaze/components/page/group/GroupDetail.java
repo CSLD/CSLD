@@ -2,6 +2,7 @@ package cz.larpovadatabaze.components.page.group;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.panel.game.GameListPanel;
+import cz.larpovadatabaze.components.panel.group.AddAuthorsToGroupPanel;
 import cz.larpovadatabaze.components.panel.group.AddGroupPanel;
 import cz.larpovadatabaze.components.panel.group.EditGroupPanel;
 import cz.larpovadatabaze.components.panel.group.GroupDetailPanel;
@@ -11,7 +12,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
- * ThisPage shows detailed info about one of the groups.
+ * This Page shows detailed info about one of the groups.
  */
 public class GroupDetail extends CsldBasePage {
     @SpringBean
@@ -26,6 +27,7 @@ public class GroupDetail extends CsldBasePage {
 
         add(new AddGroupPanel("addGroup"));
         add(new EditGroupPanel("editGroup", group));
+        add(new AddAuthorsToGroupPanel("addAuthorsToGroup", group));
         add(new GameListPanel("authoredGamesPanel",group.getAuthorsOf()));
     }
 }

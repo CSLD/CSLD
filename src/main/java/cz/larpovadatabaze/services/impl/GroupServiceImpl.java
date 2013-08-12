@@ -55,4 +55,9 @@ public class GroupServiceImpl implements GroupService {
     public List<CsldGroup> getByAutoCompletable(String groupName) throws WrongParameterException {
         return groupDAO.getByAutoCompletable(groupName);
     }
+
+    @Override
+    public void saveOrUpdate(CsldGroup group) {
+        groupDAO.saveOrUpdate(group);
+    }
 }

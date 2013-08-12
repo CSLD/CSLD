@@ -9,13 +9,9 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 11.5.13
- * Time: 9:28
+ *
  */
 public class RepeatableInput<T extends IAutoCompletable> extends AutoCompleteTextField<T> {
-    private final int AUTO_COMPLETE_CHOICES = 10;
     protected GenericService<T> service;
 
     public RepeatableInput(String id,
@@ -42,6 +38,7 @@ public class RepeatableInput<T extends IAutoCompletable> extends AutoCompleteTex
             return new ArrayList<T>().iterator();
         }
         List<T> allChoices = service.getAll();
+        int AUTO_COMPLETE_CHOICES = 10;
         List<T> choices = new ArrayList<T>(AUTO_COMPLETE_CHOICES);
         for(T t: allChoices) {
             if((t.getAutoCompleteData() != null) &&
