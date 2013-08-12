@@ -1,0 +1,58 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+    <form wicket:id="addUser">
+        <fieldset>
+            <div>
+                <label for="name"><wicket:message key="form.wholeName">Celé jméno</wicket:message></label>
+                <input type="text" wicket:id="person.name"/>
+                <span wicket:id="nameFeedback"></span>
+            </div>
+
+            <div>
+                <label for="nickname"><wicket:message key="form.nickname">Přezdívka</wicket:message></label>
+                <input type="text" wicket:id="person.nickname"/>
+                <span wicket:id="nicknameFeedback"></span>
+            </div>
+
+            <div>
+                <label for="birthDate"><wicket:message key="form.dateOfBirth">Datum narození</wicket:message></label>
+                <input type="text" wicket:id="person.birthDate"/>
+                <span wicket:id="birthDateFeedback"></span>
+            </div>
+
+            <div>
+                <label for="city"><wicket:message key="form.city">Město</wicket:message></label>
+                <input type="text" wicket:id="person.city"/>
+                <span wicket:id="cityFeedback"></span>
+            </div>
+
+            <div>
+                <label for="description"><wicket:message key="form.description">Popis</wicket:message></label>
+                <textarea wicket:id="person.description"></textarea>
+                <span wicket:id="descriptionFeedback"></span>
+            </div>
+
+            <div>
+                <label for="password"><wicket:message key="form.password">Heslo</wicket:message></label>
+                <input type="password" wicket:id="password"/>
+                <span wicket:id="passwordFeedback"></span>
+            </div>
+
+            <div>
+                <label for="passwordAgain"><wicket:message key="form.passwordAgain">Heslo znovu</wicket:message></label>
+                <input type="password" wicket:id="passwordAgain"/>
+                <span wicket:id="passwordAgainFeedback"></span>
+            </div>
+
+            <div>
+                <label for="image"><wicket:message key="form.image">Obrázek</wicket:message></label>
+                <input type="file" wicket:id="image"/>
+                <span wicket:id="imageFeedback"></span>
+            </div>
+
+            <div>
+                <input type="button" value="Uložit" wicket:message="value:form.save" wicket:id="submit"/>
+            </div>
+
+        </fieldset>
+    </form>
+</wicket:panel>

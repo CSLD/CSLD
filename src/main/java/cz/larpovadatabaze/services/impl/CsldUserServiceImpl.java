@@ -28,7 +28,7 @@ public class CsldUserServiceImpl implements CsldUserService {
     }
 
     @Override
-    public void insert(CsldUser user) {
+    public void saveOrUpdate(CsldUser user) {
         csldUserDao.saveOrUpdate(user);
     }
 

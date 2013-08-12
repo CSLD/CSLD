@@ -6,6 +6,7 @@ import cz.larpovadatabaze.components.page.author.AuthorDetail;
 import cz.larpovadatabaze.components.panel.user.CreateOrUpdateUserPanel;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.utils.HbUtils;
 import org.apache.wicket.RestartResponseException;
@@ -25,9 +26,14 @@ public class CreateOrUpdateUserPage extends CsldBasePage {
         CsldUser csldUser  = null;
         if(!params.isEmpty()){
             Integer id = params.get("id").to(Integer.class);
-            csldUser = csldUserService.getById(id);
-            if(HbUtils.isProxy(csldUser)){
-                csldUser = HbUtils.deproxy(csldUser);
+            CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
+            if(logged.getId().intValue() == id){
+                csldUser = logged;
+            } else {
+                csldUser = csldUserService.getById(id);
+                if(HbUtils.isProxy(csldUser)){
+                    csldUser = HbUtils.deproxy(csldUser);
+                }
             }
         }
         final boolean isNew = (csldUser == null);

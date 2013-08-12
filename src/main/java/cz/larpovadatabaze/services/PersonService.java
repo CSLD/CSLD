@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface PersonService extends GenericService<Person> {
 
-    public void insert(Person person);
+    public void saveOrUpdate(Person person);
 
     List<Person> getAll();
 

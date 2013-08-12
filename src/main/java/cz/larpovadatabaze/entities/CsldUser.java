@@ -3,8 +3,11 @@ package cz.larpovadatabaze.entities;
 import cz.larpovadatabaze.api.Identifiable;
 import cz.larpovadatabaze.security.CsldRoles;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -136,6 +139,7 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable {
 
     @ManyToOne
     @JoinColumn(name = "person", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     public Person getPerson() {
         return person;
     }

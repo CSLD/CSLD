@@ -23,7 +23,7 @@ public class PersonServiceImpl implements PersonService {
     private PersonDAO personDAO;
 
     @Override
-    public void insert(Person person) {
+    public void saveOrUpdate(Person person) {
         personDAO.saveOrUpdate(person);
         personDAO.flush();
     }

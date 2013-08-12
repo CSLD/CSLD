@@ -91,12 +91,12 @@ public abstract class CreateOrUpdateAuthorPanel extends Panel {
     }
 
     private void saveOrUpdateUser(Person author){
-        personService.insert(author);
+        personService.saveOrUpdate(author);
         CsldUser authorUser = CsldUser.getEmptyUser();
         authorUser.setPerson(author);
         authorUser.setPersonId(author.getId());
         authorUser.setPassword(Pwd.getMD5("defaultPWD")); // TODO get Random String for password.
-        csldUserService.insert(authorUser);
+        csldUserService.saveOrUpdate(authorUser);
     }
 
     protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}

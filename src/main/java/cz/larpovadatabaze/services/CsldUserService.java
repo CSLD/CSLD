@@ -14,7 +14,7 @@ import java.util.List;
 public interface CsldUserService extends GenericService<CsldUser> {
     public CsldUser getById(Integer id);
 
-    void insert(CsldUser user);
+    void saveOrUpdate(CsldUser user);
 
     void flush();
 

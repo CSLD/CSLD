@@ -29,9 +29,9 @@ import java.io.File;
 import java.util.List;
 
 /**
- * Panel used for registering new user or adding new Author into the database.
+ *
  */
-public abstract class CreateOrUpdateUserPanel extends Panel {
+public class UpdateUserPanel extends Panel {
     @SpringBean
     CsldUserService csldUserService;
     @SpringBean
@@ -42,7 +42,7 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
     private FileUploadField fileUpload;
     private String passwordAgain;
 
-    public CreateOrUpdateUserPanel(String id, CsldUser user) {
+    public UpdateUserPanel(String id, CsldUser user) {
         super(id);
 
         boolean isEdit = true;
@@ -60,11 +60,6 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
         name.setRequired(true);
         createOrUpdateUser.add(addFeedbackPanel(name, createOrUpdateUser, "nameFeedback"));
         createOrUpdateUser.add(addFeedbackPanel(new TextField<String>("person.nickname"), createOrUpdateUser, "nicknameFeedback"));
-
-        EmailTextField email = new EmailTextField("person.email");
-        email.setRequired(true);
-        email.add(new UniqueUserValidator(isEdit, personService));
-        createOrUpdateUser.add(addFeedbackPanel(email, createOrUpdateUser, "emailFeedback"));
 
         DateTextField birthDate = new DateTextField("person.birthDate", "dd.mm.yyyy");
         birthDate.setRequired(true);
