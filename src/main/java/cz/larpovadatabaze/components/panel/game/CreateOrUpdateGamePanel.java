@@ -41,7 +41,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * This panel is used when zou want to create or update game in the database. It encapsulates relevnat createOrUpdateGame with
+ * This panel is used when you want to create or update game in the database. It encapsulates relevant createOrUpdateGame with
  * associated HTML markup.
  */
 public abstract class CreateOrUpdateGamePanel extends Panel {
@@ -86,8 +86,8 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
         fileUploadField = new FileUploadField("image");
         createOrUpdateGame.add(addFeedbackPanel(fileUploadField, createOrUpdateGame, "imageFeedback"));
 
-        addAuthorsInput(createOrUpdateGame);
-        addGroupsInput(createOrUpdateGame);
+        addAuthorsInput(createOrUpdateGame, game);
+        addGroupsInput(createOrUpdateGame, game);
         chooseLabels = new ChooseLabelsPanel("chooseLabels");
         createOrUpdateGame.add(chooseLabels);
 
@@ -187,22 +187,22 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
         }));
     }
 
-    private void addGroupsInput(Form<Game> createOrUpdateGame) {
+    private void addGroupsInput(Form<Game> createOrUpdateGame, Game game) {
         IFactory<CsldGroup> groupIFactory = new GenericFactory<CsldGroup>(CsldGroup.class);
         IValidator<CsldGroup> groupIValidator = new GenericValidator<CsldGroup>(groupService);
 
         RepeatableInputPanel<CsldGroup> groups = new RepeatableInputPanel<CsldGroup>("groups", groupIFactory,
-                groupIValidator, groupService);
+                groupIValidator, game.getGroupAuthor(), groupService);
         createOrUpdateGame.add(groups);
         groupsOfGame = groups.getData();
     }
 
-    private void addAuthorsInput(Form createOrUpdateGame){
+    private void addAuthorsInput(Form createOrUpdateGame, Game game){
         IFactory<CsldUser> userIFactory = new GenericFactory<CsldUser>(CsldUser.class);
         IValidator<CsldUser> userIValidator = new GenericValidator<CsldUser>(csldUserService);
 
         RepeatableInputPanel<CsldUser> authors = new RepeatableInputPanel<CsldUser>("authors", userIFactory,
-                userIValidator, csldUserService);
+                userIValidator, game.getAuthors(), csldUserService);
         createOrUpdateGame.add(authors);
         authorsOfGame = authors.getData();
     }

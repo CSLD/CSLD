@@ -15,13 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 11.5.13
- * Time: 9:07
+ *
  */
 public class RepeatableInputPanel<T extends IAutoCompletable> extends Panel {
-    final protected List<T> data = new ArrayList<T>();
+    final protected List<T> data;
 
     protected IFactory<T> factory;
     protected GenericService<T> service;
@@ -34,11 +31,23 @@ public class RepeatableInputPanel<T extends IAutoCompletable> extends Panel {
                                 final IValidator<T> validator,
 
                                 GenericService<T> service) {
+        this(id, factory, validator, new ArrayList<T>(), service);
+    }
+
+    public RepeatableInputPanel(String id,
+
+                                final IFactory<T> factory,
+                                final IValidator<T> validator,
+                                List<T> data,
+
+                                GenericService<T> service) {
         super(id);
+
         this.factory = factory;
         this.service = service;
+        this.data = data;
 
-        data.add(factory.create());
+        this.data.add(factory.create());
         setOutputMarkupId(true);
 
         repeatables =

@@ -20,7 +20,6 @@ public class EditGamePanel extends Panel {
         params.add("id", toEdit.getId());
         BookmarkablePageLink<CsldBasePage> pageLink =
                 new BookmarkablePageLink<CsldBasePage>("editGame", CreateOrUpdateGamePage.class, params);
-        pageLink.add(new Label("editGameLabel", "Edit game"));
         add(pageLink);
     }
 
