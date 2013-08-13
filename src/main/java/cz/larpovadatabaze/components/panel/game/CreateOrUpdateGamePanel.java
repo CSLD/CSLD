@@ -129,19 +129,19 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
         final ModalWindow createlabelModal;
         add(createlabelModal = new ModalWindow("createLabel"));
 
-        createlabelModal.setContent(new CreateOrUpdateLabelPanel(createlabelModal.getContentId()){
-            @Override
-            protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
-                super.onCsldAction(target, form);
-                createlabelModal.close(target);
-            }
-        });
         createlabelModal.setTitle("Vytvořit štítek.");
         createlabelModal.setCookieName("create-label");
 
         createOrUpdateGame.add(new AjaxButton("createLabel"){}.setOutputMarkupId(true).add(new AjaxEventBehavior("click") {
             @Override
             protected void onEvent(AjaxRequestTarget target) {
+                createlabelModal.setContent(new CreateOrUpdateLabelPanel(createlabelModal.getContentId()){
+                    @Override
+                    protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
+                        super.onCsldAction(target, form);
+                        createlabelModal.close(target);
+                    }
+                });
                 createlabelModal.show(target);
             }
         }));
@@ -151,19 +151,19 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
         final ModalWindow createGroupModal;
         add(createGroupModal = new ModalWindow("createGroup"));
 
-        createGroupModal.setContent(new CreateOrUpdateGroupPanel(createGroupModal.getContentId()){
-            @Override
-            protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
-                super.onCsldAction(target, form);
-                createGroupModal.close(target);
-            }
-        });
         createGroupModal.setTitle("Vytvořit skupinu.");
         createGroupModal.setCookieName("create-group");
 
         createOrUpdateGame.add(new AjaxButton("createGroup"){}.setOutputMarkupId(true).add(new AjaxEventBehavior("click") {
             @Override
             protected void onEvent(AjaxRequestTarget target) {
+                createGroupModal.setContent(new CreateOrUpdateGroupPanel(createGroupModal.getContentId()){
+                    @Override
+                    protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
+                        super.onCsldAction(target, form);
+                        createGroupModal.close(target);
+                    }
+                });
                 createGroupModal.show(target);
             }
         }));
@@ -173,20 +173,19 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
         final ModalWindow createAuthorModal;
         add(createAuthorModal = new ModalWindow("createAuthor"));
 
-        CreateOrUpdateAuthorPanel createAuthor = new CreateOrUpdateAuthorPanel(createAuthorModal.getContentId(), null){
-            @Override
-            protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
-                super.onCsldAction(target, form);
-                createAuthorModal.close(target);
-            }
-        };
-        createAuthorModal.setContent(createAuthor);
         createAuthorModal.setTitle("Vytvořit autora.");
         createAuthorModal.setCookieName("create-author");
 
         createOrUpdateGame.add(new AjaxButton("createAuthor"){}.setOutputMarkupId(true).add(new AjaxEventBehavior("click") {
             @Override
             protected void onEvent(AjaxRequestTarget target) {
+                createAuthorModal.setContent(new CreateOrUpdateAuthorPanel(createAuthorModal.getContentId(), null){
+                    @Override
+                    protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
+                        super.onCsldAction(target, form);
+                        createAuthorModal.close(target);
+                    }
+                });
                 createAuthorModal.show(target);
             }
         }));

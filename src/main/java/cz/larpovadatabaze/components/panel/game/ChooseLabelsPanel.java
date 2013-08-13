@@ -1,7 +1,9 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.models.ClassContentModel;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.LabelService;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxEventBehavior;
@@ -23,37 +25,36 @@ import java.util.List;
 public class ChooseLabelsPanel extends Panel {
     @SpringBean
     private LabelService labelService;
-    private List<Label> allLabels;
+    private List<Label> requiredLabels;
+    private List<Label> optionalLabels;
+    private List<Label> chosen;
 
     public ChooseLabelsPanel(String id, final List<Label> chosen){
         super(id);
+        this.chosen = chosen;
 
-        allLabels = labelService.getAll();
-        ListView<Label> labelsChooser = new ListView<Label>("labels", allLabels) {
-            @Override
-            protected void populateItem(ListItem<Label> item) {
-                final Label actualLabel = item.getModelObject();
-                final Button nameOfLabel = new Button("name");
-                final ClassContentModel classContent = new ClassContentModel();
-                nameOfLabel.add(new AttributeAppender("value",actualLabel.getName()));
-                nameOfLabel.add(new AttributeModifier("class", classContent));
-                nameOfLabel.add(new AjaxEventBehavior("click") {
-                    @Override
-                    protected void onEvent(AjaxRequestTarget target) {
-                        classContent.select();
-                        actualLabel.select();
-                        target.add(nameOfLabel);
-                    }
-                });
-                if(chosen.contains(actualLabel)){
-                    classContent.select();
-                    actualLabel.select();
+        CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
+        List<Label> allLabels = labelService.getAll();
+        requiredLabels = new ArrayList<Label>();
+        optionalLabels = new ArrayList<Label>();
+        for(Label label: allLabels){
+            if(label.getAuthorized() != null && !label.getAuthorized()) {
+                if(!label.getAddedBy().equals(logged)) {
+                    continue;
                 }
-                nameOfLabel.setOutputMarkupId(true);
-                item.add(nameOfLabel);
             }
-        };
+
+            if(label.getRequired() != null && label.getRequired()){
+                requiredLabels.add(label);
+            } else {
+                optionalLabels.add(label);
+            }
+        }
+        ListView<Label> labelsChooser = new SimpleListViewer("requiredLabels", requiredLabels);
         add(labelsChooser);
+
+        ListView<Label> labelsChooserOptional = new SimpleListViewer("otherLabels", optionalLabels);
+        add(labelsChooserOptional);
     }
 
     public ChooseLabelsPanel(String id) {
@@ -62,11 +63,45 @@ public class ChooseLabelsPanel extends Panel {
 
     public List<Label> getSelected() {
         List<Label> selected = new ArrayList<Label>();
-        for(Label label: allLabels) {
+        for(Label label: requiredLabels) {
+            if(label.isSelected()) {
+                selected.add(label);
+            }
+        }
+        for(Label label: optionalLabels) {
             if(label.isSelected()) {
                 selected.add(label);
             }
         }
         return selected;
+    }
+
+    private class SimpleListViewer extends ListView<Label> {
+        public SimpleListViewer(String id, List<? extends Label> list) {
+            super(id, list);
+        }
+
+        @Override
+        protected void populateItem(ListItem<Label> item) {
+            final Label actualLabel = item.getModelObject();
+            final Button nameOfLabel = new Button("name");
+            final ClassContentModel classContent = new ClassContentModel();
+            nameOfLabel.add(new AttributeAppender("value",actualLabel.getName()));
+            nameOfLabel.add(new AttributeModifier("class", classContent));
+            nameOfLabel.add(new AjaxEventBehavior("click") {
+                @Override
+                protected void onEvent(AjaxRequestTarget target) {
+                    classContent.select();
+                    actualLabel.select();
+                    target.add(nameOfLabel);
+                }
+            });
+            if(chosen.contains(actualLabel)){
+                classContent.select();
+                actualLabel.select();
+            }
+            nameOfLabel.setOutputMarkupId(true);
+            item.add(nameOfLabel);
+        }
     }
 }

@@ -1,5 +1,10 @@
 <wicket:panel xmlns:wicket="http://wicket.apache.org">
-    <div wicket:id="labels">  <!-- This contains list of Labels. -->
+    <h2><wicket:message key="label.required">Požadované</wicket:message></h2>
+    <div wicket:id="requiredLabels">  <!-- This contains list of Labels. -->
+        <input type="button" class="" wicket:id="name" />
+    </div>
+    <h2><wicket:message key="label.optional">Volitelné</wicket:message></h2>
+    <div wicket:id="otherLabels">  <!-- This contains list of Labels. -->
         <input type="button" class="" wicket:id="name" />
     </div>
 </wicket:panel>
