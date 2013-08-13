@@ -155,6 +155,9 @@ public class Person implements Serializable, IAutoCompletable {
     @Transient
     public Integer getAge() {
         java.util.Date birthDate = getBirthDate();
+        if(getBirthDate() == null){
+            return 0;
+        }
         Calendar now = Calendar.getInstance();
         Calendar birthDateCal = Calendar.getInstance();
         birthDateCal.setTime(birthDate);

@@ -2,6 +2,7 @@ package cz.larpovadatabaze.components.panel.game;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.author.AuthorDetail;
+import cz.larpovadatabaze.components.panel.YouTubePanel;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import org.apache.wicket.markup.html.basic.Label;
@@ -12,6 +13,7 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.ContextRelativeResource;
 
@@ -78,5 +80,16 @@ public class GameDetailPanel extends Panel {
 
         Label description = new Label("description",game.getDescription());
         add(description);
+
+        String videoPath = "";
+        boolean isVisible = true;
+        if(game.getVideo() == null){
+            isVisible = false;
+        } else {
+            videoPath = game.getVideo().getPath();
+        }
+
+        YouTubePanel youTubePanel = new YouTubePanel("video", videoPath, isVisible);
+        add(youTubePanel);
     }
 }

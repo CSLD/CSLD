@@ -12,10 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 9.4.13
- * Time: 11:13
+ *
  */
 @Repository
 public class CsldUserServiceImpl implements CsldUserService {
@@ -106,6 +103,21 @@ public class CsldUserServiceImpl implements CsldUserService {
     @Override
     public List<CsldUser> getByAutoCompletable(String autoCompletable) throws WrongParameterException {
         return csldUserDao.getByAutoCompletable(autoCompletable);
+    }
+
+    @Override
+    public List<CsldUser> getOrderedUsersByName() {
+        return csldUserDao.getOrderedUsersByName();
+    }
+
+    @Override
+    public List<CsldUser> getOrderedUsersByComments() {
+        return csldUserDao.gerOrderedUsersByComments();
+    }
+
+    @Override
+    public List<CsldUser> getOrderedUsersByPlayed() {
+        return csldUserDao.getOrderedUsersByPlayed();
     }
 
 }

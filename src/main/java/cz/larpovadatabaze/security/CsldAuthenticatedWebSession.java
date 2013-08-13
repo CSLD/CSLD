@@ -2,6 +2,7 @@ package cz.larpovadatabaze.security;
 
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.utils.Pwd;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.injection.Injector;
@@ -41,7 +42,7 @@ public class CsldAuthenticatedWebSession extends AuthenticatedWebSession {
     @Override
     public boolean authenticate(final String username, final String password)
     {
-        CsldUser authenticated = csldUserService.authenticate(username, password);
+        CsldUser authenticated = csldUserService.authenticate(username, Pwd.getMD5(password));
 
         if(authenticated != null){
             if(authenticated.getRole() == 1) {

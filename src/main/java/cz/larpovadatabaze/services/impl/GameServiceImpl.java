@@ -122,6 +122,9 @@ public class GameServiceImpl implements GameService {
     @Override
     public Game getRandomGame() {
         List<Game> all = getAll();
+        if(all.size() < 1){
+            return null;
+        }
         int randomGame = new Random().nextInt(all.size());
         return all.get(randomGame);
     }

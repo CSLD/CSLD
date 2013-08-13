@@ -39,4 +39,10 @@ public interface CsldUserService extends GenericService<CsldUser> {
     List<CsldUser> getOrderedByPlayed();
 
     List<CsldUser> getByAutoCompletable(String autoCompletable) throws WrongParameterException;
+
+    List<CsldUser> getOrderedUsersByName();
+
+    List<CsldUser> getOrderedUsersByComments();
+
+    List<CsldUser> getOrderedUsersByPlayed();
 }

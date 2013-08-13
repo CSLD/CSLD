@@ -9,6 +9,7 @@ import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.services.PersonService;
 import cz.larpovadatabaze.utils.FileUtils;
+import cz.larpovadatabaze.utils.Pwd;
 import cz.larpovadatabaze.validator.UniqueUserValidator;
 import org.apache.wicket.Application;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -119,9 +120,9 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
                 ServletContext context = ((Csld) Application.get()).getServletContext();
                 String realPath = context.getRealPath(Csld.getBaseContext());
                 File baseFile = new File(realPath);
-
+                String fileName = Pwd.getMD5(upload.getClientFileName() + user.getPerson().getName()) + "." + FileUtils.getFileType(upload.getClientFileName());
                 // Create a new file
-                File newFile = new File(baseFile, upload.getClientFileName());
+                File newFile = new File(baseFile, fileName);
 
                 // Check new file, delete if it already existed
                 FileUtils.cleanFileIfExists(newFile);
@@ -135,7 +136,7 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
                     upload.writeTo(newFile);
 
                     Image image = new Image();
-                    image.setPath(Csld.getBaseContext() + upload.getClientFileName());
+                    image.setPath(Csld.getBaseContext() + fileName);
                     imageService.insert(image);
                     user.setImage(image);
                     user.setImageId(image.getId());
@@ -153,7 +154,9 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
 
     private void saveOrUpdateUser(CsldUser user){
         personService.saveOrUpdate(user.getPerson());
+        user.setIsAuthor(false);
         user.setPersonId(user.getPerson().getId());
+        user.setPassword(Pwd.getMD5(user.getPassword()));
         csldUserService.saveOrUpdate(user);
         csldUserService.flush();
     }

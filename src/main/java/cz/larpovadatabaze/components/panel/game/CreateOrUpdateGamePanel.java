@@ -5,15 +5,10 @@ import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
 import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
 import cz.larpovadatabaze.components.panel.group.CreateOrUpdateGroupPanel;
-import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Image;
-import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.GameService;
-import cz.larpovadatabaze.services.GroupService;
-import cz.larpovadatabaze.services.ImageService;
+import cz.larpovadatabaze.entities.*;
+import cz.larpovadatabaze.services.*;
 import cz.larpovadatabaze.utils.FileUtils;
+import cz.larpovadatabaze.utils.Pwd;
 import org.apache.wicket.Application;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -55,6 +50,8 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
     CsldUserService csldUserService;
     @SpringBean
     GroupService groupService;
+    @SpringBean
+    VideoService videoService;
 
     private FileUploadField fileUploadField;
     private List<GenericModel<CsldUser>> authorsOfGame;
@@ -68,7 +65,12 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
 
         if (game == null) {
             game = Game.getEmptyGame();
+        } else {
+            if(game.getVideo() != null) {
+                videoPath = game.getVideo().getPath();
+            }
         }
+
         final ValidatableForm<Game> createOrUpdateGame = new ValidatableForm<Game>("addGame", new CompoundPropertyModel<Game>(game));
         createOrUpdateGame.setOutputMarkupId(true);
         createOrUpdateGame.setMultiPart(true);
@@ -232,8 +234,9 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
                 String realPath = context.getRealPath(Csld.getBaseContext());
                 File baseFile = new File(realPath);
 
+                String fileName = Pwd.getMD5(upload.getClientFileName() + game.getName()) + "." + FileUtils.getFileType(upload.getClientFileName());
                 // Create a new file
-                File newFile = new File(baseFile, upload.getClientFileName());
+                File newFile = new File(baseFile, fileName);
 
                 // Check new file, delete if it already existed
                 FileUtils.cleanFileIfExists(newFile);
@@ -246,8 +249,16 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
                     upload.writeTo(newFile);
 
                     Image image = new Image();
-                    image.setPath(Csld.getBaseContext() + upload.getClientFileName());
+                    image.setPath(Csld.getBaseContext() + fileName);
                     imageService.insert(image);
+
+                    if(videoPath != null && !videoPath.equals("")){
+                        Video video = new Video();
+                        video.setPath(videoPath);
+                        video.setType(0);
+                        videoService.saveOrUpdate(video);
+                        game.setVideoId(video.getId());
+                    }
 
                     game.setImage(image);
                     game.setImageId(image.getId());
@@ -257,6 +268,14 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
                 }
             }
         } else {
+            if(videoPath != null && !videoPath.equals("")){
+                Video video = new Video();
+                video.setPath(videoPath);
+                video.setType(0);
+                videoService.saveOrUpdate(video);
+                game.setVideoId(video.getId());
+            }
+
             gameService.addGame(game);
         }
     }

@@ -11,10 +11,7 @@ import org.apache.wicket.model.Model;
 import java.util.Iterator;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 28.4.13
- * Time: 18:51
+ * It returns only users meaning that those with isAuthor = true are not to be seen here.
  */
 public class SortableUserProvider extends SortableDataProvider<CsldUser, String> {
     private CsldUserService csldUserService;
@@ -26,22 +23,22 @@ public class SortableUserProvider extends SortableDataProvider<CsldUser, String>
     @Override
     public Iterator<? extends CsldUser> iterator(long first, long last) {
         SortParam<String> props = getSort();
-        int amountOfUsers = csldUserService.getAll().size();
+        int amountOfUsers = csldUserService.getOrderedUsersByName().size();
         if(amountOfUsers > last) {
             last = amountOfUsers;
         }
-        if(props.getProperty().equals("form.wholeName")) {
-            return csldUserService.getOrderedByName().subList((int)first,(int)last).iterator();
+        if(props.getProperty().equals("name")) {
+            return csldUserService.getOrderedUsersByName().subList((int)first,(int)last).iterator();
         } else if(props.getProperty().equals("comments")) {
-            return csldUserService.getOrderedByComments().subList((int)first,(int)last).iterator();
+            return csldUserService.getOrderedUsersByComments().subList((int)first,(int)last).iterator();
         } else {
-            return csldUserService.getOrderedByPlayed().subList((int)first,(int)last).iterator();
+            return csldUserService.getOrderedUsersByPlayed().subList((int)first,(int)last).iterator();
         }
     }
 
     @Override
     public long size() {
-        return csldUserService.getAll().size();
+        return csldUserService.getOrderedUsersByName().size();
     }
 
     @Override

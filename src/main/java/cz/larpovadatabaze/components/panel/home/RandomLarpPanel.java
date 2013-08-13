@@ -21,11 +21,17 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 public class RandomLarpPanel extends Panel {
     @SpringBean
     GameService gameService;
+    private boolean show = true;
 
     public RandomLarpPanel(String id) {
         super(id);
 
         Game game = gameService.getRandomGame();
+        if(game == null){
+            game = Game.getEmptyGame();
+            game.setId(-1);
+            show = false;
+        }
 
         PageParameters params = new PageParameters();
         params.add("id", game.getId());
@@ -55,5 +61,11 @@ public class RandomLarpPanel extends Panel {
         add(new Label("players", Model.of(game.getPlayers())));
         add(new Label("year", Model.of(game.getYear())));
         add(new Label("rating", Model.of(gameService.getRatingOfGame(game))));
+    }
+
+    @Override
+    protected void onConfigure() {
+        super.onConfigure();
+        setVisibilityAllowed(show);
     }
 }

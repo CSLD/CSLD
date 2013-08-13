@@ -131,24 +131,32 @@ public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
 
     public List<CsldUser> getOrderedByComments() {
         List<CsldUser> allUsers = findAll();
+        sortByComments(allUsers);
+        return allUsers;
+    }
+
+    public List<CsldUser> getOrderedByPlayed() {
+        List<CsldUser> allUsers = findAll();
+        sortByPlayed(allUsers);
+        return allUsers;
+    }
+
+    private void sortByComments(List<CsldUser> allUsers){
         Collections.sort(allUsers, new Comparator<CsldUser>() {
             @Override
             public int compare(CsldUser o1, CsldUser o2) {
                 return o2.getCommented().size() - o1.getCommented().size();
             }
         });
-        return allUsers;
     }
 
-    public List<CsldUser> getOrderedByPlayed() {
-        List<CsldUser> allUsers = findAll();
+    private void sortByPlayed(List<CsldUser> allUsers){
         Collections.sort(allUsers, new Comparator<CsldUser>() {
             @Override
             public int compare(CsldUser o1, CsldUser o2) {
                 return o2.getPlayedGames().size() - o1.getPlayedGames().size();
             }
         });
-        return allUsers;
     }
 
     /**
@@ -169,5 +177,28 @@ public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
                 Restrictions.eq("email", email)
         );
         return uniqueUser.list();
+    }
+
+    public List<CsldUser> getOrderedUsersByName() {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("select user from CsldUser user join user.person person where user.isAuthor=false" +
+                " order by person.name");
+        return query.list();
+    }
+
+    public List<CsldUser> gerOrderedUsersByComments() {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from CsldUser where isAuthor=false");
+        List<CsldUser> allUsers = (List<CsldUser>) query.list();
+        sortByComments(allUsers);
+        return allUsers;
+    }
+
+    public List<CsldUser> getOrderedUsersByPlayed() {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from CsldUser where isAuthor=false");
+        List<CsldUser> allUsers = (List<CsldUser>) query.list();
+        sortByPlayed(allUsers);
+        return allUsers;
     }
 }

@@ -71,6 +71,18 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable {
         this.role = role;
     }
 
+    private Boolean isAuthor;
+
+    @Column(name = "is_author", nullable = false, insertable = true, updatable = true, length = 5, precision = 0)
+    @Basic
+    public Boolean getIsAuthor() {
+        return isAuthor;
+    }
+
+    public void setIsAuthor(Boolean isAuthor) {
+        this.isAuthor = isAuthor;
+    }
+
     private Integer personId;
 
     @Column(name = "person", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)

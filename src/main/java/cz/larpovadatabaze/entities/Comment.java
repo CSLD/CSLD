@@ -5,10 +5,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 27.3.13
- * Time: 14:01
+ *
  */
 @IdClass(CommentPK.class)
 @Table(schema = "public", name="csld_comment")

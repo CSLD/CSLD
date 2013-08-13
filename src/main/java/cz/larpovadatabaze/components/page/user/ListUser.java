@@ -66,7 +66,7 @@ public class ListUser extends CsldBasePage {
         add(propertyList);
         add(new PagingNavigator("navigator", propertyList));
 
-        add(new OrderByBorder("orderByName", "form.wholeName", sup)
+        add(new OrderByBorder("orderByName", "name", sup)
         {
             private static final long serialVersionUID = 1L;
 

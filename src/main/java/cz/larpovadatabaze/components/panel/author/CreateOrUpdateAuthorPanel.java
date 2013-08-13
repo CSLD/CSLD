@@ -2,11 +2,13 @@ package cz.larpovadatabaze.components.panel.author;
 
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
+import cz.larpovadatabaze.components.page.about.AboutDatabase;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Person;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.PersonService;
 import cz.larpovadatabaze.utils.Pwd;
+import cz.larpovadatabaze.utils.RandomString;
 import cz.larpovadatabaze.validator.UniqueUserValidator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -41,39 +43,19 @@ public abstract class CreateOrUpdateAuthorPanel extends Panel {
 
         TextField<String> name = new TextField<String>("name");
         name.setRequired(true);
-        ComponentFeedbackMessageFilter nameFilter = new ComponentFeedbackMessageFilter(name);
-        final FeedbackPanel nameFeedback = new FeedbackPanel("nameFeedback", nameFilter);
-        nameFeedback.setOutputMarkupId(true);
-        createOrUpdateUser.add(nameFeedback);
-        name.add(new AjaxFeedbackUpdatingBehavior("blur", nameFeedback));
-        createOrUpdateUser.add(name);
+        createOrUpdateUser.add(addFeedbackPanel(name, createOrUpdateUser, "nameFeedback"));
 
 
         TextField<String> nickname = new TextField<String>("nickname");
-        ComponentFeedbackMessageFilter nicknameFilter = new ComponentFeedbackMessageFilter(nickname);
-        final FeedbackPanel nicknameFeedback = new FeedbackPanel("nicknameFeedback", nicknameFilter);
-        nicknameFeedback.setOutputMarkupId(true);
-        createOrUpdateUser.add(nicknameFeedback);
-        nickname.add(new AjaxFeedbackUpdatingBehavior("blur", nicknameFeedback));
-        createOrUpdateUser.add(nickname);
+        createOrUpdateUser.add(addFeedbackPanel(nickname, createOrUpdateUser, "nicknameFeedback"));
 
         EmailTextField email = new EmailTextField("email");
         email.setRequired(true);
         email.add(new UniqueUserValidator(isEdit, personService));
-        ComponentFeedbackMessageFilter emailFilter = new ComponentFeedbackMessageFilter(email);
-        final FeedbackPanel emailFeedback = new FeedbackPanel("emailFeedback", emailFilter);
-        emailFeedback.setOutputMarkupId(true);
-        createOrUpdateUser.add(emailFeedback);
-        email.add(new AjaxFeedbackUpdatingBehavior("blur", emailFeedback));
-        createOrUpdateUser.add(email);
+        createOrUpdateUser.add(addFeedbackPanel(email, createOrUpdateUser, "emailFeedback"));
 
         TextArea<String> description = new TextArea<String>("description");
-        ComponentFeedbackMessageFilter descriptionFilter = new ComponentFeedbackMessageFilter(description);
-        final FeedbackPanel descriptionFeedback = new FeedbackPanel("descriptionFeedback", descriptionFilter);
-        descriptionFeedback.setOutputMarkupId(true);
-        createOrUpdateUser.add(descriptionFeedback);
-        description.add(new AjaxFeedbackUpdatingBehavior("blur", descriptionFeedback));
-        createOrUpdateUser.add(description);
+        createOrUpdateUser.add(addFeedbackPanel(description, createOrUpdateUser, "descriptionFeedback"));
 
         createOrUpdateUser.add(new AjaxButton("submit"){
             @Override
@@ -90,12 +72,22 @@ public abstract class CreateOrUpdateAuthorPanel extends Panel {
         add(createOrUpdateUser);
     }
 
+    private FormComponent addFeedbackPanel(FormComponent addFeedbackTo, Form addingFeedbackTo, String nameOfFeedbackPanel){
+        ComponentFeedbackMessageFilter filter = new ComponentFeedbackMessageFilter(addFeedbackTo);
+        final FeedbackPanel feedbackPanel = new FeedbackPanel(nameOfFeedbackPanel, filter);
+        feedbackPanel.setOutputMarkupId(true);
+        addingFeedbackTo.add(feedbackPanel);
+        addFeedbackTo.add(new AjaxFeedbackUpdatingBehavior("blur", feedbackPanel));
+        return addFeedbackTo;
+    }
+
     private void saveOrUpdateUser(Person author){
         personService.saveOrUpdate(author);
         CsldUser authorUser = CsldUser.getEmptyUser();
         authorUser.setPerson(author);
         authorUser.setPersonId(author.getId());
-        authorUser.setPassword(Pwd.getMD5("defaultPWD")); // TODO get Random String for password.
+        authorUser.setIsAuthor(true);
+        authorUser.setPassword(Pwd.getMD5(new RandomString(12).nextString()));
         csldUserService.saveOrUpdate(authorUser);
     }
 
