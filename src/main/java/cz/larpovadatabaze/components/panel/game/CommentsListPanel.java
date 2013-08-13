@@ -17,6 +17,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.ContextRelativeResource;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +31,9 @@ public class CommentsListPanel extends Panel {
         super(id);
 
         comments = game.getComments();
+        if(comments == null){
+            comments = new ArrayList<Comment>();
+        }
         ListView<Comment> commentList = new ListView<Comment>("commentList", comments) {
             @Override
             protected void populateItem(ListItem<Comment> item) {

@@ -4,9 +4,11 @@ import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
+import cz.larpovadatabaze.entities.UserPlayedGame;
 import cz.larpovadatabaze.services.CommentService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.RatingService;
+import cz.larpovadatabaze.services.UserPlayedGameService;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -26,6 +28,8 @@ public class DeleteGamePage extends CsldBasePage {
     private CommentService commentService;
     @SpringBean
     private RatingService ratingService;
+    @SpringBean
+    private UserPlayedGameService userPlayedGameService;
 
     public DeleteGamePage(PageParameters params) {
         Integer gameId = params.get("id").to(Integer.class);
@@ -39,6 +43,10 @@ public class DeleteGamePage extends CsldBasePage {
             List<Rating> ratings= game.getRatings();
             for(Rating rating: ratings){
                 ratingService.remove(rating);
+            }
+            List<UserPlayedGame> players = game.getPlayed();
+            for(UserPlayedGame playedGame: players){
+                userPlayedGameService.remove(playedGame);
             }
             gameService.remove(game);
         }

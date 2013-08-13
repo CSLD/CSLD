@@ -45,18 +45,18 @@ public class GameDetail extends CsldBasePage {
         final SimpleListUsersPanel wantedToPlay =  new SimpleListUsersPanel("wantsToPlay", wantedBy);
         wantedToPlay.setOutputMarkupId(true);
 
-        add(new PlayedPanel("playedPanel", game){
+        add(new PlayedPanel("playedPanel", game) {
             @Override
             protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
                 super.onCsldAction(target, form);
 
                 Game gameInner = gameService.getById(game.getId());
-                if(HbUtils.isProxy(gameInner)){
+                if (HbUtils.isProxy(gameInner)) {
                     gameInner = HbUtils.deproxy(gameInner);
                 }
                 List<CsldUser> wantedBy = new ArrayList<CsldUser>();
-                for(UserPlayedGame played : gameInner.getPlayed()){
-                    if(played.getState() == UserPlayedGame.WANT_TO_PLAY){
+                for (UserPlayedGame played : gameInner.getPlayed()) {
+                    if (played.getState() == UserPlayedGame.WANT_TO_PLAY) {
                         wantedBy.add(played.getPlayerOfGame());
                     }
                 }
@@ -91,6 +91,9 @@ public class GameDetail extends CsldBasePage {
 
         EditGamePanel editGamePanel = new EditGamePanel("editGamePanel", game);
         add(editGamePanel);
+
+        DeleteGamePanel deleteGamePanel = new DeleteGamePanel("deleteGamePanel", game);
+        add(deleteGamePanel);
 
         List<Game> similarGames = gameService.getSimilar(game);
         add(new GameListPanel("similarGames", similarGames));
