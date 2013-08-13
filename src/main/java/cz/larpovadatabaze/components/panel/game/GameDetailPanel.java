@@ -2,7 +2,9 @@ package cz.larpovadatabaze.components.panel.game;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.author.AuthorDetail;
+import cz.larpovadatabaze.components.page.group.GroupDetail;
 import cz.larpovadatabaze.components.panel.YouTubePanel;
+import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import org.apache.wicket.markup.html.basic.Label;
@@ -77,6 +79,22 @@ public class GameDetailPanel extends Panel {
             }
         };
         add(authorsList);
+
+        List<CsldGroup> groups = game.getGroupAuthor();
+        ListView<CsldGroup> groupsList = new ListView<CsldGroup>("authorsGroups",groups) {
+            @Override
+            protected void populateItem(ListItem<CsldGroup> item) {
+                CsldGroup group = item.getModelObject();
+                PageParameters params = new PageParameters();
+                params.add("id", group.getId());
+
+                Link<CsldBasePage> groupDetailLink = new BookmarkablePageLink<CsldBasePage>("authorGroupDetailLink", GroupDetail.class, params);
+                groupDetailLink.add(
+                        new Label("authorGroupName", group.getName()));
+                item.add(groupDetailLink);
+            }
+        };
+        add(groupsList);
 
         Label description = new Label("description",game.getDescription());
         add(description);

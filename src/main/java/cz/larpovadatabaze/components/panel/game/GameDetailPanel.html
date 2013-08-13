@@ -32,10 +32,18 @@
                     Web: <a wicket:id="webGameLink"></a>
                 </div>
                 <div class="popisek">
-                    Autoři:
+                    <wicket:message key="authorsCapitalized">Autoři:</wicket:message>
                     <div wicket:id="authors" id="authors">
                         <a wicket:id="authorDetailLink">
                             <span wicket:id="authorName"></span>
+                        </a>
+                    </div>
+                </div>
+                <div class="popisek">
+                    <wicket:message key="group.group">Skupiny:</wicket:message>
+                    <div wicket:id="authorsGroups" id="authorsGroups">
+                        <a wicket:id="authorGroupDetailLink">
+                            <span wicket:id="authorGroupName"></span>
                         </a>
                     </div>
                 </div>
