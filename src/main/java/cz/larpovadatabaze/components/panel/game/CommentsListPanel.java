@@ -18,16 +18,19 @@ import org.apache.wicket.request.resource.ContextRelativeResource;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Default List of all Comments belonging to given game.
  */
 public class CommentsListPanel extends Panel {
+    private List<Comment> comments;
 
     public CommentsListPanel(String id, Game game) {
         super(id);
 
-        ListView<Comment> commentList = new ListView<Comment>("commentList", game.getComments()) {
+        comments = game.getComments();
+        ListView<Comment> commentList = new ListView<Comment>("commentList", comments) {
             @Override
             protected void populateItem(ListItem<Comment> item) {
                 Comment actualComment = item.getModelObject();
@@ -59,5 +62,12 @@ public class CommentsListPanel extends Panel {
             }
         };
         add(commentList);
+    }
+
+    public void reload(AjaxRequestTarget target, List<Comment> comments) {
+        this.comments.removeAll(this.comments);
+        this.comments.addAll(comments);
+
+        target.add(this);
     }
 }

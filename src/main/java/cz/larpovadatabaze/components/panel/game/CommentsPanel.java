@@ -2,6 +2,7 @@ package cz.larpovadatabaze.components.panel.game;
 
 import cz.larpovadatabaze.api.IListener;
 import cz.larpovadatabaze.api.IPublisher;
+import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldUser;
@@ -25,13 +26,12 @@ import java.util.List;
 /**
  * This panel allows user to Comment given game
  */
-public class CommentsPanel extends Panel implements IPublisher {
+public abstract class CommentsPanel extends Panel {
     @SpringBean
     CommentService commentService;
 
     private Comment actualComment;
     private TextArea<String> commentContent;
-    private List<IListener> listeners;
 
     /**
      * Game must be non null value.
@@ -41,7 +41,6 @@ public class CommentsPanel extends Panel implements IPublisher {
      */
     public CommentsPanel(String id, final Game game) {
         super(id);
-        listeners = new ArrayList<IListener>();
 
         // Null is valid value of logged. Be careful.
         CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
@@ -58,28 +57,20 @@ public class CommentsPanel extends Panel implements IPublisher {
             commentText = actualComment.getComment();
         }
 
-        Form comment = new Form("comment"){
-            @Override
-            protected void onSubmit() {
-                saveComment();
-
-                PageParameters params = new PageParameters();
-                params.add("id", game.getId());
-                setResponsePage(GameDetail.class,params);
-            }
-        };
+        ValidatableForm<Comment> comment = new ValidatableForm<Comment>("comment"){};
         comment.setOutputMarkupId(true);
 
         commentContent = new TextArea<String>("textOfComment", Model.of(commentText));
         commentContent.setOutputMarkupId(true);
-        AjaxButton addComment = new AjaxButton("addComment"){};
-        addComment.setOutputMarkupId(true);
-        addComment.add(new AjaxFormComponentUpdatingBehavior("click") {
+        AjaxButton addComment = new AjaxButton("addComment"){
             @Override
-            protected void onUpdate(AjaxRequestTarget target) {
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 saveComment();
+                onCsldAction(target,form);
             }
-        });
+        };
+        addComment.setOutputMarkupId(true);
+
         comment.add(commentContent);
         comment.add(addComment);
 
@@ -94,22 +85,11 @@ public class CommentsPanel extends Panel implements IPublisher {
         actualComment.setComment(commentText);
         actualComment.setAdded(new Timestamp(System.currentTimeMillis()));
         commentService.saveOrUpdate(actualComment);
-
-        notifyListeners(commentText);
-    }
-
-    private void notifyListeners(String actualComment) {
-        for(IListener listener: listeners){
-            listener.notify(actualComment);
-        }
     }
 
     protected void onConfigure() {
         setVisibilityAllowed(CsldAuthenticatedWebSession.get().isSignedIn());
     }
 
-    @Override
-    public void addListener(IListener listener) {
-        listeners.add(listener);
-    }
+    protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}
 }

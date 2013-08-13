@@ -2,6 +2,7 @@ package cz.larpovadatabaze.components.panel.user;
 
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Person;
+import cz.larpovadatabaze.entities.UserPlayedGame;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -27,7 +28,13 @@ public class PersonDetailPanel extends Panel {
 
         add(new Label("age",person.getAge()));
         add(new Label("city",person.getCity()));
-        add(new Label("played",user.getPlayedGames().size()));
+        int played = 0;
+        for(UserPlayedGame playedGame: user.getPlayedGames()){
+            if(playedGame.getState() == UserPlayedGame.PLAYED){
+                played++;
+            }
+        }
+        add(new Label("played",played));
         add(new Label("organized",user.getAuthorOf().size()));
 
         add(new Label("description",person.getDescription()));

@@ -30,10 +30,18 @@ public class UserDetail extends CsldBasePage {
         add(new PersonDetailPanel("personDetail",user));
 
         List<Game> playedGames = new ArrayList<Game>();
+        List<Game> wantedGames = new ArrayList<Game>();
         for(UserPlayedGame played: user.getPlayedGames()){
-            playedGames.add(played.getPlayedBy());
+            if(played.getState() == UserPlayedGame.WANT_TO_PLAY){
+                wantedGames.add(played.getPlayedBy());
+            } else if(played.getState() == UserPlayedGame.PLAYED) {
+                playedGames.add(played.getPlayedBy());
+            } else {
+
+            }
         }
         add(new GameListPanel("playedGamesPanel",playedGames));
+        add(new GameListPanel("wantedGamesPanel",wantedGames));
         add(new GameListPanel("authoredGamesPanel",user.getAuthorOf()));
     }
 }

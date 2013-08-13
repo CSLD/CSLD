@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
@@ -23,7 +24,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * interest in game or the player played the game, or the player is interested in
  * playing the game.
  */
-public class PlayedPanel extends Panel {
+public abstract class PlayedPanel extends Panel {
     @SpringBean
     private UserPlayedGameService userPlayedGameService;
 
@@ -45,16 +46,7 @@ public class PlayedPanel extends Panel {
             selected = UserPlayedGame.getStateFromDb(stateOfGame.getState());
         }
 
-        Form gameState = new Form("gameState"){
-            @Override
-            protected void onSubmit() {
-                super.onSubmit();
-                saveState();
-                PageParameters params = new PageParameters();
-                params.add("id",game.getId());
-                setResponsePage(GameDetail.class, params);
-            }
-        };
+        final ValidatableForm gameState = new ValidatableForm("gameState"){};
         Select states = new Select("stateOfGame", new PropertyModel(this, "selected"));
         states.add(new SelectOption<String>("didntPlay", new StringResourceModel("game.notPlayed", this, null)));
         states.add(new SelectOption<String>("played", new StringResourceModel("game.played", this, null)));
@@ -64,9 +56,7 @@ public class PlayedPanel extends Panel {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 saveState();
-                PageParameters params = new PageParameters();
-                params.add("id",game.getId());
-                setResponsePage(GameDetail.class, params);
+                onCsldAction(target, gameState);
             }
         });
 
@@ -84,4 +74,6 @@ public class PlayedPanel extends Panel {
         super.onConfigure();
         setVisibilityAllowed(CsldAuthenticatedWebSession.get().isSignedIn());
     }
+
+    protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}
 }

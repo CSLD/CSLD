@@ -1,5 +1,7 @@
 package cz.larpovadatabaze.entities;
 
+import cz.larpovadatabaze.components.panel.game.PlayedPanel;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -15,6 +17,10 @@ import java.io.Serializable;
 @javax.persistence.Table(name = "csld_user_played_game", schema = "public", catalog = "")
 @Entity
 public class UserPlayedGame implements Serializable {
+    public static final int PLAYED = 2;
+    public static final int WANT_TO_PLAY = 1;
+    public static final int NONE = 0;
+
     private Integer gameId;
 
     @javax.persistence.Column(name = "game_id", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
