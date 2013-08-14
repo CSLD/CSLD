@@ -13,7 +13,7 @@ public class Administration extends CsldBasePage {
         super();
 
         BookmarkablePageLink<CsldBasePage> manageUserRights =
-                new BookmarkablePageLink<CsldBasePage>("manageUserRights", Administration.class);
+                new BookmarkablePageLink<CsldBasePage>("manageUserRights", ManageUserRightsPage.class);
         add(manageUserRights);
 
         BookmarkablePageLink<CsldBasePage> manageLabels =
