@@ -7,6 +7,7 @@ import cz.larpovadatabaze.components.page.group.ListGroup;
 import cz.larpovadatabaze.components.page.user.ListUser;
 import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.components.panel.search.SearchBoxPanel;
+import cz.larpovadatabaze.components.panel.user.AdminPanel;
 import cz.larpovadatabaze.components.panel.user.LoggedBoxPanel;
 import cz.larpovadatabaze.components.panel.user.LoginBoxPanel;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
@@ -46,6 +47,7 @@ public class CsldBasePage extends WebPage {
 
         add(new LoginBoxPanel("login"));
         add(new LoggedBoxPanel("loggedInfo"));
+        add(new AdminPanel("adminPanel"));
 
         add(new BookmarkablePageLink<CsldBasePage>("list-game", ListGame.class));
         add(new BookmarkablePageLink<CsldBasePage>("list-authors", ListAuthor.class));

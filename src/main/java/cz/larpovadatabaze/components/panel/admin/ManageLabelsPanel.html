@@ -1,0 +1,45 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+    <form wicket:id="manageLabels">
+        <table>
+            <thead>
+            <tr>
+                <th>
+                    <wicket:message key="form.name">Jméno</wicket:message>
+                </th>
+                <th>
+                    <wicket:message key="form.description">Popis</wicket:message>
+                </th>
+                <th>
+                    <wicket:message key="label.require">Požadovat</wicket:message>
+                </th>
+                <th>
+                    <wicket:message key="label.accept">Schválit</wicket:message>
+                </th>
+                <th>
+                    <wicket:message key="label.remove">Smazat</wicket:message>
+                </th>
+            </tr>
+            </thead>
+
+            <tbody wicket:id="labels">
+            <tr>
+                <td>
+                    <span wicket:id="name"></span>
+                </td>
+                <td>
+                    <span wicket:id="description"></span>
+                </td>
+                <td>
+                    <input type="button" wicket:id="require" wicket:message="value:label.require" class=""/>
+                </td>
+                <td>
+                    <input type="button" wicket:id="accept" wicket:message="value:label.accept" class=""/>
+                </td>
+                <td>
+                    <input type="button" wicket:id="remove" wicket:message="value:label.remove" class=""/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</wicket:panel>

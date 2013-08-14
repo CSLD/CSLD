@@ -16,7 +16,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 /**
  *
  */
-@AuthorizeInstantiation({"User","Editor","Admin"})
 public class EditGroupPanel extends Panel {
     private CsldGroup toEdit;
 

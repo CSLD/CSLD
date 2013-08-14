@@ -15,7 +15,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 /**
  *
  */
-@AuthorizeInstantiation({"User","Editor","Admin"})
 public class EditGamePanel extends Panel {
     private Game toEdit;
 
