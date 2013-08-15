@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.ListResourceBundle;
 
 /**
  *
@@ -118,6 +119,11 @@ public class CsldUserServiceImpl implements CsldUserService {
     @Override
     public List<CsldUser> getOrderedUsersByPlayed() {
         return csldUserDao.getOrderedUsersByPlayed();
+    }
+
+    @Override
+    public CsldUser getByEmail(String mail) {
+        return csldUserDao.getByEmail(mail);
     }
 
 }

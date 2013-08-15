@@ -113,6 +113,8 @@ public class Csld extends AuthenticatedWebApplication
         mountPage("/detail-user", UserDetail.class);
 
         mountPage("/oDatabazi", AboutDatabase.class);
+        mountPage("/reset", ResetPassword.class);
+        mountPage("/forgot-password", ForgotPassword.class);
     }
 
     public ApplicationContext getApplicationContext(){

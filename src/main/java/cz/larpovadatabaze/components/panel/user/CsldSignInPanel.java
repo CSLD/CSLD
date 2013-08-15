@@ -7,10 +7,7 @@ import org.apache.wicket.authentication.IAuthenticationStrategy;
 import org.apache.wicket.authroles.authentication.panel.SignInPanel;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 30.4.13
- * Time: 12:22
+ *
  */
 public class CsldSignInPanel extends SignInPanel {
     private String username;

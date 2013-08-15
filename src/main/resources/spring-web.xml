@@ -28,6 +28,29 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
         <property name="password" value="WTAdF1fWSN9pGMAqiPInAqGjz0" />
     </bean>
 
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="smtp.gmail.com"/>
+        <property name="port" value="587"/>
+        <property name="username" value="hrajlarp111@gmail.com"/>
+        <property name="password" value="hrajlarp2013"/>
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="templateMessage" class="org.springframework.mail.SimpleMailMessage">
+        <property name="from" value="hrajlarp111@gmail.com"/>
+        <property name="subject" value="HRAJLARP - Změna statusu u hry"/>
+    </bean>
+
+    <bean id="mailService" class="cz.larpovadatabaze.utils.MailClient">
+        <property name="mailSender" ref="mailSender"/>
+        <property name="templateMessage" ref="templateMessage"/>
+    </bean>
+
 	<!-- Hibernate session factory -->
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">

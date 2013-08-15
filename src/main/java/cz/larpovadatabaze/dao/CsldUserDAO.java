@@ -201,4 +201,11 @@ public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
         sortByPlayed(allUsers);
         return allUsers;
     }
+
+    public CsldUser getByEmail(String mail) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("select user from CsldUser user join user.person person where person.email = :mail");
+        query.setParameter("mail", mail);
+        return (CsldUser) query.uniqueResult();
+    }
 }

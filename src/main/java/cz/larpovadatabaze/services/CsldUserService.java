@@ -45,4 +45,6 @@ public interface CsldUserService extends GenericService<CsldUser> {
     List<CsldUser> getOrderedUsersByComments();
 
     List<CsldUser> getOrderedUsersByPlayed();
+
+    CsldUser getByEmail(String mail);
 }
