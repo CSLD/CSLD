@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.components.page.user;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.panel.game.CommentsListPanel;
 import cz.larpovadatabaze.components.panel.game.GameListPanel;
 import cz.larpovadatabaze.components.panel.user.PersonDetailPanel;
 import cz.larpovadatabaze.entities.CsldUser;
@@ -28,6 +29,7 @@ public class UserDetail extends CsldBasePage {
         CsldUser user = csldUserService.getById(authorId);
 
         add(new PersonDetailPanel("personDetail",user));
+        add(new CommentsListPanel("comments", user.getCommented()));
 
         List<Game> playedGames = new ArrayList<Game>();
         List<Game> wantedGames = new ArrayList<Game>();

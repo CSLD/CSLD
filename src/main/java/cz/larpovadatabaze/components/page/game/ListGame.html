@@ -3,40 +3,14 @@
         <div class="nadpisStranky">
             <img wicket:id="chartsIcon" class="ikonaStranky"><wicket:message key="game.charts">Žebříčky</wicket:message>
         </div>
-        <table>
-            <thead>
-            <tr>
-                <td></td>
-                <td wicket:id="orderByName"><wicket:message key="form.name">Jméno</wicket:message></td>
-                <td wicket:id="orderByRating"><wicket:message key="game.rating">Hodnocení</wicket:message></td>
-                <td wicket:id="orderByRatingAmount"><wicket:message key="game.amountOfRatings">Počet hodnocení</wicket:message></td>
-                <td wicket:id="orderByCommentAmount"><wicket:message key="game.amountOfComments">Počet komentářů</wicket:message></td>
-            </tr>
-            </thead>
-            <tbody>
-            <tr wicket:id="listGames" class="polozkaZebricek">
-                <td class="poradi">
-                    <span wicket:id="order"></span>
-                </td>
-                <td class="larp">
-                    <a wicket:id="gameLink" class="larpOdkaz">
-                        <span wicket:id="gameName"></span>
-                    </a>
-                    (<span wicket:id="gameYear"></span>)
-                </td>
-                <td class="hodnoceni"><span wicket:id="rating">94</span> %</td>
-                <td class="pocet_hodnoceni">
-                    <span wicket:id="ratings"></span><img wicket:id="ratingsIcon" style="position:relative; top:2px;">
-                </td>
-                <td class="pocet_hodnoceni">
-                    <span wicket:id="comments"></span><img wicket:id="commentsIcon" style="position:relative; top:3px;">
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <span wicket:id="navigator">[dataview navigator]</span>
+        <div wicket:id="listGame"></div>
     </div>
 
-    <div class="pravaCast" wicket:id="gamePanel" id="Zebricky">
+    <div class="pravaCast" id="Zebricky">
+        <div class="praveMenu">
+            <div class="nadpisMenu"><wicket:message key="filters.filters">filtry</wicket:message></div>
+        </div>
+        <div class="sekce" wicket:id="addGame"></div>
+        <div class="sekce" wicket:id="filterGames"></div>
     </div>
 </wicket:extend>

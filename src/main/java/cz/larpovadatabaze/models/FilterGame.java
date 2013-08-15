@@ -3,73 +3,61 @@ package cz.larpovadatabaze.models;
 import java.io.Serializable;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 3.5.13
- * Time: 12:47
+ *
  */
 public class FilterGame implements Serializable {
-    private Integer minHours;
-    private Integer maxHours;
-    private Integer minDays;
-    private Integer maxDays;
-    private Integer minPlayers;
-    private Integer maxPlayers;
-    private Boolean labelCheck;
+    private Double minHours = 0d;
+    private Double maxHours;
+    private Double minDays = 0d;
+    private Double maxDays;
+    private Double minPlayers = 0d;
+    private Double maxPlayers;
 
-    public Integer getMinHours() {
+    public Double getMinHours() {
         return minHours;
     }
 
-    public void setMinHours(Integer minHours) {
+    public void setMinHours(Double minHours) {
         this.minHours = minHours;
     }
 
-    public Integer getMaxHours() {
+    public Double getMaxHours() {
         return maxHours;
     }
 
-    public void setMaxHours(Integer maxHours) {
+    public void setMaxHours(Double maxHours) {
         this.maxHours = maxHours;
     }
 
-    public Integer getMinDays() {
+    public Double getMinDays() {
         return minDays;
     }
 
-    public void setMinDays(Integer minDays) {
+    public void setMinDays(Double minDays) {
         this.minDays = minDays;
     }
 
-    public Integer getMaxDays() {
+    public Double getMaxDays() {
         return maxDays;
     }
 
-    public void setMaxDays(Integer maxDays) {
+    public void setMaxDays(Double maxDays) {
         this.maxDays = maxDays;
     }
 
-    public Integer getMinPlayers() {
+    public Double getMinPlayers() {
         return minPlayers;
     }
 
-    public void setMinPlayers(Integer minPlayers) {
+    public void setMinPlayers(Double minPlayers) {
         this.minPlayers = minPlayers;
     }
 
-    public Integer getMaxPlayers() {
+    public Double getMaxPlayers() {
         return maxPlayers;
     }
 
-    public void setMaxPlayers(Integer maxPlayers) {
+    public void setMaxPlayers(Double maxPlayers) {
         this.maxPlayers = maxPlayers;
-    }
-
-    public Boolean getLabelCheck() {
-        return labelCheck;
-    }
-
-    public void setLabelCheck(Boolean labelCheck) {
-        this.labelCheck = labelCheck;
     }
 }

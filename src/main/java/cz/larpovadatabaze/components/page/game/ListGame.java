@@ -1,14 +1,19 @@
 package cz.larpovadatabaze.components.page.game;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.panel.game.GamesPanel;
+import cz.larpovadatabaze.components.panel.game.AddGamePanel;
+import cz.larpovadatabaze.components.panel.game.FilterGamesPanel;
+import cz.larpovadatabaze.components.panel.game.ListGamePanel;
 import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
+import cz.larpovadatabaze.models.FilterGame;
 import cz.larpovadatabaze.providers.SortableGameProvider;
 import cz.larpovadatabaze.services.GameService;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.OrderByBorder;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
@@ -30,100 +35,20 @@ public class ListGame extends CsldBasePage {
     GameService gameService;
 
     public ListGame(PageParameters params) {
-        // TODO params may contain information about filters applied on this page.
         Image chartsIcon = new Image("chartsIcon", new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getChartsIconPath()));
         add(chartsIcon);
 
-        SortableGameProvider sgp = new SortableGameProvider(gameService);
-        final DataView<Game> propertyList = new DataView<Game>("listGames", sgp) {
+        final ListGamePanel listGamePanel = new ListGamePanel("listGame");
+        listGamePanel.setOutputMarkupId(true);
+        add(listGamePanel);
+
+        add(new AddGamePanel("addGame"));
+        add(new FilterGamesPanel("filterGames"){
             @Override
-            protected void populateItem(Item<Game> item) {
-                int itemIndex = item.getIndex() + 1;
-                Game game = item.getModelObject();
-                final Label orderLabel = new Label("order", itemIndex);
-                item.add(orderLabel);
-
-                PageParameters params = new PageParameters();
-                params.add("id",game.getId());
-                final BookmarkablePageLink<CsldBasePage> gameLink =
-                        new BookmarkablePageLink<CsldBasePage>("gameLink", GameDetail.class, params);
-                final Label nameLabel = new Label("gameName", Model.of(game.getName()));
-                gameLink.add(nameLabel);
-                item.add(gameLink);
-
-                final Label gameYear = new Label("gameYear", Model.of(game.getYear()));
-                item.add(gameYear);
-
-                final Label gameRating = new Label("rating", Model.of(gameService.getRatingOfGame(game)));
-                item.add(gameRating);
-
-                List<Rating> ratings = (game.getRatings() != null) ?
-                        game.getRatings() : new ArrayList<Rating>();
-                final Label gameRatings = new Label("ratings", ratings.size());
-                item.add(gameRatings);
-                final Image ratingsIcon = new Image("ratingsIcon", new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getRatingsIconPath()));
-                item.add(ratingsIcon);
-
-                List<Comment> comments = (game.getComments() != null) ?
-                        game.getComments() : new ArrayList<Comment>();
-                final Label gameComments = new Label("comments", comments.size());
-                item.add(gameComments);
-                final Image commentsIcon = new Image("commentsIcon", new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getCommentsIconPath()));
-                item.add(commentsIcon);
-            }
-        };
-        propertyList.setOutputMarkupId(true);
-        propertyList.setItemsPerPage(25L);
-
-        add(new OrderByBorder("orderByName", "form.wholeName", sgp)
-        {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            protected void onSortChanged()
-            {
-                propertyList.setCurrentPage(0);
+            public void onCsldEvent(AjaxRequestTarget target, Form<?> form, List<cz.larpovadatabaze.entities.Label> labels) {
+                FilterGame filterGame = (FilterGame) form.getModelObject();
+                listGamePanel.reload(target, filterGame, labels);
             }
         });
-
-        add(new OrderByBorder("orderByRating", "rating", sgp)
-        {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            protected void onSortChanged()
-            {
-                propertyList.setCurrentPage(0);
-            }
-        });
-
-        add(new OrderByBorder("orderByRatingAmount", "ratingAmount", sgp)
-        {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            protected void onSortChanged()
-            {
-                propertyList.setCurrentPage(0);
-            }
-        });
-
-
-        add(new OrderByBorder("orderByCommentAmount", "commentAmount", sgp)
-        {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            protected void onSortChanged()
-            {
-                propertyList.setCurrentPage(0);
-            }
-        });
-
-
-        add(propertyList);
-        add(new PagingNavigator("navigator", propertyList));
-
-        add(new GamesPanel("gamePanel"));
     }
 }

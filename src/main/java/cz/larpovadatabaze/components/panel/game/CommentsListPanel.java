@@ -27,13 +27,14 @@ import java.util.List;
 public class CommentsListPanel extends Panel {
     private List<Comment> comments;
 
-    public CommentsListPanel(String id, Game game) {
+    public CommentsListPanel(String id, List<Comment> comments) {
         super(id);
 
-        comments = game.getComments();
         if(comments == null){
             comments = new ArrayList<Comment>();
         }
+        this.comments = comments;
+
         ListView<Comment> commentList = new ListView<Comment>("commentList", comments) {
             @Override
             protected void populateItem(ListItem<Comment> item) {

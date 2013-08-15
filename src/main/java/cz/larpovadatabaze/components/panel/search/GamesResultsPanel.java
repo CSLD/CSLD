@@ -6,7 +6,10 @@ import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
+import cz.larpovadatabaze.models.FilterGame;
 import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.utils.Filter;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
@@ -28,6 +31,12 @@ import java.util.List;
 public class GamesResultsPanel extends Panel {
     @SpringBean
     GameService gameService;
+    private List<Game> fullResults;
+    private List<Game> shortResults;
+    private String query;
+
+    private ListView<Game> othersList;
+    private ListView<Game> fullList;
 
     public GamesResultsPanel(String id, String query) {
         super(id);
@@ -35,27 +44,11 @@ public class GamesResultsPanel extends Panel {
         if(query == null) {
             query = "";
         }
+        this.query = query;
 
-        List<Game> allResults = gameService.getAll();
-        List<Game> searchResults = new ArrayList<Game>();
-        for(Game result: allResults){
-            if(result.getAutoCompleteData().toLowerCase().contains(query.toLowerCase())){
-                searchResults.add(result);
-            }
-        }
+        fillShortFull(query);
 
-        List<Game> fullResults;
-        List<Game> shortResults;
-
-        if(searchResults.size() > 2){
-            fullResults = searchResults.subList(0,3);
-            shortResults = searchResults.subList(3, searchResults.size());
-        } else {
-            fullResults = searchResults.subList(0,searchResults.size());
-            shortResults = new ArrayList<Game>();
-        }
-
-        ListView<Game> fullList = new ListView<Game>("fullGames", fullResults) {
+        fullList = new ListView<Game>("fullGames", fullResults) {
             @Override
             protected void populateItem(ListItem<Game> item) {
                 Game game = item.getModelObject();
@@ -88,7 +81,7 @@ public class GamesResultsPanel extends Panel {
         };
         add(fullList);
 
-        ListView<Game> othersList = new ListView<Game>("shortGames", shortResults) {
+        othersList = new ListView<Game>("shortGames", shortResults) {
             @Override
             protected void populateItem(ListItem<Game> item) {
                 Game game = item.getModelObject();
@@ -106,5 +99,46 @@ public class GamesResultsPanel extends Panel {
             }
         };
         add(othersList);
+    }
+
+    private void fillShortFull(String query) {
+        List<Game> allResults = gameService.getAll();
+        List<Game> searchResults = new ArrayList<Game>();
+        for(Game result: allResults){
+            if(result.getAutoCompleteData().toLowerCase().contains(query.toLowerCase())){
+                searchResults.add(result);
+            }
+        }
+
+        if(searchResults.size() > 2){
+            fullResults = searchResults.subList(0,3);
+            shortResults = searchResults.subList(3, searchResults.size());
+        } else {
+            fullResults = searchResults.subList(0,searchResults.size());
+            shortResults = new ArrayList<Game>();
+        }
+    }
+
+    public void reload(AjaxRequestTarget target, FilterGame filters, List<cz.larpovadatabaze.entities.Label> allLabels) {
+        fillShortFull(query);
+
+        fullResults = Filter.filterGames(filters, allLabels, fullResults);
+        fullList.setList(fullResults);
+        shortResults = Filter.filterGames(filters, allLabels, shortResults);
+        othersList.setList(shortResults);
+
+        List<Game> toRemove = new ArrayList<Game>();
+        if(fullResults.size() < 3 && shortResults.size() > 0){
+            for(Game game: shortResults) {
+                fullResults.add(game);
+                toRemove.add(game);
+                if(fullResults.size() >= 3) {
+                    break;
+                }
+            }
+            shortResults.removeAll(toRemove);
+        }
+
+        target.add(this);
     }
 }

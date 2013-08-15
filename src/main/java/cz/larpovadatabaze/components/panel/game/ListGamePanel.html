@@ -1,0 +1,42 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+    <table>
+        <thead>
+        <tr>
+            <td></td>
+            <td wicket:id="orderByName">
+                <wicket:message key="form.name">Jméno</wicket:message>
+            </td>
+            <td wicket:id="orderByRating">
+                <wicket:message key="game.rating">Hodnocení</wicket:message>
+            </td>
+            <td wicket:id="orderByRatingAmount">
+                <wicket:message key="game.amountOfRatings">Počet hodnocení</wicket:message>
+            </td>
+            <td wicket:id="orderByCommentAmount">
+                <wicket:message key="game.amountOfComments">Počet komentářů</wicket:message>
+            </td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr wicket:id="listGames" class="polozkaZebricek">
+            <td class="poradi">
+                <span wicket:id="order"></span>
+            </td>
+            <td class="larp">
+                <a wicket:id="gameLink" class="larpOdkaz">
+                    <span wicket:id="gameName"></span>
+                </a>
+                (<span wicket:id="gameYear"></span>)
+            </td>
+            <td class="hodnoceni"><span wicket:id="rating">94</span> %</td>
+            <td class="pocet_hodnoceni">
+                <span wicket:id="ratings"></span><img wicket:id="ratingsIcon" style="position:relative; top:2px;">
+            </td>
+            <td class="pocet_hodnoceni">
+                <span wicket:id="comments"></span><img wicket:id="commentsIcon" style="position:relative; top:3px;">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <span wicket:id="navigator">[dataview navigator]</span>
+</wicket:panel>

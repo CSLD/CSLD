@@ -31,7 +31,7 @@ public class GameDetail extends CsldBasePage {
             game = HbUtils.deproxy(game);
         }
 
-        final CommentsListPanel comments = new CommentsListPanel("commentsList", game);
+        final CommentsListPanel comments = new CommentsListPanel("commentsList", game.getComments());
         comments.setOutputMarkupId(true);
         final RatingsResultPanel ratingsResult = new RatingsResultPanel("ratingsResults", game);
         ratingsResult.setOutputMarkupId(true);
