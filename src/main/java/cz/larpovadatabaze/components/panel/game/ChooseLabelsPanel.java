@@ -29,11 +29,28 @@ public class ChooseLabelsPanel extends Panel {
     private List<Label> optionalLabels;
     private List<Label> chosen;
 
+    private ListView<Label> labelsChooser;
+    private ListView<Label> labelsChooserOptional;
+
     public ChooseLabelsPanel(String id, final List<Label> chosen){
         super(id);
         this.chosen = chosen;
 
+        fillLabels();
+        labelsChooser = new SimpleListViewer("requiredLabels", requiredLabels);
+        add(labelsChooser);
+
+        labelsChooserOptional = new SimpleListViewer("otherLabels", optionalLabels);
+        add(labelsChooserOptional);
+    }
+
+    public ChooseLabelsPanel(String id) {
+        this(id, new ArrayList<Label>());
+    }
+
+    private void fillLabels(){
         CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
+
         List<Label> allLabels = labelService.getAll();
         requiredLabels = new ArrayList<Label>();
         optionalLabels = new ArrayList<Label>();
@@ -50,15 +67,6 @@ public class ChooseLabelsPanel extends Panel {
                 optionalLabels.add(label);
             }
         }
-        ListView<Label> labelsChooser = new SimpleListViewer("requiredLabels", requiredLabels);
-        add(labelsChooser);
-
-        ListView<Label> labelsChooserOptional = new SimpleListViewer("otherLabels", optionalLabels);
-        add(labelsChooserOptional);
-    }
-
-    public ChooseLabelsPanel(String id) {
-        this(id, new ArrayList<Label>());
     }
 
     public List<Label> getSelected() {
@@ -74,6 +82,15 @@ public class ChooseLabelsPanel extends Panel {
             }
         }
         return selected;
+    }
+
+    public void reload(AjaxRequestTarget target) {
+        fillLabels();
+
+        labelsChooser.setList(requiredLabels);
+        labelsChooserOptional.setList(optionalLabels);
+
+        target.add(ChooseLabelsPanel.this);
     }
 
     private class SimpleListViewer extends ListView<Label> {

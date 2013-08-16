@@ -160,7 +160,7 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
     }
 
     private boolean saveOrUpdateUser(CsldUser user){
-        if(personService.saveOrUpdate(user.getPerson())){
+        if(!personService.saveOrUpdate(user.getPerson())){
             error("Uživatele se nepovedlo uložit.");
             return false;
         }

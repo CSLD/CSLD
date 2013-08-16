@@ -17,7 +17,6 @@ import org.apache.wicket.request.resource.ContextRelativeResource;
 /**
  *
  */
-@AuthorizeInstantiation({"User","Editor","Admin"})
 public class AddAuthorsToGroupPanel extends Panel {
     private CsldGroup group;
 

@@ -94,6 +94,7 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
         addAuthorsInput(createOrUpdateGame, game);
         addGroupsInput(createOrUpdateGame, game);
         chooseLabels = new ChooseLabelsPanel("chooseLabels", game.getLabels());
+        chooseLabels.setOutputMarkupId(true);
         createOrUpdateGame.add(chooseLabels);
 
         addCreateGroupButton(createOrUpdateGame);
@@ -141,6 +142,7 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
                     protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
                         super.onCsldAction(target, form);
                         createlabelModal.close(target);
+                        chooseLabels.reload(target);
                     }
                 });
                 createlabelModal.show(target);
