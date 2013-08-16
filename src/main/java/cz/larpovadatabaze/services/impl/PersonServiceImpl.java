@@ -23,9 +23,8 @@ public class PersonServiceImpl implements PersonService {
     private PersonDAO personDAO;
 
     @Override
-    public void saveOrUpdate(Person person) {
-        personDAO.saveOrUpdate(person);
-        personDAO.flush();
+    public boolean saveOrUpdate(Person person) {
+        return personDAO.saveOrUpdate(person);
     }
 
     @Override

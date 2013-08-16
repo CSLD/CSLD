@@ -9,5 +9,5 @@ import cz.larpovadatabaze.entities.Image;
  * Time: 19:00
  */
 public interface ImageService extends GenericService<Image> {
-    public void insert(Image image);
+    public boolean insert(Image image);
 }

@@ -47,8 +47,8 @@ public class GameServiceImpl implements GameService {
 
 
     @Override
-    public void addGame(Game game) {
-        gameDAO.saveOrUpdate(game);
+    public boolean addGame(Game game) {
+        return gameDAO.saveOrUpdate(game);
     }
 
     @Override

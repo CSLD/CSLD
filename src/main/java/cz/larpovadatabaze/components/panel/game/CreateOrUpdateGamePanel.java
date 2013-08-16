@@ -107,8 +107,9 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
 
                 if(createOrUpdateGame.isValid()){
                     Game game = createOrUpdateGame.getModelObject();
-                    saveOrUpdateGame(game);
-                    onCsldAction(target, form);
+                    if(saveOrUpdateGame(game)){
+                        onCsldAction(target, form);
+                    }
                 }
             }
         });
@@ -211,7 +212,7 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
         authorsOfGame = authors.getData();
     }
 
-    private void saveOrUpdateGame(Game game) {
+    private boolean saveOrUpdateGame(Game game) {
         game.setAdded(new Timestamp(new Date().getTime()));
         game.setLabels(chooseLabels.getSelected());
 
@@ -249,34 +250,58 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
 
                     Image image = new Image();
                     image.setPath(Csld.getBaseContext() + fileName);
-                    imageService.insert(image);
+                    if(!imageService.insert(image)){
+                        error("Hru se nepovedlo vložit.");
+                        return false;
+                    }
 
+                    Video video = new Video();
                     if(videoPath != null && !videoPath.equals("")){
-                        Video video = new Video();
                         video.setPath(videoPath);
                         video.setType(0);
-                        videoService.saveOrUpdate(video);
+                        if(!videoService.saveOrUpdate(video)){
+                            imageService.remove(image);
+                            error("Hru se nepovedlo vložit.");
+                            return false;
+                        }
                         game.setVideoId(video.getId());
                     }
 
                     game.setImage(image);
                     game.setImageId(image.getId());
-                    gameService.addGame(game);
+                    if(gameService.addGame(game)) {
+                        return true;
+                    } else {
+                        if(videoPath != null && !videoPath.equals("")){
+                            videoService.remove(video);
+                        }
+                        imageService.remove(image);
+                        error("Hru se nepovedlo vložit.");
+                        return false;
+                    }
                 } catch (Exception e) {
                     throw new IllegalStateException("Unable to write file", e);
                 }
             }
         } else {
+            Video video = new Video();
             if(videoPath != null && !videoPath.equals("")){
-                Video video = new Video();
                 video.setPath(videoPath);
                 video.setType(0);
                 videoService.saveOrUpdate(video);
                 game.setVideoId(video.getId());
             }
 
-            gameService.addGame(game);
+            if(gameService.addGame(game)) {
+                return true;
+            } else {
+                if(videoPath != null && !videoPath.equals("")){
+                    videoService.remove(video);
+                }
+                return false;
+            }
         }
+        return false;
     }
 
     protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}

@@ -6,15 +6,12 @@ import cz.larpovadatabaze.exceptions.WrongParameterException;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 9.4.13
- * Time: 11:13
+ *
  */
 public interface CsldUserService extends GenericService<CsldUser> {
     public CsldUser getById(Integer id);
 
-    void saveOrUpdate(CsldUser user);
+    boolean saveOrUpdate(CsldUser user);
 
     void flush();
 

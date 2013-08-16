@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.panel.author;
 
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
 import cz.larpovadatabaze.components.page.about.AboutDatabase;
@@ -63,8 +64,9 @@ public abstract class CreateOrUpdateAuthorPanel extends Panel {
                 super.onSubmit(target, form);
                 if(createOrUpdateUser.isValid()){
                     Person author = createOrUpdateUser.getModelObject();
-                    saveOrUpdateUser(author);
-                    onCsldAction(target, form);
+                    if(saveOrUpdateUser(author)){
+                        onCsldAction(target, form);
+                    }
                 }
             }
         });
@@ -81,14 +83,22 @@ public abstract class CreateOrUpdateAuthorPanel extends Panel {
         return addFeedbackTo;
     }
 
-    private void saveOrUpdateUser(Person author){
-        personService.saveOrUpdate(author);
+    private boolean saveOrUpdateUser(Person author){
+        if(!personService.saveOrUpdate(author)){
+            error("Uživatele se nepovedlo vložit.");
+            return false;
+        }
         CsldUser authorUser = CsldUser.getEmptyUser();
         authorUser.setPerson(author);
         authorUser.setPersonId(author.getId());
         authorUser.setIsAuthor(true);
         authorUser.setPassword(Pwd.getMD5(new RandomString(12).nextString()));
-        csldUserService.saveOrUpdate(authorUser);
+        if(csldUserService.saveOrUpdate(authorUser)){
+            return true;
+        } else {
+            personService.remove(author);
+            return false;
+        }
     }
 
     protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}

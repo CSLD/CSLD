@@ -26,8 +26,8 @@ public class CsldUserServiceImpl implements CsldUserService {
     }
 
     @Override
-    public void saveOrUpdate(CsldUser user) {
-        csldUserDao.saveOrUpdate(user);
+    public boolean saveOrUpdate(CsldUser user) {
+        return csldUserDao.saveOrUpdate(user);
     }
 
     @Override

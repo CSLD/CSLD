@@ -6,10 +6,7 @@ import cz.larpovadatabaze.exceptions.WrongParameterException;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 9.4.13
- * Time: 11:24
+ *
  */
 public interface LabelService extends GenericService<Label>{
     public List<Label> getRequired();
@@ -20,5 +17,5 @@ public interface LabelService extends GenericService<Label>{
 
     List<Label> getByAutoCompletable(String labelName) throws WrongParameterException;
 
-    void saveOrUpdate(Label label);
+    boolean saveOrUpdate(Label label);
 }

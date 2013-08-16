@@ -14,7 +14,7 @@ public interface GameService extends GenericService<Game> {
 
     public List<Game> getRated();
 
-    public void addGame(Game game);
+    public boolean addGame(Game game);
 
     public void editGame(Game game);
 

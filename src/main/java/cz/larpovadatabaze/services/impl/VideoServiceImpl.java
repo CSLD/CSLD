@@ -32,7 +32,7 @@ public class VideoServiceImpl implements VideoService{
     }
 
     @Override
-    public void saveOrUpdate(Video video) {
-        videoDAO.saveOrUpdate(video);
+    public boolean saveOrUpdate(Video video) {
+        return videoDAO.saveOrUpdate(video);
     }
 }

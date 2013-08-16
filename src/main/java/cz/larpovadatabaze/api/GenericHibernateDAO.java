@@ -1,9 +1,6 @@
 package cz.larpovadatabaze.api;
 
-import org.hibernate.Criteria;
-import org.hibernate.LockOptions;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Example;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,9 +67,15 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
         tx.commit();
 	}
 
-    public void saveOrUpdate(T entity) {
-        sessionFactory.getCurrentSession().saveOrUpdate(entity);
-        flush();
+    public boolean saveOrUpdate(T entity) {
+        try{
+            sessionFactory.getCurrentSession().saveOrUpdate(entity);
+            flush();
+            return true;
+        } catch (HibernateException ex){
+            ex.printStackTrace();
+            return false;
+        }
     }
 
 	public void flush() {

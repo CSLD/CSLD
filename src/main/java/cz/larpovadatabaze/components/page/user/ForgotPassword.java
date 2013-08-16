@@ -13,6 +13,7 @@ import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.EmailTextField;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.validation.IFormValidator;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -40,7 +41,8 @@ public class ForgotPassword extends CsldBasePage {
                 EmailAuthentication emailAuthentication = new EmailAuthentication();
                 CsldUser user = csldUserService.getByEmail(mail);
                 if(user == null) {
-                    throw new RestartResponseException(HomePage.class);
+                    error("Uživatel s tímto emailem neexistuje");
+                    return;
                 }
                 emailAuthentication.setUserId(user.getId());
 
@@ -56,6 +58,9 @@ public class ForgotPassword extends CsldBasePage {
                 new RestartResponseException(HomePage.class);
             }
         };
+        FeedbackPanel feedback = new FeedbackPanel("feedback");
+        feedback.setOutputMarkupId(true);
+        forgotPassword.add(feedback);
 
         forgotPassword.add(new EmailTextField("mail", new PropertyModel<String>(this,"mail")));
         forgotPassword.add(new Button("submit"));

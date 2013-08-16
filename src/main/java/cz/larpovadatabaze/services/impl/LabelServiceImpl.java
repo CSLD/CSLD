@@ -12,10 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 9.4.13
- * Time: 11:24
+ *
  */
 @Repository
 public class LabelServiceImpl implements LabelService {
@@ -54,8 +51,8 @@ public class LabelServiceImpl implements LabelService {
     }
 
     @Override
-    public void saveOrUpdate(Label label) {
-        labelDAO.saveOrUpdate(label);
+    public boolean saveOrUpdate(Label label) {
+        return labelDAO.saveOrUpdate(label);
     }
 
     @Override

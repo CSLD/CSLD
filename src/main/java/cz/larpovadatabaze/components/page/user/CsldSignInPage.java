@@ -2,6 +2,7 @@ package cz.larpovadatabaze.components.page.user;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import org.apache.wicket.authroles.authentication.panel.SignInPanel;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 /**
@@ -32,5 +33,7 @@ public final class CsldSignInPage extends CsldBasePage
         // functionality based on Cookies. Meaning username and password are persisted in a Cookie.
         // Please see ISecuritySettings#getAuthenticationStrategy() for details.
         add(new SignInPanel("signInPanel"));
+
+        add(new BookmarkablePageLink<CsldBasePage>("forgotPassword", ForgotPassword.class));
     }
 }

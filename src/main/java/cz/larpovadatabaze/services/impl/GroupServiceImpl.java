@@ -10,10 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 17.4.13
- * Time: 18:18
+ *
  */
 @Repository
 public class GroupServiceImpl implements GroupService {
@@ -21,9 +18,8 @@ public class GroupServiceImpl implements GroupService {
     private GroupDAO groupDAO;
 
     @Override
-    public void insert(CsldGroup group) {
-        groupDAO.saveOrUpdate(group);
-        groupDAO.flush();
+    public boolean insert(CsldGroup group) {
+        return groupDAO.saveOrUpdate(group);
     }
 
     @Override

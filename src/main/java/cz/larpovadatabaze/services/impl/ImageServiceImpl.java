@@ -20,9 +20,8 @@ public class ImageServiceImpl implements ImageService {
     ImageDAO imageDAO;
 
     @Override
-    public void insert(Image image) {
-        imageDAO.saveOrUpdate(image);
-        imageDAO.flush();
+    public boolean insert(Image image) {
+        return imageDAO.saveOrUpdate(image);
     }
 
     @Override

@@ -83,15 +83,16 @@ public abstract class CreateOrUpdateGroupPanel extends Panel {
 
                 if(createGroup.isValid()){
                     CsldGroup group = createGroup.getModelObject();
-                    saveGroupAndImage(group);
-                    onCsldAction(target, form);
+                    if(saveGroupAndImage(group)){
+                        onCsldAction(target, form);
+                    }
                 }
             }
         });
         add(createGroup);
     }
 
-    private void saveGroupAndImage(CsldGroup group) {
+    private boolean saveGroupAndImage(CsldGroup group) {
         final List<FileUpload> uploads = fileUploadField.getFileUploads();
         if (uploads != null) {
             for (FileUpload upload : uploads) {
@@ -118,14 +119,21 @@ public abstract class CreateOrUpdateGroupPanel extends Panel {
 
                     group.setImage(image);
                     group.setImageId(image.getId());
-                    groupService.insert(group);
+                    if(groupService.insert(group)){
+                        return true;
+                    } else {
+                        imageService.remove(image);
+                        error("Skupinu se nepovedlo vložit");
+                        return false;
+                    }
                 } catch (Exception e) {
                     throw new IllegalStateException("Unable to write file", e);
                 }
             }
         } else {
-            groupService.insert(group);
+            return groupService.insert(group);
         }
+        return false;
     }
 
     protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}

@@ -28,17 +28,8 @@ public abstract class CreateOrUpdateLabelPanel extends Panel {
     public CreateOrUpdateLabelPanel(String id, Label label) {
         super(id);
 
-        final ValidatableForm<Label> createOrUpdateLabel = new ValidatableForm<Label>("createOrUpdateLabel", new CompoundPropertyModel<Label>(label)){
-            @Override
-            protected void onSubmit() {
-                super.onSubmit();
-                validate();
-                if(!hasError()){
-                    Label label = getModelObject();
-                    saveOrUpdateLabel(label);
-                }
-            }
-        };
+        final ValidatableForm<Label> createOrUpdateLabel =
+                new ValidatableForm<Label>("createOrUpdateLabel", new CompoundPropertyModel<Label>(label)){};
 
         createOrUpdateLabel.add(new TextField<String>("name"));
         createOrUpdateLabel.add(new TextArea<String>("description"));
@@ -49,8 +40,9 @@ public abstract class CreateOrUpdateLabelPanel extends Panel {
 
                 if(createOrUpdateLabel.isValid()){
                     Label label = createOrUpdateLabel.getModelObject();
-                    saveOrUpdateLabel(label);
-                    onCsldAction(target, form);
+                    if(saveOrUpdateLabel(label)){
+                        onCsldAction(target, form);
+                    }
                 }
             }
         });
@@ -58,11 +50,11 @@ public abstract class CreateOrUpdateLabelPanel extends Panel {
         add(createOrUpdateLabel);
     }
 
-    private void saveOrUpdateLabel(Label label) {
+    private boolean saveOrUpdateLabel(Label label) {
         CsldUser loggedUser = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
         label.setAddedBy(loggedUser);
         label.setAddedById(loggedUser.getId());
-        labelService.saveOrUpdate(label);
+        return labelService.saveOrUpdate(label);
     }
 
     @Override

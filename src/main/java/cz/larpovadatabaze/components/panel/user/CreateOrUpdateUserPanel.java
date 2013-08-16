@@ -95,8 +95,9 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
 
                 if(createOrUpdateUser.isValid()){
                     CsldUser user = createOrUpdateUser.getModelObject();
-                    saveOrUpdateUserAndImage(user);
-                    onCsldAction(target, form);
+                    if(saveOrUpdateUserAndImage(user)){
+                        onCsldAction(target, form);
+                    }
                 }
             }
         });
@@ -113,7 +114,7 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
         return addFeedbackTo;
     }
 
-    private void saveOrUpdateUserAndImage(CsldUser user){
+    private boolean saveOrUpdateUserAndImage(CsldUser user){
         final List<FileUpload> uploads = fileUpload.getFileUploads();
         if (uploads != null) {
             for (FileUpload upload : uploads) {
@@ -140,7 +141,12 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
                     imageService.insert(image);
                     user.setImage(image);
                     user.setImageId(image.getId());
-                    saveOrUpdateUser(user);
+                    if(saveOrUpdateUser(user)){
+                        return true;
+                    } else {
+                        imageService.remove(image);
+                        return false;
+                    }
                 }
                 catch (Exception e)
                 {
@@ -148,17 +154,26 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
                 }
             }
         } else {
-            saveOrUpdateUser(user);
+            return saveOrUpdateUser(user);
         }
+        return false;
     }
 
-    private void saveOrUpdateUser(CsldUser user){
-        personService.saveOrUpdate(user.getPerson());
+    private boolean saveOrUpdateUser(CsldUser user){
+        if(personService.saveOrUpdate(user.getPerson())){
+            error("Uživatele se nepovedlo uložit.");
+            return false;
+        }
         user.setIsAuthor(false);
         user.setPersonId(user.getPerson().getId());
         user.setPassword(Pwd.getMD5(user.getPassword()));
-        csldUserService.saveOrUpdate(user);
-        csldUserService.flush();
+        if(csldUserService.saveOrUpdate(user)){
+            return true;
+        } else {
+            personService.remove(user.getPerson());
+            error("Uživatele se nepovedlo uložit.");
+            return false;
+        }
     }
 
     protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}
