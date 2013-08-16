@@ -35,7 +35,10 @@ public class EditGroupPanel extends Panel {
         boolean isVisible = CsldAuthenticatedWebSession.get().isSignedIn();
         if(isVisible){
             CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
-            if(logged.getRole() <= CsldRoles.USER.getRole()){
+            if(logged == null) {
+                isVisible = false;
+            }
+            if(logged != null && logged.getRole() <= CsldRoles.USER.getRole()){
                 if(!toEdit.getAdministrators().contains(logged)){
                     isVisible = false;
                 }
