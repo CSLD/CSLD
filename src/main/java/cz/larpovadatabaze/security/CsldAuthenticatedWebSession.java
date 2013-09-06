@@ -71,6 +71,9 @@ public class CsldAuthenticatedWebSession extends AuthenticatedWebSession {
     }
 
     public CsldUser getLoggedUser() {
+        if(!isSignedIn()){
+            return null;
+        }
         return csldUser;
     }
 

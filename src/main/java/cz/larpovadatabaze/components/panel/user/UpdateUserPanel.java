@@ -9,7 +9,7 @@ import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.services.PersonService;
 import cz.larpovadatabaze.utils.FileUtils;
-import cz.larpovadatabaze.validator.UniqueUserValidator;
+import cz.larpovadatabaze.utils.Pwd;
 import org.apache.wicket.Application;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -41,6 +41,7 @@ public class UpdateUserPanel extends Panel {
 
     private FileUploadField fileUpload;
     private String passwordAgain;
+    private List<FileUpload> images;
 
     public UpdateUserPanel(String id, CsldUser user) {
         super(id);
@@ -68,7 +69,7 @@ public class UpdateUserPanel extends Panel {
         createOrUpdateUser.add(addFeedbackPanel(new TextField<String>("person.city"), createOrUpdateUser,"cityFeedback"));
         createOrUpdateUser.add(addFeedbackPanel(new TextArea<String>("person.description"), createOrUpdateUser,"descriptionFeedback"));
 
-        fileUpload = new FileUploadField("image");
+        fileUpload = new FileUploadField("image", new PropertyModel<List<FileUpload>>(this, "images"));
         createOrUpdateUser.add(addFeedbackPanel(fileUpload, createOrUpdateUser,"imageFeedback"));
 
         PasswordTextField password = new PasswordTextField("password");
@@ -114,7 +115,9 @@ public class UpdateUserPanel extends Panel {
                 File baseFile = new File(realPath);
 
                 // Create a new file
-                File newFile = new File(baseFile, upload.getClientFileName());
+                String fileName = Pwd.getMD5(upload.getClientFileName() + user.getPerson().getName()) + "." + FileUtils.getFileType(upload.getClientFileName());
+                // Create a new file
+                File newFile = new File(baseFile, fileName);
 
                 // Check new file, delete if it already existed
                 FileUtils.cleanFileIfExists(newFile);
@@ -125,7 +128,7 @@ public class UpdateUserPanel extends Panel {
                     upload.writeTo(newFile);
 
                     Image image = new Image();
-                    image.setPath(newFile.getAbsolutePath());
+                    image.setPath(Csld.getBaseContext() + fileName);
                     imageService.insert(image);
                     user.setImage(image);
                     user.setImageId(image.getId());
