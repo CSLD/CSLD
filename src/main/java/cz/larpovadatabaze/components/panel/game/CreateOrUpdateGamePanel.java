@@ -1,6 +1,5 @@
 package cz.larpovadatabaze.components.panel.game;
 
-import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
 import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
@@ -8,8 +7,6 @@ import cz.larpovadatabaze.components.panel.group.CreateOrUpdateGroupPanel;
 import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.services.*;
 import cz.larpovadatabaze.utils.FileUtils;
-import cz.larpovadatabaze.utils.Pwd;
-import org.apache.wicket.Application;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -30,8 +27,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Bytes;
 import org.apache.wicket.validation.IValidator;
 
-import javax.servlet.ServletContext;
-import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -131,7 +126,7 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
         final ModalWindow createlabelModal;
         add(createlabelModal = new ModalWindow("createLabel"));
 
-        createlabelModal.setTitle("Vytvořit štítek.");
+        createlabelModal.setTitle(getLocalizer().getString("label.create", this));
         createlabelModal.setCookieName("create-label");
 
         createOrUpdateGame.add(new AjaxButton("createLabel"){}.setOutputMarkupId(true).add(new AjaxEventBehavior("click") {
@@ -154,7 +149,7 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
         final ModalWindow createGroupModal;
         add(createGroupModal = new ModalWindow("createGroup"));
 
-        createGroupModal.setTitle("Vytvořit skupinu.");
+        createGroupModal.setTitle(getLocalizer().getString("group.create",this));
         createGroupModal.setCookieName("create-group");
 
         createOrUpdateGame.add(new AjaxButton("createGroup"){}.setOutputMarkupId(true).add(new AjaxEventBehavior("click") {
@@ -176,7 +171,7 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
         final ModalWindow createAuthorModal;
         add(createAuthorModal = new ModalWindow("createAuthor"));
 
-        createAuthorModal.setTitle("Vytvořit autora.");
+        createAuthorModal.setTitle(getLocalizer().getString("author.create", this));
         createAuthorModal.setCookieName("create-author");
 
         createOrUpdateGame.add(new AjaxButton("createAuthor"){}.setOutputMarkupId(true).add(new AjaxEventBehavior("click") {
@@ -232,28 +227,12 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
         final List<FileUpload> uploads = fileUploadField.getFileUploads();
         if (uploads != null) {
             for (FileUpload upload : uploads) {
-                ServletContext context = ((Csld) Application.get()).getServletContext();
-                String realPath = context.getRealPath(Csld.getBaseContext());
-                File baseFile = new File(realPath);
-
-                String fileName = Pwd.getMD5(upload.getClientFileName() + game.getName()) + "." + FileUtils.getFileType(upload.getClientFileName());
-                // Create a new file
-                File newFile = new File(baseFile, fileName);
-
-                // Check new file, delete if it already existed
-                FileUtils.cleanFileIfExists(newFile);
+                String filePath = FileUtils.saveFileAndReturnPath(upload, game.getName());
                 try {
-                    baseFile.mkdirs();
-                    // Save to new file
-                    if(!newFile.createNewFile()){
-                        throw new IllegalStateException("Unable to write file " + newFile.getAbsolutePath());
-                    }
-                    upload.writeTo(newFile);
-
                     Image image = new Image();
-                    image.setPath(Csld.getBaseContext() + fileName);
+                    image.setPath(filePath);
                     if(!imageService.insert(image)){
-                        error("Hru se nepovedlo vložit.");
+                        error(getLocalizer().getString("game.cantAdd", this));
                         return false;
                     }
 
@@ -263,7 +242,7 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
                         video.setType(0);
                         if(!videoService.saveOrUpdate(video)){
                             imageService.remove(image);
-                            error("Hru se nepovedlo vložit.");
+                            error(getLocalizer().getString("game.cantAdd", this));
                             return false;
                         }
                         game.setVideoId(video.getId());
@@ -278,7 +257,7 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
                             videoService.remove(video);
                         }
                         imageService.remove(image);
-                        error("Hru se nepovedlo vložit.");
+                        error(getLocalizer().getString("game.cantAdd", this));
                         return false;
                     }
                 } catch (Exception e) {

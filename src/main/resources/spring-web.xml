@@ -10,13 +10,16 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 	<context:component-scan base-package="cz.larpovadatabaze" />
 	<context:annotation-config />
+
 	<tx:annotation-driven transaction-manager="transactionManager" />
-	<bean id="transactionManager"
+
+    <bean id="transactionManager"
 		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-    <bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+    <bean id="transactionTemplate"
+          class="org.springframework.transaction.support.TransactionTemplate">
         <property name="transactionManager" ref="transactionManager"/>
     </bean>
 

@@ -1,6 +1,5 @@
 package cz.larpovadatabaze.components.panel.user;
 
-import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
 import cz.larpovadatabaze.entities.CsldUser;
@@ -9,8 +8,6 @@ import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.services.PersonService;
 import cz.larpovadatabaze.utils.FileUtils;
-import cz.larpovadatabaze.utils.Pwd;
-import org.apache.wicket.Application;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
@@ -24,8 +21,6 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import javax.servlet.ServletContext;
-import java.io.File;
 import java.util.List;
 
 /**
@@ -110,25 +105,11 @@ public class UpdateUserPanel extends Panel {
         final List<FileUpload> uploads = fileUpload.getFileUploads();
         if (uploads != null) {
             for (FileUpload upload : uploads) {
-                ServletContext context = ((Csld) Application.get()).getServletContext();
-                String realPath = context.getRealPath(Csld.getBaseContext());
-                File baseFile = new File(realPath);
-
-                // Create a new file
-                String fileName = Pwd.getMD5(upload.getClientFileName() + user.getPerson().getName()) + "." + FileUtils.getFileType(upload.getClientFileName());
-                // Create a new file
-                File newFile = new File(baseFile, fileName);
-
-                // Check new file, delete if it already existed
-                FileUtils.cleanFileIfExists(newFile);
+                String filePath = FileUtils.saveFileAndReturnPath(upload, user.getPerson().getName());
                 try
                 {
-                    // Save to new file
-                    newFile.createNewFile();
-                    upload.writeTo(newFile);
-
                     Image image = new Image();
-                    image.setPath(Csld.getBaseContext() + fileName);
+                    image.setPath(filePath);
                     imageService.insert(image);
                     user.setImage(image);
                     user.setImageId(image.getId());

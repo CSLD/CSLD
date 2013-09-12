@@ -63,7 +63,6 @@ public abstract class AbstractEntityModel<T extends Identifiable< ? >> implement
 
     public void setObject(T object)
     {
-        throw new UnsupportedOperationException(getClass() +
-                " does not support #setObject(T entity)");
+        throw new UnsupportedOperationException(getClass() + " does not support #setObject(T entity)");
     }
 }

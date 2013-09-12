@@ -20,8 +20,10 @@ import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSessio
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -30,7 +32,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
  * 
  */
 @Component(value = "wicketApplication")
-public class Csld extends AuthenticatedWebApplication
+public class Csld extends AuthenticatedWebApplication implements ApplicationContextAware
 {
     @Autowired
     private PersonService personService;
@@ -44,6 +46,7 @@ public class Csld extends AuthenticatedWebApplication
     private LabelService labelService;
 
     private static final String DEFAULT_ENCODING = "UTF-8";
+    private ApplicationContext ctx;
 
     /**
      * Constructor
@@ -63,7 +66,7 @@ public class Csld extends AuthenticatedWebApplication
 	@Override
 	protected void init() {
 		super.init();
-        getComponentInstantiationListeners().add(new SpringComponentInjector(this));
+        getComponentInstantiationListeners().add(new SpringComponentInjector(this, ctx, true));
         getMarkupSettings().setDefaultMarkupEncoding(DEFAULT_ENCODING);
         getMarkupSettings().setStripWicketTags(true);
         getRequestCycleSettings().setResponseRequestEncoding(DEFAULT_ENCODING);
@@ -123,5 +126,10 @@ public class Csld extends AuthenticatedWebApplication
 
     public static String getBaseContext(){
         return "/files/upload/";
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.ctx = applicationContext;
     }
 }

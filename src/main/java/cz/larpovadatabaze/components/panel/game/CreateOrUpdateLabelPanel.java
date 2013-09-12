@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import cz.larpovadatabaze.api.EntityModel;
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Label;
@@ -12,6 +13,7 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -27,9 +29,10 @@ public abstract class CreateOrUpdateLabelPanel extends Panel {
 
     public CreateOrUpdateLabelPanel(String id, Label label) {
         super(id);
+        IModel<Label> labelModel = new EntityModel<Label>(Label.class, label.getId());
 
         final ValidatableForm<Label> createOrUpdateLabel =
-                new ValidatableForm<Label>("createOrUpdateLabel", new CompoundPropertyModel<Label>(label)){};
+                new ValidatableForm<Label>("createOrUpdateLabel", new CompoundPropertyModel<Label>(labelModel)){};
 
         createOrUpdateLabel.add(new TextField<String>("name"));
         createOrUpdateLabel.add(new TextArea<String>("description"));

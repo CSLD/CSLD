@@ -1,6 +1,5 @@
 package cz.larpovadatabaze.components.panel.group;
 
-import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
 import cz.larpovadatabaze.entities.CsldGroup;
@@ -8,7 +7,6 @@ import cz.larpovadatabaze.entities.Image;
 import cz.larpovadatabaze.services.GroupService;
 import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.FileUtils;
-import org.apache.wicket.Application;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
@@ -23,8 +21,6 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Bytes;
 
-import javax.servlet.ServletContext;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,25 +92,10 @@ public abstract class CreateOrUpdateGroupPanel extends Panel {
         final List<FileUpload> uploads = fileUploadField.getFileUploads();
         if (uploads != null) {
             for (FileUpload upload : uploads) {
-                ServletContext context = ((Csld) Application.get()).getServletContext();
-                String realPath = context.getRealPath(Csld.getBaseContext());
-                File baseFile = new File(realPath);
-
-                // Create a new file
-                File newFile = new File(baseFile, upload.getClientFileName());
-
-                // Check new file, delete if it already existed
-                FileUtils.cleanFileIfExists(newFile);
+                String filePath = FileUtils.saveFileAndReturnPath(upload, "group" + group.getName());
                 try {
-                    baseFile.mkdirs();
-                    // Save to new file
-                    if(!newFile.createNewFile()) {
-                        throw new IllegalStateException("Unable to write file " + newFile.getAbsolutePath());
-                    }
-                    upload.writeTo(newFile);
-
                     Image image = new Image();
-                    image.setPath(Csld.getBaseContext() + upload.getClientFileName());
+                    image.setPath(filePath);
                     imageService.insert(image);
 
                     group.setImage(image);
@@ -123,7 +104,7 @@ public abstract class CreateOrUpdateGroupPanel extends Panel {
                         return true;
                     } else {
                         imageService.remove(image);
-                        error("Skupinu se nepovedlo vložit");
+                        error(getLocalizer().getString("group.cantAdd", this));
                         return false;
                     }
                 } catch (Exception e) {

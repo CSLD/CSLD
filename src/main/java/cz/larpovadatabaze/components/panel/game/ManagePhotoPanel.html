@@ -1,0 +1,18 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+    <h2><wicket:message key="photo.manage"></wicket:message></h2>
+    <div wicket:id="uploadedPhotosFeedback"></div>
+    <form method="post" wicket:id="uploadPhotos">
+        <input type="file" wicket:id="photoOne" />
+        <input type="file" wicket:id="photoTwo" />
+        <input type="file" wicket:id="photoThree" />
+        <input type="file" wicket:id="photoFour" />
+        <input type="file" wicket:id="photoFive" />
+
+        <div>
+            <div wicket:id="progress"></div>
+        </div>
+
+        <input type="button" wicket:id="submit" wicket:message="value:form.add"/>
+    </form>
+    <div wicket:id="uploadedPhotos"></div>
+</wicket:panel>

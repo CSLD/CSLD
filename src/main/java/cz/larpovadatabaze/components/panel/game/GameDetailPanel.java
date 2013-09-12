@@ -7,6 +7,8 @@ import cz.larpovadatabaze.components.panel.YouTubePanel;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.security.CsldRoles;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -15,7 +17,6 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.ContextRelativeResource;
 
@@ -109,5 +110,22 @@ public class GameDetailPanel extends Panel {
 
         YouTubePanel youTubePanel = new YouTubePanel("video", videoPath, isVisible);
         add(youTubePanel);
+
+        ShowPhotoPanel photoPanel = new ShowPhotoPanel("photos", game.getPhotos());
+        add(photoPanel);
+
+        CsldUser loggedUser = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
+        boolean show = false;
+        if(loggedUser != null){
+            if(game.getAuthors().contains(loggedUser)) {
+                show = true;
+            }
+            if(loggedUser.getRole() >= CsldRoles.ADMIN.getRole()) {
+                show = true;
+            }
+        }
+        // Administrators
+        ManagePhotoPanel managePhotoPanel = new ManagePhotoPanel("managePhotos", game.getPhotos(), show, game);
+        add(managePhotoPanel);
     }
 }
