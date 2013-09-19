@@ -8,13 +8,13 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Example;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -29,47 +29,47 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     @Autowired
     private SessionFactory sessionFactory;
 
-
-    public List<Game> getRated() {
+    @SuppressWarnings("unchecked")
+    public List<Game> getRated(Long first, Long amountPerPage) {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from Game game order by csld_count_rating(game.id) desc");
-        List<Game> allGames = query.list();
-        return allGames;
+        Query query = session.createQuery(
+                "from Game game order by totalRating desc");
+        query.setFirstResult(first.intValue());
+        query.setMaxResults(amountPerPage.intValue());
+        return query.list();
     }
 
-    public List<Game> getOrderedByName() {
+    @SuppressWarnings("unchecked")
+    public List<Game> getRated() {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from Game game order by name");
-        List<Game> allGames = query.list();
-        return allGames;
+        Query query = session.createQuery(
+                "from Game game order by totalRating desc");
+        return query.list();
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Game> getOrderedByName(Long first, Long amountPerPage) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery(
+                "from Game game order by name");
+        query.setFirstResult(first.intValue());
+        query.setMaxResults(amountPerPage.intValue());
+        return query.list();
     }
 
     /**
      * It returns Games sorted by amount of Ratings.
      *
-     * @return
+     * @return All games sorted by amount of Ratings
      */
-    public List<Game> getRatedAmount() {
+    @SuppressWarnings("unchecked")
+    public List<Game> getRatedAmount(Long first, Long amountPerPage) {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from Game game");
-        List<Game> allGames = query.list();
-
-        Collections.sort(allGames, new Comparator<Game>() {
-            @Override
-            public int compare(Game o1, Game o2) {
-                int game1Ratings = o1.getRatings().size();
-                int game2Ratings = o2.getRatings().size();
-                if(game1Ratings < game2Ratings) {
-                    return 1;
-                } else if(game1Ratings == game2Ratings) {
-                    return 0;
-                } else {
-                    return -1;
-                }
-            }
-        });
-
-        return allGames;
+        Query query = session.createQuery(
+                "from Game game order by csld_amount_of_ratings(game.id) desc");
+        query.setFirstResult(first.intValue());
+        query.setMaxResults(amountPerPage.intValue());
+        return query.list();
     }
 
     /**
@@ -77,41 +77,14 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
      *
      * @return games sorted by amount of comments.
      */
-    public List<Game> getCommentedAmount() {
-        Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from Game game");
-        List<Game> allGames = query.list();
-
-        Collections.sort(allGames, new Comparator<Game>() {
-            @Override
-            public int compare(Game o1, Game o2) {
-                int game1Comments = o1.getComments().size();
-                int game2Comments = o2.getComments().size();
-                if(game1Comments < game2Comments) {
-                    return 1;
-                } else if(game1Comments == game2Comments) {
-                    return 0;
-                } else {
-                    return -1;
-                }
-            }
-        });
-
-        return allGames;
-    }
-
-    /**
-     * It returns rating of the game. Only place where rating is counted is in the database function csld_count_rating
-     *
-     * @param game
-     * @return If game has no rating, it returns 0
-     */
     @SuppressWarnings("unchecked")
-    public double getRatingOfGame(Game game) {
+    public List<Game> getCommentedAmount(Long first, Long amountPerPage) {
         Session session = sessionFactory.getCurrentSession();
-        String sqlQuery = String.format("select csld_count_rating(%s)", game.getId());
-        Query query = session.createSQLQuery(sqlQuery);
-        return (Double)query.uniqueResult();
+        Query query = session.createQuery(
+                "from Game game order by amountOfComments desc");
+        query.setFirstResult(first.intValue());
+        query.setMaxResults(amountPerPage.intValue());
+        return query.list();
     }
 
     /**
@@ -122,8 +95,9 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
      */
     @SuppressWarnings("unchecked")
     public List<Game> getByAutoCompletable(String gameName) throws WrongParameterException {
-        Criteria uniqueGame = sessionFactory.getCurrentSession().createCriteria(Game.class).add(
-                Restrictions.eq("name", gameName)
+        Criteria uniqueGame = sessionFactory.getCurrentSession().
+                createCriteria(Game.class).add(
+                    Restrictions.eq("name", gameName)
         );
         return uniqueGame.list();
     }
@@ -135,6 +109,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
      * @return Best Game, Every author has at least one game as definition.
      */
     public Game getBestGame(CsldUser actualAuthor) {
+        // TODO Get Best game of author
         List<Game> gamesSortedByRating = getRated();
         for(Game game: gamesSortedByRating) {
             if(game.getAuthors().contains(actualAuthor)){
@@ -144,15 +119,41 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
         throw new RuntimeException("Trying to get Best Game of someone who is not author.");
     }
 
-    /**
-     * It returns games ordered from the last added games.
-     *
-     * @return
-     */
     @SuppressWarnings("unchecked")
-    public List<Game> getLastGames() {
+    public List<Game> getLastGames(int amountOfGames) {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from Game game order by added desc");
+        Query query = session.createQuery(
+                "from Game game order by added desc");
+        query.setMaxResults(amountOfGames);
         return query.list();
+    }
+
+    public int getAmountOfGames() {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = session.createCriteria(Game.class);
+        criteria.setProjection(Projections.rowCount());
+        return ((Long)criteria.uniqueResult()).intValue();
+    }
+
+    public Game getRandomGame() {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = session.createCriteria(Game.class);
+        criteria.add(Restrictions.sqlRestriction("random() < 0.01"));
+        criteria.setMaxResults(1);
+        return (Game) criteria.uniqueResult();
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Game> getSimilar(Game game) {
+        Session session = sessionFactory.getCurrentSession();
+        Game example = new Game();
+        example.setLabels(game.getLabels());
+        Example exampleCrit = Example.create(example);
+        Criteria criteria = session.createCriteria(Game.class);
+        criteria.add(exampleCrit);
+        criteria.add(Restrictions.sqlRestriction("1=1 order by total_rating desc"));
+        // Five similar games still looks kind of nice.
+        criteria.setMaxResults(5);
+        return criteria.list();
     }
 }

@@ -1,6 +1,5 @@
 package cz.larpovadatabaze.components.panel.about;
 
-import cz.larpovadatabaze.components.panel.author.AddAuthorPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 
 /**

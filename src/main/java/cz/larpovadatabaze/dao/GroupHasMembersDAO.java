@@ -4,7 +4,6 @@ import cz.larpovadatabaze.api.GenericHibernateDAO;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.GroupHasMember;
 import cz.larpovadatabaze.entities.GroupHasMemberPK;
-import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 

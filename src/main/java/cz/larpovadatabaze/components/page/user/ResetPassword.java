@@ -13,7 +13,6 @@ import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -36,7 +35,7 @@ public class ResetPassword extends CsldBasePage {
         if(authentication == null) {
             throw new RestartResponseException(HomePage.class);
         }
-        csldUser = csldUserService.getById(authentication.getUserId());
+        csldUser = authentication.getUser();
         emailAuthenticationService.remove(authentication);
 
         Form resetPassword = new Form("resetPassword"){

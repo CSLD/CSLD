@@ -1,7 +1,8 @@
 package cz.larpovadatabaze.validator;
 
+import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Person;
-import cz.larpovadatabaze.services.PersonService;
+import cz.larpovadatabaze.services.CsldUserService;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
@@ -15,20 +16,21 @@ import java.util.List;
  * Time: 8:28
  */
 public class UniqueUserValidator implements IValidator<String> {
-    PersonService personService;
+    CsldUserService personService;
 
     private boolean updateExisting;
 
-    public UniqueUserValidator(boolean updateExisting, PersonService personService){
+    public UniqueUserValidator(boolean updateExisting, CsldUserService personService){
         this.personService = personService;
         this.updateExisting = updateExisting;
     }
 
     @Override
     public void validate(IValidatable<String> validatable) {
-        Person example = new Person();
-        example.setEmail(validatable.getValue());
-        List<Person> existingPerson = personService.getUnique(example);
+        CsldUser example = new CsldUser();
+        example.setPerson(new Person());
+        example.getPerson().setEmail(validatable.getValue());
+        List<CsldUser> existingPerson = personService.getUnique(example);
         if(!updateExisting && existingPerson.size() > 0) {
             error(validatable, "This person already exists.");
         }

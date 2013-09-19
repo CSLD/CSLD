@@ -91,7 +91,13 @@ public class GroupHasMember implements Serializable {
     private CsldUser user;
 
     @ManyToOne
-    @javax.persistence.JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @javax.persistence.JoinColumn(
+            name = "user_id",
+            referencedColumnName = "id",
+            nullable = false,
+            insertable = false,
+            updatable = false
+    )
     public CsldUser getUser() {
         return user;
     }
@@ -103,7 +109,13 @@ public class GroupHasMember implements Serializable {
     private CsldGroup group;
 
     @ManyToOne
-    @javax.persistence.JoinColumn(name = "group_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @javax.persistence.JoinColumn(
+            name = "group_id",
+            referencedColumnName = "id",
+            nullable = false,
+            insertable = false,
+            updatable = false
+    )
     public CsldGroup getGroup() {
         return group;
     }

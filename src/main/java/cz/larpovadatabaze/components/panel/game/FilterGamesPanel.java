@@ -3,15 +3,12 @@ package cz.larpovadatabaze.components.panel.game;
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.models.FilterGame;
-import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import java.util.List;
 

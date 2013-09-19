@@ -2,7 +2,6 @@ package cz.larpovadatabaze.components.panel.game;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
-import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.models.FilterGame;
@@ -33,6 +32,7 @@ public class ListGamePanel extends Panel {
     GameService gameService;
     private SortableGameProvider sgp;
 
+    @SuppressWarnings("unchecked")
     public ListGamePanel(String id) {
         super(id);
 
@@ -40,8 +40,8 @@ public class ListGamePanel extends Panel {
         final DataView<Game> propertyList = new DataView<Game>("listGames", sgp) {
             @Override
             protected void populateItem(Item<Game> item) {
-                int itemIndex = item.getIndex() + 1;
                 Game game = item.getModelObject();
+                int itemIndex = game.getFirst() + item.getIndex() + 1;
                 final Label orderLabel = new Label("order", itemIndex);
                 item.add(orderLabel);
 
@@ -56,7 +56,7 @@ public class ListGamePanel extends Panel {
                 final Label gameYear = new Label("gameYear", Model.of(game.getYear()));
                 item.add(gameYear);
 
-                final Label gameRating = new Label("rating", Model.of(gameService.getRatingOfGame(game)));
+                final Label gameRating = new Label("rating", Model.of(game.getTotalRating()));
                 item.add(gameRating);
 
                 List<Rating> ratings = (game.getRatings() != null) ?
@@ -66,9 +66,7 @@ public class ListGamePanel extends Panel {
                 final Image ratingsIcon = new Image("ratingsIcon", new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getRatingsIconPath()));
                 item.add(ratingsIcon);
 
-                List<Comment> comments = (game.getComments() != null) ?
-                        game.getComments() : new ArrayList<Comment>();
-                final Label gameComments = new Label("comments", comments.size());
+                final Label gameComments = new Label("comments", game.getAmountOfComments());
                 item.add(gameComments);
                 final Image commentsIcon = new Image("commentsIcon", new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getCommentsIconPath()));
                 item.add(commentsIcon);
@@ -124,7 +122,8 @@ public class ListGamePanel extends Panel {
 
 
         add(propertyList);
-        add(new PagingNavigator("navigator", propertyList));
+        PagingNavigator paging = new PagingNavigator("navigator", propertyList);
+        add(paging);
     }
 
     public void reload(AjaxRequestTarget target, FilterGame filterGame, List<cz.larpovadatabaze.entities.Label> labels) {

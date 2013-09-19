@@ -3,11 +3,12 @@ package cz.larpovadatabaze.entities;
 import cz.larpovadatabaze.api.Identifiable;
 import cz.larpovadatabaze.security.CsldRoles;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +24,15 @@ import java.util.List;
 public class CsldUser implements Serializable, Identifiable, IAutoCompletable {
     private Integer id;
 
-    @Column(name = "id", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(
+            name = "id",
+            nullable = false,
+            insertable = true,
+            updatable = true
+    )
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_key_gen")
-    @SequenceGenerator(name = "id_key_gen", sequenceName = "csld_user_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "id_key_gen", sequenceName = "csld_person_id_seq", allocationSize = 1)
     public Integer getId() {
         return id;
     }
@@ -35,21 +41,15 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable {
         this.id = id;
     }
 
-    private Integer imageId;
-
-    @Column(name = "image", nullable = true, insertable = true, updatable = true, length = 10, precision = 0)
-    @Basic
-    public Integer getImageId() {
-        return imageId;
-    }
-
-    public void setImageId(Integer imageId) {
-        this.imageId = imageId;
-    }
-
     private String password;
 
-    @Column(name = "password", nullable = false, insertable = true, updatable = true, length = 2147483647, precision = 0)
+    @Column(
+            name = "password",
+            nullable = false,
+            insertable = true,
+            updatable = true,
+            length = 2147483647
+    )
     @Basic
     public String getPassword() {
         return password;
@@ -61,7 +61,12 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable {
 
     private Short role;
 
-    @Column(name = "role", nullable = false, insertable = true, updatable = true, length = 5, precision = 0)
+    @Column(
+            name = "role",
+            nullable = false,
+            insertable = true,
+            updatable = true
+    )
     @Basic
     public Short getRole() {
         return role;
@@ -73,7 +78,12 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable {
 
     private Boolean isAuthor;
 
-    @Column(name = "is_author", nullable = false, insertable = true, updatable = true, length = 5, precision = 0)
+    @Column(
+            name = "is_author",
+            nullable = false,
+            insertable = true,
+            updatable = true
+    )
     @Basic
     public Boolean getIsAuthor() {
         return isAuthor;
@@ -83,28 +93,63 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable {
         this.isAuthor = isAuthor;
     }
 
-    private Integer personId;
+    private Person person;
 
-    @Column(name = "person", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Embedded
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    private Integer amountOfComments;
+
+    @Column(
+            name = "amount_of_comments",
+            nullable = false,
+            insertable = false,
+            updatable = false)
     @Basic
-    public Integer getPersonId() {
-        return personId;
+    public Integer getAmountOfComments() {
+        return amountOfComments;
     }
 
-    public void setPersonId(Integer personId) {
-        this.personId = personId;
+    public void setAmountOfComments(Integer amountOfComments) {
+        this.amountOfComments = amountOfComments;
     }
 
-    private Integer fbUser;
+    private Integer amountOfPlayed;
 
-    @Column(name = "fb_user", nullable = true, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(
+            name = "amount_of_played",
+            nullable = false,
+            insertable = false,
+            updatable = false)
     @Basic
-    public Integer getFbUser() {
-        return fbUser;
+    public Integer getAmountOfPlayed() {
+        return amountOfPlayed;
     }
 
-    public void setFbUser(Integer fbUser) {
-        this.fbUser = fbUser;
+    public void setAmountOfPlayed(Integer amountOfPlayed) {
+        this.amountOfPlayed = amountOfPlayed;
+    }
+
+    private Integer amountOfCreated;
+
+    @Column(
+            name = "amount_of_created",
+            nullable = false,
+            insertable = false,
+            updatable = false)
+    @Basic
+    public Integer getAmountOfCreated() {
+        return amountOfCreated;
+    }
+
+    public void setAmountOfCreated(Integer amountOfCreated) {
+        this.amountOfCreated = amountOfCreated;
     }
 
     @Override
@@ -114,11 +159,10 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable {
 
         CsldUser csldUser = (CsldUser) o;
 
-        if (fbUser != null ? !fbUser.equals(csldUser.fbUser) : csldUser.fbUser != null) return false;
         if (id != null ? !id.equals(csldUser.id) : csldUser.id != null) return false;
         if (image != null ? !image.equals(csldUser.image) : csldUser.image != null) return false;
         if (password != null ? !password.equals(csldUser.password) : csldUser.password != null) return false;
-        if (personId != null ? !personId.equals(csldUser.personId) : csldUser.personId != null) return false;
+        if (person != null ? !person.equals(csldUser.person) : csldUser.person != null) return false;
         if (role != null ? !role.equals(csldUser.role) : csldUser.role != null) return false;
 
         return true;
@@ -130,34 +174,26 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable {
         result = 31 * result + (image != null ? image.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (role != null ? role.hashCode() : 0);
-        result = 31 * result + (personId != null ? personId.hashCode() : 0);
-        result = 31 * result + (fbUser != null ? fbUser.hashCode() : 0);
+        result = 31 * result + (person != null ? person.hashCode() : 0);
         return result;
     }
 
-    private FbUser fb_user;
-
-    @OneToOne
-    @JoinColumn(name = "fb_user", referencedColumnName = "id_csld_user", insertable = false, updatable = false)
-    public FbUser getFb_user() {
-        return fb_user;
-    }
-
-    public void setFb_user(FbUser fb_user) {
-        this.fb_user = fb_user;
-    }
-
-    private Person person;
+    private Game bestGame;
 
     @ManyToOne
-    @JoinColumn(name = "person", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-    public Person getPerson() {
-        return person;
+    @JoinColumn(
+            name = "best_game_id",
+            referencedColumnName = "id",
+            insertable = false,
+            updatable = false
+    )
+    @Fetch(FetchMode.SELECT)
+    public Game getBestGame(){
+        return bestGame;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setBestGame(Game bestGame){
+        this.bestGame = bestGame;
     }
 
     private List<Game> authorOf;
@@ -171,17 +207,6 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable {
         this.authorOf = authorOf;
     }
 
-    private List<CsldGroup> administersGroups;
-
-    @ManyToMany(mappedBy = "administrators")
-    public List<CsldGroup> getAdministersGroups() {
-        return administersGroups;
-    }
-
-    public void setAdministersGroups(List<CsldGroup> administersGroups) {
-        this.administersGroups = administersGroups;
-    }
-
     private List<UserPlayedGame> playedGames;
 
     @OneToMany(mappedBy = "playerOfGame")
@@ -191,39 +216,6 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable {
 
     public void setPlayedGames(List<UserPlayedGame> playedGames) {
         this.playedGames = playedGames;
-    }
-
-    private List<Label> labelsAuthor;
-
-    @OneToMany(mappedBy = "addedBy")
-    public List<Label> getLabelsAuthor() {
-        return labelsAuthor;
-    }
-
-    public void setLabelsAuthor(List<Label> labelsAuthor) {
-        this.labelsAuthor = labelsAuthor;
-    }
-
-    private List<EmailAuthentication> emailAuthentications;
-
-    @OneToMany(mappedBy = "user")
-    public List<EmailAuthentication> getEmailAuthentications() {
-        return emailAuthentications;
-    }
-
-    public void setEmailAuthentications(List<EmailAuthentication> emailAuthentications) {
-        this.emailAuthentications = emailAuthentications;
-    }
-
-    private List<Rating> rated;
-
-    @OneToMany(mappedBy = "user")
-    public List<Rating> getRated() {
-        return rated;
-    }
-
-    public void setRated(List<Rating> rated) {
-        this.rated = rated;
     }
 
     private List<Comment> commented;
@@ -237,37 +229,22 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable {
         this.commented = commented;
     }
 
-    private List<GroupHasMember> groupMembers;
-
-    @OneToMany(mappedBy = "user")
-    public List<GroupHasMember> getGroupMembers() {
-        return groupMembers;
-    }
-
-    public void setGroupMembers(List<GroupHasMember> groupMembers) {
-        this.groupMembers = groupMembers;
-    }
-
     private Image image;
 
-    @ManyToOne
-    @JoinColumn(name = "image", referencedColumnName = "id", insertable = false, updatable = false)
+    @ManyToOne(cascade= javax.persistence.CascadeType.ALL)
+    @JoinColumn(
+            name = "image",
+            referencedColumnName = "id",
+            insertable = true,
+            updatable = true
+    )
+    @Cascade(CascadeType.SAVE_UPDATE)
     public Image getImage() {
-        return image != null ? image : Image.getDefaultUser();
+        return image;
     }
 
     public void setImage(Image image) {
         this.image = image;
-    }
-
-    @Transient
-    public Rating getRatingOfGame(Integer gameId){
-        for(Rating rating: rated){
-            if(rating.getGameId() == gameId){
-                return rating;
-            }
-        }
-        return null;
     }
 
     @Override
@@ -282,28 +259,13 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable {
         return String.format("%s %s, %s", person.getNickname(), person.getName(),  person.getEmail());
     }
 
-    /**
-     * It is used in localiyation and allows us to get amount of games this author created.
-     *
-     * @return
-     */
-    @Transient
-    public int getCreatedGamesAmount(){
-        return authorOf.size();
-    }
-
     public static CsldUser getEmptyUser() {
         CsldUser emptyUser = new CsldUser();
-        emptyUser.setAdministersGroups(new ArrayList<CsldGroup>());
         emptyUser.setAuthorOf(new ArrayList<Game>());
         emptyUser.setCommented(new ArrayList<Comment>());
-        emptyUser.setEmailAuthentications(new ArrayList<EmailAuthentication>());
-        emptyUser.setGroupMembers(new ArrayList<GroupHasMember>());
         emptyUser.setImage(Image.getDefaultUser());
-        emptyUser.setLabelsAuthor(new ArrayList<Label>());
         emptyUser.setPerson(Person.getEmptyPerson());
         emptyUser.setPlayedGames(new ArrayList<UserPlayedGame>());
-        emptyUser.setRated(new ArrayList<Rating>());
         emptyUser.setRole(CsldRoles.USER.getRole());
         return emptyUser;
     }

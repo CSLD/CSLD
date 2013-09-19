@@ -12,7 +12,6 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -24,7 +23,7 @@ import java.util.List;
  */
 public class GameListPanel extends Panel {
     @SpringBean
-    private GameService gameService;
+    GameService gameService;
 
     public GameListPanel(String id, List<Game> games) {
         super(id);
@@ -33,7 +32,7 @@ public class GameListPanel extends Panel {
             @Override
             protected void populateItem(ListItem item) {
                 Game game = (Game) item.getModelObject();
-                String gameRatingColor = Rating.getColorOf(gameService.getRatingOfGame(game));
+                String gameRatingColor = Rating.getColorOf(game.getTotalRating());
                 Label gameRating = new Label("gameRating","");
                 gameRating.add(new AttributeAppender("class", Model.of(gameRatingColor), " "));
                 item.add(gameRating);

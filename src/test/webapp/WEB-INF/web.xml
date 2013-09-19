@@ -16,6 +16,10 @@
     <param-name>contextConfigLocation</param-name>
     <param-value>classpath:spring-web.xml</param-value>
 </context-param>
+<context-param>
+    <param-name>configuration</param-name>
+    <param-value>deployment</param-value>
+</context-param>
 <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 </listener>
@@ -34,7 +38,11 @@
     </init-param>
     <init-param>
         <param-name>applicationClassName</param-name>
-        <param-value>com.mycompany.WicketApplication</param-value>
+        <param-value>cz.larpovadatabaze.Csld</param-value>
+    </init-param>
+    <init-param>
+        <param-name>configuration</param-name>
+        <param-value>deployment</param-value>
     </init-param>
 </filter>
 

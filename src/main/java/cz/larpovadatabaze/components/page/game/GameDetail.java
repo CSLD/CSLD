@@ -21,7 +21,8 @@ import java.util.List;
  */
 public class GameDetail extends CsldBasePage {
     @SpringBean
-    private GameService gameService;
+    GameService gameService;
+
     private Game game;
 
     public GameDetail(PageParameters params){
@@ -80,7 +81,7 @@ public class GameDetail extends CsldBasePage {
 
         add(ratingsResult);
         add(new CanNotRatePanel("canNotRatePanel"));
-        add(new RatingsPanel("ratingsPanel", game.getId()){
+        add(new RatingsPanel("ratingsPanel", game){
             @Override
             protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
                 super.onCsldAction(target, form);

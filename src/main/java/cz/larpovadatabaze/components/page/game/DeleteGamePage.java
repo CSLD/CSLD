@@ -23,13 +23,13 @@ import java.util.List;
  */
 public class DeleteGamePage extends CsldBasePage {
     @SpringBean
-    private GameService gameService;
+    GameService gameService;
     @SpringBean
-    private CommentService commentService;
+    CommentService commentService;
     @SpringBean
-    private RatingService ratingService;
+    RatingService ratingService;
     @SpringBean
-    private UserPlayedGameService userPlayedGameService;
+    UserPlayedGameService userPlayedGameService;
 
     public DeleteGamePage(PageParameters params) {
         Integer gameId = params.get("id").to(Integer.class);

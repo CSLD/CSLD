@@ -2,7 +2,6 @@ package cz.larpovadatabaze.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -15,7 +14,12 @@ import java.util.List;
 public class Image implements Serializable {
     private Integer id;
 
-    @Column(name = "id", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(
+            name = "id",
+            nullable = false,
+            insertable = true,
+            updatable = true
+    )
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_key_gen")
     @SequenceGenerator(name = "id_key_gen", sequenceName = "csld_image_id_seq", allocationSize = 1)
@@ -59,62 +63,21 @@ public class Image implements Serializable {
         return result;
     }
 
-    private List<Game> games;
-
-    @OneToMany(mappedBy = "image")
-    public List<Game> getGames() {
-        return games;
-    }
-
-    public void setGames(List<Game> games) {
-        this.games = games;
-    }
-
-    private List<CsldGroup> groups;
-
-    @OneToMany(mappedBy = "image")
-    public List<CsldGroup> getGroups() {
-        return groups;
-    }
-
-    public void setGroups(List<CsldGroup> groups) {
-        this.groups = groups;
-    }
-
-    private List<Photo> photos;
-
-    @OneToMany(mappedBy = "image")
-    public List<Photo> getPhotos() {
-        return photos;
-    }
-
-    public void setPhotos(List<Photo> photos) {
-        this.photos = photos;
-    }
-
-    private List<CsldUser> users;
-
-    @OneToMany(mappedBy = "image")
-    public List<CsldUser> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<CsldUser> users) {
-        this.users = users;
-    }
-
+    @Transient
     public static Image getDefaultGroup() {
         Image groupImage = new Image();
         groupImage.setPath("/files/img/group_icon.png");
         return groupImage;
     }
 
+    @Transient
     public static Image getDefaultUser() {
         Image userImage = new Image();
         userImage.setPath("/files/img/author_icon.png");
         return userImage;
     }
 
+    @Transient
     public static Image getDefaultGame() {
         Image gameImage = new Image();
         gameImage.setPath("/files/img/icon/question_icon_game.png");

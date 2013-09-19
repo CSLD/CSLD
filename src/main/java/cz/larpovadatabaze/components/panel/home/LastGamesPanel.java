@@ -25,18 +25,12 @@ import java.util.List;
 public class LastGamesPanel extends Panel {
     @SpringBean
     GameService gameService;
-    private final int AMOUNT_LAST_GAMES = 15;
 
     public LastGamesPanel(String id) {
         super(id);
 
-        List<Game> games = gameService.getLastGames();
-        List<Game> toShow;
-        if(AMOUNT_LAST_GAMES < games.size()) {
-            toShow = games.subList(0, AMOUNT_LAST_GAMES);
-        } else {
-            toShow = games.subList(0, games.size());
-        }
+        int AMOUNT_LAST_GAMES = 15;
+        List<Game> toShow = gameService.getLastGames(AMOUNT_LAST_GAMES);
 
 
         ListView<Game> gamesView = new ListView<Game>("gamesView", toShow) {
@@ -58,7 +52,7 @@ public class LastGamesPanel extends Panel {
                 gameLink.add(gameLinkImage);
                 item.add(gameLink);
 
-                String gameRatingColor = Rating.getColorOf(gameService.getRatingOfGame(game));
+                String gameRatingColor = Rating.getColorOf(game.getTotalRating());
                 Label gameRating = new Label("gameRating","");
                 gameRating.add(new AttributeAppender("class", Model.of(gameRatingColor), " "));
                 item.add(gameRating);

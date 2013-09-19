@@ -1,7 +1,6 @@
 package cz.larpovadatabaze.components.page.game;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.services.GameService;
@@ -19,7 +18,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 @AuthorizeInstantiation({"User","Editor","Admin"})
 public class CreateOrUpdateGamePage extends CsldBasePage {
     @SpringBean
-    private GameService gameService;
+    GameService gameService;
 
     public CreateOrUpdateGamePage(PageParameters params){
         Game game = null;

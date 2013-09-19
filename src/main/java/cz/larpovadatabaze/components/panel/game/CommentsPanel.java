@@ -1,27 +1,20 @@
 package cz.larpovadatabaze.components.panel.game;
 
-import cz.larpovadatabaze.api.IListener;
-import cz.larpovadatabaze.api.IPublisher;
 import cz.larpovadatabaze.api.ValidatableForm;
-import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.CommentService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This panel allows user to Comment given game
@@ -50,8 +43,10 @@ public abstract class CommentsPanel extends Panel {
         String commentText = "";
         if(actualComment == null) {
             actualComment = new Comment();
-            actualComment.setUserId(userId);
+            actualComment.setUser(logged);
+            actualComment.setGame(game);
             actualComment.setGameId(game.getId());
+            actualComment.setUserId(userId);
             actualComment.setComment("");
         } else {
             commentText = actualComment.getComment();

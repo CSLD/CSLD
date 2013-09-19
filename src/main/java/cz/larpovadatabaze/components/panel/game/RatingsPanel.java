@@ -2,19 +2,17 @@ package cz.larpovadatabaze.components.panel.game;
 
 import com.googlecode.wicket.jquery.ui.form.slider.AjaxSlider;
 import com.googlecode.wicket.jquery.ui.form.slider.Slider;
-import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.RatingService;
-import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -27,7 +25,7 @@ public abstract class RatingsPanel extends Panel {
 
     private Rating actualRating;
 
-    public RatingsPanel(String id, final Integer gameId) {
+    public RatingsPanel(String id, final Game game) {
         super(id);
 
         final Form form = new Form("ratingForm");
@@ -43,7 +41,7 @@ public abstract class RatingsPanel extends Panel {
         label.setOutputMarkupId(true);
 
         try {
-            actualRating = ratingService.getUserRatingOfGame(loggedId, gameId);
+            actualRating = ratingService.getUserRatingOfGame(loggedId, game.getId());
         } catch (WrongParameterException e) {
             // This should never happen.
             e.printStackTrace();
@@ -52,8 +50,8 @@ public abstract class RatingsPanel extends Panel {
             ratingOfGame.setObject(actualRating.getRating());
         } else {
             actualRating = new Rating();
-            actualRating.setGameId(gameId);
-            actualRating.setUserId(loggedId);
+            actualRating.setGame(game);
+            actualRating.setUser(logged);
         }
 
 

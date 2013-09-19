@@ -17,14 +17,13 @@ import java.util.List;
  * Time: 18:32
  */
 public class ShowPhotoPanel extends Panel {
-    private ListView<Photo> photos;
     private List<Photo> photosToShow;
 
     public ShowPhotoPanel(String id, List<Photo> photos) {
         super(id);
 
         photosToShow = photos;
-        this.photos = new ListView<Photo>("photos", photos){
+        ListView<Photo> photosL = new ListView<Photo>("photos", photos){
             @Override
             protected void populateItem(ListItem<Photo> item) {
                 Photo photo = item.getModelObject();
@@ -37,8 +36,8 @@ public class ShowPhotoPanel extends Panel {
                 item.add(photoImage);
             }
         };
-        this.photos.setOutputMarkupId(true);
-        add(this.photos);
+        photosL.setOutputMarkupId(true);
+        add(photosL);
 
         setOutputMarkupId(true);
     }

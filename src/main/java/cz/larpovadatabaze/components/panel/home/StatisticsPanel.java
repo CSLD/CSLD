@@ -25,11 +25,11 @@ public class StatisticsPanel extends Panel {
     public StatisticsPanel(String id) {
         super(id);
 
-        int amountOfUsers = csldUserService.getAll().size();
-        int amountOfAuthors = csldUserService.getAuthorsByGames().size();
-        int amountOfComments = commentService.getAll().size();
-        int amountOfLarps = gameService.getAll().size();
-        int amountOfRatings = ratingService.getAll().size();
+        int amountOfUsers = csldUserService.getAmountOfAuthors();
+        int amountOfAuthors = csldUserService.getAmountOfOnlyAuthors();
+        int amountOfComments = commentService.getAmountOfComments();
+        int amountOfLarps = gameService.getAmountOfGames();
+        int amountOfRatings = ratingService.getAmountOfRatings();
         int averageRating = (int) (ratingService.getAverageRating() * 10);
 
         add(new Label("amountOfUsers", Model.of(amountOfUsers)));

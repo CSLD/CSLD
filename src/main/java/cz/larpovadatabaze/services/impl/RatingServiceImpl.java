@@ -50,20 +50,16 @@ public class RatingServiceImpl implements RatingService {
 
     @Override
     public double getAverageRating() {
-        List<Rating> ratings = ratingDAO.findAll();
-        if(ratings == null){
-            return 0;
-        }
-        double averageRating = 0;
-        for(Rating rating: ratings){
-            averageRating += rating.getRating();
-        }
-        averageRating /= ratings.size();
-        return averageRating;
+        return ratingDAO.getAverageRating();
     }
 
     @Override
     public void saveOrUpdate(Rating actualRating) {
         ratingDAO.saveOrUpdate(actualRating);
+    }
+
+    @Override
+    public int getAmountOfRatings() {
+        return ratingDAO.getAmountOfRatings();
     }
 }

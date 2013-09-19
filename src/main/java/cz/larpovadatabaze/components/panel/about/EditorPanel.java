@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class EditorPanel extends Panel {
     @SpringBean
-    private CsldUserService csldUserService;
+    CsldUserService csldUserService;
 
     public EditorPanel(String id) {
         super(id);

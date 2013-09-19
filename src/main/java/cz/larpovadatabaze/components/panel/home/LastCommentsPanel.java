@@ -8,7 +8,6 @@ import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.services.CommentService;
-import cz.larpovadatabaze.services.GameService;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
@@ -31,23 +30,13 @@ import java.util.List;
 public class LastCommentsPanel extends Panel {
     @SpringBean
     CommentService commentService;
-    @SpringBean
-    GameService gameService;
-    private final int AMOUNT_LAST_COMMENTS = 15;
-    private final int MAX_CHARS_IN_COMMENT = 200;
+    private final int MAX_CHARS_IN_COMMENT = 120;
 
     public LastCommentsPanel(String id) {
         super(id);
 
-        List<Comment> comments = commentService.getLastComments();
-        List<Comment> toShow;
-        if(AMOUNT_LAST_COMMENTS < comments.size()) {
-            toShow = comments.subList(0, AMOUNT_LAST_COMMENTS);
-        } else {
-            toShow = comments.subList(0, comments.size());
-        }
-
-
+        int AMOUNT_LAST_COMMENTS = 15;
+        List<Comment> toShow = commentService.getLastComments(AMOUNT_LAST_COMMENTS);
         ListView<Comment> gamesView = new ListView<Comment>("commentsView", toShow) {
             @Override
             protected void populateItem(ListItem<Comment> item) {
@@ -84,7 +73,7 @@ public class LastCommentsPanel extends Panel {
                 Label commentDate = new Label("commentDate", Model.of(formatDate.format(dateOfComment)));
                 item.add(commentDate);
 
-                String gameRatingColor = Rating.getColorOf(gameService.getRatingOfGame(game));
+                String gameRatingColor = Rating.getColorOf(game.getTotalRating());
                 Label gameRating = new Label("gameRating","");
                 gameRating.add(new AttributeAppender("class", Model.of(gameRatingColor), " "));
                 item.add(gameRating);

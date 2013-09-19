@@ -25,23 +25,19 @@ public class SortableGroupProvider extends SortableDataProvider<CsldGroup, Strin
     }
 
     @Override
-    public Iterator<? extends CsldGroup> iterator(long first, long last) {
+    public Iterator<? extends CsldGroup> iterator(long first, long amountPerPage) {
         SortParam<String> sortings = getSort();
         String property = sortings.getProperty();
-        int amountOfGroups = groupService.getAll().size();
-        if(amountOfGroups > last) {
-            last = amountOfGroups;
-        }
         if(property.equals("default")){
-            return groupService.orderedByName().subList((int)first,(int)last).iterator();
+            return groupService.orderedByName(first, amountPerPage).iterator();
         } else {
-            return groupService.orderedByName().subList((int)first,(int)last).iterator();
+            return groupService.orderedByName(first, amountPerPage).iterator();
         }
     }
 
     @Override
     public long size() {
-        return groupService.getAll().size();
+        return groupService.getAmountOfGroups();
     }
 
     @Override

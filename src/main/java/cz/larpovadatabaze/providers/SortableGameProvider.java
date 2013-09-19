@@ -29,22 +29,26 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
     }
 
     @Override
-    public Iterator<? extends Game> iterator(long first, long last) {
+    public Iterator<? extends Game> iterator(long first, long amountPerPage) {
         SortParam<String> sortings = getSort();
         String property = sortings.getProperty();
-        int amountOfGames = gameService.getAll().size();
-        if(amountOfGames > last) {
-            last = amountOfGames;
-        }
+        Long firstL = (Long) first;
         if(property.equals("form.wholeName")){
-            return Filter.filterGames(filterGame, filterLabels,gameService.getOrderedByName().subList((int)first,(int)last)).iterator();
+            return Filter.filterGames(filterGame, filterLabels, setStart(gameService.getOrderedByName(first, amountPerPage), firstL.intValue())).iterator();
         } else if(property.equals("rating")) {
-            return Filter.filterGames(filterGame, filterLabels,gameService.getRated().subList((int)first,(int)last)).iterator();
+            return Filter.filterGames(filterGame, filterLabels, setStart(gameService.getRated(first, amountPerPage), firstL.intValue())).iterator();
         } else if(property.equals("ratingAmount")) {
-            return Filter.filterGames(filterGame, filterLabels,gameService.getRatedAmount().subList((int)first,(int)last)).iterator();
+            return Filter.filterGames(filterGame, filterLabels, setStart(gameService.getRatedAmount(first, amountPerPage), firstL.intValue())).iterator();
         } else {
-            return Filter.filterGames(filterGame, filterLabels,gameService.getCommentedAmount().subList((int)first,(int)last)).iterator();
+            return Filter.filterGames(filterGame, filterLabels, setStart(gameService.getCommentedAmount(first, amountPerPage), firstL.intValue())).iterator();
         }
+    }
+
+    private List<Game> setStart(List<Game> games, int first){
+        for(Game game: games){
+            game.setFirst(first);
+        }
+        return games;
     }
 
     public void setFilters(FilterGame filters, List<Label> labels) {
@@ -55,7 +59,7 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
 
     @Override
     public long size() {
-        return gameService.getAll().size();
+        return gameService.getAmountOfGames();
     }
 
     @Override

@@ -19,13 +19,12 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  */
 public class MostActiveCreators extends Panel {
     @SpringBean
-    private CsldUserService csldUserService;
-    private CsldUser author;
+    CsldUserService csldUserService;
 
     public MostActiveCreators(String id) {
         super(id);
 
-        author = csldUserService.getWithMostAuthored();
+        CsldUser author = csldUserService.getWithMostAuthored();
         if(author == null){
             author = CsldUser.getEmptyUser();
             setVisible(false);
@@ -52,7 +51,7 @@ public class MostActiveCreators extends Panel {
         moderatorLinkContent.add(moderatorName);
         add(moderatorLinkContent);
 
-        Label amountCreated = new Label("ammountCommented", new StringResourceModel("amountOfCreatedGames", this, new Model<CsldUser>(author)));
+        Label amountCreated = new Label("amountCommented", new StringResourceModel("amountOfCreated", this, new Model<CsldUser>(author)));
         add(amountCreated);
     }
 }

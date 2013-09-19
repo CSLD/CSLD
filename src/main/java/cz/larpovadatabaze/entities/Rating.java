@@ -13,30 +13,6 @@ import java.io.Serializable;
 @Table(schema = "public", name="csld_rating")
 @Entity
 public class Rating implements Serializable {
-    private Integer userId;
-
-    @Column(name = "user_id", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
-    @Id
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    private Integer gameId;
-
-    @Column(name = "game_id", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
-    @Id
-    public Integer getGameId() {
-        return gameId;
-    }
-
-    public void setGameId(Integer gameId) {
-        this.gameId = gameId;
-    }
-
     private Integer rating;
 
     @Column(name = "rating", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
@@ -56,17 +32,17 @@ public class Rating implements Serializable {
 
         Rating rating1 = (Rating) o;
 
-        if (gameId != null ? !gameId.equals(rating1.gameId) : rating1.gameId != null) return false;
+        if (game != null ? !game.equals(rating1.game) : rating1.game != null) return false;
         if (rating != null ? !rating.equals(rating1.rating) : rating1.rating != null) return false;
-        if (userId != null ? !userId.equals(rating1.userId) : rating1.userId != null) return false;
+        if (user != null ? !user.equals(rating1.user) : rating1.user != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = userId != null ? userId.hashCode() : 0;
-        result = 31 * result + (gameId != null ? gameId.hashCode() : 0);
+        int result = user != null ? user.hashCode() : 0;
+        result = 31 * result + (game != null ? game.hashCode() : 0);
         result = 31 * result + (rating != null ? rating.hashCode() : 0);
         return result;
     }
@@ -74,7 +50,14 @@ public class Rating implements Serializable {
     private Game game;
 
     @ManyToOne
-    @JoinColumn(name = "game_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(
+            name = "game_id",
+            referencedColumnName = "id",
+            nullable = false,
+            insertable = false,
+            updatable = false
+    )
+    @Id
     public Game getGame() {
         return game;
     }
@@ -86,13 +69,54 @@ public class Rating implements Serializable {
     private CsldUser user;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(
+            name = "user_id",
+            referencedColumnName = "id",
+            nullable = false,
+            insertable = false,
+            updatable = false
+    )
+    @Id
     public CsldUser getUser() {
         return user;
     }
 
     public void setUser(CsldUser user) {
         this.user = user;
+    }
+
+    private Integer userId;
+
+    @Column(
+            name = "user_id",
+            nullable = false,
+            insertable = true,
+            updatable = true
+    )
+    @Id
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    private Integer gameId;
+
+    @Column(
+            name = "game_id",
+            nullable = false,
+            insertable = true,
+            updatable = true
+    )
+    @Id
+    public Integer getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(Integer gameId) {
+        this.gameId = gameId;
     }
 
     public static String getColorOf(double gameAsAverageRating){

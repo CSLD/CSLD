@@ -6,7 +6,6 @@ import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.utils.HbUtils;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -20,7 +19,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  */
 public class RatingsResultPanel extends Panel {
     @SpringBean
-    private GameService gameService;
+    GameService gameService;
     private Game game;
 
     private Model<String> ratingColorModel;
@@ -31,7 +30,7 @@ public class RatingsResultPanel extends Panel {
         super(id);
         this.game = game;
 
-        double ratingOfGame = gameService.getRatingOfGame(game);
+        double ratingOfGame = game.getTotalRating();
         String ratingColor = Rating.getColorOf(ratingOfGame);
 
         WebMarkupContainer finalRating = new WebMarkupContainer("resultsOfRating");
@@ -57,7 +56,7 @@ public class RatingsResultPanel extends Panel {
             game = HbUtils.deproxy(game);
         }
 
-        double ratingOfGame = gameService.getRatingOfGame(game);
+        double ratingOfGame = game.getTotalRating();
         String ratingColor = Rating.getColorOf(ratingOfGame);
         ratingColorModel.setObject(ratingColor);
         ratingOfGameModel.setObject(ratingOfGame);

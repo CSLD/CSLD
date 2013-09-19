@@ -66,8 +66,8 @@ public abstract class AdministerGroupMembers extends Panel {
         group.setAdministrators(administrators);
         groupHasMemberService.removeAllMembersOfGroup(group);
         for(GroupHasMember memberOfGroup: membersOfGroup){
-            memberOfGroup.setGroupId(group.getId());
-            memberOfGroup.setUserId(memberOfGroup.getUser().getId());
+            memberOfGroup.setGroup(group);
+            memberOfGroup.setUser(memberOfGroup.getUser());
             groupHasMemberService.saveOrUpdate(memberOfGroup);
         }
         groupService.saveOrUpdate(group);

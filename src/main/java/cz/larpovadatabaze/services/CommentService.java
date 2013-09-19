@@ -15,5 +15,7 @@ public interface CommentService extends GenericService<Comment> {
 
     void saveOrUpdate(Comment actualComment);
 
-    List<Comment> getLastComments();
+    List<Comment> getLastComments(int amount);
+
+    int getAmountOfComments();
 }

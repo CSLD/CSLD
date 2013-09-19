@@ -6,8 +6,8 @@ import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Image;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.ImageService;
-import cz.larpovadatabaze.services.PersonService;
 import cz.larpovadatabaze.utils.FileUtils;
+import cz.larpovadatabaze.utils.Pwd;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
@@ -31,11 +31,11 @@ public class UpdateUserPanel extends Panel {
     CsldUserService csldUserService;
     @SpringBean
     ImageService imageService;
-    @SpringBean
-    PersonService personService;
 
     private FileUploadField fileUpload;
+    @SuppressWarnings("unused")
     private String passwordAgain;
+    @SuppressWarnings("unused")
     private List<FileUpload> images;
 
     public UpdateUserPanel(String id, CsldUser user) {
@@ -83,6 +83,7 @@ public class UpdateUserPanel extends Panel {
 
                 if(createOrUpdateUser.isValid()){
                     CsldUser user = createOrUpdateUser.getModelObject();
+                    user.setPassword(Pwd.getMD5(user.getPassword()));
                     saveOrUpdateUserAndImage(user);
                     onCsldAction(target, form);
                 }
@@ -112,7 +113,6 @@ public class UpdateUserPanel extends Panel {
                     image.setPath(filePath);
                     imageService.insert(image);
                     user.setImage(image);
-                    user.setImageId(image.getId());
                     saveOrUpdateUser(user);
                 }
                 catch (Exception e)
@@ -126,8 +126,6 @@ public class UpdateUserPanel extends Panel {
     }
 
     private void saveOrUpdateUser(CsldUser user){
-        personService.saveOrUpdate(user.getPerson());
-        user.setPersonId(user.getPerson().getId());
         csldUserService.saveOrUpdate(user);
         csldUserService.flush();
     }

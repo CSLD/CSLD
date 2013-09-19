@@ -20,7 +20,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 @AuthorizeInstantiation({"User","Editor","Admin"})
 public class ManageGroupPage extends CsldBasePage {
     @SpringBean
-    private GroupService groupService;
+    GroupService groupService;
 
     public ManageGroupPage(PageParameters params){
         Integer groupId = params.get("id").to(Integer.class);

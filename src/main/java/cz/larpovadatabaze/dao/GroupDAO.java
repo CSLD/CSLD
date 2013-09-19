@@ -7,6 +7,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -24,11 +25,14 @@ public class GroupDAO extends GenericHibernateDAO<CsldGroup, Integer> {
     @Autowired
     private SessionFactory sessionFactory;
 
-    public List<CsldGroup> orderedByName() {
+    @SuppressWarnings("unchecked")
+    public List<CsldGroup> orderedByName(Long first, Long amountPerPage) {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from CsldGroup CsldGroup order by CsldGroup.name");
-        List<CsldGroup> allGroups = query.list();
-        return allGroups;
+        Query query = session.createQuery(
+                "from CsldGroup order by name");
+        query.setFirstResult(first.intValue());
+        query.setMaxResults(amountPerPage.intValue());
+        return query.list();
     }
 
     /**
@@ -43,5 +47,12 @@ public class GroupDAO extends GenericHibernateDAO<CsldGroup, Integer> {
                 Restrictions.eq("name", groupName)
         );
         return uniqueGroup.list();
+    }
+
+    public int getAmountOfGroups() {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = session.createCriteria(CsldGroup.class);
+        criteria.setProjection(Projections.rowCount());
+        return ((Long)criteria.uniqueResult()).intValue();
     }
 }

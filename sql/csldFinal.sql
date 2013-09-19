@@ -21,26 +21,151 @@ SET search_path = public, pg_catalog;
 -- Name: csld_count_rating(integer); Type: FUNCTION; Schema: public; Owner: csld
 --
 
-CREATE FUNCTION csld_count_rating(gameid integer) RETURNS double precision
-    LANGUAGE plpgsql
-    AS $$
+CREATE OR REPLACE FUNCTION public.csld_count_best_game(userid integer)
+ RETURNS integer
+ LANGUAGE plpgsql
+AS $function$
+DECLARE
+  gameRatings RECORD;
+  mostRatedGame RECORD;
+BEGIN
+  select into gameRatings gha.id_game as bestId from csld_game_has_author gha join csld_game game on game.id = gha.id_game where gha.id_user = userid order by csld_count_rating(gha.id_game) desc limit 1;
+  return gameRatings.bestId;
+END
+$function$;
+
+
+CREATE OR REPLACE FUNCTION public.csld_count_rating(gameid integer)
+ RETURNS double precision
+ LANGUAGE plpgsql
+AS $function$
 DECLARE
   ratingsRow RECORD;
   result double precision;
   average RECORD;
 BEGIN
   select into ratingsRow sum(rating) as ratingCount, count(*) as ratingAmount from csld_rating where game_id = gameId;
-  if ratingsRow.ratingAmount = 0 THEN
+  if ratingsRow.ratingAmount < 5 THEN
         return 0;
   END IF;
-  select into average sum(rating) as ratingCount, count(*) as ratingAmount from csld_rating;
-  result = (ratingsRow.ratingCount + (average.ratingCount / average.ratingAmount * 8) / (ratingsRow.ratingAmount + 12));
-  return result;
+  select into average sum(rating) as ratingCount, count(*) as ratingAmount, avg(rating) as ratingAvg from csld_rating;
+  result = (ratingsRow.ratingCount + (1.0 * average.ratingCount / average.ratingAmount) * 5) / (0.0 + ratingsRow.ratingAmount + 5);
+  return result * 10;
+END
+$function$;
+
+ALTER FUNCTION public.csld_count_rating(gameid integer) OWNER TO csld;
+
+CREATE OR REPLACE FUNCTION public.csld_update_rating()
+  RETURNS trigger
+LANGUAGE plpgsql
+AS $function$
+DECLARE
+  gameId int;
+BEGIN
+  IF (TG_OP = 'DELETE') THEN
+    gameId := OLD.game_id;
+  ELSE
+    gameId := NEW.game_id;
+  END IF;
+  update csld_game set total_rating = csld_count_rating(gameId) where id = gameId;
+  return null;
+END
+$function$;
+
+CREATE FUNCTION csld_amount_of_ratings(gameid integer) RETURNS integer
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+  ratingsRow RECORD;
+  result integer;
+BEGIN
+  select into ratingsRow count(*) as ratingCount from csld_rating where game_id = gameId;
+  return ratingsRow.ratingCount;
+END
+$$;
+
+ALTER FUNCTION public.csld_amount_of_ratings(gameid integer) OWNER TO csld;
+
+CREATE FUNCTION csld_count_average() RETURNS double precision
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+  ratingsRow RECORD;
+BEGIN
+  select into ratingsRow count(*) as ratingCount, sum(rating) as sumOf from csld_rating;
+  return CAST(ratingsRow.sumOf as double precision) / ratingsRow.ratingCount;
+END
+$$;
+
+ALTER FUNCTION public.csld_count_average() OWNER TO csld;
+
+CREATE FUNCTION csld_user_amount_of_comments(userid integer) RETURNS integer
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+  ratingsRow RECORD;
+  result integer;
+BEGIN
+  select into ratingsRow count(*) as ratingCount from csld_comment where user_id = userid;
+  return ratingsRow.ratingCount;
 END
 $$;
 
 
-ALTER FUNCTION public.csld_count_rating(gameid integer) OWNER TO csld;
+ALTER FUNCTION public.csld_user_amount_of_comments(userid integer) OWNER TO csld;
+
+CREATE FUNCTION csld_amount_of_comments(gameid integer) RETURNS integer
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+  ratingsRow RECORD;
+  result integer;
+BEGIN
+  select into ratingsRow count(*) as ratingCount from csld_comment where game_id = gameid;
+  return ratingsRow.ratingCount;
+END
+$$;
+
+
+ALTER FUNCTION public.csld_amount_of_comments(gameid integer) OWNER TO csld;
+
+CREATE OR REPLACE FUNCTION csld_user_amount_of_played(userid integer) RETURNS integer
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+  ratingsRow RECORD;
+  result integer;
+BEGIN
+  select into ratingsRow count(*) as ratingCount from csld_user_played_game where user_id = userid and state = 2;
+  return ratingsRow.ratingCount;
+END
+$$;
+
+CREATE OR REPLACE FUNCTION csld_amount_of_played(gameid integer) RETURNS integer
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+  ratingsRow RECORD;
+  result integer;
+BEGIN
+  select into ratingsRow count(*) as ratingCount from csld_user_played_game where game_id = gameid and state = 2;
+  return ratingsRow.ratingCount;
+END
+$$;
+
+ALTER FUNCTION public.csld_user_amount_of_played(userid integer) OWNER TO csld;
+
+CREATE or replace FUNCTION csld_count_games_of_author(userid integer) RETURNS integer
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+  ratingsRow RECORD;
+BEGIN
+  select into ratingsRow count(*) as ratingCount from csld_game_has_author where id_user = userid;
+  return ratingsRow.ratingCount;
+END
+$$;
 
 --
 -- Name: csld_count_user_rating(integer); Type: FUNCTION; Schema: public; Owner: csld
@@ -66,6 +191,119 @@ $$;
 
 
 ALTER FUNCTION public.csld_count_user_rating(userid integer) OWNER TO csld;
+
+CREATE OR REPLACE FUNCTION public.csld_update_amount_of_comments()
+  RETURNS trigger
+LANGUAGE plpgsql
+AS $function$
+DECLARE
+  gameId int;
+  userId int;
+BEGIN
+  IF (TG_OP = 'DELETE') THEN
+      gameId := OLD.game_id;
+      userId := OLD.user_id;
+
+      update csld_game set amount_of_comments = amount_of_comments - 1 where id = gameId;
+      update csld_csld_user set amount_of_comments = amount_of_comments - 1 where id = userId;
+  ELSIF (TG_OP = 'INSERT') THEN
+      gameId := NEW.game_id;
+      userId := NEW.user_id;
+
+      update csld_game set amount_of_comments = amount_of_comments + 1 where id = gameId;
+      update csld_csld_user set amount_of_comments = amount_of_comments + 1 where id = userId;
+  END IF;
+  return null;
+END
+$function$;
+
+CREATE OR REPLACE FUNCTION public.csld_update_amount_of_created()
+  RETURNS trigger
+LANGUAGE plpgsql
+AS $function$
+DECLARE
+  userId int;
+BEGIN
+  IF (TG_OP = 'DELETE') THEN
+      userId := OLD.id_user;
+
+      update csld_csld_user set amount_of_created = amount_of_created - 1 where id = userId;
+  ELSIF (TG_OP = 'INSERT') THEN
+      userId := NEW.id_user;
+
+      update csld_csld_user set amount_of_created = amount_of_created + 1 where id = userId;
+  END IF;
+  return null;
+END
+$function$;
+
+CREATE OR REPLACE FUNCTION public.csld_update_amount_of_ratings()
+  RETURNS trigger
+LANGUAGE plpgsql
+AS $function$
+DECLARE
+  gameId int;
+BEGIN
+  IF (TG_OP = 'DELETE') THEN
+      gameId := OLD.game_id;
+
+      update csld_game set amount_of_ratings = amount_of_ratings - 1 where id = gameId;
+  ELSIF (TG_OP = 'INSERT') THEN
+      gameId := NEW.game_id;
+
+      update csld_game set amount_of_ratings = amount_of_ratings + 1 where id = gameId;
+  END IF;
+  return null;
+END
+$function$;
+
+CREATE OR REPLACE FUNCTION public.csld_update_best_game()
+  RETURNS trigger
+LANGUAGE plpgsql
+AS $function$
+DECLARE
+  userId int;
+BEGIN
+  IF (TG_OP = 'DELETE') THEN
+    userId := OLD.user_id;
+  ELSE
+    userId := NEW.user_id;
+  END IF;
+  update csld_csld_user set best_game_id = csld_count_best_game(id) where id = userId;
+  RETURN NULL;
+END
+$function$;
+
+CREATE OR REPLACE FUNCTION public.csld_update_amount_of_played()
+  RETURNS trigger
+LANGUAGE plpgsql
+AS $function$
+DECLARE
+  gameId int;
+  userId int;
+BEGIN
+  IF (TG_OP = 'DELETE') THEN
+      gameId := OLD.game_id;
+      userId := OLD.user_id;
+      if (OLD.state <> 2) THEN
+        return null;
+      END IF;
+
+      update csld_game set amount_of_played = amount_of_played - 1 where id = gameId;
+      update csld_csld_user set amount_of_played = amount_of_played - 1 where id = userId;
+  ELSIF (TG_OP = 'INSERT') THEN
+      gameId := NEW.game_id;
+      userId := NEW.user_id;
+      if (NEW.state <> 2) THEN
+        return null;
+      END IF;
+
+      update csld_game set amount_of_played = amount_of_played + 1 where id = gameId;
+      update csld_csld_user set amount_of_played = amount_of_played + 1 where id = userId;
+  END IF;
+  return null;
+END
+$function$;
 
 SET default_tablespace = '';
 SET default_with_oids = false;
@@ -116,6 +354,11 @@ CREATE TABLE csld_csld_user (
     image integer,
     address text,
     description text,
+    is_author boolean default false,
+    amount_of_comments integer default 0,
+    amount_of_played integer default 0,
+    amount_of_created integer default 0,
+    best_game_id integer,
 
     PRIMARY KEY(id)
 );
@@ -172,6 +415,10 @@ CREATE TABLE csld_game (
     video integer,
     image integer,
     added_by integer,
+    total_rating double precision,
+    amount_of_comments integer default 0,
+    amount_of_played integer default 0,
+    amount_of_ratings integer default 0,
 
     PRIMARY KEY(id)
 );
@@ -234,20 +481,6 @@ CREATE SEQUENCE csld_photo_id_seq
 
 
 ALTER TABLE public.csld_photo_id_seq OWNER TO csld;
-
---
--- Name: csld_game_has_photo; Type: TABLE; Schema: public; Owner: csld; Tablespace: 
---
-
-CREATE TABLE csld_game_has_photo (
-    id_photo integer NOT NULL,
-    id_game integer NOT NULL,
-
-    PRIMARY KEY(id_photo, id_game)
-);
-
-
-ALTER TABLE public.csld_game_has_photo OWNER TO csld;
 
 --
 -- Name: csld_group_has_administrator; Type: TABLE; Schema: public; Owner: csld; Tablespace: 
@@ -334,6 +567,7 @@ CREATE TABLE csld_photo (
     image integer NOT NULL,
     author integer,
     version integer,
+    game integer,
 
     PRIMARY KEY(id)
 );
@@ -543,14 +777,6 @@ ALTER TABLE ONLY csld_user_played_game
 -- Name: game_fk; Type: FK CONSTRAINT; Schema: public; Owner: csld
 --
 
-ALTER TABLE ONLY csld_game_has_photo
-    ADD CONSTRAINT game_fk FOREIGN KEY (id_game) REFERENCES csld_game(id) MATCH FULL ON UPDATE CASCADE ON DELETE RESTRICT;
-
-
---
--- Name: game_fk; Type: FK CONSTRAINT; Schema: public; Owner: csld
---
-
 ALTER TABLE ONLY csld_game_has_author
     ADD CONSTRAINT game_fk FOREIGN KEY (id_game) REFERENCES csld_game(id) MATCH FULL ON UPDATE CASCADE ON DELETE RESTRICT;
 
@@ -594,10 +820,51 @@ ALTER TABLE ONLY csld_group_has_administrator
 ALTER TABLE ONLY csld_game_has_label
     ADD CONSTRAINT label_fk FOREIGN KEY (id_label) REFERENCES csld_label(id) MATCH FULL ON UPDATE CASCADE ON DELETE RESTRICT;
 
+CREATE TRIGGER update_rating
+  AFTER INSERT OR UPDATE OR DELETE ON csld_rating
+    FOR EACH ROW EXECUTE PROCEDURE csld_update_rating();
 
---
--- Name: photo_fk; Type: FK CONSTRAINT; Schema: public; Owner: csld
---
+CREATE TRIGGER update_comments
+  AFTER INSERT OR DELETE ON csld_comment
+    FOR EACH ROW EXECUTE PROCEDURE csld_update_amount_of_comments();
 
-ALTER TABLE ONLY csld_game_has_photo
-    ADD CONSTRAINT photo_fk FOREIGN KEY (id_photo) REFERENCES csld_photo(id) MATCH FULL ON UPDATE CASCADE ON DELETE RESTRICT;
+CREATE TRIGGER update_played
+  AFTER INSERT OR DELETE ON csld_user_played_game
+    FOR EACH ROW EXECUTE PROCEDURE csld_update_amount_of_played();
+
+CREATE TRIGGER update_created
+  AFTER INSERT OR DELETE ON csld_game_has_author
+    FOR EACH ROW EXECUTE PROCEDURE csld_update_amount_of_created();
+
+CREATE TRIGGER update_ratings_count
+  AFTER INSERT OR DELETE ON csld_rating
+    FOR EACH ROW EXECUTE PROCEDURE csld_update_amount_of_ratings();
+
+CREATE TRIGGER update_best_game
+  AFTER INSERT OR DELETE OR UPDATE ON csld_rating
+    FOR EACH ROW EXECUTE PROCEDURE csld_update_best_game();
+
+
+create index total_rating_idx on csld_game(total_rating);
+
+create index game_added_idx on csld_game(added);
+
+create index game_name_idx on csld_game(name);
+
+create index comment_added_idx on csld_comment(added);
+
+create index user_name_idx on csld_csld_user(name);
+
+create index group_name_idx on csld_csld_group(name);
+
+create index game_amount_of_comments_idx on csld_game(amount_of_comments);
+
+create index game_amount_of_played_idx on csld_game(amount_of_played);
+
+create index user_amount_of_comments_idx on csld_csld_user(amount_of_comments);
+
+create index user_amount_of_played_idx on csld_csld_user(amount_of_played);
+
+create index game_amount_of_ratings_idx on csld_game(amount_of_ratings);
+
+create index user_best_game_idx on csld_csld_user(best_game_id);

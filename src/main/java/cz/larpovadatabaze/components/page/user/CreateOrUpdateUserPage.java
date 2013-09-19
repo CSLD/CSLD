@@ -2,9 +2,7 @@ package cz.larpovadatabaze.components.page.user;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.HomePage;
-import cz.larpovadatabaze.components.page.author.AuthorDetail;
 import cz.larpovadatabaze.components.panel.user.CreateOrUpdateUserPanel;
-import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.CsldUserService;
@@ -20,7 +18,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  */
 public class CreateOrUpdateUserPage extends CsldBasePage {
     @SpringBean
-    private CsldUserService csldUserService;
+    CsldUserService csldUserService;
 
     public CreateOrUpdateUserPage(PageParameters params){
         CsldUser csldUser  = null;

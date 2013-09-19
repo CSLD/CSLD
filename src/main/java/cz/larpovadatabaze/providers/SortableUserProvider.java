@@ -21,24 +21,20 @@ public class SortableUserProvider extends SortableDataProvider<CsldUser, String>
     }
 
     @Override
-    public Iterator<? extends CsldUser> iterator(long first, long last) {
+    public Iterator<? extends CsldUser> iterator(long first, long amountPerPage) {
         SortParam<String> props = getSort();
-        int amountOfUsers = csldUserService.getOrderedUsersByName().size();
-        if(amountOfUsers > last) {
-            last = amountOfUsers;
-        }
         if(props.getProperty().equals("name")) {
-            return csldUserService.getOrderedUsersByName().subList((int)first,(int)last).iterator();
+            return csldUserService.getOrderedUsersByName(first, amountPerPage).iterator();
         } else if(props.getProperty().equals("comments")) {
-            return csldUserService.getOrderedUsersByComments().subList((int)first,(int)last).iterator();
+            return csldUserService.getOrderedUsersByComments(first, amountPerPage).iterator();
         } else {
-            return csldUserService.getOrderedUsersByPlayed().subList((int)first,(int)last).iterator();
+            return csldUserService.getOrderedUsersByPlayed(first, amountPerPage).iterator();
         }
     }
 
     @Override
     public long size() {
-        return csldUserService.getOrderedUsersByName().size();
+        return csldUserService.getAmountOfAuthors();
     }
 
     @Override

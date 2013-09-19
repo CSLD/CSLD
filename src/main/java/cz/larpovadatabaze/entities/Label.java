@@ -16,10 +16,15 @@ import java.util.List;
 public class Label implements Serializable, IAutoCompletable, Identifiable<Integer> {
     private Integer id;
 
-    @Column(name = "id", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(
+            name = "id",
+            nullable = false,
+            insertable = true,
+            updatable = true
+    )
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_key_gen")
-    @SequenceGenerator(name = "id_key_gen", sequenceName = "csld_label_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "id_key_gen", sequenceName = "csld_game_label_id_seq", allocationSize = 1)
     public Integer getId() {
         return id;
     }
@@ -30,7 +35,13 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
 
     private String name;
 
-    @Column(name = "name", nullable = false, insertable = true, updatable = true, length = 2147483647, precision = 0)
+    @Column(
+            name = "name",
+            nullable = false,
+            insertable = true,
+            updatable = true,
+            length = 2147483647
+    )
     @Basic
     public String getName() {
         return name;
@@ -42,7 +53,13 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
 
     private String description;
 
-    @Column(name = "description", nullable = true, insertable = true, updatable = true, length = 2147483647, precision = 0)
+    @Column(
+            name = "description",
+            nullable = true,
+            insertable = true,
+            updatable = true,
+            length = 2147483647
+    )
     @Basic
     public String getDescription() {
         return description;
@@ -54,7 +71,12 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
 
     private Boolean isRequired;
 
-    @Column(name = "is_required", nullable = true, insertable = true, updatable = true, length = 1, precision = 0)
+    @Column(
+            name = "is_required",
+            nullable = true,
+            insertable = true,
+            updatable = true
+    )
     @Basic
     public Boolean getRequired() {
         return isRequired;
@@ -66,7 +88,12 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
 
     private Boolean isAuthorized;
 
-    @Column(name = "is_authorized", nullable = true, insertable = true, updatable = true, length = 1, precision = 0)
+    @Column(
+            name = "is_authorized",
+            nullable = true,
+            insertable = true,
+            updatable = true
+    )
     @Basic
     public Boolean getAuthorized() {
         return isAuthorized;
@@ -76,18 +103,6 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
         isAuthorized = authorized;
     }
 
-    private Integer addedById;
-
-    @Column(name = "added_by", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
-    @Basic
-    public Integer getAddedById() {
-        return addedById;
-    }
-
-    public void setAddedById(Integer addedById) {
-        this.addedById = addedById;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -95,7 +110,6 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
 
         Label label = (Label) o;
 
-        if (addedById != null ? !addedById.equals(label.addedById) : label.addedById != null) return false;
         if (description != null ? !description.equals(label.description) : label.description != null) return false;
         if (id != null ? !id.equals(label.id) : label.id != null) return false;
         if (isAuthorized != null ? !isAuthorized.equals(label.isAuthorized) : label.isAuthorized != null) return false;
@@ -112,7 +126,6 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (isRequired != null ? isRequired.hashCode() : 0);
         result = 31 * result + (isAuthorized != null ? isAuthorized.hashCode() : 0);
-        result = 31 * result + (addedById != null ? addedById.hashCode() : 0);
         return result;
     }
 
@@ -130,7 +143,12 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
     private CsldUser addedBy;
 
     @ManyToOne
-    @JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(
+            name = "added_by",
+            referencedColumnName = "id",
+            nullable = false,
+            insertable = true,
+            updatable = true)
     public CsldUser getAddedBy() {
         return addedBy;
     }

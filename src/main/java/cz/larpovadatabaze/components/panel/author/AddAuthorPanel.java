@@ -1,15 +1,11 @@
 package cz.larpovadatabaze.components.panel.author;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.author.AuthorDetail;
 import cz.larpovadatabaze.components.page.author.CreateOrUpdateAuthorPage;
-import cz.larpovadatabaze.components.page.user.CreateOrUpdateUserPage;
-import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.resource.ContextRelativeResource;
 
 /**

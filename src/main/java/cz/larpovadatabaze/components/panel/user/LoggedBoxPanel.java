@@ -1,7 +1,6 @@
 package cz.larpovadatabaze.components.panel.user;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.user.CreateOrUpdateUserPage;
 import cz.larpovadatabaze.components.page.user.SignOut;
 import cz.larpovadatabaze.components.page.user.UpdateUserPage;
 import cz.larpovadatabaze.components.page.user.UserDetail;
@@ -22,7 +21,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 public class LoggedBoxPanel extends Panel {
     private boolean initiated = false;
     @SpringBean
-    private CsldUserService csldUserService;
+    CsldUserService csldUserService;
 
     public LoggedBoxPanel(String id) {
         super(id);

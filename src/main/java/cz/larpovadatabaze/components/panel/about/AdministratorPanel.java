@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class AdministratorPanel extends Panel {
     @SpringBean
-    private CsldUserService csldUserService;
+    CsldUserService csldUserService;
 
     public AdministratorPanel(String id) {
         super(id);

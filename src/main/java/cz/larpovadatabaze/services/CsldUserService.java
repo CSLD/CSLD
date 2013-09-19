@@ -15,7 +15,7 @@ public interface CsldUserService extends GenericService<CsldUser> {
 
     void flush();
 
-    public List<CsldUser> getAuthorsByGames();
+    List<CsldUser> getAuthorsByGames(long first, long amountPerPage);
 
     List<CsldUser> getEditors();
 
@@ -27,21 +27,21 @@ public interface CsldUserService extends GenericService<CsldUser> {
 
     CsldUser authenticate(String username, String password);
 
-    List<CsldUser> getAuthorsByBestGame();
-
-    List<CsldUser> getOrderedByName();
-
-    List<CsldUser> getOrderedByComments();
-
-    List<CsldUser> getOrderedByPlayed();
+    List<CsldUser> getAuthorsByBestGame(long first, long amountPerPage);
 
     List<CsldUser> getByAutoCompletable(String autoCompletable) throws WrongParameterException;
 
-    List<CsldUser> getOrderedUsersByName();
+    List<CsldUser> getOrderedUsersByName(long first, long amountPerPage);
 
-    List<CsldUser> getOrderedUsersByComments();
+    List<CsldUser> getOrderedUsersByComments(long first, long amountPerPage);
 
-    List<CsldUser> getOrderedUsersByPlayed();
+    List<CsldUser> getOrderedUsersByPlayed(long first, long amountPerPage);
 
     CsldUser getByEmail(String mail);
+
+    int getAmountOfAuthors();
+
+    int getAmountOfOnlyAuthors();
+
+    List<CsldUser> getAuthorsByName(long first, long amountPerPage);
 }

@@ -1,7 +1,5 @@
 package cz.larpovadatabaze.entities;
 
-import cz.larpovadatabaze.components.panel.game.PlayedPanel;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -82,7 +80,13 @@ public class UserPlayedGame implements Serializable {
     private CsldUser playerOfGame;
 
     @ManyToOne
-    @javax.persistence.JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @javax.persistence.JoinColumn(
+            name = "user_id",
+            referencedColumnName = "id",
+            nullable = false,
+            insertable = false,
+            updatable = false
+    )
     public CsldUser getPlayerOfGame() {
         return playerOfGame;
     }
@@ -94,7 +98,13 @@ public class UserPlayedGame implements Serializable {
     private Game playedBy;
 
     @ManyToOne
-    @javax.persistence.JoinColumn(name = "game_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @javax.persistence.JoinColumn(
+            name = "game_id",
+            referencedColumnName = "id",
+            nullable = false,
+            insertable = false,
+            updatable = false
+    )
     public Game getPlayedBy() {
         return playedBy;
     }

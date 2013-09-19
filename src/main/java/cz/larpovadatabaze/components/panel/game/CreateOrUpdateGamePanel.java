@@ -53,6 +53,7 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
     private List<GenericModel<CsldGroup>> groupsOfGame;
     private String videoPath; // Used by model.
     private ChooseLabelsPanel chooseLabels;
+    @SuppressWarnings("unused")
     private List<FileUpload> images;
 
     public CreateOrUpdateGamePanel(String id, Game game) {
@@ -126,7 +127,7 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
         final ModalWindow createlabelModal;
         add(createlabelModal = new ModalWindow("createLabel"));
 
-        createlabelModal.setTitle(getLocalizer().getString("label.create", this));
+        createlabelModal.setTitle("Vytvořit štítek");
         createlabelModal.setCookieName("create-label");
 
         createOrUpdateGame.add(new AjaxButton("createLabel"){}.setOutputMarkupId(true).add(new AjaxEventBehavior("click") {
@@ -149,7 +150,7 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
         final ModalWindow createGroupModal;
         add(createGroupModal = new ModalWindow("createGroup"));
 
-        createGroupModal.setTitle(getLocalizer().getString("group.create",this));
+        createGroupModal.setTitle("Vytvořit skupinu");
         createGroupModal.setCookieName("create-group");
 
         createOrUpdateGame.add(new AjaxButton("createGroup"){}.setOutputMarkupId(true).add(new AjaxEventBehavior("click") {
@@ -171,7 +172,7 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
         final ModalWindow createAuthorModal;
         add(createAuthorModal = new ModalWindow("createAuthor"));
 
-        createAuthorModal.setTitle(getLocalizer().getString("author.create", this));
+        createAuthorModal.setTitle("Vytvořit autora");
         createAuthorModal.setCookieName("create-author");
 
         createOrUpdateGame.add(new AjaxButton("createAuthor"){}.setOutputMarkupId(true).add(new AjaxEventBehavior("click") {
@@ -223,6 +224,13 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
             groups.add(authorModel.getObject());
         }
         game.setGroupAuthor(groups);
+        game.setAmountOfComments(0);
+        game.setAmountOfRatings(0);
+        game.setAmountOfPlayed(0);
+        game.setTotalRating(0d);
+        if(game.getImage() == null) {
+            game.setImage(Image.getDefaultGame());
+        }
 
         final List<FileUpload> uploads = fileUploadField.getFileUploads();
         if (uploads != null) {
@@ -231,32 +239,19 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
                 try {
                     Image image = new Image();
                     image.setPath(filePath);
-                    if(!imageService.insert(image)){
-                        error(getLocalizer().getString("game.cantAdd", this));
-                        return false;
-                    }
 
-                    Video video = new Video();
                     if(videoPath != null && !videoPath.equals("")){
+                        Video video = new Video();
                         video.setPath(videoPath);
                         video.setType(0);
-                        if(!videoService.saveOrUpdate(video)){
-                            imageService.remove(image);
-                            error(getLocalizer().getString("game.cantAdd", this));
-                            return false;
-                        }
-                        game.setVideoId(video.getId());
+                        game.setVideo(video);
                     }
 
                     game.setImage(image);
-                    game.setImageId(image.getId());
+
                     if(gameService.addGame(game)) {
                         return true;
                     } else {
-                        if(videoPath != null && !videoPath.equals("")){
-                            videoService.remove(video);
-                        }
-                        imageService.remove(image);
                         error(getLocalizer().getString("game.cantAdd", this));
                         return false;
                     }
@@ -269,16 +264,12 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
             if(videoPath != null && !videoPath.equals("")){
                 video.setPath(videoPath);
                 video.setType(0);
-                videoService.saveOrUpdate(video);
-                game.setVideoId(video.getId());
+                game.setVideo(video);
             }
 
             if(gameService.addGame(game)) {
                 return true;
             } else {
-                if(videoPath != null && !videoPath.equals("")){
-                    videoService.remove(video);
-                }
                 return false;
             }
         }

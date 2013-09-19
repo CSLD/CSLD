@@ -6,7 +6,6 @@ import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Image;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.ImageService;
-import cz.larpovadatabaze.services.PersonService;
 import cz.larpovadatabaze.utils.FileUtils;
 import cz.larpovadatabaze.utils.Pwd;
 import cz.larpovadatabaze.validator.UniqueUserValidator;
@@ -34,11 +33,11 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
     CsldUserService csldUserService;
     @SpringBean
     ImageService imageService;
-    @SpringBean
-    PersonService personService;
 
     private FileUploadField fileUpload;
+    @SuppressWarnings("unused")
     private String passwordAgain;
+    @SuppressWarnings("unused")
     private List<FileUpload> images = new ArrayList<FileUpload>();
 
     public CreateOrUpdateUserPanel(String id, CsldUser user) {
@@ -62,7 +61,7 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
 
         EmailTextField email = new EmailTextField("person.email");
         email.setRequired(true);
-        email.add(new UniqueUserValidator(isEdit, personService));
+        email.add(new UniqueUserValidator(isEdit, csldUserService));
         createOrUpdateUser.add(addFeedbackPanel(email, createOrUpdateUser, "emailFeedback"));
 
         DateTextField birthDate = new DateTextField("person.birthDate", "dd.mm.yyyy");
@@ -112,6 +111,12 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
 
     private boolean saveOrUpdateUserAndImage(CsldUser user){
         final List<FileUpload> uploads = fileUpload.getFileUploads();
+        user.setAmountOfComments(0);
+        user.setAmountOfCreated(0);
+        user.setAmountOfPlayed(0);
+        if(user.getImage() == null){
+            user.setImage(Image.getDefaultUser());
+        }
         if (uploads != null) {
             for (FileUpload upload : uploads) {
                 String filePath = FileUtils.saveFileAndReturnPath(upload, user.getPerson().getName());
@@ -121,7 +126,6 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
                     image.setPath(filePath);
                     imageService.insert(image);
                     user.setImage(image);
-                    user.setImageId(image.getId());
                     if(saveOrUpdateUser(user)){
                         return true;
                     } else {
@@ -141,17 +145,11 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
     }
 
     private boolean saveOrUpdateUser(CsldUser user){
-        if(!personService.saveOrUpdate(user.getPerson())){
-            error(getLocalizer().getString("user.cantAdd", this));
-            return false;
-        }
         user.setIsAuthor(false);
-        user.setPersonId(user.getPerson().getId());
         user.setPassword(Pwd.getMD5(user.getPassword()));
         if(csldUserService.saveOrUpdate(user)){
             return true;
         } else {
-            personService.remove(user.getPerson());
             error(getLocalizer().getString("user.cantAdd", this));
             return false;
         }

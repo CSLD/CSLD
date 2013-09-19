@@ -2,13 +2,10 @@ package cz.larpovadatabaze.components.page.admin;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.models.ClassContentModel;
 import cz.larpovadatabaze.security.CsldRoles;
 import cz.larpovadatabaze.services.CsldUserService;
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.form.select.Select;
 import org.apache.wicket.extensions.markup.html.form.select.SelectOption;
@@ -36,6 +33,7 @@ public class ManageUserRightsPage extends CsldBasePage {
 
         final List<CsldUser> users = csldUserService.getAll();
         ListView<CsldUser> userView = new ListView<CsldUser>("users", users) {
+            @SuppressWarnings("unused")
             private String selected;
 
             @Override

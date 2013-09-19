@@ -1,13 +1,9 @@
 package cz.larpovadatabaze.components.panel.author;
 
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
-import cz.larpovadatabaze.components.page.about.AboutDatabase;
 import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Person;
 import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.PersonService;
 import cz.larpovadatabaze.utils.Pwd;
 import cz.larpovadatabaze.utils.RandomString;
 import cz.larpovadatabaze.validator.UniqueUserValidator;
@@ -25,37 +21,35 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  */
 public abstract class CreateOrUpdateAuthorPanel extends Panel {
     @SpringBean
-    PersonService personService;
-    @SpringBean
     CsldUserService csldUserService;
 
-    public CreateOrUpdateAuthorPanel(String id, Person author) {
+    public CreateOrUpdateAuthorPanel(String id, CsldUser author) {
         super(id);
 
         boolean isEdit = true;
         if(author == null) {
             isEdit = false;
-            author = Person.getEmptyPerson();
+            author = CsldUser.getEmptyUser();
         }
 
-        final ValidatableForm<Person> createOrUpdateUser = new ValidatableForm<Person>("addUser", new CompoundPropertyModel<Person>(author));
+        final ValidatableForm<CsldUser> createOrUpdateUser = new ValidatableForm<CsldUser>("addUser", new CompoundPropertyModel<CsldUser>(author));
         createOrUpdateUser.setMultiPart(true);
         createOrUpdateUser.setOutputMarkupId(true);
 
-        TextField<String> name = new TextField<String>("name");
+        TextField<String> name = new TextField<String>("person.name");
         name.setRequired(true);
         createOrUpdateUser.add(addFeedbackPanel(name, createOrUpdateUser, "nameFeedback"));
 
 
-        TextField<String> nickname = new TextField<String>("nickname");
+        TextField<String> nickname = new TextField<String>("person.nickname");
         createOrUpdateUser.add(addFeedbackPanel(nickname, createOrUpdateUser, "nicknameFeedback"));
 
-        EmailTextField email = new EmailTextField("email");
+        EmailTextField email = new EmailTextField("person.email");
         email.setRequired(true);
-        email.add(new UniqueUserValidator(isEdit, personService));
+        email.add(new UniqueUserValidator(isEdit, csldUserService));
         createOrUpdateUser.add(addFeedbackPanel(email, createOrUpdateUser, "emailFeedback"));
 
-        TextArea<String> description = new TextArea<String>("description");
+        TextArea<String> description = new TextArea<String>("person.description");
         createOrUpdateUser.add(addFeedbackPanel(description, createOrUpdateUser, "descriptionFeedback"));
 
         createOrUpdateUser.add(new AjaxButton("submit"){
@@ -63,7 +57,7 @@ public abstract class CreateOrUpdateAuthorPanel extends Panel {
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 super.onSubmit(target, form);
                 if(createOrUpdateUser.isValid()){
-                    Person author = createOrUpdateUser.getModelObject();
+                    CsldUser author = createOrUpdateUser.getModelObject();
                     if(saveOrUpdateUser(author)){
                         onCsldAction(target, form);
                     }
@@ -83,22 +77,10 @@ public abstract class CreateOrUpdateAuthorPanel extends Panel {
         return addFeedbackTo;
     }
 
-    private boolean saveOrUpdateUser(Person author){
-        if(!personService.saveOrUpdate(author)){
-            error("Uživatele se nepovedlo vložit.");
-            return false;
-        }
-        CsldUser authorUser = CsldUser.getEmptyUser();
-        authorUser.setPerson(author);
-        authorUser.setPersonId(author.getId());
-        authorUser.setIsAuthor(true);
-        authorUser.setPassword(Pwd.getMD5(new RandomString(12).nextString()));
-        if(csldUserService.saveOrUpdate(authorUser)){
-            return true;
-        } else {
-            personService.remove(author);
-            return false;
-        }
+    private boolean saveOrUpdateUser(CsldUser author){
+        author.setIsAuthor(true);
+        author.setPassword(Pwd.getMD5(new RandomString(12).nextString()));
+        return csldUserService.saveOrUpdate(author);
     }
 
     protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}

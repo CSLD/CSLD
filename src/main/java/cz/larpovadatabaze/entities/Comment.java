@@ -37,7 +37,12 @@ public class Comment implements Serializable {
 
     private String comment;
 
-    @Column(name = "comment", nullable = false, insertable = true, updatable = true, length = 2147483647, precision = 0)
+    @Column(
+            name = "comment",
+            nullable = false,
+            insertable = true,
+            updatable = true
+    )
     @Basic
     public String getComment() {
         return comment;
@@ -49,7 +54,12 @@ public class Comment implements Serializable {
 
     private Timestamp added;
 
-    @Column(name = "added", nullable = false, insertable = true, updatable = true, length = 2147483647, precision = 0)
+    @Column(
+            name = "added",
+            nullable = false,
+            insertable = true,
+            updatable = true
+    )
     @Basic
     public Timestamp getAdded() {
         return added;
@@ -84,7 +94,13 @@ public class Comment implements Serializable {
     private Game game;
 
     @ManyToOne
-    @JoinColumn(name = "game_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(
+            name = "game_id",
+            referencedColumnName = "id",
+            nullable = false,
+            insertable = false,
+            updatable = false
+    )
     public Game getGame() {
         return game;
     }
@@ -96,7 +112,13 @@ public class Comment implements Serializable {
     private CsldUser user;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(
+            name = "user_id",
+            referencedColumnName = "id",
+            nullable = false,
+            insertable = false,
+            updatable = false
+    )
     public CsldUser getUser() {
         return user;
     }

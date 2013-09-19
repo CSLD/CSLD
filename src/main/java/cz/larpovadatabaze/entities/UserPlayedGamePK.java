@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.entities;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Id;
 import java.io.Serializable;
 
@@ -10,6 +11,7 @@ import java.io.Serializable;
  * Date: 21.3.13
  * Time: 10:08
  */
+@Embeddable
 public class UserPlayedGamePK implements Serializable {
     private int userId;
 

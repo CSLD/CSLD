@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class UserDetail extends CsldBasePage {
     @SpringBean
-    private CsldUserService csldUserService;
+    CsldUserService csldUserService;
 
     public UserDetail(PageParameters params){
         Integer authorId = params.get("id").to(Integer.class);

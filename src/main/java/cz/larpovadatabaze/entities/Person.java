@@ -2,12 +2,13 @@ package cz.larpovadatabaze.entities;
 
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -15,22 +16,9 @@ import java.util.List;
  * Date: 27.3.13
  * Time: 14:01
  */
-@Entity
-@Table(schema = "public", name="csld_person")
+@Embeddable
 public class Person implements Serializable, IAutoCompletable {
     private Integer id;
-
-    @Column(name = "id", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_key_gen")
-    @SequenceGenerator(name = "id_key_gen", sequenceName = "csld_person_id_seq", allocationSize = 1)
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     private String name;
 
@@ -94,7 +82,7 @@ public class Person implements Serializable, IAutoCompletable {
 
     private String city;
 
-    @Column(name = "city", nullable = true, insertable = true, updatable = true, length = 2147483647, precision = 0)
+    @Column(name = "address", nullable = true, insertable = true, updatable = true, length = 2147483647, precision = 0)
     @Basic
     public String getCity() {
         return city;
@@ -132,17 +120,6 @@ public class Person implements Serializable, IAutoCompletable {
         return result;
     }
 
-    private List<CsldUser> users;
-
-    @OneToMany(mappedBy = "person")
-    public List<CsldUser> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<CsldUser> users) {
-        this.users = users;
-    }
-
     @Override
     @Transient
     public String getAutoCompleteData() {
@@ -168,7 +145,6 @@ public class Person implements Serializable, IAutoCompletable {
 
     public static Person getEmptyPerson() {
         Person emptyPerson = new Person();
-        emptyPerson.setUsers(new ArrayList<CsldUser>());
         return emptyPerson;
     }
 }

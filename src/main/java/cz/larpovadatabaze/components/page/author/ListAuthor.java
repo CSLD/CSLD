@@ -28,6 +28,7 @@ public class ListAuthor extends CsldBasePage {
     @SpringBean
     GameService gameService;
 
+    @SuppressWarnings("unchecked")
     public ListAuthor(){
         Image authorsIcon = new Image("authorsIcon", new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getLightBulbIconPath()));
         add(authorsIcon);
@@ -49,14 +50,14 @@ public class ListAuthor extends CsldBasePage {
                 authorName.add(nicknameLabel);
                 item.add(authorName);
 
-                Game bestGame = gameService.getBestGame(actualAuthor);
+                Game bestGame = actualAuthor.getBestGame();
                 PageParameters gameParams = new PageParameters();
                 gameParams.add("id", bestGame.getId());
 
                 final BookmarkablePageLink<CsldUser> gameName =
                         new BookmarkablePageLink<CsldUser>("gameName", GameDetail.class, gameParams);
                 final Label bestGameName = new Label("bestGameName", bestGame.getName());
-                final Label bestGameRating = new Label("bestGame", gameService.getRatingOfGame(bestGame));
+                final Label bestGameRating = new Label("bestGame", bestGame.getTotalRating());
                 gameName.add(bestGameName);
                 gameName.add(bestGameRating);
                 item.add(gameName);

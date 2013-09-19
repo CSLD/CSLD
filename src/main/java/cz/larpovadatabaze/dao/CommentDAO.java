@@ -5,6 +5,7 @@ import cz.larpovadatabaze.entities.Comment;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -21,8 +22,8 @@ public class CommentDAO extends GenericHibernateDAO<Comment, Integer>{
     /**
      * It return comment of user on given game.
      *
-     * @param userId
-     * @param gameId
+     * @param userId id of user
+     * @param gameId id of game
      * @return existing comment or null.
      */
     public Comment getCommentOnGameFromUser(int userId, int gameId) {
@@ -32,14 +33,18 @@ public class CommentDAO extends GenericHibernateDAO<Comment, Integer>{
         return (Comment) uniqueComment.uniqueResult();
     }
 
-    /**
-     * It return comments ordered from the last added.
-     *
-     * @return
-     */
-    public List<Comment> getLastComments() {
+    @SuppressWarnings("unchecked")
+    public List<Comment> getLastComments(int maxComments) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("from Comment order by added desc");
+        query.setMaxResults(maxComments);
         return query.list();
+    }
+
+    public int getAmountOfComments() {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = session.createCriteria(Comment.class);
+        criteria.setProjection(Projections.rowCount());
+        return ((Long)criteria.uniqueResult()).intValue();
     }
 }

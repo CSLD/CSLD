@@ -27,11 +27,11 @@ import java.util.List;
  */
 public class ManagePhotoPanel extends Panel {
     @SpringBean
-    private ImageService imageService;
+    ImageService imageService;
     @SpringBean
-    private PhotoService photoService;
+    PhotoService photoService;
     @SpringBean
-    private GameService gameService;
+    GameService gameService;
 
     private FileUploadField photoOne;
     private FileUploadField photoTwo;

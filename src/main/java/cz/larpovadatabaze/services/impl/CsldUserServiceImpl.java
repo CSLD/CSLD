@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.ListResourceBundle;
 
 /**
  *
@@ -37,6 +36,11 @@ public class CsldUserServiceImpl implements CsldUserService {
 
     public List<CsldUser> getAuthorsByGames(){
         return csldUserDao.getAuthorsByGames();
+    }
+
+    @Override
+    public List<CsldUser> getAuthorsByGames(long first, long amountPerPage) {
+        return csldUserDao.getAuthorsByGames(first, amountPerPage);
     }
 
     @Override
@@ -82,23 +86,8 @@ public class CsldUserServiceImpl implements CsldUserService {
     }
 
     @Override
-    public List<CsldUser> getAuthorsByBestGame() {
-        return csldUserDao.getAuthorsByBestGame();
-    }
-
-    @Override
-    public List<CsldUser> getOrderedByName() {
-        return csldUserDao.getOrderedByName();
-    }
-
-    @Override
-    public List<CsldUser> getOrderedByComments() {
-        return csldUserDao.getOrderedByComments();
-    }
-
-    @Override
-    public List<CsldUser> getOrderedByPlayed() {
-        return csldUserDao.getOrderedByPlayed();
+    public List<CsldUser> getAuthorsByBestGame(long first, long amountPerPage) {
+        return csldUserDao.getAuthorsByBestGame(first, amountPerPage);
     }
 
     @Override
@@ -107,23 +96,38 @@ public class CsldUserServiceImpl implements CsldUserService {
     }
 
     @Override
-    public List<CsldUser> getOrderedUsersByName() {
-        return csldUserDao.getOrderedUsersByName();
+    public List<CsldUser> getOrderedUsersByName(long first, long amountPerPage) {
+        return csldUserDao.getOrderedUsersByName(first, amountPerPage);
     }
 
     @Override
-    public List<CsldUser> getOrderedUsersByComments() {
-        return csldUserDao.gerOrderedUsersByComments();
+    public List<CsldUser> getOrderedUsersByComments(long first, long amountPerPage) {
+        return csldUserDao.gerOrderedUsersByComments(first, amountPerPage);
     }
 
     @Override
-    public List<CsldUser> getOrderedUsersByPlayed() {
-        return csldUserDao.getOrderedUsersByPlayed();
+    public List<CsldUser> getOrderedUsersByPlayed(long first, long amountPerPage) {
+        return csldUserDao.getOrderedUsersByPlayed(first, amountPerPage);
     }
 
     @Override
     public CsldUser getByEmail(String mail) {
         return csldUserDao.getByEmail(mail);
+    }
+
+    @Override
+    public int getAmountOfAuthors() {
+        return csldUserDao.getAmountOfAuthors();
+    }
+
+    @Override
+    public int getAmountOfOnlyAuthors() {
+        return csldUserDao.getAmountOfOnlyAuthors();
+    }
+
+    @Override
+    public List<CsldUser> getAuthorsByName(long first, long amountPerPage) {
+        return csldUserDao.getAuthorsByName(first, amountPerPage);
     }
 
 }

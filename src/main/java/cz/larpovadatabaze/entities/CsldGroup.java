@@ -1,6 +1,8 @@
 package cz.larpovadatabaze.entities;
 
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -18,7 +20,12 @@ import java.util.List;
 public class CsldGroup implements Serializable, IAutoCompletable {
     private Integer id;
 
-    @Column(name = "id", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(
+            name = "id",
+            nullable = false,
+            insertable = true,
+            updatable = false
+    )
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_key_gen")
     @SequenceGenerator(name = "id_key_gen", sequenceName = "csld_group_id_seq", allocationSize = 1)
@@ -30,21 +37,15 @@ public class CsldGroup implements Serializable, IAutoCompletable {
         this.id = id;
     }
 
-    private Integer imageId;
-
-    @Column(name = "image", nullable = true, insertable = true, updatable = true, length = 10, precision = 0)
-    @Basic
-    public Integer getImageId() {
-        return imageId;
-    }
-
-    public void setImageId(Integer imageId) {
-        this.imageId = imageId;
-    }
-
     private String name;
 
-    @Column(name = "name", nullable = false, insertable = true, updatable = true, length = 2147483647, precision = 0)
+    @Column(
+            name = "name",
+            nullable = false,
+            insertable = true,
+            updatable = true,
+            length = 2147483647
+    )
     @Basic
     public String getName() {
         return name;
@@ -62,7 +63,6 @@ public class CsldGroup implements Serializable, IAutoCompletable {
         CsldGroup group = (CsldGroup) o;
 
         if (id != null ? !id.equals(group.id) : group.id != null) return false;
-        if (imageId != null ? !imageId.equals(group.imageId) : group.imageId != null) return false;
         if (name != null ? !name.equals(group.name) : group.name != null) return false;
 
         return true;
@@ -71,7 +71,6 @@ public class CsldGroup implements Serializable, IAutoCompletable {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (imageId != null ? imageId.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
@@ -89,8 +88,21 @@ public class CsldGroup implements Serializable, IAutoCompletable {
 
     private List<CsldUser> administrators;
 
-    @JoinTable(name = "csld_group_has_administrator", catalog = "", schema = "public", joinColumns = @JoinColumn(name = "id_group", referencedColumnName = "id", nullable = false), inverseJoinColumns = @JoinColumn(name = "id_csld_user", referencedColumnName = "id", nullable = false))
+    @JoinTable(
+            name = "csld_group_has_administrator",
+            catalog = "",
+            schema = "public",
+            joinColumns = @JoinColumn(
+                    name = "id_group",
+                    referencedColumnName = "id",
+                    nullable = false),
+            inverseJoinColumns = @JoinColumn(
+                    name = "id_user",
+                    referencedColumnName = "id",
+                    nullable = false)
+    )
     @ManyToMany
+    @Cascade(CascadeType.SAVE_UPDATE)
     public List<CsldUser> getAdministrators() {
         return administrators;
     }
@@ -101,10 +113,16 @@ public class CsldGroup implements Serializable, IAutoCompletable {
 
     private Image image;
 
-    @ManyToOne
-    @JoinColumn(name = "image", referencedColumnName = "id", insertable = false, updatable = false)
+    @ManyToOne(cascade = javax.persistence.CascadeType.ALL)
+    @JoinColumn(
+            name = "image",
+            referencedColumnName = "id",
+            nullable = true,
+            insertable = true,
+            updatable = true)
+    @Cascade(CascadeType.SAVE_UPDATE)
     public Image getImage() {
-        return image != null ? image : Image.getDefaultGroup();
+        return image;
     }
 
     public void setImage(Image image) {
@@ -114,6 +132,7 @@ public class CsldGroup implements Serializable, IAutoCompletable {
     private List<GroupHasMember> members;
 
     @OneToMany(mappedBy = "group")
+    @Cascade(CascadeType.SAVE_UPDATE)
     public List<GroupHasMember> getMembers() {
         return members;
     }

@@ -16,7 +16,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  */
 public class GroupDetail extends CsldBasePage {
     @SpringBean
-    private GroupService groupService;
+    GroupService groupService;
 
     public GroupDetail(PageParameters params){
         Integer groupId = params.get("id").to(Integer.class);

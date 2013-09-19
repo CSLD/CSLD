@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.entities;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Id;
 import java.io.Serializable;
 
@@ -10,11 +11,17 @@ import java.io.Serializable;
  * Date: 27.3.13
  * Time: 14:01
  */
+@Embeddable
 public class CommentPK implements Serializable {
     private Integer userId;
 
     @Id
-    @Column(name = "user_id", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(
+            name = "user_id",
+            nullable = false,
+            insertable = true,
+            updatable = false
+    )
     public Integer getUserId() {
         return userId;
     }
@@ -26,7 +33,12 @@ public class CommentPK implements Serializable {
     private Integer gameId;
 
     @Id
-    @Column(name = "game_id", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(
+            name = "game_id",
+            nullable = false,
+            insertable = true,
+            updatable = false
+    )
     public Integer getGameId() {
         return gameId;
     }

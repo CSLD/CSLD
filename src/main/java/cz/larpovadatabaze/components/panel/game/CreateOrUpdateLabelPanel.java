@@ -21,7 +21,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  */
 public abstract class CreateOrUpdateLabelPanel extends Panel {
     @SpringBean
-    private LabelService labelService;
+    LabelService labelService;
 
     public CreateOrUpdateLabelPanel(String id){
         this(id,Label.getEmptyLabel());
@@ -56,7 +56,6 @@ public abstract class CreateOrUpdateLabelPanel extends Panel {
     private boolean saveOrUpdateLabel(Label label) {
         CsldUser loggedUser = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
         label.setAddedBy(loggedUser);
-        label.setAddedById(loggedUser.getId());
         return labelService.saveOrUpdate(label);
     }
 

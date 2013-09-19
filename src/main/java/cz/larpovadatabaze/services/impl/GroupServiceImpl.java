@@ -33,8 +33,8 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<CsldGroup> orderedByName() {
-        return groupDAO.orderedByName();
+    public List<CsldGroup> orderedByName(long first, long amountPerPage) {
+        return groupDAO.orderedByName(first, amountPerPage);
     }
 
     @Override
@@ -55,5 +55,10 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public void saveOrUpdate(CsldGroup group) {
         groupDAO.saveOrUpdate(group);
+    }
+
+    @Override
+    public int getAmountOfGroups() {
+        return groupDAO.getAmountOfGroups();
     }
 }

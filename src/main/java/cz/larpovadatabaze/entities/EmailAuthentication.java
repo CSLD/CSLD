@@ -14,7 +14,12 @@ import java.io.Serializable;
 public class EmailAuthentication implements Serializable {
     private Integer id;
 
-    @javax.persistence.Column(name = "id", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @javax.persistence.Column(
+            name = "id",
+            nullable = false,
+            insertable = true,
+            updatable = true
+    )
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_key_gen")
     @SequenceGenerator(name = "id_key_gen", sequenceName = "csld_email_authentication_id_seq", allocationSize = 1)
@@ -38,18 +43,6 @@ public class EmailAuthentication implements Serializable {
         this.authToken = authToken;
     }
 
-    private Integer userId;
-
-    @javax.persistence.Column(name = "user_id", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
-    @Basic
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -59,7 +52,7 @@ public class EmailAuthentication implements Serializable {
 
         if (authToken != null ? !authToken.equals(that.authToken) : that.authToken != null) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
+        if (user != null ? !user.equals(that.user) : that.user != null) return false;
 
         return true;
     }
@@ -68,14 +61,18 @@ public class EmailAuthentication implements Serializable {
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (authToken != null ? authToken.hashCode() : 0);
-        result = 31 * result + (userId != null ? userId.hashCode() : 0);
+        result = 31 * result + (user != null ? user.hashCode() : 0);
         return result;
     }
 
     private CsldUser user;
 
     @ManyToOne
-    @javax.persistence.JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @javax.persistence.JoinColumn(
+            name = "user_id",
+            referencedColumnName = "id",
+            insertable = true
+    )
     public CsldUser getUser() {
         return user;
     }

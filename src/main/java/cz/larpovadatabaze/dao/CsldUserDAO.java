@@ -2,19 +2,14 @@ package cz.larpovadatabaze.dao;
 
 import cz.larpovadatabaze.api.GenericHibernateDAO;
 import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -25,138 +20,64 @@ import java.util.List;
  */
 @Repository
 public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
-    @Autowired
-    private GameDAO gameDao;
-
-    public List<CsldUser> getAuthorsByGames() {
+    @SuppressWarnings("unchecked")
+    public List<CsldUser> getAuthorsByGames(Long first, Long amountPerPage) {
         Session session = sessionFactory.getCurrentSession();
-        List<CsldUser> orderedAuthors = null;
-        findByCriteria();
-        Transaction tx = session.beginTransaction();
-        try {
-            Query query = session.createQuery("select user from CsldUser user join user.authorOf authored " +
-                    "group by user.fbUser, user.id, user.imageId, user.password, user.personId, user.role    " +
-                    "having count(authored) > 0 " +
-                    "order by count(authored)");
-            orderedAuthors = query.list();
-            tx.commit();
-        } catch (RuntimeException ex) {
-            tx.rollback();
-            ex.printStackTrace();
-            throw ex;
-        }
-        return orderedAuthors;
+        Query query = session.createQuery(
+                "from CsldUser where amountOfCreated > 0 order by amountOfCreated desc");
+        query.setFirstResult(first.intValue());
+        query.setMaxResults(amountPerPage.intValue());
+        return query.list();
     }
 
-    public List<CsldUser> getAuthorsByBestGame() {
-        List<CsldUser> authors = new ArrayList<CsldUser>();
-        List<Game> ratedGames = gameDao.getRated();
-        for(Game rated : ratedGames) {
-            authors.addAll(rated.getAuthors());
-        }
-        return authors;
+    @SuppressWarnings("unchecked")
+    public List<CsldUser> getAuthorsByGames() {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery(
+                "from CsldUser where amountOfCreated > 0 order by amountOfCreated desc");
+        return query.list();
+    }
+
+    public int getAmountOfAuthors() {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = session.createCriteria(CsldUser.class);
+        criteria.setProjection(Projections.rowCount());
+        return ((Long)criteria.uniqueResult()).intValue();
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<CsldUser> getAuthorsByBestGame(Long first, Long amountPerPage) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery(
+                "from CsldUser order by bestGame.totalRating desc");
+        query.setFirstResult(first.intValue());
+        query.setMaxResults(amountPerPage.intValue());
+        return query.list();
     }
 
     public CsldUser getWithMostComments() {
         Session session = sessionFactory.getCurrentSession();
-        CsldUser author = null;
-        findByCriteria();
-        Transaction tx = session.beginTransaction();
-        try {
-            Query query = session.createQuery("select user from CsldUser user join user.commented commented " +
-                    "group by user.fbUser, user.id, user.imageId, user.password, user.personId, user.role    " +
-                    "having count(commented) > 0 " +
-                    "order by count(commented) desc");
-            List<CsldUser> users = query.list();
-            author = (users.size() > 0) ? users.get(0): null;
-            tx.commit();
-        } catch (RuntimeException ex) {
-            tx.rollback();
-            ex.printStackTrace();
-            throw ex;
-        }
-        return author;
+        Query query = session.createQuery("" +
+                "from CsldUser user order by amountOfComments desc");
+        query.setMaxResults(1);
+        return (CsldUser) query.uniqueResult();
     }
 
     public CsldUser getWithMostAuthored() {
         Session session = sessionFactory.getCurrentSession();
-        List<CsldUser> orderedAuthors = null;
-        findByCriteria();
-        Transaction tx = session.beginTransaction();
-        try {
-            Query query = session.createQuery("select user from CsldUser user join user.authorOf authored " +
-                    "group by user.fbUser, user.id, user.imageId, user.password, user.personId, user.role    " +
-                    "having count(authored) > 0 " +
-                    "order by count(authored) desc");
-            orderedAuthors = query.list();
-            tx.commit();
-        } catch (RuntimeException ex) {
-            tx.rollback();
-            ex.printStackTrace();
-            throw ex;
-        }
-        return (orderedAuthors.size() > 0 ) ? orderedAuthors.get(0) : null;
+        Query query = session.createQuery("" +
+                "from CsldUser user order by amountOfCreated desc");
+        query.setMaxResults(1);
+        return (CsldUser) query.uniqueResult();
     }
 
     public CsldUser authenticate(String username, String password) {
         Session session = sessionFactory.getCurrentSession();
-        List<CsldUser> orderedAuthors = null;
-        findByCriteria();
-        Transaction tx = session.beginTransaction();
-        try {
-            Query query = session.createQuery("select user from CsldUser user join user.person person " +
-                    " where person.email = :username and user.password = :password");
-            query.setString("username", username);
-            query.setString("password", password);
-            orderedAuthors = query.list();
-            tx.commit();
-        } catch (RuntimeException ex) {
-            tx.rollback();
-            ex.printStackTrace();
-            throw ex;
-        }
-        if(orderedAuthors.size() > 0){
-            return orderedAuthors.get(0);
-        } else {
-            return null;
-        }
-    }
-
-    public List<CsldUser> getOrderedByName() {
-        Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("select user from CsldUser user join user.person person" +
-                " order by person.name");
-        return query.list();
-    }
-
-    public List<CsldUser> getOrderedByComments() {
-        List<CsldUser> allUsers = findAll();
-        sortByComments(allUsers);
-        return allUsers;
-    }
-
-    public List<CsldUser> getOrderedByPlayed() {
-        List<CsldUser> allUsers = findAll();
-        sortByPlayed(allUsers);
-        return allUsers;
-    }
-
-    private void sortByComments(List<CsldUser> allUsers){
-        Collections.sort(allUsers, new Comparator<CsldUser>() {
-            @Override
-            public int compare(CsldUser o1, CsldUser o2) {
-                return o2.getCommented().size() - o1.getCommented().size();
-            }
-        });
-    }
-
-    private void sortByPlayed(List<CsldUser> allUsers){
-        Collections.sort(allUsers, new Comparator<CsldUser>() {
-            @Override
-            public int compare(CsldUser o1, CsldUser o2) {
-                return o2.getPlayedGames().size() - o1.getPlayedGames().size();
-            }
-        });
+        Query query = session.createQuery("from CsldUser user " +
+                " where user.person.email = :username and user.password = :password");
+        query.setString("username", username);
+        query.setString("password", password);
+        return (CsldUser) query.uniqueResult();
     }
 
     /**
@@ -172,40 +93,63 @@ public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
             throw new WrongParameterException();
         }
         String email = personData[1];
-        Criteria uniqueUser = sessionFactory.getCurrentSession().createCriteria(CsldUser.class).
-                createCriteria("person").add(
-                Restrictions.eq("email", email)
-        );
+        Criteria uniqueUser = sessionFactory.getCurrentSession().createCriteria(CsldUser.class)
+                .add(Restrictions.eq("person.email", email));
         return uniqueUser.list();
     }
 
-    public List<CsldUser> getOrderedUsersByName() {
+    @SuppressWarnings("unchecked")
+    public List<CsldUser> getOrderedUsersByName(Long first, Long amountPerPage) {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("select user from CsldUser user join user.person person where user.isAuthor=false" +
-                " order by person.name");
+        Query query = session.createQuery("" +
+                "from CsldUser user order by user.person.name");
+        query.setFirstResult(first.intValue());
+        query.setMaxResults(amountPerPage.intValue());
         return query.list();
     }
 
-    public List<CsldUser> gerOrderedUsersByComments() {
+    @SuppressWarnings("unchecked")
+    public List<CsldUser> gerOrderedUsersByComments(Long first, Long amountPerPage) {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from CsldUser where isAuthor=false");
-        List<CsldUser> allUsers = (List<CsldUser>) query.list();
-        sortByComments(allUsers);
-        return allUsers;
+        Query query = session.createQuery(
+                "from CsldUser user order by amountOfComments desc");
+        query.setFirstResult(first.intValue());
+        query.setMaxResults(amountPerPage.intValue());
+        return query.list();
     }
 
-    public List<CsldUser> getOrderedUsersByPlayed() {
+    @SuppressWarnings("unchecked")
+    public List<CsldUser> getOrderedUsersByPlayed(Long first, Long amountPerPage) {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from CsldUser where isAuthor=false");
-        List<CsldUser> allUsers = (List<CsldUser>) query.list();
-        sortByPlayed(allUsers);
-        return allUsers;
+        Query query = session.createQuery(
+                "from CsldUser user order by amountOfPlayed desc");
+        query.setFirstResult(first.intValue());
+        query.setMaxResults(amountPerPage.intValue());
+        return query.list();
     }
 
     public CsldUser getByEmail(String mail) {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("select user from CsldUser user join user.person person where person.email = :mail");
+        Query query = session.createQuery(
+                "from CsldUser user where user.person.email = :mail");
         query.setParameter("mail", mail);
         return (CsldUser) query.uniqueResult();
+    }
+
+    public int getAmountOfOnlyAuthors() {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = session.createCriteria(CsldUser.class);
+        criteria.add(Restrictions.isNotEmpty("authorOf"));
+        criteria.setProjection(Projections.rowCount());
+        return ((Long)criteria.uniqueResult()).intValue();
+    }
+
+    public List<CsldUser> getAuthorsByName(Long first, Long amountPerPage) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery(
+                "from CsldUser where amountOfCreated > 0 order by person.name");
+        query.setFirstResult(first.intValue());
+        query.setMaxResults(amountPerPage.intValue());
+        return query.list();
     }
 }

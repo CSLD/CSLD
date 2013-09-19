@@ -11,7 +11,8 @@ import org.apache.wicket.request.resource.ContextRelativeResource;
  */
 public class AboutDatabase extends CsldBasePage {
     public AboutDatabase(){
-        Image questionImage = new Image("questionIcon", new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getQuestionIconPath()));
+        Image questionImage = new Image("questionIcon",
+                new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getQuestionIconPath()));
         add(questionImage);
 
         add(new JQueryBehavior("#accordion","accordion"));

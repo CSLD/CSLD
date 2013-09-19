@@ -12,21 +12,17 @@ import java.util.List;
 public interface GameService extends GenericService<Game> {
     public Game getById(Integer id);
 
-    public List<Game> getRated();
-
     public boolean addGame(Game game);
 
     public void editGame(Game game);
 
-    void flush();
+    List<Game> getRated(long first, long amountPerPage);
 
-    List<Game> getGamesOfAuthor(Integer id);
+    List<Game> getOrderedByName(long first, long amountPerPage);
 
-    List<Game> getOrderedByName();
+    List<Game> getRatedAmount(long first, long amountPerPage);
 
-    List<Game> getRatedAmount();
-
-    List<Game> getCommentedAmount();
+    List<Game> getCommentedAmount(long first, long amountPerPage);
 
     List<Game> getSimilar(Game game);
 
@@ -34,11 +30,11 @@ public interface GameService extends GenericService<Game> {
 
     List<Game> getByAutoCompletable(String gameName) throws WrongParameterException;
 
-    public double getRatingOfGame(Game game);
-
     Game getBestGame(CsldUser actualAuthor);
 
     Game getRandomGame();
 
-    List<Game> getLastGames();
+    List<Game> getLastGames(int amountOfGames);
+
+    int getAmountOfGames();
 }

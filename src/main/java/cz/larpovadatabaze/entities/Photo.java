@@ -2,7 +2,6 @@ package cz.larpovadatabaze.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -87,21 +86,34 @@ public class Photo implements Serializable {
         return result;
     }
 
-    private List<Game> games;
+    private Game game;
 
-    @ManyToMany(mappedBy = "photos")
-    public List<Game> getGames() {
-        return games;
+    @ManyToOne()
+    @JoinColumn(
+            name="game",
+            referencedColumnName = "id",
+            nullable = false,
+            insertable = false,
+            updatable = false
+    )
+    public Game getGame() {
+        return game;
     }
 
-    public void setGames(List<Game> games) {
-        this.games = games;
+    public void setGame(Game game) {
+        this.game = game;
     }
 
     private Image image;
 
     @ManyToOne
-    @JoinColumn(name = "image", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(
+            name = "image",
+            referencedColumnName = "id",
+            nullable = false,
+            insertable = false,
+            updatable = false
+    )
     public Image getImage() {
         return image;
     }

@@ -35,6 +35,7 @@ public abstract class CreateOrUpdateGroupPanel extends Panel {
     ImageService imageService;
 
     private FileUploadField fileUploadField;
+    @SuppressWarnings("unused")
     private List<FileUpload> images = new ArrayList<FileUpload>();
 
     public CreateOrUpdateGroupPanel(String id) {
@@ -90,6 +91,9 @@ public abstract class CreateOrUpdateGroupPanel extends Panel {
 
     private boolean saveGroupAndImage(CsldGroup group) {
         final List<FileUpload> uploads = fileUploadField.getFileUploads();
+        if(group.getImage() == null) {
+            group.setImage(Image.getDefaultGroup());
+        }
         if (uploads != null) {
             for (FileUpload upload : uploads) {
                 String filePath = FileUtils.saveFileAndReturnPath(upload, "group" + group.getName());
@@ -99,7 +103,6 @@ public abstract class CreateOrUpdateGroupPanel extends Panel {
                     imageService.insert(image);
 
                     group.setImage(image);
-                    group.setImageId(image.getId());
                     if(groupService.insert(group)){
                         return true;
                     } else {

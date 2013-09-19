@@ -16,7 +16,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  */
 public class AuthorDetail extends CsldBasePage {
     @SpringBean
-    private CsldUserService csldUserService;
+    CsldUserService csldUserService;
 
     public AuthorDetail(PageParameters params){
         Integer authorId = params.get("id").to(Integer.class);

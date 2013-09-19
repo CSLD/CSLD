@@ -9,6 +9,7 @@ import cz.larpovadatabaze.services.GroupService;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -23,7 +24,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  */
 public class ListGroup extends CsldBasePage {
     @SpringBean
-    private GroupService groupService;
+    GroupService groupService;
 
     public ListGroup() {
         Image authorsIcon = new Image("groupsIcon", new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getLightBulbIconPath()));
@@ -50,6 +51,7 @@ public class ListGroup extends CsldBasePage {
         groupList.setItemsPerPage(25L);
 
         add(groupList);
+        add(new PagingNavigator("navigator", groupList));
         add(new AddGroupPanel("addGroup"));
     }
 }

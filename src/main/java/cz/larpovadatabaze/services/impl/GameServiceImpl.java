@@ -5,12 +5,13 @@ import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.services.GameService;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -28,11 +29,6 @@ public class GameServiceImpl implements GameService {
     @Override
     public void remove(Game toRemove) {
         gameDAO.makeTransient(toRemove);
-    }
-
-    @Override
-    public List<Game> getRated(){
-        return gameDAO.getRated();
     }
 
     @Override
@@ -57,39 +53,28 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void flush() {
-        gameDAO.flush();
+    public List<Game> getRated(long first, long amountPerPage){
+        return gameDAO.getRated(first, amountPerPage);
     }
 
     @Override
-    public List<Game> getGamesOfAuthor(Integer id) {
-        Criterion criterion = Restrictions.eq("author", id);
-        return gameDAO.findByCriteria(criterion);
+    public List<Game> getOrderedByName(long first, long amountPerPage) {
+        return gameDAO.getOrderedByName(first, amountPerPage);
     }
 
     @Override
-    public List<Game> getOrderedByName() {
-        return gameDAO.getOrderedByName();
+    public List<Game> getRatedAmount(long first, long amountPerPage) {
+        return gameDAO.getRatedAmount(first, amountPerPage);
     }
 
     @Override
-    public List<Game> getRatedAmount() {
-        return gameDAO.getRatedAmount();
-    }
-
-    @Override
-    public List<Game> getCommentedAmount() {
-        return gameDAO.getCommentedAmount();
+    public List<Game> getCommentedAmount(long first, long amountPerPage) {
+        return gameDAO.getCommentedAmount(first, amountPerPage);
     }
 
     @Override
     public List<Game> getSimilar(Game game) {
-        Game exampleGame = new Game();
-        exampleGame.setLabels(game.getLabels());
-        // TODO decide what actually does similarity means. I propose that larp is more similar if it had similar players
-        // and if it has same labels. The more labels are same the better. Similarity 1 means labels and players are the same.
-        // Similarity 0 means no player and no label were the same.
-        return gameDAO.findByExample(exampleGame, new String[]{});
+        return gameDAO.getSimilar(game);
     }
 
     @Override
@@ -98,7 +83,7 @@ public class GameServiceImpl implements GameService {
         Set<Game> games = new HashSet<Game>();
         for(CsldUser author: game.getAuthors()){
             games.addAll(author.getAuthorOf());
-        };
+        }
         List<Game> gamesOfAuthors = new ArrayList<Game>();
         gamesOfAuthors.addAll(games);
         return gamesOfAuthors;
@@ -110,27 +95,22 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public double getRatingOfGame(Game game) {
-        return gameDAO.getRatingOfGame(game);
-    }
-
-    @Override
     public Game getBestGame(CsldUser actualAuthor) {
         return gameDAO.getBestGame(actualAuthor);
     }
 
     @Override
     public Game getRandomGame() {
-        List<Game> all = getAll();
-        if(all.size() < 1){
-            return null;
-        }
-        int randomGame = new Random().nextInt(all.size());
-        return all.get(randomGame);
+        return gameDAO.getRandomGame();
     }
 
     @Override
-    public List<Game> getLastGames() {
-        return gameDAO.getLastGames();
+    public List<Game> getLastGames(int amountOfGames) {
+        return gameDAO.getLastGames(amountOfGames);
+    }
+
+    @Override
+    public int getAmountOfGames() {
+        return gameDAO.getAmountOfGames();
     }
 }

@@ -2,9 +2,7 @@ package cz.larpovadatabaze.components.page.user;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.panel.user.UsersPanel;
-import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.UserPlayedGame;
 import cz.larpovadatabaze.providers.SortableUserProvider;
 import cz.larpovadatabaze.services.CsldUserService;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.OrderByBorder;
@@ -18,9 +16,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.ContextRelativeResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  *
  */
@@ -28,6 +23,7 @@ public class ListUser extends CsldBasePage {
     @SpringBean
     CsldUserService csldUserService;
 
+    @SuppressWarnings("unchecked")
     public ListUser(){
         Image usersIcon = new Image("usersIcon", new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getUserIconPath()));
         add(usersIcon);
@@ -36,12 +32,6 @@ public class ListUser extends CsldBasePage {
         final DataView<CsldUser> propertyList = new DataView<CsldUser>("listAuthor",sup) {
             @Override
             protected void populateItem(Item<CsldUser> item) {
-                CsldUser csldUser = item.getModelObject();
-                List<UserPlayedGame> played =
-                        (csldUser.getPlayedGames() != null) ? csldUser.getPlayedGames(): new ArrayList<UserPlayedGame>();
-                List<Comment> commented =
-                        (csldUser.getCommented() != null) ? csldUser.getCommented(): new ArrayList<Comment>();
-
                 CsldUser moderator = item.getModelObject();
 
                 PageParameters params = new PageParameters();
@@ -54,8 +44,8 @@ public class ListUser extends CsldBasePage {
                 moderatorLinkContent.add(moderatorName);
                 item.add(moderatorLinkContent);
 
-                final Label commentedGames = new Label("commentedGames", commented.size());
-                final Label playedGames = new Label("playedGames", played.size());
+                final Label commentedGames = new Label("commentedGames", moderator.getAmountOfComments());
+                final Label playedGames = new Label("playedGames", moderator.getAmountOfPlayed());
                 item.add(commentedGames);
                 item.add(playedGames);
             }

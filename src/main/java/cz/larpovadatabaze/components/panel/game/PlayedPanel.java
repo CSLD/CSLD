@@ -1,7 +1,6 @@
 package cz.larpovadatabaze.components.panel.game;
 
 import cz.larpovadatabaze.api.ValidatableForm;
-import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.UserPlayedGame;
@@ -13,10 +12,8 @@ import org.apache.wicket.extensions.markup.html.form.select.Select;
 import org.apache.wicket.extensions.markup.html.form.select.SelectOption;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -26,7 +23,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  */
 public abstract class PlayedPanel extends Panel {
     @SpringBean
-    private UserPlayedGameService userPlayedGameService;
+    UserPlayedGameService userPlayedGameService;
 
     private String selected = "Nehrál jsem";
     private UserPlayedGame stateOfGame;
@@ -66,6 +63,7 @@ public abstract class PlayedPanel extends Panel {
 
     private void saveState() {
         stateOfGame.setState(UserPlayedGame.getStateForDb(selected));
+        stateOfGame.setPlayerOfGame(((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser());
         userPlayedGameService.saveOrUpdate(stateOfGame);
     }
 

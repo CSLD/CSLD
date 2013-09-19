@@ -2,7 +2,6 @@ package cz.larpovadatabaze.components.panel.group;
 
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
-import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.GroupHasMember;
 import cz.larpovadatabaze.services.CsldUserService;

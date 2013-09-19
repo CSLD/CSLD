@@ -15,4 +15,6 @@ public interface RatingService extends GenericService<Rating> {
     double getAverageRating();
 
     void saveOrUpdate(Rating actualRating);
+
+    int getAmountOfRatings();
 }

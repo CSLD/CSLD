@@ -26,9 +26,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
           destroy-method="close">
         <property name="driverClassName" value="org.postgresql.Driver" />
-        <property name="url" value="jdbc:postgresql://ec2-54-217-215-81.eu-west-1.compute.amazonaws.com:5432/d45qrl0lpia00t?username=tohgiywmquxuia&amp;password=WTAdF1fWSN9pGMAqiPInAqGjz0&amp;ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory" />
-        <property name="username" value="tohgiywmquxuia" />
-        <property name="password" value="WTAdF1fWSN9pGMAqiPInAqGjz0" />
+        <property name="url" value="jdbc:postgresql://localhost/tmp" />
+        <property name="username" value="csld" />
+        <property name="password" value="5e5icha" />
     </bean>
 
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
@@ -71,7 +71,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				<value>cz.larpovadatabaze.entities.Comment</value>
                 <value>cz.larpovadatabaze.entities.CsldUser</value>
                 <value>cz.larpovadatabaze.entities.EmailAuthentication</value>
-                <value>cz.larpovadatabaze.entities.FbUser</value>
                 <value>cz.larpovadatabaze.entities.Game</value>
                 <value>cz.larpovadatabaze.entities.CsldGroup</value>
                 <value>cz.larpovadatabaze.entities.GroupHasMember</value>

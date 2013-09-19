@@ -4,7 +4,6 @@ import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.EmailAuthentication;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.EmailAuthenticationService;
 import cz.larpovadatabaze.utils.MailClient;
@@ -12,14 +11,11 @@ import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.EmailTextField;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.validation.IFormValidator;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import javax.mail.MessagingException;
 
 /**
  *
@@ -30,8 +26,9 @@ public class ForgotPassword extends CsldBasePage {
     @SpringBean
     CsldUserService csldUserService;
     @SpringBean
-    private MailClient mailClient;
+    MailClient mailClient;
 
+    @SuppressWarnings("UnusedDeclaration")
     private String mail;
 
     public ForgotPassword(){
@@ -44,7 +41,7 @@ public class ForgotPassword extends CsldBasePage {
                     error("Uživatel s tímto emailem neexistuje");
                     return;
                 }
-                emailAuthentication.setUserId(user.getId());
+                emailAuthentication.setUser(user);
 
                 String key = ResetPassword.nextUrl();
                 PageParameters params = new PageParameters();

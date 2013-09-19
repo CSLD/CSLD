@@ -10,10 +10,19 @@ import cz.larpovadatabaze.components.page.game.ListGame;
 import cz.larpovadatabaze.components.page.group.CreateOrUpdateGroupPage;
 import cz.larpovadatabaze.components.page.group.ListGroup;
 import cz.larpovadatabaze.components.page.user.*;
-import cz.larpovadatabaze.converters.*;
-import cz.larpovadatabaze.entities.*;
+import cz.larpovadatabaze.converters.CsldUserConverter;
+import cz.larpovadatabaze.converters.GameConverter;
+import cz.larpovadatabaze.converters.GroupConverter;
+import cz.larpovadatabaze.converters.LabelConverter;
+import cz.larpovadatabaze.entities.CsldGroup;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.*;
+import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.GroupService;
+import cz.larpovadatabaze.services.LabelService;
 import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
@@ -25,7 +34,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
 /**
  * Application object for your web application. If you want to run this application without deploying, run the Start class.
@@ -34,8 +42,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 @Component(value = "wicketApplication")
 public class Csld extends AuthenticatedWebApplication implements ApplicationContextAware
 {
-    @Autowired
-    private PersonService personService;
     @Autowired
     private CsldUserService csldUserService;
     @Autowired
@@ -87,7 +93,6 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     protected IConverterLocator newConverterLocator() {
         ConverterLocator locator = (ConverterLocator) super.newConverterLocator();
 
-        locator.set(Person.class, new PersonConverter(personService));
         locator.set(CsldUser.class, new CsldUserConverter(csldUserService));
         locator.set(Game.class, new GameConverter(gameService));
         locator.set(CsldGroup.class, new GroupConverter(groupService));
@@ -118,10 +123,6 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         mountPage("/oDatabazi", AboutDatabase.class);
         mountPage("/reset", ResetPassword.class);
         mountPage("/forgot-password", ForgotPassword.class);
-    }
-
-    public ApplicationContext getApplicationContext(){
-        return WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
     }
 
     public static String getBaseContext(){

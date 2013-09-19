@@ -109,5 +109,4 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
         }
         return (T) crit.uniqueResult();
     }
-
 }

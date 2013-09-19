@@ -5,7 +5,6 @@ import cz.larpovadatabaze.components.page.author.ListAuthor;
 import cz.larpovadatabaze.components.page.game.ListGame;
 import cz.larpovadatabaze.components.page.group.ListGroup;
 import cz.larpovadatabaze.components.page.user.ListUser;
-import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.components.panel.search.SearchBoxPanel;
 import cz.larpovadatabaze.components.panel.user.AdminPanel;
 import cz.larpovadatabaze.components.panel.user.LoggedBoxPanel;

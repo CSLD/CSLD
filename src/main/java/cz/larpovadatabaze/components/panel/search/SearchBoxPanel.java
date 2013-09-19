@@ -4,7 +4,6 @@ import cz.larpovadatabaze.components.page.search.SearchResults;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;

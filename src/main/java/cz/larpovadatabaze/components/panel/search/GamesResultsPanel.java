@@ -2,8 +2,6 @@ package cz.larpovadatabaze.components.panel.search;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
-import cz.larpovadatabaze.components.page.user.UserDetail;
-import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.models.FilterGame;
@@ -67,7 +65,7 @@ public class GamesResultsPanel extends Panel {
                 gameLink.add(gameLinkImage);
                 item.add(gameLink);
 
-                String gameRatingColor = Rating.getColorOf(gameService.getRatingOfGame(game));
+                String gameRatingColor = Rating.getColorOf(game.getTotalRating());
                 Label gameRating = new Label("gameRating","");
                 gameRating.add(new AttributeAppender("class", Model.of(gameRatingColor), " "));
                 item.add(gameRating);
@@ -90,7 +88,7 @@ public class GamesResultsPanel extends Panel {
                 params.add("id", game.getId());
 
                 final BookmarkablePageLink<CsldBasePage> authorShortLink =
-                        new BookmarkablePageLink<CsldBasePage>("authorShortLink", GameDetail.class, params);
+                        new BookmarkablePageLink<CsldBasePage>("shortGameLink", GameDetail.class, params);
                 final Label shortName = new Label("shortGameName", game.getName());
                 final Label shortYear = new Label("shortGameYear", game.getYear());
                 authorShortLink.add(shortName);

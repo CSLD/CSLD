@@ -47,7 +47,7 @@ public class RandomLarpPanel extends Panel {
         gameLink.add(gameLinkImage);
         add(gameLink);
 
-        String gameRatingColor = Rating.getColorOf(gameService.getRatingOfGame(game));
+        String gameRatingColor = Rating.getColorOf(game.getTotalRating());
         Label gameRating = new Label("gameRating","");
         gameRating.add(new AttributeAppender("class", Model.of(gameRatingColor), " "));
         add(gameRating);
@@ -60,7 +60,7 @@ public class RandomLarpPanel extends Panel {
 
         add(new Label("players", Model.of(game.getPlayers())));
         add(new Label("year", Model.of(game.getYear())));
-        add(new Label("rating", Model.of(gameService.getRatingOfGame(game))));
+        add(new Label("rating", Model.of(game.getTotalRating())));
     }
 
     @Override

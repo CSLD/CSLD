@@ -1,12 +1,8 @@
 package cz.larpovadatabaze.components.page.author;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
-import cz.larpovadatabaze.components.panel.user.CreateOrUpdateUserPanel;
 import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Person;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.utils.HbUtils;
 import org.apache.wicket.RestartResponseException;
@@ -22,7 +18,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 @AuthorizeInstantiation({"User","Editor","Admin"})
 public class CreateOrUpdateAuthorPage extends CsldBasePage {
     @SpringBean
-    private CsldUserService csldUserService;
+    CsldUserService csldUserService;
 
     public CreateOrUpdateAuthorPage(PageParameters params){
         CsldUser csldUser  = null;
@@ -34,12 +30,12 @@ public class CreateOrUpdateAuthorPage extends CsldBasePage {
             }
         }
 
-        add(new CreateOrUpdateAuthorPanel("createOrUpdateAuthor", csldUser != null ? csldUser.getPerson() : Person.getEmptyPerson()){
+        add(new CreateOrUpdateAuthorPanel("createOrUpdateAuthor", csldUser != null ? csldUser : CsldUser.getEmptyUser()){
             @Override
             protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
                 super.onCsldAction(target, form);
 
-                Person author = (Person) form.getModelObject();
+                CsldUser author = (CsldUser) form.getModelObject();
                 PageParameters params = new PageParameters();
                 params.add("id", author.getId());
 
