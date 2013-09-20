@@ -56,7 +56,7 @@ public class ListGamePanel extends Panel {
                 final Label gameYear = new Label("gameYear", Model.of(game.getYear()));
                 item.add(gameYear);
 
-                final Label gameRating = new Label("rating", Model.of(game.getTotalRating()));
+                final Label gameRating = new Label("rating", Model.of(Math.round(game.getTotalRating())));
                 item.add(gameRating);
 
                 List<Rating> ratings = (game.getRatings() != null) ?

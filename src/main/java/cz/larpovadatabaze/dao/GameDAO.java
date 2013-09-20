@@ -8,7 +8,6 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -146,14 +145,10 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     @SuppressWarnings("unchecked")
     public List<Game> getSimilar(Game game) {
         Session session = sessionFactory.getCurrentSession();
-        Game example = new Game();
-        example.setLabels(game.getLabels());
-        Example exampleCrit = Example.create(example);
-        Criteria criteria = session.createCriteria(Game.class);
-        criteria.add(exampleCrit);
-        criteria.add(Restrictions.sqlRestriction("1=1 order by total_rating desc"));
-        // Five similar games still looks kind of nice.
-        criteria.setMaxResults(5);
-        return criteria.list();
+        Query query = session.createQuery("" +
+                "from Game where csld_is_similar(:gameId, id) = true order by totalRating desc");
+        query.setInteger("gameId", game.getId());
+        query.setMaxResults(5);
+        return query.list();
     }
 }
