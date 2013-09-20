@@ -3,7 +3,9 @@ package cz.larpovadatabaze.services.impl;
 import cz.larpovadatabaze.dao.GameDAO;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
+import cz.larpovadatabaze.models.FilterGame;
 import cz.larpovadatabaze.services.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -112,5 +114,15 @@ public class GameServiceImpl implements GameService {
     @Override
     public int getAmountOfGames() {
         return gameDAO.getAmountOfGames();
+    }
+
+    @Override
+    public List<Game> getFilteredGames(FilterGame filterGame, List<Label> labels, int offset, int limit, String orderBy) {
+        return gameDAO.getFilteredGames(filterGame, labels, offset, limit, orderBy);
+    }
+
+    @Override
+    public long getAmountOfFilteredGames(FilterGame filterGame, List<Label> labels) {
+        return gameDAO.getAmountOfFilteredGames(filterGame, labels);
     }
 }

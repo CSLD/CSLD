@@ -3,7 +3,10 @@ package cz.larpovadatabaze.dao;
 import cz.larpovadatabaze.api.GenericHibernateDAO;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
+import cz.larpovadatabaze.models.FilterGame;
+import cz.larpovadatabaze.utils.Strings;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -14,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -96,7 +100,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     public List<Game> getByAutoCompletable(String gameName) throws WrongParameterException {
         Criteria uniqueGame = sessionFactory.getCurrentSession().
                 createCriteria(Game.class).add(
-                    Restrictions.eq("name", gameName)
+                Restrictions.eq("name", gameName)
         );
         return uniqueGame.list();
     }
@@ -150,5 +154,78 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
         query.setInteger("gameId", game.getId());
         query.setMaxResults(5);
         return query.list();
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Game> getFilteredGames(FilterGame filterGame, List<Label> labels, int offset, int limit, String orderBy){
+        Session session = sessionFactory.getCurrentSession();
+        String labelSql = "";
+        if(labels.size() > 0){
+            labelSql = "ARRAY[";
+            for(Label label: labels){
+                labelSql += label.getId() + ",";
+            }
+            labelSql = Strings.removeLast(labelSql);
+            labelSql += "] <@ (select array(select id_label from csld_game_has_label where id_game = game.id)) ";
+        } else {
+            labelSql = "1=1 ";
+        }
+        String sqlForGameIds = String.format("select " +
+                "game.id, game.name, game.description, game.year, game.web, game.hours," +
+                "game.days, game.players, game.men_role, game.women_role, game.both_role," +
+                "game.added, game.total_rating, game.amount_of_comments, game.amount_of_played, " +
+                "game.amount_of_ratings, game.added_by, game.video, game.image " +
+                "from csld_game game where game.days >= %s and game.hours >= %s and " +
+                "game.players >= %s " +
+                "and %s",
+                filterGame.getMinDays(), filterGame.getMinHours(), filterGame.getMinPlayers(),
+                labelSql);
+        if(filterGame.getMaxDays() != null){
+            sqlForGameIds += " and game.days <= " + filterGame.getMaxDays();
+        }
+        if(filterGame.getMaxHours() != null){
+            sqlForGameIds += " and game.hours <= " + filterGame.getMaxHours();
+        }
+        if(filterGame.getMaxPlayers() != null){
+            sqlForGameIds += " and game.players <= " + filterGame.getMaxPlayers();
+        }
+        sqlForGameIds += orderBy;
+        sqlForGameIds += " offset " + offset + " limit " + limit;
+
+        Query query = session.createSQLQuery(sqlForGameIds).addEntity(Game.class);
+        return query.list();
+    }
+
+    public long getAmountOfFilteredGames(FilterGame filterGame, List<Label> labels) {
+        Session session = sessionFactory.getCurrentSession();
+        String labelSql = "";
+        if(labels.size() > 0){
+            labelSql = "ARRAY[";
+            for(Label label: labels){
+                labelSql += label.getId() + ",";
+            }
+            labelSql = Strings.removeLast(labelSql);
+            labelSql += "] <@ (select array(select id_label from csld_game_has_label where id_game = game.id)) ";
+        } else {
+            labelSql = "1=1 ";
+        }
+        String sqlForGameIds = String.format("select count(distinct game.id) " +
+                "from csld_game game join csld_game_has_label gha on game.id = gha.id_game " +
+                "where game.days >= %s and game.hours >= %s and game.players >= %s " +
+                "and %s",
+                filterGame.getMinDays(), filterGame.getMinHours(), filterGame.getMinPlayers(),
+                labelSql);
+        if(filterGame.getMaxDays() != null){
+            sqlForGameIds += " and game.days <= " + filterGame.getMaxDays();
+        }
+        if(filterGame.getMaxHours() != null){
+            sqlForGameIds += " and game.hours <= " + filterGame.getMaxHours();
+        }
+        if(filterGame.getMaxPlayers() != null){
+            sqlForGameIds += " and game.players <= " + filterGame.getMaxPlayers();
+        }
+
+        Query query = session.createSQLQuery(sqlForGameIds);
+        return ((BigInteger) query.uniqueResult()).longValue();
     }
 }

@@ -144,6 +144,7 @@ public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
         return ((Long)criteria.uniqueResult()).intValue();
     }
 
+    @SuppressWarnings("unchecked")
     public List<CsldUser> getAuthorsByName(Long first, Long amountPerPage) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery(

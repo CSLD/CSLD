@@ -4,7 +4,6 @@ import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.models.FilterGame;
 import cz.larpovadatabaze.services.GameService;
-import cz.larpovadatabaze.utils.Filter;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
@@ -34,13 +33,45 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
         String property = sortings.getProperty();
         Long firstL = (Long) first;
         if(property.equals("form.wholeName")){
-            return Filter.filterGames(filterGame, filterLabels, setStart(gameService.getOrderedByName(first, amountPerPage), firstL.intValue())).iterator();
+            return setStart(
+                    gameService.getFilteredGames(
+                            filterGame,
+                            filterLabels,
+                            firstL.intValue(),
+                            ((Long)amountPerPage).intValue(),
+                            " order by game.name "),
+                        firstL.intValue()
+            ).iterator();
         } else if(property.equals("rating")) {
-            return Filter.filterGames(filterGame, filterLabels, setStart(gameService.getRated(first, amountPerPage), firstL.intValue())).iterator();
+            return setStart(
+                    gameService.getFilteredGames(
+                            filterGame,
+                            filterLabels,
+                            firstL.intValue(),
+                            ((Long)amountPerPage).intValue(),
+                            " order by game.total_rating desc "),
+                    firstL.intValue()
+            ).iterator();
         } else if(property.equals("ratingAmount")) {
-            return Filter.filterGames(filterGame, filterLabels, setStart(gameService.getRatedAmount(first, amountPerPage), firstL.intValue())).iterator();
+            return setStart(
+                    gameService.getFilteredGames(
+                            filterGame,
+                            filterLabels,
+                            firstL.intValue(),
+                            ((Long)amountPerPage).intValue(),
+                            " order by game.amount_of_ratings desc "),
+                    firstL.intValue()
+            ).iterator();
         } else {
-            return Filter.filterGames(filterGame, filterLabels, setStart(gameService.getCommentedAmount(first, amountPerPage), firstL.intValue())).iterator();
+            return setStart(
+                    gameService.getFilteredGames(
+                            filterGame,
+                            filterLabels,
+                            firstL.intValue(),
+                            ((Long)amountPerPage).intValue(),
+                            " order by game.amount_of_commented desc "),
+                    firstL.intValue()
+            ).iterator();
         }
     }
 
@@ -59,7 +90,10 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
 
     @Override
     public long size() {
-        return gameService.getAmountOfGames();
+        return gameService.getAmountOfFilteredGames(
+                filterGame,
+                filterLabels
+        );
     }
 
     @Override

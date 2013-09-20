@@ -2,7 +2,9 @@ package cz.larpovadatabaze.services;
 
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
+import cz.larpovadatabaze.models.FilterGame;
 
 import java.util.List;
 
@@ -37,4 +39,8 @@ public interface GameService extends GenericService<Game> {
     List<Game> getLastGames(int amountOfGames);
 
     int getAmountOfGames();
+
+    List<Game> getFilteredGames(FilterGame filterGame, List<Label> labels, int offset, int limit, String orderBy);
+
+    long getAmountOfFilteredGames(FilterGame filterGame, List<Label> filterLabels);
 }
