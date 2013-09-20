@@ -1,6 +1,10 @@
 package cz.larpovadatabaze.entities;
 
+import org.hibernate.annotations.*;
+
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
@@ -24,18 +28,6 @@ public class Photo implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    private Integer imageId;
-
-    @Column(name = "image", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
-    @Basic
-    public Integer getImageId() {
-        return imageId;
-    }
-
-    public void setImageId(Integer imageId) {
-        this.imageId = imageId;
     }
 
     private Integer author;
@@ -71,7 +63,6 @@ public class Photo implements Serializable {
 
         if (author != null ? !author.equals(photo.author) : photo.author != null) return false;
         if (id != null ? !id.equals(photo.id) : photo.id != null) return false;
-        if (imageId != null ? !imageId.equals(photo.imageId) : photo.imageId != null) return false;
         if (version != null ? !version.equals(photo.version) : photo.version != null) return false;
 
         return true;
@@ -80,7 +71,6 @@ public class Photo implements Serializable {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (imageId != null ? imageId.hashCode() : 0);
         result = 31 * result + (author != null ? author.hashCode() : 0);
         result = 31 * result + (version != null ? version.hashCode() : 0);
         return result;
@@ -93,8 +83,8 @@ public class Photo implements Serializable {
             name="game",
             referencedColumnName = "id",
             nullable = false,
-            insertable = false,
-            updatable = false
+            insertable = true,
+            updatable = true
     )
     public Game getGame() {
         return game;
@@ -111,9 +101,10 @@ public class Photo implements Serializable {
             name = "image",
             referencedColumnName = "id",
             nullable = false,
-            insertable = false,
-            updatable = false
+            insertable = true,
+            updatable = true
     )
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     public Image getImage() {
         return image;
     }

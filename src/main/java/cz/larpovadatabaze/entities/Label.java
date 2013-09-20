@@ -5,8 +5,6 @@ import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletab
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -129,17 +127,6 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
         return result;
     }
 
-    private List<Game> games;
-
-    @ManyToMany(mappedBy = "labels")
-    public List<Game> getGames() {
-        return games;
-    }
-
-    public void setGames(List<Game> games) {
-        this.games = games;
-    }
-
     private CsldUser addedBy;
 
     @ManyToOne
@@ -180,7 +167,6 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
 
     public static Label getEmptyLabel() {
         Label emptyLabel = new Label();
-        emptyLabel.setGames(new ArrayList<Game>());
         return emptyLabel;
     }
 }

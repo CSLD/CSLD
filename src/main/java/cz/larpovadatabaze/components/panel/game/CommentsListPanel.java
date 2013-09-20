@@ -45,6 +45,7 @@ public class CommentsListPanel extends Panel {
                 Label commentDate = new Label("commentDate", Model.of(formatDate.format(dateOfComment)));
                 item.add(commentDate);
                 Label commentsContent = new Label("commentsContent", Model.of(actualComment.getComment()));
+                commentsContent.setEscapeModelStrings(false);
                 item.add(commentsContent);
 
                 CsldUser authorOfComment = actualComment.getUser();

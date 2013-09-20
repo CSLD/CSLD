@@ -98,6 +98,7 @@ public class GameDetailPanel extends Panel {
         add(groupsList);
 
         Label description = new Label("description",game.getDescription());
+        description.setEscapeModelStrings(false);
         add(description);
 
         String videoPath = "";

@@ -51,7 +51,6 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
     private FileUploadField fileUploadField;
     private List<GenericModel<CsldUser>> authorsOfGame;
     private List<GenericModel<CsldGroup>> groupsOfGame;
-    private String videoPath; // Used by model.
     private ChooseLabelsPanel chooseLabels;
     @SuppressWarnings("unused")
     private List<FileUpload> images;
@@ -61,10 +60,10 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
 
         if (game == null) {
             game = Game.getEmptyGame();
-        } else {
-            if(game.getVideo() != null) {
-                videoPath = game.getVideo().getPath();
-            }
+        }
+        if(game.getVideo() == null) {
+            game.setVideo(new Video());
+            game.getVideo().setType(0);
         }
 
         final ValidatableForm<Game> createOrUpdateGame = new ValidatableForm<Game>("addGame", new CompoundPropertyModel<Game>(game));
@@ -82,7 +81,7 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
         createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("menRole"), createOrUpdateGame, "menRoleFeedback"));
         createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("womenRole"), createOrUpdateGame, "womenRoleFeedback"));
         createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("bothRole"), createOrUpdateGame, "bothRoleFeedback"));
-        createOrUpdateGame.add(addFeedbackPanel(new TextField<String>("videoPath", new PropertyModel<String>(this, "videoPath")), createOrUpdateGame, "videoPathFeedback"));
+        createOrUpdateGame.add(addFeedbackPanel(new TextField<String>("video.path"), createOrUpdateGame, "videoPathFeedback"));
 
         fileUploadField = new FileUploadField("image", new PropertyModel<List<FileUpload>>(this,"images"));
         createOrUpdateGame.add(addFeedbackPanel(fileUploadField, createOrUpdateGame, "imageFeedback"));
@@ -224,10 +223,19 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
             groups.add(authorModel.getObject());
         }
         game.setGroupAuthor(groups);
-        game.setAmountOfComments(0);
-        game.setAmountOfRatings(0);
-        game.setAmountOfPlayed(0);
-        game.setTotalRating(0d);
+
+        if(game.getAmountOfComments() == null){
+            game.setAmountOfComments(0);
+        }
+        if(game.getAmountOfRatings() == null){
+            game.setAmountOfRatings(0);
+        }
+        if(game.getAmountOfPlayed() == null){
+            game.setAmountOfPlayed(0);
+        }
+        if(game.getTotalRating() == null){
+            game.setTotalRating(0d);
+        }
         if(game.getImage() == null) {
             game.setImage(Image.getDefaultGame());
         }
@@ -239,15 +247,11 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
                 try {
                     Image image = new Image();
                     image.setPath(filePath);
-
-                    if(videoPath != null && !videoPath.equals("")){
-                        Video video = new Video();
-                        video.setPath(videoPath);
-                        video.setType(0);
-                        game.setVideo(video);
-                    }
-
                     game.setImage(image);
+
+                    if(game.getVideo().getPath() == null || game.getVideo().getPath().equals("")){
+                        game.setVideo(null);
+                    }
 
                     if(gameService.addGame(game)) {
                         return true;
@@ -260,11 +264,8 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
                 }
             }
         } else {
-            Video video = new Video();
-            if(videoPath != null && !videoPath.equals("")){
-                video.setPath(videoPath);
-                video.setType(0);
-                game.setVideo(video);
+            if(game.getVideo().getPath() == null || game.getVideo().getPath().equals("")){
+                game.setVideo(null);
             }
 
             if(gameService.addGame(game)) {

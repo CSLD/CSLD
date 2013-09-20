@@ -24,7 +24,8 @@ import java.util.List;
  */
 public class ChooseLabelsPanel extends Panel {
     @SpringBean
-    private LabelService labelService;
+    LabelService labelService;
+
     private List<Label> requiredLabels;
     private List<Label> optionalLabels;
     private List<Label> chosen;

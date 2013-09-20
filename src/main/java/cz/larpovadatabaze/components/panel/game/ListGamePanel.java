@@ -61,7 +61,7 @@ public class ListGamePanel extends Panel {
 
                 List<Rating> ratings = (game.getRatings() != null) ?
                         game.getRatings() : new ArrayList<Rating>();
-                final Label gameRatings = new Label("ratings", ratings.size());
+                final Label gameRatings = new Label("ratings", game.getAmountOfRatings());
                 item.add(gameRatings);
                 final Image ratingsIcon = new Image("ratingsIcon", new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getRatingsIconPath()));
                 item.add(ratingsIcon);

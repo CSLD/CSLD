@@ -37,6 +37,6 @@ public class PersonDetailPanel extends Panel {
         add(new Label("played",played));
         add(new Label("organized",user.getAuthorOf().size()));
 
-        add(new Label("description",person.getDescription()));
+        add(new Label("description",person.getDescription()).setEscapeModelStrings(false));
     }
 }

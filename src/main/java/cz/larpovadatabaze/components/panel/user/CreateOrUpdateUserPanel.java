@@ -5,7 +5,6 @@ import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Image;
 import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.FileUtils;
 import cz.larpovadatabaze.utils.Pwd;
 import cz.larpovadatabaze.validator.UniqueUserValidator;
@@ -31,8 +30,6 @@ import java.util.List;
 public abstract class CreateOrUpdateUserPanel extends Panel {
     @SpringBean
     CsldUserService csldUserService;
-    @SpringBean
-    ImageService imageService;
 
     private FileUploadField fileUpload;
     @SuppressWarnings("unused")
@@ -111,9 +108,15 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
 
     private boolean saveOrUpdateUserAndImage(CsldUser user){
         final List<FileUpload> uploads = fileUpload.getFileUploads();
-        user.setAmountOfComments(0);
-        user.setAmountOfCreated(0);
-        user.setAmountOfPlayed(0);
+        if(user.getAmountOfComments() == null){
+            user.setAmountOfComments(0);
+        }
+        if(user.getAmountOfCreated() == null) {
+            user.setAmountOfCreated(0);
+        }
+        if(user.getAmountOfPlayed() == null) {
+            user.setAmountOfPlayed(0);
+        }
         if(user.getImage() == null){
             user.setImage(Image.getDefaultUser());
         }
@@ -124,12 +127,10 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
                 {
                     Image image = new Image();
                     image.setPath(filePath);
-                    imageService.insert(image);
                     user.setImage(image);
                     if(saveOrUpdateUser(user)){
                         return true;
                     } else {
-                        imageService.remove(image);
                         return false;
                     }
                 }

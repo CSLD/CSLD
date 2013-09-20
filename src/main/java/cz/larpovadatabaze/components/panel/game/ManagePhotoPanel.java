@@ -4,8 +4,6 @@ import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Image;
 import cz.larpovadatabaze.entities.Photo;
 import cz.larpovadatabaze.services.GameService;
-import cz.larpovadatabaze.services.ImageService;
-import cz.larpovadatabaze.services.PhotoService;
 import cz.larpovadatabaze.utils.FileUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -26,10 +24,6 @@ import java.util.List;
  * Time: 17:44
  */
 public class ManagePhotoPanel extends Panel {
-    @SpringBean
-    ImageService imageService;
-    @SpringBean
-    PhotoService photoService;
     @SpringBean
     GameService gameService;
 
@@ -100,27 +94,18 @@ public class ManagePhotoPanel extends Panel {
         String filePath = FileUtils.saveFileAndReturnPath(uploadedPhoto.getFileUpload(),uploadedPhoto.getFileUpload().getClientFileName());
         Image image = new Image();
         image.setPath(filePath);
-        if(!imageService.insert(image)){
-            error(getLocalizer().getString("image.cantAdd", this));
-            return;
-        }
 
         Photo photo = new Photo();
         photo.setImage(image);
-        photo.setImageId(image.getId());
         photo.setVersion(1);
-        if(!photoService.saveOrUpdate(photo)){
-            error(getLocalizer().getString("photo.cantAdd", this));
-            return;
-        }
+        photo.setAuthor(1);
+        photo.setGame(game);
 
         if(game.getPhotos() == null){
             game.setPhotos(new ArrayList<Photo>());
         }
         game.getPhotos().add(photo);
-
-        // Insert the Photo to the collection to be passed.
-        photosToManage.add(photo);
+        gameService.editGame(game);
     }
 
     private FileUploadField addPhoto(String id){

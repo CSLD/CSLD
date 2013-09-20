@@ -30,7 +30,7 @@ import java.util.List;
 public class LastCommentsPanel extends Panel {
     @SpringBean
     CommentService commentService;
-    private final int MAX_CHARS_IN_COMMENT = 120;
+    private final int MAX_CHARS_IN_COMMENT = 100;
 
     public LastCommentsPanel(String id) {
         super(id);
@@ -88,7 +88,7 @@ public class LastCommentsPanel extends Panel {
                 if(commentToShow.length() > MAX_CHARS_IN_COMMENT){
                     commentToShow = commentToShow.substring(0,MAX_CHARS_IN_COMMENT);
                 }
-                item.add(new Label("commentsContent", Model.of(commentToShow)));
+                item.add(new Label("commentsContent", Model.of(commentToShow)).setEscapeModelStrings(false));
                 final BookmarkablePageLink<CsldBasePage> gameMoreLink =
                         new BookmarkablePageLink<CsldBasePage>("gameMoreLink", GameDetail.class, gameParams);
                 item.add(gameMoreLink);
