@@ -385,7 +385,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable {
     private List<Photo> photos;
 
     @OneToMany(mappedBy = "game")
-    @Cascade(CascadeType.SAVE_UPDATE)
+    @Cascade(CascadeType.ALL)
     public List<Photo> getPhotos() {
         return photos;
     }

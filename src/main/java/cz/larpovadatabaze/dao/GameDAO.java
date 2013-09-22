@@ -7,10 +7,7 @@ import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.models.FilterGame;
 import cz.larpovadatabaze.utils.Strings;
-import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -228,4 +225,28 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
         Query query = session.createSQLQuery(sqlForGameIds);
         return ((BigInteger) query.uniqueResult()).longValue();
     }
+
+    @Override
+    public boolean saveOrUpdate(Game entity) {
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            session.saveOrUpdate(entity);
+            flush();
+            return true;
+        } catch (HibernateException ex){
+            ex.printStackTrace();
+        }
+
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            Game item2 = (Game) session.get(Game.class, entity.getId());
+            Game item3 = (Game) session.merge(entity);
+            flush();
+            return true;
+        } catch (HibernateException ex){
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
 }

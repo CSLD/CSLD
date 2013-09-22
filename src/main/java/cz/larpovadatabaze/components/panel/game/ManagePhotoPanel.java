@@ -66,6 +66,7 @@ public class ManagePhotoPanel extends Panel {
                         photoFour.getFileUpload() != null &&
                         photoFive.getFileUpload() != null;
                 photosToManage.removeAll(photosToManage);
+                game.getPhotos().removeAll(game.getPhotos());
                 handlePhotoFile(photoOne);
                 handlePhotoFile(photoTwo);
                 handlePhotoFile(photoThree);
