@@ -69,7 +69,7 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
                             filterLabels,
                             firstL.intValue(),
                             ((Long)amountPerPage).intValue(),
-                            " order by game.amount_of_commented desc "),
+                            " order by game.amount_of_comments desc "),
                     firstL.intValue()
             ).iterator();
         }

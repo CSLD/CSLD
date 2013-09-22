@@ -3,6 +3,7 @@ package cz.larpovadatabaze.components.page.game;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.panel.game.*;
 import cz.larpovadatabaze.components.panel.user.SimpleListUsersPanel;
+import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.UserPlayedGame;
@@ -14,6 +15,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -32,7 +34,10 @@ public class GameDetail extends CsldBasePage {
             game = HbUtils.deproxy(game);
         }
 
-        final CommentsListPanel comments = new CommentsListPanel("commentsList", game.getComments());
+
+        List<Comment> reversedComments = new ArrayList<Comment>(game.getComments());
+        Collections.reverse(reversedComments);
+        final CommentsListPanel comments = new CommentsListPanel("commentsList", reversedComments);
         comments.setOutputMarkupId(true);
         final RatingsResultPanel ratingsResult = new RatingsResultPanel("ratingsResults", game);
         ratingsResult.setOutputMarkupId(true);

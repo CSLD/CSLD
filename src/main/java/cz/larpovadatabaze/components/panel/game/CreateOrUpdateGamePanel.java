@@ -249,7 +249,9 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
                     image.setPath(filePath);
                     game.setImage(image);
 
-                    if(game.getVideo().getPath() == null || game.getVideo().getPath().equals("")){
+                    if(game.getVideo() == null ||
+                            game.getVideo().getPath() == null ||
+                            game.getVideo().getPath().equals("")){
                         game.setVideo(null);
                     }
 
@@ -264,7 +266,9 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
                 }
             }
         } else {
-            if(game.getVideo().getPath() == null || game.getVideo().getPath().equals("")){
+            if(game.getVideo() == null ||
+                    game.getVideo().getPath() == null ||
+                    game.getVideo().getPath().equals("")){
                 game.setVideo(null);
             }
 

@@ -29,7 +29,7 @@ public class UserDetail extends CsldBasePage {
         CsldUser user = csldUserService.getById(authorId);
 
         add(new PersonDetailPanel("personDetail",user));
-        add(new CommentsListPanel("comments", user.getCommented()));
+        add(new CommentsListPanel("comments", user.getCommented(), true));
 
         List<Game> playedGames = new ArrayList<Game>();
         List<Game> wantedGames = new ArrayList<Game>();

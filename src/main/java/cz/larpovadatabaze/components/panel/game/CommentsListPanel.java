@@ -1,10 +1,15 @@
 package cz.larpovadatabaze.components.panel.game;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.Rating;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -27,6 +32,10 @@ public class CommentsListPanel extends Panel {
     private List<Comment> comments;
 
     public CommentsListPanel(String id, List<Comment> comments) {
+        this(id, comments, false);
+    }
+
+    public CommentsListPanel(String id, List<Comment> comments, final boolean showGame) {
         super(id);
 
         if(comments == null){
@@ -63,10 +72,32 @@ public class CommentsListPanel extends Panel {
 
                 commentAuthorsDetail.add(authorsNick);
                 commentAuthorsDetail.add(authorsName);
+
+                WebMarkupContainer gameLabel = createGameDetailLink(actualComment.getGame());
+                gameLabel.setVisibilityAllowed(showGame);
+                item.add(gameLabel);
+
                 item.add(commentAuthorsDetail);
             }
         };
         add(commentList);
+    }
+
+    private WebMarkupContainer createGameDetailLink(Game game) {
+        WebMarkupContainer toShow = new WebMarkupContainer("showGame");
+        String gameRatingColor = Rating.getColorOf(game.getTotalRating());
+        Label gameRating = new Label("gameRating","");
+        gameRating.add(new AttributeAppender("class", Model.of(gameRatingColor), " "));
+        toShow.add(gameRating);
+
+        PageParameters params = new PageParameters();
+        params.add("id", game.getId());
+        final BookmarkablePageLink<CsldBasePage> gameDetail =
+                new BookmarkablePageLink<CsldBasePage>("gameDetail", GameDetail.class, params);
+        final Label gameName = new Label("gameName", game.getName());
+        gameDetail.add(gameName);
+        toShow.add(gameDetail);
+        return toShow;
     }
 
     public void reload(AjaxRequestTarget target, List<Comment> comments) {

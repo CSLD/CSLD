@@ -1,12 +1,28 @@
 <wicket:panel xmlns:wicket="http://wicket.apache.org">
     <h2><wicket:message key="photo.manage"></wicket:message></h2>
+    <div><wicket:message key="photo.howTo"></wicket:message></div>
     <div wicket:id="uploadedPhotosFeedback"></div>
     <form method="post" wicket:id="uploadPhotos">
-        <input type="file" wicket:id="photoOne" />
-        <input type="file" wicket:id="photoTwo" />
-        <input type="file" wicket:id="photoThree" />
-        <input type="file" wicket:id="photoFour" />
-        <input type="file" wicket:id="photoFive" />
+        <div>
+            <label for="photoOne"><wicket:message key="photo.one"></wicket:message></label>
+            <input id="photoOne" type="file" wicket:id="photoOne" />
+        </div>
+        <div>
+            <label for="photoTwo"><wicket:message key="photo.two"></wicket:message></label>
+            <input id="photoTwo" type="file" wicket:id="photoTwo" />
+        </div>
+        <div>
+                <label for="photoThree"><wicket:message key="photo.three"></wicket:message></label>
+            <input id="photoThree" type="file" wicket:id="photoThree" />
+        </div>
+        <div>
+            <label for="photoFour"><wicket:message key="photo.four"></wicket:message></label>
+            <input id="photoFour" type="file" wicket:id="photoFour" />
+        </div>
+        <div>
+            <label for="photoFive"><wicket:message key="photo.five"></wicket:message></label>
+            <input id="photoFive" type="file" wicket:id="photoFive" />
+        </div>
 
         <div>
             <div wicket:id="progress"></div>

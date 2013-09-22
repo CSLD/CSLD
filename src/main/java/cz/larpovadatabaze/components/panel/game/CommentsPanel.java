@@ -77,9 +77,18 @@ public abstract class CommentsPanel extends Panel {
      */
     private void saveComment() {
         String commentText = commentContent.getModelObject();
-        actualComment.setComment(commentText);
-        actualComment.setAdded(new Timestamp(System.currentTimeMillis()));
-        commentService.saveOrUpdate(actualComment);
+        if(commentText == null || commentText.equals("")){
+            try{
+                commentService.remove(actualComment);
+            } catch(Exception ex){
+                ex.printStackTrace();
+            }
+        } else {
+            actualComment.setComment(commentText);
+            actualComment.setAdded(new Timestamp(System.currentTimeMillis()));
+
+            commentService.saveOrUpdate(actualComment);
+        }
     }
 
     protected void onConfigure() {
