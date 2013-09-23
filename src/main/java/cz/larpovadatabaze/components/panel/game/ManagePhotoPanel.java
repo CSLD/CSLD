@@ -92,7 +92,7 @@ public class ManagePhotoPanel extends Panel {
             return;
         }
 
-        String filePath = FileUtils.saveFileAndReturnPath(uploadedPhoto.getFileUpload(),uploadedPhoto.getFileUpload().getClientFileName());
+        String filePath = FileUtils.saveImageFileAndReturnPath(uploadedPhoto.getFileUpload(), uploadedPhoto.getFileUpload().getClientFileName(), 480,240);
         Image image = new Image();
         image.setPath(filePath);
 
@@ -105,6 +105,7 @@ public class ManagePhotoPanel extends Panel {
         if(game.getPhotos() == null){
             game.setPhotos(new ArrayList<Photo>());
         }
+        gameService.editGame(game);
         game.getPhotos().add(photo);
         gameService.editGame(game);
     }

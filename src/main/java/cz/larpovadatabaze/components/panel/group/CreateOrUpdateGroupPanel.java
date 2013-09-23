@@ -96,7 +96,7 @@ public abstract class CreateOrUpdateGroupPanel extends Panel {
         }
         if (uploads != null) {
             for (FileUpload upload : uploads) {
-                String filePath = FileUtils.saveFileAndReturnPath(upload, "group" + group.getName());
+                String filePath = FileUtils.saveImageFileAndReturnPath(upload, "group" + group.getName(), 120, 120);
                 try {
                     Image image = new Image();
                     image.setPath(filePath);

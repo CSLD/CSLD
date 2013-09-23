@@ -243,7 +243,7 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
         final List<FileUpload> uploads = fileUploadField.getFileUploads();
         if (uploads != null) {
             for (FileUpload upload : uploads) {
-                String filePath = FileUtils.saveFileAndReturnPath(upload, game.getName());
+                String filePath = FileUtils.saveImageFileAndReturnPath(upload, game.getName(), 120, 120);
                 try {
                     Image image = new Image();
                     image.setPath(filePath);

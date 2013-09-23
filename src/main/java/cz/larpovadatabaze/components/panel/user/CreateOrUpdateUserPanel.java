@@ -122,7 +122,7 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
         }
         if (uploads != null) {
             for (FileUpload upload : uploads) {
-                String filePath = FileUtils.saveFileAndReturnPath(upload, user.getPerson().getName());
+                String filePath = FileUtils.saveImageFileAndReturnPath(upload, user.getPerson().getName(), 120, 120);
                 try
                 {
                     Image image = new Image();

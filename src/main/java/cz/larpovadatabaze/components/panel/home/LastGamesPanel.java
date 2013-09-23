@@ -66,8 +66,8 @@ public class LastGamesPanel extends Panel {
                 item.add(new Label("players", Model.of(game.getPlayers())));
                 item.add(new Label("gameDescription",
                         Model.of(
-                                game.getDescription().length() > 100 ?
-                                        game.getDescription().substring(0,100) :
+                                game.getDescription().length() > 80 ?
+                                        game.getDescription().substring(0,80) :
                                         game.getDescription()))
                 );
                 final BookmarkablePageLink<CsldBasePage> gameMoreLink =

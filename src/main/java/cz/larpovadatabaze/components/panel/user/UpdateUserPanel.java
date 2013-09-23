@@ -106,7 +106,7 @@ public class UpdateUserPanel extends Panel {
         final List<FileUpload> uploads = fileUpload.getFileUploads();
         if (uploads != null) {
             for (FileUpload upload : uploads) {
-                String filePath = FileUtils.saveFileAndReturnPath(upload, user.getPerson().getName());
+                String filePath = FileUtils.saveImageFileAndReturnPath(upload, user.getPerson().getName(), 120 , 120);
                 try
                 {
                     Image image = new Image();

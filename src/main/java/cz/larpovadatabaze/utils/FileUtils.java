@@ -1,11 +1,15 @@
 package cz.larpovadatabaze.utils;
 
+import com.mortennobel.imagescaling.DimensionConstrain;
+import com.mortennobel.imagescaling.ResampleOp;
 import cz.larpovadatabaze.Csld;
 import org.apache.wicket.Application;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.util.file.Files;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -42,24 +46,29 @@ public class FileUtils {
         }
     }
 
-    public static String saveFileAndReturnPath(FileUpload upload, String name){
+    public static String saveImageFileAndReturnPath(FileUpload upload, String name, int maxHeight, int maxWidth){
         ServletContext context = ((Csld) Application.get()).getServletContext();
         String realPath = context.getRealPath(Csld.getBaseContext());
         File baseFile = new File(realPath);
 
-        String fileName = Pwd.getMD5(upload.getClientFileName() + name) + "." + FileUtils.getFileType(upload.getClientFileName());
+        String fileType = FileUtils.getFileType(upload.getClientFileName());
+        String fileName = Pwd.getMD5(upload.getClientFileName() + name) + "." + fileType;
         // Create a new file
-        File newFile = new File(baseFile, fileName);
-
-        // Check new file, delete if it already existed
-        FileUtils.cleanFileIfExists(newFile);
         try {
+
+            File newFile = new File(baseFile, fileName);
+            ResampleOp resampleOp = new ResampleOp(DimensionConstrain.createMaxDimension(maxWidth, maxHeight));
+            BufferedImage imageGame = ImageIO.read(upload.getInputStream());
+            BufferedImage imageGameSized = resampleOp.filter(imageGame, null);
+
+            // Check new file, delete if it already existed
+            FileUtils.cleanFileIfExists(newFile);
             baseFile.mkdirs();
             // Save to new file
             if(!newFile.createNewFile()){
                 throw new IllegalStateException("Unable to write file " + newFile.getAbsolutePath());
             }
-            upload.writeTo(newFile);
+            ImageIO.write(imageGameSized, fileType, newFile);
 
         } catch (IOException e) {
             e.printStackTrace();
