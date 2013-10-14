@@ -1008,7 +1008,7 @@ a.stitekNapoveda:hover span {
     margin: 6px 0px 0px 0px;
     background-image: url("../img/textbox-background.png");
     background-repeat: repeat-x;
-    width: 128px;
+    width: 90%;
 }
 
 .textbox.blur {
@@ -1852,4 +1852,28 @@ a.stitekNapoveda:hover span {
 
 select[name=stateOfGame]{
     float:right;
+}
+
+.wicket-aa{
+    background: white;
+    border: solid 2px black;
+    border-radius: 5px;
+    margin-top: 5px;
+
+}
+
+.wicket-aa ul {
+    margin: 2px;
+    list-style-type: none;
+    padding: 0px;
+}
+
+.wicket-aa ul li {
+    margin-bottom: 3px;
+    padding-bottom: 2px;
+    border-bottom: solid 1px black;
+}
+
+.wicket-aa ul li.selected {
+    background-color: #aed9f1;
 }

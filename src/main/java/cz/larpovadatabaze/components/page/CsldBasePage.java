@@ -13,6 +13,7 @@ import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import org.apache.wicket.authentication.IAuthenticationStrategy;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -66,6 +67,10 @@ public class CsldBasePage extends WebPage {
 
     @Override
     public void renderHead(IHeaderResponse response) {
+        response.render(JavaScriptHeaderItem.forUrl("/files/js/jquery-ui-1.9.2.custom.js"));
+        response.render(JavaScriptHeaderItem.forUrl("/files/js/jquery.nivo.slider.pack.js"));
+        response.render(JavaScriptHeaderItem.forUrl("/files/js/jquery.nivo.slider.js"));
+
         response.render(CssHeaderItem.forUrl("/files/css/nivo-slider.css"));
         response.render(CssHeaderItem.forUrl("/files/css/style.css"));
         response.render(CssHeaderItem.forUrl("/files/css/smoothness/jquery-ui-1.8.24.custom.css"));

@@ -1,10 +1,10 @@
 <wicket:extend xmlns:wicket="http://wicket.apache.org">
     <script type="text/javascript">
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             var total = $('#nivoSlider img').length;
-            var rand = Math.floor(Math.random()*total);
-            jQuery(window).load(function(){
+            var rand = Math.floor(Math.random() * total);
+            jQuery(window).load(function () {
                 jQuery("#nivoSlider").nivoSlider({
                     effect:'boxRainGrow',
                     slices:15,
@@ -12,7 +12,7 @@
                     boxRows:4,
                     animSpeed:500,
                     pauseTime:6000,
-                    startSlide: rand,
+                    startSlide:rand,
                     directionNav:true,
                     controlNav:false,
                     controlNavThumbs:false,
@@ -36,7 +36,8 @@
                  title="Dramatické larpy disponují silným, obvykle řízeným příběhem a jsou pro větší počet hráčů."/>
             <img src="/files/img/slider/thief650.jpg" alt=""
                  title="Městské larpy se hrají ve městech a kombinují roli s akčními prvky."/>
-            <img src="/files/img/slider/bezkrali650.jpg" alt="" title="Larpy typu svět se hrají v přírodě a usilují o reálnou simulaci obchodních a politických vztahů."/>
+            <img src="/files/img/slider/bezkrali650.jpg" alt=""
+                 title="Larpy typu svět se hrají v přírodě a usilují o reálnou simulaci obchodních a politických vztahů."/>
             <img src="/files/img/slider/gangy650.jpg" alt=""
                  title="Městské larpy se hrají ve městech a kombinují roli s akčními prvky."/>
         </div>
@@ -53,7 +54,9 @@
 
     <div class="pravaCast">
         <div class="praveMenu">
-            <div class="nadpisMenu"><wicket:message key="home.navigation">rychlá navigace</wicket:message></div>
+            <div class="nadpisMenu">
+                <wicket:message key="home.navigation">rychlá navigace</wicket:message>
+            </div>
         </div>
 
         <div class="sekce" wicket:id="createGamePanel"></div>

@@ -3,100 +3,200 @@
     <div wicket:id="createAuthor"></div>
     <div wicket:id="createLabel"></div>
 
-    <form wicket:id="addGame">
-        <fieldset>
-            <div>
-                <label for="name"><wicket:message key="form.name">Jméno</wicket:message></label>
-                <input type="text" wicket:id="name"/>
-                <span wicket:id="nameFeedback"></span>
-            </div>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("input, textarea").each(function(idx, elm){
+                if($(elm).attr("value") == ""){
+                    $(elm).attr("value", $(elm).attr("title"));
+                }
+            });
 
-            <div>
-                <label for="description"><wicket:message key="form.description">Popis</wicket:message></label>
-                <textarea cols="80" rows="15" wicket:id="description"></textarea>
-                <span wicket:id="descriptionFeedback"></span>
-            </div>
+            $("input, textarea").bind("click", function(event){
+                var el = $(this);
+                if(el.attr("value") == el.attr("title")){
+                    el.attr("value","");
+                }
+            });
+        });
+    </script>
 
-            <div>
-                <label for="year"><wicket:message key="form.year">Rok</wicket:message></label>
-                <input type="text" wicket:id="year"/>
-                <span wicket:id="yearFeedback"></span>
-            </div>
+    <form id="pridatHru" wicket:id="addGame">
+        <div class="sekce">
+            <div class="nadpisStranky"><img src="/files/img/icon/plus_icon18.png" class="ikonaStranky">Přidat hru</div>
 
-            <div>
-                <label for="web"><wicket:message key="form.web">Web</wicket:message></label>
-                <input type="text" wicket:id="web"/>
-                <span wicket:id="webFeedback"></span>
-            </div>
+            <table>
+                <tbody>
 
-            <div>
-                <label for="hours"><wicket:message key="form.hours">Hodiny</wicket:message></label>
-                <input type="text" wicket:id="hours"/>
-                <span wicket:id="hoursFeedback"></span>
-            </div>
+                <tr>
+                    <td style="width:200px">
+                        <input type="file" wicket:id="image"/>
+                    </td>
+                    <td class="popis">
+                        <label for="image">
+                            <wicket:message key="form.game.image">Obrázek</wicket:message>
+                        </label>
+                    </td>
+                    <td class="error">
+                        <span wicket:id="imageFeedback"></span>
+                    </td>
+                </tr>
 
-            <div>
-                <label for="days"><wicket:message key="form.days">Dny</wicket:message></label>
-                <input type="text" wicket:id="days"/>
-                <span wicket:id="daysFeedback"></span>
-            </div>
+                <tr>
+                    <td>
+                        <input class="textbox" type="text" wicket:id="name" title="Jméno" wicket:message="title:form.name"/>
+                    </td>
+                    <td class="popis">
+                        <label for="name">
+                            <wicket:message key="form.game.name">Jméno</wicket:message>
+                        </label>
+                    </td>
+                    <td class="error">
+                        <span wicket:id="nameFeedback"></span>
+                    </td>
+                </tr>
 
-            <div>
-                <label for="players"><wicket:message key="form.players">Hráči</wicket:message></label>
-                <input type="text" wicket:id="players"/>
-                <span wicket:id="playersFeedback"></span>
-            </div>
+                <tr>
+                    <td>
+                        <div wicket:id="authors"></div>
+                    </td>
+                    <td class="popis">
+                        <label for="authors">
+                            <wicket:message key="form.game.authors">Autoři</wicket:message>
+                        </label>
+                    </td>
+                    <td>
+                        <input type="button" value="Nový autor" wicket:message="value:form.newAuthor"
+                               wicket:id="createAuthor"/>
+                    </td>
+                </tr>
 
-            <div>
-                <label for="menRole"><wicket:message key="form.menRole">Mužské role</wicket:message></label>
-                <input type="text" wicket:id="menRole"/>
-                <span wicket:id="menRoleFeedback"></span>
-            </div>
+                <tr>
+                    <td>
+                        <div wicket:id="groups"></div>
+                    </td>
+                    <td class="popis">
+                        <label for="groups">
+                            <wicket:message key="form.game.authorGroups">Autorské skupiny</wicket:message>
+                        </label>
+                    </td>
+                    <td>
+                        <input type="button" value="Nová skupina" wicket:messsage="value:form.newGroup"
+                               wicket:id="createGroup"/>
+                    </td>
+                </tr>
 
-            <div>
-                <label for="womenRole"><wicket:message key="form.womenRole">Ženské role</wicket:message></label>
-                <input type="text" wicket:id="womenRole"/>
-                <span wicket:id="womenRoleFeedback"></span>
-            </div>
+                <tr>
+                    <td>
+                        <input class="textbox" type="text" wicket:id="year" title="Rok" wicket:message="title:form.year"/>
+                    </td>
+                    <td class="popis">
+                        <label for="year">
+                            <wicket:message key="form.game.year">Rok</wicket:message>
+                        </label>
+                    </td>
+                    <td class="error">
+                        <span wicket:id="yearFeedback"></span>
+                    </td>
+                </tr>
 
-            <div>
-                <label for="bothRole"><wicket:message key="form.anyRole">Obojetné role</wicket:message></label>
-                <input type="text" wicket:id="bothRole"/>
-                <span wicket:id="bothRoleFeedback"></span>
-            </div>
+                <tr>
+                    <td>
+                        <input class="textbox" type="text" wicket:id="players" title="Hráči" wicket:message="title:form.players"/>
+                    </td>
+                    <td class="popis">
+                        <label for="players">
+                            <wicket:message key="form.game.players">Hráči</wicket:message>
+                        </label>
+                    </td>
+                    <td class="error">
+                        <span wicket:id="playersFeedback"></span>
+                    </td>
+                </tr>
 
-            <div>
-                <label for="video.path"><wicket:message key="form.video">Video</wicket:message></label>
-                <input type="text" wicket:id="video.path"/>
-                <span wicket:id="videoPathFeedback"></span>
-            </div>
+                <tr>
+                    <td>
+                        <input style="width:30%" class="textbox" type="text" wicket:id="menRole" title="Mužské" wicket:message="title:form.menRole"/>
+                        <input style="width:30%" class="textbox" type="text" wicket:id="womenRole" title="Ženské" wicket:message="title:form.womenRole"/>
+                        <input style="width:30%" class="textbox" type="text" wicket:id="bothRole" title="Obojetné" wicket:message="title:form.bothRole"/>
+                    </td>
+                    <td class="popis">
+                        <label for="menRole">
+                            <wicket:message key="form.game.roles">Mužské role</wicket:message>
+                        </label>
+                    </td>
+                    <td class="error">
+                        <span wicket:id="menRoleFeedback"></span>
+                        <span wicket:id="womenRoleFeedback"></span>
+                        <span wicket:id="bothRoleFeedback"></span>
+                    </td>
+                </tr>
 
-            <div>
-                <label for="image"><wicket:message key="form.image">Obrázek</wicket:message></label>
-                <input type="file" wicket:id="image"/>
-                <span wicket:id="imageFeedback"></span>
-            </div>
+                <tr>
+                    <td>
+                        <input style="width:45%" class="textbox" type="text" wicket:id="hours" title="Hodiny" wicket:message="title:form.hours"/>
+                        <input style="width:45%" class="textbox" type="text" wicket:id="days" title="Dny" wicket:message="title:form.days"/>
+                    </td>
+                    <td class="popis">
+                        <label for="hours">
+                            <wicket:message key="form.game.time">Hodiny</wicket:message>
+                        </label>
+                    </td>
+                    <td class="error">
+                        <span wicket:id="hoursFeedback"></span>
+                        <span wicket:id="daysFeedback"></span>
+                    </td>
+                </tr>
 
-            <div>
-                <label for="authors"><wicket:message key="authorsCapitalized">Autoři</wicket:message></label>
-                <div wicket:id="authors"></div>
-                <input type="button" value="Nový autor" wicket:message="value:form.newAuthor" wicket:id="createAuthor"/>
-            </div>
+                <tr>
+                    <td>
+                        <input class="textbox" type="text" wicket:id="web" title="web" wicket:message="title:form.web"/>
+                    </td>
+                    <td class="popis">
+                        <label for="web">
+                            <wicket:message key="form.game.web">Web</wicket:message>
+                        </label>
+                    </td>
+                    <td>
+                        <span wicket:id="webFeedback"></span>
+                    </td>
+                </tr>
 
-            <div>
-                <label for="groups"><wicket:message key="form.authorGroups">Autorské skupiny</wicket:message></label>
-                <div wicket:id="groups"></div>
-                <input type="button" value="Nová skupina" wicket:messsage="value:form.newGroup" wicket:id="createGroup"/>
-            </div>
+                <tr>
+                    <td>
+                        <input class="textbox" type="text" wicket:id="video.path" title="video" wicket:message="title:form.video"/>
+                    </td>
+                    <td class="popis">
+                        <label for="video.path">
+                            <wicket:message key="form.game.video">Video</wicket:message>
+                        </label>
+                    </td>
+                    <td>
+                        <span wicket:id="videoPathFeedback"></span>
+                    </td>
+                </tr>
 
-            <div>
-                <div wicket:id="chooseLabels"></div>
-                <input type="button" value="Nový štítek" wicket:message="value:form.newLabel" wicket:id="createLabel"/>
-            </div>
+                </tbody>
+            </table>
 
-            <div>
-                <input type="button" value="Uložit" wicket:message="value:form.save" wicket:id="submit"/>
-            </div>
-        </fieldset>
+            <div wicket:id="chooseLabels"></div>
+            <input type="button" value="Nový štítek" wicket:message="value:form.newLabel" wicket:id="createLabel"/>
+            <div style="clear:both; width:100%;"></div>
+
+            <textarea class="textarea"
+                      title="Zde zadejte popis hry"
+                      name="popis"
+                      id="popis"
+                      wicket:id="description"
+                      wicket:message="title:form.game.description"
+                      style="width:90%;"
+                      rows=8
+                ></textarea>
+            <span wicket:id="descriptionFeedback"></span>
+
+            <div style="clear:both; width:100%;"></div>
+
+            <input type="button" class="pridatHruButton" value="Uložit" wicket:message="value:form.save" wicket:id="submit"/>
+
+        </div>
     </form>
 </wicket:panel>
