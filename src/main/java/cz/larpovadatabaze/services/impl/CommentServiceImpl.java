@@ -52,6 +52,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public List<Comment> getLastComments(long first, long count) {
+        return commentDAO.getLastComments(((Long)first).intValue(), ((Long)count).intValue());
+    }
+
+    @Override
     public int getAmountOfComments() {
         return commentDAO.getAmountOfComments();
     }

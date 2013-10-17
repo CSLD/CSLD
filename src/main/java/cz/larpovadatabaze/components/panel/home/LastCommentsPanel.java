@@ -2,6 +2,7 @@ package cz.larpovadatabaze.components.panel.home;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
+import cz.larpovadatabaze.components.page.game.ListComments;
 import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldUser;
@@ -35,7 +36,7 @@ public class LastCommentsPanel extends Panel {
     public LastCommentsPanel(String id) {
         super(id);
 
-        int AMOUNT_LAST_COMMENTS = 15;
+        int AMOUNT_LAST_COMMENTS = 3;
         List<Comment> toShow = commentService.getLastComments(AMOUNT_LAST_COMMENTS);
         ListView<Comment> gamesView = new ListView<Comment>("commentsView", toShow) {
             @Override
@@ -96,5 +97,9 @@ public class LastCommentsPanel extends Panel {
             }
         };
         add(gamesView);
+
+        final BookmarkablePageLink<CsldBasePage> moreComments =
+                new BookmarkablePageLink<CsldBasePage>("moreComments", ListComments.class);
+        add(moreComments);
     }
 }

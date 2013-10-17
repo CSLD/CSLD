@@ -67,6 +67,9 @@ public class CsldBasePage extends WebPage {
 
     @Override
     public void renderHead(IHeaderResponse response) {
+        response.render(JavaScriptHeaderItem.forReference(getApplication().getJavaScriptLibrarySettings()
+                .getJQueryReference()));
+
         response.render(JavaScriptHeaderItem.forUrl("/files/js/jquery-ui-1.9.2.custom.js"));
         response.render(JavaScriptHeaderItem.forUrl("/files/js/jquery.nivo.slider.pack.js"));
         response.render(JavaScriptHeaderItem.forUrl("/files/js/jquery.nivo.slider.js"));

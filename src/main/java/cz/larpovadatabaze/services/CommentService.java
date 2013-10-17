@@ -18,4 +18,6 @@ public interface CommentService extends GenericService<Comment> {
     List<Comment> getLastComments(int amount);
 
     int getAmountOfComments();
+
+    List<Comment> getLastComments(long first, long count);
 }

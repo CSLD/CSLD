@@ -22,9 +22,13 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
     private FilterGame filterGame = new FilterGame();
     private List<Label> filterLabels = new ArrayList<Label>();
 
-    public SortableGameProvider(GameService gameService){
+    public SortableGameProvider(GameService gameService, String defaultSort) {
         this.gameService = gameService;
-        setSort("rating", SortOrder.ASCENDING);
+        setSort(defaultSort, SortOrder.ASCENDING);
+    }
+
+    public SortableGameProvider(GameService gameService) {
+        this(gameService, "rating");
     }
 
     @Override
@@ -60,6 +64,16 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
                             firstL.intValue(),
                             ((Long)amountPerPage).intValue(),
                             " order by game.amount_of_ratings desc "),
+                    firstL.intValue()
+            ).iterator();
+        } else if(property.equals("added")) {
+            return setStart(
+                    gameService.getFilteredGames(
+                            filterGame,
+                            filterLabels,
+                            firstL.intValue(),
+                            ((Long)amountPerPage).intValue(),
+                            " order by game.added desc "),
                     firstL.intValue()
             ).iterator();
         } else {

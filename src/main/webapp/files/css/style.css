@@ -322,6 +322,72 @@ img {
     padding: 0px;
 }
 
+.pridanaHra {
+    width: 320px;
+    height: 100px;
+    margin-bottom: 10px;
+    /* Chrome, Safari */
+    background-image: -webkit-linear-gradient(#f8f8f8, #cccccc);
+    background-image: -webkit-gradient(linear, 0 0, 0 bottom, from(#f8f8f8), to(#cccccc));
+    /* Mozilla */
+    background-image: -moz-linear-gradient(#f8f8f8, #cccccc);
+    background-image: -moz-gradient(linear, 0 0, 0 bottom, from(#f8f8f8), to(#cccccc));
+    /* IE */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#f8f8f8', endColorstr = '#cccccc');
+    zoom: 1;
+}
+
+.pridanaHra .datum {
+    font-size: 8pt;
+    color: #535353;
+    margin-left: 14px;
+    margin-top: 4px;
+}
+
+.pridanaHra .obsah {
+    padding-left: 6px;
+}
+
+.pridanaHra .popisek {
+    color: #535353;
+    font-size: 10pt;
+    text-align: justify;
+}
+
+.pridanaHra .HraKomentarPopisek {
+    color: #535353;
+    font-size: 10pt;
+    text-align: justify;
+    overflow: hidden;
+}
+
+.pridanaHra .HraKomentarVice {
+    color: #535353;
+    font-size: 10pt;
+    text-align: justify;
+    z-index: 10;
+    position: absolute;
+}
+
+.pridanaHra .nadpisHra {
+    font-size: 10pt;
+}
+
+.pridanaHra a {
+    text-decoration: none;
+    color: black;
+}
+
+.pridanaHra .obrazekPopis {
+    vertical-align: top;
+    margin-left: -1px;
+}
+
+.pridanaHra td {
+    vertical-align: top;
+    padding: 0px;
+}
+
 .ctverecek {
     width: 12px;
     height: 12px;
@@ -1888,4 +1954,9 @@ select[name=stateOfGame]{
 
 .wicket-aa ul li.selected {
     background-color: #aed9f1;
+}
+
+.datumKalendar{
+    float: right;
+    margin-right: 5px;
 }

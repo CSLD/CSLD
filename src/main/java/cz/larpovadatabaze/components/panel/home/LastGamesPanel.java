@@ -2,6 +2,7 @@ package cz.larpovadatabaze.components.panel.home;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
+import cz.larpovadatabaze.components.page.game.ListLastGames;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.services.GameService;
@@ -25,11 +26,12 @@ import java.util.List;
 public class LastGamesPanel extends Panel {
     @SpringBean
     GameService gameService;
+    private final int MAX_CHARS = 80;
 
     public LastGamesPanel(String id) {
         super(id);
 
-        int AMOUNT_LAST_GAMES = 15;
+        int AMOUNT_LAST_GAMES = 3;
         List<Game> toShow = gameService.getLastGames(AMOUNT_LAST_GAMES);
 
 
@@ -66,8 +68,8 @@ public class LastGamesPanel extends Panel {
                 item.add(new Label("players", Model.of(game.getPlayers())));
                 item.add(new Label("gameDescription",
                         Model.of(
-                                game.getDescription().length() > 80 ?
-                                        game.getDescription().substring(0,80) :
+                                game.getDescription().length() > MAX_CHARS ?
+                                        game.getDescription().substring(0,MAX_CHARS) :
                                         game.getDescription()))
                 );
                 final BookmarkablePageLink<CsldBasePage> gameMoreLink =
@@ -76,5 +78,9 @@ public class LastGamesPanel extends Panel {
             }
         };
         add(gamesView);
+
+        final BookmarkablePageLink<CsldBasePage> moreGames =
+                new BookmarkablePageLink<CsldBasePage>("moreGames", ListLastGames.class);
+        add(moreGames);
     }
 }

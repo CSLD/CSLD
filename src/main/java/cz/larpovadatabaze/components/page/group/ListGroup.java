@@ -43,8 +43,10 @@ public class ListGroup extends CsldBasePage {
                         new BookmarkablePageLink<CsldUser>("groupDetail", GroupDetail.class, params);
 
                 final Label label = new Label("groupName", group.getName());
+                final Label authorsOf = new Label("amountOfGames", group.getAuthorsOf().size());
                 groupDetail.add(label);
                 item.add(groupDetail);
+                item.add(authorsOf);
             }
         };
         groupList.setOutputMarkupId(true);

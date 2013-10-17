@@ -3,7 +3,6 @@ package cz.larpovadatabaze.components.panel.game;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.models.FilterGame;
 import cz.larpovadatabaze.providers.SortableGameProvider;
 import cz.larpovadatabaze.services.GameService;
@@ -21,7 +20,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.ContextRelativeResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -59,8 +57,6 @@ public class ListGamePanel extends Panel {
                 final Label gameRating = new Label("rating", Model.of(Math.round(game.getTotalRating())));
                 item.add(gameRating);
 
-                List<Rating> ratings = (game.getRatings() != null) ?
-                        game.getRatings() : new ArrayList<Rating>();
                 final Label gameRatings = new Label("ratings", game.getAmountOfRatings());
                 item.add(gameRatings);
                 final Image ratingsIcon = new Image("ratingsIcon", new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getRatingsIconPath()));

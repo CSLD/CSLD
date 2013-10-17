@@ -1,0 +1,47 @@
+<wicket:extend xmlns:wicket="http://wicket.apache.org">
+    <div class="levaCast" id="Komentáře">
+        <div class="nadpisStranky">
+            <wicket:message key="comments">Komentáře</wicket:message>
+        </div>
+        <div wicket:id="commentsView">
+            <div class="pridanaHra" style="width:100%;">
+                <div class="HraIkonka" style="float:left; height: 100%;">
+                    <a wicket:id="commenterIconLink">
+                        <img style='width: 75px; height: 75px;' wicket:id="commenterIcon" class="obrazekPopis">
+                    </a><br/>
+
+                    <div class="datum" wicket:id="commentDate">08.08.2013</div>
+                </div>
+                <div class="obsah" style="float:left; width: 85%;">
+                <span class="nadpisHra">
+                    <a wicket:id="commenterLink">
+                        <span wicket:id="commenterName">Lucie</span>
+                    </a>
+                </span> o hře
+                    <span class="ctverecek" wicket:id="gameRating"></span>
+                    <a wicket:id="gameLink">
+                        <span wicket:id="gameName" class="nadpisHra">Cesta dlouhým dnem do noci</span>
+                    </a>
+
+                    <div class="popisek komentar">
+                        <span wicket:id="commentsContent"></span>
+                        <a wicket:id="gameMoreLink">
+                            <div class="HraKomentarVice"> ... více</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span wicket:id="navigator">[dataview navigator]</span>
+    </div>
+
+    <div class="pravaCast" id="Skupiny">
+        <div class="praveMenu">
+            <div class="nadpisMenu"><wicket:message key="comments.last">Poslední komentáře</wicket:message></div>
+        </div>
+
+        <div class="sekce">
+            <wicket:message key="comments.last.info">Zde si můžete prohlédnout poslední komentáře.</wicket:message>
+        </div>
+    </div>
+</wicket:extend>

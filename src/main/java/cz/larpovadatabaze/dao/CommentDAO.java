@@ -47,4 +47,12 @@ public class CommentDAO extends GenericHibernateDAO<Comment, Integer>{
         criteria.setProjection(Projections.rowCount());
         return ((Long)criteria.uniqueResult()).intValue();
     }
+
+    public List<Comment> getLastComments(int first, int count) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from Comment order by added desc");
+        query.setFirstResult(first);
+        query.setMaxResults(count);
+        return query.list();
+    }
 }
