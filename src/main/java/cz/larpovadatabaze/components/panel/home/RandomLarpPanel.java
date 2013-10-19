@@ -47,7 +47,11 @@ public class RandomLarpPanel extends Panel {
         gameLink.add(gameLinkImage);
         add(gameLink);
 
-        String gameRatingColor = Rating.getColorOf(Math.round(game.getTotalRating()));
+        Double rating =game.getTotalRating();
+        if(rating == null){
+            rating = 0d;
+        }
+        String gameRatingColor = Rating.getColorOf(Math.round(rating));
         Label gameRating = new Label("gameRating","");
         gameRating.add(new AttributeAppender("class", Model.of(gameRatingColor), " "));
         add(gameRating);

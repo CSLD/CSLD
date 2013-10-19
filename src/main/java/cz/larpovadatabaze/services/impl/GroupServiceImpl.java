@@ -61,4 +61,9 @@ public class GroupServiceImpl implements GroupService {
     public int getAmountOfGroups() {
         return groupDAO.getAmountOfGroups();
     }
+
+    @Override
+    public int getAverageOfGroup(CsldGroup group) {
+        return groupDAO.getAverageOfGroup(group);
+    }
 }

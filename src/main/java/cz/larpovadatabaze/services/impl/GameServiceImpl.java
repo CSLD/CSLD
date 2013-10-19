@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.services.impl;
 
 import cz.larpovadatabaze.dao.GameDAO;
+import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Label;
@@ -124,5 +125,25 @@ public class GameServiceImpl implements GameService {
     @Override
     public long getAmountOfFilteredGames(FilterGame filterGame, List<Label> labels) {
         return gameDAO.getAmountOfFilteredGames(filterGame, labels);
+    }
+
+    @Override
+    public List<Game> getGamesOfAuthor(CsldUser author, int first, int count) {
+        return gameDAO.getGamesOfAuthor(author, first, count);
+    }
+
+    @Override
+    public List<Game> getGamesOfGroup(CsldGroup csldGroup, int first, int count) {
+        return gameDAO.getGamesOfGroup(csldGroup, first, count);
+    }
+
+    @Override
+    public long getAmountOfGamesOfAuthor(CsldUser author) {
+        return gameDAO.getAmountOfGamesOfAuthor(author);
+    }
+
+    @Override
+    public long getAmountOfGamesOfGroup(CsldGroup csldGroup) {
+        return gameDAO.getAmountOfGamesOfGroup(csldGroup);
     }
 }

@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.dao;
 
 import cz.larpovadatabaze.api.GenericHibernateDAO;
+import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Label;
@@ -249,4 +250,54 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
         }
     }
 
+    public List<Game> getGamesOfAuthor(CsldUser author, int first, int count) {
+        String sqlForGameIds = String.format("select " +
+                "game.id, game.name, game.description, game.year, game.web, game.hours," +
+                "game.days, game.players, game.men_role, game.women_role, game.both_role," +
+                "game.added, game.total_rating, game.amount_of_comments, game.amount_of_played, " +
+                "game.amount_of_ratings, game.added_by, game.video, game.image " +
+                "from csld_game game join csld_game_has_author gha on game.id= gha.id_game where " +
+                "gha.id_user = %s order by game.total_rating offset %s limit %s",
+                author.getId(),
+                String.valueOf(first),
+                String.valueOf(count));
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createSQLQuery(sqlForGameIds).addEntity(Game.class);
+        return query.list();
+    }
+
+    public List<Game> getGamesOfGroup(CsldGroup csldGroup, int first, int count) {
+        String sqlForGameIds = String.format("select " +
+                "game.id, game.name, game.description, game.year, game.web, game.hours," +
+                "game.days, game.players, game.men_role, game.women_role, game.both_role," +
+                "game.added, game.total_rating, game.amount_of_comments, game.amount_of_played, " +
+                "game.amount_of_ratings, game.added_by, game.video, game.image " +
+                "from csld_game game join csld_game_has_group gha on game.id= gha.id_game where " +
+                "gha.id_group = %s order by game.total_rating offset %s limit %s",
+                csldGroup.getId(),
+                String.valueOf(first),
+                String.valueOf(count));
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createSQLQuery(sqlForGameIds).addEntity(Game.class);
+        return query.list();
+    }
+
+
+    public long getAmountOfGamesOfAuthor(CsldUser author) {
+        Session session = sessionFactory.getCurrentSession();
+        String sqlForAmountOfAuthoredGames = String.format("select count(distinct game.id) from csld_game game join " +
+                "csld_game_has_author gha on gha.id_game = game.id where gha.id_user = %s",
+                author.getId());
+        Query query = session.createSQLQuery(sqlForAmountOfAuthoredGames);
+        return ((BigInteger) query.uniqueResult()).longValue();
+    }
+
+    public long getAmountOfGamesOfGroup(CsldGroup csldGroup) {
+        Session session = sessionFactory.getCurrentSession();
+        String sqlForAmountOfAuthoredGames = String.format("select count(distinct game.id) from csld_game game join " +
+                "csld_game_has_group gha on gha.id_game = game.id where gha.id_group = %s",
+                csldGroup.getId());
+        Query query = session.createSQLQuery(sqlForAmountOfAuthoredGames);
+        return ((BigInteger) query.uniqueResult()).longValue();
+    }
 }

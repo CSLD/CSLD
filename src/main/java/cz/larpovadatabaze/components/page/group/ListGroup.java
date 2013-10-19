@@ -45,6 +45,9 @@ public class ListGroup extends CsldBasePage {
                 final Label label = new Label("groupName", group.getName());
                 final Label authorsOf = new Label("amountOfGames", group.getAuthorsOf().size());
                 groupDetail.add(label);
+                final Label authorsOfAverage = new Label("averageOfAllGames", groupService.getAverageOfGroup(group));
+                item.add(authorsOfAverage);
+
                 item.add(groupDetail);
                 item.add(authorsOf);
             }

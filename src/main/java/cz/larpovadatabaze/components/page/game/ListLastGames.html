@@ -1,34 +1,8 @@
 <wicket:extend xmlns:wicket="http://wicket.apache.org">
     <div class="levaCast" id="Komentáře">
-        <div class="nadpisStranky">
-            <img wicket:id="gamesIcon" class="ikonaStranky"><wicket:message key="games">Hry</wicket:message>
+        <div wicket:id="lastGamesAnnotated">
+
         </div>
-        <div wicket:id="gamesView">
-            <div class="pridanaHra" style="width: 100%;">
-                <div class="HraIkonka" style="float:left; height: 100%;">
-                    <a wicket:id="gameIconLink">
-                        <img style='width: 75px; height: 75px;' wicket:id="gameIcon" class="obrazekPopis">
-                    </a><br/>
-
-                </div>
-                <div class="obsah" style="float:left; width: 85%;">
-                    <span wicket:id="gameRating" class="ctverecek"></span>
-                    <a wicket:id="gameLink">
-                        <span wicket:id="gameName" class="nadpisHra">Protector X.</span>
-                    </a>
-
-                    <div class="HraKomentarPopisek"><span wicket:id="players">1200</span> hráčů<br/>
-                    <span wicket:id="gameDescription">
-
-                    </span>
-                        <a wicket:id="gameMoreLink">
-                            <div class="HraKomentarVice"> ... více</div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <span wicket:id="navigator">[dataview navigator]</span>
     </div>
 
     <div class="pravaCast" id="posledníHry">

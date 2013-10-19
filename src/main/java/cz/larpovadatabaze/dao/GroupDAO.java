@@ -55,4 +55,17 @@ public class GroupDAO extends GenericHibernateDAO<CsldGroup, Integer> {
         criteria.setProjection(Projections.rowCount());
         return ((Long)criteria.uniqueResult()).intValue();
     }
+
+    public int getAverageOfGroup(CsldGroup group) {
+        Session session = sessionFactory.getCurrentSession();
+        String sqlForAverage = String.format("select sum(game.total_rating)/count(*) from csld_game as game " +
+                "join csld_game_has_group ghg on game.id = ghg.id_game where ghg.id_group = %s",group.getId());
+        Query query = session.createSQLQuery(sqlForAverage);
+        Object object = query.uniqueResult();
+        if(object == null) {
+            return 0;
+        } else {
+            return ((Double)object).intValue();
+        }
+    }
 }

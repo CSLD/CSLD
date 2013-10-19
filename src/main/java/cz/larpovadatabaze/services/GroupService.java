@@ -20,4 +20,6 @@ public interface GroupService extends GenericService<CsldGroup> {
     void saveOrUpdate(CsldGroup group);
 
     int getAmountOfGroups();
+
+    int getAverageOfGroup(CsldGroup group);
 }

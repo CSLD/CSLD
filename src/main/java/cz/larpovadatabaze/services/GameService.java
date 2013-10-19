@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.services;
 
+import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Label;
@@ -43,4 +44,12 @@ public interface GameService extends GenericService<Game> {
     List<Game> getFilteredGames(FilterGame filterGame, List<Label> labels, int offset, int limit, String orderBy);
 
     long getAmountOfFilteredGames(FilterGame filterGame, List<Label> filterLabels);
+
+    List<Game> getGamesOfAuthor(CsldUser author, int first, int count);
+
+    List<Game> getGamesOfGroup(CsldGroup csldGroup, int first, int count);
+
+    long getAmountOfGamesOfAuthor(CsldUser author);
+
+    long getAmountOfGamesOfGroup(CsldGroup csldGroup);
 }
