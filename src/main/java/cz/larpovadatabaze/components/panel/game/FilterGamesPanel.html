@@ -1,4 +1,9 @@
 <wicket:panel xmlns:wicket="http://wicket.apache.org">
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#labelsRequiredText").css("display","none");
+        });
+    </script>
     <form wicket:id="filterForm">
         <div class="sekce">
             <div class="nadpisFiltr"><wicket:message key="game.amountOfPlayers">Počty hráčů</wicket:message></div>

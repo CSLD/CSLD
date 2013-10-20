@@ -1,10 +1,9 @@
 <wicket:panel xmlns:wicket="http://wicket.apache.org">
     <div id="labelsChooserPanel">
-        <div class="stitky popis"><wicket:message key="form.game.labels">Označte štítky, které vystihují Váš larp. Pokud nespadá jednoznačně pod jednu kategorii, vyberte jich více.</wicket:message></div>
         <div wicket:id="requiredLabels">  <!-- This contains list of Labels. -->
             <input type="button" class="" wicket:id="name" style="float:left;" />
         </div>
-        <span><wicket:message key="label.required">Požadované</wicket:message></span>
+        <span id="labelsRequiredText"><wicket:message key="label.required">Požadované</wicket:message></span>
         <div style="clear:both;height:5px;"></div>
 
         <div wicket:id="otherLabels">  <!-- This contains list of Labels. -->
