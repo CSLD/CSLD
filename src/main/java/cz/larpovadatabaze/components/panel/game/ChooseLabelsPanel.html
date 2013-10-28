@@ -1,13 +1,17 @@
 <wicket:panel xmlns:wicket="http://wicket.apache.org">
     <div id="labelsChooserPanel">
         <div wicket:id="requiredLabels">  <!-- This contains list of Labels. -->
+            <!-- Beginning of repetitive part for every required Label -->
             <input type="button" class="" wicket:id="name" style="float:left;" />
+            <!-- Enf of repetitive part for every required Label -->
         </div>
         <span id="labelsRequiredText"><wicket:message key="label.required">Požadované</wicket:message></span>
         <div style="clear:both;height:5px;"></div>
 
         <div wicket:id="otherLabels">  <!-- This contains list of Labels. -->
+            <!-- Beginning of repetitive part for every optional Label -->
             <input type="button" class="filtrovatButton" wicket:id="name" style="float:left;"/>
+            <!-- Enf of repetitive part for every optional Label -->
         </div>
         <div style="clear:both"></div>
     </div>

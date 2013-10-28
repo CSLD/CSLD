@@ -1,6 +1,7 @@
 <wicket:panel xmlns:wicket="http://wicket.apache.org">
     <div class="pravaCastVyhledavani">
         <table class="prvniTabulka" wicket:id="fullResults">
+            <!-- Beginning of repetitive content for first three authors -->
             <tr>
                 <td>
                     <a wicket:id="authorLink">
@@ -18,11 +19,13 @@
                     </div>
                 </td>
             </tr>
+            <!-- End of repetitive content for first three authors -->
         </table>
 
         <div class="dalsiVysledky"><wicket:message key="search.moreResults">Další výsledky:</wicket:message></div>
 
         <table class="druhaTabulka" wicket:id="shortResults">
+            <!-- Beginning of repetitive content for other authors -->
             <tr>
                 <td>
                     <a wicket:id="authorShortLink">
@@ -31,6 +34,7 @@
                     </a>
                 </td>
             </tr>
+            <!-- End of repetitive content for other authors -->
         </table>
     </div>
 </wicket:panel>

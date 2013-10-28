@@ -1,4 +1,4 @@
-package cz.larpovadatabaze.components.panel.game;
+package cz.larpovadatabaze.components.panel.photo;
 
 import cz.larpovadatabaze.entities.Photo;
 import org.apache.wicket.ajax.AjaxRequestTarget;

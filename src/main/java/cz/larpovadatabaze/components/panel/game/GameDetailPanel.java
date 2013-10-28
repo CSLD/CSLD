@@ -4,6 +4,8 @@ import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.author.AuthorDetail;
 import cz.larpovadatabaze.components.page.group.GroupDetail;
 import cz.larpovadatabaze.components.panel.YouTubePanel;
+import cz.larpovadatabaze.components.panel.photo.ManagePhotoPanel;
+import cz.larpovadatabaze.components.panel.photo.ShowPhotoPanel;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
