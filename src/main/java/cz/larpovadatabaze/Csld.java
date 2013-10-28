@@ -2,13 +2,18 @@ package cz.larpovadatabaze;
 
 import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.components.page.about.AboutDatabase;
+import cz.larpovadatabaze.components.page.admin.Administration;
+import cz.larpovadatabaze.components.page.admin.ManageLabelsPage;
+import cz.larpovadatabaze.components.page.admin.ManageUserRightsPage;
 import cz.larpovadatabaze.components.page.author.AuthorDetail;
+import cz.larpovadatabaze.components.page.author.CreateOrUpdateAuthorPage;
 import cz.larpovadatabaze.components.page.author.ListAuthor;
-import cz.larpovadatabaze.components.page.game.CreateOrUpdateGamePage;
-import cz.larpovadatabaze.components.page.game.GameDetail;
-import cz.larpovadatabaze.components.page.game.ListGame;
+import cz.larpovadatabaze.components.page.game.*;
 import cz.larpovadatabaze.components.page.group.CreateOrUpdateGroupPage;
+import cz.larpovadatabaze.components.page.group.GroupDetail;
 import cz.larpovadatabaze.components.page.group.ListGroup;
+import cz.larpovadatabaze.components.page.group.ManageGroupPage;
+import cz.larpovadatabaze.components.page.search.SearchResults;
 import cz.larpovadatabaze.components.page.user.*;
 import cz.larpovadatabaze.converters.CsldUserConverter;
 import cz.larpovadatabaze.converters.GameConverter;
@@ -106,10 +111,11 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         mountPage("/sign-out", SignOut.class);
         mountPage("/sign-in", CsldSignInPage.class);
         mountPage("/register", CreateOrUpdateUserPage.class);
+        mountPage("/edit-user", UpdateUserPage.class);
 
         mountPage("/add-group", CreateOrUpdateGroupPage.class);
         mountPage("/add-game", CreateOrUpdateGamePage.class);
-        mountPage("/add-user", CreateOrUpdateUserPage.class);
+        mountPage("/add-author", CreateOrUpdateAuthorPage.class);
 
         mountPage("/zebricky", ListGame.class);
         mountPage("/autori", ListAuthor.class);
@@ -119,10 +125,22 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         mountPage("/detail-game", GameDetail.class);
         mountPage("/detail-author", AuthorDetail.class);
         mountPage("/detail-user", UserDetail.class);
+        mountPage("/detail-group", GroupDetail.class);
+
+        mountPage("/last-comments", ListComments.class);
+        mountPage("/last-games", ListLastGames.class);
+        mountPage("/manage-group", ManageGroupPage.class);
+        mountPage("/search", SearchResults.class);
 
         mountPage("/oDatabazi", AboutDatabase.class);
         mountPage("/reset", ResetPassword.class);
         mountPage("/forgot-password", ForgotPassword.class);
+
+        mountPage("/admin", Administration.class);
+        mountPage("/admin/manage-labels", ManageLabelsPage.class);
+        mountPage("/admin/manage-users", ManageUserRightsPage.class);
+
+        mountPage("/home", HomePage.class);
     }
 
     public static String getBaseContext(){
