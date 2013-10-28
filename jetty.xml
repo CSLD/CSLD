@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://jetty.mortbay.org/configure.dtd">
+
+<Configure id="Server" class="org.mortbay.jetty.Server">
+
+    <!-- =========================================================== -->
+    <!-- Set connectors                                              -->
+    <!-- =========================================================== -->
+
+    <Call name="addConnector">
+      <Arg>
+          <New class="org.mortbay.jetty.nio.SelectChannelConnector">
+            <Set name="host"><SystemProperty name="jetty.host" /></Set>
+            <Set name="port"><SystemProperty name="jetty.port" default="8080"/></Set>
+            <Set name="maxIdleTime">300000</Set>
+            <Set name="Acceptors">2</Set>
+            <Set name="statsOn">false</Set>
+            <Set name="confidentialPort">8443</Set>
+            <Set name="lowResourcesConnections">20000</Set>
+            <Set name="lowResourcesMaxIdleTime">5000</Set>
+          </New>
+      </Arg>
+    </Call>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- To add a HTTPS SSL connector                                    -->
+    <!-- mixin jetty-ssl.xml:                                            -->
+    <!--   java -jar start.jar etc/jetty.xml etc/jetty-ssl.xml           -->
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- To add a HTTP blocking connector                                -->
+    <!-- mixin jetty-bio.xml:                                            -->
+    <!--   java -jar start.jar etc/jetty.xml etc/jetty-bio.xml           -->
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+
+    <!-- =========================================================== -->
+    <!-- Set handler Collection Structure                            -->
+    <!-- =========================================================== -->
+    <Set name="handler">
+      <New id="Handlers" class="org.mortbay.jetty.handler.HandlerCollection">
+        <Set name="handlers">
+         <Array type="org.mortbay.jetty.Handler">
+           <Item>
+             <New id="Contexts" class="org.mortbay.jetty.handler.ContextHandlerCollection"/>
+           </Item>
+           <Item>
+             <New id="DefaultHandler" class="org.mortbay.jetty.handler.DefaultHandler"/>
+           </Item>
+           <Item>
+             <New id="RequestLog" class="org.mortbay.jetty.handler.RequestLogHandler"/>
+           </Item>
+         </Array>
+        </Set>
+      </New>
+    </Set>
+
+    <!-- =========================================================== -->
+    <!-- Configure the context deployer                              -->
+    <!-- A context deployer will deploy contexts described in        -->
+    <!-- configuration files discovered in a directory.              -->
+    <!-- The configuration directory can be scanned for hot          -->
+    <!-- deployments at the configured scanInterval.                 -->
+    <!--                                                             -->
+    <!-- This deployer is configured to deploy contexts configured   -->
+    <!-- in the $JETTY_HOME/contexts directory                       -->
+    <!--                                                             -->
+    <!-- =========================================================== -->
+    <Call name="addLifeCycle">
+      <Arg>
+        <New class="org.mortbay.jetty.deployer.ContextDeployer">
+          <Set name="contexts"><Ref id="Contexts"/></Set>
+          <Set name="configurationDir"><SystemProperty name="jetty.home" default="."/>/contexts</Set>
+          <Set name="scanInterval">5</Set>
+        </New>
+      </Arg>
+    </Call>
+
+    <New id="csld" class="org.mortbay.jetty.plus.naming.Resource">
+      <Arg>jdbc/csld</Arg>
+      <Arg>
+        <New class="com.mchange.v2.c3p0.ComboPooledDataSource">
+          <Set name="driverClass">org.postgresql.Driver</Set>
+          <Set name="jdbcUrl"><SystemProperty name="db.url" default="jdbc:postgresql://localhost/csld" /></Set>
+          <Set name="user"><SystemProperty name="db.username" default="csld" /></Set>
+          <Set name="password"><SystemProperty name="db.password" default="csld" /></Set>
+        </New>
+      </Arg>
+    </New>
+
+    <!-- =========================================================== -->
+    <!-- extra options                                               -->
+    <!-- =========================================================== -->
+
+    <Set name="stopAtShutdown">true</Set>
+    <Set name="sendServerVersion">true</Set>
+    <Set name="sendDateHeader">true</Set>
+</Configure>
