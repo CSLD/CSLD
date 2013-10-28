@@ -1,8 +1,18 @@
 <wicket:extend xmlns:wicket="http://wicket.apache.org">
     <div class="levaCast" id="uzivatel">
-        <div wicket:id="personDetail"></div>
+        <div wicket:id="personDetail">
+            <!--
+            This panel is found in package: cz.larpovadatabaze.components.panel.user.PersonDetailPanel.html
+            https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/user/PersonDetailPanel.html
+            -->
+        </div>
 
-        <div wicket:id="annotatedGamesOfAuthor"></div>
+        <div wicket:id="annotatedGamesOfAuthor">
+            <!--
+            This panel is found in package: cz.larpovadatabaze.components.panel.game.ListGamesWithAnnotations.html
+            https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/ListGamesWithAnnotations.html
+            -->
+        </div>
     </div>
 
     <!-- PRAVE MENU -->
@@ -14,7 +24,12 @@
 
         <div class="sekce">
             <div class="nadpisSekce"><wicket:message key="author.myLarps">Moje larpy</wicket:message></div>
-            <div class="obsah" wicket:id="gamesPanel"></div>
+            <div class="obsah" wicket:id="gamesPanel">
+                <!--
+                This panel is found in package: cz.larpovadatabaze.components.panel.game.GameListPanel.html
+                https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/GameListPanel.html
+                -->
+            </div>
         </div>
     </div>
 </wicket:extend>

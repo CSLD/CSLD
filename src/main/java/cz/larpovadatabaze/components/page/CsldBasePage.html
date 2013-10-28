@@ -31,13 +31,23 @@
 
 <!-- HEADER -->
 
-<img wicket:id="mainLogo" id="logoNadpis">
+<img wicket:id="mainLogo" id="logoNadpis" />
 <a wicket:id="homePage">
     <img wicket:id="topMain" id="nadpisHlavni">
 </a>
 
-<div wicket:id="login" id="loginBox"></div>
-<div wicket:id="loggedInfo" id="loginBoxPrihlaseny"></div>
+<div wicket:id="login" id="loginBox">
+    <!--
+    This panel is found in package: cz.larpovadatabaze.components.panel.user.LoginBoxPanel.html
+    https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/user/LoginBoxPanel.html
+    -->
+</div>
+<div wicket:id="loggedInfo" id="loginBoxPrihlaseny">
+    <!--
+    This panel is found in package: cz.larpovadatabaze.components.panel.user.LoggedBoxPanel.html
+    https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/user/LoggedBoxPanel.html
+    -->
+</div>
 
 <div style="clear: both"></div>
 
@@ -51,11 +61,20 @@
         <a wicket:id="about"><wicket:message key="aboutDb">o databázi</wicket:message></a>
         <span wicket:id="adminPanel"></span>
     </span>
-    <span id="divProHledani" wicket:id="searchBox"></span>
+    <span id="divProHledani" wicket:id="searchBox">
+        <!--
+        This panel is found in package: cz.larpovadatabaze.components.panel.search.SearchBoxPanel.html
+        https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/search/SearchBoxPanel.html
+        -->
+    </span>
 </div>
 <div style="margin-top: 20px;"></div>
 
-<wicket:child/>
+<wicket:child>
+    <!--
+    The content of every other page in app, wchich is descendant of CsldBasePage goes here.
+    -->
+</wicket:child>
 
 
 <!-- FOOTER -->

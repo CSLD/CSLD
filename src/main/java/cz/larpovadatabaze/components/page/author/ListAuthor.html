@@ -9,6 +9,7 @@
             <th wicket:id="orderByBestGame"><wicket:message key="author.bestGames">Nejlepší hra autora</wicket:message></th>
             </thead>
             <tr class="polozkaAutor" wicket:id="listAuthor">
+                <!-- Beginning of repetition for every author -->
                 <td class="larp">
                     <a wicket:id="authorName">
                         <span class="autorPrezdivka" wicket:id="authorNicknameContent"></span>
@@ -21,11 +22,16 @@
                         (<span wicket:id="bestGame"></span>%)
                     </a>
                 </td>
+                <!-- End of repetition for every author. -->
             </tr>
         </table>
         <span wicket:id="navigator">[dataview navigator]</span>
     </div>
 
     <div class="pravaCast" id="Autori" wicket:id="addAuthorPanel">
+        <!--
+        This panel is found in package: cz.larpovadatabaze.components.panel.author.AddAuthorsPanel.html
+        https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/author/AddAuthorsPanel.html
+        -->
     </div>
 </wicket:extend>

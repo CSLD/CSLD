@@ -11,10 +11,12 @@
                 <td><wicket:message key="form.amountOfGames">Počet hodnocených her</wicket:message></td>
             </tr>
             <tr wicket:id="listGroups">
+                <!-- Beginning of repetitive part for every group -->
                 <td></td>
                 <td><a wicket:id="groupDetail"><span wicket:id="groupName"></span></a></td>
                 <td><span wicket:id="averageOfAllGames"></span></td>
                 <td><span wicket:id="amountOfGames"></span></td>
+                <!-- End of repetitive part for every group -->
             </tr>
         </table>
         <span wicket:id="navigator">[dataview navigator]</span>
@@ -25,6 +27,11 @@
             <div class="nadpisMenu"><wicket:message key="group.group">Skupiny</wicket:message></div>
         </div>
 
-        <div class="sekce" wicket:id="addGroup"></div>
+        <div class="sekce" wicket:id="addGroup">
+            <!--
+            This panel is found in package: cz.larpovadatabaze.components.panel.group.AddGroupPanel.html
+            https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/group/AddGroupPanel.html
+            -->
+        </div>
     </div>
 </wicket:extend>

@@ -1,8 +1,18 @@
 <wicket:extend xmlns:wicket="http://wicket.apache.org">
     <div class="levaCast" id="skupina">
-        <div wicket:id="groupDetail"></div>
+        <div wicket:id="groupDetail">
+            <!--
+            This panel is found in package: cz.larpovadatabaze.components.panel.group.GroupDetailPanel.html
+            https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/group/GroupDetailPanel.html
+            -->
+        </div>
 
-        <div wicket:id="annotatedGamesOfAuthor"></div>
+        <div wicket:id="annotatedGamesOfAuthor">
+            <!--
+            This panel is found in package: cz.larpovadatabaze.components.panel.game.ListGamesWithAnnotations.html
+            https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/ListGamesWithAnnotations.html
+            -->
+        </div>
     </div>
 
     <!-- PRAVE MENU -->
@@ -12,13 +22,33 @@
             <div class="nadpisMenu"><wicket:message key="group.panel">Panel skupiny</wicket:message></div>
         </div>
 
-        <div class="sekce" wicket:id="addGroup"></div>
-        <div class="sekce" wicket:id="editGroup"></div>
-        <div class="sekce" wicket:id="addAuthorsToGroup"></div>
+        <div class="sekce" wicket:id="addGroup">
+            <!--
+            This panel is found in package: cz.larpovadatabaze.components.panel.group.AddGroupPanel.html
+            https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/group/AddGroupPanel.html
+            -->
+        </div>
+        <div class="sekce" wicket:id="editGroup">
+            <!--
+            This panel is found in package: cz.larpovadatabaze.components.panel.group.EditGroupPanel.html
+            https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/group/EditGroupPanel.html
+            -->
+        </div>
+        <div class="sekce" wicket:id="addAuthorsToGroup">
+            <!--
+            This panel is found in package: cz.larpovadatabaze.components.panel.group.AddAuthorsToGroupPanel.html
+            https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/group/AddAuthorsToGroupPanel.html
+            -->
+        </div>
 
         <div class="sekce">
             <div class="nadpisSekce"><wicket:message key="author.myLarps">Moje larpy</wicket:message></div>
-            <div class="obsah" wicket:id="authoredGamesPanel"></div>
+            <div class="obsah" wicket:id="authoredGamesPanel">
+                <!--
+                This panel is found in package: cz.larpovadatabaze.components.panel.game.GameListPanel.html
+                https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/GameListPanel.html
+                -->
+            </div>
         </div>
     </div>
 </wicket:extend>

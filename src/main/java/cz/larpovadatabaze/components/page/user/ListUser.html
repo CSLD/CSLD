@@ -11,6 +11,7 @@
                     <th wicket:id="orderByPlayed"><wicket:message key="user.played">Hraných</wicket:message></th>
                 </thead>
                 <tr wicket:id="listAuthor" class="polozkaUzivatel">
+                    <!-- Beginning of repetitive part for every user -->
                     <td class="larp">
                         <a wicket:id="userLink">
                             <span wicket:id="userNickname" class="uzivatelPrezdivka">Monty</span>
@@ -23,6 +24,7 @@
                     <td class="pocetherUzivatel">
                         <span wicket:id="playedGames">38</span><wicket:message key="user.playedGames"> odehraných her</wicket:message>
                     </td>
+                    <!-- End of repetitive part for every user -->
                 </tr>
             </table>
             <span wicket:id="navigator">[dataview navigator]</span>
@@ -30,6 +32,9 @@
     </div>
 
     <div class="pravaCast" id="Uzivatele" wicket:id="userPanel">
-
+        <!--
+        This panel is found in package: cz.larpovadatabaze.components.panel.user.UsersPanel.html
+        https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/user/UsersPanel.html
+        -->
     </div>
 </wicket:extend>
