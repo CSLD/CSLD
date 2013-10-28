@@ -24,6 +24,7 @@ public class RatingDAO extends GenericHibernateDAO<Rating, Integer> {
         Session session = sessionFactory.getCurrentSession();
         String sqlQuery = String.format("select csld_count_average()");
         Query query = session.createSQLQuery(sqlQuery);
-        return (Double)query.uniqueResult();
+        if (query.uniqueResult() == null) { return 0.0; }
+        else { return ((Double) query.uniqueResult()).doubleValue(); }
     }
 }

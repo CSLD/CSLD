@@ -18,6 +18,61 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 SET search_path = public, pg_catalog;
 
 --
+-- Name: csld_group_id_seq; Type: SEQUENCE; Schema: public; Owner: csld
+--
+
+CREATE SEQUENCE csld_group_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    MINVALUE 0
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.csld_group_id_seq OWNER TO csld;
+
+--
+-- Name: csld_person_id_seq; Type: SEQUENCE; Schema: public; Owner: csld
+--
+
+CREATE SEQUENCE csld_person_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    MINVALUE 0
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.csld_person_id_seq OWNER TO csld;
+
+--
+-- Name: csld_game_id_seq; Type: SEQUENCE; Schema: public; Owner: csld
+--
+
+CREATE SEQUENCE csld_game_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    MINVALUE 0
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.csld_game_id_seq OWNER TO csld;
+
+--
+-- Name: csld_game_label_id_seq; Type: SEQUENCE; Schema: public; Owner: csld
+--
+
+CREATE SEQUENCE csld_game_label_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    MINVALUE 0
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.csld_game_label_id_seq OWNER TO csld;
+--
 -- Name: csld_count_rating(integer); Type: FUNCTION; Schema: public; Owner: csld
 --
 
