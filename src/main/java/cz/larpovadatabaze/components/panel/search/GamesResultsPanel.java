@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * It shows game results of search.
  */
 public class GamesResultsPanel extends Panel {
     @SpringBean

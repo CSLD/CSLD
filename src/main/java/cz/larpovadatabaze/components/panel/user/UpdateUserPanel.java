@@ -24,7 +24,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import java.util.List;
 
 /**
- *
+ * This panel allows editing of user.
  */
 public class UpdateUserPanel extends Panel {
     @SpringBean

@@ -18,10 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 6.9.13
- * Time: 17:44
+ * It allows user to basically manage photos.
  */
 public class ManagePhotoPanel extends Panel {
     @SpringBean

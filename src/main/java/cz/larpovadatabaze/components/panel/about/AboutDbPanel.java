@@ -3,10 +3,8 @@ package cz.larpovadatabaze.components.panel.about;
 import org.apache.wicket.markup.html.panel.Panel;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 29.4.13
- * Time: 12:00
+ *  Panel combining together Info about Administrators with info about Editors.
+ *  It also contains basic contact info.
  */
 public class AboutDbPanel extends Panel
 {

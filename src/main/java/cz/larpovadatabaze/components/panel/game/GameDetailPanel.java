@@ -25,7 +25,8 @@ import org.apache.wicket.request.resource.ContextRelativeResource;
 import java.util.List;
 
 /**
- *
+ * This panel shows basic information about the game, like its duration, description.
+ * amount of players, labels and so on.
  */
 public class GameDetailPanel extends Panel {
     public GameDetailPanel(String id, Game game) {

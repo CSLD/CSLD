@@ -9,7 +9,8 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.resource.ContextRelativeResource;
 
 /**
- *
+ * It shows link to page for creating authors. Link is combined form image and text.
+ * This panel is shown only for logged users.
  */
 public class AddAuthorPanel extends Panel {
     public AddAuthorPanel(String id) {

@@ -1,12 +1,20 @@
 <wicket:panel xmlns:wicket="http://wicket.apache.org">
-        <table>
-            <tbody><tr>
-                <td>
-                    <a wicket:id="createAuthorIcon"><img wicket:id="createAuthorImage" class="pridatIkona"></a>
-                </td>
-                <td class="pridatPopis">
-                    <a wicket:id="createAuthor"><wicket:message key="addAuthor">Přidat autora</wicket:message></a>
-                </td>
-            </tr>
-            </tbody></table>
+    <!--
+    It shows link to page for creating authors. Link is combined form image and text.
+    This panel is shown only for logged users.
+    -->
+    <table>
+        <tbody>
+        <tr>
+            <td>
+                <a wicket:id="createAuthorIcon"><img wicket:id="createAuthorImage" class="pridatIkona"></a>
+            </td>
+            <td class="pridatPopis">
+                <a wicket:id="createAuthor">
+                    <wicket:message key="addAuthor">Přidat autora</wicket:message>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </wicket:panel>

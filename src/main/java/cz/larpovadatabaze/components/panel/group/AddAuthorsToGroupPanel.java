@@ -13,7 +13,8 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.ContextRelativeResource;
 
 /**
- *
+ * This panel contains link to the page allowing to manage members of the group.
+ * It is shown only to logged person, which has rights toward the group.
  */
 public class AddAuthorsToGroupPanel extends Panel {
     private CsldGroup group;

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * It shows user results of search.
  */
 public class UserResultsPanel extends Panel {
     @SpringBean

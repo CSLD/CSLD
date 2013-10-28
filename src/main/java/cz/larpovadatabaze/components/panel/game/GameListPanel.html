@@ -1,13 +1,17 @@
 <wicket:panel xmlns:wicket="http://wicket.apache.org">
-        <div wicket:id="listGames">
-            <!-- Beginning of repetitive content for every Game -->
-            <div class="obsahPolozka">
-                <div wicket:id="gameRating" class="ctverecek"></div>
-                <a wicket:id="gameDetail">
-                    <span wicket:id="gameName"></span>
-                    (<span wicket:id="gameYear"></span>)
-                </a>
-            </div>
-            <!-- End of repetitive content for every Game -->
+    <!--
+    It lists games given in parameter as square with color based on the rating of game followed by its name and year
+    when it was created.
+    -->
+    <div wicket:id="listGames">
+        <!-- Beginning of repetitive content for every Game -->
+        <div class="obsahPolozka">
+            <div wicket:id="gameRating" class="ctverecek"></div>
+            <a wicket:id="gameDetail">
+                <span wicket:id="gameName"></span>
+                (<span wicket:id="gameYear"></span>)
+            </a>
         </div>
+        <!-- End of repetitive content for every Game -->
+    </div>
 </wicket:panel>

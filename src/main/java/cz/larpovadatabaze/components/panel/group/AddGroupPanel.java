@@ -9,7 +9,8 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.resource.ContextRelativeResource;
 
 /**
- *
+ *  It contains link to the page for creating new Group.
+ *  It is shown only to the logged user.
  */
 public class AddGroupPanel extends Panel {
     public AddGroupPanel(String id) {

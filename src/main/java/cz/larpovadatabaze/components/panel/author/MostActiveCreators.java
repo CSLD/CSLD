@@ -15,7 +15,7 @@ import org.apache.wicket.request.resource.ContextRelativeResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
- * It contains information about the most active of creators.
+ * It contains information about the author, who created most games.
  */
 public class MostActiveCreators extends Panel {
     @SpringBean

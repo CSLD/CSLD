@@ -17,10 +17,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 29.4.13
- * Time: 17:41
+ * It shows information about all administrators of the database.
  */
 public class AdministratorPanel extends Panel {
     @SpringBean

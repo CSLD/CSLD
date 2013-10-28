@@ -16,7 +16,7 @@ import org.apache.wicket.request.resource.ContextRelativeResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
- *
+ * It shows info about randomly choosen Larp from database.
  */
 public class RandomLarpPanel extends Panel {
     @SpringBean

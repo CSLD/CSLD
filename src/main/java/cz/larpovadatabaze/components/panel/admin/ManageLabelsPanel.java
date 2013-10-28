@@ -16,7 +16,10 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import java.util.List;
 
 /**
- *
+ * This panel shows all labels and allows to change their status.
+ * Label can be required or optional.
+ * To be used by everyone, it needs to be approved.
+ * It is also possible to delete Label.
  */
 public class ManageLabelsPanel extends Panel {
     @SpringBean

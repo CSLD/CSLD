@@ -33,8 +33,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * This panel is used when you want to create or update game in the database. It encapsulates relevant createOrUpdateGame with
- * associated HTML markup.
+ * This panel is used when you want to create or update game in the database.
+ * It encapsulates relevant createOrUpdateGame with associated HTML markup.
  */
 public abstract class CreateOrUpdateGamePanel extends Panel {
     @SpringBean

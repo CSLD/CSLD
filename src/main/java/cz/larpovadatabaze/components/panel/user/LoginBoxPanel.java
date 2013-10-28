@@ -8,10 +8,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 9.4.13
- * Time: 13:09
+ * It shows links to the registration and login page.
  */
 public class LoginBoxPanel extends Panel {
     public LoginBoxPanel(String id) {

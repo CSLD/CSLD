@@ -16,6 +16,9 @@ import org.apache.wicket.request.resource.ContextRelativeResource;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * It shows basic information about Group.
+ */
 public class GroupDetailPanel extends Panel {
     public GroupDetailPanel(String id, CsldGroup group) {
         super(id);

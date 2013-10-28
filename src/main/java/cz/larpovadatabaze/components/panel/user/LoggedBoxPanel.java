@@ -16,7 +16,7 @@ import org.apache.wicket.request.resource.ContextRelativeResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
- *
+ * It shows info about actually logged user.
  */
 public class LoggedBoxPanel extends Panel {
     private boolean initiated = false;

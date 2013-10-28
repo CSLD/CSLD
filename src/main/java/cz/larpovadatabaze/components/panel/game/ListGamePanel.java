@@ -23,7 +23,9 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import java.util.List;
 
 /**
- *
+ * It contains all games in a pageable list, there are four possible ways to order
+ * the list. Order alphabetically, Order by rating or order by amount of ratings, or
+ * by amount of comments.
  */
 public class ListGamePanel extends Panel {
     @SpringBean

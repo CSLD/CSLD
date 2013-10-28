@@ -1,7 +1,17 @@
 <wicket:panel xmlns:wicket="http://wicket.apache.org">
-<div wicket:id="createGroup"></div>
-<div wicket:id="createAuthor"></div>
-<div wicket:id="createLabel"></div>
+<!--
+This panel is used when you want to create or update game in the database.
+It encapsulates relevant createOrUpdateGame with associated HTML markup.
+-->
+<div wicket:id="createGroup">
+    <!-- This will contain popup modal window with CreateOrUpdateGroupPanel -->
+</div>
+<div wicket:id="createAuthor">
+    <!-- This will contain popup modal window with CreateOrUpdateAuthorPanel -->
+</div>
+<div wicket:id="createLabel">
+    <!-- This will contain popup modal window with CreateOrUpdateLabelPanel -->
+</div>
 
 <script type="text/javascript">
     $(document).ready(function () {

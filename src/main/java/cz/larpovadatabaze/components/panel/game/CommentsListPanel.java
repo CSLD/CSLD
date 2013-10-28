@@ -26,7 +26,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Default List of all Comments belonging to given game.
+ * This Panel shows List of comments. Everything about comment is shown and the
+ * full text of the comment.
  */
 public class CommentsListPanel extends Panel {
     private List<Comment> comments;

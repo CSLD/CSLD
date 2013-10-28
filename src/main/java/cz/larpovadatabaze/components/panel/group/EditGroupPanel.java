@@ -11,7 +11,8 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 /**
- *
+ * It consists of link to the page for editing actual group.
+ * It is shown only for the logged users, who have rights to manage the group.
  */
 public class EditGroupPanel extends Panel {
     private CsldGroup toEdit;

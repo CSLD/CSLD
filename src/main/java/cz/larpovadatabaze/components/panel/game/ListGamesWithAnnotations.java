@@ -18,10 +18,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.ContextRelativeResource;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 18.10.13
- * Time: 15:20
+ * It shows pageable list of games ordered by time when they were added to the database
  */
 public class ListGamesWithAnnotations extends Panel {
     private final int MAX_LENGTH = 160;

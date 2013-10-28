@@ -1,14 +1,22 @@
 <wicket:panel xmlns:wicket="http://wicket.apache.org">
-        <table>
-            <tbody><tr>
-                <td>
-                    <a wicket:id="addGameIconLink">
-                        <img wicket:id="addGameIcon" class="pridatIkona">
-                    </a>
-                </td>
-                <td class="pridatPopis">
-                    <a wicket:id="addGameLink"><wicket:message key="game.add">Přidat hru</wicket:message></a>
-                </td>
-            </tr>
-            </tbody></table>
+    <!--
+    It contains link to page for creating new Game. Link consists of image and text.
+    It is shown only to logged user.
+    -->
+    <table>
+        <tbody>
+        <tr>
+            <td>
+                <a wicket:id="addGameIconLink">
+                    <img wicket:id="addGameIcon" class="pridatIkona">
+                </a>
+            </td>
+            <td class="pridatPopis">
+                <a wicket:id="addGameLink">
+                    <wicket:message key="game.add">Přidat hru</wicket:message>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </wicket:panel>

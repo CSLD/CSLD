@@ -11,7 +11,8 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 /**
- *
+ * This panel contains link to the page for editing game.
+ * It is shown only to logged user, with rights toward the specific game.
  */
 public class EditGamePanel extends Panel {
     private Game toEdit;

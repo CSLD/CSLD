@@ -1,11 +1,21 @@
 <wicket:panel xmlns:wicket="http://wicket.apache.org">
+    <!--
+    Panel combining together Info about Administrators with info about Editors.
+    It also contains basic contact info.
+    -->
     <div class="praveMenu">
-        <div class="nadpisMenu"><wicket:message key="contacts">kontakty</wicket:message></div>
+        <div class="nadpisMenu">
+            <wicket:message key="contacts">kontakty</wicket:message>
+        </div>
     </div>
 
     <div class="sekce">
-        <div class="nadpisSekce"><wicket:message key="writeUs">Napište nám</wicket:message></div>
-        <div class="napisteNam"><a href="mailto: larpovadatabaze@gmail.com"><wicket:message key="larpMail">larpovadatabaze@gmail.com</wicket:message></a></div>
+        <div class="nadpisSekce">
+            <wicket:message key="writeUs">Napište nám</wicket:message>
+        </div>
+        <div class="napisteNam"><a href="mailto: larpovadatabaze@gmail.com">
+            <wicket:message key="larpMail">larpovadatabaze@gmail.com</wicket:message>
+        </a></div>
     </div>
     <div class="sekce" wicket:id="administrators">
         <!--

@@ -13,7 +13,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import java.util.List;
 
 /**
- *
+ * It contains basic characteristics of the game and allows user to filter by them.
  */
 public abstract class FilterGamesPanel extends Panel {
     private ChooseLabelsPanel labels;

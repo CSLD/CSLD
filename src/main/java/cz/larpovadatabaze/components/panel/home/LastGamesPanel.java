@@ -21,7 +21,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import java.util.List;
 
 /**
- *
+ * This panel shows information about last added games
  */
 public class LastGamesPanel extends Panel {
     @SpringBean

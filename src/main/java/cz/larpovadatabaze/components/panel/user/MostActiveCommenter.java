@@ -13,10 +13,7 @@ import org.apache.wicket.request.resource.ContextRelativeResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 29.4.13
- * Time: 18:33
+ * It shows information about the user, who has most comments.
  */
 public class MostActiveCommenter extends Panel {
     @SpringBean

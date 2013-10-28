@@ -1,5 +1,9 @@
 <wicket:panel xmlns:wicket="http://wicket.apache.org">
-    <!-- It should be a select with three values Nehral jsem / Hral jsem / Chci hrat -->
+    <!--
+     The Played Panel has three states of being. Either the player does not have any
+     interest in game or the player played the game, or the player is interested in
+     playing the game.
+     -->
     <form wicket:id="gameState">
         <select wicket:id="stateOfGame">
             <option wicket:id="didntPlay">Nehrál jsem</option>

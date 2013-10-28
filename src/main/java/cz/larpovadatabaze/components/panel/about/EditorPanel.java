@@ -17,10 +17,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 29.4.13
- * Time: 10:25
+ * It shows information about all editors of the database
  */
 public class EditorPanel extends Panel {
     @SpringBean

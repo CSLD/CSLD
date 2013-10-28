@@ -9,7 +9,8 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.resource.ContextRelativeResource;
 
 /**
- *
+ * It contains link to page for creating new Game. Link consists of image and text.
+ * It is shown only to logged user.
  */
 public class AddGamePanel extends Panel {
     public AddGamePanel(String id) {

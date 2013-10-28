@@ -3,10 +3,8 @@ package cz.larpovadatabaze.components.panel.author;
 import org.apache.wicket.markup.html.panel.Panel;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 30.4.13
- * Time: 12:42
+ * It combines panel allowing to create new author with panel showing author, who created most
+ * games.
  */
 public class AuthorsPanel extends Panel {
     public AuthorsPanel(String id) {

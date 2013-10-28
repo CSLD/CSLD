@@ -26,7 +26,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- *
+ * This panel shows shortened info about last comments.
  */
 public class LastCommentsPanel extends Panel {
     @SpringBean

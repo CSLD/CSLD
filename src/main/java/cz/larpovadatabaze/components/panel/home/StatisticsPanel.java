@@ -10,7 +10,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
- *
+ * It shows basic statistics about larp database.
  */
 public class StatisticsPanel extends Panel {
     @SpringBean

@@ -9,10 +9,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.resource.ContextRelativeResource;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 14.5.13
- * Time: 9:57
+ * It shows detail of user.
  */
 public class PersonDetailPanel extends Panel {
     public PersonDetailPanel(String id, CsldUser user) {

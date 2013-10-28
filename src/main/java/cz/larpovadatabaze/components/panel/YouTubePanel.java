@@ -4,6 +4,9 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.PropertyModel;
 
+/**
+ * This panel can contain embedded Video from youtube.
+ */
 public class YouTubePanel extends Panel {
     private int width = 350;
     private int height = 350;

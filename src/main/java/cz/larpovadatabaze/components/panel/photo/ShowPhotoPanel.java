@@ -11,10 +11,7 @@ import org.apache.wicket.request.resource.ContextRelativeResource;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 6.9.13
- * Time: 18:32
+ * It shows all photos added to given game.
  */
 public class ShowPhotoPanel extends Panel {
     private List<Photo> photosToShow;
