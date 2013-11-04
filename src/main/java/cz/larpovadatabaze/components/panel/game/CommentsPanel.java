@@ -84,7 +84,7 @@ public abstract class CommentsPanel extends Panel {
                 ex.printStackTrace();
             }
         } else {
-            actualComment.setComment(commentText);
+            actualComment.setComment(commentText.replaceAll("\n", "<br/>"));
             actualComment.setAdded(new Timestamp(System.currentTimeMillis()));
 
             commentService.saveOrUpdate(actualComment);

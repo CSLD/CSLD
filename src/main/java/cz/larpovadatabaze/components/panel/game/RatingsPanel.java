@@ -48,10 +48,16 @@ public abstract class RatingsPanel extends Panel {
         }
         if(actualRating != null){
             ratingOfGame.setObject(actualRating.getRating());
+            if(actualRating.getUser() == null){
+                actualRating.setUser(logged);
+                actualRating.setUserId(loggedId);
+            }
         } else {
             actualRating = new Rating();
             actualRating.setGame(game);
+            actualRating.setGameId(game.getId());
             actualRating.setUser(logged);
+            actualRating.setUserId(loggedId);
         }
 
 

@@ -4,6 +4,7 @@ import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Image;
 import cz.larpovadatabaze.entities.Photo;
 import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.PhotoService;
 import cz.larpovadatabaze.utils.FileUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -23,6 +24,8 @@ import java.util.List;
 public class ManagePhotoPanel extends Panel {
     @SpringBean
     GameService gameService;
+    @SpringBean
+    PhotoService photoService;
 
     private FileUploadField photoOne;
     private FileUploadField photoTwo;
@@ -62,8 +65,12 @@ public class ManagePhotoPanel extends Panel {
                         photoThree.getFileUpload() != null &&
                         photoFour.getFileUpload() != null &&
                         photoFive.getFileUpload() != null;
+                List<Photo> photos = new ArrayList<Photo>(game.getPhotos());
                 photosToManage.removeAll(photosToManage);
-                game.getPhotos().removeAll(game.getPhotos());
+                game.getPhotos().removeAll(photos);
+                for(Photo photo: photos){
+                    photoService.remove(photo);
+                }
                 handlePhotoFile(photoOne);
                 handlePhotoFile(photoTwo);
                 handlePhotoFile(photoThree);

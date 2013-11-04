@@ -23,7 +23,7 @@ public class RatingsResultPanel extends Panel {
     private Game game;
 
     private Model<String> ratingColorModel;
-    private Model<Double> ratingOfGameModel;
+    private Model<Integer> ratingOfGameModel;
     private Model<Game> ratersModel;
 
     public RatingsResultPanel(String id, Game game) {
@@ -38,7 +38,7 @@ public class RatingsResultPanel extends Panel {
         finalRating.add(new AttributeModifier("class",ratingColorModel));
         finalRating.setOutputMarkupId(true);
 
-        ratingOfGameModel = Model.of(ratingOfGame);
+        ratingOfGameModel = Model.of((int) Math.round(ratingOfGame));
         Label rating = new Label("rating", ratingOfGameModel);
         rating.setOutputMarkupId(true);
         ratersModel = new Model<Game>(game);
@@ -59,7 +59,7 @@ public class RatingsResultPanel extends Panel {
         double ratingOfGame = game.getTotalRating();
         String ratingColor = Rating.getColorOf(ratingOfGame);
         ratingColorModel.setObject(ratingColor);
-        ratingOfGameModel.setObject(ratingOfGame);
+        ratingOfGameModel.setObject((int) Math.round(ratingOfGame));
         ratersModel.setObject(game);
 
         target.add(this);

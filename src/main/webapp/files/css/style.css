@@ -288,11 +288,16 @@ img {
     text-align: justify;
 }
 
+.sloupecPravy .pridanaHra {
+    position: relative;
+}
+
 .pridanaHra .HraKomentarPopisek {
     color: #535353;
     font-size: 10pt;
     text-align: justify;
     overflow: hidden;
+    position: relative;
 }
 
 .pridanaHra .HraKomentarVice {
@@ -301,6 +306,8 @@ img {
     text-align: justify;
     z-index: 10;
     position: absolute;
+    right: 0;
+    bottom: 0;
 }
 
 .pridanaHra .nadpisHra {
@@ -898,13 +905,13 @@ img {
 
 .pravaCast#game .hodnoceni {
     height: 100px;
+    padding: 20px;
 }
 
 .pravaCast#game .hodnoceniVysledne {
     font-size: 42pt;
     text-align: center;
     font-weight: bold;
-    padding-top: 10px;
 }
 
 .pravaCast#game .hodnotilo {
@@ -1892,5 +1899,20 @@ select[name=stateOfGame]{
 
 .datumKalendar{
     float: right;
+    margin-right: 5px;
+}
+
+.popisek .labels{
+    float: left;
+    margin-right: 5px;
+}
+
+.popisek .authors{
+    float: left;
+    margin-right: 5px;
+}
+
+.photoImage {
+    float:left;
     margin-right: 5px;
 }

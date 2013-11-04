@@ -6,7 +6,6 @@ import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.utils.Pwd;
 import cz.larpovadatabaze.utils.RandomString;
-import cz.larpovadatabaze.validator.UniqueUserValidator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
@@ -15,6 +14,8 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.UUID;
 
 /**
  * Panel used for registering new author or adding new Author into the database.
@@ -45,8 +46,6 @@ public abstract class CreateOrUpdateAuthorPanel extends Panel {
         createOrUpdateUser.add(addFeedbackPanel(nickname, createOrUpdateUser, "nicknameFeedback"));
 
         EmailTextField email = new EmailTextField("person.email");
-        email.setRequired(true);
-        email.add(new UniqueUserValidator(isEdit, csldUserService));
         createOrUpdateUser.add(addFeedbackPanel(email, createOrUpdateUser, "emailFeedback"));
 
         TextArea<String> description = new TextArea<String>("person.description");
@@ -80,6 +79,9 @@ public abstract class CreateOrUpdateAuthorPanel extends Panel {
     private boolean saveOrUpdateUser(CsldUser author){
         author.setIsAuthor(true);
         author.setPassword(Pwd.getMD5(new RandomString(12).nextString()));
+        if(author.getPerson().getEmail() == null){
+            author.getPerson().setEmail(UUID.randomUUID().toString() + "@" + UUID.randomUUID().toString() + ".cz");
+        }
         return csldUserService.saveOrUpdate(author);
     }
 
