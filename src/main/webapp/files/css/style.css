@@ -286,9 +286,6 @@ img {
     color: #535353;
     font-size: 10pt;
     text-align: justify;
-}
-
-.sloupecPravy .pridanaHra {
     position: relative;
 }
 
@@ -904,8 +901,7 @@ img {
 }
 
 .pravaCast#game .hodnoceni {
-    height: 100px;
-    padding: 20px;
+    padding: 20px 20px 30px 20px;
 }
 
 .pravaCast#game .hodnoceniVysledne {
@@ -1802,7 +1798,6 @@ a.stitekNapoveda:hover span {
     width: 80px;
     height: 26px;
     margin-top: 6px;
-    float: left;
 }
 
 /* pridat tlacitko */
