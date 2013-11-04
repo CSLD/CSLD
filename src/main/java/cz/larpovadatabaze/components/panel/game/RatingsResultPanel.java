@@ -4,8 +4,8 @@ import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.utils.HbUtils;
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -35,7 +35,7 @@ public class RatingsResultPanel extends Panel {
 
         WebMarkupContainer finalRating = new WebMarkupContainer("resultsOfRating");
         ratingColorModel = Model.of(ratingColor);
-        finalRating.add(new AttributeModifier("class",ratingColorModel));
+        finalRating.add(new AttributeAppender("class",ratingColorModel, " "));
         finalRating.setOutputMarkupId(true);
 
         ratingOfGameModel = Model.of((int) Math.round(ratingOfGame));
