@@ -29,6 +29,15 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
                 el.attr("value", "");
             }
         });
+
+        $("#submitButton").bind("click", function(event){
+            $("input, textarea").each(function (idx, elm){
+                var el = $(elm);
+                if (el.attr("value") == el.attr("title")) {
+                    el.attr("value", "");
+                }
+            });
+        });
     });
 </script>
 
@@ -249,7 +258,7 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
 <div style="clear:both; width:100%;"></div>
 
 <input type="button" class="pridatHruButton" value="Uložit" wicket:message="value:form.save"
-       wicket:id="submit"/>
+       wicket:id="submit" id="submitButton"/>
 
 </div>
 </form>

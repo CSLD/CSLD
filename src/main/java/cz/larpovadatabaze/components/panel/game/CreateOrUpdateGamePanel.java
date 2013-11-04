@@ -9,6 +9,7 @@ import cz.larpovadatabaze.services.*;
 import cz.larpovadatabaze.utils.FileUtils;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.*;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -97,6 +98,8 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
         addCreateLabelButton(createOrUpdateGame);
 
         createOrUpdateGame.add(new AjaxButton("submit"){
+
+
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 super.onSubmit(target, form);
@@ -108,7 +111,21 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
                     }
                 }
             }
-        });
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                super.onError(target, form);
+                validate();
+                target.add(getParent());
+            }
+        }.add(new AjaxFormComponentUpdatingBehavior("click") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                if(!createOrUpdateGame.isValid()){
+                    target.add(createOrUpdateGame);
+                }
+            }
+        }));
 
         add(createOrUpdateGame);
     }
