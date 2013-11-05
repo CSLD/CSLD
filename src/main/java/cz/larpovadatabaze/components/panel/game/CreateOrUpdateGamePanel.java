@@ -9,7 +9,6 @@ import cz.larpovadatabaze.services.*;
 import cz.larpovadatabaze.utils.FileUtils;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.*;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -85,6 +84,7 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
         createOrUpdateGame.add(addFeedbackPanel(new TextField<String>("video.path"), createOrUpdateGame, "videoPathFeedback"));
 
         fileUploadField = new FileUploadField("image", new PropertyModel<List<FileUpload>>(this,"images"));
+        fileUploadField.setOutputMarkupId(true);
         createOrUpdateGame.add(addFeedbackPanel(fileUploadField, createOrUpdateGame, "imageFeedback"));
 
         addAuthorsInput(createOrUpdateGame, game);
@@ -115,17 +115,11 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
                 super.onError(target, form);
-                validate();
-                target.add(getParent());
-            }
-        }.add(new AjaxFormComponentUpdatingBehavior("click") {
-            @Override
-            protected void onUpdate(AjaxRequestTarget target) {
                 if(!createOrUpdateGame.isValid()){
-                    target.add(createOrUpdateGame);
+                    target.add(getParent());
                 }
             }
-        }));
+        });
 
         add(createOrUpdateGame);
     }
