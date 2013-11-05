@@ -88,6 +88,14 @@ public class UpdateUserPanel extends Panel {
                     onCsldAction(target, form);
                 }
             }
+
+            @Override
+             protected void onError(AjaxRequestTarget target, Form<?> form) {
+                super.onError(target, form);
+                if(!createOrUpdateUser.isValid()){
+                    target.add(getParent());
+                }
+            }
         });
 
         add(createOrUpdateUser);

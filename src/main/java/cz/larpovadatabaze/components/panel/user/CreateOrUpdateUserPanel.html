@@ -5,18 +5,35 @@
     Code - cz.larpovadatabaze.components.panel.user.CreateOrUpdateUserPanel.html
     -->
     <script type="text/javascript">
-        $(document).ready(function(){
-            $("input, textarea").each(function(idx, elm){
-                if($(elm).attr("value") == ""){
+        $(document).ready(function () {
+            $("input, textarea").each(function (idx, elm) {
+                if($(elm).attr("type") == "file"){
+                    return;
+                }
+                if ($(elm).attr("value") == "") {
                     $(elm).attr("value", $(elm).attr("title"));
                 }
             });
 
-            $("input, textarea").bind("click", function(event){
+            $("input, textarea").bind("click", function (event) {
                 var el = $(this);
-                if(el.attr("value") == el.attr("title")){
-                    el.attr("value","");
+                if(el.attr("type") != "file"){
+                    if (el.attr("value") == el.attr("title")) {
+                        el.attr("value", "");
+                    }
                 }
+            });
+
+            $("#submitButton").bind("mousedown", function(event){
+                $("input, textarea").each(function (idx, elm){
+                    var el = $(elm);
+                    if(el.attr("type") == "file"){
+                        return;
+                    }
+                    if (el.attr("value") == el.attr("title")) {
+                        el.attr("value", "");
+                    }
+                });
             });
         });
     </script>
@@ -155,6 +172,6 @@
 
         <div style="clear:both; width:100%;"></div>
 
-        <input class="pridatHruButton" type="button" value="Registrovat" wicket:message="value:form.register" wicket:id="submit"/>
+        <input class="pridatHruButton" type="button" value="Registrovat" wicket:message="value:form.register" wicket:id="submit" id="submitButton"/>
     </form>
 </wicket:panel>

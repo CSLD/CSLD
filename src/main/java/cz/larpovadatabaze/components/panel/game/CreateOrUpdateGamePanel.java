@@ -84,6 +84,7 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
         createOrUpdateGame.add(addFeedbackPanel(new TextField<String>("video.path"), createOrUpdateGame, "videoPathFeedback"));
 
         fileUploadField = new FileUploadField("image", new PropertyModel<List<FileUpload>>(this,"images"));
+        fileUploadField.setOutputMarkupId(true);
         createOrUpdateGame.add(addFeedbackPanel(fileUploadField, createOrUpdateGame, "imageFeedback"));
 
         addAuthorsInput(createOrUpdateGame, game);
@@ -97,6 +98,8 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
         addCreateLabelButton(createOrUpdateGame);
 
         createOrUpdateGame.add(new AjaxButton("submit"){
+
+
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 super.onSubmit(target, form);
@@ -106,6 +109,14 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
                     if(saveOrUpdateGame(game)){
                         onCsldAction(target, form);
                     }
+                }
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                super.onError(target, form);
+                if(!createOrUpdateGame.isValid()){
+                    target.add(getParent());
                 }
             }
         });

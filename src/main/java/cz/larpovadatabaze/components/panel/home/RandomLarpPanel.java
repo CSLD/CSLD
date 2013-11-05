@@ -64,7 +64,7 @@ public class RandomLarpPanel extends Panel {
 
         add(new Label("players", Model.of(game.getPlayers())));
         add(new Label("year", Model.of(game.getYear())));
-        add(new Label("rating", Model.of(Math.round(game.getTotalRating()))));
+        add(new Label("rating", Model.of(Math.round((game.getTotalRating() != null) ? game.getTotalRating() : 0))));
     }
 
     @Override
