@@ -1256,6 +1256,8 @@ a.stitekNapoveda:hover span {
     border-style: solid;
 }
 
+.levaCast#Zebricky
+
 .levaCast#Zebricky td:first-child {
     width: 10px;
 }
@@ -1275,6 +1277,7 @@ a.stitekNapoveda:hover span {
 .levaCast#Zebricky .larpOdkaz {
     color: #214c61;
     font-weight: bold;
+    text-decoration: none;
 }
 
 .levaCast#Zebricky .hodnoceni {
@@ -1451,8 +1454,8 @@ a.stitekNapoveda:hover span {
 }
 
 .levaCast#Uzivatele .pocetherUzivatel {
-    text-align: right;
-    width: 250px;
+    text-align: center;
+    width: 200px;
 }
 
 .levaCast#Uzivatele .uzivatelPrezdivka {

@@ -1,25 +1,27 @@
 <wicket:extend xmlns:wicket="http://wicket.apache.org">
     <div class="levaCast" id="Skupiny">
-        <div class="nadpisStranky">
-            <img wicket:id="groupsIcon" class="ikonaStranky"><wicket:message key="group.group">Skupiny</wicket:message>
+        <div class="sekce sekceAutori">
+            <div class="nadpisStranky">
+                <img wicket:id="groupsIcon" class="ikonaStranky"><wicket:message key="group.group">Skupiny</wicket:message>
+            </div>
+            <table>
+                <tr>
+                    <td></td>
+                    <td><wicket:message key="form.name">Jméno</wicket:message></td>
+                    <td><wicket:message key="form.averageOfAllGames">Průměrné hodnocení her</wicket:message></td>
+                    <td><wicket:message key="form.amountOfGames">Počet hodnocených her</wicket:message></td>
+                </tr>
+                <tr wicket:id="listGroups">
+                    <!-- Beginning of repetitive part for every group -->
+                    <td></td>
+                    <td><a wicket:id="groupDetail"><span wicket:id="groupName"></span></a></td>
+                    <td><span wicket:id="averageOfAllGames"></span></td>
+                    <td><span wicket:id="amountOfGames"></span></td>
+                    <!-- End of repetitive part for every group -->
+                </tr>
+            </table>
+            <span wicket:id="navigator">[dataview navigator]</span>
         </div>
-        <table>
-            <tr>
-                <td></td>
-                <td><wicket:message key="form.name">Jméno</wicket:message></td>
-                <td><wicket:message key="form.averageOfAllGames">Průměrné hodnocení her</wicket:message></td>
-                <td><wicket:message key="form.amountOfGames">Počet hodnocených her</wicket:message></td>
-            </tr>
-            <tr wicket:id="listGroups">
-                <!-- Beginning of repetitive part for every group -->
-                <td></td>
-                <td><a wicket:id="groupDetail"><span wicket:id="groupName"></span></a></td>
-                <td><span wicket:id="averageOfAllGames"></span></td>
-                <td><span wicket:id="amountOfGames"></span></td>
-                <!-- End of repetitive part for every group -->
-            </tr>
-        </table>
-        <span wicket:id="navigator">[dataview navigator]</span>
     </div>
 
     <div class="pravaCast" id="Skupiny">
