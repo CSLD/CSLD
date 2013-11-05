@@ -8,8 +8,25 @@
         <wicket:message key="game.lastComments">Poslední komentáře</wicket:message>
     </div>
 
-    <div wicket:id="commentsView">
-        <!-- Beginning of repetitive content for every comment -->
+    <wicket:container wicket:id="visibleComments">
+        <wicket:container wicket:id="comment" />
+    </wicket:container>
+
+    <a href="#" class="moreLink" onclick="$(this).hide(); $('#hiddenComments').slideDown(); return false;">
+        <wicket:message key="comments.more">Více...</wicket:message>
+    </a>
+
+    <div id="hiddenComments" style="display: none">
+        <wicket:container wicket:id="hiddenComments">
+            <wicket:container wicket:id="comment" />
+        </wicket:container>
+
+        <div>
+            <a wicket:id="allComments" class="moreLink"><wicket:message key="comments.last">Poslední komentáře</wicket:message></a>
+        </div>
+    </div>
+
+    <wicket:fragment wicket:id="commentFragment">
         <div class="pridanaHra">
             <div class="HraIkonka" style="float:left; height: 100%;">
                 <a wicket:id="commenterIconLink">
@@ -31,16 +48,11 @@
 
                 <div class="popisek komentar">
                     <span wicket:id="commentsContent"></span>
-                    <a wicket:id="gameMoreLink">
-                        <div class="HraKomentarVice"> ... více</div>
-                    </a>
                 </div>
             </div>
+            <a wicket:id="gameMoreLink">
+                <div class="HraKomentarVice"> ... více</div>
+            </a>
         </div>
-        <!-- End of repetitive content for every comment -->
-    </div>
-
-    <div>
-        <a wicket:id="moreComments"><wicket:message key="game.more">Více</wicket:message></a>
-    </div>
+    </wicket:fragment>
 </wicket:panel>
