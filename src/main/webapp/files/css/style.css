@@ -1911,3 +1911,7 @@ select[name=stateOfGame]{
     float:left;
     margin-right: 5px;
 }
+
+.faqAccordion .ui-accordion-header {
+    padding-left: 30px;
+}
