@@ -39,6 +39,8 @@ http://www.springframework.org/schema/jee http://www.springframework.org/schema/
     
 
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+    	<property name="session"><jee:jndi-lookup jndi-name="mail/Session"/></property>
+    	<!--
         <property name="host" value="smtp.gmail.com"/>
         <property name="port" value="587"/>
         <property name="username" value="hrajlarp111@gmail.com"/>
@@ -49,6 +51,7 @@ http://www.springframework.org/schema/jee http://www.springframework.org/schema/
                 <prop key="mail.smtp.starttls.enable">true</prop>
             </props>
         </property>
+        -->
     </bean>
 
     <bean id="templateMessage" class="org.springframework.mail.SimpleMailMessage">

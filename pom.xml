@@ -24,6 +24,21 @@
             </snapshots>
         </repository>
     </repositories>
+
+    <properties>
+        <wicket.version>6.6.0</wicket.version>
+        <wicket-annotations.version>1.3.7</wicket-annotations.version>
+        <jetty.version>9.1.0.RC0</jetty.version>
+        <tomcat.version>7</tomcat.version>
+        <hibernate.version>3.5.1-Final</hibernate.version>
+        <spring.version>3.0.3.RELEASE</spring.version>
+        <hsqldb.version>1.8.0.7</hsqldb.version>
+        <tomcatContextFile>${basedir}/src/test/config/tomcat.xml</tomcatContextFile>
+        <jettyContextFile>${basedir}/src/test/config/jetty.xml</jettyContextFile>
+        <javax.mail.version>1.4.7</javax.mail.version>
+        <postgresql.version>9.1-901.jdbc4</postgresql.version>
+    </properties>
+
     <dependencies>
         <!-- WICKET DEPENDENCIES -->
         <dependency>
@@ -125,14 +140,9 @@
             <version>${hsqldb.version}</version>
         </dependency>
         <dependency>
-            <groupId>commons-dbcp</groupId>
-            <artifactId>commons-dbcp</artifactId>
-            <version>${commons-dbcp.version}</version>
-        </dependency>
-        <dependency>
             <groupId>postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>9.1-901.jdbc4</version>
+            <version>${postgresql.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -153,6 +163,13 @@
             <version>0.9.24</version>
         </dependency>
 
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.4</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- JUNIT DEPENDENCY FOR TESTING -->
         <dependency>
             <groupId>junit</groupId>
@@ -160,32 +177,32 @@
             <version>4.8.1</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- JETTY DEPENDENCIES FOR TESTING -->
         <dependency>
-            <groupId>org.mortbay.jetty</groupId>
-            <artifactId>jetty</artifactId>
-            <version>${jetty.version}</version>
+            <groupId>c3p0</groupId>
+            <artifactId>c3p0</artifactId>
+            <version>0.9.1.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.mortbay.jetty</groupId>
-            <artifactId>jetty-util</artifactId>
-            <version>${jetty.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mortbay.jetty</groupId>
-            <artifactId>jetty-management</artifactId>
-            <version>${jetty.version}</version>
-            <scope>provided</scope>
-        </dependency>
+      			<groupId>org.apache.tomcat</groupId>
+  	    		<artifactId>catalina</artifactId>
+      			<version>6.0.33</version>
+  	    		<scope>provided</scope>
+    		</dependency>
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
-            <version>1.4.7</version>
+            <version>${javax.mail.version}</version>
+  	    		<scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.icegreen</groupId>
+            <artifactId>greenmail</artifactId>
+            <version>1.3.1b</version>
+  	    		<scope>provided</scope>
         </dependency>
     </dependencies>
+
     <build>
         <resources>
             <resource>
@@ -228,83 +245,61 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.mortbay.jetty</groupId>
-                <artifactId>maven-jetty-plugin</artifactId>
-                <version>${jetty.version}</version>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.1</version>
                 <configuration>
-                    <scanIntervalSeconds>10</scanIntervalSeconds>
-                    <stopKey>foo</stopKey>
-                    <stopPort>9999</stopPort>
-                    <jettyConfig>jetty.xml</jettyConfig>
+                    <contextFile>${tomcatContextFile}</contextFile>
+                    <path>/</path>
+                    <httpsPort>8443</httpsPort>
+                    <keystoreFile>${basedir}/src/test/config/keystore</keystoreFile>
+                    <keystorePass>csldcsld</keystorePass>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>start-jetty</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <scanIntervalSeconds>0</scanIntervalSeconds>
-                            <daemon>true</daemon>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>stop-jetty</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>stop</goal>
-                        </goals>
-                    </execution>
-                </executions>
                 <dependencies>
+                    <dependency>
+  	                    <groupId>javax.mail</groupId>
+	                      <artifactId>mail</artifactId>
+                        <version>${javax.mail.version}</version>
+                    </dependency>
                     <dependency>
                         <groupId>postgresql</groupId>
                         <artifactId>postgresql</artifactId>
-                        <version>9.1-901.jdbc4</version>
+                        <version>${postgresql.version}</version>
                     </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>${jetty.version}</version>
+                <configuration>
+                    <scanIntervalSeconds>10</scanIntervalSeconds>
+                    <jettyXml>${jettyContextFile}</jettyXml>
+                    <systemProperties>
+                        <systemProperty>
+                            <name>keystore</name>
+                            <value>${basedir}/src/test/config/keystore</value>
+                        </systemProperty>
+                    </systemProperties>
+                </configuration>
+                <dependencies>
                     <dependency>
-                        <groupId>org.mortbay.jetty</groupId>
-                        <artifactId>jetty-util</artifactId>
-                        <version>6.1.4</version>
+  	                    <groupId>javax.mail</groupId>
+	                      <artifactId>mail</artifactId>
+                        <version>${javax.mail.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>c3p0</groupId>
                         <artifactId>c3p0</artifactId>
                         <version>0.9.1.2</version>
                     </dependency>
+                    <dependency>
+                        <groupId>postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>${postgresql.version}</version>
+                    </dependency>
                 </dependencies>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.3</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals><goal>copy</goal></goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>org.mortbay.jetty</groupId>
-                                    <artifactId>jetty-runner</artifactId>
-                                    <version>7.4.5.v20110725</version>
-                                    <destFileName>jetty-runner.jar</destFileName>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
-    <properties>
-        <wicket.version>6.6.0</wicket.version>
-        <wicket-annotations.version>1.3.7</wicket-annotations.version>
-        <jetty.version>6.1.4</jetty.version>
-        <hibernate.version>3.5.1-Final</hibernate.version>
-        <spring.version>3.0.3.RELEASE</spring.version>
-        <hsqldb.version>1.8.0.7</hsqldb.version>
-        <commons-dbcp.version>1.4</commons-dbcp.version>
-    </properties>
 </project>
