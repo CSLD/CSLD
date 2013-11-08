@@ -1,7 +1,6 @@
 package cz.larpovadatabaze.components.page.author;
 
 import cz.larpovadatabaze.Csld;
-import cz.larpovadatabaze.components.page.HomePage;
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Time: 10:27
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:spring-web.xml","classpath:hibernate.cfg.xml"})
+@ContextConfiguration(locations = {"classpath:cz/larpovadatabaze/test/spring-test.xml", "classpath:spring-web.xml","classpath:hibernate.cfg.xml"})
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
 @Transactional
 public class ListAuthorTest {
