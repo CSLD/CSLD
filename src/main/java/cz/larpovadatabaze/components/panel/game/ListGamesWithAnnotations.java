@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.entities.Game;
@@ -15,7 +16,7 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.ContextRelativeResource;
+import org.apache.wicket.request.resource.PackageResourceReference;
 
 /**
  * It shows pageable list of games ordered by time when they were added to the database
@@ -30,7 +31,8 @@ public class ListGamesWithAnnotations extends Panel {
     }
 
     private void createListWithAnnotation(SortableDataProvider<Game,String> dataProvider){
-        Image chartsIcon = new Image("gamesIcon", new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getChartsIconPath()));
+        Image chartsIcon = new Image("gamesIcon",
+                new PackageResourceReference(Csld.class, cz.larpovadatabaze.entities.Image.getChartsIconPath()));
         add(chartsIcon);
 
         DataView<Game> gamesView = new DataView<Game>("gamesView", dataProvider) {
@@ -48,7 +50,7 @@ public class ListGamesWithAnnotations extends Panel {
                 final BookmarkablePageLink<CsldBasePage> gameLink =
                         new BookmarkablePageLink<CsldBasePage>("gameIconLink", GameDetail.class, params);
                 final Image gameLinkImage = new Image("gameIcon",
-                        new ContextRelativeResource(game.getImage().getPath()));
+                        new PackageResourceReference(Csld.class, game.getImage().getPath()));
                 gameLink.add(gameLinkImage);
                 item.add(gameLink);
 

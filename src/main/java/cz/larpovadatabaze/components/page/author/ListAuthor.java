@@ -1,7 +1,9 @@
 package cz.larpovadatabaze.components.page.author;
 
+import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
+import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.components.panel.author.AuthorsPanel;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
@@ -16,7 +18,7 @@ import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.ContextRelativeResource;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -30,7 +32,8 @@ public class ListAuthor extends CsldBasePage {
 
     @SuppressWarnings("unchecked")
     public ListAuthor(){
-        Image authorsIcon = new Image("authorsIcon", new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getLightBulbIconPath()));
+        Image authorsIcon = new Image("authorsIcon",
+                new PackageResourceReference(Csld.class, cz.larpovadatabaze.entities.Image.getAuthorIconPath()));
         add(authorsIcon);
 
         SortableAuthorProvider sap = new SortableAuthorProvider(csldUserService);
@@ -43,7 +46,7 @@ public class ListAuthor extends CsldBasePage {
                 params.add("id", actualAuthor.getId());
 
                 final BookmarkablePageLink<CsldUser> authorName =
-                        new BookmarkablePageLink<CsldUser>("authorName", AuthorDetail.class, params);
+                        new BookmarkablePageLink<CsldUser>("authorName", UserDetail.class, params);
                 final Label nicknameLabel = new Label("authorNicknameContent", actualAuthor.getPerson().getNickname());
                 final Label nameLabel = new Label("authorNameContent", actualAuthor.getPerson().getName());
                 authorName.add(nameLabel);

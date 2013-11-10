@@ -28,6 +28,7 @@ public abstract class PlayedPanel extends Panel {
     private String selected = "Nehrál jsem";
     private UserPlayedGame stateOfGame;
 
+    @SuppressWarnings("unchecked")
     public PlayedPanel(String id, final Game game) {
         super(id);
 

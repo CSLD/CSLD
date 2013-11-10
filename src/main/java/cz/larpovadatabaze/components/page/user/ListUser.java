@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.page.user;
 
+import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.panel.user.UsersPanel;
 import cz.larpovadatabaze.entities.CsldUser;
@@ -13,7 +14,7 @@ import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.ContextRelativeResource;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -25,7 +26,8 @@ public class ListUser extends CsldBasePage {
 
     @SuppressWarnings("unchecked")
     public ListUser(){
-        Image usersIcon = new Image("usersIcon", new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getUserIconPath()));
+        Image usersIcon = new Image("usersIcon",
+                new PackageResourceReference(Csld.class, cz.larpovadatabaze.entities.Image.getUserIconPath()));
         add(usersIcon);
 
         SortableUserProvider sup = new SortableUserProvider(csldUserService);

@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.panel.user;
 
+import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.user.SignOut;
 import cz.larpovadatabaze.components.page.user.UpdateUserPage;
@@ -12,7 +13,7 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.ContextRelativeResource;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -39,20 +40,20 @@ public class LoggedBoxPanel extends Panel {
 
                 PageParameters params = new PageParameters();
                 params.add("id", loggedUser.getId());
-                final BookmarkablePageLink<CsldBasePage> moderatorLink =
+                final BookmarkablePageLink<CsldBasePage> loggedUserLink =
                         new BookmarkablePageLink<CsldBasePage>("loggedUserLink", UserDetail.class, params);
-                final Image moderatorImage = new Image("loggedUserImage",
-                        new ContextRelativeResource(loggedUser.getImage().getPath()));
-                moderatorLink.add(moderatorImage);
-                add(moderatorLink);
+                final Image loggedUserIcon = new Image("loggedUserImage",
+                        new PackageResourceReference(Csld.class, loggedUser.getImage().getPath()));
+                loggedUserLink.add(loggedUserIcon);
+                add(loggedUserLink);
 
-                final BookmarkablePageLink<CsldBasePage> moderatorLinkContent =
+                final BookmarkablePageLink<CsldBasePage> loggedUserLinkContent =
                         new BookmarkablePageLink<CsldBasePage>("loggedUserLinkContent", UserDetail.class, params);
-                final Label moderatorNick = new Label("loggedUserNick", loggedUser.getPerson().getNickname());
-                final Label moderatorName = new Label("loggedUserName", loggedUser.getPerson().getName());
-                moderatorLinkContent.add(moderatorNick);
-                moderatorLinkContent.add(moderatorName);
-                add(moderatorLinkContent);
+                final Label loggedUserNick = new Label("loggedUserNick", loggedUser.getPerson().getNickname());
+                final Label loggedUserName = new Label("loggedUserName", loggedUser.getPerson().getName());
+                loggedUserLinkContent.add(loggedUserNick);
+                loggedUserLinkContent.add(loggedUserName);
+                add(loggedUserLinkContent);
 
                 final BookmarkablePageLink<CsldBasePage> editConfiguration =
                         new BookmarkablePageLink<CsldBasePage>("editConfiguration", UpdateUserPage.class, params);

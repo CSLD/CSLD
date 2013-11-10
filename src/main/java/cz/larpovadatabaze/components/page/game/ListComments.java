@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.page.game;
 
+import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.entities.Comment;
@@ -16,7 +17,7 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.ContextRelativeResource;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.text.SimpleDateFormat;
@@ -53,7 +54,7 @@ public class ListComments extends CsldBasePage{
                 final BookmarkablePageLink<CsldBasePage> commenterIconLink =
                         new BookmarkablePageLink<CsldBasePage>("commenterIconLink", UserDetail.class, userParams);
                 final Image commenterIcon = new Image("commenterIcon",
-                        new ContextRelativeResource(commenter.getImage().getPath()));
+                        new PackageResourceReference(Csld.class, commenter.getImage().getPath()));
                 commenterIconLink.add(commenterIcon);
                 item.add(commenterIconLink);
 

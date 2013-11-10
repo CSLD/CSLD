@@ -1,12 +1,13 @@
 package cz.larpovadatabaze.components.panel.photo;
 
+import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.entities.Photo;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.request.resource.ContextRelativeResource;
+import org.apache.wicket.request.resource.PackageResourceReference;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class ShowPhotoPanel extends Panel {
                 }
 
                 Image photoImage = new Image("photo",
-                        new ContextRelativeResource(photo.getImage().getPath()));
+                        new PackageResourceReference(Csld.class, photo.getImage().getPath()));
                 item.add(photoImage);
             }
         };

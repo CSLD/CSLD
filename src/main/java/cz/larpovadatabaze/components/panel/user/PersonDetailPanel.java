@@ -1,12 +1,13 @@
 package cz.larpovadatabaze.components.panel.user;
 
+import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Person;
 import cz.larpovadatabaze.entities.UserPlayedGame;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.request.resource.ContextRelativeResource;
+import org.apache.wicket.request.resource.PackageResourceReference;
 
 /**
  * It shows detail of user.
@@ -16,7 +17,7 @@ public class PersonDetailPanel extends Panel {
         super(id);
 
         final Image userImage = new Image("userImage",
-                new ContextRelativeResource(user.getImage().getPath()));
+                new PackageResourceReference(Csld.class, user.getImage().getPath()));
         add(userImage);
 
         Person person = user.getPerson();

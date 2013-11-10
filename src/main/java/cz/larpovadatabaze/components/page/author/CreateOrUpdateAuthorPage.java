@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.components.page.author;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.services.CsldUserService;
@@ -39,7 +40,7 @@ public class CreateOrUpdateAuthorPage extends CsldBasePage {
                 PageParameters params = new PageParameters();
                 params.add("id", author.getId());
 
-                throw new RestartResponseException(AuthorDetail.class, params);
+                throw new RestartResponseException(UserDetail.class, params);
             }
         });
     }

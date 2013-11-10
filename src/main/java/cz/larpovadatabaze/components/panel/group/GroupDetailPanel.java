@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.components.panel.group;
 
-import cz.larpovadatabaze.components.page.author.AuthorDetail;
+import cz.larpovadatabaze.Csld;
+import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.GroupHasMember;
@@ -11,7 +12,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.ContextRelativeResource;
+import org.apache.wicket.request.resource.PackageResourceReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +24,9 @@ public class GroupDetailPanel extends Panel {
     public GroupDetailPanel(String id, CsldGroup group) {
         super(id);
 
-        final Image userImage = new Image("groupImage",
-                new ContextRelativeResource(group.getImage().getPath()));
-        add(userImage);
+        final Image groupIcon = new Image("groupImage",
+                new PackageResourceReference(Csld.class, group.getImage().getPath()));
+        add(groupIcon);
 
         add(new Label("name", group.getName()));
         int authoredLarps = group.getAuthorsOf().size();
@@ -49,7 +50,7 @@ public class GroupDetailPanel extends Panel {
                 params.add("id", author.getId());
 
                 final BookmarkablePageLink<CsldUser> authorName =
-                        new BookmarkablePageLink<CsldUser>("groupAuthor", AuthorDetail.class, params);
+                        new BookmarkablePageLink<CsldUser>("groupAuthor", UserDetail.class, params);
 
                 authorName.add(new Label("groupAuthorName", author.getPerson().getName()));
                 authorName.add(new Label("groupAuthorNickname", author.getPerson().getNickname()));

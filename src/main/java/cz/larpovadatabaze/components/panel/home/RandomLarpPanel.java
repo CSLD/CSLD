@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.panel.home;
 
+import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.entities.Game;
@@ -12,7 +13,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.ContextRelativeResource;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -43,7 +44,7 @@ public class RandomLarpPanel extends Panel {
         final BookmarkablePageLink<CsldBasePage> gameLink =
                 new BookmarkablePageLink<CsldBasePage>("gameIconLink", GameDetail.class, params);
         final Image gameLinkImage = new Image("gameIcon",
-                new ContextRelativeResource(game.getImage().getPath()));
+                new PackageResourceReference(Csld.class, game.getImage().getPath()));
         gameLink.add(gameLinkImage);
         add(gameLink);
 

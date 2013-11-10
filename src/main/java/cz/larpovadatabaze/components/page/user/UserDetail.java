@@ -3,11 +3,14 @@ package cz.larpovadatabaze.components.page.user;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.panel.game.CommentsListPanel;
 import cz.larpovadatabaze.components.panel.game.GameListPanel;
+import cz.larpovadatabaze.components.panel.game.ListGamesWithAnnotations;
 import cz.larpovadatabaze.components.panel.user.PersonDetailPanel;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.UserPlayedGame;
+import cz.larpovadatabaze.providers.SortableAnnotatedProvider;
 import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.GameService;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -23,6 +26,8 @@ import java.util.List;
 public class UserDetail extends CsldBasePage {
     @SpringBean
     CsldUserService csldUserService;
+    @SpringBean
+    GameService gameService;
 
     public UserDetail(PageParameters params){
         Integer authorId = params.get("id").to(Integer.class);
@@ -30,6 +35,11 @@ public class UserDetail extends CsldBasePage {
 
         add(new PersonDetailPanel("personDetail",user));
         add(new CommentsListPanel("comments", user.getCommented(), true));
+
+        SortableAnnotatedProvider provider = new SortableAnnotatedProvider(gameService);
+        provider.setAuthor(user);
+        add(new ListGamesWithAnnotations("annotatedGamesOfAuthor", provider));
+
 
         List<Game> playedGames = new ArrayList<Game>();
         List<Game> wantedGames = new ArrayList<Game>();

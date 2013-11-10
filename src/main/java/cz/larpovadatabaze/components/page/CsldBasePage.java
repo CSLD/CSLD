@@ -15,10 +15,9 @@ import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.request.http.WebResponse;
-import org.apache.wicket.request.resource.ContextRelativeResource;
+import org.apache.wicket.request.resource.PackageResourceReference;
 
 /**
  * Base page from which all other pages are derived.
@@ -33,17 +32,6 @@ public class CsldBasePage extends WebPage {
                 CsldAuthenticatedWebSession.get().signIn(data[0], data[1]);
             }
         }
-
-        final Image mainLogo = new Image("mainLogo",
-                new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getMainLogoPath()));
-        add(mainLogo);
-
-        final BookmarkablePageLink<CsldBasePage> homePageLink =
-                new BookmarkablePageLink<CsldBasePage>("homePage", HomePage.class);
-        final Image topMain = new Image("topMain",
-                new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getTopLogoPath()));
-        homePageLink.add(topMain);
-        add(homePageLink);
 
         add(new LoginBoxPanel("login"));
         add(new LoggedBoxPanel("loggedInfo"));
@@ -70,13 +58,13 @@ public class CsldBasePage extends WebPage {
         response.render(JavaScriptHeaderItem.forReference(getApplication().getJavaScriptLibrarySettings()
                 .getJQueryReference()));
 
-        response.render(JavaScriptHeaderItem.forUrl("/files/js/jquery-ui-1.9.2.custom.js"));
-        response.render(JavaScriptHeaderItem.forUrl("/files/js/jquery.nivo.slider.pack.js"));
-        response.render(JavaScriptHeaderItem.forUrl("/files/js/jquery.nivo.slider.js"));
+        response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"js/jquery-ui-1.9.2.custom.js")));
+        response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"js/jquery.nivo.slider.pack.js")));
+        response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"js/jquery.nivo.slider.js")));
 
-        response.render(CssHeaderItem.forUrl("/files/css/nivo-slider.css"));
-        response.render(CssHeaderItem.forUrl("/files/css/style.css"));
-        response.render(CssHeaderItem.forUrl("/files/css/smoothness/jquery-ui-1.8.24.custom.css"));
+        response.render(CssHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"css/nivo-slider.css")));
+        response.render(CssHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"css/style.css")));
+        response.render(CssHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"css/smoothness/jquery-ui-1.8.24.custom.css")));
         super.renderHead(response);
     }
 }

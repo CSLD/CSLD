@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.entities.Game;
@@ -17,7 +18,7 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.ContextRelativeResource;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.List;
@@ -61,12 +62,14 @@ public class ListGamePanel extends Panel {
 
                 final Label gameRatings = new Label("ratings", game.getAmountOfRatings());
                 item.add(gameRatings);
-                final Image ratingsIcon = new Image("ratingsIcon", new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getRatingsIconPath()));
+                final Image ratingsIcon = new Image("ratingsIcon",
+                        new PackageResourceReference(Csld.class, cz.larpovadatabaze.entities.Image.getRatingsIconPath()));
                 item.add(ratingsIcon);
 
                 final Label gameComments = new Label("comments", game.getAmountOfComments());
                 item.add(gameComments);
-                final Image commentsIcon = new Image("commentsIcon", new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getCommentsIconPath()));
+                final Image commentsIcon = new Image("commentsIcon",
+                        new PackageResourceReference(Csld.class, cz.larpovadatabaze.entities.Image.getCommentsIconPath()));
                 item.add(commentsIcon);
             }
         };

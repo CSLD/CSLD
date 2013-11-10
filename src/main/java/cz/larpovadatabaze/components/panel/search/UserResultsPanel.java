@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.panel.search;
 
+import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.entities.CsldUser;
@@ -12,7 +13,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.ContextRelativeResource;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
@@ -65,7 +66,7 @@ public class UserResultsPanel extends Panel {
                 final BookmarkablePageLink<CsldBasePage> moderatorLink =
                         new BookmarkablePageLink<CsldBasePage>("authorLink", UserDetail.class, params);
                 final Image moderatorImage = new Image("authorLinkImage",
-                        new ContextRelativeResource(actualUser.getImage().getPath()));
+                        new PackageResourceReference(Csld.class, actualUser.getImage().getPath()));
                 moderatorLink.add(moderatorImage);
                 item.add(moderatorLink);
 

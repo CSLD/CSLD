@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.panel.home;
 
+import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.components.page.game.ListComments;
@@ -19,7 +20,7 @@ import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.ContextRelativeResource;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.text.SimpleDateFormat;
@@ -62,7 +63,7 @@ public class LastCommentsPanel extends Panel {
             final BookmarkablePageLink<CsldBasePage> commenterIconLink =
                     new BookmarkablePageLink<CsldBasePage>("commenterIconLink", UserDetail.class, userParams);
             final Image commenterIcon = new Image("commenterIcon",
-                    new ContextRelativeResource(commenter.getImage().getPath()));
+                    new PackageResourceReference(Csld.class, commenter.getImage().getPath()));
             commenterIconLink.add(commenterIcon);
             commentFragment.add(commenterIconLink);
 

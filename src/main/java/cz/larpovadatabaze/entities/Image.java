@@ -66,61 +66,49 @@ public class Image implements Serializable {
     @Transient
     public static Image getDefaultGroup() {
         Image groupImage = new Image();
-        groupImage.setPath("/files/img/group_icon.png");
+        groupImage.setPath("upload/group_icon.png");
         return groupImage;
     }
 
     @Transient
     public static Image getDefaultUser() {
         Image userImage = new Image();
-        userImage.setPath("/files/img/author_icon.png");
+        userImage.setPath("upload/author_icon.png");
         return userImage;
     }
 
     @Transient
     public static Image getDefaultGame() {
         Image gameImage = new Image();
-        gameImage.setPath("/files/img/icon/question_icon_game.png");
+        gameImage.setPath("upload/question_icon_game.png");
         return gameImage;
     }
 
     public static String getPlusIconPath() {
-        return "/files/img/icon/plus_icon.png";
-    }
-
-    public static String getQuestionIconPath() {
-        return "/files/img/icon/question_icon.png";
-    }
-
-    public static String getLightBulbIconPath() {
-        return "/files/img/icon/light_icon.png";
+        return "img/icon/plus_icon.png";
     }
 
     public static String getChartsIconPath() {
-        return "/files/img/icon/charts_icon.png";
+        return "img/icon/charts_icon.png";
     }
 
     public static String getRatingsIconPath() {
-        return "/files/img/icon/star_icon.png";
+        return "img/icon/star_icon.png";
     }
 
     public static String getCommentsIconPath() {
-        return "/files/img/icon/comment_icon.png";
+        return "img/icon/comment_icon.png";
     }
 
     public static String getUserIconPath() {
-        return "/files/img/icon/user_icon.png";
+        return "img/icon/user_icon.png";
     }
 
-    public static String getSearchResultsIconPath() {
-        return "/files/img/icon/glass_icon.png";
+    public static String getAuthorIconPath() {
+        return "img/icon/author_icon.png";
     }
 
-    public static String getTopLogoPath() {
-        return "/files/img/nadpis.png";
-    }
-
-    public static String getMainLogoPath() {
-        return "/files/img/logo50.png";
+    public static String getSettingsIconPath() {
+        return "img/icon/settings_icon.png";
     }
 }

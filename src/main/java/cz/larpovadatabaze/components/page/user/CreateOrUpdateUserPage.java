@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.page.user;
 
+import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.components.panel.user.CreateOrUpdateUserPanel;
@@ -10,7 +11,9 @@ import cz.larpovadatabaze.utils.HbUtils;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -21,6 +24,10 @@ public class CreateOrUpdateUserPage extends CsldBasePage {
     CsldUserService csldUserService;
 
     public CreateOrUpdateUserPage(PageParameters params){
+        Image settingsIcon = new Image("settingsIcon",
+                new PackageResourceReference(Csld.class, cz.larpovadatabaze.entities.Image.getSettingsIconPath()));
+        add(settingsIcon);
+
         CsldUser csldUser  = null;
         if(!params.isEmpty()){
             Integer id = params.get("id").to(Integer.class);

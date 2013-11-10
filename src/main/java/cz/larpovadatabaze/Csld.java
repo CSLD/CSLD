@@ -5,7 +5,6 @@ import cz.larpovadatabaze.components.page.about.AboutDatabase;
 import cz.larpovadatabaze.components.page.admin.Administration;
 import cz.larpovadatabaze.components.page.admin.ManageLabelsPage;
 import cz.larpovadatabaze.components.page.admin.ManageUserRightsPage;
-import cz.larpovadatabaze.components.page.author.AuthorDetail;
 import cz.larpovadatabaze.components.page.author.CreateOrUpdateAuthorPage;
 import cz.larpovadatabaze.components.page.author.ListAuthor;
 import cz.larpovadatabaze.components.page.game.*;
@@ -34,6 +33,8 @@ import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
+import org.apache.wicket.markup.html.IPackageResourceGuard;
+import org.apache.wicket.markup.html.SecurePackageResourceGuard;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.log4j.Logger;
@@ -94,6 +95,14 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         getMarkupSettings().setStripWicketTags(true);
         getRequestCycleSettings().setResponseRequestEncoding(DEFAULT_ENCODING);
 
+        IPackageResourceGuard packageResourceGuard = getResourceSettings().getPackageResourceGuard();
+        if(packageResourceGuard instanceof SecurePackageResourceGuard){
+            SecurePackageResourceGuard guard = (SecurePackageResourceGuard) packageResourceGuard;
+            guard.addPattern("+*.JPG");
+            guard.addPattern("+*.JPEG");
+            guard.addPattern("+*.PNG");
+            guard.addPattern("+*.GIF");
+        }
 
         mountPages();
 	}
@@ -136,7 +145,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         mountPage("/skupiny", ListGroup.class);
 
         mountPage("/detail-game", GameDetail.class);
-        mountPage("/detail-author", AuthorDetail.class);
+        mountPage("/detail-author", UserDetail.class);
         mountPage("/detail-user", UserDetail.class);
         mountPage("/detail-group", GroupDetail.class);
 

@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.panel.about;
 
+import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.entities.CsldUser;
@@ -11,7 +12,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.ContextRelativeResource;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.List;
@@ -37,7 +38,7 @@ public class AdministratorPanel extends Panel {
                 final BookmarkablePageLink<CsldBasePage> adminLink =
                         new BookmarkablePageLink<CsldBasePage>("administratorLink", UserDetail.class, params);
                 final Image adminImage = new Image("administratorImage",
-                        new ContextRelativeResource(admin.getImage().getPath()));
+                        new PackageResourceReference(Csld.class, admin.getImage().getPath()));
                 adminLink.add(adminImage);
                 item.add(adminLink);
 

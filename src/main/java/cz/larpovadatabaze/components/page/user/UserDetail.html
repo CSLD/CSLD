@@ -7,6 +7,13 @@
             -->
         </div>
 
+        <div wicket:id="annotatedGamesOfAuthor">
+            <!--
+            This panel is found in package: cz.larpovadatabaze.components.panel.game.ListGamesWithAnnotations.html
+            https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/ListGamesWithAnnotations.html
+            -->
+        </div>
+
         <h2><wicket:message key="user.comments">Komentáře</wicket:message></h2>
         <div wicket:id="comments">
             <!--
@@ -14,6 +21,8 @@
             https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/CommentsListPanel.html
             -->
         </div>
+
+
     </div>
 
     <!-- PRAVE MENU -->
@@ -21,6 +30,17 @@
     <div class="pravaCast" id="uzivatel">
         <div class="praveMenu">
             <div class="nadpisMenu"><wicket:message key="user.panel">Uživatelův panel</wicket:message></div>
+        </div>
+
+
+        <div class="sekce">
+            <div class="nadpisSekce"><wicket:message key="author.myLarps">Moje larpy</wicket:message></div>
+            <div class="obsah" wicket:id="authoredGamesPanel">
+                <!--
+                This panel is found in package: cz.larpovadatabaze.components.panel.game.GameListPanel.html
+                https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/GameListPanel.html
+                -->
+            </div>
         </div>
 
         <div class="sekce">
@@ -36,17 +56,6 @@
         <div class="sekce">
             <div class="nadpisSekce"><wicket:message key="user.wantsToPlay">Chci hrát</wicket:message></div>
             <div class="obsah" wicket:id="wantedGamesPanel">
-                <!--
-                This panel is found in package: cz.larpovadatabaze.components.panel.game.GameListPanel.html
-                https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/GameListPanel.html
-                -->
-            </div>
-        </div>
-
-
-        <div class="sekce">
-            <div class="nadpisSekce"><wicket:message key="author.myLarps">Moje larpy</wicket:message></div>
-            <div class="obsah" wicket:id="authoredGamesPanel">
                 <!--
                 This panel is found in package: cz.larpovadatabaze.components.panel.game.GameListPanel.html
                 https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/GameListPanel.html

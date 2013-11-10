@@ -1,8 +1,9 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.author.AuthorDetail;
 import cz.larpovadatabaze.components.page.group.GroupDetail;
+import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.components.panel.YouTubePanel;
 import cz.larpovadatabaze.components.panel.photo.ManagePhotoPanel;
 import cz.larpovadatabaze.components.panel.photo.ShowPhotoPanel;
@@ -20,7 +21,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.ContextRelativeResource;
+import org.apache.wicket.request.resource.PackageResourceReference;
 
 import java.util.List;
 
@@ -33,9 +34,9 @@ public class GameDetailPanel extends Panel {
         super(id);
 
 
-        final Image adminImage = new Image("gameImage",
-                new ContextRelativeResource((game.getImage() != null) ? game.getImage().getPath(): cz.larpovadatabaze.entities.Image.getDefaultGame().getPath()));
-        add(adminImage);
+        final Image gameIcon = new Image("gameImage",
+                new PackageResourceReference(Csld.class, (game.getImage() != null) ? game.getImage().getPath(): cz.larpovadatabaze.entities.Image.getDefaultGame().getPath()));
+        add(gameIcon);
         Label gameName =
                 new Label("gameName", game.getName());
         add(gameName);
@@ -76,7 +77,7 @@ public class GameDetailPanel extends Panel {
                 PageParameters params = new PageParameters();
                 params.add("id", author.getId());
 
-                Link<CsldBasePage> authorDetailLink = new BookmarkablePageLink<CsldBasePage>("authorDetailLink", AuthorDetail.class, params);
+                Link<CsldBasePage> authorDetailLink = new BookmarkablePageLink<CsldBasePage>("authorDetailLink", UserDetail.class, params);
                 authorDetailLink.add(
                         new Label("authorName", author.getPerson().getNickname() + " " + author.getPerson().getName()));
                 item.add(authorDetailLink);

@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.components.page.user.UserDetail;
@@ -18,7 +19,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.ContextRelativeResource;
+import org.apache.wicket.request.resource.PackageResourceReference;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,7 +62,7 @@ public class CommentsListPanel extends Panel {
                 CsldUser authorOfComment = actualComment.getUser();
 
                 final Image authorsAvatar = new Image("authorsAvatar",
-                        new ContextRelativeResource(authorOfComment.getImage().getPath()));
+                        new PackageResourceReference(Csld.class, authorOfComment.getImage().getPath()));
                 item.add(authorsAvatar);
 
                 PageParameters params = new PageParameters();

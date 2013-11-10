@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.panel.group;
 
+import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.group.ManageGroupPage;
 import cz.larpovadatabaze.entities.CsldGroup;
@@ -10,7 +11,7 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.ContextRelativeResource;
+import org.apache.wicket.request.resource.PackageResourceReference;
 
 /**
  * This panel contains link to the page allowing to manage members of the group.
@@ -26,7 +27,8 @@ public class AddAuthorsToGroupPanel extends Panel {
         PageParameters params = new PageParameters();
         params.add("id",group.getId());
 
-        Image createGameIcon = new Image("addAuthorsIcon", new ContextRelativeResource(cz.larpovadatabaze.entities.Image.getPlusIconPath()));
+        Image createGameIcon = new Image("addAuthorsIcon",
+                new PackageResourceReference(Csld.class, cz.larpovadatabaze.entities.Image.getPlusIconPath()));
         BookmarkablePageLink<CsldBasePage> createGameIconLink =
                 new BookmarkablePageLink<CsldBasePage>("addAuthorsIconLink", ManageGroupPage.class, params);
         createGameIconLink.add(createGameIcon);

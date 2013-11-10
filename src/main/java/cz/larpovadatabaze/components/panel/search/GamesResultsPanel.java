@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.panel.search;
 
+import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.entities.Game;
@@ -17,7 +18,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.ContextRelativeResource;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
@@ -61,7 +62,7 @@ public class GamesResultsPanel extends Panel {
                 final BookmarkablePageLink<CsldBasePage> gameLink =
                         new BookmarkablePageLink<CsldBasePage>("gameLink", GameDetail.class, params);
                 final Image gameLinkImage = new Image("gameLinkImage",
-                        new ContextRelativeResource(game.getImage().getPath()));
+                        new PackageResourceReference(Csld.class, game.getImage().getPath()));
                 gameLink.add(gameLinkImage);
                 item.add(gameLink);
 
