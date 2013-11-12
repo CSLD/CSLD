@@ -150,6 +150,8 @@ public class GameServiceImpl implements GameService {
         return gameDAO.getAmountOfGamesOfGroup(csldGroup);
     }
 
+
+
     public boolean saveOrUpdate(Game game) {
         game.setAdded(new Timestamp(new Date().getTime()));
 

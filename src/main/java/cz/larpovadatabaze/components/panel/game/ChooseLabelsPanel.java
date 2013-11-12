@@ -68,7 +68,11 @@ public class ChooseLabelsPanel extends FormComponentPanel<ArrayList<Label>> {
         protected void populateItem(ListItem<Label> item) {
             Label actualLabel = item.getModelObject();
             if(!(ChooseLabelsPanel.this.getModelObject() instanceof ArrayList)){
-                ChooseLabelsPanel.this.setModelObject(new ArrayList<Label>(ChooseLabelsPanel.this.getModelObject()));
+                if(ChooseLabelsPanel.this.getModelObject() != null) {
+                    ChooseLabelsPanel.this.setModelObject(new ArrayList<Label>(ChooseLabelsPanel.this.getModelObject()));
+                } else {
+                    ChooseLabelsPanel.this.setModelObject(new ArrayList<Label>());
+                }
             }
             if(ChooseLabelsPanel.this.getModelObject() != null &&
                     ChooseLabelsPanel.this.getModelObject().contains(actualLabel)){

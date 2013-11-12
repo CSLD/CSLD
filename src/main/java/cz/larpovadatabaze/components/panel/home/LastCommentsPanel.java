@@ -33,7 +33,7 @@ import java.util.List;
 public class LastCommentsPanel extends Panel {
     @SpringBean
     CommentService commentService;
-    private static final int MAX_CHARS_IN_COMMENT = 160;
+    private static final int MAX_CHARS_IN_COMMENT = 80;
     private static int INITIAL_LAST_COMMENTS = 3;
     private static int EXPANDED_LAST_COMMENTS = 10;
 

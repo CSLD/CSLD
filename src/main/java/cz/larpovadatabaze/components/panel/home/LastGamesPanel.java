@@ -29,7 +29,7 @@ import java.util.List;
 public class LastGamesPanel extends Panel {
     @SpringBean
     GameService gameService;
-    private final static int MAX_CHARS = 160;
+    private final static int MAX_CHARS = 80;
     private final static int INITIAL_AMOUNT_LAST_GAMES = 3;
     private final static int EXPANDED_AMOUNT_LAST_GAMES = 10;
 

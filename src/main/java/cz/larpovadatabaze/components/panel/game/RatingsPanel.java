@@ -8,6 +8,8 @@ import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.RatingService;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -24,22 +26,14 @@ public abstract class RatingsPanel extends Panel {
     RatingService ratingService;
 
     private Rating actualRating;
-
     public RatingsPanel(String id, final Game game) {
         super(id);
-
-        final Form form = new Form("ratingForm");
 
         CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
         // Be Careful logged can be null. It is valid value for it.
         int loggedId = (logged != null) ? logged.getId() : -1;
-        Integer rating = 0;
 
-        final Model<Integer> ratingOfGame = new Model<Integer>(rating);
-        final Label label = new Label("rating", ratingOfGame);
-        form.add(label);
-        label.setOutputMarkupId(true);
-
+        actualRating = null;
         try {
             actualRating = ratingService.getUserRatingOfGame(loggedId, game.getId());
         } catch (WrongParameterException e) {
@@ -47,7 +41,6 @@ public abstract class RatingsPanel extends Panel {
             e.printStackTrace();
         }
         if(actualRating != null){
-            ratingOfGame.setObject(actualRating.getRating());
             if(actualRating.getUser() == null){
                 actualRating.setUser(logged);
                 actualRating.setUserId(loggedId);
@@ -60,31 +53,62 @@ public abstract class RatingsPanel extends Panel {
             actualRating.setUserId(loggedId);
         }
 
+        add(new StarLabel("star1",1));
+        add(new StarLabel("star2",2));
+        add(new StarLabel("star3",3));
+        add(new StarLabel("star4",4));
+        add(new StarLabel("star5",5));
+        add(new StarLabel("star6",6));
+        add(new StarLabel("star7",7));
+        add(new StarLabel("star8",8));
+        add(new StarLabel("star9",9));
+        add(new StarLabel("star10",10));
 
-        AjaxSlider slider = new AjaxSlider("slider", ratingOfGame, label) {
-            @Override
-            public void onValueChanged(AjaxRequestTarget target)
-            {
-                saveOrUpdateRating(ratingOfGame);
-                onCsldAction(target, form);
-            }
-        };
-        slider.setRange(Slider.Range.MIN).setMax(10);
-        slider.setRange(Slider.Range.MAX).setMin(1);
-        form.add(slider);
-
-        add(form);
+        setActive();
+        setOutputMarkupId(true);
     }
 
-    private void saveOrUpdateRating(Model<Integer> ratingOfGame) {
-        Integer rating = ratingOfGame.getObject();
-        actualRating.setRating(rating);
+    private void saveAndShow(int value){
+        actualRating.setRating(value);
         ratingService.saveOrUpdate(actualRating);
+
+        setActive();
+    }
+
+    private void setActive() {
+        int rating = actualRating.getRating()!= null ? actualRating.getRating() : 0;
+        for(int i =1; i <= rating; i++){
+            get("star" + i).add(AttributeModifier.replace("class",Model.of("active icon-star")));
+        }
+        for(int i=rating+1; i <= 10; i++){
+            get("star" + i).add(AttributeModifier.replace("class",Model.of("icon-star")));
+        }
     }
 
     protected void onConfigure() {
         setVisibilityAllowed(CsldAuthenticatedWebSession.get().isSignedIn());
     }
 
-    protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}
+    protected void onCsldAction(AjaxRequestTarget target){}
+
+    private class StarLabel extends Label{
+        private int value;
+
+        public StarLabel(String id, int pValue) {
+            super(id);
+
+            this.value = pValue;
+            add(new AjaxEventBehavior("click") {
+                @Override
+                protected void onEvent(AjaxRequestTarget target) {
+                    saveAndShow(value);
+
+                    onCsldAction(target);
+                    target.add(getParent());
+                }
+            });
+
+            setOutputMarkupId(true);
+        }
+    }
 }

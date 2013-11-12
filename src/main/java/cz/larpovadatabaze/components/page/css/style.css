@@ -16,17 +16,21 @@ checkbox zelená - a0d85b
 světle šedá (popisky) - 666
 */
 
+@import url(http://fonts.googleapis.com/css?family=Roboto:100,300,400);
+@import url(http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
 @font-face {
     font-family: Baskerville;
-    src: url('../fonts/baskvill.ttf');
+    src: url('fonts/baskvill.ttf');
+    font-family: Lobster;
+    src: url('fonts/lobster.ttf');
 }
 
 /* Body */
 body {
-    background-image: url(img/background.png);
+    background-image: url(../img/background.png);
     background-repeat: repeat;
     font-family: Arial;
-    font-size: 10pt;
+    font-size: 12px;
 }
 
 .page {
@@ -54,7 +58,7 @@ body {
 
 .levaCast {
     float: left;
-    width: 650px;
+    width: 650px; 
 }
 
 .pravaCast {
@@ -71,6 +75,22 @@ img {
     border: 0px;
 }
 
+a{
+  color: #00A0B0;
+  text-decoration: none;
+}
+a:hover{
+  color: #CC333F;
+  text-decoration: underline;
+}
+h1{
+    color: #00A0B0;
+    font-size: 16px;
+}
+h2{
+    color: #00A0B0;
+    font-size: 14px;
+}
 /* Header */
 #logoNadpis {
     margin-top: 51px;
@@ -180,16 +200,22 @@ img {
 
 .menu {
     width: 1000px;
-    height: 50px;
-    background-image: url(img/menu_zip_pozadi.png);
-    background-repeat: repeat-x;
+    background-color: #00C8DC;
+    background-repeat: repeat-x; 
+    border-radius: 2px;
+    margin: 0 auto;
+    box-shadow:  0 0 1px 1px #D0D0D0;
+    background-image: url("./smoothness/images/ui-bg_diagonals-small_50_262626_40x40.png");
+    background-repeat: repeat;
+    background-position: center top;
     position: relative;
+    text-shadow: 1px 1px 1px grey;
+    font-family: 'Lobster';
 }
 
 .menu .polozky {
-    margin-top: 17px;
     width: 1000px;
-    height: 30px;
+    height: 48px;
     display: inline-block;
 }
 
@@ -199,10 +225,23 @@ img {
 
 .menu a {
     text-decoration: none;
-    margin-left: 80px;
-    color: #214c61;
-    font-weight: bold;
-    font-size: 11pt;
+    padding:  5px 25px;
+    color: #F8F8F8;
+    font-size: 17px;
+    border-right:  1px #D0D0D0 dotted;
+    position: relative;
+    left: -10px;
+    line-height: 48px;
+}
+.menu a:last-child {
+    border: 0;
+    }
+.menu a:hover{
+  color: #CC333F;
+  text-shadow: 1px 1px 1px white;
+}
+.menu a:first-letter{
+  text-transform: uppercase;
 }
 
 .menu #divProHledani {
@@ -218,7 +257,7 @@ img {
 }
 
 #divProHledani .glass {
-    background-image: url(img/glass.png);
+    background-image: url(../img/glass.png);
     border: 0;
     margin: 0;
     padding: 0;
@@ -258,10 +297,8 @@ img {
 
 .pridanaHra {
     width: 320px;
-    height: 98px;
+    height: 100px;
     margin-bottom: 10px;
-    overflow: hidden;
-    position: relative;
     /* Chrome, Safari */
     background-image: -webkit-linear-gradient(#f8f8f8, #cccccc);
     background-image: -webkit-gradient(linear, 0 0, 0 bottom, from(#f8f8f8), to(#cccccc));
@@ -288,6 +325,7 @@ img {
     color: #535353;
     font-size: 10pt;
     text-align: justify;
+    position: relative;
 }
 
 .pridanaHra .HraKomentarPopisek {
@@ -295,6 +333,7 @@ img {
     font-size: 10pt;
     text-align: justify;
     overflow: hidden;
+    position: relative;
 }
 
 .pridanaHra .HraKomentarVice {
@@ -303,9 +342,8 @@ img {
     text-align: justify;
     z-index: 10;
     position: absolute;
-    right: 5px;
-    bottom: 2px;
-    background-color: #d4d4d4;
+    right: 0;
+    bottom: 0;
 }
 
 .pridanaHra .nadpisHra {
@@ -333,6 +371,7 @@ img {
     margin-right: 4px;
     vertical-align: -5%;
     display: inline-block;
+    border-radius: 2px;
 }
 
 #dalsiPridaneHry {
@@ -361,19 +400,19 @@ img {
 }
 
 .mediocre {
-    background-color: #535353
+    background-color: #757575
 }
 
 .great {
-    background-color: #c1001f
+    background-color: #CC333F
 }
 
 .average {
-    background-color: #0072bc
+    background-color: #00A0B0
 }
 
 .notrated {
-    background-color: grey
+    background-color: white
 }
 
 /*
@@ -385,35 +424,38 @@ img {
 
 .praveMenu {
     width: 328px;
-    height: 50px;
-    background-image: url(img/menu_zip_pozadi.png);
+    background-color: #00C8DC;
     background-repeat: repeat-x;
-    text-align: center;  }
+    text-align: center; 
+    border-radius: 2px;
+    margin: 0 auto;
+    box-shadow:  0 0 1px 1px #D0D0D0;
+    background-image: url("./smoothness/images/ui-bg_diagonals-small_50_262626_40x40.png");
+    background-repeat: repeat;
+    background-position: center top;
+     }
 
 .praveMenu .nadpisMenu {
-    margin-top: 17px;
     width: 200px;
-    height: 30px;
+    padding:  10px;
     display: inline-block;
-    color: #214c61;
-    font-weight: bold;
-    font-size: 11pt;
+    color: #F8F8F8;
+    font-size: 22px;
+    font-family: Lobster;
+    text-shadow: 1px 1px 1px grey;
 }
-
+.praveMenu .nadpisMenu:before, .praveMenu .nadpisMenu:after{
+  content: " * ";
+}
 .sekce {
     padding-left: 6px;
-    padding-bottom: 12px;
+    padding-bottom: 10px;
     margin-top: 10px;
     position: relative;
-    /* Chrome, Safari */
-    background-image: -webkit-linear-gradient(#f8f8f8, #cccccc);
-    background-image: -webkit-gradient(linear, 0 0, 0 bottom, from(#f8f8f8), to(#cccccc));
-    /* Mozilla */
-    background-image: -moz-linear-gradient(#f8f8f8, #cccccc);
-    background-image: -moz-gradient(linear, 0 0, 0 bottom, from(#f8f8f8), to(#cccccc));
-    /* IE */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#f8f8f8', endColorstr = '#cccccc');
-    zoom: 1;
+    background-color: #F0F0F0;
+    border:  4px #F0F0F0 solid;   
+    border-radius: 3px; 
+    box-shadow:  0 0 1px 1px #F0F0F0;  
 }
 
 .sekce a {
@@ -422,7 +464,8 @@ img {
 }
 
 .nadpisSekce {
-    font-size: 12pt;
+    color: #00A0B0;
+    font-size: 13px;
     font-weight: bold;
     margin-bottom: 6px;
     margin-top: 10px;
@@ -448,8 +491,8 @@ img {
 }
 
 .nadpisHra {
-    font-size: 10pt;
-    font-weight: bold;
+    color: #006276;
+    font-size: 16px;
 }
 
 .obsah {
@@ -475,7 +518,8 @@ img {
 .obrazekHra {
     width: 70px;
     height: 70px;
-    box-shadow: 4px 4px 4px #444;
+    box-shadow:  0 0 2px 2px #D0D0D0;
+    border-radius: 2px;
     border-collapse: separate;
     border: 0px;
 }
@@ -504,7 +548,8 @@ img {
 #uzivatel .obrazekUzivatel {
     width: 120px;
     height: 120px;
-    box-shadow: 8px 8px 8px #444;
+    box-shadow:  0 0 2px 2px #D0D0D0;
+    border-radius: 2px;
     border-collapse: separate;
 }
 
@@ -630,7 +675,11 @@ img {
 
 .levaCast#game {
     float: left;
-    width: 650px;
+    width: 642px;
+    background-color: #F0F0F0;
+    border:  4px #F0F0F0 solid;   
+    border-radius: 3px; 
+    box-shadow:  0 0 1px 1px #F0F0F0;       
 }
 
 .levaCast#game .obrazekHraBunka {
@@ -640,18 +689,22 @@ img {
 .levaCast#game .obrazekHra {
     width: 120px;
     height: 120px;
-    box-shadow: 8px 8px 8px #444;
+    box-shadow:  0 0 2px 2px #E0E0E0;
+    border-radius: 2px;
     border-collapse: separate;
+    margin: 5px 0 0 5px;
+    border:  0px #F6F6F6 solid;
 }
 
 .levaCast#game .bunkaHra {
     vertical-align: top;
     padding-left: 12px;
     padding-top: 6px;
+    font-size: 11px;
 }
 
 .levaCast#game .nadpisHra {
-    font-size: 16pt;
+    font-size: 16px;
     font-weight: bold;
     margin-bottom: 6px;
     width: 386px;
@@ -659,34 +712,26 @@ img {
 
 .levaCast#game .popisek {
     color: #666;
-    font-size: 10pt;
-    font-style: normal;
     margin-bottom: 6px;
+    font-size: 11px;
 }
 
 .levaCast#game .popisek a {
     color: #666;
-    font-size: 10pt;
-    font-style: normal;
     text-decoration: none;
-    margin-bottom: 6px;
 }
 
 .levaCast#game .popisek a:hover {
     color: #666;
-    font-size: 10pt;
-    font-style: normal;
     text-decoration: underline;
-    margin-bottom: 6px;
 }
 
 .levaCast#game .obsah {
     color: #666;
-    font-size: 10pt;
     font-style: italic;
     margin-bottom: 6px;
     margin-top: 6px;
-    line-height: 1.4;
+    padding: 10px;
 }
 
 .levaCast#game .menuHra {
@@ -716,22 +761,18 @@ img {
     padding: 4px;
     margin-left: 10px;
 }
-
 .levaCast#game .komentar {
-    width: 650px;
-    padding: 0px;
-    padding-bottom: 6px;
-    /* Chrome, Safari */
-    background-image: -webkit-linear-gradient(#f8f8f8, #cccccc);
-    background-image: -webkit-gradient(linear, 0 0, 0 bottom, from(#f8f8f8), to(#cccccc));
-    /* Mozilla */
-    background-image: -moz-linear-gradient(#f8f8f8, #cccccc);
-    background-image: -moz-gradient(linear, 0 0, 0 bottom, from(#f8f8f8), to(#cccccc));
-    /* IE */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#f8f8f8', endColorstr = '#cccccc');
-    zoom: 1;
-}
+    padding: 5px;
+    padding-bottom: 6px;   
+    margin: 10px 5px; 
+    border-radius: 4px;  
+    box-shadow:  0 0 1px 1px #D0D0D0;   
+    background-color: #FCFCFC;           
 
+}
+.levaCast#game .komentar:nth-child(2n-1) {
+  background-color: #F8F8F8;
+}
 .levaCast#game  .komentar a {
     text-decoration: none;
     color: black;
@@ -742,11 +783,15 @@ img {
     color: black;
 }
 
-.levaCast#game  .komentar .bunkaObrazek {
+.levaCast#game  .komentar .bunkaObrazek  {
     vertical-align: top;
     padding: 0px;
-}
 
+}
+.levaCast#game  .komentar .bunkaObrazek img {
+    border-radius: 2px;
+    box-shadow:  0 0 1px 1px #D0D0D0;
+}
 .levaCast#game  .komentar .obrazekUziv {
     vertical-align: top;
     margin-left: -2px;
@@ -756,13 +801,26 @@ img {
 }
 
 .levaCast#game  .komentar .nick {
-    font-size: 10pt;
+    font-size: 13px;
     font-weight: bold;
+    padding:  0 5px;
+    color: white;
+    margin-left: 5px;
+    background-color: #00A0B0;
+    line-height: 15px;
+    border-radius: 2px;
 }
 
 .levaCast#game  .komentar .jmeno {
-    font-size: 10pt;
+    font-size: 11px;
     color: #666;
+    padding:  1px 5px 1px 5px;
+    background-color: white;
+    line-height: 15px;   
+    text-align: left; 
+    position: relative;
+    top: -1px;
+    border-radius: 2px;
 }
 
 .levaCast#game  .komentar .bunkaKomentar {
@@ -772,9 +830,10 @@ img {
 }
 
 .levaCast#game  .komentar .obsahKomentar {
-    font-size: 10pt;
+    font-size: 12px;
     color: #444;
     margin-top: 4px;
+    padding:  5px;
 }
 
 .levaCast#game  .komentar .datum {
@@ -902,7 +961,8 @@ img {
 }
 
 .pravaCast#game .hodnoceni {
-    padding: 20px 20px 30px 20px;
+    height: 100px;
+    padding: 20px;
 }
 
 .pravaCast#game .hodnoceniVysledne {
@@ -1015,7 +1075,7 @@ a.stitekNapoveda:hover span {
     border-radius: 4px;
     padding: 2px;
     margin: 6px 0px 0px 0px;
-    background-image: url("img/textbox-background.png");
+    background-image: url("../img/textbox-background.png");
     background-repeat: repeat-x;
     width: 90%;
 }
@@ -1034,7 +1094,7 @@ a.stitekNapoveda:hover span {
     border-radius: 4px;
     padding: 2px;
     margin: 6px 0px 0px 4px;
-    background-image: url("img/textarea-background.png");
+    background-image: url("../img/textarea-background.png");
     background-repeat: repeat-x;
     resize: none;
     width: 90%;
@@ -1256,8 +1316,6 @@ a.stitekNapoveda:hover span {
     border-style: solid;
 }
 
-.levaCast#Zebricky
-
 .levaCast#Zebricky td:first-child {
     width: 10px;
 }
@@ -1277,7 +1335,6 @@ a.stitekNapoveda:hover span {
 .levaCast#Zebricky .larpOdkaz {
     color: #214c61;
     font-weight: bold;
-    text-decoration: none;
 }
 
 .levaCast#Zebricky .hodnoceni {
@@ -1454,8 +1511,8 @@ a.stitekNapoveda:hover span {
 }
 
 .levaCast#Uzivatele .pocetherUzivatel {
-    text-align: center;
-    width: 200px;
+    text-align: right;
+    width: 250px;
 }
 
 .levaCast#Uzivatele .uzivatelPrezdivka {
@@ -1795,15 +1852,6 @@ a.stitekNapoveda:hover span {
     margin-top: -8px;
 }
 
-.filtrovatButton {
-    margin-left: 136px;
-    font-size: 10pt;
-    font-weight: bold;
-    width: 80px;
-    height: 26px;
-    margin-top: 6px;
-}
-
 /* pridat tlacitko */
 /* je na konci kvuli priorite*/
 
@@ -1827,17 +1875,21 @@ a.stitekNapoveda:hover span {
 
 /* footer */
 .footer {
-    height: 60px;
     width: 100%;
-    margin-top: 10px;
-    padding-top: 8px;
-    background-image: url(img/footer_pozadi.png);
+    margin: 10px 0;
+    padding: 10px;
     text-align: center;
     float: left;
+    font-size: 9px;
+    color: #F8F8F8;
+    background-color: #00C8DC;
+    background-repeat: repeat-x; 
+    border-radius: 2px;
+    box-shadow:  0 0 1px 1px #D0D0D0;
+    background-image: url("./smoothness/images/ui-bg_diagonals-small_50_262626_40x40.png");
     background-repeat: repeat;
-    color: #444;
-    font-size: 9pt;
-    font-style: italic;
+    background-position: center top;   
+     
 }
 
 .footer a {
@@ -1866,12 +1918,6 @@ a.stitekNapoveda:hover span {
 select[name=stateOfGame]{
     float:right;
 }
-
-.textarea {
-    width: 90%;
-    height: 60px;
-}
-
 .wicket-aa{
     background: white;
     border: solid 2px black;
@@ -1916,11 +1962,177 @@ select[name=stateOfGame]{
     margin-right: 5px;
 }
 
-.faqAccordion .ui-accordion-header {
-    padding-left: 30px;
+
+
+/* rating panel with histogram */
+.container {
+  font-family: 'Roboto', Helvetica;
+  color: #393939;
+  font-weight: 300;
+  width: 320px;
+  margin: 0 auto;
+  background-color: #EFEFEF;
+  padding: 4px;
 }
 
-a.moreLink {
-    text-decoration: none;
-    color: #666;
+.inner {
+  padding: 1em;
+  background-color: white;
+  overflow: hidden;
+  position: relative; 
+  border-radius: 4px; 
 }
+
+.rating {
+  float: left;
+  width: 45%;
+  margin-right: 5%;
+  text-align: center;
+  margin-top: 20px;
+
+}
+
+.rating-num {
+  color: #ffffff;
+  font-size: 72px;
+  font-weight: 100;
+  line-height: 1em; 
+  padding: 0px 14px 0px 14px;
+  border-radius: 2px; 
+  position: relative;
+  top: -6px;
+
+}
+
+.rating-stars {
+  font-size: 19px;
+  color: #D0D0D0;
+  margin-bottom: .5em;
+  cursor: pointer;
+  margin: 5px auto;
+  text-align: center;
+  position: relative;
+  left: -3px;
+  top: 6px;
+}
+.rating-stars .active {
+  color: #393939;
+}
+.rating-stars span:nth-of-type(10):hover,
+ .rating-stars span:nth-of-type(9):hover,
+  .rating-stars span:nth-of-type(8):hover,
+   .rating-stars span:nth-of-type(7):hover{
+  color: #CC333F;
+}
+.rating-stars span:nth-of-type(6):hover,
+ .rating-stars span:nth-of-type(5):hover,
+  .rating-stars span:nth-of-type(4):hover{
+  color: #00A0B0;
+}
+.rating-stars span:nth-of-type(3):hover,
+ .rating-stars span:nth-of-type(2):hover,
+  .rating-stars span:nth-of-type(1):hover{
+  color: #757575;
+}
+.rating-users {
+  font-size: 14px;
+  margin: 15px 0 5px 0;
+}
+.container select[name=stateOfGame]{
+    position: relative;
+    right: 15px;
+    top: 5px;
+}
+.histo {
+  float: left;
+  width: 50%;
+  font-size: 10px;
+}
+.histo-star {
+  float: left;
+  padding: 3px;
+  text-align: center;
+  width: 25px;
+}
+.rating-stars .icon-star{
+}
+.rating-message{
+  font-size: 10px;
+  font-weight: bold;
+  color: #393939;
+  margin-bottom: 5px;
+}
+.histo-rate {
+  width: 100%;
+  display: block;
+  clear: both;
+}
+
+.bar-block {
+  margin-left: 3px;
+  color: black;
+  display: block;
+  float: left;
+  width: 75%;
+  position: relative;
+  top: 2px;
+}
+
+.bar {
+  padding: 1px 4px 1px 4px;
+  display: block;
+  min-width: 6%;
+  max-width: 86%;
+}
+
+#bar-ten {
+  width: 0;
+  background-color: #CC333F;
+}
+
+#bar-nine {
+  width: 0;
+  background-color: #CC333F;
+}
+
+#bar-eight {
+  width: 0;
+  background-color: #CC333F;
+}
+
+#bar-seven {
+  width: 0;
+  background-color: #CC333F;
+}
+
+#bar-six {
+  width: 0;
+  background-color: #00A0B0;
+}
+
+#bar-five {
+  width: 0;
+  background-color: #00A0B0;
+}
+
+#bar-four {
+  width: 0;
+  background-color: #00A0B0;
+}
+
+#bar-three {
+  width: 0;
+  background-color: #757575;
+}
+
+#bar-two {
+  width: 0;
+  background-color: #757575;
+}
+
+#bar-one {
+  width: 0;
+  background-color: #757575;
+}
+
+/* end of rating panel with histogram */            

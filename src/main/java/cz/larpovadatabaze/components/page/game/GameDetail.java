@@ -46,8 +46,6 @@ public class GameDetail extends CsldBasePage {
         Collections.reverse(reversedComments);
         final CommentsListPanel comments = new CommentsListPanel("commentsList", reversedComments);
         comments.setOutputMarkupId(true);
-        final RatingsResultPanel ratingsResult = new RatingsResultPanel("ratingsResults", game);
-        ratingsResult.setOutputMarkupId(true);
 
         List<CsldUser> wantedBy = new ArrayList<CsldUser>();
         for(UserPlayedGame played : game.getPlayed()){
@@ -58,7 +56,22 @@ public class GameDetail extends CsldBasePage {
         final SimpleListUsersPanel wantedToPlay =  new SimpleListUsersPanel("wantsToPlay", wantedBy);
         wantedToPlay.setOutputMarkupId(true);
 
-        add(new PlayedPanel("playedPanel", game) {
+        add(new GameDetailPanel("gameDetail", game));
+        add(new CommentsPanel("addComment", game){
+            @Override
+            protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
+                super.onCsldAction(target, form);
+
+                Game gameInner = gameService.getById(game.getId());
+                if(HbUtils.isProxy(gameInner)){
+                    gameInner = HbUtils.deproxy(gameInner);
+                }
+                comments.reload(target, gameInner.getComments());
+            }
+        });
+        add(comments);
+
+        final RatingsResultPanel ratingsResult = new RatingsResultPanel("ratingsResults", game){
             @Override
             protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
                 super.onCsldAction(target, form);
@@ -75,29 +88,13 @@ public class GameDetail extends CsldBasePage {
                 }
                 wantedToPlay.reload(target, wantedBy);
             }
-        });
-        add(new GameDetailPanel("gameDetail", game));
-        add(new CommentsPanel("addComment", game){
-            @Override
-            protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
-                super.onCsldAction(target, form);
-
-                Game gameInner = gameService.getById(game.getId());
-                if(HbUtils.isProxy(gameInner)){
-                    gameInner = HbUtils.deproxy(gameInner);
-                }
-                comments.reload(target, gameInner.getComments());
-            }
-        });
-        add(comments);
-
+        };
+        ratingsResult.setOutputMarkupId(true);
         add(ratingsResult);
         add(new CanNotRatePanel("canNotRatePanel"));
         add(new RatingsPanel("ratingsPanel", game){
             @Override
-            protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
-                super.onCsldAction(target, form);
-
+            protected void onCsldAction(AjaxRequestTarget target) {
                 ratingsResult.reload(target);
             }
         });
