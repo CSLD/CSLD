@@ -2,6 +2,7 @@ package cz.larpovadatabaze.components.panel.user;
 
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
+import cz.larpovadatabaze.behavior.ErrorClassAppender;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Image;
 import cz.larpovadatabaze.services.CsldUserService;
@@ -15,9 +16,11 @@ import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
+import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -53,15 +56,18 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
 
         TextField<String> name = new TextField<String>("person.name");
         name.setRequired(true);
+        name.setLabel(Model.of("Jméno"));
         createOrUpdateUser.add(addFeedbackPanel(name, createOrUpdateUser, "nameFeedback"));
         createOrUpdateUser.add(addFeedbackPanel(new TextField<String>("person.nickname"), createOrUpdateUser, "nicknameFeedback"));
 
         EmailTextField email = new EmailTextField("person.email");
         email.setRequired(true);
+        email.setLabel(Model.of("Email"));
         email.add(new UniqueUserValidator(isEdit, csldUserService));
         createOrUpdateUser.add(addFeedbackPanel(email, createOrUpdateUser, "emailFeedback"));
 
         DateTextField birthDate = new DateTextField("person.birthDate", "dd.mm.yyyy");
+        birthDate.setLabel(Model.of("Datum narození"));
         createOrUpdateUser.add(addFeedbackPanel(birthDate, createOrUpdateUser, "birthDateFeedback"));
 
         createOrUpdateUser.add(addFeedbackPanel(new TextField<String>("person.city"), createOrUpdateUser,"cityFeedback"));
@@ -100,6 +106,7 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
                 }
             }
         });
+        createOrUpdateUser.add(new EqualPasswordInputValidator(password, passwordAgain));
 
         add(createOrUpdateUser);
     }
@@ -110,6 +117,7 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
         feedbackPanel.setOutputMarkupId(true);
         addingFeedbackTo.add(feedbackPanel);
         addFeedbackTo.add(new AjaxFeedbackUpdatingBehavior("blur", feedbackPanel));
+        addFeedbackTo.add(new ErrorClassAppender());
         return addFeedbackTo;
     }
 

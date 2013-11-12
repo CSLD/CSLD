@@ -90,4 +90,17 @@ public class CsldAuthenticatedWebSession extends AuthenticatedWebSession {
         }
         return null;
     }
+
+    boolean clearRequested = false;
+    public void requestClear(){
+        clearRequested = true;
+    }
+
+    public void setClearRequested(boolean clearRequested){
+        this.clearRequested = clearRequested;
+    }
+
+    public boolean isClearRequested(){
+        return clearRequested;
+    }
 }

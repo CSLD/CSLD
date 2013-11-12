@@ -33,6 +33,11 @@ public class GroupHasMemberServiceImpl implements GroupHasMemberService {
     }
 
     @Override
+    public List<GroupHasMember> getFirstChoices(String startsWith, int maxChoices) {
+        throw new UnsupportedOperationException("This does not support autocompletion");
+    }
+
+    @Override
     public void saveOrUpdate(GroupHasMember memberOfGroup) {
         groupHasMembersDAO.saveOrUpdate(memberOfGroup);
     }

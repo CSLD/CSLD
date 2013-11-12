@@ -5,7 +5,9 @@ import com.mortennobel.imagescaling.ResampleOp;
 import cz.larpovadatabaze.Csld;
 import org.apache.wicket.Application;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
+import org.apache.wicket.request.resource.PackageResource;
 import org.apache.wicket.util.file.Files;
+import org.apache.wicket.util.lang.Packages;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
@@ -48,7 +50,7 @@ public class FileUtils {
 
     public static String saveImageFileAndReturnPath(FileUpload upload, String name, int maxHeight, int maxWidth){
         ServletContext context = ((Csld) Application.get()).getServletContext();
-        String realPath = context.getRealPath(Csld.getBaseContext());
+        String realPath = context.getRealPath("/WEB-INF/classes/" + Packages.absolutePath(Csld.class,Csld.getBaseContext()));;
         File baseFile = new File(realPath);
 
         String fileType = FileUtils.getFileType(upload.getClientFileName());

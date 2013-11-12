@@ -1,5 +1,7 @@
 package cz.larpovadatabaze.services;
 
+import cz.larpovadatabaze.entities.CsldUser;
+
 import java.util.List;
 
 /**
@@ -11,4 +13,6 @@ public interface GenericService<T> {
     List<T> getUnique(T example);
 
     void remove(T toRemove);
+
+    List<T> getFirstChoices(String startsWith, int maxChoices);
 }

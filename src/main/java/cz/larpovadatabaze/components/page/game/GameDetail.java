@@ -16,6 +16,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -36,6 +37,12 @@ public class GameDetail extends CsldBasePage {
 
 
         List<Comment> reversedComments = new ArrayList<Comment>(game.getComments());
+        Collections.sort(reversedComments, new Comparator<Comment>() {
+            @Override
+            public int compare(Comment o1, Comment o2) {
+                return o1.getAdded().compareTo(o2.getAdded());
+            }
+        });
         Collections.reverse(reversedComments);
         final CommentsListPanel comments = new CommentsListPanel("commentsList", reversedComments);
         comments.setOutputMarkupId(true);

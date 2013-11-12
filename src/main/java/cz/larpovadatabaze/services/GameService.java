@@ -52,4 +52,6 @@ public interface GameService extends GenericService<Game> {
     long getAmountOfGamesOfAuthor(CsldUser author);
 
     long getAmountOfGamesOfGroup(CsldGroup csldGroup);
+
+    boolean saveOrUpdate(Game game);
 }

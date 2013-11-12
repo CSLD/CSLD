@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.services.impl;
 
 import cz.larpovadatabaze.dao.CsldUserDAO;
+import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.services.CsldUserService;
@@ -123,6 +124,11 @@ public class CsldUserServiceImpl implements CsldUserService {
     @Override
     public int getAmountOfOnlyAuthors() {
         return csldUserDao.getAmountOfOnlyAuthors();
+    }
+
+    @Override
+    public List<CsldUser> getFirstChoices(String startsWith, int maxChoices) {
+        return csldUserDao.getFirstChoices(startsWith, maxChoices);
     }
 
     @Override

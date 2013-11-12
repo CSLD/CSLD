@@ -30,8 +30,8 @@ import java.util.List;
 public class GamesResultsPanel extends Panel {
     @SpringBean
     GameService gameService;
-    private List<Game> fullResults;
-    private List<Game> shortResults;
+    private ArrayList<Game> fullResults;
+    private ArrayList<Game> shortResults;
     private String query;
 
     private ListView<Game> othersList;
@@ -110,10 +110,10 @@ public class GamesResultsPanel extends Panel {
         }
 
         if(searchResults.size() > 2){
-            fullResults = searchResults.subList(0,3);
-            shortResults = searchResults.subList(3, searchResults.size());
+            fullResults = new ArrayList<Game>(searchResults.subList(0,3));
+            shortResults = new ArrayList<Game>(searchResults.subList(3, searchResults.size()));
         } else {
-            fullResults = searchResults.subList(0,searchResults.size());
+            fullResults = new ArrayList<Game>(searchResults.subList(0,searchResults.size()));
             shortResults = new ArrayList<Game>();
         }
     }

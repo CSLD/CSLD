@@ -10,10 +10,7 @@ import org.apache.wicket.validation.ValidationError;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 14.6.13
- * Time: 8:28
+ *
  */
 public class UniqueUserValidator implements IValidator<String> {
     CsldUserService personService;
@@ -32,10 +29,10 @@ public class UniqueUserValidator implements IValidator<String> {
         example.getPerson().setEmail(validatable.getValue());
         List<CsldUser> existingPerson = personService.getUnique(example);
         if(!updateExisting && existingPerson.size() > 0) {
-            error(validatable, "This person already exists.");
+            error(validatable, "person-exists");
         }
         if(updateExisting && existingPerson.size() == 0){
-            error(validatable, "User you are trying to edit does not exist.");
+            error(validatable, "update-nonexistent");
         }
     }
 

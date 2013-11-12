@@ -37,6 +37,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public List<Comment> getFirstChoices(String startsWith, int maxChoices) {
+        throw new UnsupportedOperationException("This does not support autocompletion");
+    }
+
+    @Override
     public Comment getCommentOnGameFromUser(int userId, int gameId) {
         return commentDAO.getCommentOnGameFromUser(userId, gameId);
     }

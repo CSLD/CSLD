@@ -19,4 +19,12 @@ public class ClassContentModel extends Model<String> {
     public void select(){
         isSelected = !isSelected;
     }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.isSelected = selected;
+    }
 }

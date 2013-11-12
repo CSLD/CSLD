@@ -32,6 +32,11 @@ public class UserPlayedGameServiceImpl implements UserPlayedGameService {
     }
 
     @Override
+    public List<UserPlayedGame> getFirstChoices(String startsWith, int maxChoices) {
+        throw new UnsupportedOperationException("This does not support autocompletion");
+    }
+
+    @Override
     public UserPlayedGame getUserPlayedGame(int gameId, int userId) {
         return userPlayedGameDAO.getUserPlayedGame(gameId, userId);
     }

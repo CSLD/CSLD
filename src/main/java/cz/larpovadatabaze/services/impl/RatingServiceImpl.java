@@ -44,6 +44,11 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
+    public List<Rating> getFirstChoices(String startsWith, int maxChoices) {
+        throw new UnsupportedOperationException("This does not support autocompletion");
+    }
+
+    @Override
     public List<Rating> getUnique(Rating example) {
         return ratingDAO.findByExample(example, new String[]{});
     }

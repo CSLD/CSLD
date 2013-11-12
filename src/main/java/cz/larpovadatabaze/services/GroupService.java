@@ -3,6 +3,7 @@ package cz.larpovadatabaze.services;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**

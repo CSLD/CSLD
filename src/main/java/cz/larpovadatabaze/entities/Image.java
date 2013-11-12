@@ -1,7 +1,10 @@
 package cz.larpovadatabaze.entities;
 
+import org.apache.wicket.markup.html.form.upload.FileUpload;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -61,6 +64,19 @@ public class Image implements Serializable {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (path != null ? path.hashCode() : 0);
         return result;
+    }
+
+    @Transient
+    private List<FileUpload> fileUpload;
+
+    @Transient
+    public List<FileUpload> getFileUpload() {
+        return fileUpload;
+    }
+
+    @Transient
+    public void setFileUpload(List<FileUpload> fileUpload) {
+        this.fileUpload = fileUpload;
     }
 
     @Transient

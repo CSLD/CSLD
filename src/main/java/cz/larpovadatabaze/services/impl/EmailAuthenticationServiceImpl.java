@@ -33,6 +33,11 @@ public class EmailAuthenticationServiceImpl implements EmailAuthenticationServic
     }
 
     @Override
+    public List<EmailAuthentication> getFirstChoices(String startsWith, int maxChoices) {
+        throw new UnsupportedOperationException("This does not support autocompletion");
+    }
+
+    @Override
     public void saveOrUpdate(EmailAuthentication emailAuthentication) {
         emailAuthenticationDAO.saveOrUpdate(emailAuthentication);
     }

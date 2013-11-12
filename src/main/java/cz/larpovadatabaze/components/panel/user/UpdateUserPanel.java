@@ -15,6 +15,7 @@ import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
+import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -97,6 +98,7 @@ public class UpdateUserPanel extends Panel {
                 }
             }
         });
+        createOrUpdateUser.add(new EqualPasswordInputValidator(password, passwordAgain));
 
         add(createOrUpdateUser);
     }

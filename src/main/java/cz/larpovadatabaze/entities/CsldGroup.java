@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.entities;
 
+import cz.larpovadatabaze.api.Identifiable;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -17,7 +18,7 @@ import java.util.List;
  */
 @Entity
 @Table(schema = "public", name="csld_csld_group")
-public class CsldGroup implements Serializable, IAutoCompletable {
+public class CsldGroup implements Serializable, Identifiable, IAutoCompletable {
     private Integer id;
 
     @Column(

@@ -29,10 +29,12 @@ public abstract class CreateOrUpdateLabelPanel extends Panel {
 
     public CreateOrUpdateLabelPanel(String id, Label label) {
         super(id);
-        IModel<Label> labelModel = new EntityModel<Label>(Label.class, label.getId());
+        if(label == null){
+            label = Label.getEmptyLabel();
+        }
 
         final ValidatableForm<Label> createOrUpdateLabel =
-                new ValidatableForm<Label>("createOrUpdateLabel", new CompoundPropertyModel<Label>(labelModel)){};
+                new ValidatableForm<Label>("createOrUpdateLabel", new CompoundPropertyModel<Label>(label)){};
 
         createOrUpdateLabel.add(new TextField<String>("name"));
         createOrUpdateLabel.add(new TextArea<String>("description"));
@@ -56,6 +58,7 @@ public abstract class CreateOrUpdateLabelPanel extends Panel {
     private boolean saveOrUpdateLabel(Label label) {
         CsldUser loggedUser = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
         label.setAddedBy(loggedUser);
+        label.setRequired(false);
         return labelService.saveOrUpdate(label);
     }
 

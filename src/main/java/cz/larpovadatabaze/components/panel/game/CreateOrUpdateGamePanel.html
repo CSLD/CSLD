@@ -57,10 +57,18 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
 
 <table>
     <tbody>
+    <tr>
+        <td>
+            <div wicket:id="feedback"></div>
+        </td>
+        <td>
+
+        </td>
+    </tr>
 
     <tr>
         <td style="width:200px">
-            <input type="file" wicket:id="image"/>
+            <div wicket:id="image"></div>
         </td>
         <td class="popis">
             <label for="image">
@@ -112,7 +120,7 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
 
     <tr>
         <td>
-            <div wicket:id="groups"></div>
+            <div wicket:id="groupAuthor"></div>
         </td>
         <td class="popis">
             <label for="groups">
@@ -247,7 +255,8 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
 </table>
 
 <div class="stitky popis"><wicket:message key="form.game.labels">Označte štítky, které vystihují Váš larp. Pokud nespadá jednoznačně pod jednu kategorii, vyberte jich více.</wicket:message></div>
-<div wicket:id="chooseLabels"></div>
+<div wicket:id="labels"></div>
+<div style="width:100%;" wicket:id="labelsFeedback"></div>
 <input type="button" value="Nový štítek" wicket:message="value:form.newLabel" wicket:id="createLabel"/>
 
 <div style="clear:both; width:100%;"></div>

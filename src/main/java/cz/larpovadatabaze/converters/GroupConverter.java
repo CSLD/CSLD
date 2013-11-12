@@ -26,10 +26,14 @@ public class GroupConverter implements IConverter<CsldGroup> {
             if(amountOfGroups == 1) {
                 return foundGroups.get(0);
             } else {
-                return null;
+                CsldGroup group = CsldGroup.getEmptyGroup();
+                group.setId(-1);
+                return group;
             }
         } catch(WrongParameterException ex) {
-            return null;
+            CsldGroup group = CsldGroup.getEmptyGroup();
+            group.setId(-1);
+            return group;
         }
     }
 

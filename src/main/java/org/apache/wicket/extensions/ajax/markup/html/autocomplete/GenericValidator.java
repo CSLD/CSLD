@@ -1,5 +1,6 @@
 package org.apache.wicket.extensions.ajax.markup.html.autocomplete;
 
+import cz.larpovadatabaze.api.Identifiable;
 import cz.larpovadatabaze.services.GenericService;
 import org.apache.wicket.validation.INullAcceptingValidator;
 import org.apache.wicket.validation.IValidatable;
@@ -14,7 +15,7 @@ import java.util.List;
  * Date: 11.5.13
  * Time: 14:23
  */
-public class GenericValidator<T> implements INullAcceptingValidator<T>, Serializable {
+public class GenericValidator<T extends Identifiable> implements INullAcceptingValidator<T>, Serializable {
     protected GenericService<T> service;
 
     List list = null;
@@ -28,9 +29,9 @@ public class GenericValidator<T> implements INullAcceptingValidator<T>, Serializ
 
     @Override
     public void validate(IValidatable<T> validatable) {
+        // If validatableEntity is null but the input is not null.
 
         T validatableEntity = validatable.getValue();
-
         if(list == null){
             if(object == null && validatableEntity == null){
                 if(required)
@@ -44,6 +45,12 @@ public class GenericValidator<T> implements INullAcceptingValidator<T>, Serializ
         else if((list.size() < 2) && validatableEntity == null){
             if(required)
                 errorNonExisting(validatable);
+            return;
+        }
+
+        if(validatableEntity != null && validatableEntity.getId() !=null &&
+                ((Integer) validatableEntity.getId()) == -1) {
+            errorNonExisting(validatable);
             return;
         }
 
@@ -84,7 +91,7 @@ public class GenericValidator<T> implements INullAcceptingValidator<T>, Serializ
 
     private void error(IValidatable<T> validatable, String message) {
         ValidationError error = new ValidationError();
-        error.setMessage(message);
+        error.addKey(message);
         validatable.error(error);
     }
 }

@@ -36,6 +36,8 @@ import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.markup.html.IPackageResourceGuard;
 import org.apache.wicket.markup.html.SecurePackageResourceGuard;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.request.cycle.AbstractRequestCycleListener;
+import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeansException;
@@ -104,6 +106,18 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
             guard.addPattern("+*.GIF");
         }
 
+        getRequestCycleListeners().add(new AbstractRequestCycleListener() {
+            @Override
+            public void onBeginRequest(RequestCycle cycle) {
+                super.onBeginRequest(cycle);
+                CsldAuthenticatedWebSession session = (CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get();
+                if (session.isClearRequested()) {
+                    session.clear();
+                    session.setClearRequested(false);
+                }
+            }
+        });
+
         mountPages();
 	}
 
@@ -166,7 +180,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     }
 
     public static String getBaseContext(){
-        return "/files/upload/";
+        return "upload/";
     }
 
     @Override

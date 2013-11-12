@@ -1,6 +1,9 @@
 package cz.larpovadatabaze.models;
 
+import cz.larpovadatabaze.entities.Label;
+
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *
@@ -12,6 +15,15 @@ public class FilterGame implements Serializable {
     private Double maxDays;
     private Double minPlayers = 0d;
     private Double maxPlayers;
+    private List<Label> filterByLabels;
+
+    public List<Label> getFilterByLabels() {
+        return filterByLabels;
+    }
+
+    public void setFilterByLabels(List<Label> filterByLabels) {
+        this.filterByLabels = filterByLabels;
+    }
 
     public Double getMinHours() {
         return minHours;

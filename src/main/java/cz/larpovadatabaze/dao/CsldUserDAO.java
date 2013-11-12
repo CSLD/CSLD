@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.dao;
 
 import cz.larpovadatabaze.api.GenericHibernateDAO;
+import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import org.hibernate.Criteria;
@@ -151,6 +152,14 @@ public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
                 "from CsldUser where amountOfCreated > 0 order by person.name");
         query.setFirstResult(first.intValue());
         query.setMaxResults(amountPerPage.intValue());
+        return query.list();
+    }
+
+    public List<CsldUser> getFirstChoices(String startsWith, int maxChoices) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria query = session.createCriteria(CsldUser.class);
+        query.setMaxResults(maxChoices);
+        query.add(Restrictions.ilike("person.name",startsWith+"%"));
         return query.list();
     }
 }

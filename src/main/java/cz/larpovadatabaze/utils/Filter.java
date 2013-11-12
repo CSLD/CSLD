@@ -11,8 +11,8 @@ import java.util.List;
  *
  */
 public class Filter {
-    public static List<Game> filterGames(FilterGame filters, List<Label> labels, List<Game> toFilter) {
-        List<Game> filteredList = new ArrayList<Game>();
+    public static ArrayList<Game> filterGames(FilterGame filters, List<Label> labels, List<Game> toFilter) {
+        ArrayList<Game> filteredList = new ArrayList<Game>();
         for(Game game: toFilter) {
             if(game.getLabels() == null) {
                 game.setLabels(new ArrayList<cz.larpovadatabaze.entities.Label>());

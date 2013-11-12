@@ -27,10 +27,14 @@ public class CsldUserConverter implements IConverter<CsldUser> {
             if(amountOfUsers == 1) {
                 return foundUsers.get(0);
             } else {
-                return null;
+                CsldUser user = CsldUser.getEmptyUser();
+                user.setId(-1);
+                return user;
             }
         } catch(WrongParameterException ex) {
-            return null;
+            CsldUser user = CsldUser.getEmptyUser();
+            user.setId(-1);
+            return user;
         }
     }
 

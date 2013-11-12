@@ -32,6 +32,11 @@ public class VideoServiceImpl implements VideoService{
     }
 
     @Override
+    public List<Video> getFirstChoices(String startsWith, int maxChoices) {
+        throw new UnsupportedOperationException("This does not support autocompletion");
+    }
+
+    @Override
     public boolean saveOrUpdate(Video video) {
         return videoDAO.saveOrUpdate(video);
     }

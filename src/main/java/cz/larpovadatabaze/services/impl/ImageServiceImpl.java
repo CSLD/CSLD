@@ -38,4 +38,9 @@ public class ImageServiceImpl implements ImageService {
     public void remove(Image toRemove) {
         imageDAO.makeTransient(toRemove);
     }
+
+    @Override
+    public List<Image> getFirstChoices(String startsWith, int maxChoices) {
+        throw new UnsupportedOperationException("This does not support autocompletion");
+    }
 }

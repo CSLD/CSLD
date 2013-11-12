@@ -12,6 +12,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -67,5 +68,13 @@ public class GroupDAO extends GenericHibernateDAO<CsldGroup, Integer> {
         } else {
             return ((Double)object).intValue();
         }
+    }
+
+    public List<CsldGroup> getFirstChoices(String startsWith, int maxChoices) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria query = session.createCriteria(CsldGroup.class);
+        query.setMaxResults(maxChoices);
+        query.add(Restrictions.ilike("name",startsWith+"%"));
+        return query.list();
     }
 }

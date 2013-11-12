@@ -1,20 +1,18 @@
 package cz.larpovadatabaze.services.impl;
 
 import cz.larpovadatabaze.dao.GameDAO;
-import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Label;
+import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.models.FilterGame;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.utils.FileUtils;
+import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.sql.Timestamp;
+import java.util.*;
 
 /**
  *
@@ -32,6 +30,11 @@ public class GameServiceImpl implements GameService {
     @Override
     public void remove(Game toRemove) {
         gameDAO.makeTransient(toRemove);
+    }
+
+    @Override
+    public List<Game> getFirstChoices(String startsWith, int maxChoices) {
+        throw new UnsupportedOperationException("This does not support autocompletion");
     }
 
     @Override
@@ -145,5 +148,70 @@ public class GameServiceImpl implements GameService {
     @Override
     public long getAmountOfGamesOfGroup(CsldGroup csldGroup) {
         return gameDAO.getAmountOfGamesOfGroup(csldGroup);
+    }
+
+    public boolean saveOrUpdate(Game game) {
+        game.setAdded(new Timestamp(new Date().getTime()));
+
+        CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
+        game.setAddedBy(logged);
+
+        if(game.getAmountOfComments() == null){
+            game.setAmountOfComments(0);
+        }
+        if(game.getAmountOfRatings() == null){
+            game.setAmountOfRatings(0);
+        }
+        if(game.getAmountOfPlayed() == null){
+            game.setAmountOfPlayed(0);
+        }
+        if(game.getTotalRating() == null){
+            game.setTotalRating(0d);
+        }
+        if(game.getImage() == null || game.getImage().getFileUpload() == null) {
+            game.setImage(Image.getDefaultGame());
+        }
+
+        final List<FileUpload> uploads = game.getImage().getFileUpload();
+        if (uploads != null) {
+            for (FileUpload upload : uploads) {
+                String filePath = FileUtils.saveImageFileAndReturnPath(upload, game.getName(), 120, 120);
+                try {
+                    Image image = new Image();
+                    image.setPath(filePath);
+                    game.setImage(image);
+
+                    if(game.getVideo() == null ||
+                            game.getVideo().getPath() == null ||
+                            game.getVideo().getPath().equals("") ||
+                            game.getVideo().getPath().equals("Video")){
+                        //TODO problem when internationalizating.
+                        game.setVideo(null);
+                    }
+
+                    if(addGame(game)) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } catch (Exception e) {
+                    throw new IllegalStateException("Unable to write file", e);
+                }
+            }
+        } else {
+            if(game.getVideo() == null ||
+                    game.getVideo().getPath() == null ||
+                    game.getVideo().getPath().equals("") ||
+                    game.getVideo().getPath().equals("Video")){
+                game.setVideo(null);
+            }
+
+            if(addGame(game)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
     }
 }

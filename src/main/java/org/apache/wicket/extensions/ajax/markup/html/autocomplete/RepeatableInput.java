@@ -37,18 +37,7 @@ public class RepeatableInput<T extends IAutoCompletable> extends AutoCompleteTex
         if(Strings.isEmpty(input)){
             return new ArrayList<T>().iterator();
         }
-        List<T> allChoices = service.getAll();
         int AUTO_COMPLETE_CHOICES = 10;
-        List<T> choices = new ArrayList<T>(AUTO_COMPLETE_CHOICES);
-        for(T t: allChoices) {
-            if((t.getAutoCompleteData() != null) &&
-                    t.getAutoCompleteData().toLowerCase().contains(input.toLowerCase())){
-                choices.add(t);
-            }
-            if(choices.size() >= AUTO_COMPLETE_CHOICES) {
-                break;
-            }
-        }
-        return choices.iterator();
+        return service.getFirstChoices(input.toLowerCase(), AUTO_COMPLETE_CHOICES).iterator();
     }
 }

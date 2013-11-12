@@ -3,6 +3,7 @@ package cz.larpovadatabaze.components.page.game;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel;
 import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.utils.HbUtils;
 import org.apache.wicket.RestartResponseException;
@@ -38,6 +39,8 @@ public class CreateOrUpdateGamePage extends CsldBasePage {
                 Game game = (Game) form.getModelObject();
                 PageParameters params = new PageParameters();
                 params.add("id", game.getId());
+                CsldAuthenticatedWebSession session = (CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get();
+                session.requestClear();
                 throw new RestartResponseException(GameDetail.class, params);
             }
         });

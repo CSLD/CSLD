@@ -16,8 +16,6 @@ import java.util.List;
  * It contains basic characteristics of the game and allows user to filter by them.
  */
 public abstract class FilterGamesPanel extends Panel {
-    private ChooseLabelsPanel labels;
-
     public FilterGamesPanel(String id) {
         super(id);
 
@@ -31,16 +29,14 @@ public abstract class FilterGamesPanel extends Panel {
         filterGames.add(new NumberTextField<Double>("minDays"));
         filterGames.add(new NumberTextField<Double>("maxDays"));
 
-        labels = new ChooseLabelsPanel("filterByLabels");
+        ChooseLabelsPanel labels = new ChooseLabelsPanel("filterByLabels");
         filterGames.add(labels);
 
         filterGames.add(new AjaxButton("submit"){
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 if(filterGames.isValid()){
-                    List<Label> selectedLabels = labels.getSelected();
-
-                    onCsldEvent(target, form, selectedLabels);
+                    onCsldEvent(target, form, ((FilterGame)form.getModelObject()).getFilterByLabels());
                 }
             }
         });

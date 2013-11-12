@@ -3,36 +3,33 @@ package cz.larpovadatabaze.components.panel.game;
 import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
+import cz.larpovadatabaze.behavior.ErrorClassAppender;
+import cz.larpovadatabaze.components.panel.ImagePanel;
 import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
 import cz.larpovadatabaze.components.panel.group.CreateOrUpdateGroupPanel;
 import cz.larpovadatabaze.entities.*;
-import cz.larpovadatabaze.services.*;
-import cz.larpovadatabaze.utils.FileUtils;
+import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.GroupService;
+import cz.larpovadatabaze.validator.AtLeastOneRequiredLabelValidator;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.extensions.ajax.markup.html.autocomplete.*;
+import org.apache.wicket.extensions.ajax.markup.html.autocomplete.GenericFactory;
+import org.apache.wicket.extensions.ajax.markup.html.autocomplete.GenericValidator;
+import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IFactory;
+import org.apache.wicket.extensions.ajax.markup.html.autocomplete.RepeatableInputPanel;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.FormComponent;
-import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.form.upload.FileUpload;
-import org.apache.wicket.markup.html.form.upload.FileUploadField;
+import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Bytes;
 import org.apache.wicket.validation.IValidator;
-
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * This panel is used when you want to create or update game in the database.
@@ -42,20 +39,11 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
     @SpringBean
     GameService gameService;
     @SpringBean
-    ImageService imageService;
-    @SpringBean
     CsldUserService csldUserService;
     @SpringBean
     GroupService groupService;
-    @SpringBean
-    VideoService videoService;
 
-    private FileUploadField fileUploadField;
-    private List<GenericModel<CsldUser>> authorsOfGame;
-    private List<GenericModel<CsldGroup>> groupsOfGame;
     private ChooseLabelsPanel chooseLabels;
-    @SuppressWarnings("unused")
-    private List<FileUpload> images;
 
     public CreateOrUpdateGamePanel(String id, Game game) {
         super(id);
@@ -72,48 +60,50 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
         createOrUpdateGame.setOutputMarkupId(true);
         createOrUpdateGame.setMultiPart(true);
         createOrUpdateGame.setMaxSize(Bytes.kilobytes(1024));
+        ComponentFeedbackMessageFilter filter = new ComponentFeedbackMessageFilter(createOrUpdateGame);
+        createOrUpdateGame.add(new FeedbackPanel("feedback", filter).setOutputMarkupId(true));
 
         final org.apache.wicket.markup.html.image.Image plusIcon = new org.apache.wicket.markup.html.image.Image("plusIcon",
                 new PackageResourceReference(Csld.class, Image.getPlusIconPath()));
         createOrUpdateGame.add(plusIcon);
 
-        createOrUpdateGame.add(addFeedbackPanel(new TextField<String>("name").setRequired(true), createOrUpdateGame, "nameFeedback"));
-        createOrUpdateGame.add(addFeedbackPanel(new TextArea<String>("description").setRequired(true), createOrUpdateGame, "descriptionFeedback"));
-        createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("year"), createOrUpdateGame, "yearFeedback"));
-        createOrUpdateGame.add(addFeedbackPanel(new TextField<String>("web"), createOrUpdateGame, "webFeedback"));
-        createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("hours"), createOrUpdateGame, "hoursFeedback"));
-        createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("days"), createOrUpdateGame, "daysFeedback"));
-        createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("players"), createOrUpdateGame, "playersFeedback"));
-        createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("menRole"), createOrUpdateGame, "menRoleFeedback"));
-        createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("womenRole"), createOrUpdateGame, "womenRoleFeedback"));
-        createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("bothRole"), createOrUpdateGame, "bothRoleFeedback"));
-        createOrUpdateGame.add(addFeedbackPanel(new TextField<String>("video.path"), createOrUpdateGame, "videoPathFeedback"));
+        createOrUpdateGame.add(addFeedbackPanel(new RequiredTextField<String>("name").setLabel(Model.of("Jméno")), createOrUpdateGame, "nameFeedback"));
+        createOrUpdateGame.add(addFeedbackPanel(new TextArea<String>("description").setRequired(true).setLabel(Model.of("Popis")), createOrUpdateGame, "descriptionFeedback"));
 
-        fileUploadField = new FileUploadField("image", new PropertyModel<List<FileUpload>>(this,"images"));
-        fileUploadField.setOutputMarkupId(true);
-        createOrUpdateGame.add(addFeedbackPanel(fileUploadField, createOrUpdateGame, "imageFeedback"));
+        createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("year").setLabel(Model.of("Rok")), createOrUpdateGame, "yearFeedback"));
+        createOrUpdateGame.add(addFeedbackPanel(new TextField<String>("web"), createOrUpdateGame, "webFeedback"));
+        createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("hours").setLabel(Model.of("Hodiny")), createOrUpdateGame, "hoursFeedback"));
+        createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("days").setLabel(Model.of("Dny")), createOrUpdateGame, "daysFeedback"));
+        createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("players").setLabel(Model.of("Počet hráčů")), createOrUpdateGame, "playersFeedback"));
+        createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("menRole").setLabel(Model.of("Počet mužů")), createOrUpdateGame, "menRoleFeedback"));
+        createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("womenRole").setLabel(Model.of("Počet žen")), createOrUpdateGame, "womenRoleFeedback"));
+        createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("bothRole").setLabel(Model.of("Počet obojetných")), createOrUpdateGame, "bothRoleFeedback"));
+        createOrUpdateGame.add(addFeedbackPanel(new TextField<String>("video.path"), createOrUpdateGame, "videoPathFeedback"));
+        createOrUpdateGame.add(addFeedbackPanel(new ImagePanel("image"), createOrUpdateGame, "imageFeedback"));
 
         addAuthorsInput(createOrUpdateGame, game);
         addGroupsInput(createOrUpdateGame, game);
-        chooseLabels = new ChooseLabelsPanel("chooseLabels", game.getLabels());
-        chooseLabels.setOutputMarkupId(true);
-        createOrUpdateGame.add(chooseLabels);
+
+        chooseLabels = new ChooseLabelsPanel("labels");
+        chooseLabels.add(new AtLeastOneRequiredLabelValidator());
+        createOrUpdateGame.add(addFeedbackPanel(chooseLabels, createOrUpdateGame, "labelsFeedback"));
 
         addCreateGroupButton(createOrUpdateGame);
         addCreateAuthorButton(createOrUpdateGame);
         addCreateLabelButton(createOrUpdateGame);
 
         createOrUpdateGame.add(new AjaxButton("submit"){
-
-
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 super.onSubmit(target, form);
 
                 if(createOrUpdateGame.isValid()){
                     Game game = createOrUpdateGame.getModelObject();
-                    if(saveOrUpdateGame(game)){
+                    if(gameService.saveOrUpdate(game)){
                         onCsldAction(target, form);
+                    } else {
+                        error(getLocalizer().getString("game.cantAdd", this));
+                        target.add(getParent());
                     }
                 }
             }
@@ -136,6 +126,7 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
         feedbackPanel.setOutputMarkupId(true);
         addingFeedbackTo.add(feedbackPanel);
         addFeedbackTo.add(new AjaxFeedbackUpdatingBehavior("blur", feedbackPanel));
+        addFeedbackTo.add(new ErrorClassAppender());
         return addFeedbackTo;
     }
 
@@ -210,10 +201,9 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
         IFactory<CsldGroup> groupIFactory = new GenericFactory<CsldGroup>(CsldGroup.class);
         IValidator<CsldGroup> groupIValidator = new GenericValidator<CsldGroup>(groupService);
 
-        RepeatableInputPanel<CsldGroup> groups = new RepeatableInputPanel<CsldGroup>("groups", groupIFactory,
+        RepeatableInputPanel<CsldGroup> groups = new RepeatableInputPanel<CsldGroup>("groupAuthor", groupIFactory,
                 groupIValidator, game.getGroupAuthor(), groupService);
         createOrUpdateGame.add(groups);
-        groupsOfGame = groups.getData();
     }
 
     private void addAuthorsInput(Form createOrUpdateGame, Game game){
@@ -223,82 +213,6 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
         RepeatableInputPanel<CsldUser> authors = new RepeatableInputPanel<CsldUser>("authors", userIFactory,
                 userIValidator, game.getAuthors(), csldUserService);
         createOrUpdateGame.add(authors);
-        authorsOfGame = authors.getData();
-    }
-
-    private boolean saveOrUpdateGame(Game game) {
-        game.setAdded(new Timestamp(new Date().getTime()));
-        game.setLabels(chooseLabels.getSelected());
-
-        List<CsldUser> authors = new ArrayList<CsldUser>();
-        for (GenericModel<CsldUser> authorModel : authorsOfGame) {
-            authors.add(authorModel.getObject());
-        }
-        game.setAuthors(authors);
-        List<CsldGroup> groups = new ArrayList<CsldGroup>();
-        for (GenericModel<CsldGroup> authorModel : groupsOfGame) {
-            groups.add(authorModel.getObject());
-        }
-        game.setGroupAuthor(groups);
-
-        if(game.getAmountOfComments() == null){
-            game.setAmountOfComments(0);
-        }
-        if(game.getAmountOfRatings() == null){
-            game.setAmountOfRatings(0);
-        }
-        if(game.getAmountOfPlayed() == null){
-            game.setAmountOfPlayed(0);
-        }
-        if(game.getTotalRating() == null){
-            game.setTotalRating(0d);
-        }
-        if(game.getImage() == null) {
-            game.setImage(Image.getDefaultGame());
-        }
-
-        final List<FileUpload> uploads = fileUploadField.getFileUploads();
-        if (uploads != null) {
-            for (FileUpload upload : uploads) {
-                String filePath = FileUtils.saveImageFileAndReturnPath(upload, game.getName(), 120, 120);
-                try {
-                    Image image = new Image();
-                    image.setPath(filePath);
-                    game.setImage(image);
-
-                    if(game.getVideo() == null ||
-                            game.getVideo().getPath() == null ||
-                            game.getVideo().getPath().equals("") ||
-                            game.getVideo().getPath().equals("Video")){
-                        //TODO problem when internationalizating.
-                        game.setVideo(null);
-                    }
-
-                    if(gameService.addGame(game)) {
-                        return true;
-                    } else {
-                        error(getLocalizer().getString("game.cantAdd", this));
-                        return false;
-                    }
-                } catch (Exception e) {
-                    throw new IllegalStateException("Unable to write file", e);
-                }
-            }
-        } else {
-            if(game.getVideo() == null ||
-                    game.getVideo().getPath() == null ||
-                    game.getVideo().getPath().equals("") ||
-                    game.getVideo().getPath().equals("Video")){
-                game.setVideo(null);
-            }
-
-            if(gameService.addGame(game)) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        return false;
     }
 
     protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}

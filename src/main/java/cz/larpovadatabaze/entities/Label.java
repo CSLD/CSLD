@@ -151,7 +151,7 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
     }
 
     @Transient
-    private boolean selected;
+    private boolean selected = false;
 
     @Transient
     public void select(){
@@ -168,5 +168,10 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
     public static Label getEmptyLabel() {
         Label emptyLabel = new Label();
         return emptyLabel;
+    }
+
+    @Transient
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

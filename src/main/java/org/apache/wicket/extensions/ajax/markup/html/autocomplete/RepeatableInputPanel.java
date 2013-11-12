@@ -1,10 +1,14 @@
 package org.apache.wicket.extensions.ajax.markup.html.autocomplete;
 
+import cz.larpovadatabaze.api.Identifiable;
 import cz.larpovadatabaze.services.GenericService;
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.form.FormComponentPanel;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
@@ -17,22 +21,8 @@ import java.util.List;
 /**
  *
  */
-public class RepeatableInputPanel<T extends IAutoCompletable> extends Panel {
-    final protected List<T> data;
-
-    protected IFactory<T> factory;
-    protected GenericService<T> service;
-
+public class RepeatableInputPanel<T extends IAutoCompletable & Identifiable> extends FormComponentPanel<List<T>> {
     final protected RepeatableListView<T> repeatables;
-
-    public RepeatableInputPanel(String id,
-
-                                final IFactory<T> factory,
-                                final IValidator<T> validator,
-
-                                GenericService<T> service) {
-        this(id, factory, validator, new ArrayList<T>(), service);
-    }
 
     public RepeatableInputPanel(String id,
 
@@ -43,11 +33,7 @@ public class RepeatableInputPanel<T extends IAutoCompletable> extends Panel {
                                 GenericService<T> service) {
         super(id);
 
-        this.factory = factory;
-        this.service = service;
-        this.data = data;
-
-        this.data.add(factory.create());
+        data.add(factory.create());
         setOutputMarkupId(true);
 
         repeatables =
@@ -60,20 +46,25 @@ public class RepeatableInputPanel<T extends IAutoCompletable> extends Panel {
         add(repeatables);
     }
 
-    public List<GenericModel<T>> getData() {
-        return repeatables.getData();
+    @Override
+    protected void convertInput() {
+        super.convertInput();
+
+        List<T> results = new ArrayList<T>();
+        for(FormComponent<T> component: repeatables.inputs) {
+            results.add(component.getConvertedInput());
+        }
+        setConvertedInput(results);
     }
 
-    private Panel getThisPanel(){
-        return this;
-    }
-
-    private class RepeatableListView<T extends IAutoCompletable> extends ListView<T> {
+    private class RepeatableListView<T extends IAutoCompletable & Identifiable> extends ListView<T> {
         protected IFactory<T> factory;
         protected IValidator<T> validator;
         protected GenericService<T> service;
 
         protected List<GenericModel<T>> modelsInner;
+
+        public List<FormComponent<T>> inputs;
 
         public RepeatableListView(String id,
 
@@ -84,14 +75,11 @@ public class RepeatableInputPanel<T extends IAutoCompletable> extends Panel {
                                   GenericService<T> service) {
             super(id, data);
 
+            inputs = new ArrayList<FormComponent<T>>();
             modelsInner = new ArrayList<GenericModel<T>>();
             this.factory = factory;
             this.validator = validator;
             this.service = service;
-        }
-
-        public List<GenericModel<T>> getData() {
-            return modelsInner;
         }
 
         @Override
@@ -124,7 +112,7 @@ public class RepeatableInputPanel<T extends IAutoCompletable> extends Panel {
                     }
                     if (addNew) {
                         modelList.add(factory.create());
-                        ajaxRequestTarget.add(getThisPanel());
+                        ajaxRequestTarget.add(RepeatableInputPanel.this);
                     }
                 }
 
@@ -144,6 +132,8 @@ public class RepeatableInputPanel<T extends IAutoCompletable> extends Panel {
             item.add(repeatableFeedback);
 
             item.add(repeatable);
+
+            inputs.add(repeatable);
         }
     }
 }

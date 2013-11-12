@@ -7,6 +7,7 @@ import cz.larpovadatabaze.services.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -40,6 +41,11 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public void remove(CsldGroup toRemove) {
         groupDAO.makeTransient(toRemove);
+    }
+
+    @Override
+    public List<CsldGroup> getFirstChoices(String startsWith, int maxChoices) {
+        return groupDAO.getFirstChoices(startsWith, maxChoices);
     }
 
     @Override
