@@ -97,6 +97,12 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -107,6 +113,12 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
             <version>${spring.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -153,15 +165,34 @@
 
         <!-- LOGGING DEPENDENCIES - LOG4J -->
         <dependency>
+  	        <groupId>org.slf4j</groupId>
+	          <artifactId>slf4j-api</artifactId>
+	          <version>1.7.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+	          <version>1.7.5</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+	          <version>1.7.5</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.14</version>
         </dependency>
+        <!--
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>0.9.24</version>
         </dependency>
+        -->
 
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -254,6 +285,9 @@
                     <httpsPort>8443</httpsPort>
                     <keystoreFile>${basedir}/src/test/config/keystore</keystoreFile>
                     <keystorePass>csldcsld</keystorePass>
+                    <additionalClasspathDirs>
+                        <additionalClasspathDir>${basedir}/src/test/config/tomcat</additionalClasspathDir>
+                    </additionalClasspathDirs>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -281,6 +315,7 @@
                             <value>${basedir}/src/test/config/keystore</value>
                         </systemProperty>
                     </systemProperties>
+                    <useTestClasspath>true</useTestClasspath>
                 </configuration>
                 <dependencies>
                     <dependency>

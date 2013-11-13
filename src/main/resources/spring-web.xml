@@ -26,32 +26,10 @@ http://www.springframework.org/schema/jee http://www.springframework.org/schema/
         <property name="transactionManager" ref="transactionManager"/>
     </bean>
 
-<!--
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-          destroy-method="close">
-        <property name="driverClassName" value="org.postgresql.Driver" />
-        <property name="url" value="jdbc:postgresql://localhost/tmp" />
-        <property name="username" value="csld" />
-        <property name="password" value="5e5icha" />
-    </bean>
-    -->
-	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/csld"/>
-    
+  	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/csld"/>
 
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
     	<property name="session"><jee:jndi-lookup jndi-name="mail/Session"/></property>
-    	<!--
-        <property name="host" value="smtp.gmail.com"/>
-        <property name="port" value="587"/>
-        <property name="username" value="hrajlarp111@gmail.com"/>
-        <property name="password" value="hrajlarp2013"/>
-        <property name="javaMailProperties">
-            <props>
-                <prop key="mail.smtp.auth">true</prop>
-                <prop key="mail.smtp.starttls.enable">true</prop>
-            </props>
-        </property>
-        -->
     </bean>
 
     <bean id="templateMessage" class="org.springframework.mail.SimpleMailMessage">
