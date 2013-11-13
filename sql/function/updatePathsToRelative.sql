@@ -1,6 +1,21 @@
+CREATE OR REPLACE FUNCTION reverse(text) RETURNS text
+    AS $_$
+DECLARE
+original alias for $1;
+      reverse_str text;
+      i int4;
+BEGIN
+    reverse_str := '';
+    FOR i IN REVERSE LENGTH(original)..1 LOOP
+      reverse_str := reverse_str || substr(original,i,1);
+    END LOOP;
+RETURN reverse_str;
+END;$_$
+    LANGUAGE plpgsql IMMUTABLE;
+
 CREATE OR REPLACE FUNCTION public.csld_rev_path(gameid integer)
-  RETURNS text
-LANGUAGE plpgsql
+ RETURNS text
+ LANGUAGE plpgsql
 AS $function$
 DECLARE
   result RECORD;
