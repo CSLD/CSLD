@@ -6,11 +6,7 @@
      It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/game/PlayedPanel.html
      Code - cz.larpovadatabaze.components.panel.game.PlayedPanel.html
     -->
-    <form wicket:id="gameState">
-        <select wicket:id="stateOfGame">
-            <option wicket:id="didntPlay">Nehrál jsem</option>
-            <option wicket:id="played">Hrál jsem</option>
-            <option wicket:id="wantToPlay">Chci hrát</option>
-        </select>
-    </form>
+    <a wicket:id="didntPlay"><wicket:message key="game.notPlayed">Nehrál jsem</wicket:message></a>
+    <a wicket:id="played"><wicket:message key="game.played">Hrál jsem</wicket:message></a>
+    <a wicket:id="wantToPlay"><wicket:message key="game.wishToPlay">Chci hrát</wicket:message></a>
 </wicket:panel>

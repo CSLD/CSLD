@@ -73,9 +73,7 @@ public class GameDetail extends CsldBasePage {
 
         final RatingsResultPanel ratingsResult = new RatingsResultPanel("ratingsResults", game){
             @Override
-            protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
-                super.onCsldAction(target, form);
-
+            protected void onCsldAction(AjaxRequestTarget target, UserPlayedGame userPlayedGame) {
                 Game gameInner = gameService.getById(game.getId());
                 if (HbUtils.isProxy(gameInner)) {
                     gameInner = HbUtils.deproxy(gameInner);

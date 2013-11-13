@@ -3,6 +3,7 @@ package cz.larpovadatabaze.components.panel.game;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
+import cz.larpovadatabaze.entities.UserPlayedGame;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.GameService;
@@ -45,8 +46,8 @@ public abstract class RatingsResultPanel extends Panel {
 
         add(new PlayedPanel("playedPanel", game) {
             @Override
-            protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
-                RatingsResultPanel.this.onCsldAction(target, form);
+            protected void onCsldAction(AjaxRequestTarget target, UserPlayedGame userPlayedGame) {
+                RatingsResultPanel.this.onCsldAction(target, userPlayedGame);
             }
         });
 
@@ -192,5 +193,5 @@ public abstract class RatingsResultPanel extends Panel {
                 "               width: widthOne}, 1000);");
     }
 
-    protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}
+    protected void onCsldAction(AjaxRequestTarget target, UserPlayedGame userPlayedGame){}
 }

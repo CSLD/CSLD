@@ -30,7 +30,7 @@ public abstract class AdministerGroupMembers extends Panel {
     @SpringBean
     GroupHasMemberService groupHasMemberService;
 
-    private List<GenericModel<CsldUser>> administratorsOfGroup;
+    private List<CsldUser> administratorsOfGroup;
     private List<GroupHasMember> membersOfGroup;
     private CsldGroup group;
 
@@ -59,11 +59,7 @@ public abstract class AdministerGroupMembers extends Panel {
     }
 
     private void saveGroup() {
-        List<CsldUser> administrators = new ArrayList<CsldUser>();
-        for(GenericModel<CsldUser> administrator: administratorsOfGroup){
-            administrators.add(administrator.getObject());
-        }
-        group.setAdministrators(administrators);
+        group.setAdministrators(administratorsOfGroup);
         groupHasMemberService.removeAllMembersOfGroup(group);
         for(GroupHasMember memberOfGroup: membersOfGroup){
             memberOfGroup.setGroup(group);
@@ -80,7 +76,7 @@ public abstract class AdministerGroupMembers extends Panel {
         RepeatableInputPanel<CsldUser> authors = new RepeatableInputPanel<CsldUser>("administrators", userIFactory,
                 userIValidator, group.getAdministrators(), csldUserService);
         administerGroup.add(authors);
-        administratorsOfGroup = authors.getData();
+        administratorsOfGroup = authors.getModelObject();
     }
 
     protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}
