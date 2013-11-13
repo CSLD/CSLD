@@ -39,17 +39,20 @@ public abstract class RatingsResultPanel extends Panel {
     private Model<Integer> myRating;
     private Model<Integer> amountOfResults;
 
+    private PlayedPanel playedPanel;
+
     public RatingsResultPanel(String id, Game game) {
         super(id);
         setOutputMarkupId(true);
         this.game = game;
 
-        add(new PlayedPanel("playedPanel", game) {
+        playedPanel = new PlayedPanel("playedPanel", game) {
             @Override
             protected void onCsldAction(AjaxRequestTarget target, UserPlayedGame userPlayedGame) {
                 RatingsResultPanel.this.onCsldAction(target, userPlayedGame);
             }
-        });
+        };
+        add(playedPanel);
 
         double ratingOfGame = game.getTotalRating() != null ? game.getTotalRating() : 0;
         String ratingColor = Rating.getColorOf(ratingOfGame);
@@ -142,12 +145,16 @@ public abstract class RatingsResultPanel extends Panel {
         CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
         try {
             Rating mine = ratingService.getUserRatingOfGame(logged.getId(), game.getId());
-            myRating.setObject(mine.getRating());
+            if(mine != null){
+                myRating.setObject(mine.getRating());
+            } else {
+                myRating.setObject(0);
+            }
         } catch (WrongParameterException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
-
+        playedPanel.reload(target);
         get("widthOne").setDefaultModel(Model.of(ratings[0]));
         get("widthTwo").setDefaultModel(Model.of(ratings[1]));
         get("widthThree").setDefaultModel(Model.of(ratings[2]));

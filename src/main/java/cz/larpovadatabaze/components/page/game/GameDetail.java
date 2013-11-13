@@ -27,6 +27,8 @@ public class GameDetail extends CsldBasePage {
     GameService gameService;
 
     private Game game;
+    private RatingsResultPanel ratingsResult;
+    private RatingsPanel ratingsPanel;
 
     public GameDetail(PageParameters params){
         Integer gameId = params.get("id").to(Integer.class);
@@ -71,7 +73,7 @@ public class GameDetail extends CsldBasePage {
         });
         add(comments);
 
-        final RatingsResultPanel ratingsResult = new RatingsResultPanel("ratingsResults", game){
+        ratingsResult = new RatingsResultPanel("ratingsResults", game){
             @Override
             protected void onCsldAction(AjaxRequestTarget target, UserPlayedGame userPlayedGame) {
                 Game gameInner = gameService.getById(game.getId());
@@ -85,17 +87,32 @@ public class GameDetail extends CsldBasePage {
                     }
                 }
                 wantedToPlay.reload(target, wantedBy);
+                ratingsResult.reload(target);
+                ratingsPanel.reload(target);
             }
         };
         ratingsResult.setOutputMarkupId(true);
         add(ratingsResult);
         add(new CanNotRatePanel("canNotRatePanel"));
-        add(new RatingsPanel("ratingsPanel", game){
+        ratingsPanel = new RatingsPanel("ratingsPanel", game){
             @Override
             protected void onCsldAction(AjaxRequestTarget target) {
                 ratingsResult.reload(target);
+
+                Game gameInner = gameService.getById(game.getId());
+                if (HbUtils.isProxy(gameInner)) {
+                    gameInner = HbUtils.deproxy(gameInner);
+                }
+                List<CsldUser> wantedBy = new ArrayList<CsldUser>();
+                for (UserPlayedGame played : gameInner.getPlayed()) {
+                    if (played.getState() == UserPlayedGame.WANT_TO_PLAY) {
+                        wantedBy.add(played.getPlayerOfGame());
+                    }
+                }
+                wantedToPlay.reload(target, wantedBy);
             }
-        });
+        };
+        add(ratingsPanel);
 
         EditGamePanel editGamePanel = new EditGamePanel("editGamePanel", game);
         add(editGamePanel);

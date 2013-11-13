@@ -3,8 +3,11 @@ package cz.larpovadatabaze.components.panel.game;
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.entities.UserPlayedGame;
+import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.services.RatingService;
 import cz.larpovadatabaze.services.UserPlayedGameService;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -27,6 +30,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 public abstract class PlayedPanel extends Panel {
     @SpringBean
     UserPlayedGameService userPlayedGameService;
+    @SpringBean
+    RatingService ratingService;
 
     private String selected = "Nehrál jsem";
     private UserPlayedGame stateOfGame;
@@ -35,13 +40,16 @@ public abstract class PlayedPanel extends Panel {
     private AjaxLink<UserPlayedGame> played;
     private AjaxLink<UserPlayedGame> wantToPlay;
 
+    private Game game;
+
     @SuppressWarnings("unchecked")
     public PlayedPanel(String id, final Game game) {
         super(id);
 
         setOutputMarkupId(true);
         CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
-        int userId = (logged != null) ? logged.getId() : -1;
+        final int userId = (logged != null) ? logged.getId() : -1;
+        this.game = game;
 
         didntPlay = new AjaxLink<UserPlayedGame>("didntPlay") {
             @Override
@@ -50,6 +58,15 @@ public abstract class PlayedPanel extends Panel {
                 played.add(AttributeModifier.replace("class", Model.of("played button")));
                 wantToPlay.add(AttributeModifier.replace("class", Model.of("wantToPlay button")));
                 didntPlay.add(AttributeModifier.replace("class", Model.of("active didnt button")));
+
+                try {
+                    Rating rating = ratingService.getUserRatingOfGame(userId, game.getId());
+                    if(rating != null) {
+                        ratingService.remove(rating);
+                    }
+                } catch (WrongParameterException e) {
+                    e.printStackTrace();
+                }
                 saveStateAndReload(target);
             }
         };
@@ -112,4 +129,32 @@ public abstract class PlayedPanel extends Panel {
     }
 
     protected void onCsldAction(AjaxRequestTarget target, UserPlayedGame userPlayedGame){}
+
+    public void reload(AjaxRequestTarget target) {
+        CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
+        final int userId = (logged != null) ? logged.getId() : -1;
+
+        played.add(AttributeModifier.replace("class", Model.of("played button")));
+        wantToPlay.add(AttributeModifier.replace("class", Model.of("wantToPlay button")));
+        didntPlay.add(AttributeModifier.replace("class", Model.of("didnt button")));
+
+        stateOfGame = userPlayedGameService.getUserPlayedGame(game.getId(), userId);
+        if(stateOfGame == null) {
+            stateOfGame = new UserPlayedGame();
+            stateOfGame.setGameId(game.getId());
+            stateOfGame.setUserId(userId);
+            didntPlay.add(AttributeModifier.replace("class", Model.of("active didnt button")));
+        } else {
+            selected = UserPlayedGame.getStateFromDb(stateOfGame.getState());
+            if(stateOfGame.getState() == 2) {
+                played.add(AttributeModifier.replace("class", Model.of("active played button")));
+            } else if(stateOfGame.getState() == 1) {
+                wantToPlay.add(AttributeModifier.replace("class", Model.of("active wantToPlay button")));
+            } else {
+                didntPlay.add(AttributeModifier.replace("class", Model.of("active didnt button")));
+            }
+        }
+
+        target.add(PlayedPanel.this);
+    }
 }
