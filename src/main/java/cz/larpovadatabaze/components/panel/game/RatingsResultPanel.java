@@ -126,6 +126,7 @@ public abstract class RatingsResultPanel extends Panel {
         ratingColorModel.setObject(ratingColor);
         DecimalFormat df = new DecimalFormat("0.0");
         ratingOfGameModel.setObject(df.format(ratingOfGame / 10));
+        this.amountOfResults.setObject(ratingService.getRatingsForGame(game.getId()));
 
         int[] ratings = new int[10];
         Arrays.fill(ratings,0);

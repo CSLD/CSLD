@@ -67,4 +67,9 @@ public class RatingServiceImpl implements RatingService {
     public int getAmountOfRatings() {
         return ratingDAO.getAmountOfRatings();
     }
+
+    @Override
+    public Integer getRatingsForGame(Integer id) {
+        return ratingDAO.getRatingsForGame(id);
+    }
 }

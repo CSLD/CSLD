@@ -17,4 +17,6 @@ public interface RatingService extends GenericService<Rating> {
     void saveOrUpdate(Rating actualRating);
 
     int getAmountOfRatings();
+
+    Integer getRatingsForGame(Integer id);
 }

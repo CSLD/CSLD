@@ -8,6 +8,8 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigInteger;
+
 /**
  *
  */
@@ -26,5 +28,11 @@ public class RatingDAO extends GenericHibernateDAO<Rating, Integer> {
         Query query = session.createSQLQuery(sqlQuery);
         if (query.uniqueResult() == null) { return 0.0; }
         else { return ((Double) query.uniqueResult()).doubleValue(); }
+    }
+
+    public Integer getRatingsForGame(Integer id) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createSQLQuery("select count(*) from csld_rating where game_id = " + id);
+        return ((BigInteger) query.uniqueResult()).intValue();
     }
 }
