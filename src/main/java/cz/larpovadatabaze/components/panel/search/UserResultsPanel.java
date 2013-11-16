@@ -4,6 +4,7 @@ import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.services.CsldUserService;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
@@ -45,10 +46,10 @@ public class UserResultsPanel extends Panel {
         List<CsldUser> shortResults;
 
         if(searchResults.size() > 2){
-            fullResults = searchResults.subList(0,3);
-            shortResults = searchResults.subList(3, searchResults.size());
+            fullResults = new ArrayList<CsldUser>(searchResults.subList(0,3));
+            shortResults = new ArrayList<CsldUser>(searchResults.subList(3, searchResults.size()));
         } else {
-            fullResults = searchResults.subList(0,searchResults.size());
+            fullResults = new ArrayList<CsldUser>(searchResults.subList(0,searchResults.size()));
             shortResults = new ArrayList<CsldUser>();
         }
         ListView<CsldUser> fullList = new ListView<CsldUser>("fullResults", fullResults) {

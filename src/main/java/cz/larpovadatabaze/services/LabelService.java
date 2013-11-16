@@ -22,5 +22,9 @@ public interface LabelService extends GenericService<Label>{
 
     List<Label> getByAutoCompletable(String labelName) throws WrongParameterException;
 
+    Label getByName(String name);
+
     boolean saveOrUpdate(Label label);
+
+    Label getById(int filterLabel);
 }

@@ -7,6 +7,7 @@ import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.models.FilterGame;
 import cz.larpovadatabaze.providers.SortableGameProvider;
 import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.LabelService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.OrderByBorder;
 import org.apache.wicket.markup.html.basic.Label;
@@ -32,13 +33,22 @@ import java.util.List;
 public class ListGamePanel extends Panel {
     @SpringBean
     GameService gameService;
+    @SpringBean
+    LabelService labelService;
     private SortableGameProvider sgp;
 
     @SuppressWarnings("unchecked")
-    public ListGamePanel(String id) {
+    public ListGamePanel(String id, int filterLabel) {
         super(id);
 
-        sgp = new SortableGameProvider(gameService);
+        cz.larpovadatabaze.entities.Label label;
+        if(filterLabel != -1){
+            label = labelService.getById(filterLabel);
+        } else {
+            label = null;
+        }
+
+        sgp = new SortableGameProvider(gameService, label);
         final DataView<Game> propertyList = new DataView<Game>("listGames", sgp) {
             @Override
             protected void populateItem(Item<Game> item) {

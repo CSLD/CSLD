@@ -110,10 +110,10 @@ public class GamesResultsPanel extends Panel {
         }
 
         if(searchResults.size() > 2){
-            fullResults = new ArrayList<Game>(searchResults.subList(0,3));
-            shortResults = new ArrayList<Game>(searchResults.subList(3, searchResults.size()));
+            fullResults = new ArrayList<Game>(new ArrayList<Game>(searchResults.subList(0,3)));
+            shortResults = new ArrayList<Game>(new ArrayList<Game>(searchResults.subList(3, searchResults.size())));
         } else {
-            fullResults = new ArrayList<Game>(searchResults.subList(0,searchResults.size()));
+            fullResults = new ArrayList<Game>(new ArrayList<Game>(searchResults.subList(0,searchResults.size())));
             shortResults = new ArrayList<Game>();
         }
     }

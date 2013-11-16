@@ -85,8 +85,18 @@ public class LabelServiceImpl implements LabelService {
     }
 
     @Override
+    public Label getByName(String name) {
+        return labelDAO.findSingleByCriteria(Restrictions.eq("name",name));
+    }
+
+    @Override
     public boolean saveOrUpdate(Label label) {
         return labelDAO.saveOrUpdate(label);
+    }
+
+    @Override
+    public Label getById(int filterLabel) {
+        return labelDAO.findById(filterLabel, false);
     }
 
     @Override

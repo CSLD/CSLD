@@ -21,14 +21,18 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
     private GameService gameService;
     private FilterGame filterGame = new FilterGame();
     private List<Label> filterLabels = new ArrayList<Label>();
+    private int filterLabel = -1;
 
     public SortableGameProvider(GameService gameService, String defaultSort) {
         this.gameService = gameService;
         setSort(defaultSort, SortOrder.ASCENDING);
     }
 
-    public SortableGameProvider(GameService gameService) {
+    public SortableGameProvider(GameService gameService, Label filterLabel) {
         this(gameService, "rating");
+        if(filterLabel != null) {
+            filterLabels.add(filterLabel);
+        }
     }
 
     @Override
