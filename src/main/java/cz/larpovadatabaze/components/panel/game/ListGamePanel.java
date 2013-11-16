@@ -21,6 +21,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -57,20 +58,16 @@ public class ListGamePanel extends Panel {
                 final Label gameYear = new Label("gameYear", Model.of(game.getYear()));
                 item.add(gameYear);
 
-                final Label gameRating = new Label("rating", Model.of(Math.round(game.getTotalRating())));
+                Long totalRating = Math.round(game.getTotalRating());
+                DecimalFormat df = new DecimalFormat("0.0");
+                final Label gameRating = new Label("rating", Model.of(df.format((double) totalRating / 10d)));
                 item.add(gameRating);
 
                 final Label gameRatings = new Label("ratings", game.getAmountOfRatings());
                 item.add(gameRatings);
-                final Image ratingsIcon = new Image("ratingsIcon",
-                        new PackageResourceReference(Csld.class, cz.larpovadatabaze.entities.Image.getRatingsIconPath()));
-                item.add(ratingsIcon);
 
                 final Label gameComments = new Label("comments", game.getAmountOfComments());
                 item.add(gameComments);
-                final Image commentsIcon = new Image("commentsIcon",
-                        new PackageResourceReference(Csld.class, cz.larpovadatabaze.entities.Image.getCommentsIconPath()));
-                item.add(commentsIcon);
             }
         };
         propertyList.setOutputMarkupId(true);

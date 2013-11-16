@@ -18,10 +18,6 @@ import java.util.List;
  */
 public class ListGame extends CsldBasePage {
     public ListGame() {
-        Image chartsIcon = new Image("chartsIcon",
-                new PackageResourceReference(Csld.class, cz.larpovadatabaze.entities.Image.getChartsIconPath()));
-        add(chartsIcon);
-
         final ListGamePanel listGamePanel = new ListGamePanel("listGame");
         listGamePanel.setOutputMarkupId(true);
         add(listGamePanel);

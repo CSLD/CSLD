@@ -15,9 +15,10 @@ pozadí přechodu šedá - cccccc
 checkbox zelená - a0d85b
 světle šedá (popisky) - 666
 */
-
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&subset=latin,latin-ext,cyrillic-ext,cyrillic);
 @import url(http://fonts.googleapis.com/css?family=Roboto:100,300,400);
 @import url(http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+@import url(http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css);
 @font-face {
     font-family: Baskerville;
     src: url('fonts/baskvill.ttf');
@@ -29,7 +30,7 @@ světle šedá (popisky) - 666
 body {
     background-image: url(../img/background.png);
     background-repeat: repeat;
-    font-family: Arial;
+    font-family: Open Sans;
     font-size: 12px;
 }
 
@@ -41,14 +42,14 @@ body {
 }
 
 .nadpisStranky {
-    font-family: Arial;
-    font-size: 20pt;
+    font-size: 20px;
     padding-bottom: 12px;
     padding-top: 10px;
     margin-left: -6px;
     text-align: center;
     color: #214c61;
     vertical-align: middle;
+    font-weight: bold;
 }
 
 .ikonaStranky {
@@ -58,7 +59,11 @@ body {
 
 .levaCast {
     float: left;
-    width: 650px; 
+    width: 642px;
+    background-color: #F0F0F0;
+    border:  4px #F0F0F0 solid;   
+    border-radius: 3px; 
+    box-shadow:  0 0 1px 1px #F0F0F0;   
 }
 
 .pravaCast {
@@ -90,6 +95,10 @@ h1{
 h2{
     color: #00A0B0;
     font-size: 14px;
+}
+#levaCastOdatabazi h3{
+  padding:  4px;
+  padding-left: 25px;
 }
 /* Header */
 #logoNadpis {
@@ -254,18 +263,24 @@ h2{
 #divProHledani .hledatBox {
     width: 150px;
     color: grey;
+    border-radius: 2px;
+    border: 1px #EFEFEF solid;
+
 }
 
 #divProHledani .glass {
-    background-image: url(../img/glass.png);
     border: 0;
     margin: 0;
     padding: 0;
-    width: 21px;
-    height: 21px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
     position: absolute;
     top: 2px;
     cursor: pointer;
+    border-radius: 2px;
+    border: 1px #EFEFEF solid;
+    margin-left: 2px;
 }
 
 #divProHledani a {
@@ -279,15 +294,17 @@ h2{
 }
 
 .nadpis {
-    font-size: 12pt;
+    font-size: 14px;
     font-weight: bold;
     margin-bottom: 10px;
     margin-top: 10px;
     margin-left: 6px;
+    color: #00A0B0;
 }
 
 .sloupecLevy {
     float: left;
+    margin-left: 10px;
 }
 
 .sloupecPravy {
@@ -296,24 +313,15 @@ h2{
 }
 
 .pridanaHra {
-    width: 320px;
+    width: 310px;
     height: 100px;
     margin-bottom: 10px;
-    /* Chrome, Safari */
-    background-image: -webkit-linear-gradient(#f8f8f8, #cccccc);
-    background-image: -webkit-gradient(linear, 0 0, 0 bottom, from(#f8f8f8), to(#cccccc));
-    /* Mozilla */
-    background-image: -moz-linear-gradient(#f8f8f8, #cccccc);
-    background-image: -moz-gradient(linear, 0 0, 0 bottom, from(#f8f8f8), to(#cccccc));
-    /* IE */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#f8f8f8', endColorstr = '#cccccc');
-    zoom: 1;
 }
 
 .pridanaHra .datum {
     font-size: 8pt;
     color: #535353;
-    margin-left: 14px;
+    margin-left: 9px;
     margin-top: 4px;
 }
 
@@ -323,31 +331,34 @@ h2{
 
 .pridanaHra .popisek {
     color: #535353;
-    font-size: 10pt;
+    font-size: 12px;
     text-align: justify;
     position: relative;
 }
 
 .pridanaHra .HraKomentarPopisek {
     color: #535353;
-    font-size: 10pt;
+    font-size: 11px;
     text-align: justify;
-    overflow: hidden;
     position: relative;
+}
+.pridanaHra .HraKomentarPopisek .HraKomentarVice{
+    bottom: -20px;
+    right: 0px;
 }
 
 .pridanaHra .HraKomentarVice {
     color: #535353;
-    font-size: 10pt;
-    text-align: justify;
+    font-size: 11px;
+    text-align: right;
     z-index: 10;
     position: absolute;
-    right: 0;
-    bottom: 0;
+    right: 6px;
+    bottom: 4px;
 }
-
+ 
 .pridanaHra .nadpisHra {
-    font-size: 10pt;
+    font-size: 12px;
 }
 
 .pridanaHra a {
@@ -358,6 +369,9 @@ h2{
 .pridanaHra .obrazekPopis {
     vertical-align: top;
     margin-left: -1px;
+    box-shadow:  0 0 2px 2px #D0D0D0;
+    border-radius: 2px;
+    border-collapse: separate;
 }
 
 .pridanaHra td {
@@ -412,7 +426,7 @@ h2{
 }
 
 .notrated {
-    background-color: white
+    background-color: #CCC
 }
 
 /*
@@ -527,25 +541,14 @@ h2{
 .pruhStatistika {
     font-size: 10pt;
     color: #000;
-    font-weight: bold;
-    background-color: #37b2f0;
-    background-image: -webkit-gradient(linear, right 0, left 0, from(#6dceff), to(#2882af));
+    padding-left: 3px;
+    background-color: rgba(0,160,176,0.6);
 }
 
 /* user */
-#uzivatel .komentar a {
-    font-weight: bold;
-    text-decoration: none;
-    color: black;
-}
 
-#uzivatel .komentar a:hover {
-    font-weight: bold;
-    text-decoration: underline;
-    color: black;
-}
 
-#uzivatel .obrazekUzivatel {
+.obrazekUzivatel {
     width: 120px;
     height: 120px;
     box-shadow:  0 0 2px 2px #D0D0D0;
@@ -591,32 +594,14 @@ h2{
     float: left;
     font-weight: bold;
     padding: 4px;
-    /* Chrome, Safari */
-    background-image: -webkit-linear-gradient(#f8f8f8, #cccccc);
-    background-image: -webkit-gradient(linear, 0 0, 0 bottom, from(#f8f8f8), to(#cccccc));
-    /* Mozilla */
-    background-image: -moz-linear-gradient(#f8f8f8, #cccccc);
-    background-image: -moz-gradient(linear, 0 0, 0 bottom, from(#f8f8f8), to(#cccccc));
-    /* IE */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#f8f8f8', endColorstr = '#cccccc');
-    zoom: 1;
 }
-
 #uzivatel .menuUzivatel .polozka {
     float: left;
     padding: 4px;
     margin-left: 10px;
 }
 
-#uzivatel .komentar {
-    width: 650px;
-    padding: 0px;
-    padding-bottom: 6px;
-    background-image: -webkit-linear-gradient(#f8f8f8, #ccc);
-    background-image: -webkit-gradient(linear, 0 0, 0 bottom, from(#f8f8f8), to(#ccc));
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#f8f8f8', endColorstr = '#cccccc'); /* IE9 a starší*/
-    zoom: 1; /* Bez zoomu se přechod v IE nezobrazí */
-}
+
 
 #uzivatel .bunkaDatum {
     vertical-align: middle;
@@ -646,7 +631,7 @@ h2{
 
 #nivoSlider {
     height:435px;
-    width:650px;
+    width:642px;
 }
 
 #uzivatel .komentar .jmeno {
@@ -682,7 +667,7 @@ h2{
     box-shadow:  0 0 1px 1px #F0F0F0;       
 }
 
-.levaCast#game .obrazekHraBunka {
+.levaCast .obrazekHraBunka {
     vertical-align: top;
 }
 
@@ -700,7 +685,8 @@ h2{
     vertical-align: top;
     padding-left: 12px;
     padding-top: 6px;
-    font-size: 11px;
+    font-size: 12px;
+
 }
 
 .levaCast#game .nadpisHra {
@@ -713,7 +699,8 @@ h2{
 .levaCast#game .popisek {
     color: #666;
     margin-bottom: 6px;
-    font-size: 11px;
+    font-size: 12px;
+
 }
 
 .levaCast#game .popisek a {
@@ -761,7 +748,7 @@ h2{
     padding: 4px;
     margin-left: 10px;
 }
-.levaCast#game .komentar {
+.levaCast .komentar {
     padding: 5px;
     padding-bottom: 6px;   
     margin: 10px 5px; 
@@ -770,29 +757,29 @@ h2{
     background-color: #FCFCFC;           
 
 }
-.levaCast#game .komentar:nth-child(2n-1) {
+.levaCast .komentar:nth-child(2n-1) {
   background-color: #F8F8F8;
 }
-.levaCast#game  .komentar a {
+.levaCast  .komentar a {
     text-decoration: none;
     color: black;
 }
 
-.levaCast#game  .komentar a:hover {
+.levaCast  .komentar a:hover {
     text-decoration: underline;
     color: black;
 }
 
-.levaCast#game  .komentar .bunkaObrazek  {
+.levaCast  .komentar .bunkaObrazek  {
     vertical-align: top;
     padding: 0px;
 
 }
-.levaCast#game  .komentar .bunkaObrazek img {
+.levaCast  .komentar .bunkaObrazek img {
     border-radius: 2px;
     box-shadow:  0 0 1px 1px #D0D0D0;
 }
-.levaCast#game  .komentar .obrazekUziv {
+.levaCast  .komentar .obrazekUziv {
     vertical-align: top;
     margin-left: -2px;
     margin-top: -2px;
@@ -800,7 +787,8 @@ h2{
     height: 75px;
 }
 
-.levaCast#game  .komentar .nick {
+.levaCast  .komentar .nick {
+    font-family: Arial;
     font-size: 13px;
     font-weight: bold;
     padding:  0 5px;
@@ -811,7 +799,8 @@ h2{
     border-radius: 2px;
 }
 
-.levaCast#game  .komentar .jmeno {
+.levaCast  .komentar .jmeno {
+    font-family: Arial;
     font-size: 11px;
     color: #666;
     padding:  1px 5px 1px 5px;
@@ -823,34 +812,36 @@ h2{
     border-radius: 2px;
 }
 
-.levaCast#game  .komentar .bunkaKomentar {
+.levaCast  .komentar .bunkaKomentar {
     padding-left: 4px;
     padding-top: 4px;
     vertical-align: top;
 }
-
-.levaCast#game  .komentar .obsahKomentar {
+.levaCast  .komentar .bunkaKomentar a:hover{
+    text-decoration: none;
+}
+.levaCast  .komentar .obsahKomentar {
     font-size: 12px;
     color: #444;
     margin-top: 4px;
     padding:  5px;
 }
 
-.levaCast#game  .komentar .datum {
+.levaCast .komentar .datum {
     font-size: 8pt;
     color: #535353;
     margin-left: 14px;
     margin-top: 4px;
 }
 
-.levaCast#game .checklist {
+.levaCast .checklist {
     list-style: none;
     margin: 0;
     padding: 0;
     height: 30px;
 }
 
-.levaCast#game .checklist li {
+.levaCast .checklist li {
     font-size: 14pt;
     font-weight: bold;
     float: left;
@@ -867,7 +858,7 @@ h2{
     padding-top: 6px;
 }
 
-.levaCast#game .checklist li.selected {
+.levaCast .checklist li.selected {
     font-size: 14pt;
     font-weight: bold;
     float: left;
@@ -883,15 +874,15 @@ h2{
     padding-top: 6px;
 }
 
-.levaCast#game .checklist li.selected .checkbox-select {
+.levaCast .checklist li.selected .checkbox-select {
     display: none;
 }
 
-.levaCast#game .checklist li.selected .checkbox-deselect {
+.levaCast .checklist li.selected .checkbox-deselect {
     display: block;
 }
 
-.levaCast#game .checkbox-select {
+.levaCast .checkbox-select {
     color: black !important;
     display: block;
     text-decoration: none;
@@ -902,11 +893,11 @@ h2{
     border: 1px;
 }
 
-.levaCast#game .checklist li input {
+.levaCast .checklist li input {
     display: none;
 }
 
-.levaCast#game .checkbox-deselect {
+.levaCast .checkbox-deselect {
     color: #000 !important;
     display: none;
     color: white;
@@ -917,40 +908,40 @@ h2{
     border-radius: 3px;
 }
 
-.levaCast#game .pridatKomentarTabulka {
+.levaCast .pridatKomentarTabulka {
     margin-left: 10px;
     margin-top: 6px;
 }
 
-.levaCast#game .pridatKomentarTabulka td {
+.levaCast .pridatKomentarTabulka td {
     height: 18px;
 }
 
-.levaCast#game .pridatKomentarTabulka img {
+.levaCast .pridatKomentarTabulka img {
     margin-bottom: 6px;
 }
 
-.levaCast#game .pridatKomentarTabulka a {
+.levaCast .pridatKomentarTabulka a {
     color: black;
     text-decoration: none;
     font-weight: bold;
 }
 
-.levaCast#game .pridatKomentarTabulka a:hover {
+.levaCast .pridatKomentarTabulka a:hover {
     color: black;
     text-decoration: underline;
 }
 
-.levaCast#game .pridatKomentarNadpis {
+.levaCast .pridatKomentarNadpis {
     padding-bottom: 8px;
 }
 
-.levaCast#game #pridatKomentar {
+.levaCast #pridatKomentar {
     display: none;
     margin-bottom: 6px;
 }
 
-.levaCast#game .pridatKomentarButton {
+.levaCast .pridatKomentarButton {
     margin-left: 250px;
 }
 
@@ -1028,7 +1019,7 @@ h2{
 /* add game */
 #levaCastPridatHru {
     float: left;
-    width: 650px;
+    width: 642px;
 }
 
 #levaCastPridatHru td {
@@ -1085,7 +1076,6 @@ a.stitekNapoveda:hover span {
 }
 
 .textarea {
-    font-family: Arial;
     font-size: 10pt;
     color: #444;
     border: 1px;
@@ -1202,7 +1192,7 @@ a.stitekNapoveda:hover span {
 .fieldset {
     border: 0;
     padding: 0;
-    width: 650px;
+    width: 642px;
     margin-left: 4px;
 }
 
@@ -1274,11 +1264,9 @@ a.stitekNapoveda:hover span {
 }
 
 /* zebricky */
-.levaCast#Zebricky {
-    float: left;
-    width: 650px;
+.levaCast#Zebricky .icon-star{
+  color: #00A0B0;  
 }
-
 .levaCast#Zebricky .sekceZebricky {
     margin-top: 0px;
     padding-top: 10px;
@@ -1286,24 +1274,24 @@ a.stitekNapoveda:hover span {
 
 .levaCast#Zebricky .polozkaZebricek {
     margin-top: 0px;
-    padding: 2px;
 }
-
-.levaCast#Zebricky table {
+.levaCast table {
     border: 0;
     padding: 0;
     margin: 0;
     border-spacing: 0px;
+}
+.levaCast#Zebricky table {
     width: 620px;
 }
-
-.levaCast#Zebricky tr {
-    border: 1px;
-    border-color: #bbb;
-    border-style: solid;
+.levaCast tr:nth-child(odd){
+    background-color: #F8F8F8;
 }
-
-.levaCast#Zebricky td {
+.levaCast tr:hover,
+ .levaCast tr:nth-child(odd):hover{
+    background-color: rgba(0,160,176,0.2);
+}
+.levaCast td {
     border-bottom-width: 1px;
     border-left-width: 0px;
     border-right-width: 0px;
@@ -1312,7 +1300,7 @@ a.stitekNapoveda:hover span {
     padding-top: 4px;
     padding-bottom: 4px;
     margin: 0;
-    border-color: #bbb;
+    border-color: #EFEFEF;
     border-style: solid;
 }
 
@@ -1323,13 +1311,16 @@ a.stitekNapoveda:hover span {
 .levaCast#Zebricky td:last-child {
     text-align: right;
 }
-
+ thead td, thead, th{
+    background-color: #FEFEFE;
+}
+ thead td:nth-child(even){
+}
 .levaCast#Zebricky .poradi {
     text-align: right;
 }
 
 .levaCast#Zebricky .larp {
-    width: 370px;
 }
 
 .levaCast#Zebricky .larpOdkaz {
@@ -1342,15 +1333,56 @@ a.stitekNapoveda:hover span {
 }
 
 .levaCast#Zebricky .pocet_hodnoceni {
-    text-align: center;
+    text-align: right;
     position: relative;
     vertical-align: middle;
+    padding-right: 5px;
 }
-
+.levaCast#Zebricky .fa-bars,
+ .levaCast#uzivatel .fa-bars{
+    color: #00A0B0;
+    margin-right: 8px;
+}
+.levaCast#Zebricky .fa-star-half-full,
+ .levaCast#Zebricky .fa-comments-o{
+    color: #00A0B0;
+    font-size: 14px;
+}
+#levaCastOdatabazi .fa-question{
+    color: #00A0B0;  
+}
+#Autori .fa-user,
+ #Uzivatele .fa-user,
+  #Autori .fa-user,
+   #Autori .fa-pencil,
+    #Skupiny .fa-users{
+    color: #00A0B0;
+    margin-right: 5px;
+}
 .levaCast#Zebricky .pocet_hodnoceni span {
     margin-right: 2px;
 }
-
+.levaCast#game tr:hover, 
+.levaCast#game tr:nth-child(odd), 
+.levaCast#game td {
+  background-color: transparent;
+  border: none;
+}
+.levaCast#game .poleHra tr{
+    background-color: #F8F8F8;    
+}
+.sekce .fa-plus{
+    color: #00A0B0;  
+}
+#divProHledani .fa-search{
+  color: #00A0B0;
+  position: absolute;
+  right: 1px;
+  top: 4px;
+  z-index: 20;
+  text-shadow:  none;
+  font-size: 14px;
+}
 .napovedaZebricky {
     font-size: 10pt;
     color: #535353;
@@ -1361,7 +1393,6 @@ a.stitekNapoveda:hover span {
 .pravaCast#Zebricky {
     float: left;
     margin-left: 20px;
-    width: 330px;
 }
 
 .pravaCast#Zebricky .fieldset {
@@ -1388,10 +1419,6 @@ a.stitekNapoveda:hover span {
 }
 
 /* autori */
-.levaCast#Autori {
-    float: left;
-    width: 650px;
-}
 
 .levaCast#Autori .sekceAutori {
     margin-top: 0px;
@@ -1468,10 +1495,7 @@ a.stitekNapoveda:hover span {
 }
 
 /* uzivatele */
-.levaCast#Uzivatele {
-    float: left;
-    width: 650px;
-}
+
 
 .levaCast#Uzivatele .sekceUzivatele {
     margin-top: 0px;
@@ -1554,13 +1578,18 @@ a.stitekNapoveda:hover span {
 }
 
 /* o databazi */
-#levaCastOdatabazi {
+#levaCastOdatabazi{
     float: left;
-    width: 650px;
+    width: 642px;
+    background-color: #F0F0F0;
+    border:  4px #F0F0F0 solid;   
+    border-radius: 3px; 
+    box-shadow:  0 0 1px 1px #F0F0F0;  
 }
 
 #levaCastOdatabazi p {
     text-align: justify;
+    padding: 2px 8px;
 }
 
 #levaCastOdatabazi a {
@@ -1585,15 +1614,11 @@ a.stitekNapoveda:hover span {
     width: 330px;
 }
 
-#pravaCastOdatabazi .napisteNam {
+#pravaCastOdatabazi .napisteNam, a[href^="mailto:"]{
     font-size: 11pt;
     margin-left: 20px;
+    color: #00A0B0;
 }
-
-#pravaCastOdatabazi .napisteNam a {
-    color: blue;
-}
-
 #pravaCastOdatabazi a:hover {
     text-decoration: underline;
 }
@@ -1614,6 +1639,8 @@ a.stitekNapoveda:hover span {
 #pravaCastOdatabazi .obrazekModerator {
     width: 75px;
     height: 75px;
+    box-shadow:  0 0 2px 2px #D0D0D0;
+    border-radius: 2px;
 }
 
 /* přihlaseni STARE */
@@ -1855,22 +1882,24 @@ a.stitekNapoveda:hover span {
 /* pridat tlacitko */
 /* je na konci kvuli priorite*/
 
-.pridatIkona {
-    width: 25px;
-    height: 25px;
-    margin-left: 4px;
-    margin-right: 6px;
-}
 
 .pridatPopis {
     font-weight: bold;
-    font-size: 14pt;
-    vertical-align: middle !important;
+    font-size: 18px;
+    padding-top: 10px;
 }
 
 .pridatPopis a {
     text-decoration: none !important;
-    color: black !important;
+}
+/* navigator */
+.navigator{
+  text-align: center;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 11px;  
+}
+.navigator span{
 }
 
 /* footer */
@@ -1903,11 +1932,12 @@ a.stitekNapoveda:hover span {
 }
 
 #labelsChooserPanel input[type=button] {
-    background-color: rgb(204, 204, 204);
+    background-color: #FCFCFC;
+    border-radius: 2px;
     border: 1px none;
-    border-radius: 5px;
     color: rgb(33, 76, 97) !important;
     margin: 2px;
+    box-shadow: 0 0 1px 1px #E0E0E0;
 }
 
 #labelsChooserPanel input[type=button].selected {
@@ -1954,7 +1984,13 @@ select[name=stateOfGame]{
 
 .popisek .authors{
     float: left;
-    margin-right: 5px;
+}
+.popisek .authors:after{
+  content: ",";
+  margin-right: 5px;
+}
+.popisek .authors:last-child:after{
+  content: "";
 }
 
 .photoImage {
@@ -1973,6 +2009,7 @@ select[name=stateOfGame]{
   margin: 0 auto;
   background-color: #EFEFEF;
   padding: 4px;
+  position: relative;
 }
 
 .inner {
@@ -2079,10 +2116,10 @@ select[name=stateOfGame]{
 }
 
 .bar {
-  padding: 1px 4px 1px 4px;
+  padding: 1px 2px 1px 2px;
   display: block;
-  min-width: 6%;
-  max-width: 86%;
+  min-width: 0%;
+  max-width: 88%;
 }
 
 #bar-ten {
@@ -2134,5 +2171,133 @@ select[name=stateOfGame]{
   width: 0;
   background-color: #757575;
 }
+a.button{
+  background-color: #F0F0F0;
+  border-radius: 2px;
+  padding: 0px 3px;
+  font-size: 17px;
+  margin: 0 1px;
+  float: left;
 
+}
+a.button:hover{
+  text-decoration: none;
+}
+a.active.button{
+  background-color: #707070;
+  color: #F0F0F0;
+  text-align: left;
+  width: 70px;
+}
+.playedPanel{
+  position: absolute;
+  bottom: 24px;
+  left: 20px;
+  z-index: 20;
+}
+a.active.played.button:after{
+  content: "Hrál jsem";
+  font-size: 10px;
+  position: relative;
+  bottom: 3px;
+  left: 3px;
+  
+}
+a.active.didnt.button:after{
+  content: "Nehrál jsem";
+  font-size: 10px;
+  position: relative;
+  bottom: 3px;
+  left: 3px;
+}
+a.active.wantToPlay.button:after{
+  content: "Chci hrát";
+  font-size: 10px;
+  position: relative;
+  bottom: 3px;
+  left: 3px; 
+}
+.playedPanel .wrapper {
+  color: #555;
+  position: relative;
+  text-align: center;
+  float: left;  
+  -webkit-transform: translateZ(0); /* webkit flicker fix */
+  -webkit-font-smoothing: antialiased; /* webkit text rendering fix */
+}
+
+.playedPanel .wrapper .tooltip {
+  background: #1496bb;
+  bottom: 100%;
+  color: #fff;
+  display: block;
+  left: -24px;
+  margin-bottom: 15px;
+  opacity: 0;
+  padding: 5px;
+  pointer-events: none;
+  position: absolute;
+  width: 65px;
+  font-size: 10px;
+  -webkit-transform: translateY(10px);
+     -moz-transform: translateY(10px);
+      -ms-transform: translateY(10px);
+       -o-transform: translateY(10px);
+          transform: translateY(10px);
+  -webkit-transition: all .25s ease-out;
+     -moz-transition: all .25s ease-out;
+      -ms-transition: all .25s ease-out;
+       -o-transition: all .25s ease-out;
+          transition: all .25s ease-out;
+  -webkit-box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);
+     -moz-box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);
+      -ms-box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);
+       -o-box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);
+          box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);
+          border-radius: 2px;   
+}
+
+/* This bridges the gap so you can mouse into the tooltip without it disappearing */
+.playedPanel .wrapper .tooltip:before {
+  bottom: -20px;
+  content: " ";
+  display: block;
+  height: 20px;
+  left: 0;
+  position: absolute;
+  width: 100%;
+}  
+
+/* CSS Triangles */
+.playedPanel .wrapper .tooltip:after {
+  border-left: solid transparent 10px;
+  border-right: solid transparent 10px;
+  border-top: solid #1496bb 10px;
+  bottom: -10px;
+  content: " ";
+  height: 0;
+  left: 50%;
+  margin-left: -13px;
+  position: absolute;
+  width: 0;
+}
+  
+.playedPanel .wrapper:hover .tooltip {
+  opacity: 1;
+  pointer-events: auto;
+  -webkit-transform: translateY(0px);
+     -moz-transform: translateY(0px);
+      -ms-transform: translateY(0px);
+       -o-transform: translateY(0px);
+          transform: translateY(0px);
+}
+
+/* IE can just show/hide with no transition */
+.playedPanel .lte8 .wrapper .tooltip {
+  display: none;
+}
+
+.playedPanel .lte8 .wrapper:hover .tooltip {
+  display: block;
+}
 /* end of rating panel with histogram */            

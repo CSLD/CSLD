@@ -63,10 +63,6 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
         ComponentFeedbackMessageFilter filter = new ComponentFeedbackMessageFilter(createOrUpdateGame);
         createOrUpdateGame.add(new FeedbackPanel("feedback", filter).setOutputMarkupId(true));
 
-        final org.apache.wicket.markup.html.image.Image plusIcon = new org.apache.wicket.markup.html.image.Image("plusIcon",
-                new PackageResourceReference(Csld.class, Image.getPlusIconPath()));
-        createOrUpdateGame.add(plusIcon);
-
         createOrUpdateGame.add(addFeedbackPanel(new RequiredTextField<String>("name").setLabel(Model.of("Jméno")), createOrUpdateGame, "nameFeedback"));
         createOrUpdateGame.add(addFeedbackPanel(new TextArea<String>("description").setRequired(true).setLabel(Model.of("Popis")), createOrUpdateGame, "descriptionFeedback"));
 

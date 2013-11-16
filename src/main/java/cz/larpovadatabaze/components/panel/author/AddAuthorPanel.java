@@ -17,11 +17,8 @@ public class AddAuthorPanel extends Panel {
     public AddAuthorPanel(String id) {
         super(id);
 
-        Image createAuthorImage = new Image("createAuthorImage",
-                new PackageResourceReference(Csld.class, cz.larpovadatabaze.entities.Image.getPlusIconPath()));
         BookmarkablePageLink<CsldBasePage> createAuthor =
                 new BookmarkablePageLink<CsldBasePage>("createAuthorIcon", CreateOrUpdateAuthorPage.class);
-        createAuthor.add(createAuthorImage);
         add(createAuthor);
 
         BookmarkablePageLink<CsldBasePage> createAuthorLink =

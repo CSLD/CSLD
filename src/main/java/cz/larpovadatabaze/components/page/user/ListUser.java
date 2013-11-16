@@ -26,10 +26,6 @@ public class ListUser extends CsldBasePage {
 
     @SuppressWarnings("unchecked")
     public ListUser(){
-        Image usersIcon = new Image("usersIcon",
-                new PackageResourceReference(Csld.class, cz.larpovadatabaze.entities.Image.getUserIconPath()));
-        add(usersIcon);
-
         SortableUserProvider sup = new SortableUserProvider(csldUserService);
         final DataView<CsldUser> propertyList = new DataView<CsldUser>("listAuthor",sup) {
             @Override

@@ -32,10 +32,6 @@ public class ListAuthor extends CsldBasePage {
 
     @SuppressWarnings("unchecked")
     public ListAuthor(){
-        Image authorsIcon = new Image("authorsIcon",
-                new PackageResourceReference(Csld.class, cz.larpovadatabaze.entities.Image.getAuthorIconPath()));
-        add(authorsIcon);
-
         SortableAuthorProvider sap = new SortableAuthorProvider(csldUserService);
         final DataView<CsldUser> propertyList = new DataView<CsldUser>("listAuthor",sap) {
             @Override

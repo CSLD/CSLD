@@ -12,7 +12,7 @@
 /* The Nivo Slider styles */
 .nivoSlider {
 	position:relative;
-  width: 650px;
+  width: 642px;
 }
 .nivoSlider img {
 	position:absolute;
@@ -24,7 +24,7 @@
 	position:absolute;
 	top:0px;
 	left:0px;
-	width:650px;
+	width:642px;
 	height:350px;
 	border:0;
 	padding:0;
@@ -54,7 +54,7 @@
 	opacity:0.4; /* Overridden by captionOpacity setting */
   -khtml- opacity:0.4;
   -moz- opacity:0.4;
-	width:650px;
+	width:642px;
   height: 40px;
 	z-index:8;
 }

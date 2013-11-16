@@ -11,13 +11,13 @@
         <tr>
             <td></td>
             <td wicket:id="orderByName">
-                <wicket:message key="form.name">Jméno</wicket:message>
+                <wicket:message key="form.larpname">Název LARPu</wicket:message>
             </td>
             <td wicket:id="orderByRating">
                 <wicket:message key="game.rating">Hodnocení</wicket:message>
             </td>
             <td wicket:id="orderByRatingAmount">
-                <wicket:message key="game.amountOfRatings">Počet hodnocení</wicket:message>
+                <wicket:message key="game.amountOfRatings">Hodnoceno</wicket:message>
             </td>
             <td wicket:id="orderByCommentAmount">
                 <wicket:message key="game.amountOfComments">Počet komentářů</wicket:message>
@@ -36,16 +36,18 @@
                 </a>
                 (<span wicket:id="gameYear"></span>)
             </td>
-            <td class="hodnoceni"><span wicket:id="rating">94</span> %</td>
+            <td class="hodnoceni"><span wicket:id="rating">94</span></td>
             <td class="pocet_hodnoceni">
-                <span wicket:id="ratings"></span><img wicket:id="ratingsIcon" style="position:relative; top:2px;">
+                <span wicket:id="ratings"></span>x <i class="fa fa-star-half-full"></i>
             </td>
             <td class="pocet_hodnoceni">
-                <span wicket:id="comments"></span><img wicket:id="commentsIcon" style="position:relative; top:3px;">
+                <span wicket:id="comments"></span><i class="fa fa-comments-o"></i>
             </td>
             <!-- End of repetitive content for every Game -->
         </tr>
         </tbody>
     </table>
+    <div class="navigator">
     <span wicket:id="navigator">[dataview navigator]</span>
+    </div>
 </wicket:panel>

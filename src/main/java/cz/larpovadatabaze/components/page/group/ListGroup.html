@@ -3,16 +3,16 @@
         <div class="sekce sekceAutori">
             <div class="nadpisStranky">
                 <wicket:link>
-                    <img src="group_icon.png" class="ikonaStranky"><wicket:message key="group.group">Skupiny</wicket:message>
+                    <i class="fa fa-users"></i><wicket:message key="group.group">Skupiny</wicket:message>
                 </wicket:link>
             </div>
             <table>
-                <tr>
-                    <td></td>
-                    <td><wicket:message key="form.name">Jméno</wicket:message></td>
-                    <td><wicket:message key="form.averageOfAllGames">Průměrné hodnocení her</wicket:message></td>
-                    <td><wicket:message key="form.amountOfGames">Počet hodnocených her</wicket:message></td>
-                </tr>
+                <thead>
+                    <th></th>
+                    <th><wicket:message key="form.name">Jméno</wicket:message></th>
+                    <th><wicket:message key="form.averageOfAllGames">Průměrné hodnocení her</wicket:message></th>
+                    <th><wicket:message key="form.amountOfGames">Počet hodnocených her</wicket:message></th>
+                </thead>
                 <tr wicket:id="listGroups">
                     <!-- Beginning of repetitive part for every group -->
                     <td></td>
@@ -22,7 +22,9 @@
                     <!-- End of repetitive part for every group -->
                 </tr>
             </table>
+            <div class="navigator">
             <span wicket:id="navigator">[dataview navigator]</span>
+            </div>
         </div>
     </div>
 

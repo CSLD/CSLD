@@ -17,11 +17,8 @@ public class AddGroupPanel extends Panel {
     public AddGroupPanel(String id) {
         super(id);
 
-        Image createGameIcon = new Image("createGroupIcon",
-                new PackageResourceReference(Csld.class, cz.larpovadatabaze.entities.Image.getPlusIconPath()));
         BookmarkablePageLink<CsldBasePage> createGameIconLink =
                 new BookmarkablePageLink<CsldBasePage>("createGroupIconLink", CreateOrUpdateGroupPage.class);
-        createGameIconLink.add(createGameIcon);
         add(createGameIconLink);
 
         BookmarkablePageLink<CsldBasePage> createAuthorLink =

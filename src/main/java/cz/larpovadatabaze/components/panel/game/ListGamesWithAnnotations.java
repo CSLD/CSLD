@@ -31,10 +31,6 @@ public class ListGamesWithAnnotations extends Panel {
     }
 
     private void createListWithAnnotation(SortableDataProvider<Game,String> dataProvider){
-        Image chartsIcon = new Image("gamesIcon",
-                new PackageResourceReference(Csld.class, cz.larpovadatabaze.entities.Image.getChartsIconPath()));
-        add(chartsIcon);
-
         DataView<Game> gamesView = new DataView<Game>("gamesView", dataProvider) {
             @Override
             protected void populateItem(Item<Game> item) {

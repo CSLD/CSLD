@@ -17,11 +17,8 @@ public class AddGamePanel extends Panel {
     public AddGamePanel(String id) {
         super(id);
 
-        Image createGameIcon = new Image("addGameIcon",
-                new PackageResourceReference(Csld.class, cz.larpovadatabaze.entities.Image.getPlusIconPath()));
         BookmarkablePageLink<CsldBasePage> createGameIconLink =
                 new BookmarkablePageLink<CsldBasePage>("addGameIconLink", CreateOrUpdateGamePage.class);
-        createGameIconLink.add(createGameIcon);
         add(createGameIconLink);
 
         BookmarkablePageLink<CsldBasePage> createAuthorLink =
