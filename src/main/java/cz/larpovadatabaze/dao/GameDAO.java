@@ -173,11 +173,19 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
                 "game.days, game.players, game.men_role, game.women_role, game.both_role," +
                 "game.added, game.total_rating, game.amount_of_comments, game.amount_of_played, " +
                 "game.amount_of_ratings, game.added_by, game.video, game.image " +
-                "from csld_game game where game.days >= %s and game.hours >= %s and " +
-                "game.players >= %s " +
+                "from csld_game game where 1=1 " +
                 "and %s",
-                filterGame.getMinDays(), filterGame.getMinHours(), filterGame.getMinPlayers(),
                 labelSql);
+        if(filterGame.getMinDays() != 0){
+            sqlForGameIds += " and game.days >= " + filterGame.getMinDays();
+        }
+        if(filterGame.getMinHours() != 0){
+            sqlForGameIds += " and game.hours >= " + filterGame.getMinHours();
+        }
+        if(filterGame.getMinPlayers() != 0){
+            sqlForGameIds += " and game.players >= " + filterGame.getMinPlayers();
+        }
+
         if(filterGame.getMaxDays() != null){
             sqlForGameIds += " and game.days <= " + filterGame.getMaxDays();
         }
@@ -209,10 +217,18 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
         }
         String sqlForGameIds = String.format("select count(distinct game.id) " +
                 "from csld_game game join csld_game_has_label gha on game.id = gha.id_game " +
-                "where game.days >= %s and game.hours >= %s and game.players >= %s " +
-                "and %s",
-                filterGame.getMinDays(), filterGame.getMinHours(), filterGame.getMinPlayers(),
+                "where 1=1 and %s",
                 labelSql);
+        if(filterGame.getMinDays() != 0){
+            sqlForGameIds += " and game.days >= " + filterGame.getMinDays();
+        }
+        if(filterGame.getMinHours() != 0){
+            sqlForGameIds += " and game.hours >= " + filterGame.getMinHours();
+        }
+        if(filterGame.getMinPlayers() != 0){
+            sqlForGameIds += " and game.players >= " + filterGame.getMinPlayers();
+        }
+
         if(filterGame.getMaxDays() != null){
             sqlForGameIds += " and game.days <= " + filterGame.getMaxDays();
         }
