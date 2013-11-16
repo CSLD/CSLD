@@ -7,9 +7,9 @@ DECLARE
 BEGIN
   IF (TG_OP = 'DELETE') THEN
     gameId := OLD.game_id;
-  ELSE THEN
+  ELSE
     gameId := NEW.game_id;
-  END IF
+  END IF;
   update csld_game set total_rating = csld_count_rating(gameId) where game_id = gameId;
 END
 $function$;
