@@ -43,7 +43,7 @@ public class MostActiveCommenter extends Panel {
 
         final BookmarkablePageLink<CsldBasePage> moderatorLinkContent =
                 new BookmarkablePageLink<CsldBasePage>("mostActiveCommenterContent", UserDetail.class, params);
-        final Label moderatorNick = new Label("mostActiveCommenterNick", commenter.getPerson().getNickname());
+        final Label moderatorNick = new Label("mostActiveCommenterNick", commenter.getPerson().getNickNameView());
         final Label moderatorName = new Label("mostActiveCommenterName", commenter.getPerson().getName());
         moderatorLinkContent.add(moderatorNick);
         moderatorLinkContent.add(moderatorName);

@@ -43,7 +43,7 @@ public class ListAuthor extends CsldBasePage {
 
                 final BookmarkablePageLink<CsldUser> authorName =
                         new BookmarkablePageLink<CsldUser>("authorName", UserDetail.class, params);
-                final Label nicknameLabel = new Label("authorNicknameContent", actualAuthor.getPerson().getNickname());
+                final Label nicknameLabel = new Label("authorNicknameContent", actualAuthor.getPerson().getNickNameView());
                 final Label nameLabel = new Label("authorNameContent", actualAuthor.getPerson().getName());
                 authorName.add(nameLabel);
                 authorName.add(nicknameLabel);

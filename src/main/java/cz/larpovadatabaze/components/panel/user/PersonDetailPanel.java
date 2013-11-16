@@ -21,7 +21,7 @@ public class PersonDetailPanel extends Panel {
         add(userImage);
 
         Person person = user.getPerson();
-        add(new Label("nickname",person.getNickname()));
+        add(new Label("nickname",person.getNickNameView()));
         add(new Label("name",person.getName()));
 
         add(new Label("age",person.getAge()));

@@ -49,7 +49,7 @@ public class LoggedBoxPanel extends Panel {
 
                 final BookmarkablePageLink<CsldBasePage> loggedUserLinkContent =
                         new BookmarkablePageLink<CsldBasePage>("loggedUserLinkContent", UserDetail.class, params);
-                final Label loggedUserNick = new Label("loggedUserNick", loggedUser.getPerson().getNickname());
+                final Label loggedUserNick = new Label("loggedUserNick", loggedUser.getPerson().getNickNameView());
                 final Label loggedUserName = new Label("loggedUserName", loggedUser.getPerson().getName());
                 loggedUserLinkContent.add(loggedUserNick);
                 loggedUserLinkContent.add(loggedUserName);

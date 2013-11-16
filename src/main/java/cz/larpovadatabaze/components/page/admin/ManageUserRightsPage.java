@@ -39,7 +39,7 @@ public class ManageUserRightsPage extends CsldBasePage {
             @Override
             protected void populateItem(ListItem<CsldUser> item) {
                 final CsldUser user = item.getModelObject();
-                String personName = String.format("%s %s", user.getPerson().getNickname(), user.getPerson().getName());
+                String personName = String.format("%s %s", user.getPerson().getNickNameView(), user.getPerson().getName());
                 Label name = new Label("name", Model.of(personName));
                 item.add(name);
 

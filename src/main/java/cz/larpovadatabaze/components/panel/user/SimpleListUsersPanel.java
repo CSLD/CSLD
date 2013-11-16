@@ -34,7 +34,7 @@ public class SimpleListUsersPanel extends Panel {
                         new BookmarkablePageLink<CsldUser>("user", UserDetail.class, params);
 
                 authorName.add(new Label("userName", user.getPerson().getName()));
-                authorName.add(new Label("userNickname", user.getPerson().getNickname()));
+                authorName.add(new Label("userNickname", user.getPerson().getNickNameView()));
 
                 item.add(authorName);
             }

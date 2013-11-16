@@ -36,7 +36,7 @@ public class ListUser extends CsldBasePage {
                 params.add("id", moderator.getId());
                 final BookmarkablePageLink<CsldBasePage> moderatorLinkContent =
                         new BookmarkablePageLink<CsldBasePage>("userLink", UserDetail.class, params);
-                final Label moderatorNick = new Label("userNickname", moderator.getPerson().getNickname());
+                final Label moderatorNick = new Label("userNickname", moderator.getPerson().getNickNameView());
                 final Label moderatorName = new Label("userName", moderator.getPerson().getName());
                 moderatorLinkContent.add(moderatorNick);
                 moderatorLinkContent.add(moderatorName);

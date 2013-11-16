@@ -69,7 +69,7 @@ public class CommentsListPanel extends Panel {
                 params.add("id", authorOfComment.getId());
                 final BookmarkablePageLink<CsldBasePage> commentAuthorsDetail =
                         new BookmarkablePageLink<CsldBasePage>("authorsDetail", UserDetail.class, params);
-                Label authorsNick = new Label("authorsNick", Model.of(authorOfComment.getPerson().getNickname()));
+                Label authorsNick = new Label("authorsNick", Model.of(authorOfComment.getPerson().getNickNameView()));
                 Label authorsName = new Label("authorsName", Model.of(authorOfComment.getPerson().getName()));
 
                 commentAuthorsDetail.add(authorsNick);

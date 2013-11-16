@@ -143,6 +143,11 @@ public class Person implements Serializable, IAutoCompletable {
         return age;
     }
 
+    @Transient
+    public String getNickNameView() {
+        return (nickname != null && !nickname.equals("")) ? nickname : getName().split(" ")[0];
+    }
+
     public static Person getEmptyPerson() {
         Person emptyPerson = new Person();
         return emptyPerson;

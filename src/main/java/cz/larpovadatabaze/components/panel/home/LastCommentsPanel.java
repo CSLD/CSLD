@@ -70,7 +70,7 @@ public class LastCommentsPanel extends Panel {
             final BookmarkablePageLink<CsldBasePage> commenterLink =
                     new BookmarkablePageLink<CsldBasePage>("commenterLink", UserDetail.class, userParams);
             Label commenterName = new Label("commenterName",
-                    Model.of(commenter.getPerson().getNickname() + " - " +  commenter.getPerson().getName()));
+                    Model.of(commenter.getPerson().getNickNameView() + " - " +  commenter.getPerson().getName()));
             commenterLink.add(commenterName);
             commentFragment.add(commenterLink);
 

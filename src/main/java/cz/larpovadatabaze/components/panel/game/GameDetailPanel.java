@@ -79,7 +79,7 @@ public class GameDetailPanel extends Panel {
 
                 Link<CsldBasePage> authorDetailLink = new BookmarkablePageLink<CsldBasePage>("authorDetailLink", UserDetail.class, params);
                 authorDetailLink.add(
-                        new Label("authorName", author.getPerson().getNickname() + " " + author.getPerson().getName()));
+                        new Label("authorName", author.getPerson().getNickNameView() + " " + author.getPerson().getName()));
                 item.add(authorDetailLink);
             }
         };

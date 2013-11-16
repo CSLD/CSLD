@@ -44,7 +44,7 @@ public class AdministratorPanel extends Panel {
 
                 final BookmarkablePageLink<CsldBasePage> administratorLinkContent =
                         new BookmarkablePageLink<CsldBasePage>("administratorLinkContent", UserDetail.class, params);
-                final Label administratorNick = new Label("nicknameAdministrator", admin.getPerson().getNickname());
+                final Label administratorNick = new Label("nicknameAdministrator", admin.getPerson().getNickNameView());
                 final Label administratorName = new Label("nameAdministrator", admin.getPerson().getName());
                 administratorLinkContent.add(administratorNick);
                 administratorLinkContent.add(administratorName);

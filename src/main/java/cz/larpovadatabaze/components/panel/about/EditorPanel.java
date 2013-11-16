@@ -44,7 +44,7 @@ public class EditorPanel extends Panel {
 
                 final BookmarkablePageLink<CsldBasePage> moderatorLinkContent =
                         new BookmarkablePageLink<CsldBasePage>("moderatorLinkContent", UserDetail.class, params);
-                final Label moderatorNick = new Label("moderatorNick", moderator.getPerson().getNickname());
+                final Label moderatorNick = new Label("moderatorNick", moderator.getPerson().getNickNameView());
                 final Label moderatorName = new Label("moderatorName", moderator.getPerson().getName());
                 moderatorLinkContent.add(moderatorNick);
                 moderatorLinkContent.add(moderatorName);

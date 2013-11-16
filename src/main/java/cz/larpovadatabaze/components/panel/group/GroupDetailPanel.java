@@ -53,7 +53,7 @@ public class GroupDetailPanel extends Panel {
                         new BookmarkablePageLink<CsldUser>("groupAuthor", UserDetail.class, params);
 
                 authorName.add(new Label("groupAuthorName", author.getPerson().getName()));
-                authorName.add(new Label("groupAuthorNickname", author.getPerson().getNickname()));
+                authorName.add(new Label("groupAuthorNickname", author.getPerson().getNickNameView()));
 
                 item.add(authorName);
             }

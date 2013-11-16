@@ -73,7 +73,7 @@ public class UserResultsPanel extends Panel {
 
                 final BookmarkablePageLink<CsldBasePage> moderatorLinkContent =
                         new BookmarkablePageLink<CsldBasePage>("authorLinkContent", UserDetail.class, params);
-                final Label moderatorNick = new Label("authorNick", actualUser.getPerson().getNickname());
+                final Label moderatorNick = new Label("authorNick", actualUser.getPerson().getNickNameView());
                 final Label moderatorName = new Label("authorName", actualUser.getPerson().getName());
                 moderatorLinkContent.add(moderatorNick);
                 moderatorLinkContent.add(moderatorName);
@@ -98,7 +98,7 @@ public class UserResultsPanel extends Panel {
 
                 final BookmarkablePageLink<CsldBasePage> moderatorLinkContent =
                         new BookmarkablePageLink<CsldBasePage>("authorShortLink", UserDetail.class, params);
-                final Label moderatorNick = new Label("authorShortNick", actualUser.getPerson().getNickname());
+                final Label moderatorNick = new Label("authorShortNick", actualUser.getPerson().getNickNameView());
                 final Label moderatorName = new Label("authorShortName", actualUser.getPerson().getName());
                 moderatorLinkContent.add(moderatorNick);
                 moderatorLinkContent.add(moderatorName);
