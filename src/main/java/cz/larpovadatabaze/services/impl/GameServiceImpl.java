@@ -170,7 +170,7 @@ public class GameServiceImpl implements GameService {
         if(game.getTotalRating() == null){
             game.setTotalRating(0d);
         }
-        if(game.getImage() == null || game.getImage().getFileUpload() == null) {
+        if(game.getImage() == null || (game.getImage().getFileUpload() == null && game.getImage().getPath() == null)) {
             game.setImage(Image.getDefaultGame());
         }
 

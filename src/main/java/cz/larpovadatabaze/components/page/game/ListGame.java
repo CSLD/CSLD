@@ -31,7 +31,7 @@ public class ListGame extends CsldBasePage {
     public ListGame(PageParameters params) {
         int ALL = -1;
         Label chamber = labelService.getByName("komorní");
-        int label = params.get("label").toInt(chamber.getId());
+        int label = params.get("label").toInt(ALL);
 
         Label dramatic = labelService.getByName("dramatický");
         Label battle = labelService.getByName("bitva");

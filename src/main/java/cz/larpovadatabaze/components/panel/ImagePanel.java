@@ -13,6 +13,8 @@ import java.util.List;
  *
  */
 public class ImagePanel extends FormComponentPanel<Image> {
+    private Image baseImage;
+
     public ImagePanel(String id) {
         super(id);
 
@@ -40,10 +42,18 @@ public class ImagePanel extends FormComponentPanel<Image> {
     @Override
     protected void convertInput() {
         super.convertInput();
+        if(baseImage == null) {
+            this.baseImage = getModel().getObject();
+        }
 
-        Image image = new Image();
-        image.setFileUpload(((FileUploadField) get("imageP")).getFileUploads());
-        setConvertedInput(image);
-        getModel().setObject(image);
+        if(((FileUploadField) get("imageP")).getFileUploads() != null){
+
+            Image image = new Image();
+            image.setFileUpload(((FileUploadField) get("imageP")).getFileUploads());
+            setConvertedInput(image);
+            getModel().setObject(image);
+        } else {
+            getModel().setObject(baseImage);
+        }
     }
 }
