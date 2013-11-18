@@ -314,7 +314,7 @@ h2{
 
 .pridanaHra {
     width: 310px;
-    height: 100px;
+    height: 102px;
     margin-bottom: 10px;
 }
 
@@ -337,14 +337,20 @@ h2{
 }
 
 .pridanaHra .HraKomentarPopisek {
-    color: #535353;
-    font-size: 11px;
-    text-align: justify;
-    position: relative;
+padding: 5px;
+padding-bottom: 6px;
+margin: 10px 5px;
+border-radius: 4px;
+box-shadow: 0 0 1px 1px #D0D0D0;
+background-color: #F8F8F8;
+color: #535353;
+font-size: 12px;
+text-align: justify;
+position: relative;
 }
 .pridanaHra .HraKomentarPopisek .HraKomentarVice{
-    bottom: -20px;
-    right: 0px;
+    right: 6px;
+    bottom: 4px;
 }
 
 .pridanaHra .HraKomentarVice {
@@ -479,11 +485,10 @@ h2{
 
 .nadpisSekce {
     color: #00A0B0;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: bold;
     margin-bottom: 6px;
     margin-top: 10px;
-    margin-left: 6px;
 }
 
 .popisek {
@@ -508,7 +513,9 @@ h2{
     color: #006276;
     font-size: 16px;
 }
-
+.sekce .nadpisHra{
+    font-size: 12px;
+}
 .obsah {
     padding-left: 6px;
 }
@@ -1302,14 +1309,22 @@ a.stitekNapoveda:hover span {
     margin: 0;
     border-color: #EFEFEF;
     border-style: solid;
+    text-align: left;
 }
-
+.levaCast#Zebricky td{
+    text-align: right;  
+}
 .levaCast#Zebricky td:first-child {
     width: 10px;
 }
-
+.levaCast#Zebricky td:nth-of-type(2) {
+    text-align: left;
+}
+.levaCast#Zebricky td:nth-of-type(3) {
+    text-align: center;
+}
 .levaCast#Zebricky td:last-child {
-    text-align: right;
+    padding-right: 5px;
 }
  thead td, thead, th{
     background-color: #FEFEFE;
@@ -1368,8 +1383,38 @@ a.stitekNapoveda:hover span {
   background-color: transparent;
   border: none;
 }
+.levaCast#game table.poleHra{
+  width: 100%;
+}
 .levaCast#game .poleHra tr{
     background-color: #F8F8F8;    
+}
+.levaCast .podzebricky div{
+    background-color: #FCFCFC;
+    border-radius: 2px;
+    border: 1px none;
+    box-shadow: 0 0 1px 1px #E0E0E0;
+    padding: 2px 0px;
+    width: 80px;  
+    display: inline-block;
+    text-align: center;
+
+}
+.levaCast .podzebricky a{
+  color: rgb(33, 76, 97) !important;
+  margin: 0 3px;  
+}
+.levaCast .podzebricky a.active{
+  font-weight: bold;
+}
+.levaCast .podzebricky a:first-of-type{
+  margin-left: 3px;
+}
+.levaCast .podzebricky a:last-of-type{
+  margin-right: 0px;
+}
+.levaCast .podzebricky{
+  margin-bottom: 12px;
 }
 .sekce .fa-plus{
     color: #00A0B0;  
@@ -1456,7 +1501,9 @@ a.stitekNapoveda:hover span {
     border-color: #bbb;
     border-style: solid;
 }
-
+.levaCast#Autori td:nth-of-type(2) {
+    text-align: left;
+}
 .levaCast#Autori .autorPrezdivka {
     color: #214c61;
     font-weight: bold;
@@ -1467,7 +1514,6 @@ a.stitekNapoveda:hover span {
 }
 
 .levaCast#Autori .nejlepsiHraAutor {
-    text-align: right;
 }
 
 .pravaCast#Autori {
@@ -1507,14 +1553,16 @@ a.stitekNapoveda:hover span {
     padding: 2px;
 }
 
-.levaCast#Uzivatele table {
+.levaCast#Uzivatele table, .levaCast#Skupiny table {
     border: 0;
     padding: 0;
     margin: 0;
     border-spacing: 0px;
     width: 630px;
 }
-
+.levaCast#Skupiny td:nth-of-type(3), .levaCast#Skupiny td:nth-of-type(4){
+    text-align: center;
+}
 .levaCast#Uzivatele tr {
     border: 1px;
     border-color: #bbb;
@@ -1535,8 +1583,7 @@ a.stitekNapoveda:hover span {
 }
 
 .levaCast#Uzivatele .pocetherUzivatel {
-    text-align: right;
-    width: 250px;
+    text-align: left;
 }
 
 .levaCast#Uzivatele .uzivatelPrezdivka {
@@ -1899,7 +1946,14 @@ a.stitekNapoveda:hover span {
   font-weight: bold;
   font-size: 11px;  
 }
-.navigator span{
+.navigator a{
+background-color: #FCFCFC;
+border-radius: 2px;
+border: 1px none;
+margin: 2px;
+box-shadow: 0 0 1px 1px #E0E0E0;
+padding:  2px 6px 2px 6px;
+text-align: center;
 }
 
 /* footer */
