@@ -7,6 +7,7 @@ import cz.larpovadatabaze.entities.Image;
 import cz.larpovadatabaze.services.GroupService;
 import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.FileUtils;
+import cz.larpovadatabaze.validator.UniqueGroupValidator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
@@ -20,6 +21,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Bytes;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,8 @@ public abstract class CreateOrUpdateGroupPanel extends Panel {
     GroupService groupService;
     @SpringBean
     ImageService imageService;
+    @SpringBean
+    UniqueGroupValidator uniqueGroupValidator;
 
     private FileUploadField fileUploadField;
     @SuppressWarnings("unused")
@@ -47,6 +51,8 @@ public abstract class CreateOrUpdateGroupPanel extends Panel {
 
         if(group == null) {
             group = CsldGroup.getEmptyGroup();
+        } else {
+            uniqueGroupValidator.setUpdateExisting(true);
         }
         final ValidatableForm<CsldGroup> createGroup = new ValidatableForm<CsldGroup>("addGroup", new CompoundPropertyModel<CsldGroup>(group)) {};
         createGroup.setMultiPart(true);
@@ -61,6 +67,7 @@ public abstract class CreateOrUpdateGroupPanel extends Panel {
         nameFeedback.setOutputMarkupId(true);
         createGroup.add(nameFeedback);
         name.add(new AjaxFeedbackUpdatingBehavior("blur", nameFeedback));
+        name.add(uniqueGroupValidator);
         createGroup.add(name);
 
         // Add one file input field
