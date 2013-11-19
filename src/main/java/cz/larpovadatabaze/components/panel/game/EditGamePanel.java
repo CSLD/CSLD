@@ -36,7 +36,7 @@ public class EditGamePanel extends Panel {
                 isVisible = false;
             }
             if(logged != null && logged.getRole() <= CsldRoles.USER.getRole()){
-                if(!toEdit.getAuthors().contains(logged)){
+                if(!toEdit.getAuthors().contains(logged) && !toEdit.getAddedBy().equals(logged)){
                     isVisible = false;
                 }
             }
