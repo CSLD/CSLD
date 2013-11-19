@@ -58,15 +58,10 @@ public class CsldSignInPanel extends SignInPanel {
     }
 
     protected boolean signIn(String username, String password){
-        return (CsldAuthenticatedWebSession.get()).signIn(username, getPassword());
+        return (CsldAuthenticatedWebSession.get()).signIn(username, password);
     }
 
     protected boolean isSignedIn(){
         return CsldAuthenticatedWebSession.get().isSignedIn();
-    }
-
-    @Override
-    public String getPassword() {
-        return Pwd.getMD5(super.getPassword());
     }
 }

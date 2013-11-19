@@ -30,6 +30,8 @@ import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Bytes;
 import org.apache.wicket.validation.IValidator;
+import wicket.contrib.tinymce.TinyMceBehavior;
+import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 /**
  * This panel is used when you want to create or update game in the database.
@@ -64,7 +66,11 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
         createOrUpdateGame.add(new FeedbackPanel("feedback", filter).setOutputMarkupId(true));
 
         createOrUpdateGame.add(addFeedbackPanel(new RequiredTextField<String>("name").setLabel(Model.of("Jméno")), createOrUpdateGame, "nameFeedback"));
-        createOrUpdateGame.add(addFeedbackPanel(new TextArea<String>("description").setRequired(true).setLabel(Model.of("Popis")), createOrUpdateGame, "descriptionFeedback"));
+        TinyMceBehavior tinyMceBehavior = new TinyMceBehavior();
+        TextArea description = (TextArea) new TextArea<String>("description").setRequired(true).setLabel(Model.of("Popis"));
+        description.add(tinyMceBehavior);
+        createOrUpdateGame.add(addFeedbackPanel(description, createOrUpdateGame, "descriptionFeedback"));
+
 
         createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("year").setLabel(Model.of("Rok")), createOrUpdateGame, "yearFeedback"));
         createOrUpdateGame.add(addFeedbackPanel(new TextField<String>("web"), createOrUpdateGame, "webFeedback"));
@@ -111,7 +117,7 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
                     target.add(getParent());
                 }
             }
-        });
+        }.add(new TinyMceAjaxSubmitModifier()));
 
         add(createOrUpdateGame);
     }

@@ -14,6 +14,8 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import wicket.contrib.tinymce.TinyMceBehavior;
+import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 import java.util.UUID;
 
@@ -49,6 +51,7 @@ public abstract class CreateOrUpdateAuthorPanel extends Panel {
         createOrUpdateUser.add(addFeedbackPanel(email, createOrUpdateUser, "emailFeedback"));
 
         TextArea<String> description = new TextArea<String>("person.description");
+        description.add(new TinyMceBehavior());
         createOrUpdateUser.add(addFeedbackPanel(description, createOrUpdateUser, "descriptionFeedback"));
 
         createOrUpdateUser.add(new AjaxButton("submit"){
@@ -62,7 +65,7 @@ public abstract class CreateOrUpdateAuthorPanel extends Panel {
                     }
                 }
             }
-        });
+        }.add(new TinyMceAjaxSubmitModifier()));
 
         add(createOrUpdateUser);
     }
@@ -78,10 +81,10 @@ public abstract class CreateOrUpdateAuthorPanel extends Panel {
 
     private boolean saveOrUpdateUser(CsldUser author){
         author.setIsAuthor(true);
-        author.setPassword(Pwd.getMD5(new RandomString(12).nextString()));
         if(author.getPerson().getEmail() == null){
             author.getPerson().setEmail(UUID.randomUUID().toString() + "@" + UUID.randomUUID().toString() + ".cz");
         }
+        author.setPassword(Pwd.generateStrongPasswordHash(new RandomString(12).nextString(), author.getPerson().getEmail()));
         return csldUserService.saveOrUpdate(author);
     }
 

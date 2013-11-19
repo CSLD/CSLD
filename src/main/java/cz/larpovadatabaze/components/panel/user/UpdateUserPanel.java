@@ -21,6 +21,8 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import wicket.contrib.tinymce.TinyMceBehavior;
+import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 import java.util.List;
 
@@ -63,7 +65,10 @@ public class UpdateUserPanel extends Panel {
         createOrUpdateUser.add(addFeedbackPanel(birthDate, createOrUpdateUser, "birthDateFeedback"));
 
         createOrUpdateUser.add(addFeedbackPanel(new TextField<String>("person.city"), createOrUpdateUser,"cityFeedback"));
-        createOrUpdateUser.add(addFeedbackPanel(new TextArea<String>("person.description"), createOrUpdateUser,"descriptionFeedback"));
+
+        TextArea description = new TextArea<String>("person.description");
+        description.add(new TinyMceBehavior());
+        createOrUpdateUser.add(addFeedbackPanel(description, createOrUpdateUser,"descriptionFeedback"));
 
         fileUpload = new FileUploadField("image", new PropertyModel<List<FileUpload>>(this, "images"));
         createOrUpdateUser.add(addFeedbackPanel(fileUpload, createOrUpdateUser,"imageFeedback"));
@@ -84,7 +89,7 @@ public class UpdateUserPanel extends Panel {
 
                 if(createOrUpdateUser.isValid()){
                     CsldUser user = createOrUpdateUser.getModelObject();
-                    user.setPassword(Pwd.getMD5(user.getPassword()));
+                    user.setPassword(Pwd.generateStrongPasswordHash(user.getPassword(), user.getPerson().getEmail()));
                     saveOrUpdateUserAndImage(user);
                     onCsldAction(target, form);
                 }
@@ -97,7 +102,7 @@ public class UpdateUserPanel extends Panel {
                     target.add(getParent());
                 }
             }
-        });
+        }.add(new TinyMceAjaxSubmitModifier()));
         createOrUpdateUser.add(new EqualPasswordInputValidator(password, passwordAgain));
 
         add(createOrUpdateUser);

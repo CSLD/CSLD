@@ -42,7 +42,17 @@ public class CsldAuthenticatedWebSession extends AuthenticatedWebSession {
     @Override
     public boolean authenticate(final String username, final String password)
     {
-        CsldUser authenticated = csldUserService.authenticate(username, Pwd.getMD5(password));
+        CsldUser authenticated = csldUserService.getByEmail(username);
+        if(authenticated == null) {
+            return false;
+        }
+        if(!Pwd.validatePassword(password, authenticated.getPassword())) {
+            authenticated = csldUserService.authenticate(username, Pwd.getMD5(password));
+            if(authenticated != null){
+                authenticated.setPassword(Pwd.generateStrongPasswordHash(username, password));
+                csldUserService.saveOrUpdate(authenticated);
+            }
+        }
 
         if(authenticated != null){
             if(authenticated.getRole() == 1) {

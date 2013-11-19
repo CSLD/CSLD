@@ -42,7 +42,7 @@ public class ResetPassword extends CsldBasePage {
             @Override
             protected void onSubmit() {
                 if(password != null && passwordAgain != null && password.equals(passwordAgain)){
-                    csldUser.setPassword(Pwd.getMD5(password));
+                    csldUser.setPassword(Pwd.generateStrongPasswordHash(password, csldUser.getPerson().getEmail()));
                     csldUserService.saveOrUpdate(csldUser);
 
                     throw new RestartResponseException(HomePage.class);

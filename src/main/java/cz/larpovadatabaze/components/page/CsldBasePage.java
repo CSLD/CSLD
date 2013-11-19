@@ -18,6 +18,7 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.request.resource.PackageResourceReference;
+import wicket.contrib.tinymce.settings.TinyMCESettings;
 
 /**
  * Base page from which all other pages are derived.
@@ -57,10 +58,12 @@ public class CsldBasePage extends WebPage {
     public void renderHead(IHeaderResponse response) {
         response.render(JavaScriptHeaderItem.forReference(getApplication().getJavaScriptLibrarySettings()
                 .getJQueryReference()));
+        response.render(JavaScriptHeaderItem.forReference(TinyMCESettings.javaScriptReference()));
 
         response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"js/jquery-ui-1.9.2.custom.js")));
         response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"js/jquery.nivo.slider.pack.js")));
         response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"js/jquery.nivo.slider.js")));
+
 
         response.render(CssHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"css/nivo-slider.css")));
         response.render(CssHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"css/style.css")));

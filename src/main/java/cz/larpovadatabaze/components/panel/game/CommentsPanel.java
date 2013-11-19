@@ -13,6 +13,8 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import wicket.contrib.tinymce.TinyMceBehavior;
+import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 import java.sql.Timestamp;
 
@@ -56,6 +58,7 @@ public abstract class CommentsPanel extends Panel {
         comment.setOutputMarkupId(true);
 
         commentContent = new TextArea<String>("textOfComment", Model.of(commentText));
+        commentContent.add(new TinyMceBehavior());
         commentContent.setOutputMarkupId(true);
         AjaxButton addComment = new AjaxButton("addComment"){
             @Override
@@ -65,6 +68,7 @@ public abstract class CommentsPanel extends Panel {
             }
         };
         addComment.setOutputMarkupId(true);
+        addComment.add(new TinyMceAjaxSubmitModifier());
 
         comment.add(commentContent);
         comment.add(addComment);
@@ -84,7 +88,7 @@ public abstract class CommentsPanel extends Panel {
                 ex.printStackTrace();
             }
         } else {
-            actualComment.setComment(commentText.replaceAll("\n", "<br/>"));
+            actualComment.setComment(commentText);
             actualComment.setAdded(new Timestamp(System.currentTimeMillis()));
 
             commentService.saveOrUpdate(actualComment);

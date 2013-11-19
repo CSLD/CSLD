@@ -15,6 +15,8 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import wicket.contrib.tinymce.TinyMceBehavior;
+import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 /**
  * It is used for creating and updating Labels for games.
@@ -37,7 +39,7 @@ public abstract class CreateOrUpdateLabelPanel extends Panel {
                 new ValidatableForm<Label>("createOrUpdateLabel", new CompoundPropertyModel<Label>(label)){};
 
         createOrUpdateLabel.add(new TextField<String>("name"));
-        createOrUpdateLabel.add(new TextArea<String>("description"));
+        createOrUpdateLabel.add(new TextArea<String>("description").add(new TinyMceBehavior()));
         createOrUpdateLabel.add(new AjaxButton("submit"){
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
@@ -50,7 +52,7 @@ public abstract class CreateOrUpdateLabelPanel extends Panel {
                     }
                 }
             }
-        });
+        }.add(new TinyMceAjaxSubmitModifier()));
 
         add(createOrUpdateLabel);
     }
