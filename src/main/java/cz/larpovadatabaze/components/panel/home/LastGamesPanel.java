@@ -80,7 +80,7 @@ public class LastGamesPanel extends Panel {
                     Model.of(
                             game.getDescription().length() > MAX_CHARS ?
                                     game.getDescription().substring(0,MAX_CHARS) :
-                                    game.getDescription()))
+                                    game.getDescription())).setEscapeModelStrings(false)
             );
             final BookmarkablePageLink<CsldBasePage> gameMoreLink =
                     new BookmarkablePageLink<CsldBasePage>("gameMoreLink", GameDetail.class, params);
