@@ -5,13 +5,14 @@ import cz.larpovadatabaze.components.panel.game.CommentsListPanel;
 import cz.larpovadatabaze.components.panel.game.GameListPanel;
 import cz.larpovadatabaze.components.panel.game.ListGamesWithAnnotations;
 import cz.larpovadatabaze.components.panel.user.PersonDetailPanel;
-import cz.larpovadatabaze.entities.Comment;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.UserPlayedGame;
+import cz.larpovadatabaze.components.panel.user.RatingsListPanel;
+import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.providers.SortableAnnotatedProvider;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.RatingService;
+import cz.larpovadatabaze.utils.HbUtils;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -28,6 +29,8 @@ public class UserDetail extends CsldBasePage {
     CsldUserService csldUserService;
     @SpringBean
     GameService gameService;
+    @SpringBean
+    RatingService ratingService;
 
     public UserDetail(PageParameters params){
         Integer authorId = params.get("id").to(Integer.class);
@@ -69,6 +72,17 @@ public class UserDetail extends CsldBasePage {
         }
         add(new GameListPanel("playedGamesPanel",playedGames));
         add(new GameListPanel("wantedGamesPanel",wantedGames));
-        add(new GameListPanel("authoredGamesPanel",user.getAuthorOf()));
+
+        CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
+        if(HbUtils.isProxy(user)){
+            user = HbUtils.deproxy(user);
+        }
+        List<Rating> myRatings = ratingService.getRatingsOfUser(logged, user);
+        boolean visible = true;
+        if(logged == null || !logged.getId().equals(user.getId())) {
+            visible = false;
+        }
+        add(new RatingsListPanel("ratedGamesPanel", myRatings, visible));
+
     }
 }

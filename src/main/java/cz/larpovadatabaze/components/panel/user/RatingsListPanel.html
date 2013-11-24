@@ -1,0 +1,23 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+    <div class="nadpisSekce"><wicket:message key="author.ratedByMe">Mnou hodnocené</wicket:message></div>
+    <div class="obsah">
+        <!--
+        It lists ratings given in as parameter in similar way to games. You get Game info and then your rating of game.
+
+        It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/user/RatingsListPanel.html
+        Code - cz.larpovadatabaze.components.panel.user.RatingsListPanel.html
+        -->
+        <div wicket:id="listGames">
+            <!-- Beginning of repetitive content for every Rating -->
+            <div class="obsahPolozka">
+                <a wicket:id="gameDetail">
+                    <span wicket:id="gameName"></span>
+                    (<span wicket:id="gameYear"></span>)
+                </a>
+
+                <span style="position: absolute; right: 0;" wicket:id="myRating"></span>
+            </div>
+            <!-- End of repetitive content for every Rating -->
+        </div>
+    </div>
+</wicket:panel>

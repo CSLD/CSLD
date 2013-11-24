@@ -34,16 +34,6 @@
 
 
         <div class="sekce">
-            <div class="nadpisSekce"><wicket:message key="author.myLarps">Moje larpy</wicket:message></div>
-            <div class="obsah" wicket:id="authoredGamesPanel">
-                <!--
-                This panel is found in package: cz.larpovadatabaze.components.panel.game.GameListPanel.html
-                https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/GameListPanel.html
-                -->
-            </div>
-        </div>
-
-        <div class="sekce">
             <div class="nadpisSekce"><wicket:message key="user.playedLarps">Moje larpotéka</wicket:message></div>
             <div class="obsah" wicket:id="playedGamesPanel">
                 <!--
@@ -61,6 +51,13 @@
                 https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/GameListPanel.html
                 -->
             </div>
+        </div>
+
+        <div wicket:id="ratedGamesPanel" class="sekce">
+            <!--
+            This panel is found in package: cz.larpovadatabaze.components.panel.game.GameListPanel.html
+            https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/GameListPanel.html
+            -->
         </div>
     </div>
 </wicket:extend>

@@ -1,7 +1,10 @@
 package cz.larpovadatabaze.services;
 
+import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
+
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -19,4 +22,6 @@ public interface RatingService extends GenericService<Rating> {
     int getAmountOfRatings();
 
     Integer getRatingsForGame(Integer id);
+
+    List<Rating> getRatingsOfUser(CsldUser logged, CsldUser actual);
 }
