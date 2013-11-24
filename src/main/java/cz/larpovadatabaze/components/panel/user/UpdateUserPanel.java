@@ -93,7 +93,6 @@ public class UpdateUserPanel extends Panel {
 
                 if(createOrUpdateUser.isValid()){
                     CsldUser user = createOrUpdateUser.getModelObject();
-                    user.setPassword(Pwd.generateStrongPasswordHash(user.getPassword(), user.getPerson().getEmail()));
                     saveOrUpdateUserAndImage(user);
                     onCsldAction(target, form);
                 }
@@ -122,9 +121,13 @@ public class UpdateUserPanel extends Panel {
     }
 
     private void saveOrUpdateUserAndImage(CsldUser user){
-        if(user.getPassword().equals("") && passwordAgain.equals("")){
+        if((user.getPassword() == null || user.getPassword().equals("")) &&
+                (passwordAgain == null || passwordAgain.equals(""))){
             user.setPassword(this.password);
+        } else {
+            user.setPassword(Pwd.generateStrongPasswordHash(user.getPassword(), user.getPerson().getEmail()));
         }
+
         if(user.getPerson().getDescription() != null) {
             user.getPerson().setDescription(Jsoup.clean(user.getPerson().getDescription(), Whitelist.basic()));
         }
