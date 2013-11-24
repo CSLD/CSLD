@@ -1,5 +1,8 @@
 package cz.larpovadatabaze.entities;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -45,7 +48,7 @@ public class Comment implements Serializable {
     )
     @Basic
     public String getComment() {
-        return comment;
+        return Jsoup.clean((comment != null)?comment:"", Whitelist.basic());
     }
 
     public void setComment(String comment) {

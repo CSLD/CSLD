@@ -40,6 +40,7 @@ public class UpdateUserPanel extends Panel {
     private String passwordAgain;
     @SuppressWarnings("unused")
     private List<FileUpload> images;
+    private String password;
 
     public UpdateUserPanel(String id, CsldUser user) {
         super(id);
@@ -49,6 +50,7 @@ public class UpdateUserPanel extends Panel {
             isEdit = false;
             user = CsldUser.getEmptyUser();
         }
+        this.password = user.getPassword();
 
         final ValidatableForm<CsldUser> createOrUpdateUser =
                 new ValidatableForm<CsldUser>("addUser", new CompoundPropertyModel<CsldUser>(user));
@@ -74,12 +76,12 @@ public class UpdateUserPanel extends Panel {
         createOrUpdateUser.add(addFeedbackPanel(fileUpload, createOrUpdateUser,"imageFeedback"));
 
         PasswordTextField password = new PasswordTextField("password");
-        password.setRequired(true);
+        password.setRequired(false);
         createOrUpdateUser.add(addFeedbackPanel(password, createOrUpdateUser, "passwordFeedback"));
 
         PasswordTextField passwordAgain =
                 new PasswordTextField("passwordAgain", new PropertyModel<String>(this, "passwordAgain"));
-        passwordAgain.setRequired(true);
+        passwordAgain.setRequired(false);
         createOrUpdateUser.add(addFeedbackPanel(passwordAgain, createOrUpdateUser, "passwordAgainFeedback"));
 
         createOrUpdateUser.add(new AjaxButton("submit"){
@@ -118,6 +120,9 @@ public class UpdateUserPanel extends Panel {
     }
 
     private void saveOrUpdateUserAndImage(CsldUser user){
+        if(user.getPassword().equals("") && passwordAgain.equals("")){
+            user.setPassword(this.password);
+        }
         final List<FileUpload> uploads = fileUpload.getFileUploads();
         if (uploads != null) {
             for (FileUpload upload : uploads) {

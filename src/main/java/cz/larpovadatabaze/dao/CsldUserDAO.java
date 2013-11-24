@@ -159,7 +159,10 @@ public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
         Session session = sessionFactory.getCurrentSession();
         Criteria query = session.createCriteria(CsldUser.class);
         query.setMaxResults(maxChoices);
-        query.add(Restrictions.ilike("person.name",startsWith+"%"));
+        query.add(Restrictions.or(
+                Restrictions.ilike("person.name","%"+startsWith+"%"),
+                Restrictions.ilike("person.nickname","%"+startsWith+"%")));
+
         return query.list();
     }
 }

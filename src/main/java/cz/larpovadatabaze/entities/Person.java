@@ -1,6 +1,8 @@
 package cz.larpovadatabaze.entities;
 
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -11,10 +13,7 @@ import java.sql.Date;
 import java.util.Calendar;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 27.3.13
- * Time: 14:01
+ *
  */
 @Embeddable
 public class Person implements Serializable, IAutoCompletable {
@@ -37,7 +36,7 @@ public class Person implements Serializable, IAutoCompletable {
     @Column(name = "description", nullable = true, insertable = true, updatable = true, length = 2147483647, precision = 0)
     @Basic
     public String getDescription() {
-        return description;
+        return Jsoup.clean((description!=null)?description:"", Whitelist.basic());
     }
 
     public void setDescription(String description) {

@@ -74,7 +74,7 @@ public class GroupDAO extends GenericHibernateDAO<CsldGroup, Integer> {
         Session session = sessionFactory.getCurrentSession();
         Criteria query = session.createCriteria(CsldGroup.class);
         query.setMaxResults(maxChoices);
-        query.add(Restrictions.ilike("name",startsWith+"%"));
+        query.add(Restrictions.ilike("name","%"+startsWith+"%"));
         return query.list();
     }
 }
