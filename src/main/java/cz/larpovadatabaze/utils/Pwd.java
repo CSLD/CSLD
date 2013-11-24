@@ -96,6 +96,8 @@ public class Pwd {
         } catch (InvalidKeySpecException e) {
             e.printStackTrace();
             return false;
+        } catch(NumberFormatException e) {
+            return false;
         }
     }
 
