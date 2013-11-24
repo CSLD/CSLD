@@ -90,18 +90,21 @@ public abstract class RatingsResultPanel extends Panel {
 
         int[] ratingsArray = new int[10];
         Arrays.fill(ratingsArray,0);
-        for(Rating rating: game.getRatings()) {
-            ratingsArray[rating.getRating() - 1]++;
-        }
-        int maxRatings = 0;
-        for(int actRating: ratingsArray){
-            if(actRating > maxRatings) {
-                maxRatings = actRating;
+        if(game.getAmountOfRatings() > 3) {
+            for(Rating rating: game.getRatings()) {
+                ratingsArray[rating.getRating() - 1]++;
+            }
+            int maxRatings = 0;
+            for(int actRating: ratingsArray){
+                if(actRating > maxRatings) {
+                    maxRatings = actRating;
+                }
+            }
+            for(int i = 0; i < ratingsArray.length; i++){
+                ratingsArray[i] = (int)(((double) ratingsArray[i] / (double)maxRatings) * 100);
             }
         }
-        for(int i = 0; i < ratingsArray.length; i++){
-            ratingsArray[i] = (int)(((double) ratingsArray[i] / (double)maxRatings) * 100);
-        }
+
 
         add(new Label("widthOne",Model.of(ratingsArray[0])).setOutputMarkupId(true));
         add(new Label("widthTwo",Model.of(ratingsArray[1])).setOutputMarkupId(true));
