@@ -59,6 +59,24 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable {
         this.password = password;
     }
 
+    private Integer lastRating;
+
+    @Column(
+            name = "last_rating",
+            nullable = true,
+            insertable = true,
+            updatable = true,
+            length = 2147483647
+    )
+    @Basic
+    public Integer getLastRating() {
+        return lastRating;
+    }
+
+    public void setLastRating(Integer lastRating) {
+        this.lastRating = lastRating;
+    }
+
     private Short role;
 
     @Column(
