@@ -36,7 +36,7 @@ public class Person implements Serializable, IAutoCompletable {
     @Column(name = "description", nullable = true, insertable = true, updatable = true, length = 2147483647, precision = 0)
     @Basic
     public String getDescription() {
-        return Jsoup.clean((description!=null)?description:"", Whitelist.basic());
+        return description;
     }
 
     public void setDescription(String description) {

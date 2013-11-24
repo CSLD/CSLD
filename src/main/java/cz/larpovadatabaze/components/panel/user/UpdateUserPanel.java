@@ -21,6 +21,8 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import wicket.contrib.tinymce.TinyMceBehavior;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
@@ -122,6 +124,9 @@ public class UpdateUserPanel extends Panel {
     private void saveOrUpdateUserAndImage(CsldUser user){
         if(user.getPassword().equals("") && passwordAgain.equals("")){
             user.setPassword(this.password);
+        }
+        if(user.getPerson().getDescription() != null) {
+            user.getPerson().setDescription(Jsoup.clean(user.getPerson().getDescription(), Whitelist.basic()));
         }
         final List<FileUpload> uploads = fileUpload.getFileUploads();
         if (uploads != null) {

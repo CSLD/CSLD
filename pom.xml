@@ -162,6 +162,12 @@
             <artifactId>java-image-scaling</artifactId>
             <version>0.8.4</version>
         </dependency>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.7.2</version>
+        </dependency>
+
 
         <!-- LOGGING DEPENDENCIES - LOG4J -->
         <dependency>

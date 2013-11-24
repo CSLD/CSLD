@@ -48,7 +48,7 @@ public class Comment implements Serializable {
     )
     @Basic
     public String getComment() {
-        return Jsoup.clean((comment != null)?comment:"", Whitelist.basic());
+        return comment;
     }
 
     public void setComment(String comment) {

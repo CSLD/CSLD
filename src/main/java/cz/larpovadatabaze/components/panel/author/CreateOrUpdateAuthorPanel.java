@@ -14,6 +14,8 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import wicket.contrib.tinymce.TinyMceBehavior;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
@@ -83,6 +85,10 @@ public abstract class CreateOrUpdateAuthorPanel extends Panel {
         author.setIsAuthor(true);
         if(author.getPerson().getEmail() == null){
             author.getPerson().setEmail(UUID.randomUUID().toString() + "@" + UUID.randomUUID().toString() + ".cz");
+        }
+
+        if(author.getPerson().getDescription() != null) {
+            author.getPerson().setDescription(Jsoup.clean(author.getPerson().getDescription(), Whitelist.basic()));
         }
         author.setPassword(Pwd.generateStrongPasswordHash(new RandomString(12).nextString(), author.getPerson().getEmail()));
         return csldUserService.saveOrUpdate(author);

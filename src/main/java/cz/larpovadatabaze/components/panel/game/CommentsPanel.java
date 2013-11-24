@@ -13,6 +13,8 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import wicket.contrib.tinymce.TinyMceBehavior;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
@@ -88,7 +90,7 @@ public abstract class CommentsPanel extends Panel {
                 ex.printStackTrace();
             }
         } else {
-            actualComment.setComment(commentText);
+            actualComment.setComment(Jsoup.clean(commentText, Whitelist.basic()));
             actualComment.setAdded(new Timestamp(System.currentTimeMillis()));
 
             commentService.saveOrUpdate(actualComment);

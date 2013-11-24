@@ -8,6 +8,8 @@ import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.utils.FileUtils;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -172,6 +174,9 @@ public class GameServiceImpl implements GameService {
         }
         if(game.getImage() == null || (game.getImage().getFileUpload() == null && game.getImage().getPath() == null)) {
             game.setImage(Image.getDefaultGame());
+        }
+        if(game.getDescription() != null){
+            game.setDescription(Jsoup.clean(game.getDescription(), Whitelist.basic()));
         }
 
         final List<FileUpload> uploads = game.getImage().getFileUpload();

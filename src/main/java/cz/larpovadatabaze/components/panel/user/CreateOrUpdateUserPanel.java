@@ -23,6 +23,8 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import wicket.contrib.tinymce.TinyMceBehavior;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
@@ -138,6 +140,9 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
         }
         if(user.getImage() == null){
             user.setImage(Image.getDefaultUser());
+        }
+        if(user.getPerson().getDescription() != null) {
+            user.getPerson().setDescription(Jsoup.clean(user.getPerson().getDescription(), Whitelist.basic()));
         }
         if (uploads != null) {
             for (FileUpload upload : uploads) {
