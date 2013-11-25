@@ -68,6 +68,14 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 	}
 
     public boolean saveOrUpdate(T entity) {
+        try {
+            sessionFactory.getCurrentSession().merge(entity);
+            flush();
+            return true;
+        } catch (HibernateException ex){
+            ex.printStackTrace();
+        }
+
         try{
             sessionFactory.getCurrentSession().saveOrUpdate(entity);
             flush();

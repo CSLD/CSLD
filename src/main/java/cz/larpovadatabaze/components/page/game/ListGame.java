@@ -69,21 +69,7 @@ public class ListGame extends CsldBasePage {
             csldUserService.saveOrUpdate(logged);
         }
 
-        if(label == ALL) {
-            allLink.add(AttributeModifier.replace("class","active"));
-        } else if(label == chamber.getId()) {
-            chamberLink.add(AttributeModifier.replace("class","active"));
-        } else if(label == dramatic.getId()) {
-            dramaticLink.add(AttributeModifier.replace("class","active"));
-        } else if(label == battle.getId()) {
-            battleLink.add(AttributeModifier.replace("class","active"));
-        } else if(label == world.getId()) {
-            worldLink.add(AttributeModifier.replace("class","active"));
-        } else if(label == city.getId()) {
-            cityLink.add(AttributeModifier.replace("class","active"));
-        } else if(label == group.getId()){
-            groupLink.add(AttributeModifier.replace("class","active"));
-        } else {
+        if(label == NONE) {
             label = ALL;
             // Some user is logged.
             if(logged != null) {
@@ -94,6 +80,24 @@ public class ListGame extends CsldBasePage {
                     label = ALL;
                 }
             }
+        }
+
+        if(label.equals(ALL)) {
+            allLink.add(AttributeModifier.replace("class","active"));
+        } else if(label.equals(chamber.getId())) {
+            chamberLink.add(AttributeModifier.replace("class","active"));
+        } else if(label.equals(dramatic.getId())) {
+            dramaticLink.add(AttributeModifier.replace("class","active"));
+        } else if(label.equals(battle.getId())) {
+            battleLink.add(AttributeModifier.replace("class","active"));
+        } else if(label.equals(world.getId())) {
+            worldLink.add(AttributeModifier.replace("class","active"));
+        } else if(label.equals(city.getId())) {
+            cityLink.add(AttributeModifier.replace("class","active"));
+        } else if(label.equals(group.getId())){
+            groupLink.add(AttributeModifier.replace("class","active"));
+        } else {
+
         }
 
         final ListGamePanel listGamePanel = new ListGamePanel("listGame", label);
