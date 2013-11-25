@@ -49,7 +49,7 @@ public class CsldAuthenticatedWebSession extends AuthenticatedWebSession {
         if(!Pwd.validatePassword(password, authenticated.getPassword())) {
             authenticated = csldUserService.authenticate(username, Pwd.getMD5(password));
             if(authenticated != null){
-                authenticated.setPassword(Pwd.generateStrongPasswordHash(username, password));
+                authenticated.setPassword(Pwd.generateStrongPasswordHash(password, username));
                 csldUserService.saveOrUpdate(authenticated);
             }
         }
