@@ -97,7 +97,6 @@ public class Pwd {
             e.printStackTrace();
             return false;
         } catch(NumberFormatException e) {
-            System.out.println("Old password");
             return false;
         }
     }
