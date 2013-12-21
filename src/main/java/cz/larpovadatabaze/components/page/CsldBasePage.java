@@ -15,7 +15,10 @@ import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import wicket.contrib.tinymce.settings.TinyMCESettings;
@@ -23,8 +26,22 @@ import wicket.contrib.tinymce.settings.TinyMCESettings;
 /**
  * Base page from which all other pages are derived.
  */
-public class CsldBasePage extends WebPage {
-    public CsldBasePage(){
+public abstract class CsldBasePage extends WebPage {
+
+    public CsldBasePage() {
+    }
+
+    /**
+     * @return Model for HTML page title
+     */
+    protected IModel<String> getPageTitleModel() {
+        return new StringResourceModel("larpDatabaseTitle", null, null);
+    }
+
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
+
         if(!CsldAuthenticatedWebSession.get().isSignedIn()){
             IAuthenticationStrategy strategy = getApplication().getSecuritySettings()
                     .getAuthenticationStrategy();
@@ -33,6 +50,8 @@ public class CsldBasePage extends WebPage {
                 CsldAuthenticatedWebSession.get().signIn(data[0], data[1]);
             }
         }
+
+        add(new Label("pageTitle", getPageTitleModel()));
 
         add(new LoginBoxPanel("login"));
         add(new LoggedBoxPanel("loggedInfo"));
