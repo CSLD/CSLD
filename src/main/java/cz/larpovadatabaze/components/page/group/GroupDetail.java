@@ -11,6 +11,7 @@ import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.providers.SortableAnnotatedProvider;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.GroupService;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -23,8 +24,16 @@ public class GroupDetail extends CsldBasePage {
     @SpringBean
     GameService gameService;
 
+    private final Integer groupId;
+
     public GroupDetail(PageParameters params){
-        Integer groupId = params.get("id").to(Integer.class);
+        groupId = params.get("id").to(Integer.class);
+    }
+
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
+
         CsldGroup group = groupService.getById(groupId);
 
         GroupDetailPanel groupPanel = new GroupDetailPanel("groupDetail", group);
@@ -33,7 +42,7 @@ public class GroupDetail extends CsldBasePage {
         add(new AddGroupPanel("addGroup"));
         add(new EditGroupPanel("editGroup", group));
         add(new AddAuthorsToGroupPanel("addAuthorsToGroup", group));
-        add(new GameListPanel("authoredGamesPanel",group.getAuthorsOf()));
+        add(new GameListPanel("authoredGamesPanel",Model.ofList(group.getAuthorsOf())));
 
         SortableAnnotatedProvider provider = new SortableAnnotatedProvider(gameService);
         provider.setGroup(group);

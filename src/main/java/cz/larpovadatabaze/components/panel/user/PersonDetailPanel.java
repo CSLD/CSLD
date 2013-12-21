@@ -13,8 +13,16 @@ import org.apache.wicket.request.resource.PackageResourceReference;
  * It shows detail of user.
  */
 public class PersonDetailPanel extends Panel {
+    private final CsldUser user;
+
     public PersonDetailPanel(String id, CsldUser user) {
         super(id);
+        this.user = user;
+    }
+
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
 
         final Image userImage = new Image("userImage",
                 new PackageResourceReference(Csld.class, user.getImage().getPath()));
@@ -28,7 +36,7 @@ public class PersonDetailPanel extends Panel {
         add(new Label("city",person.getCity()));
         int played = 0;
         for(UserPlayedGame playedGame: user.getPlayedGames()){
-            if(playedGame.getState() == UserPlayedGame.PLAYED){
+            if(playedGame.getStateEnum().equals(UserPlayedGame.UserPlayedGameState.PLAYED)){
                 played++;
             }
         }

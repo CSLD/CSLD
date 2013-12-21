@@ -2176,52 +2176,52 @@ select[name=stateOfGame]{
   max-width: 88%;
 }
 
-#bar-ten {
+.bar10 {
   width: 0;
   background-color: #CC333F;
 }
 
-#bar-nine {
+.bar9 {
   width: 0;
   background-color: #CC333F;
 }
 
-#bar-eight {
+.bar8 {
   width: 0;
   background-color: #CC333F;
 }
 
-#bar-seven {
+.bar7 {
   width: 0;
   background-color: #CC333F;
 }
 
-#bar-six {
+.bar6 {
   width: 0;
   background-color: #00A0B0;
 }
 
-#bar-five {
+.bar5 {
   width: 0;
   background-color: #00A0B0;
 }
 
-#bar-four {
+.bar4 {
   width: 0;
   background-color: #00A0B0;
 }
 
-#bar-three {
+.bar3 {
   width: 0;
   background-color: #757575;
 }
 
-#bar-two {
+.bar2 {
   width: 0;
   background-color: #757575;
 }
 
-#bar-one {
+.bar1 {
   width: 0;
   background-color: #757575;
 }

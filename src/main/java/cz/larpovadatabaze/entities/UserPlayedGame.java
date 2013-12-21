@@ -3,6 +3,7 @@ package cz.larpovadatabaze.entities;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import java.io.Serializable;
 
 /**
@@ -15,9 +16,19 @@ import java.io.Serializable;
 @javax.persistence.Table(name = "csld_user_played_game", schema = "public", catalog = "")
 @Entity
 public class UserPlayedGame implements Serializable {
-    public static final int PLAYED = 2;
-    public static final int WANT_TO_PLAY = 1;
-    public static final int NONE = 0;
+    public static final int STATE_CODE_PLAYED = 2;
+    public static final int STATE_CODE_WANT_TO_PLAY = 1;
+    public static final int STATE_CODE_NONE = 0;
+
+    public static enum UserPlayedGameState {
+        NONE(STATE_CODE_NONE),
+        PLAYED(STATE_CODE_PLAYED),
+        WANT_TO_PLAY(STATE_CODE_WANT_TO_PLAY);
+
+        private final int dbCode;
+
+        private UserPlayedGameState(int dbCode) { this.dbCode = dbCode; }
+    }
 
     private Integer gameId;
 
@@ -43,14 +54,38 @@ public class UserPlayedGame implements Serializable {
         this.userId = userId;
     }
 
-    private Integer state;
+    private UserPlayedGameState state = UserPlayedGameState.NONE;
 
     @javax.persistence.Column(name = "state", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
     public Integer getState() {
-        return state;
+        return state.dbCode;
     }
 
     public void setState(Integer state) {
+        switch(state) {
+            case STATE_CODE_NONE:
+                this.state = UserPlayedGameState.NONE;
+                break;
+            case STATE_CODE_PLAYED:
+                this.state = UserPlayedGameState.PLAYED;
+                break;
+            case STATE_CODE_WANT_TO_PLAY:
+                this.state = UserPlayedGameState.WANT_TO_PLAY;
+                break;
+        }
+
+        // Sanity check
+        if (this.state.dbCode != state) {
+            throw new IllegalArgumentException("Invalid state code or configuration error");
+        }
+    }
+
+    @Transient
+    public UserPlayedGameState getStateEnum() {
+        return this.state;
+    }
+
+    public void setStateEnum(UserPlayedGameState state) {
         this.state = state;
     }
 

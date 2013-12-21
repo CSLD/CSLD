@@ -20,6 +20,9 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.PackageResourceReference;
 
@@ -30,16 +33,24 @@ import java.util.List;
  * amount of players, labels and so on.
  */
 public class GameDetailPanel extends Panel {
-    public GameDetailPanel(String id, Game game) {
-        super(id);
+    private final IModel<Game> model;
 
+    public GameDetailPanel(String id, IModel<Game> model) {
+        super(id);
+        this.model = model;
+        setDefaultModel(new CompoundPropertyModel<Game>(model));
+    }
+
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
+
+        Game game = model.getObject();
 
         final Image gameIcon = new Image("gameImage",
                 new PackageResourceReference(Csld.class, (game.getImage() != null) ? game.getImage().getPath(): cz.larpovadatabaze.entities.Image.getDefaultGame().getPath()));
         add(gameIcon);
-        Label gameName =
-                new Label("gameName", game.getName());
-        add(gameName);
+        add(new Label("name"));
 
         List<cz.larpovadatabaze.entities.Label> labels = game.getLabels();
         ListView<cz.larpovadatabaze.entities.Label> view = new ListView<cz.larpovadatabaze.entities.Label>("labels", labels) {
@@ -51,23 +62,16 @@ public class GameDetailPanel extends Panel {
         };
         add(view);
 
-        Label players = new Label("players", game.getPlayers());
-        add(players);
-        Label men = new Label("men", game.getMenRole());
-        add(men);
-        Label women = new Label("women", game.getWomenRole());
-        add(women);
-        Label both = new Label("both", game.getBothRole());
-        add(both);
+        add(new Label("players"));
+        add(new Label("menRole"));
+        add(new Label("womenRole"));
+        add(new Label("bothRole"));
 
-        Label hours = new Label("hours", game.getHours());
-        add(hours);
-        Label days = new Label("days", game.getDays());
-        add(days);
-        Label years = new Label("year", game.getYear());
-        add(years);
+        add(new Label("hours"));
+        add(new Label("days"));
+        add(new Label("year"));
 
-        add(new ExternalLink("webGameLink", game.getWeb(), game.getWeb()));
+        add(new ExternalLink("webGameLink", Model.of(game.getWeb()), Model.of(game.getWeb())));
 
         List<CsldUser> authors = game.getAuthors();
         ListView<CsldUser> authorsList = new ListView<CsldUser>("authors",authors) {
@@ -101,7 +105,7 @@ public class GameDetailPanel extends Panel {
         };
         add(groupsList);
 
-        Label description = new Label("description",game.getDescription());
+        Label description = new Label("description");
         description.setEscapeModelStrings(false);
         add(description);
 
@@ -130,7 +134,7 @@ public class GameDetailPanel extends Panel {
             }
         }
         // Administrators
-        ManagePhotoPanel managePhotoPanel = new ManagePhotoPanel("managePhotos", game.getPhotos(), show, game);
+        ManagePhotoPanel managePhotoPanel = new ManagePhotoPanel("managePhotos", game.getPhotos(), show, model);
         add(managePhotoPanel);
     }
 }

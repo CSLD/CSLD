@@ -3,6 +3,7 @@ package cz.larpovadatabaze.services.impl;
 import cz.larpovadatabaze.dao.CommentDAO;
 import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.services.CommentService;
+import cz.larpovadatabaze.services.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +19,9 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService {
     @Autowired
     private CommentDAO commentDAO;
+
+    @Autowired
+    private GameService gameService;
 
     @Override
     public List<Comment> getAll() {
@@ -49,6 +53,8 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void saveOrUpdate(Comment actualComment) {
         commentDAO.saveOrUpdate(actualComment);
+
+        gameService.evictGame(actualComment.getGameId());
     }
 
     @Override

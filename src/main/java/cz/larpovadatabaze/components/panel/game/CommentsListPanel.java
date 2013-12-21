@@ -8,7 +8,6 @@ import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -17,12 +16,12 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.PackageResourceReference;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,19 +30,24 @@ import java.util.List;
  * full text of the comment.
  */
 public class CommentsListPanel extends Panel {
-    private List<Comment> comments;
+    private final IModel<List<Comment>> comments;
 
-    public CommentsListPanel(String id, List<Comment> comments) {
+    private final boolean showGame;
+
+    public CommentsListPanel(String id, IModel<List<Comment>> comments) {
         this(id, comments, false);
     }
 
-    public CommentsListPanel(String id, List<Comment> comments, final boolean showGame) {
+    public CommentsListPanel(String id, IModel<List<Comment>> comments, final boolean showGame) {
         super(id);
 
-        if(comments == null){
-            comments = new ArrayList<Comment>();
-        }
         this.comments = comments;
+        this.showGame = showGame;
+    }
+
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
 
         ListView<Comment> commentList = new ListView<Comment>("commentList", comments) {
             @Override
@@ -100,12 +104,5 @@ public class CommentsListPanel extends Panel {
         gameDetail.add(gameName);
         toShow.add(gameDetail);
         return toShow;
-    }
-
-    public void reload(AjaxRequestTarget target, List<Comment> comments) {
-        this.comments.removeAll(this.comments);
-        this.comments.addAll(comments);
-
-        target.add(this);
     }
 }

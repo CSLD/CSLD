@@ -15,6 +15,13 @@ import java.util.List;
 public interface GameService extends GenericService<Game> {
     public Game getById(Integer id);
 
+    /**
+     * Flush game from Hibernate cache / session cache
+     *
+     * @param id Game id
+     */
+    public void evictGame(Integer id);
+
     public boolean addGame(Game game);
 
     public void editGame(Game game);

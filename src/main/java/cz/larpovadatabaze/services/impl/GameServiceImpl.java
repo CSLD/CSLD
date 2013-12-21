@@ -8,6 +8,7 @@ import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.utils.FileUtils;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
+import org.hibernate.SessionFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,18 @@ public class GameServiceImpl implements GameService {
     @Autowired
     private GameDAO gameDAO;
 
+    @Autowired
+    private SessionFactory sessionFactory;
+
     @Override
     public Game getById(Integer id) {
         return gameDAO.findById(id, false);
+    }
+
+    @Override
+    public void evictGame(Integer id) {
+        Game g1 = (Game)sessionFactory.getCurrentSession().get(Game.class, id);
+        sessionFactory.getCurrentSession().evict(g1);
     }
 
     @Override

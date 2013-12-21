@@ -5,180 +5,38 @@
     It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/game/RatingsResultPanel.html
     Code - cz.larpovadatabaze.components.panel.game.RatingsResultPanel.html
     -->
-    <span style="display: none;" id="widthTen" wicket:id="widthTen">10</span>
-    <span style="display: none;" id="widthNine" wicket:id="widthNine">20</span>
-    <span style="display: none;" id="widthEight" wicket:id="widthEight">100</span>
-    <span style="display: none;" id="widthSeven" wicket:id="widthSeven">50</span>
-    <span style="display: none;" id="widthSix" wicket:id="widthSix">40</span>
-    <span style="display: none;" id="widthFive" wicket:id="widthFive">30</span>
-    <span style="display: none;" id="widthFour" wicket:id="widthFour">20</span>
-    <span style="display: none;" id="widthThree" wicket:id="widthThree">50</span>
-    <span style="display: none;" id="widthTwo" wicket:id="widthTwo">40</span>
-    <span style="display: none;" id="widthOne" wicket:id="widthOne">30</span>
-      <script type="text/javascript">
-          $(document).ready(function() {
-              var widthTen = $("#widthTen").html();
-              var widthNine = $("#widthNine").html();
-              var widthEight = $("#widthEight").html();
-              var widthSeven = $("#widthSeven").html();
-              var widthSix = $("#widthSix").html();
-              var widthFive = $("#widthFive").html();
-              var widthFour = $("#widthFour").html();
-              var widthThree = $("#widthThree").html();
-              var widthTwo = $("#widthTwo").html();
-              var widthOne = $("#widthOne").html();
 
-            $('.bar span').hide();
-            $('#bar-ten').animate({
-               width: widthTen}, 1000);
-            $('#bar-nine').animate({
-               width: widthNine}, 1000);
-            $('#bar-eight').animate({
-               width: widthEight}, 1000);
-            $('#bar-seven').animate({
-               width: widthSeven}, 1000);
-            $('#bar-six').animate({
-               width: widthSix}, 1000);
-            $('#bar-five').animate({
-               width: widthFive}, 1000);
-            $('#bar-four').animate({
-               width: widthFour}, 1000);
-            $('#bar-three').animate({
-               width: widthThree}, 1000);
-            $('#bar-two').animate({
-               width: widthTwo}, 1000);
-            $('#bar-one').animate({
-               width: widthOne}, 1000);
-            
-            setTimeout(function() {
-              $('.bar span').fadeIn('slow');
-            }, 1000);
-          
-        });
-    </script>
-    
-  <div class="container">
-  <div wicket:id="playedPanel"></div>
-  <div class="inner">
-    <div class="rating">
-      <span wicket:id="ratingResult" class="rating-num">8.4</span>
+    <div class="container">
+        <div wicket:id="playedPanel"></div>
+        <div class="inner">
+            <div class="rating">
+                <span wicket:id="ratingResult" class="rating-num">8.4</span>
 
-      <div class="rating-users">
-        <i class="icon-user"></i> <span wicket:id="amountOfResults">100</span> celkem
-      </div>
-      <div>Vaše hodnocení je: <span wicket:id="myResult">8</span></div>
-           
+                <div class="rating-users">
+                    <i class="icon-user"></i> <span wicket:id="amountOfResults">100</span> celkem
+                </div>
+                <div>Vaše hodnocení je: <span wicket:id="myResult">8</span></div>
+
+            </div>
+
+            <div class="histo">
+
+                <wicket:container wicket:id="starsAndBars">
+                    <div class="histo-rate">
+
+                        <span class="histo-star"> <i class="active fa fa-star"></i> <wicket:container wicket:id="number" /> </span>
+                        <span class="bar-block">
+                          <span wicket:id="bar" class="bar">
+                            <span></span>&nbsp;
+                          </span>
+                        </span>
+                    </div>
+                </wicket:container>
+
+            </div>
+        </div>
+
+
     </div>
-    
-    <div class="histo">
-      <div class="histo-rate">
-        <span class="histo-star">
-          <i class="active fa fa-star"></i> 10 </span>
-        <span class="bar-block">
-          <span id="bar-ten" class="bar">
-            <span></span>&nbsp;
-          </span> 
-        </span>
-      </div>
-    
-
-      <div class="histo-rate">
-        <span class="histo-star">
-          <i class="active fa fa-star"></i> 9 </span>
-        <span class="bar-block">
-          <span id="bar-nine" class="bar">
-            <span></span>&nbsp;
-          </span> 
-        </span>
-      </div>
-    
-
-      <div class="histo-rate">
-        <span class="histo-star">
-          <i class="active fa fa-star"></i> 8 </span>
-        <span class="bar-block">
-          <span id="bar-eight" class="bar">
-            <span></span>&nbsp;
-          </span> 
-        </span>
-      </div>
-    
-
-      <div class="histo-rate">
-        <span class="histo-star">
-          <i class="active fa fa-star"></i> 7 </span>
-        <span class="bar-block">
-          <span id="bar-seven" class="bar">
-            <span></span>&nbsp;
-          </span> 
-        </span>
-      </div>
-    
-
-      <div class="histo-rate">
-        <span class="histo-star">
-          <i class="active fa fa-star"></i> 6 </span>
-        <span class="bar-block">
-          <span id="bar-six" class="bar">
-            <span></span>&nbsp;
-          </span> 
-        </span>
-      </div>
-    
-
-      <div class="histo-rate">
-        <span class="histo-star">
-          <i class="active fa fa-star"></i> 5 </span>
-        <span class="bar-block">
-          <span id="bar-five" class="bar">
-            <span></span>&nbsp;
-          </span> 
-        </span>
-      </div>
-      
-      <div class="histo-rate">
-        <span class="histo-star">
-          <i class="active fa fa-star"></i> 4 </span>
-        <span class="bar-block">
-          <span id="bar-four" class="bar">
-            <span></span>&nbsp;
-          </span> 
-        </span>
-      </div> 
-      
-      <div class="histo-rate">
-        <span class="histo-star">
-          <i class="active fa fa-star"></i> 3 </span>
-        <span class="bar-block">
-          <span id="bar-three" class="bar">
-            <span></span>&nbsp;
-          </span> 
-        </span>
-      </div>
-      
-      <div class="histo-rate">
-        <span class="histo-star">
-          <i class="active fa fa-star"></i> 2 </span>
-        <span class="bar-block">
-          <span id="bar-two" class="bar">
-            <span></span>&nbsp;
-          </span> 
-        </span>
-      </div>
-      
-      <div class="histo-rate">
-        <span class="histo-star">
-          <i class="active fa fa-star"></i> 1 </span>
-        <span class="bar-block">
-          <span id="bar-one" class="bar">
-            <span></span>&nbsp;
-          </span> 
-        </span>
-      </div>
-    </div>
-  </div>
-  
-
-</div>    
 
 </wicket:panel>

@@ -1,25 +1,18 @@
 package cz.larpovadatabaze.components.panel.game;
 
-import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.entities.UserPlayedGame;
-import cz.larpovadatabaze.exceptions.WrongParameterException;
+import cz.larpovadatabaze.models.ReadOnlyModel;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.RatingService;
 import cz.larpovadatabaze.services.UserPlayedGameService;
-import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.extensions.markup.html.form.select.Select;
-import org.apache.wicket.extensions.markup.html.form.select.SelectOption;
-import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -27,134 +20,118 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * interest in game or the player played the game, or the player is interested in
  * playing the game.
  */
-public abstract class PlayedPanel extends Panel {
+public class PlayedPanel extends Panel {
     @SpringBean
     UserPlayedGameService userPlayedGameService;
     @SpringBean
     RatingService ratingService;
 
-    private String selected = "Nehrál jsem";
-    private UserPlayedGame stateOfGame;
+    private final Component[] componentsToRefresh;
+    private final int gameId;
+    private final IModel<UserPlayedGame> model;
+    private final IModel<Game> gameModel;
 
     private AjaxLink<UserPlayedGame> didntPlay;
     private AjaxLink<UserPlayedGame> played;
     private AjaxLink<UserPlayedGame> wantToPlay;
 
-    private Game game;
+    /**
+     * Model for user played game - implemented as loadable / detachable
+     */
+    private class UserPlayedGameModel extends ReadOnlyModel<UserPlayedGame> {
+        @Override
+        public UserPlayedGame getObject() {
+            int userId = getUserId();
+            UserPlayedGame stateOfGame = userPlayedGameService.getUserPlayedGame(gameId, userId);
+            if(stateOfGame == null) {
+                stateOfGame = new UserPlayedGame();
+                stateOfGame.setGameId(gameId);
+                stateOfGame.setUserId(userId);
+            }
 
-    @SuppressWarnings("unchecked")
-    public PlayedPanel(String id, final Game game) {
+            return stateOfGame;
+        }
+    }
+
+    /**
+     * Model that returns "active" string when user played game state is equal to state passed in constructor
+     */
+    private class StateActiveModel extends ReadOnlyModel<String> {
+        private UserPlayedGame.UserPlayedGameState state;
+
+        private StateActiveModel(UserPlayedGame.UserPlayedGameState state) {
+            this.state = state;
+        }
+
+        @Override
+        public String getObject() {
+            return model.getObject().getStateEnum().equals(state)?"active":"";
+        }
+    }
+
+    public PlayedPanel(String id, IModel<Game> gameModel, Component[] componentsToRefresh) {
         super(id);
 
-        setOutputMarkupId(true);
+        this.gameId = gameModel.getObject().getId();
+        this.model = new UserPlayedGameModel();
+        this.gameModel = gameModel;
+        this.componentsToRefresh = componentsToRefresh;
+    }
+
+    protected int getUserId() {
         CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
-        final int userId = (logged != null) ? logged.getId() : -1;
-        this.game = game;
+        return (logged != null) ? logged.getId() : -1;
+    }
+
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
+
+        setOutputMarkupId(true);
 
         didntPlay = new AjaxLink<UserPlayedGame>("didntPlay") {
             @Override
             public void onClick(AjaxRequestTarget target) {
-                selected = "Nehrál jsem";
-                played.add(AttributeModifier.replace("class", Model.of("played button")));
-                wantToPlay.add(AttributeModifier.replace("class", Model.of("wantToPlay button")));
-                didntPlay.add(AttributeModifier.replace("class", Model.of("active didnt button")));
-
-                try {
-                    Rating rating = ratingService.getUserRatingOfGame(userId, game.getId());
-                    if(rating != null) {
-                        ratingService.remove(rating);
-                    }
-                } catch (WrongParameterException e) {
-                    e.printStackTrace();
-                }
-                saveStateAndReload(target);
+                saveStateAndReload(target, UserPlayedGame.UserPlayedGameState.NONE);
             }
         };
         played = new AjaxLink<UserPlayedGame>("played") {
             @Override
             public void onClick(AjaxRequestTarget target) {
-                selected = "Hrál jsem";
-                played.add(AttributeModifier.replace("class", Model.of("active played button")));
-                wantToPlay.add(AttributeModifier.replace("class", Model.of("wantToPlay button")));
-                didntPlay.add(AttributeModifier.replace("class", Model.of("didnt button")));
-                saveStateAndReload(target);
+                saveStateAndReload(target, UserPlayedGame.UserPlayedGameState.PLAYED);
             }
         };
         wantToPlay = new AjaxLink<UserPlayedGame>("wantToPlay") {
             @Override
             public void onClick(AjaxRequestTarget target) {
-                selected = "Chci hrát";
-                played.add(AttributeModifier.replace("class", Model.of("played button")));
-                wantToPlay.add(AttributeModifier.replace("class", Model.of("active wantToPlay button")));
-                didntPlay.add(AttributeModifier.replace("class", Model.of("didnt button")));
-                saveStateAndReload(target);
+                saveStateAndReload(target, UserPlayedGame.UserPlayedGameState.WANT_TO_PLAY);
             }
         };
 
-        stateOfGame = userPlayedGameService.getUserPlayedGame(game.getId(), userId);
-        if(stateOfGame == null) {
-            stateOfGame = new UserPlayedGame();
-            stateOfGame.setGameId(game.getId());
-            stateOfGame.setUserId(userId);
-            didntPlay.add(AttributeModifier.replace("class", Model.of("active didnt button")));
-        } else {
-            selected = UserPlayedGame.getStateFromDb(stateOfGame.getState());
-            if(stateOfGame.getState() == 2) {
-                played.add(AttributeModifier.replace("class", Model.of("active played button")));
-            } else if(stateOfGame.getState() == 1) {
-                wantToPlay.add(AttributeModifier.replace("class", Model.of("active wantToPlay button")));
-            } else {
-                didntPlay.add(AttributeModifier.replace("class", Model.of("active didnt button")));
-            }
-        }
+        /* Add attribute modifiers to buttons */
+        played.add(new AttributeAppender("class", new StateActiveModel(UserPlayedGame.UserPlayedGameState.PLAYED), " "));
+        wantToPlay.add(new AttributeAppender("class", new StateActiveModel(UserPlayedGame.UserPlayedGameState.WANT_TO_PLAY), " "));
+        didntPlay.add(new AttributeAppender("class", new StateActiveModel(UserPlayedGame.UserPlayedGameState.NONE), " "));
 
         add(didntPlay);
         add(played);
         add(wantToPlay);
     }
 
-    private void saveStateAndReload(AjaxRequestTarget target) {
-        stateOfGame.setState(UserPlayedGame.getStateForDb(selected));
+    private void saveStateAndReload(AjaxRequestTarget target, UserPlayedGame.UserPlayedGameState state) {
+        // Update in DB
+        UserPlayedGame stateOfGame = model.getObject();
+        stateOfGame.setStateEnum(state);
         stateOfGame.setPlayerOfGame(((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser());
         userPlayedGameService.saveOrUpdate(stateOfGame);
 
-        target.add(PlayedPanel.this);
-        onCsldAction(target, stateOfGame);
+        // Refresh model and components and gameModel
+        gameModel.detach();
+        target.add(componentsToRefresh);
     }
 
     @Override
     protected void onConfigure() {
         super.onConfigure();
         setVisibilityAllowed(CsldAuthenticatedWebSession.get().isSignedIn());
-    }
-
-    protected void onCsldAction(AjaxRequestTarget target, UserPlayedGame userPlayedGame){}
-
-    public void reload(AjaxRequestTarget target) {
-        CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
-        final int userId = (logged != null) ? logged.getId() : -1;
-
-        played.add(AttributeModifier.replace("class", Model.of("played button")));
-        wantToPlay.add(AttributeModifier.replace("class", Model.of("wantToPlay button")));
-        didntPlay.add(AttributeModifier.replace("class", Model.of("didnt button")));
-
-        stateOfGame = userPlayedGameService.getUserPlayedGame(game.getId(), userId);
-        if(stateOfGame == null) {
-            stateOfGame = new UserPlayedGame();
-            stateOfGame.setGameId(game.getId());
-            stateOfGame.setUserId(userId);
-            didntPlay.add(AttributeModifier.replace("class", Model.of("active didnt button")));
-        } else {
-            selected = UserPlayedGame.getStateFromDb(stateOfGame.getState());
-            if(stateOfGame.getState() == 2) {
-                played.add(AttributeModifier.replace("class", Model.of("active played button")));
-            } else if(stateOfGame.getState() == 1) {
-                wantToPlay.add(AttributeModifier.replace("class", Model.of("active wantToPlay button")));
-            } else {
-                didntPlay.add(AttributeModifier.replace("class", Model.of("active didnt button")));
-            }
-        }
-
-        target.add(PlayedPanel.this);
-    }
-}
+    }}

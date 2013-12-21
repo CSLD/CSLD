@@ -6,12 +6,13 @@ import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.CommentService;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -23,83 +24,146 @@ import java.sql.Timestamp;
 /**
  * This panel allows user to Comment given game
  */
-public abstract class CommentsPanel extends Panel {
+public class CommentsPanel extends Panel {
     @SpringBean
     CommentService commentService;
 
-    private Comment actualComment;
     private TextArea<String> commentContent;
 
+    private final IModel<Game> gameModel;
+
+    private final CommentTextModel model;
+
+    private final Component[] refreshOnChange;
+
     /**
-     * Game must be non null value.
-     *
-     * @param id
-     * @param game This value can not be null.
+     * Model for comment text. Works with the complete comment, which it caches
+     * (and allows detaching).
      */
-    public CommentsPanel(String id, final Game game) {
-        super(id);
+    private class CommentTextModel implements IModel<String> {
 
-        // Null is valid value of logged. Be careful.
-        CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
-        int userId = (logged != null) ? logged.getId() : -1;
+        /**
+         * Id of game
+         */
+        private int gameId;
 
-        actualComment = commentService.getCommentOnGameFromUser(userId, game.getId());
-        String commentText = "";
-        if(actualComment == null) {
-            actualComment = new Comment();
-            actualComment.setUser(logged);
-            actualComment.setGame(game);
-            actualComment.setGameId(game.getId());
-            actualComment.setUserId(userId);
-            actualComment.setComment("");
-        } else {
-            commentText = actualComment.getComment();
+        /**
+         * Cached comment
+         */
+        private Comment actualComment;
+
+        private CommentTextModel(int gameId) {
+            this.gameId = gameId;
         }
 
-        ValidatableForm<Comment> comment = new ValidatableForm<Comment>("comment"){};
-        comment.setOutputMarkupId(true);
+        private CsldUser getUser() {
+            return ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
+        }
 
-        commentContent = new TextArea<String>("textOfComment", Model.of(commentText));
+        private int getUserId(CsldUser user) {
+            return (user == null)?-1:user.getId();
+        }
+
+        private void loadIfNecessary() {
+            if (actualComment == null) {
+                // Load comment
+                CsldUser user = getUser();
+                int userId = getUserId(user);
+
+                actualComment = commentService.getCommentOnGameFromUser(userId, gameId);
+                if(actualComment == null) {
+                    // Init comment
+                    actualComment = new Comment();
+                    actualComment.setUser(user);
+                    actualComment.setGame(gameModel.getObject());
+                    actualComment.setGameId(gameId);
+                    actualComment.setUserId(userId);
+                    actualComment.setComment("");
+                }
+            }
+        }
+
+        @Override
+        public String getObject() {
+            loadIfNecessary();
+            return actualComment.getComment();
+        }
+
+        @Override
+        public void setObject(String newComment) {
+            loadIfNecessary();
+
+            if (!actualComment.getComment().equals(newComment)) {
+                // Comment changed - save
+                if(newComment == null || newComment.equals("")){
+                    try{
+                        commentService.remove(actualComment);
+                    } catch(Exception ex){
+                        ex.printStackTrace();
+                    }
+                } else {
+                    actualComment.setComment(Jsoup.clean(newComment, Whitelist.basic()));
+                    actualComment.setAdded(new Timestamp(System.currentTimeMillis()));
+
+                    commentService.saveOrUpdate(actualComment);
+
+                }
+            }
+        }
+
+        @Override
+        public void detach() {
+            actualComment = null;
+        }
+    }
+
+    /**
+     * Constructor
+     *
+     * @param id Panel id
+     * @param gameModel Model of the game comments are for
+     * @param refreshOnChange Components to refresh on change
+     */
+    public CommentsPanel(String id, IModel<Game> gameModel, Component[] refreshOnChange) {
+        super(id);
+        this.model = new CommentTextModel(gameModel.getObject().getId());
+        this.gameModel = gameModel;
+        this.refreshOnChange = refreshOnChange;
+    }
+
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
+
+        ValidatableForm<Comment> commentForm = new ValidatableForm<Comment>("comment"){};
+        commentForm.setOutputMarkupId(true);
+
+        commentContent = new TextArea<String>("textOfComment", model);
         commentContent.add(new TinyMceBehavior());
         commentContent.setOutputMarkupId(true);
         AjaxButton addComment = new AjaxButton("addComment"){
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                saveComment();
-                onCsldAction(target,form);
+                // Reload game
+                gameModel.detach();
+
+                // Refresh panels
+                target.add(this);
+                target.add(refreshOnChange);
             }
         };
         addComment.setOutputMarkupId(true);
         addComment.add(new TinyMceAjaxSubmitModifier());
 
-        comment.add(commentContent);
-        comment.add(addComment);
+        commentForm.add(commentContent);
+        commentForm.add(addComment);
 
-        add(comment);
-    }
-
-    /**
-     * Some Components might want to show Comment as early as it is added.
-     */
-    private void saveComment() {
-        String commentText = commentContent.getModelObject();
-        if(commentText == null || commentText.equals("")){
-            try{
-                commentService.remove(actualComment);
-            } catch(Exception ex){
-                ex.printStackTrace();
-            }
-        } else {
-            actualComment.setComment(Jsoup.clean(commentText, Whitelist.basic()));
-            actualComment.setAdded(new Timestamp(System.currentTimeMillis()));
-
-            commentService.saveOrUpdate(actualComment);
-        }
+        add(commentForm);
     }
 
     protected void onConfigure() {
         setVisibilityAllowed(CsldAuthenticatedWebSession.get().isSignedIn());
     }
 
-    protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}
+    protected void onCsldAction(AjaxRequestTarget target){}
 }

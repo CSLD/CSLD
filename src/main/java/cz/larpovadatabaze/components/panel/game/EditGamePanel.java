@@ -8,6 +8,7 @@ import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.security.CsldRoles;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 /**
@@ -15,20 +16,28 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
  * It is shown only to logged user, with rights toward the specific game.
  */
 public class EditGamePanel extends Panel {
-    private Game toEdit;
+    private IModel<Game> model;
 
-    public EditGamePanel(String id, Game toEdit) {
+    public EditGamePanel(String id, IModel<Game> model) {
         super(id);
-        this.toEdit = toEdit;
+        this.model = model;
+    }
+
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
 
         PageParameters params = new PageParameters();
-        params.add("id", toEdit.getId());
+        params.add("id", model.getObject().getId());
         BookmarkablePageLink<CsldBasePage> pageLink =
                 new BookmarkablePageLink<CsldBasePage>("editGame", CreateOrUpdateGamePage.class, params);
         add(pageLink);
     }
 
+    @Override
     protected void onConfigure() {
+        super.onConfigure();
+
         boolean isVisible = CsldAuthenticatedWebSession.get().isSignedIn();
         if(isVisible){
             CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
@@ -36,7 +45,7 @@ public class EditGamePanel extends Panel {
                 isVisible = false;
             }
             if(logged != null && logged.getRole() <= CsldRoles.USER.getRole()){
-                if(!toEdit.getAuthors().contains(logged) && !toEdit.getAddedBy().equals(logged)){
+                if(!model.getObject().getAuthors().contains(logged) && !model.getObject().getAddedBy().equals(logged)){
                     isVisible = false;
                 }
             }

@@ -3,7 +3,6 @@ package cz.larpovadatabaze.components.panel.game;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.DeleteGamePage;
 import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.security.CsldRoles;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -14,11 +13,20 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
  * This panel contains link for deleting the game.
  */
 public class DeleteGamePanel extends Panel {
-    public DeleteGamePanel(String id, Game game) {
+
+    private final int gameId;
+
+    public DeleteGamePanel(String id, int gameId) {
         super(id);
+        this.gameId = gameId;
+    }
+
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
 
         PageParameters params = new PageParameters();
-        params.add("id", game.getId());
+        params.add("id", gameId);
         BookmarkablePageLink<CsldBasePage> pageLink =
                 new BookmarkablePageLink<CsldBasePage>("deleteGame", DeleteGamePage.class, params);
         add(pageLink);

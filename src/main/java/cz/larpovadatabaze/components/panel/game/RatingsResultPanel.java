@@ -3,206 +3,212 @@ package cz.larpovadatabaze.components.panel.game;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
-import cz.larpovadatabaze.entities.UserPlayedGame;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
+import cz.larpovadatabaze.models.ReadOnlyModel;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.RatingService;
-import cz.larpovadatabaze.utils.HbUtils;
-import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * This panel shows result of rating of a game. It has background based on the rating and the amount of rating as
  * number.
  */
-public abstract class RatingsResultPanel extends Panel {
-    @SpringBean
-    GameService gameService;
+public class RatingsResultPanel extends Panel {
+    private static final int NUM_RATINGS = 10;
+
     @SpringBean
     RatingService ratingService;
 
-    private Game game;
+    private final IModel<Game> model;
+    private final Component componentToRefresh;
+    private final Component playedToRefresh;
 
-    private Model<String> ratingColorModel;
-    private Model<String> ratingOfGameModel;
     private Model<Integer> myRating;
-    private Model<Integer> amountOfResults;
+    private RatingsArrayModel ratingsArrayModel;
 
     private PlayedPanel playedPanel;
 
-    public RatingsResultPanel(String id, Game game) {
-        super(id);
-        setOutputMarkupId(true);
-        this.game = game;
+    /**
+     * Model to provide color for the game
+     */
+    private class RatingColorModel extends ReadOnlyModel<String> {
 
-        playedPanel = new PlayedPanel("playedPanel", game) {
-            @Override
-            protected void onCsldAction(AjaxRequestTarget target, UserPlayedGame userPlayedGame) {
-                RatingsResultPanel.this.onCsldAction(target, userPlayedGame);
+        @Override
+        public String getObject() {
+            double ratingOfGame = model.getObject().getTotalRating() != null ? model.getObject().getTotalRating() : 0;
+            return Rating.getColorOf(ratingOfGame);
+        }
+    }
+
+    /**
+     * Model to provide textual rating for the game
+     */
+    private class RatingResultModel extends ReadOnlyModel<String> {
+        private DecimalFormat df = new DecimalFormat("0.0");
+
+        @Override
+        public String getObject() {
+            double ratingOfGame = model.getObject().getTotalRating() != null ? model.getObject().getTotalRating()/10 : 0;
+            return df.format(ratingOfGame);
+        }
+    }
+
+    /**
+     * Holds array of ratings. Value is cached and refreshed on-request.
+     */
+    private class RatingsArrayModel extends ReadOnlyModel<int[]> {
+
+        // Backing array
+        private int[] array;
+
+        /**
+         * Refresh array values
+         */
+        public void recompute() {
+            array = new int[10];
+            Arrays.fill(array,0);
+            if(model.getObject().getAmountOfRatings() > 3) {
+                for(Rating rating: model.getObject().getRatings()) {
+                    array[rating.getRating() - 1]++;
+                }
+                int maxRatings = 0;
+                for(int actRating: array){
+                    if(actRating > maxRatings) {
+                        maxRatings = actRating;
+                    }
+                }
+                for(int i = 0; i < array.length; i++){
+                    array[i] = (int)(((double) array[i] / (double)maxRatings) * 100);
+                }
             }
-        };
+        }
+
+        @Override
+        public int[] getObject() {
+            if (array == null) recompute();
+            return array;
+        }
+    }
+
+    /****************************************************************************/
+
+    public RatingsResultPanel(String id, IModel<Game> model, Component componentToRefresh, Component playedToRefresh) {
+        super(id);
+        this.model = model;
+        this.componentToRefresh = componentToRefresh;
+        this.playedToRefresh = playedToRefresh;
+    }
+
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
+
+        setOutputMarkupId(true);
+
+        Game game = model.getObject();
+
+        playedPanel = new PlayedPanel("playedPanel", model, new Component[] { componentToRefresh, playedToRefresh });
         add(playedPanel);
 
-        double ratingOfGame = game.getTotalRating() != null ? game.getTotalRating() : 0;
-        String ratingColor = Rating.getColorOf(ratingOfGame);
-
-        ratingColorModel = Model.of(ratingColor);
-        DecimalFormat df = new DecimalFormat("0.0");
-        ratingOfGameModel = Model.of(df.format(ratingOfGame / 10));
-        Label finalRating = new Label("ratingResult", ratingOfGameModel);
-        finalRating.add(new AttributeAppender("class",ratingColorModel, " "));
+        Label finalRating = new Label("ratingResult", new RatingResultModel());
+        finalRating.add(new AttributeAppender("class",new RatingColorModel(), " "));
         finalRating.setOutputMarkupId(true);
         add(finalRating);
 
-        CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
-        if(logged != null){
-            try {
-                Rating mine = ratingService.getUserRatingOfGame(logged.getId(), game.getId());
-                if(mine != null){
-                    myRating = Model.of(mine.getRating());
-                } else {
-                    myRating = Model.of(0);
-                }
-            } catch (WrongParameterException e) {
-                e.printStackTrace();
-                myRating = Model.of(0);
-            }
-        } else {
-            myRating = Model.of(0);
-        }
+        // This is example of model refreshed on configure
+        myRating = Model.of(0);
         Label myResult = new Label("myResult", myRating);
         add(myResult);
 
-        this.amountOfResults = Model.of(game.getAmountOfRatings());
-        Label amountOfResults = new Label("amountOfResults", this.amountOfResults);
+        Label amountOfResults = new Label("amountOfResults", new ReadOnlyModel<Integer>() {
+            @Override
+            public Integer getObject() {
+                return model.getObject().getRatings().size();
+            }
+        });
         add(amountOfResults);
 
-        int[] ratingsArray = new int[10];
-        Arrays.fill(ratingsArray,0);
-        if(game.getAmountOfRatings() > 3) {
-            for(Rating rating: game.getRatings()) {
-                ratingsArray[rating.getRating() - 1]++;
-            }
-            int maxRatings = 0;
-            for(int actRating: ratingsArray){
-                if(actRating > maxRatings) {
-                    maxRatings = actRating;
-                }
-            }
-            for(int i = 0; i < ratingsArray.length; i++){
-                ratingsArray[i] = (int)(((double) ratingsArray[i] / (double)maxRatings) * 100);
-            }
-        }
+        ratingsArrayModel = new RatingsArrayModel();
 
+        // Add stars & bars
+        List<Integer> nums = new ArrayList<Integer>();
+        for(int i=NUM_RATINGS; i>=1; i--) nums.add(i);
 
-        add(new Label("widthOne",Model.of(ratingsArray[0])).setOutputMarkupId(true));
-        add(new Label("widthTwo",Model.of(ratingsArray[1])).setOutputMarkupId(true));
-        add(new Label("widthThree",Model.of(ratingsArray[2])).setOutputMarkupId(true));
-        add(new Label("widthFour",Model.of(ratingsArray[3])).setOutputMarkupId(true));
-        add(new Label("widthFive",Model.of(ratingsArray[4])).setOutputMarkupId(true));
-        add(new Label("widthSix",Model.of(ratingsArray[5])).setOutputMarkupId(true));
-        add(new Label("widthSeven",Model.of(ratingsArray[6])).setOutputMarkupId(true));
-        add(new Label("widthEight",Model.of(ratingsArray[7])).setOutputMarkupId(true));
-        add(new Label("widthNine",Model.of(ratingsArray[8])).setOutputMarkupId(true));
-        add(new Label("widthTen",Model.of(ratingsArray[9])).setOutputMarkupId(true));
+        add(new ListView<Integer>("starsAndBars", nums) {
+            @Override
+            protected void populateItem(ListItem<Integer> item) {
+                // Add label
+                item.add(new Label("number", item.getModel()));
+
+                // Add class to the bar
+                WebMarkupContainer bar = new WebMarkupContainer("bar");
+                bar.add(new AttributeAppender("class", Model.of("bar"+item.getModelObject()), " "));
+                item.add(bar);
+            }
+        });
     }
 
-    public void reload(AjaxRequestTarget target) {
-        game = gameService.getById(game.getId());
-        if(HbUtils.isProxy(game)){
-            game = HbUtils.deproxy(game);
-        }
+    @Override
+    protected void onConfigure() {
+        super.onConfigure();
 
-        double ratingOfGame = game.getTotalRating() != null ? game.getTotalRating() : 0;
-        String ratingColor = Rating.getColorOf(ratingOfGame);
-        ratingColorModel.setObject(ratingColor);
-        DecimalFormat df = new DecimalFormat("0.0");
-        ratingOfGameModel.setObject(df.format(ratingOfGame / 10));
-        this.amountOfResults.setObject(ratingService.getRatingsForGame(game.getId()));
-
-        int[] ratings = new int[10];
-        Arrays.fill(ratings,0);
-        for(Rating rating: game.getRatings()) {
-            ratings[rating.getRating() - 1]++;
-        }
-        int maxRatings = 0;
-        for(int actRating: ratings){
-            if(actRating > maxRatings) {
-                maxRatings = actRating;
-            }
-        }
-        for(int i = 0; i < ratings.length; i++){
-            ratings[i] = (int)(((double)ratings[i] / (double)maxRatings) * 100);
-        }
-
+        // Refresh my rating
         CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
-        try {
-            Rating mine = ratingService.getUserRatingOfGame(logged.getId(), game.getId());
-            if(mine != null){
-                myRating.setObject(mine.getRating());
-            } else {
+        if(logged != null){
+            try {
+                Rating mine = ratingService.getUserRatingOfGame(logged.getId(), model.getObject().getId());
+                if(mine != null){
+                    myRating.setObject(mine.getRating());
+                } else {
+                    myRating.setObject(0);
+                }
+            } catch (WrongParameterException e) {
+                e.printStackTrace();
                 myRating.setObject(0);
             }
-        } catch (WrongParameterException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } else {
+            myRating.setObject(0);
         }
 
-        playedPanel.reload(target);
-        get("widthOne").setDefaultModel(Model.of(ratings[0]));
-        get("widthTwo").setDefaultModel(Model.of(ratings[1]));
-        get("widthThree").setDefaultModel(Model.of(ratings[2]));
-        get("widthFour").setDefaultModel(Model.of(ratings[3]));
-        get("widthFive").setDefaultModel(Model.of(ratings[4]));
-        get("widthSix").setDefaultModel(Model.of(ratings[5]));
-        get("widthSeven").setDefaultModel(Model.of(ratings[6]));
-        get("widthEight").setDefaultModel(Model.of(ratings[7]));
-        get("widthNine").setDefaultModel(Model.of(ratings[8]));
-        get("widthTen").setDefaultModel(Model.of(ratings[9]));
-        target.add(this);
-        target.appendJavaScript("var widthTen = $(\"#widthTen\").html();\n" +
-                "              var widthNine = $(\"#widthNine\").html();\n" +
-                "              var widthEight = $(\"#widthEight\").html();\n" +
-                "              var widthSeven = $(\"#widthSeven\").html();\n" +
-                "              var widthSix = $(\"#widthSix\").html();\n" +
-                "              var widthFive = $(\"#widthFive\").html();\n" +
-                "              var widthFour = $(\"#widthFour\").html();\n" +
-                "              var widthThree = $(\"#widthThree\").html();\n" +
-                "              var widthTwo = $(\"#widthTwo\").html();\n" +
-                "              var widthOne = $(\"#widthOne\").html();\n" +
-                "\n" +
-                "            $('.bar span').hide();\n" +
-                "            $('#bar-ten').animate({\n" +
-                "               width: widthTen}, 1000);\n" +
-                "            $('#bar-nine').animate({\n" +
-                "               width: widthNine}, 1000);\n" +
-                "            $('#bar-eight').animate({\n" +
-                "               width: widthEight}, 1000);\n" +
-                "            $('#bar-seven').animate({\n" +
-                "               width: widthSeven}, 1000);\n" +
-                "            $('#bar-six').animate({\n" +
-                "               width: widthSix}, 1000);\n" +
-                "            $('#bar-five').animate({\n" +
-                "               width: widthFive}, 1000);\n" +
-                "            $('#bar-four').animate({\n" +
-                "               width: widthFour}, 1000);\n" +
-                "            $('#bar-three').animate({\n" +
-                "               width: widthThree}, 1000);\n" +
-                "            $('#bar-two').animate({\n" +
-                "               width: widthTwo}, 1000);\n" +
-                "            $('#bar-one').animate({\n" +
-                "               width: widthOne}, 1000);");
+        // Recompute ratings
+        ratingsArrayModel.recompute();
+
     }
 
-    protected void onCsldAction(AjaxRequestTarget target, UserPlayedGame userPlayedGame){}
+    /* Renders necessary animation Javascript */
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+
+        StringBuilder js = new StringBuilder();
+        js.append("$(document).ready(function() {\n");
+        js.append("$('.bar span').hide();\n");
+
+        for(int i=1; i<=NUM_RATINGS; i++) {
+            js.append("$('.bar.bar").append(i).append("').animate({width: ").append(ratingsArrayModel.getObject()[i-1]).append("}, 1000);\n");
+        }
+
+        js.append("window.setTimeout(function() {\n" +
+                  "  $('.bar span').fadeIn('slow');\n" +
+                  "  }, 1000);\n");
+        js.append("});\n");
+
+        response.render(OnDomReadyHeaderItem.forScript(js));
+    }
 }

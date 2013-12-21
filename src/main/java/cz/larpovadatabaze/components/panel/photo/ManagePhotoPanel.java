@@ -13,6 +13,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
@@ -37,13 +38,20 @@ public class ManagePhotoPanel extends Panel {
     private Form<?> managePhotos;
 
     private boolean show;
-    private final Game game;
+    private final IModel<Game> model;
 
-    public ManagePhotoPanel(String id, List<Photo> pPhotosToManage, boolean show, Game pGame) {
+    public ManagePhotoPanel(String id, List<Photo> pPhotosToManage, boolean show, IModel<Game> model) {
         super(id);
         this.show = show;
-        this.game = pGame;
+        this.model = model;
         this.photosToManage = pPhotosToManage;
+    }
+
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
+
+        Game game = model.getObject();
 
         add(new FeedbackPanel("uploadedPhotosFeedback").setOutputMarkupId(true));
 
@@ -65,6 +73,9 @@ public class ManagePhotoPanel extends Panel {
                         photoThree.getFileUpload() != null &&
                         photoFour.getFileUpload() != null &&
                         photoFive.getFileUpload() != null;
+
+                Game game = model.getObject();
+
                 List<Photo> photos = new ArrayList<Photo>(game.getPhotos());
                 photosToManage.removeAll(photosToManage);
                 game.getPhotos().removeAll(photos);
@@ -99,6 +110,8 @@ public class ManagePhotoPanel extends Panel {
         String filePath = FileUtils.saveImageFileAndReturnPath(uploadedPhoto.getFileUpload(), uploadedPhoto.getFileUpload().getClientFileName(), 480,240);
         Image image = new Image();
         image.setPath(filePath);
+
+        Game game = model.getObject();
 
         Photo photo = new Photo();
         photo.setImage(image);
