@@ -2311,6 +2311,17 @@ a.active.wantToPlay.button:after{
           border-radius: 2px;   
 }
 
+.nadpisSekce .ratingNum {
+    float: right;
+    margin: 2px 10px 0 0;
+    font-size: smaller;
+}
+
+.obsahPolozka .ratingNum {
+    float: right;
+    margin: 0 10px;
+}
+
 /* This bridges the gap so you can mouse into the tooltip without it disappearing */
 .playedPanel .wrapper .tooltip:before {
   bottom: -20px;

@@ -32,14 +32,11 @@
             <div class="nadpisMenu"><wicket:message key="user.panel">Uživatelův panel</wicket:message></div>
         </div>
 
-
         <div class="sekce">
-            <div class="nadpisSekce"><wicket:message key="user.playedLarps">Moje larpotéka</wicket:message></div>
-            <div class="obsah" wicket:id="playedGamesPanel">
-                <!--
-                This panel is found in package: cz.larpovadatabaze.components.panel.game.GameListPanel.html
-                https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/GameListPanel.html
-                -->
+            <div class="nadpisSekce"><div class="ratingNum" wicket:id="ratingLabel"><wicket:message key="author.myRating" /></div><wicket:message key="user.playedLarps">Moje larpotéka</wicket:message></div>
+            <div class="obsah">
+                <wicket:container wicket:id="ratedGames" />
+                <wicket:container wicket:id="playedGames" />
             </div>
         </div>
 
@@ -53,11 +50,5 @@
             </div>
         </div>
 
-        <div wicket:id="ratedGamesPanel" class="sekce">
-            <!--
-            This panel is found in package: cz.larpovadatabaze.components.panel.game.GameListPanel.html
-            https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/GameListPanel.html
-            -->
-        </div>
     </div>
 </wicket:extend>

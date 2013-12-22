@@ -13,15 +13,13 @@ import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.RatingService;
 import cz.larpovadatabaze.utils.HbUtils;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -81,6 +79,13 @@ public class UserDetail extends CsldBasePage {
         provider.setAuthor(user);
         add(new ListGamesWithAnnotations("annotatedGamesOfAuthor", provider));
 
+        CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
+        if(HbUtils.isProxy(user)){
+            user = HbUtils.deproxy(user);
+        }
+
+        WebMarkupContainer ratingLabel = new WebMarkupContainer("ratingLabel");
+        add(ratingLabel);
 
         List<Game> playedGames = new ArrayList<Game>();
         List<Game> wantedGames = new ArrayList<Game>();
@@ -93,19 +98,29 @@ public class UserDetail extends CsldBasePage {
 
             }
         }
-        add(new GameListPanel("playedGamesPanel",Model.ofList(playedGames)));
+
+        if(logged == null || !logged.getId().equals(user.getId())) {
+            // Do not show rated games
+            add(new WebMarkupContainer("ratedGames").setVisible(false));
+            ratingLabel.setVisible(false);
+        }
+        else {
+            // Load ratings
+            List<Rating> myRatings = ratingService.getRatingsOfUser(logged, user);
+            add(new RatingsListPanel("ratedGames", Model.ofList(myRatings)));
+
+            // From played games, remove those that are rated, so they do not show twice
+            Set<Game> playedGamesSet = new HashSet<Game>(playedGames);
+            for(Rating r : myRatings) {
+                playedGamesSet.remove(r.getGame());
+            }
+            playedGames.clear();
+            playedGames.addAll(playedGamesSet);
+        }
+        add(new GameListPanel("playedGames",Model.ofList(playedGames)));
+
         add(new GameListPanel("wantedGamesPanel",Model.ofList(wantedGames)));
 
-        CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
-        if(HbUtils.isProxy(user)){
-            user = HbUtils.deproxy(user);
-        }
-        List<Rating> myRatings = ratingService.getRatingsOfUser(logged, user);
-        boolean visible = true;
-        if(logged == null || !logged.getId().equals(user.getId())) {
-            visible = false;
-        }
-        add(new RatingsListPanel("ratedGamesPanel", myRatings, visible));
 
     }
 }
