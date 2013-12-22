@@ -50,7 +50,7 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
 </script>
 
 <form id="pridatHru" wicket:id="addGame">
-<div class="sekce">
+<div class="sekce" style="padding-right: 5px;">
 <div class="nadpisStranky">
     <!-- TODO Change Image to wicket handled one -->
     <i class="fa fa-plus"></i><wicket:message key="game.add">Přidat hru</wicket:message></div>
@@ -259,7 +259,7 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
 <div style="width:100%;" wicket:id="labelsFeedback"></div>
 <input type="button" value="Nový štítek" wicket:message="value:form.newLabel" wicket:id="createLabel"/>
 
-<div style="clear:both; width:100%;"></div>
+<div style="clear:both; width:100%; margin-bottom: 5px;"></div>
 
 <textarea class="textarea"
           title="Zde zadejte popis hry"
@@ -267,7 +267,7 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
           id="popis"
           wicket:id="description"
           wicket:message="title:form.game.description"
-          style="width:90%;"
+          style="width:100%;"
           rows=8
     ></textarea>
 <span wicket:id="descriptionFeedback"></span>

@@ -2,6 +2,7 @@ package cz.larpovadatabaze.components.panel.author;
 
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
+import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.utils.Pwd;
@@ -16,7 +17,6 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
-import wicket.contrib.tinymce.TinyMceBehavior;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 import java.util.UUID;
@@ -53,7 +53,7 @@ public abstract class CreateOrUpdateAuthorPanel extends Panel {
         createOrUpdateUser.add(addFeedbackPanel(email, createOrUpdateUser, "emailFeedback"));
 
         TextArea<String> description = new TextArea<String>("person.description");
-        description.add(new TinyMceBehavior());
+        description.add(new CSLDTinyMceBehavior());
         createOrUpdateUser.add(addFeedbackPanel(description, createOrUpdateUser, "descriptionFeedback"));
 
         createOrUpdateUser.add(new AjaxButton("submit"){

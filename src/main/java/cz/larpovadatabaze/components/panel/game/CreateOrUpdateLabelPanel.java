@@ -1,7 +1,7 @@
 package cz.larpovadatabaze.components.panel.game;
 
-import cz.larpovadatabaze.api.EntityModel;
 import cz.larpovadatabaze.api.ValidatableForm;
+import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
@@ -13,9 +13,7 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import wicket.contrib.tinymce.TinyMceBehavior;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 /**
@@ -39,7 +37,7 @@ public abstract class CreateOrUpdateLabelPanel extends Panel {
                 new ValidatableForm<Label>("createOrUpdateLabel", new CompoundPropertyModel<Label>(label)){};
 
         createOrUpdateLabel.add(new TextField<String>("name"));
-        createOrUpdateLabel.add(new TextArea<String>("description").add(new TinyMceBehavior()));
+        createOrUpdateLabel.add(new TextArea<String>("description").add(new CSLDTinyMceBehavior()));
         createOrUpdateLabel.add(new AjaxButton("submit"){
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {

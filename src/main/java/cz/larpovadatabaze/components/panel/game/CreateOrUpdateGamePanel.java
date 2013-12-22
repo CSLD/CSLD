@@ -1,13 +1,16 @@
 package cz.larpovadatabaze.components.panel.game;
 
-import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
+import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.behavior.ErrorClassAppender;
 import cz.larpovadatabaze.components.panel.ImagePanel;
 import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
 import cz.larpovadatabaze.components.panel.group.CreateOrUpdateGroupPanel;
-import cz.larpovadatabaze.entities.*;
+import cz.larpovadatabaze.entities.CsldGroup;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.Video;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.GroupService;
@@ -26,11 +29,9 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Bytes;
 import org.apache.wicket.validation.IValidator;
-import wicket.contrib.tinymce.TinyMceBehavior;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 /**
@@ -66,9 +67,8 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
         createOrUpdateGame.add(new FeedbackPanel("feedback", filter).setOutputMarkupId(true));
 
         createOrUpdateGame.add(addFeedbackPanel(new RequiredTextField<String>("name").setLabel(Model.of("Jméno")), createOrUpdateGame, "nameFeedback"));
-        TinyMceBehavior tinyMceBehavior = new TinyMceBehavior();
         TextArea description = (TextArea) new TextArea<String>("description").setRequired(true).setLabel(Model.of("Popis"));
-        description.add(tinyMceBehavior);
+        description.add(new CSLDTinyMceBehavior());
         createOrUpdateGame.add(addFeedbackPanel(description, createOrUpdateGame, "descriptionFeedback"));
 
 

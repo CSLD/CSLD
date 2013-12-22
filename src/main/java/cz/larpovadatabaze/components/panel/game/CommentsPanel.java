@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.components.panel.game;
 
 import cz.larpovadatabaze.api.ValidatableForm;
+import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
@@ -16,7 +17,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
-import wicket.contrib.tinymce.TinyMceBehavior;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 import java.sql.Timestamp;
@@ -139,7 +139,7 @@ public class CommentsPanel extends Panel {
         commentForm.setOutputMarkupId(true);
 
         commentContent = new TextArea<String>("textOfComment", model);
-        commentContent.add(new TinyMceBehavior());
+        commentContent.add(new CSLDTinyMceBehavior());
         commentContent.setOutputMarkupId(true);
         AjaxButton addComment = new AjaxButton("addComment"){
             @Override

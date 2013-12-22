@@ -2,6 +2,7 @@ package cz.larpovadatabaze.components.panel.user;
 
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
+import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Image;
 import cz.larpovadatabaze.services.CsldUserService;
@@ -23,7 +24,6 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
-import wicket.contrib.tinymce.TinyMceBehavior;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 import java.util.List;
@@ -71,7 +71,7 @@ public class UpdateUserPanel extends Panel {
         createOrUpdateUser.add(addFeedbackPanel(new TextField<String>("person.city"), createOrUpdateUser,"cityFeedback"));
 
         TextArea description = new TextArea<String>("person.description");
-        description.add(new TinyMceBehavior());
+        description.add(new CSLDTinyMceBehavior());
         createOrUpdateUser.add(addFeedbackPanel(description, createOrUpdateUser,"descriptionFeedback"));
 
         fileUpload = new FileUploadField("image", new PropertyModel<List<FileUpload>>(this, "images"));
