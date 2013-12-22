@@ -1,20 +1,24 @@
 package cz.larpovadatabaze.components.panel.user;
 
+import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.page.user.ForgotPassword;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.utils.Pwd;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.authentication.IAuthenticationStrategy;
 import org.apache.wicket.authroles.authentication.panel.SignInPanel;
+import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.ResourceModel;
 
 /**
  *
  */
 public class CsldSignInPanel extends SignInPanel {
-    private String username;
-    private String password;
-
     public CsldSignInPanel(String id) {
         super(id);
+
+        getForm().add(new BookmarkablePageLink<CsldBasePage>("forgotPassword", ForgotPassword.class));
+        getForm().add(new Button("submitButton", new ResourceModel("form.signIn", "Sign In")));
     }
 
     /**
@@ -36,9 +40,6 @@ public class CsldSignInPanel extends SignInPanel {
                 // try to sign in the user
                 if (signIn(data[0], data[1]))
                 {
-                    username = data[0];
-                    password = data[1];
-
                     // logon successful. Continue to the original destination
                     continueToOriginalDestination();
                     // Ups, no original destination. Go to the home page
