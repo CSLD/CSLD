@@ -184,7 +184,6 @@ public class PhotoPanel extends Panel {
         /* Upload panel */
         if (canEdit) {
             // Create real upload panel
-            final int gameId = game.getId();
             wrapper.add(new FileUploadComponentPanel("uploadPanel", 5000000, "/(\\.|\\/)(gif|jpe?g|png)$/i", new IFileUploadCallback() {
                 @Override
                 public void filesUploaded(List<FileItem> fileItems) throws IOException {

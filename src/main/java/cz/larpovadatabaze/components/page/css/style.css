@@ -2522,3 +2522,42 @@ a.active.wantToPlay.button:after{
 }
 
 /* end of gallery */
+
+/* tabs component */
+
+.cmpTabs {
+    display: block;
+    border-bottom: 1px solid #00C8DC;
+    overflow: visible;
+    height: 31px;
+    padding: 0 5px;
+}
+
+.cmpTabs li {
+    position: relative;
+    display: inline-block;
+    margin: 0 5px;
+    border-top: 1px solid #00C8DC;
+    border-left: 1px solid #00C8DC;
+    border-right: 1px solid #00C8DC;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    list-style-type: none;
+    background-color: #ffffff;
+    font-weight: bold;
+}
+
+.cmpTabs li.active {
+    top: 1px;
+    background-color: #f0f0f0;
+}
+
+.cmpTabs a {
+    display: block;
+    line-height: 20px;
+    height: 20px;
+    text-align: center;
+    padding: 5px 10px;
+}
+
+/* end of tabs component */

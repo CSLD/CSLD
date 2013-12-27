@@ -4,7 +4,6 @@ import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.group.GroupDetail;
 import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.components.panel.YouTubePanel;
-import cz.larpovadatabaze.components.panel.photo.PhotoPanel;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
@@ -114,9 +113,5 @@ public class GameDetailPanel extends Panel {
 
         YouTubePanel youTubePanel = new YouTubePanel("video", videoPath, isVisible);
         add(youTubePanel);
-
-        // Photo panel
-        PhotoPanel photoPanel = new PhotoPanel("photos", (IModel<Game>)getDefaultModel());
-        add(photoPanel);
     }
 }
