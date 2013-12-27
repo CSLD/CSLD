@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.page;
 
+import com.googlecode.wicket.jquery.core.resource.JQueryUIResourceReference;
 import cz.larpovadatabaze.components.page.about.AboutDatabase;
 import cz.larpovadatabaze.components.page.author.ListAuthor;
 import cz.larpovadatabaze.components.page.game.ListGame;
@@ -35,7 +36,7 @@ public abstract class CsldBasePage extends WebPage {
      * @return Model for HTML page title
      */
     protected IModel<String> getPageTitleModel() {
-        return new StringResourceModel("larpDatabaseTitle", null, null);
+        return new StringResourceModel("larpDatabaseTitle", null);
     }
 
     @Override
@@ -77,9 +78,11 @@ public abstract class CsldBasePage extends WebPage {
     public void renderHead(IHeaderResponse response) {
         response.render(JavaScriptHeaderItem.forReference(getApplication().getJavaScriptLibrarySettings()
                 .getJQueryReference()));
+        response.render(JavaScriptHeaderItem.forReference(getApplication().getJavaScriptLibrarySettings()
+                .getJQueryReference()));
         response.render(JavaScriptHeaderItem.forReference(TinyMCESettings.javaScriptReference()));
 
-        response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"js/jquery-ui-1.9.2.custom.js")));
+        response.render(JavaScriptHeaderItem.forReference(JQueryUIResourceReference.get()));
         response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"js/jquery.nivo.slider.pack.js")));
         response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"js/jquery.nivo.slider.js")));
 

@@ -7,7 +7,7 @@ import cz.larpovadatabaze.behavior.ErrorClassAppender;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Image;
 import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.utils.FileUtils;
+import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.utils.Pwd;
 import cz.larpovadatabaze.validator.UniqueUserValidator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -37,6 +37,8 @@ import java.util.List;
 public abstract class CreateOrUpdateUserPanel extends Panel {
     @SpringBean
     CsldUserService csldUserService;
+    @SpringBean
+    FileService fileService;
 
     private FileUploadField fileUpload;
     @SuppressWarnings("unused")
@@ -138,15 +140,12 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
         if(user.getAmountOfPlayed() == null) {
             user.setAmountOfPlayed(0);
         }
-        if(user.getImage() == null){
-            user.setImage(Image.getDefaultUser());
-        }
         if(user.getPerson().getDescription() != null) {
             user.getPerson().setDescription(Jsoup.clean(user.getPerson().getDescription(), Whitelist.basic()));
         }
         if (uploads != null) {
             for (FileUpload upload : uploads) {
-                String filePath = FileUtils.saveImageFileAndReturnPath(upload, user.getPerson().getName(), 120, 120);
+                String filePath = fileService.saveImageFileAndReturnPath(upload, 120, 120).path;
                 try
                 {
                     Image image = new Image();

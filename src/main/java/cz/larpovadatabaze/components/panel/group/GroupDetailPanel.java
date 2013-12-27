@@ -1,10 +1,10 @@
 package cz.larpovadatabaze.components.panel.group;
 
-import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.GroupHasMember;
+import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -12,7 +12,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +21,13 @@ import java.util.List;
  * It shows basic information about Group.
  */
 public class GroupDetailPanel extends Panel {
+    @SpringBean
+    ImageService imageService;
+
     public GroupDetailPanel(String id, CsldGroup group) {
         super(id);
 
-        final Image groupIcon = new Image("groupImage",
-                new PackageResourceReference(Csld.class, group.getImage().getPath()));
+        final Image groupIcon = new Image("groupImage", imageService.getImageResource(group));
         add(groupIcon);
 
         add(new Label("name", group.getName()));

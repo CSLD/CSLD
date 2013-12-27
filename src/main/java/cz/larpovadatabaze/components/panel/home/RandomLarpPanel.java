@@ -1,11 +1,11 @@
 package cz.larpovadatabaze.components.panel.home;
 
-import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
@@ -13,7 +13,6 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -22,6 +21,10 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 public class RandomLarpPanel extends Panel {
     @SpringBean
     GameService gameService;
+
+    @SpringBean
+    ImageService imageService;
+
     private boolean show = true;
 
     public RandomLarpPanel(String id) {
@@ -37,14 +40,9 @@ public class RandomLarpPanel extends Panel {
         PageParameters params = new PageParameters();
         params.add("id", game.getId());
 
-        if(game.getImage() == null){
-            game.setImage(cz.larpovadatabaze.entities.Image.getDefaultGame());
-        }
-
         final BookmarkablePageLink<CsldBasePage> gameLink =
                 new BookmarkablePageLink<CsldBasePage>("gameIconLink", GameDetail.class, params);
-        final Image gameLinkImage = new Image("gameIcon",
-                new PackageResourceReference(Csld.class, game.getImage().getPath()));
+        final Image gameLinkImage = new Image("gameIcon", imageService.getImageResource(game));
         gameLink.add(gameLinkImage);
         add(gameLink);
 

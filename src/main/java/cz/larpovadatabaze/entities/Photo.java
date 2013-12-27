@@ -1,10 +1,8 @@
 package cz.larpovadatabaze.entities;
 
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
@@ -42,16 +40,52 @@ public class Photo implements Serializable {
         this.author = author;
     }
 
-    private Integer version;
+    private Integer orderSeq;
 
-    @Column(name = "version", nullable = true, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "orderSeq", nullable = true, insertable = true, updatable = true, length = 10, precision = 0)
     @Basic
-    public Integer getVersion() {
-        return version;
+    public Integer getOrderSeq() {
+        return orderSeq;
     }
 
-    public void setVersion(Integer version) {
-        this.version = version;
+    public void setOrderSeq(Integer version) {
+        this.orderSeq = version;
+    }
+
+    private String description;
+
+    @Column(name="description")
+    @Basic
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    private int fullWidth;
+
+    @Column(name="fullWidth")
+    @Basic
+    public int getFullWidth() {
+        return fullWidth;
+    }
+
+    public void setFullWidth(int fullWidth) {
+        this.fullWidth = fullWidth;
+    }
+
+    private int fullHeight;
+
+    @Column(name="fullHeight")
+    @Basic
+    public int getFullHeight() {
+        return fullHeight;
+    }
+
+    public void setFullHeight(int fullHeight) {
+        this.fullHeight = fullHeight;
     }
 
     @Override
@@ -63,7 +97,9 @@ public class Photo implements Serializable {
 
         if (author != null ? !author.equals(photo.author) : photo.author != null) return false;
         if (id != null ? !id.equals(photo.id) : photo.id != null) return false;
-        if (version != null ? !version.equals(photo.version) : photo.version != null) return false;
+        if (orderSeq != null ? !orderSeq.equals(photo.orderSeq) : photo.orderSeq != null) return false;
+        if (fullWidth != photo.fullWidth) return false;
+        if (fullHeight != photo.fullHeight) return false;
 
         return true;
     }
@@ -72,7 +108,9 @@ public class Photo implements Serializable {
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (author != null ? author.hashCode() : 0);
-        result = 31 * result + (version != null ? version.hashCode() : 0);
+        result = 31 * result + (orderSeq != null ? orderSeq.hashCode() : 0);
+        result = 31 * result + fullWidth;
+        result = 31 * result + fullHeight;
         return result;
     }
 

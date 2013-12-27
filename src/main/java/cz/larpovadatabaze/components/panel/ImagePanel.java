@@ -6,7 +6,6 @@ import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.model.IModel;
 
-import java.awt.image.ImageObserver;
 import java.util.List;
 
 /**

@@ -21,7 +21,7 @@ import java.util.List;
  */
 @Table(name = "csld_csld_user", schema = "public", catalog = "")
 @Entity
-public class CsldUser implements Serializable, Identifiable, IAutoCompletable {
+public class CsldUser implements Serializable, Identifiable, IAutoCompletable, IEntityWithImage {
     private Integer id;
 
     @Column(
@@ -261,6 +261,12 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable {
         return image;
     }
 
+    @Override
+    @Transient
+    public IPredefinedImage getDefaultImage() {
+        return PredefinedImage.DEFAULT_AUTHOR_ICON;
+    }
+
     public void setImage(Image image) {
         this.image = image;
     }
@@ -281,7 +287,7 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable {
         CsldUser emptyUser = new CsldUser();
         emptyUser.setAuthorOf(new ArrayList<Game>());
         emptyUser.setCommented(new ArrayList<Comment>());
-        emptyUser.setImage(Image.getDefaultUser());
+        emptyUser.setImage(null);
         emptyUser.setPerson(Person.getEmptyPerson());
         emptyUser.setPlayedGames(new ArrayList<UserPlayedGame>());
         emptyUser.setRole(CsldRoles.USER.getRole());

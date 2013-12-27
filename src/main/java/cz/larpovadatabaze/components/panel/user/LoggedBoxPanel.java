@@ -1,6 +1,5 @@
 package cz.larpovadatabaze.components.panel.user;
 
-import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.user.SignOut;
 import cz.larpovadatabaze.components.page.user.UpdateUserPage;
@@ -8,12 +7,12 @@ import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -21,8 +20,12 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  */
 public class LoggedBoxPanel extends Panel {
     private boolean initiated = false;
+
     @SpringBean
     CsldUserService csldUserService;
+
+    @SpringBean
+    ImageService imageService;
 
     public LoggedBoxPanel(String id) {
         super(id);
@@ -43,7 +46,7 @@ public class LoggedBoxPanel extends Panel {
                 final BookmarkablePageLink<CsldBasePage> loggedUserLink =
                         new BookmarkablePageLink<CsldBasePage>("loggedUserLink", UserDetail.class, params);
                 final Image loggedUserIcon = new Image("loggedUserImage",
-                        new PackageResourceReference(Csld.class, loggedUser.getImage().getPath()));
+                        imageService.getImageResource(loggedUser));
                 loggedUserLink.add(loggedUserIcon);
                 add(loggedUserLink);
 

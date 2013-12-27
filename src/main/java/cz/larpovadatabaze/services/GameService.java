@@ -61,4 +61,9 @@ public interface GameService extends GenericService<Game> {
     long getAmountOfGamesOfGroup(CsldGroup csldGroup);
 
     boolean saveOrUpdate(Game game);
+
+    /**
+     * @return Currently logged user can edit game
+     */
+    boolean canEditGame(Game game);
 }

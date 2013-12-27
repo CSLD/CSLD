@@ -2,12 +2,12 @@ package cz.larpovadatabaze.entities;
 
 import cz.larpovadatabaze.api.Identifiable;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.List;
  */
 @Entity
 @Table(schema = "public", name="csld_game")
-public class Game implements Serializable, Identifiable, IAutoCompletable {
+public class Game implements Serializable, Identifiable, IAutoCompletable, IEntityWithImage {
     public Game(){}
 
     private Integer id;
@@ -407,6 +407,12 @@ public class Game implements Serializable, Identifiable, IAutoCompletable {
         return image;
     }
 
+    @Override
+    @Transient
+    public IPredefinedImage getDefaultImage() {
+        return PredefinedImage.DEFAULT_GAME_ICON;
+    }
+
     public void setImage(Image image) {
         this.image = image;
     }
@@ -525,7 +531,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable {
         emptyGame.setAuthors(new ArrayList<CsldUser>());
         emptyGame.setComments(new ArrayList<Comment>());
         emptyGame.setLabels(new ArrayList<Label>());
-        emptyGame.setImage(Image.getDefaultGame());
+        emptyGame.setImage(null);
         emptyGame.setPhotos(new ArrayList<Photo>());
         emptyGame.setPlayed(new ArrayList<UserPlayedGame>());
         emptyGame.setRatings(new ArrayList<Rating>());

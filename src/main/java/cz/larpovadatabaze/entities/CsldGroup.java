@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Entity
 @Table(schema = "public", name="csld_csld_group")
-public class CsldGroup implements Serializable, Identifiable, IAutoCompletable {
+public class CsldGroup implements Serializable, Identifiable, IAutoCompletable, IEntityWithImage {
     private Integer id;
 
     @Column(
@@ -126,6 +126,12 @@ public class CsldGroup implements Serializable, Identifiable, IAutoCompletable {
         return image;
     }
 
+    @Override
+    @Transient
+    public IPredefinedImage getDefaultImage() {
+        return PredefinedImage.DEFAULT_GROUP_ICON;
+    }
+
     public void setImage(Image image) {
         this.image = image;
     }
@@ -159,7 +165,6 @@ public class CsldGroup implements Serializable, Identifiable, IAutoCompletable {
         emptyGroup.setAdministrators(new ArrayList<CsldUser>());
         emptyGroup.setAuthorsOf(new ArrayList<Game>());
         emptyGroup.setMembers(new ArrayList<GroupHasMember>());
-        emptyGroup.setImage(Image.getDefaultGroup());
         return emptyGroup;
     }
 }

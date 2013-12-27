@@ -1,23 +1,27 @@
 package cz.larpovadatabaze.components.panel.group;
 
-import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.group.ManageGroupPage;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.PredefinedImage;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.security.CsldRoles;
+import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * This panel contains link to the page allowing to manage members of the group.
  * It is shown only to logged person, which has rights toward the group.
  */
 public class AddAuthorsToGroupPanel extends Panel {
+    @SpringBean
+    ImageService imageService;
+
     private CsldGroup group;
 
     public AddAuthorsToGroupPanel(String id, CsldGroup group) {
@@ -28,7 +32,7 @@ public class AddAuthorsToGroupPanel extends Panel {
         params.add("id",group.getId());
 
         Image createGameIcon = new Image("addAuthorsIcon",
-                new PackageResourceReference(Csld.class, cz.larpovadatabaze.entities.Image.getPlusIconPath()));
+                imageService.getPredefinedImageResource(PredefinedImage.PLUS_ICON));
         BookmarkablePageLink<CsldBasePage> createGameIconLink =
                 new BookmarkablePageLink<CsldBasePage>("addAuthorsIconLink", ManageGroupPage.class, params);
         createGameIconLink.add(createGameIcon);

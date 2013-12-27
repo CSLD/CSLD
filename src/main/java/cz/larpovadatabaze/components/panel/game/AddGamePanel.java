@@ -1,13 +1,10 @@
 package cz.larpovadatabaze.components.panel.game;
 
-import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.CreateOrUpdateGamePage;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.request.resource.PackageResourceReference;
 
 /**
  * It contains link to page for creating new Game. Link consists of image and text.

@@ -1,10 +1,10 @@
 package cz.larpovadatabaze.components.panel.about;
 
-import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -12,7 +12,6 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.List;
@@ -23,6 +22,9 @@ import java.util.List;
 public class EditorPanel extends Panel {
     @SpringBean
     CsldUserService csldUserService;
+
+    @SpringBean
+    ImageService imageService;
 
     public EditorPanel(String id) {
         super(id);
@@ -38,7 +40,7 @@ public class EditorPanel extends Panel {
                 final BookmarkablePageLink<CsldBasePage> moderatorLink =
                         new BookmarkablePageLink<CsldBasePage>("moderatorLink", UserDetail.class, params);
                 final Image moderatorImage = new Image("moderatorImage",
-                        new PackageResourceReference(Csld.class, moderator.getImage().getPath()));
+                        imageService.getImageResource(moderator));
                 moderatorLink.add(moderatorImage);
                 item.add(moderatorLink);
 

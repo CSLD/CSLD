@@ -55,14 +55,28 @@ public class Image implements Serializable {
 
         if (id != null ? !id.equals(image.id) : image.id != null) return false;
         if (path != null ? !path.equals(image.path) : image.path != null) return false;
+        if (contentType != null ? !contentType.equals(image.contentType) : image.contentType != null) return false;
 
         return true;
+    }
+
+    private String contentType;
+
+    @Column(name="contentType")
+    @Basic
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
     }
 
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (path != null ? path.hashCode() : 0);
+        result = 31 * result + (contentType != null ? contentType.hashCode() : 0);
         return result;
     }
 
@@ -79,52 +93,4 @@ public class Image implements Serializable {
         this.fileUpload = fileUpload;
     }
 
-    @Transient
-    public static Image getDefaultGroup() {
-        Image groupImage = new Image();
-        groupImage.setPath("upload/group_icon.png");
-        return groupImage;
-    }
-
-    @Transient
-    public static Image getDefaultUser() {
-        Image userImage = new Image();
-        userImage.setPath("upload/author_icon.png");
-        return userImage;
-    }
-
-    @Transient
-    public static Image getDefaultGame() {
-        Image gameImage = new Image();
-        gameImage.setPath("upload/question_icon_game.png");
-        return gameImage;
-    }
-
-    public static String getPlusIconPath() {
-        return "img/icon/plus_icon.png";
-    }
-
-    public static String getChartsIconPath() {
-        return "img/icon/charts_icon.png";
-    }
-
-    public static String getRatingsIconPath() {
-        return "img/icon/star_icon.png";
-    }
-
-    public static String getCommentsIconPath() {
-        return "img/icon/comment_icon.png";
-    }
-
-    public static String getUserIconPath() {
-        return "img/icon/user_icon.png";
-    }
-
-    public static String getAuthorIconPath() {
-        return "img/icon/author_icon.png";
-    }
-
-    public static String getSettingsIconPath() {
-        return "img/icon/settings_icon.png";
-    }
 }

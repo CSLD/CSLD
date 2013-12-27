@@ -1,18 +1,22 @@
 package cz.larpovadatabaze.components.panel.user;
 
-import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Person;
 import cz.larpovadatabaze.entities.UserPlayedGame;
+import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * It shows detail of user.
  */
 public class PersonDetailPanel extends Panel {
+
+    @SpringBean
+    private ImageService imageService;
+
     private final CsldUser user;
 
     public PersonDetailPanel(String id, CsldUser user) {
@@ -25,7 +29,7 @@ public class PersonDetailPanel extends Panel {
         super.onInitialize();
 
         final Image userImage = new Image("userImage",
-                new PackageResourceReference(Csld.class, user.getImage().getPath()));
+                imageService.getImageResource(user));
         add(userImage);
 
         Person person = user.getPerson();

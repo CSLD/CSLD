@@ -4,9 +4,9 @@ import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.Image;
+import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.GroupService;
 import cz.larpovadatabaze.services.ImageService;
-import cz.larpovadatabaze.utils.FileUtils;
 import cz.larpovadatabaze.validator.UniqueGroupValidator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -21,7 +21,6 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Bytes;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +36,8 @@ public abstract class CreateOrUpdateGroupPanel extends Panel {
     ImageService imageService;
     @SpringBean
     UniqueGroupValidator uniqueGroupValidator;
+    @SpringBean
+    FileService fileService;
 
     private FileUploadField fileUploadField;
     @SuppressWarnings("unused")
@@ -98,12 +99,9 @@ public abstract class CreateOrUpdateGroupPanel extends Panel {
 
     private boolean saveGroupAndImage(CsldGroup group) {
         final List<FileUpload> uploads = fileUploadField.getFileUploads();
-        if(group.getImage() == null) {
-            group.setImage(Image.getDefaultGroup());
-        }
         if (uploads != null) {
             for (FileUpload upload : uploads) {
-                String filePath = FileUtils.saveImageFileAndReturnPath(upload, "group" + group.getName(), 120, 120);
+                String filePath = fileService.saveImageFileAndReturnPath(upload, 120, 120).path;
                 try {
                     Image image = new Image();
                     image.setPath(filePath);

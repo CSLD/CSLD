@@ -1,12 +1,12 @@
 package cz.larpovadatabaze.components.panel.search;
 
-import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.models.FilterGame;
 import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.Filter;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AttributeAppender;
@@ -18,7 +18,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
@@ -30,6 +29,10 @@ import java.util.List;
 public class GamesResultsPanel extends Panel {
     @SpringBean
     GameService gameService;
+
+    @SpringBean
+    ImageService imageService;
+
     private ArrayList<Game> fullResults;
     private ArrayList<Game> shortResults;
     private String query;
@@ -55,14 +58,9 @@ public class GamesResultsPanel extends Panel {
                 PageParameters params = new PageParameters();
                 params.add("id", game.getId());
 
-                if(game.getImage() == null){
-                    game.setImage(cz.larpovadatabaze.entities.Image.getDefaultGame());
-                }
-
                 final BookmarkablePageLink<CsldBasePage> gameLink =
                         new BookmarkablePageLink<CsldBasePage>("gameLink", GameDetail.class, params);
-                final Image gameLinkImage = new Image("gameLinkImage",
-                        new PackageResourceReference(Csld.class, game.getImage().getPath()));
+                final Image gameLinkImage = new Image("gameLinkImage", imageService.getImageResource(game));
                 gameLink.add(gameLinkImage);
                 item.add(gameLink);
 

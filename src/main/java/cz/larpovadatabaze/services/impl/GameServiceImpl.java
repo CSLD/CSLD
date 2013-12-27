@@ -5,8 +5,9 @@ import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.models.FilterGame;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.security.CsldRoles;
+import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.GameService;
-import cz.larpovadatabaze.utils.FileUtils;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.hibernate.SessionFactory;
 import org.jsoup.Jsoup;
@@ -27,6 +28,9 @@ public class GameServiceImpl implements GameService {
 
     @Autowired
     private SessionFactory sessionFactory;
+
+    @Autowired
+    private FileService fileService;
 
     @Override
     public Game getById(Integer id) {
@@ -62,6 +66,10 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public boolean addGame(Game game) {
+        if (game.getImage() != null) {
+            if (game.getImage().getPath() == null) game.setImage(null);
+        }
+
         return gameDAO.saveOrUpdate(game);
     }
 
@@ -182,17 +190,14 @@ public class GameServiceImpl implements GameService {
         if(game.getTotalRating() == null){
             game.setTotalRating(0d);
         }
-        if(game.getImage() == null || (game.getImage().getFileUpload() == null && game.getImage().getPath() == null)) {
-            game.setImage(Image.getDefaultGame());
-        }
         if(game.getDescription() != null){
             game.setDescription(Jsoup.clean(game.getDescription(), Whitelist.basic()));
         }
 
-        final List<FileUpload> uploads = game.getImage().getFileUpload();
+        final List<FileUpload> uploads = (game.getImage() != null)?game.getImage().getFileUpload():null;
         if (uploads != null) {
             for (FileUpload upload : uploads) {
-                String filePath = FileUtils.saveImageFileAndReturnPath(upload, game.getName(), 120, 120);
+                String filePath = fileService.saveImageFileAndReturnPath(upload, 120, 120).path;
                 try {
                     Image image = new Image();
                     image.setPath(filePath);
@@ -229,6 +234,22 @@ public class GameServiceImpl implements GameService {
                 return false;
             }
         }
+
+        return false;
+    }
+
+    @Override
+    public boolean canEditGame(Game game) {
+        CsldUser loggedUser = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
+        if(loggedUser != null){
+            if(game.getAuthors().contains(loggedUser)) {
+                return true;
+            }
+            if(loggedUser.getRole() >= CsldRoles.ADMIN.getRole()) {
+                return true;
+            }
+        }
+
         return false;
     }
 }

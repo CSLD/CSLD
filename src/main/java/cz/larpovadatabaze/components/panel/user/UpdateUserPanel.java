@@ -6,8 +6,8 @@ import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Image;
 import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.ImageService;
-import cz.larpovadatabaze.utils.FileUtils;
 import cz.larpovadatabaze.utils.Pwd;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -36,6 +36,8 @@ public class UpdateUserPanel extends Panel {
     CsldUserService csldUserService;
     @SpringBean
     ImageService imageService;
+    @SpringBean
+    FileService fileService;
 
     private FileUploadField fileUpload;
     @SuppressWarnings("unused")
@@ -134,7 +136,7 @@ public class UpdateUserPanel extends Panel {
         final List<FileUpload> uploads = fileUpload.getFileUploads();
         if (uploads != null) {
             for (FileUpload upload : uploads) {
-                String filePath = FileUtils.saveImageFileAndReturnPath(upload, user.getPerson().getName(), 120 , 120);
+                String filePath = fileService.saveImageFileAndReturnPath(upload, 120 , 120).path;
                 try
                 {
                     Image image = new Image();

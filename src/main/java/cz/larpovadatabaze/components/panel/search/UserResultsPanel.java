@@ -1,11 +1,10 @@
 package cz.larpovadatabaze.components.panel.search;
 
-import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -14,7 +13,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
@@ -26,6 +24,9 @@ import java.util.List;
 public class UserResultsPanel extends Panel {
     @SpringBean
     CsldUserService csldUserService;
+
+    @SpringBean
+    ImageService imageService;
 
     public UserResultsPanel(String id, String query) {
         super(id);
@@ -60,14 +61,10 @@ public class UserResultsPanel extends Panel {
                 PageParameters params = new PageParameters();
                 params.add("id", actualUser.getId());
 
-                if(actualUser.getImage() == null) {
-                    actualUser.setImage(cz.larpovadatabaze.entities.Image.getDefaultUser());
-                }
-
                 final BookmarkablePageLink<CsldBasePage> moderatorLink =
                         new BookmarkablePageLink<CsldBasePage>("authorLink", UserDetail.class, params);
                 final Image moderatorImage = new Image("authorLinkImage",
-                        new PackageResourceReference(Csld.class, actualUser.getImage().getPath()));
+                        imageService.getImageResource(actualUser));
                 moderatorLink.add(moderatorImage);
                 item.add(moderatorLink);
 

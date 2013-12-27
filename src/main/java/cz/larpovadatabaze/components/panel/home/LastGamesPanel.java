@@ -1,12 +1,12 @@
 package cz.larpovadatabaze.components.panel.home;
 
-import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.components.page.game.ListLastGames;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
@@ -18,7 +18,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.List;
@@ -29,6 +28,10 @@ import java.util.List;
 public class LastGamesPanel extends Panel {
     @SpringBean
     GameService gameService;
+
+    @SpringBean
+    ImageService imageService;
+
     private final static int MAX_CHARS = 80;
     private final static int INITIAL_AMOUNT_LAST_GAMES = 3;
     private final static int EXPANDED_AMOUNT_LAST_GAMES = 10;
@@ -53,14 +56,10 @@ public class LastGamesPanel extends Panel {
             PageParameters params = new PageParameters();
             params.add("id", game.getId());
 
-            if(game.getImage() == null){
-                game.setImage(cz.larpovadatabaze.entities.Image.getDefaultGame());
-            }
-
             final BookmarkablePageLink<CsldBasePage> gameLink =
                     new BookmarkablePageLink<CsldBasePage>("gameIconLink", GameDetail.class, params);
             final Image gameLinkImage = new Image("gameIcon",
-                    new PackageResourceReference(Csld.class, game.getImage().getPath()));
+                    imageService.getImageResource(game));
             gameLink.add(gameLinkImage);
             gameFragment.add(gameLink);
 

@@ -1,16 +1,15 @@
 package cz.larpovadatabaze.components.panel.user;
 
-import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -19,6 +18,9 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 public class MostActiveCommenter extends Panel {
     @SpringBean
     CsldUserService csldUserService;
+
+    @SpringBean
+    ImageService imageService;
 
     public MostActiveCommenter(String id) {
         super(id);
@@ -37,7 +39,7 @@ public class MostActiveCommenter extends Panel {
         final BookmarkablePageLink<CsldBasePage> moderatorLink =
                 new BookmarkablePageLink<CsldBasePage>("mostActiveCommenter", UserDetail.class, params);
         final Image moderatorImage = new Image("mostActiveCommenterImage",
-                new PackageResourceReference(Csld.class, commenter.getImage().getPath()));
+                imageService.getImageResource(commenter));
         moderatorLink.add(moderatorImage);
         add(moderatorLink);
 

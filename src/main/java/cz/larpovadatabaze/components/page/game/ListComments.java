@@ -1,6 +1,5 @@
 package cz.larpovadatabaze.components.page.game;
 
-import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.entities.Comment;
@@ -8,6 +7,7 @@ import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.providers.SortableCommentProvider;
+import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
@@ -17,7 +17,6 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.text.SimpleDateFormat;
@@ -32,6 +31,10 @@ import java.util.Date;
 public class ListComments extends CsldBasePage{
     @SpringBean
     SortableCommentProvider sortableCommentProvider;
+
+    @SpringBean
+    ImageService imageService;
+
     private final int MAX_CHARS_IN_COMMENT = 160;
 
     public ListComments(){
@@ -47,14 +50,10 @@ public class ListComments extends CsldBasePage{
                 PageParameters userParams = new PageParameters();
                 userParams.add("id", commenter.getId());
 
-                if(commenter.getImage() == null){
-                    commenter.setImage(cz.larpovadatabaze.entities.Image.getDefaultUser());
-                }
-
                 final BookmarkablePageLink<CsldBasePage> commenterIconLink =
                         new BookmarkablePageLink<CsldBasePage>("commenterIconLink", UserDetail.class, userParams);
                 final Image commenterIcon = new Image("commenterIcon",
-                        new PackageResourceReference(Csld.class, commenter.getImage().getPath()));
+                        imageService.getImageResource(commenter));
                 commenterIconLink.add(commenterIcon);
                 item.add(commenterIconLink);
 

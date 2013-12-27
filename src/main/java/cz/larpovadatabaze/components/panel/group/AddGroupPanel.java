@@ -1,13 +1,10 @@
 package cz.larpovadatabaze.components.panel.group;
 
-import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.group.CreateOrUpdateGroupPage;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.request.resource.PackageResourceReference;
 
 /**
  *  It contains link to the page for creating new Group.

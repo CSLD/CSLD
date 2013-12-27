@@ -51,20 +51,8 @@ public class GameDetail extends CsldBasePage {
         protected Game load() {
             Game game = gameService.getById(gameId);
             if(HbUtils.isProxy(game)){
-                game = HbUtils.deproxy(game);
-            }
+            }    game = HbUtils.deproxy(game);
 
-            /**
-             * Ratings and comments are set to lazy load, but they can be only loaded in the same request as the Game object is loaded. So when Game
-             * object is loaded and comments are not touched (when updating ratings, for example) and in the next request we need to show comments,
-             * we get an exception.
-             *
-             * To overcome this, we "touch" comments and ratings on load of Game objects to ensure they are loaded. We could also change load from lazy to eager,
-             * but that would affect other places when game is loaded and comments/ratings are not needed.
-             */
-            game.getComments().size();
-            game.getRatings().size();
-            game.getAuthors().size();
 
             return game;
         }
@@ -117,7 +105,7 @@ public class GameDetail extends CsldBasePage {
 
     @Override
     protected IModel<String> getPageTitleModel() {
-        return new StringResourceModel("larpDatabaseTitleForGame", model, null);
+        return new StringResourceModel("larpDatabaseTitleForGame", model);
     }
 
     @Override

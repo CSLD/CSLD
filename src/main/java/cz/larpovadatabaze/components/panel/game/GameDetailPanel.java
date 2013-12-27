@@ -1,17 +1,14 @@
 package cz.larpovadatabaze.components.panel.game;
 
-import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.group.GroupDetail;
 import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.components.panel.YouTubePanel;
-import cz.larpovadatabaze.components.panel.photo.ManagePhotoPanel;
-import cz.larpovadatabaze.components.panel.photo.ShowPhotoPanel;
+import cz.larpovadatabaze.components.panel.photo.PhotoPanel;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.security.CsldRoles;
+import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -24,7 +21,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.List;
 
@@ -33,22 +30,20 @@ import java.util.List;
  * amount of players, labels and so on.
  */
 public class GameDetailPanel extends Panel {
-    private final IModel<Game> model;
+    @SpringBean
+    ImageService imageService;
 
     public GameDetailPanel(String id, IModel<Game> model) {
-        super(id);
-        this.model = model;
-        setDefaultModel(new CompoundPropertyModel<Game>(model));
+        super(id, new CompoundPropertyModel<Game>(model));
     }
 
     @Override
     protected void onInitialize() {
         super.onInitialize();
 
-        Game game = model.getObject();
+        Game game = (Game)getDefaultModelObject();
 
-        final Image gameIcon = new Image("gameImage",
-                new PackageResourceReference(Csld.class, (game.getImage() != null) ? game.getImage().getPath(): cz.larpovadatabaze.entities.Image.getDefaultGame().getPath()));
+        final Image gameIcon = new Image("gameImage", imageService.getImageResource(game));
         add(gameIcon);
         add(new Label("name"));
 
@@ -120,21 +115,8 @@ public class GameDetailPanel extends Panel {
         YouTubePanel youTubePanel = new YouTubePanel("video", videoPath, isVisible);
         add(youTubePanel);
 
-        ShowPhotoPanel photoPanel = new ShowPhotoPanel("photos", game.getPhotos());
+        // Photo panel
+        PhotoPanel photoPanel = new PhotoPanel("photos", (IModel<Game>)getDefaultModel());
         add(photoPanel);
-
-        CsldUser loggedUser = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
-        boolean show = false;
-        if(loggedUser != null){
-            if(game.getAuthors().contains(loggedUser)) {
-                show = true;
-            }
-            if(loggedUser.getRole() >= CsldRoles.ADMIN.getRole()) {
-                show = true;
-            }
-        }
-        // Administrators
-        ManagePhotoPanel managePhotoPanel = new ManagePhotoPanel("managePhotos", game.getPhotos(), show, model);
-        add(managePhotoPanel);
     }
 }
