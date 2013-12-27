@@ -25,7 +25,8 @@ public class FileUploadComponentPanel extends Panel {
     private final IFileUploadCallback uploadCallback;
     private final String acceptedTypes;
 
-    private AbstractAjaxBehavior uploadDoneCallback;
+    private AbstractAjaxBehavior uploadDoneBehaviour;
+    private AbstractAjaxBehavior uploadBehaviour;
     private WebMarkupContainer bar;
 
     private static final String INIT_JS = "new FileUploadUI('${componentMarkupId}', '${url}', '${paramName}', ${maxUploadSize}, ${acceptedTypes}, '${doneURL}');";
@@ -59,8 +60,8 @@ public class FileUploadComponentPanel extends Panel {
         variables.put("paramName", PARAM_NAME);
         variables.put("acceptedTypes", acceptedTypes);
         variables.put("maxUploadSize", maxUploadSize);
-        variables.put("doneURL", uploadDoneCallback.getCallbackUrl());
-        variables.put("url", urlFor(new FileUploadResourceReference(maxUploadSize, PARAM_NAME, uploadCallback), null));
+        variables.put("doneURL", uploadDoneBehaviour.getCallbackUrl());
+        variables.put("url", uploadBehaviour.getCallbackUrl());
 
         response.render(OnDomReadyHeaderItem.forScript(new MapVariableInterpolator(INIT_JS, variables).toString()));
     }
@@ -78,14 +79,17 @@ public class FileUploadComponentPanel extends Panel {
         add(bar);
 
         // Add behaviour to handle "upload done" callback
-        uploadDoneCallback = new AbstractDefaultAjaxBehavior() {
+        uploadDoneBehaviour = new AbstractDefaultAjaxBehavior() {
             @Override
             protected void respond(AjaxRequestTarget target) {
                 // Propagate to our callback
                 uploadCallback.fileUploadDone(target);
             }
         };
-        add(uploadDoneCallback);
+        add(uploadDoneBehaviour);
+
+        uploadBehaviour = new FileUploadBehaviour(maxUploadSize, uploadCallback, PARAM_NAME);
+        add(uploadBehaviour);
     }
 
 
