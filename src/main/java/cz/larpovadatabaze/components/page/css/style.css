@@ -336,6 +336,12 @@ h2{
     position: relative;
 }
 
+.pridanaHra .komentar {
+    min-height: 38px;
+    max-height: 47px;
+    overflow: hidden;
+}
+
 .pridanaHra .HraKomentarPopisek {
 padding: 5px;
 padding-bottom: 6px;
@@ -347,6 +353,9 @@ color: #535353;
 font-size: 12px;
 text-align: justify;
 position: relative;
+min-height: 38px;
+max-height: 47px;
+overflow: hidden;
 }
 .pridanaHra .HraKomentarPopisek .HraKomentarVice{
     right: 6px;
@@ -359,10 +368,13 @@ position: relative;
     text-align: right;
     z-index: 10;
     position: absolute;
+    padding-left: 3px;
     right: 6px;
     bottom: 4px;
+    background-color: #F8F8F8;
+    font-weight: bold;
 }
- 
+
 .pridanaHra .nadpisHra {
     font-size: 12px;
 }
@@ -762,11 +774,11 @@ position: relative;
     border-radius: 4px;  
     box-shadow:  0 0 1px 1px #D0D0D0;   
     background-color: #FCFCFC;           
-
 }
 .levaCast .komentar:nth-child(2n-1) {
   background-color: #F8F8F8;
 }
+
 .levaCast  .komentar a {
     text-decoration: none;
     color: black;

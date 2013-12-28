@@ -15,10 +15,10 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.jsoup.Jsoup;
 
 import java.util.List;
 
@@ -32,11 +32,9 @@ public class LastGamesPanel extends Panel {
     @SpringBean
     ImageService imageService;
 
-    private final static int MAX_CHARS = 80;
+    private final static int MAX_CHARS_IN_DESCRIPTION = 150;
     private final static int INITIAL_AMOUNT_LAST_GAMES = 3;
     private final static int EXPANDED_AMOUNT_LAST_GAMES = 10;
-
-    private IModel<List<Game>> gamesModel;
 
     /**
      * List view of games
@@ -75,12 +73,11 @@ public class LastGamesPanel extends Panel {
             gameFragment.add(gameLinkContent);
 
             gameFragment.add(new Label("players", Model.of(game.getPlayers())));
-            gameFragment.add(new Label("gameDescription",
-                    Model.of(
-                            game.getDescription().length() > MAX_CHARS ?
-                                    game.getDescription().substring(0,MAX_CHARS) :
-                                    game.getDescription())).setEscapeModelStrings(false)
-            );
+
+            String gameDescription = Jsoup.parse(game.getDescription()).text();
+            if (gameDescription.length() > MAX_CHARS_IN_DESCRIPTION) gameDescription = gameDescription.substring(MAX_CHARS_IN_DESCRIPTION);
+            gameFragment.add(new Label("gameDescription", gameDescription));
+
             final BookmarkablePageLink<CsldBasePage> gameMoreLink =
                     new BookmarkablePageLink<CsldBasePage>("gameMoreLink", GameDetail.class, params);
             gameFragment.add(gameMoreLink);
@@ -93,7 +90,7 @@ public class LastGamesPanel extends Panel {
 
     @Override
     public void onInitialize() {
-        super.onInitialize();;
+        super.onInitialize();
 
         List<Game> toShow = gameService.getLastGames(EXPANDED_AMOUNT_LAST_GAMES);
 

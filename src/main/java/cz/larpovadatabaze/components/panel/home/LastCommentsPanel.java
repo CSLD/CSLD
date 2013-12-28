@@ -21,6 +21,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.jsoup.Jsoup;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,7 +37,7 @@ public class LastCommentsPanel extends Panel {
     @SpringBean
     ImageService imageService;
 
-    private static final int MAX_CHARS_IN_COMMENT = 80;
+    private static final int MAX_CHARS_IN_COMMENT = 150;
     private static int INITIAL_LAST_COMMENTS = 3;
     private static int EXPANDED_LAST_COMMENTS = 10;
 
@@ -91,7 +92,7 @@ public class LastCommentsPanel extends Panel {
             gameLinkContent.add(gameName);
             commentFragment.add(gameLinkContent);
 
-            String commentToShow = comment.getComment();
+            String commentToShow = Jsoup.parse(comment.getComment()).text();
             if(commentToShow.length() > MAX_CHARS_IN_COMMENT){
                 commentToShow = commentToShow.substring(0,MAX_CHARS_IN_COMMENT);
             }
@@ -104,6 +105,11 @@ public class LastCommentsPanel extends Panel {
 
     public LastCommentsPanel(String id) {
         super(id);
+    }
+
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
 
         List<Comment> toShow = commentService.getLastComments(EXPANDED_LAST_COMMENTS);
 
