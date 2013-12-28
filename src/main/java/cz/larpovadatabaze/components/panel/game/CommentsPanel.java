@@ -103,7 +103,9 @@ public class CommentsPanel extends Panel {
                     }
                 } else {
                     actualComment.setComment(Jsoup.clean(newComment, Whitelist.basic()));
-                    actualComment.setAdded(new Timestamp(System.currentTimeMillis()));
+                    if (actualComment.getAdded() == null) {
+                        actualComment.setAdded(new Timestamp(System.currentTimeMillis()));
+                    }
 
                     commentService.saveOrUpdate(actualComment);
 
