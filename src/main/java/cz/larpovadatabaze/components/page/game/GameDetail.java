@@ -2,13 +2,11 @@ package cz.larpovadatabaze.components.page.game;
 
 import cz.larpovadatabaze.components.common.tabs.TabsComponentPanel;
 import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.panel.YouTubePanel;
 import cz.larpovadatabaze.components.panel.game.*;
 import cz.larpovadatabaze.components.panel.photo.PhotoPanel;
 import cz.larpovadatabaze.components.panel.user.SimpleListUsersPanel;
-import cz.larpovadatabaze.entities.Comment;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.UserPlayedGame;
+import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.models.ReadOnlyModel;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.utils.HbUtils;
@@ -25,15 +23,14 @@ import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  *
  */
 public class GameDetail extends CsldBasePage {
+    private static enum TabContentType { COMMENTS, PHOTOS, VIDEO };
+
     @SpringBean
     GameService gameService;
 
@@ -45,6 +42,8 @@ public class GameDetail extends CsldBasePage {
     private WebMarkupContainer tabContent;
 
     private final static Logger logger = Logger.getLogger(GameDetail.class);
+
+    private Vector<TabContentType> tabContentType;
 
     /**
      * Model for selected tab number
@@ -159,23 +158,36 @@ public class GameDetail extends CsldBasePage {
     private void addOrReplaceTabContentPanel() {
         Fragment fragment;
 
-        if (tabNumberModel.getObject() == 0) {
-            // Create comments
-            fragment = new Fragment("tabContentPanel", "comments", this);
+        switch(tabContentType.get(tabNumberModel.getObject())) {
+            case COMMENTS:
+                // Create comments
+                fragment = new Fragment("tabContentPanel", "comments", this);
 
-            final CommentsListPanel comments = new CommentsListPanel("commentsList", new CommentsModel());
-            comments.setOutputMarkupId(true);
+                final CommentsListPanel comments = new CommentsListPanel("commentsList", new CommentsModel());
+                comments.setOutputMarkupId(true);
 
-            fragment.add(new CommentsPanel("addComment", getModel(), new Component[] { comments }));
-            fragment.add(comments);
-        }
-        else {
-            // Create photos
-            fragment = new Fragment("tabContentPanel", "photos", this);
+                fragment.add(new CommentsPanel("addComment", getModel(), new Component[] { comments }));
+                fragment.add(comments);
+                break;
+            case PHOTOS:
+                // Create photos
+                fragment = new Fragment("tabContentPanel", "photos", this);
 
-            PhotoPanel photoPanel = new PhotoPanel("photos", getModel());
-            fragment.add(photoPanel);
-
+                PhotoPanel photoPanel = new PhotoPanel("photos", getModel());
+                fragment.add(photoPanel);
+                break;
+            case VIDEO:
+                // Create video
+                fragment = new Fragment("tabContentPanel", "video", this);
+                fragment.add(new YouTubePanel("video", new ReadOnlyModel<Video>() {
+                    @Override
+                    public Video getObject() {
+                        return getModel().getObject().getVideo();
+                    }
+                }));
+                break;
+            default:
+                throw new IllegalStateException("Invalid tab content type");
         }
 
         tabContent.addOrReplace(fragment);
@@ -183,6 +195,31 @@ public class GameDetail extends CsldBasePage {
 
     protected IModel<Game> getModel() {
         return (IModel<Game>)getDefaultModel();
+    }
+
+    protected void addTabComponent() {
+        tabNumberModel = new TabNumberModel(0);
+        List<IModel> models = new ArrayList<IModel>();
+        tabContentType = new Vector<TabContentType>();
+
+        // Comments
+        models.add(Model.of("Komentáře"));
+        tabContentType.add(TabContentType.COMMENTS);
+
+        // Photos
+        Game g = getModel().getObject();
+        if (((g.getPhotos() != null) && (!g.getPhotos().isEmpty())) || gameService.canEditGame(g)) {
+            models.add(Model.of("Fotky"));
+            tabContentType.add(TabContentType.PHOTOS);
+        }
+
+        // Video
+        if (g.getVideo() != null) {
+            models.add(Model.of("Video"));
+            tabContentType.add(TabContentType.VIDEO);
+        }
+
+        add(new TabsComponentPanel("tabs", tabNumberModel, models.toArray(new IModel[models.size()])));
     }
 
     @Override
@@ -194,9 +231,7 @@ public class GameDetail extends CsldBasePage {
 
         add(new GameDetailPanel("gameDetail", getModel()));
 
-        // Tabs
-        tabNumberModel = new TabNumberModel(0);
-        add(new TabsComponentPanel("tabs", tabNumberModel, new IModel[] { Model.of("Komentáře"), Model.of("Fotky") }));
+        addTabComponent();
 
         // Tab content
         tabContent = new WebMarkupContainer("tabContent");
