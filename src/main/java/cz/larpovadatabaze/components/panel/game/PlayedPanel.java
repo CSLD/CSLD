@@ -3,7 +3,6 @@ package cz.larpovadatabaze.components.panel.game;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.UserPlayedGame;
-import cz.larpovadatabaze.models.ReadOnlyModel;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.RatingService;
 import cz.larpovadatabaze.services.UserPlayedGameService;
@@ -12,6 +11,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -38,7 +38,7 @@ public class PlayedPanel extends Panel {
     /**
      * Model for user played game - implemented as loadable / detachable
      */
-    private class UserPlayedGameModel extends ReadOnlyModel<UserPlayedGame> {
+    private class UserPlayedGameModel extends AbstractReadOnlyModel<UserPlayedGame> {
         @Override
         public UserPlayedGame getObject() {
             int userId = getUserId();
@@ -56,7 +56,7 @@ public class PlayedPanel extends Panel {
     /**
      * Model that returns "active" string when user played game state is equal to state passed in constructor
      */
-    private class StateActiveModel extends ReadOnlyModel<String> {
+    private class StateActiveModel extends AbstractReadOnlyModel<String> {
         private UserPlayedGame.UserPlayedGameState state;
 
         private StateActiveModel(UserPlayedGame.UserPlayedGameState state) {

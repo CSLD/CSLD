@@ -7,7 +7,6 @@ import cz.larpovadatabaze.components.panel.game.*;
 import cz.larpovadatabaze.components.panel.photo.PhotoPanel;
 import cz.larpovadatabaze.components.panel.user.SimpleListUsersPanel;
 import cz.larpovadatabaze.entities.*;
-import cz.larpovadatabaze.models.ReadOnlyModel;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.utils.HbUtils;
 import org.apache.log4j.Logger;
@@ -15,10 +14,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Fragment;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.model.*;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -109,7 +105,7 @@ public class GameDetail extends CsldBasePage {
      * Model for comments of actual game. (Might get GameModel as constructor parameter to be extra clean, but we use the one stored in the page.)
      * The downside is it does not cache results so getObject() may be costly.
      */
-    private class CommentsModel extends ReadOnlyModel<List<Comment>> {
+    private class CommentsModel extends AbstractReadOnlyModel<List<Comment>> {
         @Override
         public List<Comment> getObject() {
             List<Comment> res = new ArrayList<Comment>(getModel().getObject().getComments());
@@ -128,7 +124,7 @@ public class GameDetail extends CsldBasePage {
      * Model for users who want to play the game. (Might get GameModel as constructor parameter to be extra clean, but we use the one stored in the page.)
      * The downside is it does not cache results so getObject() may be costly.
      */
-    private class WantedByModel extends ReadOnlyModel<List<CsldUser>> {
+    private class WantedByModel extends AbstractReadOnlyModel<List<CsldUser>> {
 
         @Override
         public List<CsldUser> getObject() {
@@ -179,7 +175,7 @@ public class GameDetail extends CsldBasePage {
             case VIDEO:
                 // Create video
                 fragment = new Fragment("tabContentPanel", "video", this);
-                fragment.add(new YouTubePanel("video", new ReadOnlyModel<Video>() {
+                fragment.add(new YouTubePanel("video", new AbstractReadOnlyModel<Video>() {
                     @Override
                     public Video getObject() {
                         return getModel().getObject().getVideo();

@@ -2439,6 +2439,16 @@ a.active.wantToPlay.button:after{
     background: #00A0B0;
 }
 
+.cmpFileUploadErrors ul {
+    margin: 15px 5px;
+    border: 1px solid red;
+    background: #ff8d90;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
 /* end of file upload */
 
 /* gallery */

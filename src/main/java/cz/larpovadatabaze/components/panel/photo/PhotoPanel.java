@@ -10,8 +10,10 @@ import cz.larpovadatabaze.entities.Photo;
 import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.PhotoService;
+import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -20,7 +22,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.upload.FileItem;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -31,6 +32,7 @@ import java.util.*;
  * Time: 15:21
  */
 public class PhotoPanel extends Panel {
+    private final static Logger logger = Logger.getLogger(PhotoPanel.class);
 
     @SpringBean
     private GameService gameService;
@@ -42,6 +44,10 @@ public class PhotoPanel extends Panel {
     private FileService fileService;
 
     private WebMarkupContainer wrapper;
+
+    private FeedbackPanel feedbackPanel;
+
+    private List<String> storedErrors = new ArrayList<String>();
 
     private static class PhotoImageInfo extends GalleryPanel.ImageInfo {
         private final int orderSeq;
@@ -181,19 +187,43 @@ public class PhotoPanel extends Panel {
         GalleryPanel gallery = new GalleryPanel("galleryPanel", new PhotoListModel(), new PhotoGalleryDataProvider(), canEdit?new PhotoGalleryManager():null);
         wrapper.add(gallery);
 
+        // Feedback panel
+        feedbackPanel = new FeedbackPanel("feedbackPanel");
+        wrapper.add(feedbackPanel);
+
         /* Upload panel */
         if (canEdit) {
             // Create real upload panel
             wrapper.add(new FileUploadComponentPanel("uploadPanel", 5000000, "/(\\.|\\/)(gif|jpe?g|png)$/i", new IFileUploadCallback() {
                 @Override
-                public void filesUploaded(List<FileItem> fileItems) throws IOException {
+                public void filesUploaded(List<FileItem> fileItems) {
                     for(FileItem fi : fileItems) {
-                        photoService.createNewPhotoForGame((Game)PhotoPanel.this.getDefaultModelObject(), fi);
+                        try {
+                            // Check type
+                            String ct1 = fi.getContentType().split("/")[0];
+                            if (!"image".equals(ct1)) {
+                                storedErrors.add(fi.getName() + ": Soubor není obrázek");
+                                continue;
+                            }
+
+                            // Create photo
+                            photoService.createNewPhotoForGame((Game)PhotoPanel.this.getDefaultModelObject(), fi);
+                        }
+                        catch(Exception e) {
+                            logger.error("Error while adding photo", e);
+                            storedErrors.add(fi.getName() + ": Interní chyba");
+                        }
                     }
                 }
 
                 @Override
                 public void fileUploadDone(AjaxRequestTarget target) {
+                    // Add stored errors
+                    for(String error : storedErrors) {
+                        getPage().error(error);
+                    }
+                    storedErrors.clear();
+
                     // Refresh complete panel
                     target.add(wrapper);
                 }

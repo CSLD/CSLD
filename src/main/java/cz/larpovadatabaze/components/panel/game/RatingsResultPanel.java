@@ -4,7 +4,6 @@ import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
-import cz.larpovadatabaze.models.ReadOnlyModel;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.RatingService;
 import org.apache.wicket.Component;
@@ -16,6 +15,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -47,7 +47,7 @@ public class RatingsResultPanel extends Panel {
     /**
      * Model to provide color for the game
      */
-    private class RatingColorModel extends ReadOnlyModel<String> {
+    private class RatingColorModel extends AbstractReadOnlyModel<String> {
 
         @Override
         public String getObject() {
@@ -59,7 +59,7 @@ public class RatingsResultPanel extends Panel {
     /**
      * Model to provide textual rating for the game
      */
-    private class RatingResultModel extends ReadOnlyModel<String> {
+    private class RatingResultModel extends AbstractReadOnlyModel<String> {
         private DecimalFormat df = new DecimalFormat("0.0");
 
         @Override
@@ -72,7 +72,7 @@ public class RatingsResultPanel extends Panel {
     /**
      * Holds array of ratings. Value is cached and refreshed on-request.
      */
-    private class RatingsArrayModel extends ReadOnlyModel<int[]> {
+    private class RatingsArrayModel extends AbstractReadOnlyModel<int[]> {
 
         // Backing array
         private int[] array;
@@ -136,7 +136,7 @@ public class RatingsResultPanel extends Panel {
         Label myResult = new Label("myResult", myRating);
         add(myResult);
 
-        Label amountOfResults = new Label("amountOfResults", new ReadOnlyModel<Integer>() {
+        Label amountOfResults = new Label("amountOfResults", new AbstractReadOnlyModel<Integer>() {
             @Override
             public Integer getObject() {
                 return model.getObject().getRatings().size();

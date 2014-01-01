@@ -4,7 +4,6 @@ import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
-import cz.larpovadatabaze.models.ReadOnlyModel;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.RatingService;
 import org.apache.wicket.Component;
@@ -13,6 +12,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -67,7 +67,7 @@ public class RatingsPanel extends Panel {
     /**
      * Model returning "active" if this star should be active. Star number is passed as a parameter to the constructor
      */
-    private class ActiveStarClassModel extends ReadOnlyModel<String> {
+    private class ActiveStarClassModel extends AbstractReadOnlyModel<String> {
 
         private final int starNo;
 
