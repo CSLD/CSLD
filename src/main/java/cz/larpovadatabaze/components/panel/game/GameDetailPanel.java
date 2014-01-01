@@ -7,6 +7,7 @@ import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.services.ImageService;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -50,7 +51,9 @@ public class GameDetailPanel extends Panel {
             @Override
             protected void populateItem(ListItem<cz.larpovadatabaze.entities.Label> item) {
                 cz.larpovadatabaze.entities.Label label = item.getModelObject();
-                item.add(new Label("label", label.getName()));
+                Label labelC = new Label("label", label.getName());
+                labelC.add(new AttributeModifier("title", label.getDescription()));
+                item.add(labelC);
             }
         };
         add(view);

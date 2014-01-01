@@ -2045,7 +2045,14 @@ select[name=stateOfGame]{
 
 .popisek .labels{
     float: left;
+    margin: 3px 5px 3px 0;
+}
+
+.popisek .labels span{
     margin-right: 5px;
+    padding: 5px;
+    background-color: #F0F0F0;
+    cursor: default;
 }
 
 .popisek .authors{
