@@ -4,10 +4,7 @@ import cz.larpovadatabaze.dao.PhotoDAO;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Image;
 import cz.larpovadatabaze.entities.Photo;
-import cz.larpovadatabaze.services.FileService;
-import cz.larpovadatabaze.services.GameService;
-import cz.larpovadatabaze.services.ImageService;
-import cz.larpovadatabaze.services.PhotoService;
+import cz.larpovadatabaze.services.*;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.util.upload.FileItem;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +31,9 @@ public class PhotoServiceImpl implements PhotoService {
 
     @Autowired
     private GameService gameService;
+
+    @Autowired
+    private ImageResizingStrategyFactoryService imageResizingStrategyFactoryService;
 
     @Override
     public boolean saveOrUpdate(Photo actualPhoto) {
@@ -89,7 +89,7 @@ public class PhotoServiceImpl implements PhotoService {
 
     @Override
     public boolean createNewPhotoForGame(Game game, FileItem fileItem) {
-        FileService.ResizeAndSaveReturn ret = fileService.saveImageFileAndPreviewAndReturnPath(new FileUpload(fileItem), MAX_PHOTO_WIDTH, MAX_PHOTO_HEIGHT, PREVIEW_SIZE);
+        FileService.ResizeAndSaveReturn ret = fileService.saveImageFileAndPreviewAndReturnPath(new FileUpload(fileItem), imageResizingStrategyFactoryService.getMaxWidthHeightStrategy(MAX_PHOTO_WIDTH, MAX_PHOTO_HEIGHT), imageResizingStrategyFactoryService.getCuttingSquareStrategy(PREVIEW_SIZE, 50));
         Image image = new Image();
         image.setPath(ret.path);
         image.setContentType(fileItem.getContentType());

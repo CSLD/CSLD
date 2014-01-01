@@ -1,8 +1,7 @@
 package cz.larpovadatabaze.services.impl;
 
-import com.mortennobel.imagescaling.DimensionConstrain;
-import com.mortennobel.imagescaling.ResampleOp;
 import cz.larpovadatabaze.services.FileService;
+import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService.IImageResizingStrategy;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
@@ -13,6 +12,7 @@ import org.apache.wicket.util.time.Time;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.jndi.JndiTemplate;
+import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -23,6 +23,7 @@ import java.io.*;
  * Date: 25.12.13
  * Time: 20:44
  */
+@Service
 public class FileServiceImpl implements FileService, InitializingBean {
 
     private static final String PREVIEW_POSTFIX = "-p";
@@ -141,7 +142,7 @@ public class FileServiceImpl implements FileService, InitializingBean {
     }
 
     @Override
-    public ResizeAndSaveReturn saveImageFileAndPreviewAndReturnPath(FileUpload upload, int maxHeight, int maxWidth, int previewSize) {
+    public ResizeAndSaveReturn saveImageFileAndPreviewAndReturnPath(FileUpload upload, IImageResizingStrategy fullImageResizingStrategy, IImageResizingStrategy previewResizingStrategy) {
 
         // Determine file type
         String fileType;
@@ -169,9 +170,8 @@ public class FileServiceImpl implements FileService, InitializingBean {
         try {
 
             File newFile = getPathInDataDir(fileName);
-            ResampleOp resampleOp = new ResampleOp(DimensionConstrain.createMaxDimension(maxWidth, maxHeight, true));
             BufferedImage sourceImage = ImageIO.read(upload.getInputStream());
-            imageGameSized = resampleOp.filter(sourceImage, null);
+            imageGameSized =  fullImageResizingStrategy.convertImage(sourceImage);
 
             // Check new file, delete if it already existed
             cleanFileIfExists(newFile);
@@ -182,29 +182,9 @@ public class FileServiceImpl implements FileService, InitializingBean {
             }
             ImageIO.write(imageGameSized, fileType, newFile);
 
-            if (previewSize > 0) {
-                /* Create preview */
-
-                // Compute source
-                int sx1,sy1,sx2,sy2;
-                int sw = sourceImage.getWidth();
-                int sh = sourceImage.getHeight();
-                if (sw > sh) {
-                    sy1 = 0;
-                    sy2 = sh;
-                    sx1 = (sw-sh)/2;
-                    sx2 = sx1+sh;
-                }
-                else {
-                    sx1 = 0;
-                    sx2 = sw;
-                    sy1 = (sh-sw)/2;
-                    sy2 = sy1 + sw;
-                }
-
-                // Create, copy and save image
-                BufferedImage previewImage = new BufferedImage(previewSize, previewSize, BufferedImage.TYPE_3BYTE_BGR);
-                previewImage.getGraphics().drawImage(sourceImage, 0, 0, previewSize, previewSize, sx1, sy1, sx2, sy2, null);
+            if (previewResizingStrategy != null) {
+                // Create preview
+                BufferedImage previewImage = previewResizingStrategy.convertImage(sourceImage);
 
                 File previewFile = getFilePreviewInDataDir(fileName);
                 if (!previewFile.createNewFile()) {
@@ -221,8 +201,8 @@ public class FileServiceImpl implements FileService, InitializingBean {
     }
 
     @Override
-    public ResizeAndSaveReturn saveImageFileAndReturnPath(FileUpload upload, int maxHeight, int maxWidth) {
-        return saveImageFileAndPreviewAndReturnPath(upload, maxHeight, maxWidth, -1);
+    public ResizeAndSaveReturn saveImageFileAndReturnPath(FileUpload upload, IImageResizingStrategy fullImageResizingStrategy) {
+        return saveImageFileAndPreviewAndReturnPath(upload, fullImageResizingStrategy, null);
     }
 
     @Override

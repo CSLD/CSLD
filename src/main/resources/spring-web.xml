@@ -42,8 +42,6 @@ http://www.springframework.org/schema/jee http://www.springframework.org/schema/
         <property name="templateMessage" ref="templateMessage"/>
     </bean>
 
-    <bean id="fileService" class="cz.larpovadatabaze.services.impl.FileServiceImpl" />
-
 	<!-- Hibernate session factory -->
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">

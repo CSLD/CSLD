@@ -8,6 +8,7 @@ import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.security.CsldRoles;
 import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.hibernate.SessionFactory;
 import org.jsoup.Jsoup;
@@ -23,6 +24,8 @@ import java.util.*;
  */
 @Repository
 public class GameServiceImpl implements GameService {
+    private static final int GAME_ICON_SIZE=120;
+
     @Autowired
     private GameDAO gameDAO;
 
@@ -31,6 +34,9 @@ public class GameServiceImpl implements GameService {
 
     @Autowired
     private FileService fileService;
+
+    @Autowired
+    private ImageResizingStrategyFactoryService imageResizingStrategyFactoryService;
 
     @Override
     public Game getById(Integer id) {
@@ -197,7 +203,7 @@ public class GameServiceImpl implements GameService {
         final List<FileUpload> uploads = (game.getImage() != null)?game.getImage().getFileUpload():null;
         if (uploads != null) {
             for (FileUpload upload : uploads) {
-                String filePath = fileService.saveImageFileAndReturnPath(upload, 120, 120).path;
+                String filePath = fileService.saveImageFileAndReturnPath(upload, imageResizingStrategyFactoryService.getCuttingSquareStrategy(GAME_ICON_SIZE, 50)).path;
                 try {
                     Image image = new Image();
                     image.setPath(filePath);
@@ -242,8 +248,10 @@ public class GameServiceImpl implements GameService {
     public boolean canEditGame(Game game) {
         CsldUser loggedUser = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
         if(loggedUser != null){
-            if(game.getAuthors().contains(loggedUser)) {
-                return true;
+            for(CsldUser author : game.getAuthors()) {
+                if (author.getId().equals(loggedUser.getId())) {
+                    return true;
+                }
             }
             if(loggedUser.getRole() >= CsldRoles.ADMIN.getRole()) {
                 return true;

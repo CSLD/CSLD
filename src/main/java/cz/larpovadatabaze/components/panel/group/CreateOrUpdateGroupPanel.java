@@ -6,6 +6,7 @@ import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.Image;
 import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.GroupService;
+import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.validator.UniqueGroupValidator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -30,6 +31,8 @@ import java.util.List;
  * editing group if group is given as parameter. If it isn't it gets empty one as a model.
  */
 public abstract class CreateOrUpdateGroupPanel extends Panel {
+    private static final int GROUP_ICON_SIZE=120;
+
     @SpringBean
     GroupService groupService;
     @SpringBean
@@ -38,6 +41,8 @@ public abstract class CreateOrUpdateGroupPanel extends Panel {
     UniqueGroupValidator uniqueGroupValidator;
     @SpringBean
     FileService fileService;
+    @SpringBean
+    ImageResizingStrategyFactoryService imageResizingStrategyFactoryService;
 
     private FileUploadField fileUploadField;
     @SuppressWarnings("unused")
@@ -101,7 +106,7 @@ public abstract class CreateOrUpdateGroupPanel extends Panel {
         final List<FileUpload> uploads = fileUploadField.getFileUploads();
         if (uploads != null) {
             for (FileUpload upload : uploads) {
-                String filePath = fileService.saveImageFileAndReturnPath(upload, 120, 120).path;
+                String filePath = fileService.saveImageFileAndReturnPath(upload, imageResizingStrategyFactoryService.getCuttingSquareStrategy(GROUP_ICON_SIZE, 50)).path;
                 try {
                     Image image = new Image();
                     image.setPath(filePath);

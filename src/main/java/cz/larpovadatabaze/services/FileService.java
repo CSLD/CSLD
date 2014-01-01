@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.services;
 
+import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService.IImageResizingStrategy;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.request.resource.AbstractResource;
 
@@ -28,6 +29,8 @@ public interface FileService {
             this.savedHeight = savedHeight;
         }
     }
+
+
 
     /**
      * @param relativeName Relative name
@@ -75,24 +78,22 @@ public interface FileService {
      * Resize and save uploaded image
      *
      * @param upload Upload to save
-     * @param maxHeight Maximum width
-     * @param maxWidth Maximum height
+     * @param resizingStrategy Strategy to use to resize the image
      *
      * @return Result class
      */
-    public ResizeAndSaveReturn saveImageFileAndReturnPath(FileUpload upload, int maxHeight, int maxWidth);
+    public ResizeAndSaveReturn saveImageFileAndReturnPath(FileUpload upload, IImageResizingStrategy resizingStrategy);
 
     /**
      * Resize and save uploaded image plus save image preview
      *
      * @param upload Upload to save
-     * @param maxHeight Maximum width
-     * @param maxWidth Maximum height
-     * @param previewSize Size of (rectangular) preview
+     * @param fullImageResizingStrategy Strategy used to resize the full image
+     * @param previewResizingStrategy Strategy used to resize image preview
      *
      * @return Result class
      */
-    public ResizeAndSaveReturn saveImageFileAndPreviewAndReturnPath(FileUpload upload, int maxHeight, int maxWidth, int previewSize);
+    public ResizeAndSaveReturn saveImageFileAndPreviewAndReturnPath(FileUpload upload, IImageResizingStrategy fullImageResizingStrategy, IImageResizingStrategy previewResizingStrategy);
 
     /**
      * Delete file(s) belonging to this relative path (used when file is about to be deleted)

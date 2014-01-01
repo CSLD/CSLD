@@ -9,6 +9,9 @@ import java.util.List;
  *
  */
 public interface CsldUserService extends GenericService<CsldUser> {
+    public static final int USER_IMAGE_SIZE=120;
+    public static final int USER_IMAGE_LEFTTOP_PERCENT=10;
+
     public CsldUser getById(Integer id);
 
     boolean saveOrUpdate(CsldUser user);

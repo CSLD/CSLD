@@ -8,6 +8,7 @@ import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Image;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.FileService;
+import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.utils.Pwd;
 import cz.larpovadatabaze.validator.UniqueUserValidator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -35,10 +36,13 @@ import java.util.List;
  * Panel used for registering new user or adding new Author into the database.
  */
 public abstract class CreateOrUpdateUserPanel extends Panel {
+
     @SpringBean
     CsldUserService csldUserService;
     @SpringBean
     FileService fileService;
+    @SpringBean
+    ImageResizingStrategyFactoryService imageResizingStrategyFactoryService;
 
     private FileUploadField fileUpload;
     @SuppressWarnings("unused")
@@ -145,7 +149,7 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
         }
         if (uploads != null) {
             for (FileUpload upload : uploads) {
-                String filePath = fileService.saveImageFileAndReturnPath(upload, 120, 120).path;
+                String filePath = fileService.saveImageFileAndReturnPath(upload, imageResizingStrategyFactoryService.getCuttingSquareStrategy(CsldUserService.USER_IMAGE_SIZE, CsldUserService.USER_IMAGE_LEFTTOP_PERCENT)).path;
                 try
                 {
                     Image image = new Image();

@@ -7,6 +7,7 @@ import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Image;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.FileService;
+import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.Pwd;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -38,6 +39,8 @@ public class UpdateUserPanel extends Panel {
     ImageService imageService;
     @SpringBean
     FileService fileService;
+    @SpringBean
+    ImageResizingStrategyFactoryService imageResizingStrategyFactoryService;
 
     private FileUploadField fileUpload;
     @SuppressWarnings("unused")
@@ -136,7 +139,7 @@ public class UpdateUserPanel extends Panel {
         final List<FileUpload> uploads = fileUpload.getFileUploads();
         if (uploads != null) {
             for (FileUpload upload : uploads) {
-                String filePath = fileService.saveImageFileAndReturnPath(upload, 120 , 120).path;
+                String filePath = fileService.saveImageFileAndReturnPath(upload, imageResizingStrategyFactoryService.getCuttingSquareStrategy(CsldUserService.USER_IMAGE_SIZE, CsldUserService.USER_IMAGE_LEFTTOP_PERCENT)).path;
                 try
                 {
                     Image image = new Image();
