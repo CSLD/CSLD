@@ -36,7 +36,7 @@ public class AdministratorPanel extends Panel {
                 CsldUser admin = item.getModelObject();
 
                 PageParameters params = new PageParameters();
-                params.add("userId", admin.getId());
+                params.add("id", admin.getId());
                 final BookmarkablePageLink<CsldBasePage> adminLink =
                         new BookmarkablePageLink<CsldBasePage>("administratorLink", UserDetail.class, params);
                 final Image adminImage = new Image("administratorImage",
