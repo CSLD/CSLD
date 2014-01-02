@@ -28,7 +28,7 @@ public interface PhotoService extends GenericService<Photo> {
      * @param game Game to create photo for
      * @param fileItem File item from
      *
-     * @return
+     * @return True when photo added, false when maximum number of photos reached.
      */
     boolean createNewPhotoForGame(Game game, FileItem fileItem);
 }

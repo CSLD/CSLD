@@ -20,6 +20,8 @@ import java.util.List;
  */
 @Repository
 public class PhotoServiceImpl implements PhotoService {
+    private final int MAX_PHOTOS_PER_GAME = 10;
+
     @Autowired
     private PhotoDAO photoDao;
 
@@ -94,6 +96,8 @@ public class PhotoServiceImpl implements PhotoService {
         image.setPath(ret.path);
         image.setContentType(fileItem.getContentType());
 
+        if (game.getPhotos().size() >= MAX_PHOTOS_PER_GAME) return false; // No more photos can be added
+
         Photo photo = new Photo();
         photo.setImage(image);
         photo.setAuthor(1);
@@ -104,6 +108,8 @@ public class PhotoServiceImpl implements PhotoService {
 
         game.getPhotos().add(photo);
 
-        return gameService.saveOrUpdate(game);
+        gameService.saveOrUpdate(game);
+
+        return true;
     }
 }

@@ -207,7 +207,9 @@ public class PhotoPanel extends Panel {
                             }
 
                             // Create photo
-                            photoService.createNewPhotoForGame((Game)PhotoPanel.this.getDefaultModelObject(), fi);
+                            if (!photoService.createNewPhotoForGame((Game)PhotoPanel.this.getDefaultModelObject(), fi)) {
+                                storedErrors.add(fi.getName() + ": Dosažen maximální počet obrázků ke hře");
+                            }
                         }
                         catch(Exception e) {
                             logger.error("Error while adding photo", e);
