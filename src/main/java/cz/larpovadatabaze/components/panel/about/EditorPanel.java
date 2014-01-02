@@ -36,7 +36,7 @@ public class EditorPanel extends Panel {
                 CsldUser moderator = item.getModelObject();
 
                 PageParameters params = new PageParameters();
-                params.add("userId", moderator.getId());
+                params.add("id", moderator.getId());
                 final BookmarkablePageLink<CsldBasePage> moderatorLink =
                         new BookmarkablePageLink<CsldBasePage>("moderatorLink", UserDetail.class, params);
                 final Image moderatorImage = new Image("moderatorImage",

@@ -33,7 +33,7 @@ http://www.springframework.org/schema/jee http://www.springframework.org/schema/
     </bean>
 
     <bean id="templateMessage" class="org.springframework.mail.SimpleMailMessage">
-        <property name="from" value="hrajlarp111@gmail.com"/>
+        <property name="from" value="larpovadatabaze@gmail.com"/>
         <property name="subject" value="Zapomenuté heslo"/>
     </bean>
 
