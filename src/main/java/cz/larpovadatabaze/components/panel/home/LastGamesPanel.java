@@ -75,7 +75,7 @@ public class LastGamesPanel extends Panel {
             gameFragment.add(new Label("players", Model.of(game.getPlayers())));
 
             String gameDescription = Jsoup.parse(game.getDescription()).text();
-            if (gameDescription.length() > MAX_CHARS_IN_DESCRIPTION) gameDescription = gameDescription.substring(MAX_CHARS_IN_DESCRIPTION);
+            if (gameDescription.length() > MAX_CHARS_IN_DESCRIPTION) gameDescription = gameDescription.substring(0, MAX_CHARS_IN_DESCRIPTION);
             gameFragment.add(new Label("gameDescription", gameDescription));
 
             final BookmarkablePageLink<CsldBasePage> gameMoreLink =
