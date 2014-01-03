@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.panel.search;
 
+import cz.larpovadatabaze.components.common.icons.GameIcon;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.entities.Game;
@@ -11,7 +12,6 @@ import cz.larpovadatabaze.utils.Filter;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -60,7 +60,7 @@ public class GamesResultsPanel extends Panel {
 
                 final BookmarkablePageLink<CsldBasePage> gameLink =
                         new BookmarkablePageLink<CsldBasePage>("gameLink", GameDetail.class, params);
-                final Image gameLinkImage = new Image("gameLinkImage", imageService.getImageResource(game));
+                final GameIcon gameLinkImage = new GameIcon("gameLinkImage", item.getModel());
                 gameLink.add(gameLinkImage);
                 item.add(gameLink);
 

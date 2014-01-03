@@ -1,14 +1,15 @@
 package cz.larpovadatabaze.components.panel.author;
 
+import cz.larpovadatabaze.components.common.AbstractCsldPanel;
+import cz.larpovadatabaze.components.common.icons.UserIcon;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -17,17 +18,34 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 /**
  * It contains information about the author, who created most games.
  */
-public class MostActiveCreators extends Panel {
+public class MostActiveCreators extends AbstractCsldPanel<CsldUser> {
     @SpringBean
     CsldUserService csldUserService;
 
     @SpringBean
     ImageService imageService;
 
+    private class UserModel extends LoadableDetachableModel<CsldUser> {
+
+        @Override
+        protected CsldUser load() {
+            CsldUser res = csldUserService.getWithMostAuthored();
+            if (res == null) res = CsldUser.getEmptyUser();
+            return res;
+        }
+    }
+
     public MostActiveCreators(String id) {
         super(id);
+        setDefaultModel(new UserModel());
+    }
 
-        CsldUser author = csldUserService.getWithMostAuthored();
+
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
+
+        CsldUser author = getModelObject();
         if(author == null){
             author = CsldUser.getEmptyUser();
             setVisible(false);
@@ -41,8 +59,7 @@ public class MostActiveCreators extends Panel {
 
         final BookmarkablePageLink<CsldBasePage> moderatorLink =
                 new BookmarkablePageLink<CsldBasePage>("mostActiveCommenter", UserDetail.class, params);
-        final Image moderatorImage = new Image("mostActiveCommenterImage",
-                imageService.getImageResource(author));
+        final UserIcon moderatorImage = new UserIcon("mostActiveCommenterImage", getModel());
         moderatorLink.add(moderatorImage);
         add(moderatorLink);
 

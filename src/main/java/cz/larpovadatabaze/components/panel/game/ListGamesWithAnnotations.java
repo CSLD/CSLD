@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import cz.larpovadatabaze.components.common.icons.GameIcon;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.entities.Game;
@@ -8,7 +9,6 @@ import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -44,7 +44,7 @@ public class ListGamesWithAnnotations extends Panel {
 
                 final BookmarkablePageLink<CsldBasePage> gameLink =
                         new BookmarkablePageLink<CsldBasePage>("gameIconLink", GameDetail.class, params);
-                final Image gameLinkImage = new Image("gameIcon", imageService.getImageResource(game));
+                final GameIcon gameLinkImage = new GameIcon("gameIcon", item.getModel());
                 gameLink.add(gameLinkImage);
                 item.add(gameLink);
 

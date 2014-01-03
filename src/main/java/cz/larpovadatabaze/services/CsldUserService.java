@@ -8,7 +8,7 @@ import java.util.List;
 /**
  *
  */
-public interface CsldUserService extends GenericService<CsldUser> {
+public interface CsldUserService extends GenericService<CsldUser>, IIconReferenceProvider<CsldUser> {
     public static final int USER_IMAGE_SIZE=120;
     public static final int USER_IMAGE_LEFTTOP_PERCENT=10;
 

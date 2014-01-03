@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import cz.larpovadatabaze.components.common.icons.UserIcon;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.components.page.user.UserDetail;
@@ -11,11 +12,11 @@ import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -54,7 +55,7 @@ public class CommentsListPanel extends Panel {
 
         ListView<Comment> commentList = new ListView<Comment>("commentList", comments) {
             @Override
-            protected void populateItem(ListItem<Comment> item) {
+            protected void populateItem(final ListItem<Comment> item) {
                 Comment actualComment = item.getModelObject();
                 SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy");
                 Date dateOfComment = new Date();
@@ -68,8 +69,12 @@ public class CommentsListPanel extends Panel {
 
                 CsldUser authorOfComment = actualComment.getUser();
 
-                final Image authorsAvatar = new Image("authorsAvatar",
-                        imageService.getImageResource(authorOfComment));
+                final UserIcon authorsAvatar = new UserIcon("authorsAvatar", new AbstractReadOnlyModel<CsldUser>() {
+                    @Override
+                    public CsldUser getObject() {
+                        return item.getModelObject().getUser();
+                    }
+                });
                 item.add(authorsAvatar);
 
                 PageParameters params = new PageParameters();

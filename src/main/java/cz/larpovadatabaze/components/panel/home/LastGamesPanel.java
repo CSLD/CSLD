@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.panel.home;
 
+import cz.larpovadatabaze.components.common.icons.GameIcon;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.components.page.game.ListLastGames;
@@ -9,7 +10,6 @@ import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -56,8 +56,7 @@ public class LastGamesPanel extends Panel {
 
             final BookmarkablePageLink<CsldBasePage> gameLink =
                     new BookmarkablePageLink<CsldBasePage>("gameIconLink", GameDetail.class, params);
-            final Image gameLinkImage = new Image("gameIcon",
-                    imageService.getImageResource(game));
+            final GameIcon gameLinkImage = new GameIcon("gameIcon", item.getModel());
             gameLink.add(gameLinkImage);
             gameFragment.add(gameLink);
 

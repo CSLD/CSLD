@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.components.panel.game;
 
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
+import cz.larpovadatabaze.components.common.icons.GameIcon;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.group.GroupDetail;
 import cz.larpovadatabaze.components.page.user.UserDetail;
@@ -10,7 +11,6 @@ import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.services.ImageService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.link.Link;
@@ -42,7 +42,7 @@ public class GameDetailPanel extends AbstractCsldPanel<Game> {
 
         Game game = getModelObject();
 
-        final Image gameIcon = new Image("gameImage", imageService.getImageResource(game));
+        final GameIcon gameIcon = new GameIcon("gameImage", getModel());
         add(gameIcon);
         add(new Label("name"));
 

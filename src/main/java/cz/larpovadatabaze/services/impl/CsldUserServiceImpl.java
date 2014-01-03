@@ -1,10 +1,11 @@
 package cz.larpovadatabaze.services.impl;
 
 import cz.larpovadatabaze.dao.CsldUserDAO;
-import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.ImageService;
+import org.apache.wicket.request.resource.ResourceReference;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,11 @@ import java.util.List;
 public class CsldUserServiceImpl implements CsldUserService {
     @Autowired
     private CsldUserDAO csldUserDao;
+
+    @Autowired
+    private ImageService imageService;
+
+    private ResourceReference userIconReference;
 
     @Override
     public CsldUser getById(Integer id) {
@@ -136,4 +142,14 @@ public class CsldUserServiceImpl implements CsldUserService {
         return csldUserDao.getAuthorsByName(first, amountPerPage);
     }
 
+    @Override
+    public ResourceReference getIconReference() {
+        // Reference is singleton, lazy-inited
+        synchronized(this) {
+            if (userIconReference == null) {
+                userIconReference = imageService.createImageTypeResourceReference(csldUserDao);
+            }
+        }
+        return userIconReference;
+    }
 }

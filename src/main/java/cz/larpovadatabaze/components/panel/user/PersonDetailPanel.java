@@ -1,37 +1,35 @@
 package cz.larpovadatabaze.components.panel.user;
 
+import cz.larpovadatabaze.components.common.AbstractCsldPanel;
+import cz.larpovadatabaze.components.common.icons.UserIcon;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Person;
 import cz.larpovadatabaze.entities.UserPlayedGame;
 import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * It shows detail of user.
  */
-public class PersonDetailPanel extends Panel {
+public class PersonDetailPanel extends AbstractCsldPanel<CsldUser> {
 
     @SpringBean
     private ImageService imageService;
 
-    private final CsldUser user;
-
-    public PersonDetailPanel(String id, CsldUser user) {
-        super(id);
-        this.user = user;
+    public PersonDetailPanel(String id, IModel<CsldUser> model) {
+        super(id, model);
     }
 
     @Override
     protected void onInitialize() {
         super.onInitialize();
 
-        final Image userImage = new Image("userImage",
-                imageService.getImageResource(user));
+        final UserIcon userImage = new UserIcon("userImage", getModel());
         add(userImage);
 
+        CsldUser user = getModelObject();
         Person person = user.getPerson();
         add(new Label("nickname",person.getNickNameView()));
         add(new Label("name",person.getName()));

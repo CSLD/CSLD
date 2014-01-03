@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.page.game;
 
+import cz.larpovadatabaze.components.common.icons.UserIcon;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.entities.Comment;
@@ -10,11 +11,11 @@ import cz.larpovadatabaze.providers.SortableCommentProvider;
 import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -40,7 +41,7 @@ public class ListComments extends CsldBasePage{
     public ListComments(){
         DataView<Comment> commentsView = new DataView<Comment>("commentsView", sortableCommentProvider) {
             @Override
-            protected void populateItem(Item<Comment> item) {
+            protected void populateItem(final Item<Comment> item) {
                 Comment comment = item.getModelObject();
                 Game game = comment.getGame();
                 CsldUser commenter = comment.getUser();
@@ -52,8 +53,12 @@ public class ListComments extends CsldBasePage{
 
                 final BookmarkablePageLink<CsldBasePage> commenterIconLink =
                         new BookmarkablePageLink<CsldBasePage>("commenterIconLink", UserDetail.class, userParams);
-                final Image commenterIcon = new Image("commenterIcon",
-                        imageService.getImageResource(commenter));
+                final UserIcon commenterIcon = new UserIcon("commenterIcon", new AbstractReadOnlyModel<CsldUser>() {
+                    @Override
+                    public CsldUser getObject() {
+                        return item.getModelObject().getUser();
+                    }
+                });
                 commenterIconLink.add(commenterIcon);
                 item.add(commenterIconLink);
 

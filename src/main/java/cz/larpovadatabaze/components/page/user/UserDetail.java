@@ -14,6 +14,7 @@ import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.RatingService;
 import cz.larpovadatabaze.utils.HbUtils;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -35,14 +36,11 @@ public class UserDetail extends CsldBasePage {
     @SpringBean
     RatingService ratingService;
 
-    private int authorId;
-
     private class UserCommentsModel extends LoadableDetachableModel<List<Comment>> {
 
         @Override
         protected List<Comment> load() {
-            CsldUser user = csldUserService.getById(authorId);
-            List<Comment> userComments = new ArrayList<Comment>(user.getCommented());
+            List<Comment> userComments = new ArrayList<Comment>(((CsldUser)getDefaultModelObject()).getCommented());
             Collections.sort(userComments, new Comparator<Comment>() {
                 @Override
                 public int compare(Comment o1, Comment o2) {
@@ -62,17 +60,31 @@ public class UserDetail extends CsldBasePage {
         }
     }
 
+    private class UserModel extends LoadableDetachableModel<CsldUser> {
+
+        final int userId;
+
+        private UserModel(int userId) {
+            this.userId = userId;
+        }
+
+        @Override
+        protected CsldUser load() {
+            return csldUserService.getById(userId);
+        }
+    }
+
     public UserDetail(PageParameters params){
-        authorId = params.get("id").to(Integer.class);
+        setDefaultModel(new UserModel(params.get("id").to(Integer.class)));
     }
 
     @Override
     protected void onInitialize() {
         super.onInitialize();
 
-        CsldUser user = csldUserService.getById(authorId);
+        CsldUser user = (CsldUser)getDefaultModelObject();
 
-        add(new PersonDetailPanel("personDetail", user));
+        add(new PersonDetailPanel("personDetail", (IModel<CsldUser>)getDefaultModel()));
         add(new CommentsListPanel("comments", new UserCommentsModel(), true));
 
         SortableAnnotatedProvider provider = new SortableAnnotatedProvider(gameService);

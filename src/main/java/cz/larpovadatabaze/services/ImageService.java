@@ -1,8 +1,10 @@
 package cz.larpovadatabaze.services;
 
+import cz.larpovadatabaze.api.GenericHibernateDAO;
 import cz.larpovadatabaze.entities.IEntityWithImage;
 import cz.larpovadatabaze.entities.Image;
 import org.apache.wicket.request.resource.IResource;
+import org.apache.wicket.request.resource.ResourceReference;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,29 +13,21 @@ import org.apache.wicket.request.resource.IResource;
  * Time: 19:00
  */
 public interface ImageService extends GenericService<Image> {
+    // @see getImageResourceReference()
+    public static final String RESOURCE_REFERENCE_ID_PARAM_NAME="id";
 
     public boolean insert(Image image);
 
-    /**
-     * @param image Image to retrieve
-     *
-     * @return Resource reference for the image
-     */
     public IResource getPredefinedImageResource(IEntityWithImage.IPredefinedImage image);
 
-    /**
-     * @param image Image to retrieve (may be NULL)
-     * @param defaultImage Default image to use when specified image is NULL
-     *
-     * @return Resource reference for the image
-     */
-    public IResource getImageResource(Image image, IEntityWithImage.IPredefinedImage defaultImage);
 
     /**
-     * Get associated image resource for entity that is IEntityWithImage
+     * Create resource reference for entity type
      *
-     * @param entity Entity get image for
-     * @return Image resource for the user
+     * @param dao DAO to use to get entity
+     *
+     * @return Resource reference for image associated with this type entity. Resource expects entity ID in the parameter
+     * named with string in constant RESOURCE_REFERENCE_ID_PARAM_NAME (see above)
      */
-    public IResource getImageResource(IEntityWithImage entity);
+    public ResourceReference createImageTypeResourceReference(GenericHibernateDAO<? extends IEntityWithImage, Integer> dao);
 }

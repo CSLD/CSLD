@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.panel.home;
 
+import cz.larpovadatabaze.components.common.icons.UserIcon;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.components.page.game.ListComments;
@@ -12,12 +13,12 @@ import cz.larpovadatabaze.services.CommentService;
 import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -47,7 +48,7 @@ public class LastCommentsPanel extends Panel {
         }
 
         @Override
-        protected void populateItem(ListItem<Comment> item) {
+        protected void populateItem(final ListItem<Comment> item) {
             Comment comment = item.getModelObject();
             Game game = comment.getGame();
             CsldUser commenter = comment.getUser();
@@ -62,8 +63,12 @@ public class LastCommentsPanel extends Panel {
 
             final BookmarkablePageLink<CsldBasePage> commenterIconLink =
                     new BookmarkablePageLink<CsldBasePage>("commenterIconLink", UserDetail.class, userParams);
-            final Image commenterIcon = new Image("commenterIcon",
-                    imageService.getImageResource(commenter));
+            final UserIcon commenterIcon = new UserIcon("commenterIcon", new AbstractReadOnlyModel<CsldUser>() {
+                @Override
+                public CsldUser getObject() {
+                    return item.getModelObject().getUser();
+                }
+            });
             commenterIconLink.add(commenterIcon);
             commentFragment.add(commenterIconLink);
 

@@ -1,12 +1,12 @@
 package cz.larpovadatabaze.components.panel.about;
 
+import cz.larpovadatabaze.components.common.icons.UserIcon;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -39,8 +39,7 @@ public class EditorPanel extends Panel {
                 params.add("id", moderator.getId());
                 final BookmarkablePageLink<CsldBasePage> moderatorLink =
                         new BookmarkablePageLink<CsldBasePage>("moderatorLink", UserDetail.class, params);
-                final Image moderatorImage = new Image("moderatorImage",
-                        imageService.getImageResource(moderator));
+                final UserIcon moderatorImage = new UserIcon("moderatorImage", item.getModel());
                 moderatorLink.add(moderatorImage);
                 item.add(moderatorLink);
 

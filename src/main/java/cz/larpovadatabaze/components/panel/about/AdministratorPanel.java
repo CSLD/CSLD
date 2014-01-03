@@ -1,12 +1,12 @@
 package cz.larpovadatabaze.components.panel.about;
 
+import cz.larpovadatabaze.components.common.icons.UserIcon;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -39,8 +39,7 @@ public class AdministratorPanel extends Panel {
                 params.add("id", admin.getId());
                 final BookmarkablePageLink<CsldBasePage> adminLink =
                         new BookmarkablePageLink<CsldBasePage>("administratorLink", UserDetail.class, params);
-                final Image adminImage = new Image("administratorImage",
-                        imageService.getImageResource(admin));
+                final UserIcon adminImage = new UserIcon("administratorImage", item.getModel());
                 adminLink.add(adminImage);
                 item.add(adminLink);
 

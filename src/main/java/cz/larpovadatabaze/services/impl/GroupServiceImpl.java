@@ -4,10 +4,11 @@ import cz.larpovadatabaze.dao.GroupDAO;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.services.GroupService;
+import cz.larpovadatabaze.services.ImageService;
+import org.apache.wicket.request.resource.ResourceReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -17,6 +18,11 @@ import java.util.List;
 public class GroupServiceImpl implements GroupService {
     @Autowired
     private GroupDAO groupDAO;
+
+    @Autowired
+    private ImageService imageService;
+
+    private ResourceReference iconResourceReference;
 
     @Override
     public boolean insert(CsldGroup group) {
@@ -71,5 +77,16 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public int getAverageOfGroup(CsldGroup group) {
         return groupDAO.getAverageOfGroup(group);
+    }
+
+    @Override
+    public ResourceReference getIconReference() {
+        synchronized(this) {
+            if (iconResourceReference == null) {
+                iconResourceReference = imageService.createImageTypeResourceReference(groupDAO);
+            }
+        }
+
+        return iconResourceReference;
     }
 }

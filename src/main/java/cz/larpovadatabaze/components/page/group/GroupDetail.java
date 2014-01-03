@@ -11,6 +11,8 @@ import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.providers.SortableAnnotatedProvider;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.GroupService;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -24,19 +26,30 @@ public class GroupDetail extends CsldBasePage {
     @SpringBean
     GameService gameService;
 
-    private final Integer groupId;
+    private class GroupModel extends LoadableDetachableModel<CsldGroup> {
+        private final int groupId;
+
+        private GroupModel(int groupId) {
+            this.groupId = groupId;
+        }
+
+        @Override
+        protected CsldGroup load() {
+            return groupService.getById(groupId);
+        }
+    }
 
     public GroupDetail(PageParameters params){
-        groupId = params.get("id").to(Integer.class);
+        setDefaultModel(new GroupModel(params.get("id").to(Integer.class)));
     }
 
     @Override
     protected void onInitialize() {
         super.onInitialize();
 
-        CsldGroup group = groupService.getById(groupId);
+        CsldGroup group = (CsldGroup)getDefaultModelObject();
 
-        GroupDetailPanel groupPanel = new GroupDetailPanel("groupDetail", group);
+        GroupDetailPanel groupPanel = new GroupDetailPanel("groupDetail", (IModel<CsldGroup>)getDefaultModel());
         add(groupPanel);
 
         add(new AddGroupPanel("addGroup"));

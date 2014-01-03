@@ -9,7 +9,9 @@ import cz.larpovadatabaze.security.CsldRoles;
 import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
+import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
+import org.apache.wicket.request.resource.ResourceReference;
 import org.hibernate.SessionFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -37,6 +39,11 @@ public class GameServiceImpl implements GameService {
 
     @Autowired
     private ImageResizingStrategyFactoryService imageResizingStrategyFactoryService;
+
+    @Autowired
+    private ImageService imageService;
+
+    private ResourceReference iconResourceReference;
 
     @Override
     public Game getById(Integer id) {
@@ -259,5 +266,16 @@ public class GameServiceImpl implements GameService {
         }
 
         return false;
+    }
+
+    @Override
+    public ResourceReference getIconReference() {
+        synchronized (this) {
+            if (iconResourceReference == null) {
+                iconResourceReference = imageService.createImageTypeResourceReference(gameDAO);
+            }
+        }
+
+        return iconResourceReference;
     }
 }

@@ -3,13 +3,12 @@ package cz.larpovadatabaze.services;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
  *
  */
-public interface GroupService extends GenericService<CsldGroup> {
+public interface GroupService extends GenericService<CsldGroup>, IIconReferenceProvider<CsldGroup> {
     public boolean insert(CsldGroup group);
 
     List<CsldGroup> orderedByName(long first, long amountPerPage);

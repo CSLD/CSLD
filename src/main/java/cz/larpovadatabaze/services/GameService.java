@@ -12,7 +12,7 @@ import java.util.List;
 /**
  *
  */
-public interface GameService extends GenericService<Game> {
+public interface GameService extends GenericService<Game>, IIconReferenceProvider<Game> {
     public Game getById(Integer id);
 
     /**

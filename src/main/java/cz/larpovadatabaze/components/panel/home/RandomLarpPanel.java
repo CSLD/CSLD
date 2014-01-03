@@ -1,5 +1,7 @@
 package cz.larpovadatabaze.components.panel.home;
 
+import cz.larpovadatabaze.components.common.AbstractCsldPanel;
+import cz.larpovadatabaze.components.common.icons.GameIcon;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.entities.Game;
@@ -8,9 +10,8 @@ import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -18,7 +19,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 /**
  * It shows info about randomly choosen Larp from database.
  */
-public class RandomLarpPanel extends Panel {
+public class RandomLarpPanel extends AbstractCsldPanel<Game> {
     @SpringBean
     GameService gameService;
 
@@ -27,10 +28,31 @@ public class RandomLarpPanel extends Panel {
 
     private boolean show = true;
 
-    public RandomLarpPanel(String id) {
-        super(id);
+    private class GameModel extends LoadableDetachableModel<Game> {
+        private final int gameId;
 
-        Game game = gameService.getRandomGame();
+        public GameModel() {
+            gameId = gameService.getRandomGame().getId();
+        }
+
+
+        @Override
+        protected Game load() {
+            return gameService.getById(gameId);
+        }
+    }
+
+    public RandomLarpPanel(String id) {
+        super(id, null);
+        setDefaultModel(new GameModel());
+    }
+
+
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
+
+        Game game = getModelObject();
         if(game == null){
             game = Game.getEmptyGame();
             game.setId(-1);
@@ -42,7 +64,7 @@ public class RandomLarpPanel extends Panel {
 
         final BookmarkablePageLink<CsldBasePage> gameLink =
                 new BookmarkablePageLink<CsldBasePage>("gameIconLink", GameDetail.class, params);
-        final Image gameLinkImage = new Image("gameIcon", imageService.getImageResource(game));
+        final GameIcon gameLinkImage = new GameIcon("gameIcon", getModel());
         gameLink.add(gameLinkImage);
         add(gameLink);
 

@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.services.impl;
 
+import cz.larpovadatabaze.api.GenericHibernateDAO;
 import cz.larpovadatabaze.dao.ImageDAO;
 import cz.larpovadatabaze.entities.IEntityWithImage;
 import cz.larpovadatabaze.entities.Image;
@@ -7,6 +8,7 @@ import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.request.resource.ResourceReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -55,12 +57,10 @@ public class ImageServiceImpl implements ImageService {
         throw new UnsupportedOperationException("This does not support autocompletion");
     }
 
-    @Override
     public IResource getPredefinedImageResource(IEntityWithImage.IPredefinedImage image) {
         return new PackageResourceReference(image.getBaseClass(), image.getPath()).getResource();
     }
 
-    @Override
     public IResource getImageResource(Image image, IEntityWithImage.IPredefinedImage defaultImage) {
         if (image != null) {
             try {
@@ -74,8 +74,26 @@ public class ImageServiceImpl implements ImageService {
         else return getPredefinedImageResource(defaultImage);
     }
 
-    @Override
     public IResource getImageResource(IEntityWithImage entity) {
         return getImageResource(entity.getImage(), entity.getDefaultImage());
+    }
+
+    @Override
+    public ResourceReference createImageTypeResourceReference(final GenericHibernateDAO<? extends IEntityWithImage, Integer> dao) {
+        return new ResourceReference(ImageService.class, dao.getClass().getSimpleName()) {
+            @Override
+            public IResource getResource() {
+                return new IResource() {
+                    @Override
+                    public void respond(Attributes attributes) {
+                        int id = attributes.getParameters().get(RESOURCE_REFERENCE_ID_PARAM_NAME).toInt();
+
+                        // Load
+                        IEntityWithImage entity = dao.findById(id, false);
+                        getImageResource(entity).respond(attributes);
+                    }
+                };
+            }
+        };
     }
 }

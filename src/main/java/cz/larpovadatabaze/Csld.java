@@ -84,14 +84,6 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
 	protected void init() {
 		super.init();
 
-        /*
-        List<Logger> loggers = Collections.<Logger>list(LogManager.getCurrentLoggers());
-        loggers.add(LogManager.getRootLogger());
-        for ( Logger logger : loggers ) {
-            logger.setLevel(Level.OFF);
-        }
-        */
-
         // Exception reporting
         getRequestCycleListeners().add(new AbstractRequestCycleListener() {
             final Logger logger = Logger.getLogger(Csld.class);
@@ -132,6 +124,8 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         });
 
         mountPages();
+
+        mountResources();
 	}
 
     @Override
@@ -192,6 +186,11 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         mountPage("/home", HomePage.class);
         mountPage("/test", TestPage.class);
     }
+
+    private void mountResources() {
+        mountResource("/user-icon", csldUserService.getIconReference());
+    }
+
 
     public static String getBaseContext(){
         return "upload/";
