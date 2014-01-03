@@ -84,6 +84,10 @@ public class GameDetailPanel extends AbstractCsldPanel<Game> {
         ListView<CsldUser> authorsList = new ListView<CsldUser>("authors",authors) {
             @Override
             protected void populateItem(ListItem<CsldUser> item) {
+                // Add separator
+                item.add(new Label("separator", (item.getIndex() == 0)?"":", "));
+
+                // Add author itself
                 CsldUser author = item.getModelObject();
                 PageParameters params = new PageParameters();
                 params.add("id", author.getId());
@@ -92,6 +96,7 @@ public class GameDetailPanel extends AbstractCsldPanel<Game> {
                 authorDetailLink.add(
                         new Label("authorName", author.getPerson().getNickNameView() + " " + author.getPerson().getName()));
                 item.add(authorDetailLink);
+
             }
         };
         add(authorsList);
@@ -100,13 +105,16 @@ public class GameDetailPanel extends AbstractCsldPanel<Game> {
         ListView<CsldGroup> groupsList = new ListView<CsldGroup>("authorsGroups",groups) {
             @Override
             protected void populateItem(ListItem<CsldGroup> item) {
+                // Add separator
+                item.add(new Label("separator", (item.getIndex() == 0)?"":", "));
+
+                // Add group
                 CsldGroup group = item.getModelObject();
                 PageParameters params = new PageParameters();
                 params.add("id", group.getId());
 
                 Link<CsldBasePage> groupDetailLink = new BookmarkablePageLink<CsldBasePage>("authorGroupDetailLink", GroupDetail.class, params);
-                groupDetailLink.add(
-                        new Label("authorGroupName", group.getName()));
+                groupDetailLink.add(new Label("authorGroupName", group.getName()));
                 item.add(groupDetailLink);
             }
         };

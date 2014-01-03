@@ -2075,17 +2075,6 @@ select[name=stateOfGame]{
     display: block;
 }
 
-.popisek .authors{
-    float: left;
-}
-.popisek .authors:after{
-  content: ",";
-  margin-right: 5px;
-}
-.popisek .authors:last-child:after{
-  content: "";
-}
-
 .photoImage {
     float:left;
     margin-right: 5px;
