@@ -10,6 +10,7 @@ import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -21,17 +22,48 @@ public class CreateOrUpdateGamePage extends CsldBasePage {
     @SpringBean
     GameService gameService;
 
-    public CreateOrUpdateGamePage(PageParameters params){
-        Game game = null;
-        if(!params.isEmpty()){
-            Integer id = params.get("id").to(Integer.class);
-            game = gameService.getById(id);
-            if(HbUtils.isProxy(game)){
-                game = HbUtils.deproxy(game);
-            }
+    /**
+     * Model for game specified by game id
+     */
+    private class GameModel extends LoadableDetachableModel<Game> {
+
+        // Game id. We could also store id as page property.
+        private Integer gameId;
+
+        private GameModel(Integer gameId) {
+            this.gameId = gameId;
         }
 
-        add(new CreateOrUpdateGamePanel("createOrUpdateGame", game){
+        @Override
+        protected Game load() {
+            if (gameId == null) return Game.getEmptyGame(); // Empty game
+
+            Game game = gameService.getById(gameId);
+            if(HbUtils.isProxy(game)){
+            }    game = HbUtils.deproxy(game);
+
+
+            return game;
+        }
+
+        @Override
+        public void detach() {
+            if (gameId != null) {
+                // Detach only when not creating a new game
+                super.detach();
+            }
+        }
+    }
+    public CreateOrUpdateGamePage(PageParameters params){
+        if(!params.isEmpty()) setDefaultModel(new GameModel(params.get("id").to(Integer.class)));
+        else setDefaultModel(new GameModel(null));
+    }
+
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
+
+        add(new CreateOrUpdateGamePanel("createOrUpdateGame", (GameModel)getDefaultModel()) {
             @Override
             protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
                 super.onCsldAction(target, form);

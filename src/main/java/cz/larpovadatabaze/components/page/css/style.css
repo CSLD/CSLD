@@ -2043,16 +2043,36 @@ select[name=stateOfGame]{
     margin-right: 5px;
 }
 
-.popisek .labels{
-    float: left;
-    margin: 3px 5px 3px 0;
+.cmpGameLabelContainer {
+    display: inline-block;
+    position: relative;
+    overflow: visible;
 }
 
-.popisek .labels span{
-    margin-right: 5px;
+.cmpGameLabel {
+    margin: 3px 5px 3px 0;
     padding: 5px;
-    background-color: #F0F0F0;
+    background-color: #FCFCFC;
+    border: 1px #E0E0E0;
+    border-radius: 2px;
     cursor: default;
+}
+
+.cmpGameLabelContainer .tooltip {
+    display: none;
+    position: absolute;
+    left: 5px;
+    bottom: 25px;
+    width: 300px;
+    border: 1px solid #808080;
+    border-radius: 3px;
+    background: whitesmoke;
+    padding: 4px;
+    z-index: 1;
+}
+
+.cmpGameLabelContainer:hover .tooltip {
+    display: block;
 }
 
 .popisek .authors{

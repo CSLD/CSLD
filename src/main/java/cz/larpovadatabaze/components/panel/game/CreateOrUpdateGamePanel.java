@@ -4,6 +4,7 @@ import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
 import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.behavior.ErrorClassAppender;
+import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.panel.ImagePanel;
 import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
 import cz.larpovadatabaze.components.panel.group.CreateOrUpdateGroupPanel;
@@ -26,8 +27,8 @@ import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Bytes;
@@ -38,7 +39,7 @@ import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
  * This panel is used when you want to create or update game in the database.
  * It encapsulates relevant createOrUpdateGame with associated HTML markup.
  */
-public abstract class CreateOrUpdateGamePanel extends Panel {
+public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
     @SpringBean
     GameService gameService;
     @SpringBean
@@ -48,12 +49,16 @@ public abstract class CreateOrUpdateGamePanel extends Panel {
 
     private ChooseLabelsPanel chooseLabels;
 
-    public CreateOrUpdateGamePanel(String id, Game game) {
-        super(id);
+    public CreateOrUpdateGamePanel(String id, IModel<Game> model) {
+        super(id, model);
+    }
 
-        if (game == null) {
-            game = Game.getEmptyGame();
-        }
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
+
+        Game game = getModelObject();
+
         if(game.getVideo() == null) {
             game.setVideo(new Video());
             game.getVideo().setType(0);

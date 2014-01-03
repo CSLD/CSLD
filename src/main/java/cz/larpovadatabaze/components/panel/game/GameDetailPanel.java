@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.group.GroupDetail;
 import cz.larpovadatabaze.components.page.user.UserDetail;
@@ -7,7 +8,7 @@ import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.services.ImageService;
-import org.apache.wicket.AttributeModifier;
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -15,7 +16,6 @@ import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -28,7 +28,7 @@ import java.util.List;
  * This panel shows basic information about the game, like its duration, description.
  * amount of players, labels and so on.
  */
-public class GameDetailPanel extends Panel {
+public class GameDetailPanel extends AbstractCsldPanel<Game> {
     @SpringBean
     ImageService imageService;
 
@@ -40,7 +40,7 @@ public class GameDetailPanel extends Panel {
     protected void onInitialize() {
         super.onInitialize();
 
-        Game game = (Game)getDefaultModelObject();
+        Game game = getModelObject();
 
         final Image gameIcon = new Image("gameImage", imageService.getImageResource(game));
         add(gameIcon);
@@ -52,8 +52,10 @@ public class GameDetailPanel extends Panel {
             protected void populateItem(ListItem<cz.larpovadatabaze.entities.Label> item) {
                 cz.larpovadatabaze.entities.Label label = item.getModelObject();
                 Label labelC = new Label("label", label.getName());
-                labelC.add(new AttributeModifier("title", label.getDescription()));
                 item.add(labelC);
+                Label tooltip = new Label("tooltip", label.getDescription());
+                tooltip.setVisible(StringUtils.isNotBlank(label.getDescription()));
+                item.add(tooltip);
             }
         };
         add(view);

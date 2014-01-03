@@ -6,19 +6,16 @@
     Code - cz.larpovadatabaze.components.panel.game.ChooseLabelsPanel.html
     -->
     <div id="labelsChooserPanel">
-        <div wicket:id="requiredLabels">  <!-- This contains list of Labels. -->
-            <!-- Beginning of repetitive part for every required Label -->
-            <input type="button" class="" wicket:id="name" style="float:left;" />
-            <!-- Enf of repetitive part for every required Label -->
+        <div wicket:id="requiredLabels" class="cmpGameLabelContainer">  <!-- This contains list of Labels. -->
+            <input type="button" class="cmpGameLabel" wicket:id="name" />
+            <div class="tooltip" wicket:id="tooltip"></div>
         </div>
         <span id="labelsRequiredText"><wicket:message key="label.required">Požadované</wicket:message></span>
         <div style="clear:both;height:5px;"></div>
 
-        <div wicket:id="otherLabels">  <!-- This contains list of Labels. -->
-            <!-- Beginning of repetitive part for every optional Label -->
-            <input type="button" class="filtrovatButton" wicket:id="name" style="float:left;"/>
-            <!-- Enf of repetitive part for every optional Label -->
+        <div wicket:id="otherLabels" class="cmpGameLabelContainer">  <!-- This contains list of Labels. -->
+            <input type="button" class="filtrovatButton cmpGameLabel" wicket:id="name"/>
+            <div class="tooltip" wicket:id="tooltip"></div>
         </div>
-        <div style="clear:both"></div>
     </div>
 </wicket:panel>
