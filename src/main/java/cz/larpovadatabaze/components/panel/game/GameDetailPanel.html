@@ -36,7 +36,9 @@
                     <span wicket:id="year" id="year">2012</span>
                 </div>
                 <div class="popisek">
-                    Web: <a wicket:id="webGameLink"></a>
+                    Web: <a wicket:id="webGameLink"></a><br />
+                    <wicket:enclosure child="webGalleryLink">Galerie: <a wicket:id="webGalleryLink"></a><br /></wicket:enclosure>
+                    <wicket:enclosure child="photoAuthor">Autor fotografií: <wicket:container wicket:id="photoAuthor" /></wicket:enclosure>
                 </div>
                 <div class="popisek">
                     <wicket:message key="authorsCapitalized">Autoři:</wicket:message>

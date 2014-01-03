@@ -2571,6 +2571,12 @@ a.active.wantToPlay.button:after{
     font-weight: bold;
 }
 
+.cmpPhotoWarning {
+    font-weight: bold;
+    text-align: center;
+}
+
+
 /* end of gallery */
 
 /* tabs component */

@@ -218,7 +218,7 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
 
     <tr>
         <td>
-            <input class="textbox" type="text" wicket:id="web" title="web" wicket:message="title:form.web"/>
+            <input class="textbox" type="text" wicket:id="web" title="Web" wicket:message="title:form.web"/>
         </td>
         <td class="popis">
             <label for="web">
@@ -230,6 +230,40 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
     <tr>
         <td colspan="2" class="error">
             <span wicket:id="webFeedback"></span>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <input class="textbox" type="text" wicket:id="galleryURL" title="" wicket:message="title:form.galleryURL"/>
+        </td>
+        <td class="popis">
+            <label for="galleryURL">
+                <wicket:message key="form.game.galleryURL">Galerie</wicket:message>
+            </label>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2" class="error">
+            <span wicket:id="galleryFeedback"></span>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <input class="textbox" type="text" wicket:id="photoAuthor" title="" wicket:message="title:form.photoAuthor"/>
+        </td>
+        <td class="popis">
+            <label for="photoAuthor">
+                <wicket:message key="form.game.photoAuthor">Autor fotografií</wicket:message>
+            </label>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2" class="error">
+            <span wicket:id="photoAuthorFeedback"></span>
         </td>
     </tr>
 

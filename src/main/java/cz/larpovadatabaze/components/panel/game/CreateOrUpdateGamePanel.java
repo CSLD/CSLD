@@ -79,6 +79,8 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
 
         createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("year").setLabel(Model.of("Rok")), createOrUpdateGame, "yearFeedback"));
         createOrUpdateGame.add(addFeedbackPanel(new TextField<String>("web"), createOrUpdateGame, "webFeedback"));
+        createOrUpdateGame.add(addFeedbackPanel(new TextField<String>("galleryURL"), createOrUpdateGame, "galleryFeedback"));
+        createOrUpdateGame.add(addFeedbackPanel(new TextField<String>("photoAuthor"), createOrUpdateGame, "photoAuthorFeedback"));
         createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("hours").setLabel(Model.of("Hodiny")), createOrUpdateGame, "hoursFeedback"));
         createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("days").setLabel(Model.of("Dny")), createOrUpdateGame, "daysFeedback"));
         createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("players").setLabel(Model.of("Počet hráčů")), createOrUpdateGame, "playersFeedback"));

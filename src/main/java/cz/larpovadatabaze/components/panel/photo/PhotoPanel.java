@@ -10,6 +10,7 @@ import cz.larpovadatabaze.entities.Photo;
 import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.PhotoService;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -231,10 +232,21 @@ public class PhotoPanel extends Panel {
                 }
             }));
 
+            if (StringUtils.isNotBlank(game.getPhotoAuthor())) {
+                // Author filled in - hide warning
+                wrapper.add(new WebMarkupContainer("photoWarning").setVisible(false));
+            }
+            else {
+                // Add warning
+                wrapper.add(new WebMarkupContainer("photoWarning"));
+            }
         }
         else {
             // Empty upload panel
             wrapper.add(new WebMarkupContainer("uploadPanel"));
+
+            // Empty warning
+            wrapper.add(new WebMarkupContainer("photoWarning").setVisible(false));
         }
     }
 }

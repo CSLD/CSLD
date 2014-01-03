@@ -71,6 +71,15 @@ public class GameDetailPanel extends AbstractCsldPanel<Game> {
 
         add(new ExternalLink("webGameLink", Model.of(game.getWeb()), Model.of(game.getWeb())));
 
+        String galleryURL = game.getGalleryURL();
+        ExternalLink webGalleryLink = new ExternalLink("webGalleryLink", Model.of(galleryURL), Model.of(galleryURL));
+        webGalleryLink.setVisible(StringUtils.isNotBlank(galleryURL));
+        add(webGalleryLink);
+
+        Label photoAuthor = new Label("photoAuthor");
+        photoAuthor.setVisible(StringUtils.isNotBlank(game.getPhotoAuthor()));
+        add(photoAuthor);
+
         List<CsldUser> authors = game.getAuthors();
         ListView<CsldUser> authorsList = new ListView<CsldUser>("authors",authors) {
             @Override

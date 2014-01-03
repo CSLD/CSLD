@@ -294,6 +294,31 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
         this.amountOfRatings = amountOfRatings;
     }
 
+    private String galleryURL;
+
+
+    @Column(name="gallery_url")
+    @Basic
+    public String getGalleryURL() {
+        return galleryURL;
+    }
+
+    public void setGalleryURL(String galleryURL) {
+        this.galleryURL = galleryURL;
+    }
+
+    private String photoAuthor;
+
+    @Column(name="photo_author")
+    @Basic
+    public String getPhotoAuthor() {
+        return photoAuthor;
+    }
+
+    public void setPhotoAuthor(String photoAuthor) {
+        this.photoAuthor = photoAuthor;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

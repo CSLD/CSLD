@@ -172,7 +172,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
                 "game.id, game.name, game.description, game.year, game.web, game.hours," +
                 "game.days, game.players, game.men_role, game.women_role, game.both_role," +
                 "game.added, game.total_rating, game.amount_of_comments, game.amount_of_played, " +
-                "game.amount_of_ratings, game.added_by, game.video, game.image " +
+                "game.amount_of_ratings, game.added_by, game.video, game.image, game.gallery_url, game.photo_author " +
                 "from csld_game game where 1=1 " +
                 "and %s",
                 labelSql);
@@ -271,7 +271,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
                 "game.id, game.name, game.description, game.year, game.web, game.hours," +
                 "game.days, game.players, game.men_role, game.women_role, game.both_role," +
                 "game.added, game.total_rating, game.amount_of_comments, game.amount_of_played, " +
-                "game.amount_of_ratings, game.added_by, game.video, game.image " +
+                "game.amount_of_ratings, game.added_by, game.video, game.image, game.gallery_url, game.photo_author " +
                 "from csld_game game join csld_game_has_author gha on game.id= gha.id_game where " +
                 "gha.id_user = %s order by game.total_rating offset %s limit %s",
                 author.getId(),
@@ -287,7 +287,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
                 "game.id, game.name, game.description, game.year, game.web, game.hours," +
                 "game.days, game.players, game.men_role, game.women_role, game.both_role," +
                 "game.added, game.total_rating, game.amount_of_comments, game.amount_of_played, " +
-                "game.amount_of_ratings, game.added_by, game.video, game.image " +
+                "game.amount_of_ratings, game.added_by, game.video, game.image, game.gallery_url, game.photo_author " +
                 "from csld_game game join csld_game_has_group gha on game.id= gha.id_game where " +
                 "gha.id_group = %s order by game.total_rating offset %s limit %s",
                 csldGroup.getId(),
