@@ -1,12 +1,14 @@
 package cz.larpovadatabaze.utils;
 
-import java.util.regex.Matcher;
+import java.text.Normalizer;
 import java.util.regex.Pattern;
 
 /**
  * This class contains utility methods useful when handling Strings.
  */
 public class Strings {
+    private static final Pattern ACCENTS_PATTERN = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+
     /**
      * This method is useful to remove last character from String. When the String is empty it returns
      * empty String. When the String is null it returns empty String.
@@ -21,60 +23,15 @@ public class Strings {
         return toRemove.substring(0, toRemove.length() - 1);
     }
 
-    public static boolean isMailValid(String email){
-        Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
-        Matcher m = p.matcher(email);
-        return m.matches();
+
+    public static boolean containsIgnoreCaseAndAccents(String haystack, String needle) {
+        final String hsToCompare = removeAccents(haystack).toLowerCase();
+        final String nToCompare = removeAccents(needle).toLowerCase();
+
+        return hsToCompare.contains(nToCompare);
     }
 
-    public static String stringToHTMLString(String string) {
-        StringBuffer sb = new StringBuffer(string.length());
-        // true if last char was blank
-        boolean lastWasBlankChar = false;
-        int len = string.length();
-        char c;
-
-        for (int i = 0; i < len; i++)
-        {
-            c = string.charAt(i);
-            if (c == ' ') {
-                // blank gets extra work,
-                // this solves the problem you get if you replace all
-                // blanks with &nbsp;, if you do that you loss
-                // word breaking
-                if (lastWasBlankChar) {
-                    lastWasBlankChar = false;
-                    sb.append("&nbsp;");
-                }
-                else {
-                    lastWasBlankChar = true;
-                    sb.append(' ');
-                }
-            }
-            else {
-                lastWasBlankChar = false;
-                //
-                // HTML Special Chars
-                if (c == '"')
-                    sb.append("&quot;");
-                else if (c == '&')
-                    sb.append("&amp;");
-                else if (c == '<')
-                    sb.append("&lt;");
-                else if (c == '>')
-                    sb.append("&gt;");
-                else if (c == '\'')
-                    sb.append("''");
-                else if (c == '"')
-                    sb.append("\"\"");
-                else if (c == '\n')
-                    // Handle Newline
-                    sb.append("<br/>");
-                else {
-                    sb.append(c);
-                }
-            }
-        }
-        return sb.toString();
+    public static String removeAccents(String string) {
+        return ACCENTS_PATTERN.matcher(Normalizer.normalize(string, Normalizer.Form.NFD)).replaceAll("");
     }
 }

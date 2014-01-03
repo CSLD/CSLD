@@ -1715,12 +1715,7 @@ a.stitekNapoveda:hover span {
 
 #vyhledavani .levaCastVyhledavani {
     width: 312px;
-    margin-right: 20px;
-    float: left;
-}
-
-#vyhledavani .pravaCastVyhledavani {
-    width: 312px;
+    margin: 0 12px 0 3px;
     float: left;
 }
 

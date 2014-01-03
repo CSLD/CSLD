@@ -14,10 +14,14 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
  */
 public class SearchBoxPanel extends Panel {
 
+    public final static String QUERY_PARAMETER_NAME = "queryString";
+
     public SearchBoxPanel(String id) {
         super(id);
 
-        final Model<String> searchText = Model.of();
+        String query = getWebRequest().getQueryParameters().getParameterValue(QUERY_PARAMETER_NAME).toString(null);
+
+        final Model<String> searchText = Model.of(query);
         Form<String> search = new Form<String>("search"){
             @Override
             protected void onSubmit() {
@@ -35,7 +39,7 @@ public class SearchBoxPanel extends Panel {
 
     private void sendSearchToResults(String searchText){
         PageParameters params = new PageParameters();
-        params.add("queryString", searchText);
+        params.add(QUERY_PARAMETER_NAME, searchText);
 
         throw new RestartResponseException(SearchResults.class, params);
     }

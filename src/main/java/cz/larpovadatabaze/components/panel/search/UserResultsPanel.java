@@ -6,6 +6,8 @@ import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.ImageService;
+import cz.larpovadatabaze.utils.Strings;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -38,7 +40,7 @@ public class UserResultsPanel extends Panel {
         List<CsldUser> allResults = csldUserService.getAll();
         List<CsldUser> searchResults = new ArrayList<CsldUser>();
         for(CsldUser result: allResults) {
-            if(result.getAutoCompleteData().toLowerCase().contains(query.toLowerCase())){
+            if(Strings.containsIgnoreCaseAndAccents(result.getAutoCompleteData(), query)){
                 searchResults.add(result);
             }
         }
@@ -83,6 +85,8 @@ public class UserResultsPanel extends Panel {
             }
         };
         add(fullList);
+
+        add(new WebMarkupContainer("moreResults").setVisible(!shortResults.isEmpty()));
 
         ListView<CsldUser> othersList = new ListView<CsldUser>("shortResults", shortResults) {
             @Override

@@ -9,8 +9,10 @@ import cz.larpovadatabaze.models.FilterGame;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.Filter;
+import cz.larpovadatabaze.utils.Strings;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -20,8 +22,10 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * It shows game results of search.
@@ -78,6 +82,8 @@ public class GamesResultsPanel extends Panel {
         };
         add(fullList);
 
+        add(new WebMarkupContainer("moreResults").setVisible(!shortResults.isEmpty()));
+
         othersList = new ListView<Game>("shortGames", shortResults) {
             @Override
             protected void populateItem(ListItem<Game> item) {
@@ -101,8 +107,11 @@ public class GamesResultsPanel extends Panel {
     private void fillShortFull(String query) {
         List<Game> allResults = gameService.getAll();
         List<Game> searchResults = new ArrayList<Game>();
+        Collator collator = Collator.getInstance(new Locale("cs"));
+        collator.setStrength(Collator.PRIMARY);
+
         for(Game result: allResults){
-            if(result.getAutoCompleteData().toLowerCase().contains(query.toLowerCase())){
+            if(Strings.containsIgnoreCaseAndAccents(result.getAutoCompleteData(), query)) {
                 searchResults.add(result);
             }
         }

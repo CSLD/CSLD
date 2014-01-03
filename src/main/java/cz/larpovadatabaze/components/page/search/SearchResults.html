@@ -5,18 +5,18 @@
                 <img src="glass_icon.png" class="ikonaStranky"><wicket:message key="search.title">Vyhledávání</wicket:message>
             </wicket:link>
         </div>
-        <div wicket:id="games">
+        <wicket:container wicket:id="games">
             <!--
             This panel is found in package: cz.larpovadatabaze.components.panel.search.GamesResultsPanel.html
             https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/search/GamesResultsPanel.html
             -->
-        </div>
-        <div wicket:id="users">
+        </wicket:container>
+        <wicket:container wicket:id="users" style="margin-bottom: 10px">
             <!--
             This panel is found in package: cz.larpovadatabaze.components.panel.search.UserResultsPanel.html
             https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/search/UserResultsPanel.html
             -->
-        </div>
+        </wicket:container>
     </div>
 
     <div class="pravaCast" id="Zebricky" wicket:id="gamePanel">

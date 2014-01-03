@@ -3,6 +3,7 @@ package cz.larpovadatabaze.components.page.search;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.panel.game.FilterGamesPanel;
 import cz.larpovadatabaze.components.panel.search.GamesResultsPanel;
+import cz.larpovadatabaze.components.panel.search.SearchBoxPanel;
 import cz.larpovadatabaze.components.panel.search.UserResultsPanel;
 import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.models.FilterGame;
@@ -17,7 +18,7 @@ import java.util.List;
  */
 public class SearchResults extends CsldBasePage {
     public SearchResults(PageParameters params) {
-        String query = params.get("queryString").toString();
+        String query = params.get(SearchBoxPanel.QUERY_PARAMETER_NAME).toString();
 
         final GamesResultsPanel gamesResultsPanel = new GamesResultsPanel("games", query);
         gamesResultsPanel.setOutputMarkupId(true);
