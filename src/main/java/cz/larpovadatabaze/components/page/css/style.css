@@ -2001,9 +2001,15 @@ text-align: center;
     box-shadow: 0 0 1px 1px #E0E0E0;
 }
 
-#labelsChooserPanel input[type=button].selected {
+#labelsChooserPanel input[type=button].selected,
+#manageLabels input[type=button].selected {
     background-color: rgb(55, 178, 240);
     color: rgb(0, 0, 0) !important;
+}
+
+#manageLabels table input[type=button] {
+    float: right;
+    margin-left: 10px;
 }
 
 select[name=stateOfGame]{
@@ -2363,6 +2369,12 @@ a.active.wantToPlay.button:after{
     top: -2px;
 }
 
+.administration li {
+    list-style-type: none;
+    margin: 5px 0;
+    font-size: 14px;
+}
+
 
 /* This bridges the gap so you can mouse into the tooltip without it disappearing */
 .playedPanel .wrapper .tooltip:before {
@@ -2620,3 +2632,25 @@ a.active.wantToPlay.button:after{
 }
 
 /* end of tabs component */
+
+/* edit dialog */
+
+.cmpEditDialog {
+    position: fixed;
+    left: 100px;
+    top: 100px;
+    width: 400px;
+    z-index: 100;
+    padding: 15px;
+    background: #F0F0F0;
+    border: 1px solid #808080;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.cmpEditDialog textarea {
+    width: 100%;
+    height: 200px;
+}
+
+/* end of edit dialog */

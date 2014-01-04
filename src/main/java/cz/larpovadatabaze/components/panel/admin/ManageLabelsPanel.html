@@ -7,7 +7,7 @@
     It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/admin/ManageLabelsPanel.html
     Code - cz.larpovadatabaze.components.panel.admin.ManageLabelsPanel.html
     -->
-    <form wicket:id="manageLabels">
+    <form wicket:id="manageLabels" id="manageLabels">
         <table>
             <thead>
             <tr>
@@ -36,6 +36,7 @@
                     <span wicket:id="name"></span>
                 </td>
                 <td>
+                    <input type="button" class="startEdit" wicket:id="editBtn" data-id="10" value="E" />
                     <span wicket:id="description"></span>
                 </td>
                 <td>
@@ -51,5 +52,13 @@
             <!-- End of repetitive part for every Label -->
             </tbody>
         </table>
+
+        <div id="editDialog" class="cmpEditDialog" style="display:none">
+            <div>
+                <input type="hidden" wicket:id="editedLabelId" />
+                <textarea wicket:id="newLabelDescription" />
+                <input type="submit" value="Změnit" /> <input type="button" value="Storno" />
+            </div>
+        </div>
     </form>
 </wicket:panel>

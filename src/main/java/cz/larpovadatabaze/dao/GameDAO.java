@@ -176,27 +176,32 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
                 "from csld_game game where 1=1 " +
                 "and %s",
                 labelSql);
-        if(filterGame.getMinDays() != 0){
-            sqlForGameIds += " and game.days >= " + filterGame.getMinDays();
-        }
-        if(filterGame.getMinHours() != 0){
-            sqlForGameIds += " and game.hours >= " + filterGame.getMinHours();
-        }
-        if(filterGame.getMinPlayers() != 0){
-            sqlForGameIds += " and game.players >= " + filterGame.getMinPlayers();
-        }
 
-        if(filterGame.getMaxDays() != null){
-            sqlForGameIds += " and game.days <= " + filterGame.getMaxDays();
+        if (filterGame != null) {
+            if(filterGame.getMinDays() != 0){
+                sqlForGameIds += " and game.days >= " + filterGame.getMinDays();
+            }
+            if(filterGame.getMinHours() != 0){
+                sqlForGameIds += " and game.hours >= " + filterGame.getMinHours();
+            }
+            if(filterGame.getMinPlayers() != 0){
+                sqlForGameIds += " and game.players >= " + filterGame.getMinPlayers();
+            }
+
+            if(filterGame.getMaxDays() != null){
+                sqlForGameIds += " and game.days <= " + filterGame.getMaxDays();
+            }
+            if(filterGame.getMaxHours() != null){
+                sqlForGameIds += " and game.hours <= " + filterGame.getMaxHours();
+            }
+            if(filterGame.getMaxPlayers() != null){
+                sqlForGameIds += " and game.players <= " + filterGame.getMaxPlayers();
+            }
         }
-        if(filterGame.getMaxHours() != null){
-            sqlForGameIds += " and game.hours <= " + filterGame.getMaxHours();
+        if (orderBy != null) sqlForGameIds += orderBy;
+        if (limit > 0) {
+            sqlForGameIds += " offset " + offset + " limit " + limit;
         }
-        if(filterGame.getMaxPlayers() != null){
-            sqlForGameIds += " and game.players <= " + filterGame.getMaxPlayers();
-        }
-        sqlForGameIds += orderBy;
-        sqlForGameIds += " offset " + offset + " limit " + limit;
 
         Query query = session.createSQLQuery(sqlForGameIds).addEntity(Game.class);
         return query.list();

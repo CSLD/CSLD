@@ -457,8 +457,8 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
                     referencedColumnName = "id",
                     nullable = false)
     )
-    @ManyToMany
-    @Cascade(CascadeType.SAVE_UPDATE)
+    @ManyToMany(cascade = {javax.persistence.CascadeType.PERSIST, javax.persistence.CascadeType.MERGE, javax.persistence.CascadeType.REMOVE })
+    @Cascade(value = { CascadeType.SAVE_UPDATE, CascadeType.DELETE})
     public List<Label> getLabels() {
         return labels;
     }

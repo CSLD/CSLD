@@ -865,7 +865,7 @@ ALTER TABLE ONLY csld_game_has_group
 --
 
 ALTER TABLE ONLY csld_group_has_administrator
-    ADD CONSTRAINT group_fk FOREIGN KEY (id_group) REFERENCES csld_csld_group(id) MATCH FULL ON UPDATE CASCADE ON DELETE RESTRICT;
+    ADD CONSTRAINT group_fk FOREIGN KEY (id_group) REFERENCES csld_csld_group(id) MATCH FULL ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
