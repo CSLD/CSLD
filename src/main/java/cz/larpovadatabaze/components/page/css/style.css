@@ -2345,6 +2345,25 @@ a.active.wantToPlay.button:after{
     margin: 0 10px;
 }
 
+.levaCast .shareButtons {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.shareButtons div {
+    margin-right: 5px;
+}
+
+.shareButtons .fb-share-button {
+    top: -6px;
+}
+
+.shareButtons .twitter-share-button {
+    position: relative;
+    top: -2px;
+}
+
+
 /* This bridges the gap so you can mouse into the tooltip without it disappearing */
 .playedPanel .wrapper .tooltip:before {
   bottom: -20px;

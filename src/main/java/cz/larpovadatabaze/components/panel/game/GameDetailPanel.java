@@ -2,6 +2,7 @@ package cz.larpovadatabaze.components.panel.game;
 
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.common.icons.GameIcon;
+import cz.larpovadatabaze.components.common.social.SocialShareButtons;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.group.GroupDetail;
 import cz.larpovadatabaze.components.page.user.UserDetail;
@@ -123,5 +124,7 @@ public class GameDetailPanel extends AbstractCsldPanel<Game> {
         Label description = new Label("description");
         description.setEscapeModelStrings(false);
         add(description);
+
+        add(new SocialShareButtons("socialShareButtons"));
     }
 }
