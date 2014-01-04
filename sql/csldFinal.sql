@@ -421,6 +421,8 @@ CREATE TABLE csld_csld_user (
 
 ALTER TABLE public.csld_csld_user OWNER TO csld;
 
+CREATE UNIQUE INDEX csld_csld_user_lc_email ON csld_csld_user(lower(email));
+
 --
 -- Name: csld_email_authentication_id_seq; Type: SEQUENCE; Schema: public; Owner: csld
 --

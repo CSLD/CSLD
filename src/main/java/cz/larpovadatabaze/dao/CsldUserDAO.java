@@ -1,7 +1,6 @@
 package cz.larpovadatabaze.dao;
 
 import cz.larpovadatabaze.api.GenericHibernateDAO;
-import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import org.hibernate.Criteria;
@@ -132,8 +131,8 @@ public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
     public CsldUser getByEmail(String mail) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery(
-                "from CsldUser user where user.person.email = :mail");
-        query.setParameter("mail", mail);
+                "from CsldUser user where lower(user.person.email) = :mail");
+        query.setParameter("mail", mail.toLowerCase());
         return (CsldUser) query.uniqueResult();
     }
 
