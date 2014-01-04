@@ -11,14 +11,17 @@ import cz.larpovadatabaze.components.panel.user.AdminPanel;
 import cz.larpovadatabaze.components.panel.user.LoggedBoxPanel;
 import cz.larpovadatabaze.components.panel.user.LoginBoxPanel;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.authentication.IAuthenticationStrategy;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.request.resource.PackageResourceReference;
@@ -39,6 +42,10 @@ public abstract class CsldBasePage extends WebPage {
         return new StringResourceModel("larpDatabaseTitle", null);
     }
 
+    protected IModel<String> getPreviewImageUrlModel() {
+        return Model.of("img/logo512.png");
+    }
+
     @Override
     protected void onInitialize() {
         super.onInitialize();
@@ -53,6 +60,14 @@ public abstract class CsldBasePage extends WebPage {
         }
 
         add(new Label("pageTitle", getPageTitleModel()));
+
+        WebMarkupContainer previewImageTag1 = new WebMarkupContainer("previewImageTag1");
+        previewImageTag1.add(new AttributeModifier("href", getPreviewImageUrlModel()));
+        add(previewImageTag1);
+
+        WebMarkupContainer previewImageTag2 = new WebMarkupContainer("previewImageTag2");
+        previewImageTag2.add(new AttributeModifier("content", getPreviewImageUrlModel()));
+        add(previewImageTag2);
 
         add(new LoginBoxPanel("login"));
         add(new LoggedBoxPanel("loggedInfo"));

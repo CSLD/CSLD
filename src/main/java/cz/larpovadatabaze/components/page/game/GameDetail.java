@@ -8,6 +8,7 @@ import cz.larpovadatabaze.components.panel.photo.PhotoPanel;
 import cz.larpovadatabaze.components.panel.user.SimpleListUsersPanel;
 import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.HbUtils;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
@@ -40,6 +41,8 @@ public class GameDetail extends CsldBasePage {
     private final static Logger logger = Logger.getLogger(GameDetail.class);
 
     private Vector<TabContentType> tabContentType;
+
+    private IModel<String> previewImageUrlModel;
 
     /**
      * Model for selected tab number
@@ -151,6 +154,11 @@ public class GameDetail extends CsldBasePage {
         return new StringResourceModel("larpDatabaseTitleForGame", getDefaultModel());
     }
 
+    @Override
+    protected IModel<String> getPreviewImageUrlModel() {
+        return previewImageUrlModel;
+    }
+
     private void addOrReplaceTabContentPanel() {
         Fragment fragment;
 
@@ -220,6 +228,16 @@ public class GameDetail extends CsldBasePage {
 
     @Override
     protected void onInitialize() {
+        // Init this model ASAP, since parent needs it
+        previewImageUrlModel = new LoadableDetachableModel<String>() {
+            @Override
+            protected String load() {
+                PageParameters pp = new PageParameters();
+                pp.add(ImageService.RESOURCE_REFERENCE_ID_PARAM_NAME, getModel().getObject().getId());
+                return urlFor(gameService.getIconReference(), pp).toString();
+            }
+        };
+
         super.onInitialize();
 
         final SimpleListUsersPanel wantedToPlay =  new SimpleListUsersPanel("wantsToPlay", new WantedByModel());
