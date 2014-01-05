@@ -23,6 +23,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.request.Url;
 import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import wicket.contrib.tinymce.settings.TinyMCESettings;
@@ -61,12 +62,14 @@ public abstract class CsldBasePage extends WebPage {
 
         add(new Label("pageTitle", getPageTitleModel()));
 
+        String previewImageURL = getRequestCycle().getUrlRenderer().renderFullUrl(Url.parse(getPreviewImageUrlModel().getObject()));
+
         WebMarkupContainer previewImageTag1 = new WebMarkupContainer("previewImageTag1");
-        previewImageTag1.add(new AttributeModifier("href", getPreviewImageUrlModel()));
+        previewImageTag1.add(new AttributeModifier("href", previewImageURL));
         add(previewImageTag1);
 
         WebMarkupContainer previewImageTag2 = new WebMarkupContainer("previewImageTag2");
-        previewImageTag2.add(new AttributeModifier("content", getPreviewImageUrlModel()));
+        previewImageTag2.add(new AttributeModifier("content", previewImageURL));
         add(previewImageTag2);
 
         add(new LoginBoxPanel("login"));
