@@ -44,7 +44,7 @@ public abstract class CsldBasePage extends WebPage {
     }
 
     protected IModel<String> getPreviewImageUrlModel() {
-        return Model.of("img/logo512.png");
+        return Model.of(urlFor(new PackageResourceReference(getClass(), "img/logo512.png"), null).toString());
     }
 
     @Override
