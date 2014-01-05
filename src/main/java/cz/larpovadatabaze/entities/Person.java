@@ -1,8 +1,8 @@
 package cz.larpovadatabaze.entities;
 
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -10,7 +10,6 @@ import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.Calendar;
 
 /**
  *
@@ -130,16 +129,12 @@ public class Person implements Serializable, IAutoCompletable {
 
     @Transient
     public Integer getAge() {
-        java.util.Date birthDate = getBirthDate();
         if(getBirthDate() == null){
-            return 0;
+            return null;
         }
-        Calendar now = Calendar.getInstance();
-        Calendar birthDateCal = Calendar.getInstance();
-        birthDateCal.setTime(birthDate);
 
-        Integer age = now.get(Calendar.YEAR) - birthDateCal.get(Calendar.YEAR);
-        return age;
+        Interval life = new Interval(new DateTime(getBirthDate()), new DateTime());
+        return life.toPeriod().getYears();
     }
 
     @Transient

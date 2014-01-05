@@ -44,12 +44,13 @@ public class RandomLarpPanel extends AbstractCsldPanel<Game> {
 
     public RandomLarpPanel(String id) {
         super(id, null);
-        setDefaultModel(new GameModel());
     }
 
 
     @Override
     protected void onInitialize() {
+        setDefaultModel(new GameModel());
+
         super.onInitialize();
 
         Game game = getModelObject();

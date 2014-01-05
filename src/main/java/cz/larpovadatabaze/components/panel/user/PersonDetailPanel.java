@@ -34,7 +34,9 @@ public class PersonDetailPanel extends AbstractCsldPanel<CsldUser> {
         add(new Label("nickname",person.getNickNameView()));
         add(new Label("name",person.getName()));
 
-        add(new Label("age",person.getAge()));
+        Integer age = person.getAge();
+        add(new Label("age",age).setVisible(age != null));
+
         add(new Label("city",person.getCity()));
         int played = 0;
         for(UserPlayedGame playedGame: user.getPlayedGames()){

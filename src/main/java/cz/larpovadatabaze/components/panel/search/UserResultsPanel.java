@@ -77,7 +77,9 @@ public class UserResultsPanel extends Panel {
                 moderatorLinkContent.add(moderatorName);
                 item.add(moderatorLinkContent);
 
-                Label year = new Label("year", Model.of(actualUser.getPerson().getAge()));
+                Integer age = actualUser.getPerson().getAge();
+                Label year = new Label("year", age);
+                year.setVisible(age != null);
                 item.add(year);
 
                 Label city = new Label("city", Model.of(actualUser.getPerson().getCity()));
