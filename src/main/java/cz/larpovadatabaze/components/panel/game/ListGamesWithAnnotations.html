@@ -22,13 +22,11 @@ Code - cz.larpovadatabaze.components.panel.game.ListGamesWithAnnotations.html
                 <span wicket:id="gameName" class="nadpisHra">Protector X.</span>
             </a>
 
-            <div class="HraKomentarPopisek"><span wicket:id="players">1200</span> hráčů<br/>
-                    <span wicket:id="gameDescription">
-
-                    </span>
-                <a wicket:id="gameMoreLink">
-                    <div class="HraKomentarVice"> ... více</div>
-                </a>
+            <div class="HraKomentarPopisek"><div wicket:id="players" class="HraKomentarPopisekInner">1200</div>
+                <div class="HraKomentarPopisekInner">
+                    <wicket:container wicket:id="gameDescription" />
+                    <a wicket:id="gameMoreLink" class="HraKomentarVice">... více</a>
+                </div>
             </div>
         </div>
     </div>

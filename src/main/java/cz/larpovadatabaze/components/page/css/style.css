@@ -336,30 +336,30 @@ h2{
     position: relative;
 }
 
-.pridanaHra .komentar {
-    min-height: 38px;
-    max-height: 48px;
+.pridanaHra .commentInner {
+    min-height: 34px;
+    max-height: 49.5px;
     overflow: hidden;
+    position: relative;
 }
 
 .pridanaHra .HraKomentarPopisek {
-padding: 5px;
-padding-bottom: 6px;
 margin: 10px 5px;
 border-radius: 4px;
 box-shadow: 0 0 1px 1px #D0D0D0;
 background-color: #F8F8F8;
 color: #535353;
-font-size: 12px;
-text-align: justify;
-position: relative;
-min-height: 38px;
-max-height: 47px;
-overflow: hidden;
+    padding: 5px;
+    padding-bottom: 6px;
 }
-.pridanaHra .HraKomentarPopisek .HraKomentarVice{
-    right: 6px;
-    bottom: 4px;
+
+.pridanaHra .HraKomentarPopisekInner {
+    overflow: hidden;
+    position: relative;
+    font-size: 12px;
+    text-align: justify;
+    min-height: 34px;
+    max-height: 49.5px;
 }
 
 .pridanaHra .HraKomentarVice {
@@ -369,8 +369,8 @@ overflow: hidden;
     z-index: 10;
     position: absolute;
     padding-left: 3px;
-    right: 6px;
-    bottom: 4px;
+    right: 0;
+    bottom: 0;
     background-color: #F8F8F8;
     font-weight: bold;
 }

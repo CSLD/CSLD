@@ -17,12 +17,13 @@ import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.jsoup.Jsoup;
 
 /**
  * It shows pageable list of games ordered by time when they were added to the database
  */
 public class ListGamesWithAnnotations extends Panel {
-    private final int MAX_LENGTH = 160;
+    private final int MAX_CHARS_IN_DESCRIPTION = 300;
 
     @SpringBean
     ImageService imageService;
@@ -60,12 +61,10 @@ public class ListGamesWithAnnotations extends Panel {
                 item.add(gameLinkContent);
 
                 item.add(new Label("players", Model.of(game.getPlayers())));
-                item.add(new Label("gameDescription",
-                        Model.of(
-                                game.getDescription().length() > MAX_LENGTH ?
-                                        game.getDescription().substring(0,MAX_LENGTH) :
-                                        game.getDescription())).setEscapeModelStrings(false)
-                );
+
+                String gameDescription = Jsoup.parse(game.getDescription()).text();
+                if (gameDescription.length() > MAX_CHARS_IN_DESCRIPTION) gameDescription = gameDescription.substring(0, MAX_CHARS_IN_DESCRIPTION);
+                item.add(new Label("gameDescription", gameDescription));
                 final BookmarkablePageLink<CsldBasePage> gameMoreLink =
                         new BookmarkablePageLink<CsldBasePage>("gameMoreLink", GameDetail.class, params);
                 item.add(gameMoreLink);

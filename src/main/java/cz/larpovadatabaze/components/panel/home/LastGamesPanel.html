@@ -38,10 +38,10 @@
                 </a>
                 &nbsp;pro <span wicket:id="players">1200</span> hráčů<br/>
                 <div class="HraKomentarPopisek">
-                    <span wicket:id="gameDescription"></span>
-                    <a wicket:id="gameMoreLink">
-                        <div class="HraKomentarVice"> ..více</div>
-                    </a>
+                    <div class="HraKomentarPopisekInner">
+                        <wicket:container wicket:id="gameDescription" />
+                        <a wicket:id="gameMoreLink" class="HraKomentarVice">...více</a>
+                    </div>
                 </div>
             </div>
         </div>

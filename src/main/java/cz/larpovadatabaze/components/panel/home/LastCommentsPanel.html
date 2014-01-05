@@ -47,10 +47,10 @@
                 </a>
 
                 <div class="popisek komentar">
-                    <span wicket:id="commentsContent"></span>
-                    <a wicket:id="gameMoreLink">
-                        <div class="HraKomentarVice"> ..více</div>
-                    </a>
+                    <div class="commentInner">
+                        <wicket:container wicket:id="commentsContent" />
+                        <a wicket:id="gameMoreLink" class="HraKomentarVice">...více</a>
+                        </div>
                 </div>
             </div>
         </div>
