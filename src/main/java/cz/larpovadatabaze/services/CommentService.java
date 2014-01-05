@@ -20,4 +20,8 @@ public interface CommentService extends GenericService<Comment> {
     int getAmountOfComments();
 
     List<Comment> getLastComments(long first, long count);
+
+    void hideComment(Comment comment);
+
+    void unHideComment(Comment comment);
 }

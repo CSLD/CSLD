@@ -36,7 +36,7 @@ public class CommentDAO extends GenericHibernateDAO<Comment, Integer>{
     @SuppressWarnings("unchecked")
     public List<Comment> getLastComments(int maxComments) {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from Comment order by added desc");
+        Query query = session.createQuery("from Comment where is_hidden=false order by added desc");
         query.setMaxResults(maxComments);
         return query.list();
     }
@@ -50,7 +50,7 @@ public class CommentDAO extends GenericHibernateDAO<Comment, Integer>{
 
     public List<Comment> getLastComments(int first, int count) {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from Comment order by added desc");
+        Query query = session.createQuery("from Comment where is_hidden=false order by added desc");
         query.setFirstResult(first);
         query.setMaxResults(count);
         return query.list();

@@ -27,9 +27,5 @@ public class Administration extends CsldBasePage {
         BookmarkablePageLink<CsldBasePage> manageLabels =
                 new BookmarkablePageLink<CsldBasePage>("manageLabels", ManageLabelsPage.class);
         add(manageLabels);
-
-        BookmarkablePageLink<CsldBasePage> manageComments =
-                new BookmarkablePageLink<CsldBasePage>("manageComments", Administration.class);
-        add(manageComments);
     }
 }

@@ -1,8 +1,5 @@
 package cz.larpovadatabaze.entities;
 
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -72,6 +69,18 @@ public class Comment implements Serializable {
         this.added = added;
     }
 
+    private Boolean isHidden;
+
+    @Column(name="is_hidden")
+    @Basic
+    public Boolean getHidden() {
+        return isHidden;
+    }
+
+    public void setHidden(Boolean hidden) {
+        isHidden = hidden;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -82,6 +91,7 @@ public class Comment implements Serializable {
         if (comment != null ? !comment.equals(comment1.comment) : comment1.comment != null) return false;
         if (gameId != null ? !gameId.equals(comment1.gameId) : comment1.gameId != null) return false;
         if (userId != null ? !userId.equals(comment1.userId) : comment1.userId != null) return false;
+        if (isHidden != null ? !isHidden.equals(comment1.isHidden) : comment1.isHidden != null) return false;
 
         return true;
     }
@@ -91,6 +101,7 @@ public class Comment implements Serializable {
         int result = userId != null ? userId.hashCode() : 0;
         result = 31 * result + (gameId != null ? gameId.hashCode() : 0);
         result = 31 * result + (comment != null ? comment.hashCode() : 0);
+        result = 31 * result + (isHidden != null ? isHidden.hashCode() : 0);
         return result;
     }
 

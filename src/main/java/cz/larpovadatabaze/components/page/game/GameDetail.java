@@ -10,6 +10,7 @@ import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.HbUtils;
+import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -108,10 +109,32 @@ public class GameDetail extends CsldBasePage {
      * Model for comments of actual game. (Might get GameModel as constructor parameter to be extra clean, but we use the one stored in the page.)
      * The downside is it does not cache results so getObject() may be costly.
      */
-    private class CommentsModel extends AbstractReadOnlyModel<List<Comment>> {
+    private class CommentsModel extends LoadableDetachableModel<List<Comment>> {
         @Override
-        public List<Comment> getObject() {
-            List<Comment> res = new ArrayList<Comment>(getModel().getObject().getComments());
+        public List<Comment> load() {
+            List<Comment> res = new ArrayList<Comment>();
+
+            // Fill in array
+            if (UserUtils.isEditor()) {
+                // Editors see everything
+                res.addAll(getModel().getObject().getComments());
+            }
+            else {
+                // Filter
+                Integer thisUserId = null;
+                CsldUser user = UserUtils.getLoggedUser();
+                if (user != null) {
+                    thisUserId = user.getId();
+                }
+                for(Comment c : getModel().getObject().getComments()) {
+                    if (c.getHidden()) {
+                        if (!c.getUserId().equals(thisUserId)) continue; // Hidden comment and user is not creator - hide
+                    }
+                    res.add(c);
+                }
+            }
+
+            // Sort
             Collections.sort(res, new Comparator<Comment>() {
                 @Override
                 public int compare(Comment o1, Comment o2) {

@@ -4,6 +4,8 @@ import cz.larpovadatabaze.dao.CommentDAO;
 import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.services.CommentService;
 import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.utils.UserUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -17,6 +19,8 @@ import java.util.List;
  */
 @Repository
 public class CommentServiceImpl implements CommentService {
+    private static final Logger logger = Logger.getLogger(CommentServiceImpl.class);
+
     @Autowired
     private CommentDAO commentDAO;
 
@@ -71,4 +75,27 @@ public class CommentServiceImpl implements CommentService {
     public int getAmountOfComments() {
         return commentDAO.getAmountOfComments();
     }
+
+    @Override
+    public void hideComment(Comment comment) {
+        if (Boolean.TRUE.equals(comment.getHidden())) return; // Nothing to do
+
+        comment.setHidden(true);
+        commentDAO.saveOrUpdate(comment);
+
+        // Log
+        logger.info("Editor #"+ UserUtils.getLoggedUser().getId()+" hidden comment of user #"+comment.getUserId()+" for game #"+comment.getGameId());
+    }
+
+    @Override
+    public void unHideComment(Comment comment) {
+        if (Boolean.FALSE.equals(comment.getHidden())) return; // Nothing to do
+
+        comment.setHidden(false);
+        commentDAO.saveOrUpdate(comment);
+
+        // Log
+        logger.info("Editor #"+ UserUtils.getLoggedUser().getId()+" unhidden comment of user #"+comment.getUserId()+" for game #"+comment.getGameId());
+    }
+
 }

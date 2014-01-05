@@ -798,6 +798,10 @@ overflow: hidden;
     border-radius: 2px;
     box-shadow:  0 0 1px 1px #D0D0D0;
 }
+
+.levaCast  .komentar .bunkaKomentar {
+    width: 100%;
+}
 .levaCast  .komentar .obrazekUziv {
     vertical-align: top;
     margin-left: -2px;
@@ -2654,3 +2658,25 @@ a.active.wantToPlay.button:after{
 }
 
 /* end of edit dialog */
+
+/* comment hidden button */
+
+.cmpCommentHiddenButton {
+    float: right;
+    width: 24px;
+    height: 24px;
+    background: url(../img/oko.png);
+    border: 2px solid #ddd;
+    border-radius: 4px;
+}
+
+.cmpCommentHiddenButton.hidden {
+    background-position: -26px 0;
+    border: 2px solid black;
+}
+
+.cmpCommentHiddenButton:hover {
+    border: 2px solid #aaa;
+}
+
+/* end of comment hidden button */

@@ -177,7 +177,7 @@ DECLARE
   ratingsRow RECORD;
   result integer;
 BEGIN
-  select into ratingsRow count(*) as ratingCount from csld_comment where game_id = gameid;
+  select into ratingsRow count(*) as ratingCount from csld_comment where game_id = gameid and not is_hidden;
   return ratingsRow.ratingCount;
 END
 $$;
@@ -372,6 +372,7 @@ CREATE TABLE csld_comment (
     game_id integer NOT NULL,
     comment text NOT NULL,
     added timestamp without time zone DEFAULT now(),
+    is_hidden boolean not null default false,
 
     PRIMARY KEY (user_id, game_id)
 );

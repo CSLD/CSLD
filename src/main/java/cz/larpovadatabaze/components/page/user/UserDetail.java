@@ -13,6 +13,7 @@ import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.RatingService;
 import cz.larpovadatabaze.utils.HbUtils;
+import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -40,7 +41,24 @@ public class UserDetail extends CsldBasePage {
 
         @Override
         protected List<Comment> load() {
-            List<Comment> userComments = new ArrayList<Comment>(((CsldUser)getDefaultModelObject()).getCommented());
+            List<Comment> userComments = new ArrayList<Comment>();
+
+            CsldUser thisUser = (CsldUser)getDefaultModelObject();
+            List<Comment> allUserComments = thisUser.getCommented();
+
+            // Add comments
+            if (UserUtils.isEditor() || (thisUser.equals(UserUtils.getLoggedUser()))) {
+                // Editors see all, users also see all their comments
+                userComments.addAll(allUserComments);
+            }
+            else {
+                // Filter not-hidden comments
+                for(Comment c : allUserComments) {
+                    if (!Boolean.TRUE.equals(c.getHidden())) userComments.add(c);
+                }
+            }
+
+            // Sort
             Collections.sort(userComments, new Comparator<Comment>() {
                 @Override
                 public int compare(Comment o1, Comment o2) {
