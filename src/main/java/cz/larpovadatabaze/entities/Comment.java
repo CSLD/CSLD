@@ -69,7 +69,7 @@ public class Comment implements Serializable {
         this.added = added;
     }
 
-    private Boolean isHidden;
+    private Boolean isHidden = Boolean.FALSE;
 
     @Column(name="is_hidden")
     @Basic
