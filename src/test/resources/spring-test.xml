@@ -17,10 +17,20 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
                     <property name="driverClass" value="org.postgresql.Driver" />
                     <property name="jdbcUrl" value="jdbc:postgresql://localhost/csld" />
                     <property name="user" value="csld" />
-                    <property name="password" value="5e5icha" />
+                    <property name="password" value="csld" />
                 </bean>
             </list>
         </property>
     </bean>
 
+    <bean id="fileUploadSet" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetClass"><value>cz.larpovadatabaze.test.RegisterJNDIFactory</value></property>
+        <property name="targetMethod"><value>propagateJNDIObject</value></property>
+        <property name="arguments">
+            <list>
+                <value>java:comp/env/csld/dataDir</value>
+                <value>C:\User\jbalhar\</value>
+            </list>
+        </property>
+    </bean>
 </beans>

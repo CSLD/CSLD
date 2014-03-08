@@ -13,26 +13,21 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 7.9.13
- * Time: 10:27
+ *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:cz/larpovadatabaze/test/spring-test.xml", "classpath:spring-web.xml","classpath:hibernate.cfg.xml"})
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
-@Transactional
+@ContextConfiguration(
+        locations = {
+                "file:src/main/resources/spring-web.xml",
+                "file:src/test/resources/spring-test.xml"
+        }
+)
 public class ListAuthorTest {
     private WicketTester tester;
 
-    @Autowired
-    private ApplicationContext ctx;
-    @Autowired
-    private Csld csld;
-
     @Before
     public void setUp(){
-        tester = new WicketTester(csld);
+        tester = new WicketTester();
     }
 
     @Test

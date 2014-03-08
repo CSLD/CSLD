@@ -12,4 +12,8 @@
             type="javax.mail.Session"
             mail.smtp.host="localhost"/>
 
+    <Environment name="csld/dataDir"
+            value="C:\Users\jbalhar\Projekty\csldDir"
+            type="java.lang.String"
+            override="false" />
 </Context>

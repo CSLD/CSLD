@@ -14,6 +14,7 @@ import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.RatingService;
 import cz.larpovadatabaze.utils.HbUtils;
 import cz.larpovadatabaze.utils.UserUtils;
+import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -93,6 +94,9 @@ public class UserDetail extends CsldBasePage {
     }
 
     public UserDetail(PageParameters params){
+        if(params.get("id") == null){
+            throw new RestartResponseException(ListUser.class);
+        }
         setDefaultModel(new UserModel(params.get("id").to(Integer.class)));
     }
 
@@ -109,7 +113,7 @@ public class UserDetail extends CsldBasePage {
         provider.setAuthor(user);
         add(new ListGamesWithAnnotations("annotatedGamesOfAuthor", provider));
 
-        CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
+        CsldUser logged = CsldAuthenticatedWebSession.get().getLoggedUser();
         if(HbUtils.isProxy(user)){
             user = HbUtils.deproxy(user);
         }

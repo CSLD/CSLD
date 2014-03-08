@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.services;
 
 import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 
@@ -24,4 +25,6 @@ public interface RatingService extends GenericService<Rating> {
     Integer getRatingsForGame(Integer id);
 
     List<Rating> getRatingsOfUser(CsldUser logged, CsldUser actual);
+
+    List<Game> getGamesRatedByUser(int userId);
 }

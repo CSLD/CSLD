@@ -2,12 +2,15 @@ package cz.larpovadatabaze.components.panel.game;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
+import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.models.FilterGame;
 import cz.larpovadatabaze.providers.SortableGameProvider;
-import cz.larpovadatabaze.services.GameService;
-import cz.larpovadatabaze.services.LabelService;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.services.*;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.OrderByBorder;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -15,11 +18,13 @@ import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,7 +37,51 @@ public class ListGamePanel extends Panel {
     GameService gameService;
     @SpringBean
     LabelService labelService;
+    @SpringBean
+    CsldUserService csldUserService;
+    @SpringBean
+    RatingService ratingService;
+    @SpringBean
+    CommentService commentService;
+
     private SortableGameProvider sgp;
+
+    private RatingsModel ratingsModel;
+    private CommentsModel commentsModel;
+
+    private class CommentsModel extends LoadableDetachableModel<List<Game>> {
+        final int userId;
+
+        private CommentsModel(int userId) {
+            this.userId = userId;
+        }
+
+        @Override
+        protected List<Game> load() {
+            if(userId == 0) {
+                return new ArrayList<Game>();
+            } else {
+                return commentService.getGamesCommentedByUser(userId);
+            }
+        }
+    }
+
+    private class RatingsModel extends LoadableDetachableModel<List<Game>> {
+        final int userId;
+
+        private RatingsModel(int userId) {
+            this.userId = userId;
+        }
+
+        @Override
+        protected List<Game> load() {
+            if(userId == 0) {
+                return new ArrayList<Game>();
+            } else {
+                return ratingService.getGamesRatedByUser(userId);
+            }
+        }
+    }
 
     @SuppressWarnings("unchecked")
     public ListGamePanel(String id, int filterLabel) {
@@ -43,6 +92,15 @@ public class ListGamePanel extends Panel {
             label = labelService.getById(filterLabel);
         } else {
             label = null;
+        }
+
+        CsldUser loggedUser =  CsldAuthenticatedWebSession.get().getLoggedUser();
+        if(loggedUser != null) {
+            ratingsModel = new RatingsModel(loggedUser.getId());
+            commentsModel = new CommentsModel(loggedUser.getId());
+        } else {
+            ratingsModel = new RatingsModel(0);
+            commentsModel = new CommentsModel(0);
         }
 
         sgp = new SortableGameProvider(gameService, label);
@@ -71,9 +129,15 @@ public class ListGamePanel extends Panel {
                 item.add(gameRating);
 
                 final Label gameRatings = new Label("ratings", game.getAmountOfRatings());
+                if(ratingsModel.getObject().contains(game)){
+                    gameRatings.add(new AttributeAppender("class"," rated"));
+                }
                 item.add(gameRatings);
 
                 final Label gameComments = new Label("comments", game.getAmountOfComments());
+                if(commentsModel.getObject().contains(game)){
+                    gameComments.add(new AttributeAppender("class"," commented"));
+                }
                 item.add(gameComments);
             }
         };

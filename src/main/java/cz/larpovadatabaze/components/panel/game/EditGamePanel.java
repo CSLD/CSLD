@@ -45,7 +45,9 @@ public class EditGamePanel extends Panel {
                 isVisible = false;
             }
             if(logged != null && logged.getRole() <= CsldRoles.USER.getRole()){
-                if(!model.getObject().getAuthors().contains(logged) && !model.getObject().getAddedBy().equals(logged)){
+                if(model.getObject() == null || model.getObject().getAuthors() == null || model.getObject().getAddedBy() == null) {
+                    isVisible = false;
+                } else if(!model.getObject().getAuthors().contains(logged) && !model.getObject().getAddedBy().equals(logged)){
                     isVisible = false;
                 }
             }

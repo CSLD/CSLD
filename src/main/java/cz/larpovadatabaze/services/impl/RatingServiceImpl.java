@@ -2,6 +2,7 @@ package cz.larpovadatabaze.services.impl;
 
 import cz.larpovadatabaze.dao.RatingDAO;
 import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.entities.UserPlayedGame;
 import cz.larpovadatabaze.services.GameService;
@@ -111,5 +112,10 @@ public class RatingServiceImpl implements RatingService {
         } else {
             return ratingDAO.getRatingsOfUser(logged.getId());
         }
+    }
+
+    @Override
+    public List<Game> getGamesRatedByUser(int userId){
+         return ratingDAO.getGamesRatedByUser(userId);
     }
 }

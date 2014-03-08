@@ -2,6 +2,7 @@ package cz.larpovadatabaze.dao;
 
 import cz.larpovadatabaze.api.GenericHibernateDAO;
 import cz.larpovadatabaze.entities.Comment;
+import cz.larpovadatabaze.entities.Game;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -53,6 +54,14 @@ public class CommentDAO extends GenericHibernateDAO<Comment, Integer>{
         Query query = session.createQuery("from Comment where is_hidden=false order by added desc");
         query.setFirstResult(first);
         query.setMaxResults(count);
+        return query.list();
+    }
+
+    public List<Game> getGamesCommentedByUser(int userId) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("select game from Game game join game.comments comments " +
+                "where comments.userId = :id");
+        query.setParameter("id", userId);
         return query.list();
     }
 }

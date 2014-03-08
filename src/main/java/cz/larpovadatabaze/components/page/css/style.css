@@ -2679,4 +2679,9 @@ a.active.wantToPlay.button:after{
     border: 2px solid #aaa;
 }
 
+
 /* end of comment hidden button */
+
+.rated, .commented {
+    font-weight: bold;
+}

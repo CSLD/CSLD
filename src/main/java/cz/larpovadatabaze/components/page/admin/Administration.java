@@ -7,7 +7,7 @@ import org.apache.wicket.authroles.authorization.strategies.role.annotations.Aut
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 
 /**
- *
+ *  This page shall contain links to most of the tasks that editors takes care of.
  */
 @AuthorizeInstantiation({"Editor","Admin"})
 public class Administration extends CsldBasePage {

@@ -2,6 +2,7 @@ package cz.larpovadatabaze.services.impl;
 
 import cz.larpovadatabaze.dao.CommentDAO;
 import cz.larpovadatabaze.entities.Comment;
+import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.services.CommentService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.utils.UserUtils;
@@ -96,6 +97,11 @@ public class CommentServiceImpl implements CommentService {
 
         // Log
         logger.info("Editor #"+ UserUtils.getLoggedUser().getId()+" unhidden comment of user #"+comment.getUserId()+" for game #"+comment.getGameId());
+    }
+
+    @Override
+    public List<Game> getGamesCommentedByUser(int userId) {
+        return commentDAO.getGamesCommentedByUser(userId);
     }
 
 }

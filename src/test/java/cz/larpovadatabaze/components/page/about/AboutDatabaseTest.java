@@ -14,15 +14,8 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 7.9.13
- * Time: 10:24
+ *
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:spring-web.xml","classpath:hibernate.cfg.xml"})
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
-@Transactional
 public class AboutDatabaseTest {
     private WicketTester tester;
 

@@ -14,10 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 27.3.13
- * Time: 14:01
+ *
  */
 @Table(name = "csld_csld_user", schema = "public", catalog = "")
 @Entity

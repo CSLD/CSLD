@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.services;
 
 import cz.larpovadatabaze.entities.Comment;
+import cz.larpovadatabaze.entities.Game;
 
 import java.util.List;
 
@@ -24,4 +25,6 @@ public interface CommentService extends GenericService<Comment> {
     void hideComment(Comment comment);
 
     void unHideComment(Comment comment);
+
+    List<Game> getGamesCommentedByUser(int userId);
 }

@@ -20,10 +20,12 @@ public class RegisterJNDIFactory {
 			StringBuffer buf = new StringBuffer("");
 			if (subcontext.contains(":")) {
 				String[] contexts = subcontext.split(":");
-				ic.createSubcontext(contexts[0]);
+                ic.createSubcontext(contexts[0]);
 				buf.append(contexts[0]).append(":");
 				cont = contexts[1].split("/");
-			} else { cont = subcontext.split("/"); }
+			} else {
+                cont = subcontext.split("/");
+            }
 			for (int i = 0; i < cont.length; i++) {
 				if (!"".equals(cont[i])) {
 					buf.append(cont[i]);

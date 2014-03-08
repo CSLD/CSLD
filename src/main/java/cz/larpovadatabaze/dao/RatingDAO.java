@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.dao;
 
 import cz.larpovadatabaze.api.GenericHibernateDAO;
+import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -41,6 +42,14 @@ public class RatingDAO extends GenericHibernateDAO<Rating, Integer> {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("from Rating where userId = :id");
         query.setParameter("id", id);
+        return query.list();
+    }
+
+    public List<Game> getGamesRatedByUser(int userId) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("select game from Game game join game.ratings ratings " +
+                "where ratings.userId = :id");
+        query.setParameter("id", userId);
         return query.list();
     }
 }
