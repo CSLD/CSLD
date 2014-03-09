@@ -82,6 +82,10 @@ public class GameServiceImpl implements GameService {
         if (game.getImage() != null) {
             if (game.getImage().getPath() == null) game.setImage(null);
         }
+        if(game.getWeb() != null && !game.getWeb().isEmpty() && (!game.getWeb().startsWith("http://") &&
+                !game.getWeb().startsWith("https://"))) {
+            game.setWeb("http://" + game.getWeb());
+        }
 
         return gameDAO.saveOrUpdate(game);
     }

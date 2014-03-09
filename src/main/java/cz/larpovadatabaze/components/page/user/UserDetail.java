@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.components.page.user;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.panel.admin.AdminAllRatingsPanel;
 import cz.larpovadatabaze.components.panel.game.CommentsListPanel;
 import cz.larpovadatabaze.components.panel.game.GameListPanel;
 import cz.larpovadatabaze.components.panel.game.ListGamesWithAnnotations;
@@ -94,7 +95,7 @@ public class UserDetail extends CsldBasePage {
     }
 
     public UserDetail(PageParameters params){
-        if(params.get("id") == null){
+        if(params.get("id") == null || params.get("id").isEmpty()){
             throw new RestartResponseException(ListUser.class);
         }
         setDefaultModel(new UserModel(params.get("id").to(Integer.class)));
@@ -141,6 +142,12 @@ public class UserDetail extends CsldBasePage {
         else {
             // Load ratings
             List<Rating> myRatings = ratingService.getRatingsOfUser(logged, user);
+            Collections.sort(myRatings, new Comparator<Rating>() {
+                @Override
+                public int compare(Rating o1, Rating o2) {
+                    return o2.getRating() - o1.getRating();
+                }
+            });
             add(new RatingsListPanel("ratedGames", Model.ofList(myRatings)));
 
             // From played games, remove those that are rated, so they do not show twice
@@ -154,7 +161,5 @@ public class UserDetail extends CsldBasePage {
         add(new GameListPanel("playedGames",Model.ofList(playedGames)));
 
         add(new GameListPanel("wantedGamesPanel",Model.ofList(wantedGames)));
-
-
     }
 }

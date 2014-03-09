@@ -1,0 +1,19 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+    <div class="obsah" >
+    <!--
+        It lists rating of users for given game.
+
+        It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/admin/AdminAllRatingsPanel.html
+        Code - cz.larpovadatabaze.components.panel.admin.AdminAllRatingsPanel.html
+        -->
+        <div class="nadpisSekce"><wicket:message key="game.rating">Hodnocení</wicket:message></div>
+        <div wicket:id="listUsers">
+            <!-- Beginning of repetitive content for every Rating -->
+            <div class="obsahPolozka">
+                <span wicket:id="rating" class="ratingNum"></span>
+
+                <span wicket:id="userDetail"></span>
+            </div>
+        </div>
+    </div>
+</wicket:panel>

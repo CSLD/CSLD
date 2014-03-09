@@ -47,4 +47,6 @@ public interface CsldUserService extends GenericService<CsldUser>, IIconReferenc
     int getAmountOfOnlyAuthors();
 
     List<CsldUser> getAuthorsByName(long first, long amountPerPage);
+
+    boolean isLoggedAtLeastEditor();
 }

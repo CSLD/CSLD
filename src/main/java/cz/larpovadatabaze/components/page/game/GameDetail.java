@@ -3,6 +3,7 @@ package cz.larpovadatabaze.components.page.game;
 import cz.larpovadatabaze.components.common.tabs.TabsComponentPanel;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.panel.YouTubePanel;
+import cz.larpovadatabaze.components.panel.admin.AdminAllRatingsPanel;
 import cz.larpovadatabaze.components.panel.game.*;
 import cz.larpovadatabaze.components.panel.photo.PhotoPanel;
 import cz.larpovadatabaze.components.panel.user.SimpleListUsersPanel;
@@ -309,6 +310,8 @@ public class GameDetail extends CsldBasePage {
                 return gameService.gamesOfAuthors(getModel().getObject());
             }
         }));
+
+        add(new AdminAllRatingsPanel("ratingsOfUsersPanel", getModel()));
 
         add(wantedToPlay);
     }

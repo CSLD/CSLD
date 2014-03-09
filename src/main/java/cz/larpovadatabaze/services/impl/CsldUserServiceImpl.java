@@ -3,6 +3,8 @@ package cz.larpovadatabaze.services.impl;
 import cz.larpovadatabaze.dao.CsldUserDAO;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.security.CsldRoles;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.request.resource.ResourceReference;
@@ -140,6 +142,15 @@ public class CsldUserServiceImpl implements CsldUserService {
     @Override
     public List<CsldUser> getAuthorsByName(long first, long amountPerPage) {
         return csldUserDao.getAuthorsByName(first, amountPerPage);
+    }
+
+    @Override
+    public boolean isLoggedAtLeastEditor() {
+        CsldUser user = CsldAuthenticatedWebSession.get().getLoggedUser();
+        if(user == null){
+            return false;
+        }
+        return user.getRole() >= CsldRoles.getRoleByName("Editor");
     }
 
     @Override
