@@ -5,6 +5,7 @@ import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.entities.UserPlayedGame;
+import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.RatingService;
 import cz.larpovadatabaze.services.UserPlayedGameService;
@@ -26,6 +27,8 @@ import java.util.List;
 public class RatingServiceImpl implements RatingService {
     @Autowired
     private RatingDAO ratingDAO;
+    @Autowired
+    private CsldUserService csldUserService;
 
     @Autowired
     private UserPlayedGameService userPlayedGameService;
@@ -107,7 +110,7 @@ public class RatingServiceImpl implements RatingService {
 
     @Override
     public List<Rating> getRatingsOfUser(CsldUser logged, CsldUser actual) {
-        if(logged == null || !logged.getId().equals(actual.getId())) {
+        if(logged == null || (!logged.getId().equals(actual.getId()) && !csldUserService.isLoggedAtLeastEditor())) {
             return new ArrayList<Rating>();
         } else {
             return ratingDAO.getRatingsOfUser(logged.getId());

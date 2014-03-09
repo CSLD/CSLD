@@ -134,7 +134,7 @@ public class UserDetail extends CsldBasePage {
             }
         }
 
-        if(logged == null || !logged.getId().equals(user.getId())) {
+        if(logged == null || (!logged.getId().equals(user.getId()) && !csldUserService.isLoggedAtLeastEditor())) {
             // Do not show rated games
             add(new WebMarkupContainer("ratedGames").setVisible(false));
             ratingLabel.setVisible(false);
