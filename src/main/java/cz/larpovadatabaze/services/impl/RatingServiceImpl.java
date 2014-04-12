@@ -113,7 +113,7 @@ public class RatingServiceImpl implements RatingService {
         if(logged == null || (!logged.getId().equals(actual.getId()) && !csldUserService.isLoggedAtLeastEditor())) {
             return new ArrayList<Rating>();
         } else {
-            return ratingDAO.getRatingsOfUser(logged.getId());
+            return ratingDAO.getRatingsOfUser(actual.getId());
         }
     }
 
