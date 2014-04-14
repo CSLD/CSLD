@@ -49,4 +49,6 @@ public interface CsldUserService extends GenericService<CsldUser>, IIconReferenc
     List<CsldUser> getAuthorsByName(long first, long amountPerPage);
 
     boolean isLoggedAtLeastEditor();
+
+    boolean saveOrUpdateNewAuthor(CsldUser author);
 }

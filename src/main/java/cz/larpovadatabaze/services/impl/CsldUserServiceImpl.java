@@ -7,13 +7,18 @@ import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.security.CsldRoles;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.ImageService;
+import cz.larpovadatabaze.utils.Pwd;
+import cz.larpovadatabaze.utils.RandomString;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  *
@@ -151,6 +156,20 @@ public class CsldUserServiceImpl implements CsldUserService {
             return false;
         }
         return user.getRole() >= CsldRoles.getRoleByName("Editor");
+    }
+
+    @Override
+    public boolean saveOrUpdateNewAuthor(CsldUser author) {
+        author.setIsAuthor(true);
+        if(author.getPerson().getEmail() == null){
+            author.getPerson().setEmail(UUID.randomUUID().toString() + "@" + UUID.randomUUID().toString() + ".cz");
+        }
+
+        if(author.getPerson().getDescription() != null) {
+            author.getPerson().setDescription(Jsoup.clean(author.getPerson().getDescription(), Whitelist.basic()));
+        }
+        author.setPassword(Pwd.generateStrongPasswordHash(new RandomString(12).nextString(), author.getPerson().getEmail()));
+        return saveOrUpdate(author);
     }
 
     @Override

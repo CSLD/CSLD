@@ -55,7 +55,6 @@ public abstract class CreateOrUpdateAuthorPanel extends Panel {
         createOrUpdateUser.add(addFeedbackPanel(email, createOrUpdateUser, "emailFeedback"));
 
         TextArea<String> description = new TextArea<String>("person.description");
-        description.add(new CSLDTinyMceBehavior());
         createOrUpdateUser.add(addFeedbackPanel(description, createOrUpdateUser, "descriptionFeedback"));
 
         createOrUpdateUser.add(new AjaxButton("submit"){
@@ -64,7 +63,7 @@ public abstract class CreateOrUpdateAuthorPanel extends Panel {
                 super.onSubmit(target, form);
                 if(createOrUpdateUser.isValid()){
                     CsldUser author = createOrUpdateUser.getModelObject();
-                    if(saveOrUpdateUser(author)){
+                    if(csldUserService.saveOrUpdateNewAuthor(author)){
                         onCsldAction(target, form);
                     }
                 }
@@ -81,19 +80,6 @@ public abstract class CreateOrUpdateAuthorPanel extends Panel {
         addingFeedbackTo.add(feedbackPanel);
         addFeedbackTo.add(new AjaxFeedbackUpdatingBehavior("blur", feedbackPanel));
         return addFeedbackTo;
-    }
-
-    private boolean saveOrUpdateUser(CsldUser author){
-        author.setIsAuthor(true);
-        if(author.getPerson().getEmail() == null){
-            author.getPerson().setEmail(UUID.randomUUID().toString() + "@" + UUID.randomUUID().toString() + ".cz");
-        }
-
-        if(author.getPerson().getDescription() != null) {
-            author.getPerson().setDescription(Jsoup.clean(author.getPerson().getDescription(), Whitelist.basic()));
-        }
-        author.setPassword(Pwd.generateStrongPasswordHash(new RandomString(12).nextString(), author.getPerson().getEmail()));
-        return csldUserService.saveOrUpdate(author);
     }
 
     protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}

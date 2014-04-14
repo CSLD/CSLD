@@ -37,7 +37,7 @@ public abstract class CreateOrUpdateLabelPanel extends Panel {
                 new ValidatableForm<Label>("createOrUpdateLabel", new CompoundPropertyModel<Label>(label)){};
 
         createOrUpdateLabel.add(new TextField<String>("name"));
-        createOrUpdateLabel.add(new TextArea<String>("description").add(new CSLDTinyMceBehavior()));
+        createOrUpdateLabel.add(new TextArea<String>("description"));
         createOrUpdateLabel.add(new AjaxButton("submit"){
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
@@ -50,13 +50,13 @@ public abstract class CreateOrUpdateLabelPanel extends Panel {
                     }
                 }
             }
-        }.add(new TinyMceAjaxSubmitModifier()));
+        });
 
         add(createOrUpdateLabel);
     }
 
     private boolean saveOrUpdateLabel(Label label) {
-        CsldUser loggedUser = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
+        CsldUser loggedUser = CsldAuthenticatedWebSession.get().getLoggedUser();
         label.setAddedBy(loggedUser);
         label.setRequired(false);
         return labelService.saveOrUpdate(label);
