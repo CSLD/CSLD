@@ -1,0 +1,19 @@
+<Context>
+    <Resource name="jdbc/csld"
+              auth="Container"
+              type="javax.sql.DataSource"
+              username="csld" password="hesloKDbCsldTxt"
+              driverClassName="org.postgresql.Driver"
+              url="jdbc:postgresql://localhost/csld"
+              maxActive="20" maxIdle="10"/>
+
+    <Resource name="mail/Session"
+              auth="Container"
+              type="javax.mail.Session"
+              mail.smtp.host="localhost"/>
+
+    <Environment name="csld/dataDir"
+                 value="C:\Users\jbalhar\Projekty\csldDir"
+                 type="java.lang.String"
+                 override="false" />
+</Context>
