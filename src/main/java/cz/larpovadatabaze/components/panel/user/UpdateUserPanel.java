@@ -70,7 +70,6 @@ public class UpdateUserPanel extends Panel {
         createOrUpdateUser.add(addFeedbackPanel(new TextField<String>("person.nickname"), createOrUpdateUser, "nicknameFeedback"));
 
         DateTextField birthDate = new DateTextField("person.birthDate", "dd.MM.yyyy");
-        birthDate.setRequired(true);
         createOrUpdateUser.add(addFeedbackPanel(birthDate, createOrUpdateUser, "birthDateFeedback"));
 
         createOrUpdateUser.add(addFeedbackPanel(new TextField<String>("person.city"), createOrUpdateUser,"cityFeedback"));
