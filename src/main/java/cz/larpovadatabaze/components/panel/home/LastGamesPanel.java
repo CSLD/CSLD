@@ -51,11 +51,10 @@ public class LastGamesPanel extends Panel {
             Fragment gameFragment = new Fragment("game", "gameFragment", LastGamesPanel.this);
             item.add(gameFragment);
 
-            PageParameters params = new PageParameters();
-            params.add("id", game.getId());
+            PageParameters gameParams = GameDetail.paramsForGame(game);
 
             final BookmarkablePageLink<CsldBasePage> gameLink =
-                    new BookmarkablePageLink<CsldBasePage>("gameIconLink", GameDetail.class, params);
+                    new BookmarkablePageLink<CsldBasePage>("gameIconLink", GameDetail.class, gameParams);
             final GameIcon gameLinkImage = new GameIcon("gameIcon", item.getModel());
             gameLink.add(gameLinkImage);
             gameFragment.add(gameLink);
@@ -66,7 +65,7 @@ public class LastGamesPanel extends Panel {
             gameFragment.add(gameRating);
 
             final BookmarkablePageLink<CsldBasePage> gameLinkContent =
-                    new BookmarkablePageLink<CsldBasePage>("gameLink", GameDetail.class, params);
+                    new BookmarkablePageLink<CsldBasePage>("gameLink", GameDetail.class, gameParams);
             final Label gameName = new Label("gameName", game.getName());
             gameLinkContent.add(gameName);
             gameFragment.add(gameLinkContent);
@@ -78,7 +77,7 @@ public class LastGamesPanel extends Panel {
             gameFragment.add(new Label("gameDescription", gameDescription));
 
             final BookmarkablePageLink<CsldBasePage> gameMoreLink =
-                    new BookmarkablePageLink<CsldBasePage>("gameMoreLink", GameDetail.class, params);
+                    new BookmarkablePageLink<CsldBasePage>("gameMoreLink", GameDetail.class, gameParams);
             gameFragment.add(gameMoreLink);
         }
     }

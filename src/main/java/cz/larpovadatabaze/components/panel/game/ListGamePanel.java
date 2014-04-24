@@ -19,7 +19,6 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.text.DecimalFormat;
@@ -111,10 +110,8 @@ public class ListGamePanel extends Panel {
                 final Label orderLabel = new Label("order", itemIndex);
                 item.add(orderLabel);
 
-                PageParameters params = new PageParameters();
-                params.add("id",game.getId());
                 final BookmarkablePageLink<CsldBasePage> gameLink =
-                        new BookmarkablePageLink<CsldBasePage>("gameLink", GameDetail.class, params);
+                        new BookmarkablePageLink<CsldBasePage>("gameLink", GameDetail.class, GameDetail.paramsForGame(game));
                 final Label nameLabel = new Label("gameName", Model.of(game.getName()));
                 gameLink.add(nameLabel);
                 item.add(gameLink);

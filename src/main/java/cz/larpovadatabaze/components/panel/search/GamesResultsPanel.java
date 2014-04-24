@@ -59,11 +59,10 @@ public class GamesResultsPanel extends Panel {
             protected void populateItem(ListItem<Game> item) {
                 Game game = item.getModelObject();
 
-                PageParameters params = new PageParameters();
-                params.add("id", game.getId());
+                PageParameters gameParams = GameDetail.paramsForGame(game);
 
                 final BookmarkablePageLink<CsldBasePage> gameLink =
-                        new BookmarkablePageLink<CsldBasePage>("gameLink", GameDetail.class, params);
+                        new BookmarkablePageLink<CsldBasePage>("gameLink", GameDetail.class, gameParams);
                 final GameIcon gameLinkImage = new GameIcon("gameLinkImage", item.getModel());
                 gameLink.add(gameLinkImage);
                 item.add(gameLink);
@@ -74,7 +73,7 @@ public class GamesResultsPanel extends Panel {
                 item.add(gameRating);
 
                 final BookmarkablePageLink<CsldBasePage> gameLinkContent =
-                        new BookmarkablePageLink<CsldBasePage>("gameLinkContent", GameDetail.class, params);
+                        new BookmarkablePageLink<CsldBasePage>("gameLinkContent", GameDetail.class, gameParams);
                 final Label gameName = new Label("gameName", game.getName());
                 gameLinkContent.add(gameName);
                 item.add(gameLinkContent);

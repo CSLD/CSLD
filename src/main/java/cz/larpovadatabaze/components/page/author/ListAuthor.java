@@ -44,12 +44,8 @@ public class ListAuthor extends CsldBasePage {
                 item.add(authorName);
 
                 Game bestGame = actualAuthor.getBestGame();
-                PageParameters gameParams = new PageParameters();
-                int bestGameId = (bestGame == null) ? -1: bestGame.getId();
-                gameParams.add("id", bestGameId);
-
                 final BookmarkablePageLink<CsldUser> gameName =
-                        new BookmarkablePageLink<CsldUser>("gameName", GameDetail.class, gameParams);
+                        new BookmarkablePageLink<CsldUser>("gameName", GameDetail.class, GameDetail.paramsForGame(bestGame));
                 final Label bestGameName = new Label("bestGameName", bestGame != null ? bestGame.getName(): "");
                 final Label bestGameRating = new Label("bestGame", bestGame != null ? bestGame.getTotalRating(): 0);
                 gameName.add(bestGameName);

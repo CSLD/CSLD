@@ -126,6 +126,9 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         mountPages();
 
         mountResources();
+
+        // Turn on containers names
+//        getDebugSettings().setOutputMarkupContainerClassName(true);
 	}
 
     @Override
@@ -166,6 +169,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         mountPage("/skupiny", ListGroup.class);
 
         mountPage("/detail-game", GameDetail.class);
+        mountPage("/game/${name}/${id}", GameDetail.class);
         mountPage("/detail-author", UserDetail.class);
         mountPage("/detail-user", UserDetail.class);
         mountPage("/detail-group", GroupDetail.class);

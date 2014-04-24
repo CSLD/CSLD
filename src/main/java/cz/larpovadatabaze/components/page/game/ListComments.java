@@ -46,8 +46,7 @@ public class ListComments extends CsldBasePage{
                 Game game = comment.getGame();
                 CsldUser commenter = comment.getUser();
 
-                PageParameters gameParams = new PageParameters();
-                gameParams.add("id", game.getId());
+                PageParameters gameParams = GameDetail.paramsForGame(game);
                 PageParameters userParams = new PageParameters();
                 userParams.add("id", commenter.getId());
 

@@ -11,6 +11,7 @@ import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.HbUtils;
+import cz.larpovadatabaze.utils.Strings;
 import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
@@ -31,6 +32,8 @@ import java.util.*;
  *
  */
 public class GameDetail extends CsldBasePage {
+    private static final String ID_PARAM = "id";
+
     private static enum TabContentType { COMMENTS, PHOTOS, VIDEO };
 
     @SpringBean
@@ -173,7 +176,7 @@ public class GameDetail extends CsldBasePage {
      * Constructor - initialize just model
      */
     public GameDetail(PageParameters params){
-        setDefaultModel(new GameModel(params.get("id").to(Integer.class)));
+        setDefaultModel(new GameModel(params.get(ID_PARAM).to(Integer.class)));
     }
 
     @Override
@@ -362,5 +365,16 @@ public class GameDetail extends CsldBasePage {
             }
         });
 
+    }
+
+    public static PageParameters paramsForGame(Game game) {
+        PageParameters pp = new PageParameters();
+
+        if (game != null) {
+            pp.add(ID_PARAM, game.getId());
+            pp.add("name", Strings.removeAccents(game.getName()).toLowerCase().replaceAll("[^a-z0-9\\.]", "-").replaceAll("-+", "-").replaceAll("-$", ""));
+        }
+
+        return pp;
     }
 }

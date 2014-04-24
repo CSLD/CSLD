@@ -137,10 +137,8 @@ public class CommentsListPanel extends Panel {
         gameRating.add(new AttributeAppender("class", Model.of(gameRatingColor), " "));
         toShow.add(gameRating);
 
-        PageParameters params = new PageParameters();
-        params.add("id", game.getId());
         final BookmarkablePageLink<CsldBasePage> gameDetail =
-                new BookmarkablePageLink<CsldBasePage>("gameDetail", GameDetail.class, params);
+                new BookmarkablePageLink<CsldBasePage>("gameDetail", GameDetail.class, GameDetail.paramsForGame(game));
         final Label gameName = new Label("gameName", game.getName());
         gameDetail.add(gameName);
         toShow.add(gameDetail);

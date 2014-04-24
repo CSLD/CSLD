@@ -69,11 +69,9 @@ public class CreateOrUpdateGamePage extends CsldBasePage {
                 super.onCsldAction(target, form);
 
                 Game game = (Game) form.getModelObject();
-                PageParameters params = new PageParameters();
-                params.add("id", game.getId());
                 CsldAuthenticatedWebSession session = (CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get();
                 session.requestClear();
-                throw new RestartResponseException(GameDetail.class, params);
+                throw new RestartResponseException(GameDetail.class, GameDetail.paramsForGame(game));
             }
         });
     }
