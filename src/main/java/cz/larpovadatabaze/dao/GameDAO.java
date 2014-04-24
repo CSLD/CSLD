@@ -193,7 +193,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
         String sqlForGameIds = String.format("select " +
                 "game.id, game.name, game.description, game.year, game.web, game.hours," +
                 "game.days, game.players, game.men_role, game.women_role, game.both_role," +
-                "game.added, game.total_rating, game.amount_of_comments, game.amount_of_played, " +
+                "game.added, game.average_rating, game.total_rating, game.amount_of_comments, game.amount_of_played, " +
                 "game.amount_of_ratings, game.added_by, game.video, game.image, game.gallery_url, game.photo_author " +
                 "from csld_game game where 1=1 " +
                 "and %s",

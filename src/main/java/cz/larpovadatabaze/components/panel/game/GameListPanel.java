@@ -12,7 +12,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import java.util.List;
 
@@ -41,10 +40,8 @@ public class GameListPanel extends Panel {
                 gameRating.add(new AttributeAppender("class", Model.of(gameRatingColor), " "));
                 item.add(gameRating);
 
-                PageParameters params = new PageParameters();
-                params.add("id", game.getId());
                 final BookmarkablePageLink<CsldBasePage> gameDetail =
-                        new BookmarkablePageLink<CsldBasePage>("gameDetail", GameDetail.class, params);
+                        new BookmarkablePageLink<CsldBasePage>("gameDetail", GameDetail.class, GameDetail.paramsForGame(game));
                 final Label gameName = new Label("gameName", game.getName());
                 final Label gameYear = new Label("gameYear", game.getYear());
                 gameDetail.add(gameName);

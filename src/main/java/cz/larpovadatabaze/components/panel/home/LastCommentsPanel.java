@@ -56,8 +56,7 @@ public class LastCommentsPanel extends Panel {
             Fragment commentFragment = new Fragment("comment", "commentFragment", LastCommentsPanel.this);
             item.add(commentFragment);
 
-            PageParameters gameParams = new PageParameters();
-            gameParams.add("id", game.getId());
+            PageParameters gameParams = GameDetail.paramsForGame(game);
             PageParameters userParams = new PageParameters();
             userParams.add("id", commenter.getId());
 

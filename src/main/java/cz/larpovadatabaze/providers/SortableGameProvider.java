@@ -29,7 +29,7 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
     }
 
     public SortableGameProvider(GameService gameService, Label filterLabel) {
-        this(gameService, "rating");
+        this(gameService, "year");
         if(filterLabel != null) {
             filterLabels.add(filterLabel);
         }
@@ -49,6 +49,16 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
                             ((Long)amountPerPage).intValue(),
                             " order by game.name "),
                         firstL.intValue()
+            ).iterator();
+        } else if(property.equals("year")) {
+            return setStart(
+                    gameService.getFilteredGames(
+                            filterGame,
+                            filterLabels,
+                            firstL.intValue(),
+                            ((Long)amountPerPage).intValue(),
+                            " order by year desc "),
+                    firstL.intValue()
             ).iterator();
         } else if(property.equals("rating")) {
             return setStart(

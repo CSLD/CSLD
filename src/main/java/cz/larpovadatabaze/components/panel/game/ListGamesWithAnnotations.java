@@ -40,11 +40,10 @@ public class ListGamesWithAnnotations extends Panel {
             protected void populateItem(Item<Game> item) {
                 Game game = item.getModelObject();
 
-                PageParameters params = new PageParameters();
-                params.add("id", game.getId());
+                PageParameters gameParams = GameDetail.paramsForGame(game);
 
                 final BookmarkablePageLink<CsldBasePage> gameLink =
-                        new BookmarkablePageLink<CsldBasePage>("gameIconLink", GameDetail.class, params);
+                        new BookmarkablePageLink<CsldBasePage>("gameIconLink", GameDetail.class, gameParams);
                 final GameIcon gameLinkImage = new GameIcon("gameIcon", item.getModel());
                 gameLink.add(gameLinkImage);
                 item.add(gameLink);
@@ -55,7 +54,7 @@ public class ListGamesWithAnnotations extends Panel {
                 item.add(gameRating);
 
                 final BookmarkablePageLink<CsldBasePage> gameLinkContent =
-                        new BookmarkablePageLink<CsldBasePage>("gameLink", GameDetail.class, params);
+                        new BookmarkablePageLink<CsldBasePage>("gameLink", GameDetail.class, gameParams);
                 final Label gameName = new Label("gameName", game.getName());
                 gameLinkContent.add(gameName);
                 item.add(gameLinkContent);
@@ -66,7 +65,7 @@ public class ListGamesWithAnnotations extends Panel {
                 if (gameDescription.length() > MAX_CHARS_IN_DESCRIPTION) gameDescription = gameDescription.substring(0, MAX_CHARS_IN_DESCRIPTION);
                 item.add(new Label("gameDescription", gameDescription));
                 final BookmarkablePageLink<CsldBasePage> gameMoreLink =
-                        new BookmarkablePageLink<CsldBasePage>("gameMoreLink", GameDetail.class, params);
+                        new BookmarkablePageLink<CsldBasePage>("gameMoreLink", GameDetail.class, gameParams);
                 item.add(gameMoreLink);
             }
         };

@@ -8,7 +8,6 @@ import cz.larpovadatabaze.models.FilterGame;
 import cz.larpovadatabaze.providers.SortableGameProvider;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.*;
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.OrderByBorder;
@@ -20,7 +19,6 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.text.DecimalFormat;
@@ -112,10 +110,8 @@ public class ListGamePanel extends Panel {
                 final Label orderLabel = new Label("order", itemIndex);
                 item.add(orderLabel);
 
-                PageParameters params = new PageParameters();
-                params.add("id",game.getId());
                 final BookmarkablePageLink<CsldBasePage> gameLink =
-                        new BookmarkablePageLink<CsldBasePage>("gameLink", GameDetail.class, params);
+                        new BookmarkablePageLink<CsldBasePage>("gameLink", GameDetail.class, GameDetail.paramsForGame(game));
                 final Label nameLabel = new Label("gameName", Model.of(game.getName()));
                 gameLink.add(nameLabel);
                 item.add(gameLink);
@@ -127,6 +123,10 @@ public class ListGamePanel extends Panel {
                 DecimalFormat df = new DecimalFormat("0.0");
                 final Label gameRating = new Label("rating", Model.of(df.format((double) totalRating / 10d)));
                 item.add(gameRating);
+
+                Long averageRating = Math.round(game.getAverageRating());
+                final Label average = new Label("average", Model.of(df.format((double) averageRating / 10d)));
+                item.add(average);
 
                 final Label gameRatings = new Label("ratings", game.getAmountOfRatings());
                 if(ratingsModel.getObject().contains(game)){
@@ -144,7 +144,16 @@ public class ListGamePanel extends Panel {
         propertyList.setOutputMarkupId(true);
         propertyList.setItemsPerPage(25L);
 
-        add(new OrderByBorder("orderByName", "form.wholeName", sgp)
+        add(new OrderByBorder("orderByName", "form.wholeName", sgp) {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            protected void onSortChanged() {
+                propertyList.setCurrentPage(0);
+            }
+        });
+
+        add(new OrderByBorder("orderByYear", "year", sgp)
         {
             private static final long serialVersionUID = 1L;
 

@@ -31,6 +31,7 @@ import cz.larpovadatabaze.services.LabelService;
 import org.apache.log4j.Logger;
 import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
+import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.markup.html.IPackageResourceGuard;
@@ -99,6 +100,10 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         getComponentInstantiationListeners().add(new SpringComponentInjector(this, ctx, true));
         getMarkupSettings().setDefaultMarkupEncoding(DEFAULT_ENCODING);
         getMarkupSettings().setStripWicketTags(true);
+        if (!isDevelopmentMode()) {
+            // Strip comments in development mode
+            getMarkupSettings().setStripComments(true);
+        }
         getRequestCycleSettings().setResponseRequestEncoding(DEFAULT_ENCODING);
 
         IPackageResourceGuard packageResourceGuard = getResourceSettings().getPackageResourceGuard();
@@ -126,6 +131,11 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         mountPages();
 
         mountResources();
+
+        if (isDevelopmentMode()) {
+            // Turn on containers names when debugging
+            getDebugSettings().setOutputMarkupContainerClassName(true);
+        }
 	}
 
     @Override
@@ -165,7 +175,8 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         mountPage("/uzivatele", ListUser.class);
         mountPage("/skupiny", ListGroup.class);
 
-        mountPage("/detail-game", GameDetail.class);
+        mountPage("/detail-game", GameDetailOld.class);
+        mountPage("/game/${name}/${id}", GameDetail.class);
         mountPage("/detail-author", UserDetail.class);
         mountPage("/detail-user", UserDetail.class);
         mountPage("/detail-group", GroupDetail.class);
@@ -200,4 +211,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.ctx = applicationContext;
     }
-}
+
+    protected boolean isDevelopmentMode() {
+        return RuntimeConfigurationType.DEVELOPMENT.equals(this.getConfigurationType());
+    }}

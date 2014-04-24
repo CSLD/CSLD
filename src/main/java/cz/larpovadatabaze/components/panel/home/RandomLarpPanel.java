@@ -60,11 +60,10 @@ public class RandomLarpPanel extends AbstractCsldPanel<Game> {
             show = false;
         }
 
-        PageParameters params = new PageParameters();
-        params.add("id", game.getId());
+        PageParameters gameParams = GameDetail.paramsForGame(game);
 
         final BookmarkablePageLink<CsldBasePage> gameLink =
-                new BookmarkablePageLink<CsldBasePage>("gameIconLink", GameDetail.class, params);
+                new BookmarkablePageLink<CsldBasePage>("gameIconLink", GameDetail.class, gameParams);
         final GameIcon gameLinkImage = new GameIcon("gameIcon", getModel());
         gameLink.add(gameLinkImage);
         add(gameLink);
@@ -79,7 +78,7 @@ public class RandomLarpPanel extends AbstractCsldPanel<Game> {
         add(gameRating);
 
         final BookmarkablePageLink<CsldBasePage> gameLinkContent =
-                new BookmarkablePageLink<CsldBasePage>("gameLink", GameDetail.class, params);
+                new BookmarkablePageLink<CsldBasePage>("gameLink", GameDetail.class, gameParams);
         final Label gameName = new Label("gameName", game.getName());
         gameLinkContent.add(gameName);
         add(gameLinkContent);

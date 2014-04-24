@@ -15,6 +15,7 @@ import cz.larpovadatabaze.entities.Video;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.GroupService;
+import cz.larpovadatabaze.services.VideoService;
 import cz.larpovadatabaze.validator.AtLeastOneRequiredLabelValidator;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -46,8 +47,11 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
     CsldUserService csldUserService;
     @SpringBean
     GroupService groupService;
+    @SpringBean
+    VideoService videoService;
 
     private ChooseLabelsPanel chooseLabels;
+    private TextField<String> videoField;
 
     public CreateOrUpdateGamePanel(String id, IModel<Game> model) {
         super(id, model);
@@ -87,7 +91,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("menRole").setLabel(Model.of("Počet mužů")), createOrUpdateGame, "menRoleFeedback"));
         createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("womenRole").setLabel(Model.of("Počet žen")), createOrUpdateGame, "womenRoleFeedback"));
         createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("bothRole").setLabel(Model.of("Počet obojetných")), createOrUpdateGame, "bothRoleFeedback"));
-        createOrUpdateGame.add(addFeedbackPanel(new TextField<String>("video.path"), createOrUpdateGame, "videoPathFeedback"));
+        createOrUpdateGame.add(addFeedbackPanel(videoField = new TextField<String>("video.path"), createOrUpdateGame, "videoPathFeedback"));
         createOrUpdateGame.add(addFeedbackPanel(new ImagePanel("image"), createOrUpdateGame, "imageFeedback"));
 
         addAuthorsInput(createOrUpdateGame, game);
@@ -106,8 +110,25 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 super.onSubmit(target, form);
 
+                // Process video
+                Game game = CreateOrUpdateGamePanel.this.getModelObject();
+                String videoURL = videoService.getEmbedingURL(videoField.getConvertedInput());
+                if (videoURL == null) {
+                    // Bad URL - TODO - does not work - TODO
+                    videoField.error("Nerozpoznané URL videa");
+                }
+                else {
+                    // Set URL
+                    Video v = game.getVideo();
+                    if (v == null) {
+                        v = new Video();
+                        v.setType(0);
+                        game.setVideo(v);
+                    }
+                    game.getVideo().setPath(videoURL);
+                }
+
                 if(createOrUpdateGame.isValid()){
-                    Game game = createOrUpdateGame.getModelObject();
                     if(gameService.saveOrUpdate(game)){
                         onCsldAction(target, form);
                     } else {
