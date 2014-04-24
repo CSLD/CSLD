@@ -14,8 +14,11 @@ import cz.larpovadatabaze.utils.HbUtils;
 import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.*;
 import org.apache.wicket.request.cycle.RequestCycle;
@@ -289,6 +292,8 @@ public class GameDetail extends CsldBasePage {
 
         ratingsContainerPanel.add(new CanNotRatePanel("canNotRatePanel"));
 
+        addAuthorRatePanel(ratingsContainerPanel);
+
         add(ratingsContainerPanel);
 
         EditGamePanel editGamePanel = new EditGamePanel("editGamePanel", getModel());
@@ -314,5 +319,48 @@ public class GameDetail extends CsldBasePage {
         add(new AdminAllRatingsPanel("ratingsOfUsersPanel", getModel()));
 
         add(wantedToPlay);
+    }
+
+    /**
+     * Add container for case when author wants to rate his/her own game
+     */
+    private void addAuthorRatePanel(final MarkupContainer container) {
+        final Form<Void> authorRatePanel = new Form<Void>("authorRatePanel");
+        container.add(authorRatePanel);
+        container.setOutputMarkupId(true);
+
+        // Check if current user is author of the game
+        boolean showPanel = false;
+        if (UserUtils.isSignedIn() && !ratingsPanel.isRatingSet()) {
+            Integer userId = UserUtils.getLoggedUser().getId();
+            for(CsldUser u : getModel().getObject().getAuthors()) {
+                if (userId.equals(u.getId())) {
+                    showPanel = true;
+                    break;
+                }
+            }
+        }
+
+        if (!showPanel) {
+            // No author - hide this panel
+            authorRatePanel.setVisible(false);
+            return;
+        }
+
+        // Show this panel - hide ratings panel
+        ratingsPanel.setOutputMarkupId(true);
+        ratingsPanel.setVisible(false);
+
+        // Add button
+        authorRatePanel.add(new AjaxButton("authorRate", new ResourceModel("Rating.author.button"), authorRatePanel) {
+            @Override
+            protected void onSubmit(AjaxRequestTarget art, Form<?> form) {
+                // Show ratings panel and hide this panel
+                ratingsPanel.setVisible(true);
+                authorRatePanel.setVisible(false);
+                art.add(container);
+            }
+        });
+
     }
 }

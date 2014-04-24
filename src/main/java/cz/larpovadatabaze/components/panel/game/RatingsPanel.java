@@ -124,6 +124,10 @@ public class RatingsPanel extends Panel {
         gameModel.detach();
     }
 
+    public boolean isRatingSet() {
+        return (model.getObject().getRating() != null);
+    }
+
     @Override
     protected void onConfigure() {
         super.onConfigure();
