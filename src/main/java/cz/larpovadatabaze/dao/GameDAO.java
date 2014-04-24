@@ -10,6 +10,7 @@ import cz.larpovadatabaze.models.FilterGame;
 import cz.larpovadatabaze.utils.Strings;
 import org.hibernate.*;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.id.IdentityGenerator;
@@ -145,10 +146,10 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     @SuppressWarnings("unchecked")
     public List<Game> getLastGames(int amountOfGames) {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery(
-                "from Game game order by added desc");
-        query.setMaxResults(amountOfGames);
-        return query.list();
+        Criteria criteria = session.createCriteria(Game.class);
+        criteria.setMaxResults(amountOfGames);
+        criteria.addOrder(Order.desc("added"));
+        return criteria.list();
     }
 
     public int getAmountOfGames() {
@@ -166,6 +167,73 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
         return (Game) criteria.uniqueResult();
     }
 
+    public List<Game> getGamesOfAuthor(CsldUser author, int first, int count) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = session.createCriteria(Game.class, "game");
+        criteria.createAlias("game.authors", "author");
+        criteria.add(Restrictions.eq("author.id", author.getId()));
+        criteria.addOrder(Order.asc("totalRating"));
+        criteria.setFirstResult(first);
+        criteria.setMaxResults(count);
+        return criteria.list();
+    }
+
+    public List<Game> getGamesOfGroup(CsldGroup csldGroup, int first, int count) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = session.createCriteria(Game.class, "game");
+        criteria.createAlias("game.groupAuthor", "group");
+        criteria.add(Restrictions.eq("group.id", csldGroup.getId()));
+        criteria.addOrder(Order.asc("totalRating"));
+        criteria.setFirstResult(first);
+        criteria.setMaxResults(count);
+        return criteria.list();
+    }
+
+    public long getAmountOfGamesOfAuthor(CsldUser author) {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria(Game.class, "game");
+        criteria.createAlias("game.authors", "author");
+        criteria.add(Restrictions.eq("author.id", author.getId()));
+        criteria.setProjection(Projections.countDistinct("game.id"));
+
+        return (Long)criteria.uniqueResult();
+    }
+
+    public long getAmountOfGamesOfGroup(CsldGroup csldGroup) {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria(Game.class, "game");
+        criteria.createAlias("game.groupAuthor", "group");
+        criteria.add(Restrictions.eq("group.id", csldGroup.getId()));
+        criteria.setProjection(Projections.countDistinct("game.id"));
+
+        return (Long)criteria.uniqueResult();
+    }
+
+    @Override
+    public boolean saveOrUpdate(Game entity) {
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            session.saveOrUpdate(entity);
+            flush();
+            return true;
+        } catch (HibernateException ex){
+            ex.printStackTrace();
+        }
+
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            Game item2 = (Game) session.get(Game.class, entity.getId());
+            Game item3 = (Game) session.merge(entity);
+            flush();
+            return true;
+        } catch (HibernateException ex){
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
     @SuppressWarnings("unchecked")
     public List<Game> getSimilar(Game game) {
         Session session = sessionFactory.getCurrentSession();
@@ -180,6 +248,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     public List<Game> getFilteredGames(FilterGame filterGame, List<Label> labels, int offset, int limit, String orderBy){
         Session session = sessionFactory.getCurrentSession();
         String labelSql = "";
+        // Something like in http://stackoverflow.com/questions/7344701/hibernate-criteria-equivalent-for-in-clause-in-subqueries
         if(labels.size() > 0){
             labelSql = "ARRAY[";
             for(Label label: labels){
@@ -267,80 +336,6 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
         }
 
         Query query = session.createSQLQuery(sqlForGameIds);
-        return ((BigInteger) query.uniqueResult()).longValue();
-    }
-
-    @Override
-    public boolean saveOrUpdate(Game entity) {
-        try{
-            Session session = sessionFactory.getCurrentSession();
-            session.saveOrUpdate(entity);
-            flush();
-            return true;
-        } catch (HibernateException ex){
-            ex.printStackTrace();
-        }
-
-        try{
-            Session session = sessionFactory.getCurrentSession();
-            Game item2 = (Game) session.get(Game.class, entity.getId());
-            Game item3 = (Game) session.merge(entity);
-            flush();
-            return true;
-        } catch (HibernateException ex){
-            ex.printStackTrace();
-            return false;
-        }
-    }
-
-    public List<Game> getGamesOfAuthor(CsldUser author, int first, int count) {
-        String sqlForGameIds = String.format("select " +
-                "game.id, game.name, game.description, game.year, game.web, game.hours," +
-                "game.days, game.players, game.men_role, game.women_role, game.both_role," +
-                "game.added, game.total_rating, game.amount_of_comments, game.amount_of_played, " +
-                "game.amount_of_ratings, game.added_by, game.video, game.image, game.gallery_url, game.photo_author " +
-                "from csld_game game join csld_game_has_author gha on game.id= gha.id_game where " +
-                "gha.id_user = %s order by game.total_rating offset %s limit %s",
-                author.getId(),
-                String.valueOf(first),
-                String.valueOf(count));
-        Session session = sessionFactory.getCurrentSession();
-        Query query = session.createSQLQuery(sqlForGameIds).addEntity(Game.class);
-        return query.list();
-    }
-
-    public List<Game> getGamesOfGroup(CsldGroup csldGroup, int first, int count) {
-        String sqlForGameIds = String.format("select " +
-                "game.id, game.name, game.description, game.year, game.web, game.hours," +
-                "game.days, game.players, game.men_role, game.women_role, game.both_role," +
-                "game.added, game.total_rating, game.amount_of_comments, game.amount_of_played, " +
-                "game.amount_of_ratings, game.added_by, game.video, game.image, game.gallery_url, game.photo_author " +
-                "from csld_game game join csld_game_has_group gha on game.id= gha.id_game where " +
-                "gha.id_group = %s order by game.total_rating offset %s limit %s",
-                csldGroup.getId(),
-                String.valueOf(first),
-                String.valueOf(count));
-        Session session = sessionFactory.getCurrentSession();
-        Query query = session.createSQLQuery(sqlForGameIds).addEntity(Game.class);
-        return query.list();
-    }
-
-
-    public long getAmountOfGamesOfAuthor(CsldUser author) {
-        Session session = sessionFactory.getCurrentSession();
-        String sqlForAmountOfAuthoredGames = String.format("select count(distinct game.id) from csld_game game join " +
-                "csld_game_has_author gha on gha.id_game = game.id where gha.id_user = %s",
-                author.getId());
-        Query query = session.createSQLQuery(sqlForAmountOfAuthoredGames);
-        return ((BigInteger) query.uniqueResult()).longValue();
-    }
-
-    public long getAmountOfGamesOfGroup(CsldGroup csldGroup) {
-        Session session = sessionFactory.getCurrentSession();
-        String sqlForAmountOfAuthoredGames = String.format("select count(distinct game.id) from csld_game game join " +
-                "csld_game_has_group gha on gha.id_game = game.id where gha.id_group = %s",
-                csldGroup.getId());
-        Query query = session.createSQLQuery(sqlForAmountOfAuthoredGames);
         return ((BigInteger) query.uniqueResult()).longValue();
     }
 }
