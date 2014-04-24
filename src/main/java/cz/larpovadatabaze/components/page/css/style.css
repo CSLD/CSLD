@@ -2360,11 +2360,7 @@ a.active.wantToPlay.button:after{
     margin-top: 10px;
 }
 
-.shareButtons div {
-    margin-right: 5px;
-}
-
-.shareButtons .fb-share-button {
+.shareButtons .fb-like {
     top: -6px;
 }
 
