@@ -29,7 +29,7 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
     }
 
     public SortableGameProvider(GameService gameService, Label filterLabel) {
-        this(gameService, "rating");
+        this(gameService, "year");
         if(filterLabel != null) {
             filterLabels.add(filterLabel);
         }
