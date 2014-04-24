@@ -124,7 +124,7 @@ public class ListGamePanel extends Panel {
                 final Label gameRating = new Label("rating", Model.of(df.format((double) totalRating / 10d)));
                 item.add(gameRating);
 
-                Long averageRating = Math.round(game.getAverageRating());
+                Long averageRating = (totalRating == 0)?0:Math.round(game.getAverageRating());
                 final Label average = new Label("average", Model.of(df.format((double) averageRating / 10d)));
                 item.add(average);
 
