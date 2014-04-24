@@ -8,7 +8,6 @@ import cz.larpovadatabaze.models.FilterGame;
 import cz.larpovadatabaze.providers.SortableGameProvider;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.*;
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.OrderByBorder;
@@ -128,6 +127,10 @@ public class ListGamePanel extends Panel {
                 final Label gameRating = new Label("rating", Model.of(df.format((double) totalRating / 10d)));
                 item.add(gameRating);
 
+                Long averageRating = Math.round(game.getAverageRating());
+                final Label average = new Label("average", Model.of(df.format((double) averageRating / 10d)));
+                item.add(average);
+
                 final Label gameRatings = new Label("ratings", game.getAmountOfRatings());
                 if(ratingsModel.getObject().contains(game)){
                     gameRatings.add(new AttributeAppender("class"," rated"));
@@ -144,7 +147,16 @@ public class ListGamePanel extends Panel {
         propertyList.setOutputMarkupId(true);
         propertyList.setItemsPerPage(25L);
 
-        add(new OrderByBorder("orderByName", "form.wholeName", sgp)
+        add(new OrderByBorder("orderByName", "form.wholeName", sgp) {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            protected void onSortChanged() {
+                propertyList.setCurrentPage(0);
+            }
+        });
+
+        add(new OrderByBorder("orderByYear", "year", sgp)
         {
             private static final long serialVersionUID = 1L;
 

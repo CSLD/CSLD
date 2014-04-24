@@ -1,3 +1,8 @@
+alter table csld_game add average_rating double precision;
+
+update csld_game set average_rating = (select avg(rating) from csld_rating where csld_rating.game_id=csld_game.id)*10;
+update csld_game set average_rating = 0 where average_rating is null;
+
 CREATE OR REPLACE FUNCTION public.csld_update_rating()
   RETURNS trigger
 LANGUAGE plpgsql

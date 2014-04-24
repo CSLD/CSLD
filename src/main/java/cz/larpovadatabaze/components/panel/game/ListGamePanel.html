@@ -13,6 +13,9 @@
             <td wicket:id="orderByName">
                 <wicket:message key="form.larpname">Název LARPu</wicket:message>
             </td>
+            <td wicket:id="orderByYear">
+                <wicket:message key="game.year">Vytvořen</wicket:message>
+            </td>
             <td wicket:id="orderByRating">
                 <wicket:message key="game.rating">Hodnocení</wicket:message>
             </td>
@@ -34,9 +37,9 @@
                 <a wicket:id="gameLink" class="larpOdkaz">
                     <span wicket:id="gameName"></span>
                 </a>
-                (<span wicket:id="gameYear"></span>)
             </td>
-            <td class="hodnoceni"><span wicket:id="rating">94</span></td>
+            <td><span wicket:id="gameYear"></span></td>
+            <td class="hodnoceni"><span wicket:id="rating">94</span> (&empty;<span wicket:id="average">94</span>)</td>
             <td class="pocet_hodnoceni">
                 <span wicket:id="ratings"></span>x <i class="fa fa-star-half-full"></i>
             </td>

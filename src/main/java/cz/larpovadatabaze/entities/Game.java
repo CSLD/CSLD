@@ -230,6 +230,23 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
         this.totalRating = totalRating;
     }
 
+    private Double averageRating;
+
+    @Column(
+            name = "average_rating",
+            nullable = false,
+            insertable = true,
+            updatable = true
+    )
+    @Basic
+    public Double getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
+    }
+
     private Timestamp added;
 
     @Column(
