@@ -257,7 +257,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public boolean canEditGame(Game game) {
-        CsldUser loggedUser = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
+        CsldUser loggedUser = CsldAuthenticatedWebSession.get().getLoggedUser();
         if(loggedUser != null){
             for(CsldUser author : game.getAuthors()) {
                 if (author.getId().equals(loggedUser.getId())) {

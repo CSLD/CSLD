@@ -9,8 +9,10 @@ import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.models.FilterGame;
 import cz.larpovadatabaze.utils.Strings;
 import org.hibernate.*;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.id.IdentityGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -29,33 +31,53 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     @Qualifier("sessionFactory")
     @Autowired
     private SessionFactory sessionFactory;
+    /*
+    Is it possible to create some kind of builder, as many of these queries are basically similar. There is also another
+    question. Is it possible to write the same queries using just one type of API without switching between them?
+    Probably the best choice would be to try Hibernates Criteria API.
+     */
 
+    /**
+     * It returns part of the games ordered by rating. Only given amount with given offset is returned.
+     *
+     * @param first Position of first game to be returned.
+     * @param amountPerPage Amount of games to be retrieved.
+     *
+     * @return List of games, which contains between zero and amountPerPage data.
+     */
     @SuppressWarnings("unchecked")
     public List<Game> getRated(Long first, Long amountPerPage) {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery(
-                "from Game game order by totalRating desc");
-        query.setFirstResult(first.intValue());
-        query.setMaxResults(amountPerPage.intValue());
-        return query.list();
+
+        Criteria criteria = session.createCriteria(Game.class);
+        criteria.setFirstResult(first.intValue());
+        criteria.setMaxResults(amountPerPage.intValue());
+        criteria.addOrder(Order.desc("totalRating"));
+        return criteria.list();
     }
 
+    /**
+     * It returns all games in the database ordered by rating from the highest rating.
+     *
+     * @return Rated games data.
+     */
     @SuppressWarnings("unchecked")
     public List<Game> getRated() {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery(
-                "from Game game order by totalRating desc");
-        return query.list();
+
+        Criteria criteria = session.createCriteria(Game.class);
+        criteria.addOrder(Order.desc("totalRating"));
+        return criteria.list();
     }
 
     @SuppressWarnings("unchecked")
     public List<Game> getOrderedByName(Long first, Long amountPerPage) {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery(
-                "from Game game order by name");
-        query.setFirstResult(first.intValue());
-        query.setMaxResults(amountPerPage.intValue());
-        return query.list();
+        Criteria criteria = session.createCriteria(Game.class);
+        criteria.addOrder(Order.asc("name"));
+        criteria.setFirstResult(first.intValue());
+        criteria.setMaxResults(amountPerPage.intValue());
+        return criteria.list();
     }
 
     /**
@@ -66,11 +88,11 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     @SuppressWarnings("unchecked")
     public List<Game> getRatedAmount(Long first, Long amountPerPage) {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery(
-                "from Game game order by csld_amount_of_ratings(game.id) desc");
-        query.setFirstResult(first.intValue());
-        query.setMaxResults(amountPerPage.intValue());
-        return query.list();
+        Criteria criteria = session.createCriteria(Game.class);
+        criteria.setFirstResult(first.intValue());
+        criteria.setMaxResults(amountPerPage.intValue());
+        criteria.addOrder(Order.desc("amountOfRatings"));
+        return criteria.list();
     }
 
     /**
@@ -81,11 +103,11 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     @SuppressWarnings("unchecked")
     public List<Game> getCommentedAmount(Long first, Long amountPerPage) {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery(
-                "from Game game order by amountOfComments desc");
-        query.setFirstResult(first.intValue());
-        query.setMaxResults(amountPerPage.intValue());
-        return query.list();
+        Criteria criteria = session.createCriteria(Game.class);
+        criteria.setFirstResult(first.intValue());
+        criteria.setMaxResults(amountPerPage.intValue());
+        criteria.addOrder(Order.desc("amountOfComments"));
+        return criteria.list();
     }
 
     /**
@@ -110,14 +132,14 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
      * @return Best Game, Every author has at least one game as definition.
      */
     public Game getBestGame(CsldUser actualAuthor) {
-        // TODO Get Best game of author
-        List<Game> gamesSortedByRating = getRated();
-        for(Game game: gamesSortedByRating) {
-            if(game.getAuthors().contains(actualAuthor)){
-                return game;
-            }
-        }
-        throw new RuntimeException("Trying to get Best Game of someone who is not author.");
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria(Game.class, "game");
+        criteria.createAlias("game.authors", "author");
+        criteria.add(Restrictions.eq("author.id", actualAuthor.getId()));
+        criteria.addOrder(Order.desc("totalRating"));
+
+        return (Game) criteria.uniqueResult();
     }
 
     @SuppressWarnings("unchecked")

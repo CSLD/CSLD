@@ -16,4 +16,9 @@
             value="C:\Users\jbalhar\Projekty\csldDir"
             type="java.lang.String"
             override="false" />
+
+    <context-param>
+        <param-name>com.newrelic.agent.APPLICATION_NAME</param-name>
+        <param-value>CSLD</param-value>
+    </context-param>
 </Context>
