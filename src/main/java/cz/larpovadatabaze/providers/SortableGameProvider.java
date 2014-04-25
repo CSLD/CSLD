@@ -57,7 +57,7 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
                             filterLabels,
                             firstL.intValue(),
                             ((Long)amountPerPage).intValue(),
-                            " order by year desc "),
+                            " order by year desc nulls last"),
                     firstL.intValue()
             ).iterator();
         } else if(property.equals("rating")) {
