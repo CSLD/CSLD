@@ -176,7 +176,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         mountPage("/skupiny", ListGroup.class);
 
         mountPage("/detail-game", GameDetailOld.class);
-        mountPage("/game/${name}/${id}", GameDetail.class);
+        mountPage("/larp/${name}/${id}", GameDetail.class);
         mountPage("/detail-author", UserDetail.class);
         mountPage("/detail-user", UserDetail.class);
         mountPage("/detail-group", GroupDetail.class);
