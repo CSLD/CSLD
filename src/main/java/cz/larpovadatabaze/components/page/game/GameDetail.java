@@ -2,6 +2,7 @@ package cz.larpovadatabaze.components.page.game;
 
 import cz.larpovadatabaze.components.common.tabs.TabsComponentPanel;
 import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.components.panel.YouTubePanel;
 import cz.larpovadatabaze.components.panel.admin.AdminAllRatingsPanel;
 import cz.larpovadatabaze.components.panel.game.*;
@@ -16,6 +17,7 @@ import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -176,7 +178,11 @@ public class GameDetail extends CsldBasePage {
      * Constructor - initialize just model
      */
     public GameDetail(PageParameters params){
+        try {
         setDefaultModel(new GameModel(params.get(ID_PARAM).to(Integer.class)));
+        } catch (NumberFormatException ex) {
+            throw new RestartResponseException(HomePage.class);
+        }
     }
 
     @Override
