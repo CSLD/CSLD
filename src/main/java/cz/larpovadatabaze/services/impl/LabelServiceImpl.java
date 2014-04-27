@@ -22,9 +22,6 @@ public class LabelServiceImpl implements LabelService {
     @Autowired
     private LabelDAO labelDAO;
 
-    @Autowired
-    private GameDAO gameDAO;
-
     public List<Label> getAll(){
         return labelDAO.findAll();
     }

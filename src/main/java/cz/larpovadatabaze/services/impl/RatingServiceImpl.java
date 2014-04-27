@@ -18,10 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 9.4.13
- * Time: 11:27
+ *
  */
 @Repository
 public class RatingServiceImpl implements RatingService {
@@ -101,11 +98,6 @@ public class RatingServiceImpl implements RatingService {
     @Override
     public int getAmountOfRatings() {
         return ratingDAO.getAmountOfRatings();
-    }
-
-    @Override
-    public Integer getRatingsForGame(Integer id) {
-        return ratingDAO.getRatingsForGame(id);
     }
 
     @Override

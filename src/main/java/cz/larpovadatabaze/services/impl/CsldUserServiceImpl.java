@@ -48,15 +48,6 @@ public class CsldUserServiceImpl implements CsldUserService {
         csldUserDao.flush();
     }
 
-    public List<CsldUser> getAuthorsByGames(){
-        return csldUserDao.getAuthorsByGames();
-    }
-
-    @Override
-    public List<CsldUser> getAuthorsByGames(long first, long amountPerPage) {
-        return csldUserDao.getAuthorsByGames(first, amountPerPage);
-    }
-
     @Override
     public List<CsldUser> getAll() {
         return csldUserDao.findAll();

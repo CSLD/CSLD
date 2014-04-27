@@ -18,8 +18,6 @@ public interface CsldUserService extends GenericService<CsldUser>, IIconReferenc
 
     void flush();
 
-    List<CsldUser> getAuthorsByGames(long first, long amountPerPage);
-
     List<CsldUser> getEditors();
 
     List<CsldUser> getAdmins();

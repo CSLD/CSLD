@@ -7,10 +7,7 @@ import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.request.resource.ResourceReference;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 17.4.13
- * Time: 19:00
+ *
  */
 public interface ImageService extends GenericService<Image> {
     // @see getImageResourceReference()
