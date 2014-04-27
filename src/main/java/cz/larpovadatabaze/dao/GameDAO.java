@@ -11,10 +11,8 @@ import cz.larpovadatabaze.models.FilterGame;
 import cz.larpovadatabaze.utils.Strings;
 import org.hibernate.*;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.id.IdentityGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -51,35 +49,22 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     public List<Game> getRated(Long first, Long amountPerPage) {
         Session session = sessionFactory.getCurrentSession();
 
-        Criteria criteria = new GameBuilder(session).build();
-        criteria.setFirstResult(first.intValue());
-        criteria.setMaxResults(amountPerPage.intValue());
-        criteria.addOrder(Order.desc("totalRating"));
+        Criteria criteria = new GameBuilder(session).build()
+                .setFirstResult(first.intValue())
+                .setMaxResults(amountPerPage.intValue())
+                .addOrder(Order.desc("totalRating"));
 
-        return criteria.list();
-    }
-
-    /**
-     * It returns all games in the database ordered by rating from the highest rating.
-     *
-     * @return Rated games data.
-     */
-    @SuppressWarnings("unchecked")
-    public List<Game> getRated() {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = new GameBuilder(session).build();
-        criteria.addOrder(Order.desc("totalRating"));
         return criteria.list();
     }
 
     @SuppressWarnings("unchecked")
     public List<Game> getOrderedByName(Long first, Long amountPerPage) {
         Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = new GameBuilder(session).build();
-        criteria.addOrder(Order.asc("name"));
-        criteria.setFirstResult(first.intValue());
-        criteria.setMaxResults(amountPerPage.intValue());
+        Criteria criteria = new GameBuilder(session).build()
+                .addOrder(Order.asc("name"))
+                .setFirstResult(first.intValue())
+                .setMaxResults(amountPerPage.intValue());
+
         return criteria.list();
     }
 
@@ -91,10 +76,11 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     @SuppressWarnings("unchecked")
     public List<Game> getRatedAmount(Long first, Long amountPerPage) {
         Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = new GameBuilder(session).build();
-        criteria.setFirstResult(first.intValue());
-        criteria.setMaxResults(amountPerPage.intValue());
-        criteria.addOrder(Order.desc("amountOfRatings"));
+        Criteria criteria = new GameBuilder(session).build()
+                .setFirstResult(first.intValue())
+                .setMaxResults(amountPerPage.intValue())
+                .addOrder(Order.desc("amountOfRatings"));
+
         return criteria.list();
     }
 
@@ -106,10 +92,11 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     @SuppressWarnings("unchecked")
     public List<Game> getCommentedAmount(Long first, Long amountPerPage) {
         Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = new GameBuilder(session).build();
-        criteria.setFirstResult(first.intValue());
-        criteria.setMaxResults(amountPerPage.intValue());
-        criteria.addOrder(Order.desc("amountOfComments"));
+        Criteria criteria = new GameBuilder(session).build()
+                .setFirstResult(first.intValue())
+                .setMaxResults(amountPerPage.intValue())
+                .addOrder(Order.desc("amountOfComments"));
+
         return criteria.list();
     }
 
@@ -122,9 +109,8 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     @SuppressWarnings("unchecked")
     public List<Game> getByAutoCompletable(String gameName) throws WrongParameterException {
         Session session = sessionFactory.getCurrentSession();
-        Criteria uniqueGame = new GameBuilder(session).build().add(
-                Restrictions.eq("name", gameName)
-        );
+        Criteria uniqueGame = new GameBuilder(session).build()
+                .add(Restrictions.eq("name", gameName));
         return uniqueGame.list();
     }
 
@@ -137,10 +123,10 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     public Game getBestGame(CsldUser actualAuthor) {
         Session session = sessionFactory.getCurrentSession();
 
-        Criteria criteria = new GameBuilder(session).build();
-        criteria.createAlias("game.authors", "author");
-        criteria.add(Restrictions.eq("author.id", actualAuthor.getId()));
-        criteria.addOrder(Order.desc("totalRating"));
+        Criteria criteria = new GameBuilder(session).build()
+                .createAlias("game.authors", "author")
+                .add(Restrictions.eq("author.id", actualAuthor.getId()))
+                .addOrder(Order.desc("totalRating"));
 
         return (Game) criteria.uniqueResult();
     }
@@ -148,58 +134,68 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     @SuppressWarnings("unchecked")
     public List<Game> getLastGames(int amountOfGames) {
         Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = new GameBuilder(session).build();
-        criteria.setMaxResults(amountOfGames);
-        criteria.addOrder(Order.desc("added"));
+        Criteria criteria = new GameBuilder(session).build()
+                .setMaxResults(amountOfGames)
+                .addOrder(Order.desc("added"));
+
         return criteria.list();
     }
 
     public int getAmountOfGames() {
         Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = new GameBuilder(session).build();
-        criteria.setProjection(Projections.rowCount());
+        Criteria criteria = new GameBuilder(session).build()
+                .setProjection(Projections.rowCount());
+
         return ((Long)criteria.uniqueResult()).intValue();
     }
 
     public Game getRandomGame() {
         Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = new GameBuilder(session).build();
-        criteria.add(Restrictions.sqlRestriction("random() < 0.01"));
-        criteria.setMaxResults(1);
-        return (Game) criteria.uniqueResult();
+        Criteria criteria = new GameBuilder(session).build()
+                .add(Restrictions.sqlRestriction("random() < 0.01"))
+                .setMaxResults(1);
+
+        Game result = (Game) criteria.uniqueResult();
+        if(result == null) {
+            return getRandomGame();
+        } else {
+            return result;
+        }
     }
 
     @SuppressWarnings("unchecked")
     public List<Game> getGamesOfAuthor(CsldUser author, int first, int count) {
         Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = new GameBuilder(session).build();
-        criteria.createAlias("game.authors", "author");
-        criteria.add(Restrictions.eq("author.id", author.getId()));
-        criteria.addOrder(Order.asc("totalRating"));
-        criteria.setFirstResult(first);
-        criteria.setMaxResults(count);
+        Criteria criteria = new GameBuilder(session).build()
+                .createAlias("game.authors", "author")
+                .add(Restrictions.eq("author.id", author.getId()))
+                .addOrder(Order.asc("totalRating"))
+                .setFirstResult(first)
+                .setMaxResults(count);
+
         return criteria.list();
     }
 
     @SuppressWarnings("unchecked")
     public List<Game> getGamesOfGroup(CsldGroup csldGroup, int first, int count) {
         Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = new GameBuilder(session).build();
-        criteria.createAlias("game.groupAuthor", "group");
-        criteria.add(Restrictions.eq("group.id", csldGroup.getId()));
-        criteria.addOrder(Order.asc("totalRating"));
-        criteria.setFirstResult(first);
-        criteria.setMaxResults(count);
+        Criteria criteria = new GameBuilder(session).build()
+                .createAlias("game.groupAuthor", "group")
+                .add(Restrictions.eq("group.id", csldGroup.getId()))
+                .addOrder(Order.asc("totalRating"))
+                .setFirstResult(first)
+                .setMaxResults(count);
+
         return criteria.list();
     }
 
     public long getAmountOfGamesOfAuthor(CsldUser author) {
         Session session = sessionFactory.getCurrentSession();
 
-        Criteria criteria = new GameBuilder(session).build();
-        criteria.createAlias("game.authors", "author");
-        criteria.add(Restrictions.eq("author.id", author.getId()));
-        criteria.setProjection(Projections.countDistinct("game.id"));
+        Criteria criteria = new GameBuilder(session).build()
+                .createAlias("game.authors", "author")
+                .add(Restrictions.eq("author.id", author.getId()))
+                .setProjection(Projections.countDistinct("game.id"));
 
         return (Long)criteria.uniqueResult();
     }
@@ -207,12 +203,23 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     public long getAmountOfGamesOfGroup(CsldGroup csldGroup) {
         Session session = sessionFactory.getCurrentSession();
 
-        Criteria criteria = new GameBuilder(session).build();
-        criteria.createAlias("game.groupAuthor", "group");
-        criteria.add(Restrictions.eq("group.id", csldGroup.getId()));
-        criteria.setProjection(Projections.countDistinct("game.id"));
+        Criteria criteria = new GameBuilder(session).build()
+                .createAlias("game.groupAuthor", "group")
+                .add(Restrictions.eq("group.id", csldGroup.getId()))
+                .setProjection(Projections.countDistinct("game.id"));
 
         return (Long)criteria.uniqueResult();
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Game> getSimilar(Game game) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = new GameBuilder(session).build()
+                .add(Restrictions.sqlRestriction("csld_is_similar('" + game.getId() + "', this_.id)"))
+                .addOrder(Order.desc("totalRating"))
+                .setMaxResults(5);
+
+        return criteria.list();
     }
 
     @Override
@@ -236,16 +243,6 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
             ex.printStackTrace();
             return false;
         }
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<Game> getSimilar(Game game) {
-        Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("" +
-                "from Game where csld_is_similar(:gameId, id) = true order by totalRating desc");
-        query.setInteger("gameId", game.getId());
-        query.setMaxResults(5);
-        return query.list();
     }
 
     @SuppressWarnings("unchecked")

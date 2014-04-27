@@ -17,7 +17,7 @@ http://www.springframework.org/schema/jee http://www.springframework.org/schema/
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
     <bean id="transactionManager"
-		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
@@ -44,7 +44,7 @@ http://www.springframework.org/schema/jee http://www.springframework.org/schema/
 
 	<!-- Hibernate session factory -->
 	<bean id="sessionFactory"
-		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <property name="hibernateProperties">
 			<props>
