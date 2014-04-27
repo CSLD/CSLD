@@ -56,7 +56,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public CsldGroup getById(Integer id){
-        return groupDAO.findById(id, false);
+        return groupDAO.findById(id);
     }
 
     @Override

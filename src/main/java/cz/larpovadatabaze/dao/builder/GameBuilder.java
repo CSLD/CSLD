@@ -1,19 +1,15 @@
 package cz.larpovadatabaze.dao.builder;
 
 import cz.larpovadatabaze.entities.Game;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
+import org.hibernate.criterion.DetachedCriteria;
 
-/**
- *
- */
-public class GameBuilder {
-    Criteria basicCriteria;
+public class GameBuilder implements IBuilder {
+    DetachedCriteria baseCriteria;
 
-    public GameBuilder(Session session) {
-        this.basicCriteria = session.createCriteria(Game.class, "game");
+    public GameBuilder() {
+        this.baseCriteria = DetachedCriteria.forClass(Game.class, "game");
     }
 
-    public Criteria build(){
-        return basicCriteria;
+    public DetachedCriteria build(){
+        return baseCriteria;
     }                                      }

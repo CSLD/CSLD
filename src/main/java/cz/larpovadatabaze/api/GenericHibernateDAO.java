@@ -1,8 +1,10 @@
 package cz.larpovadatabaze.api;
 
+import cz.larpovadatabaze.dao.builder.IBuilder;
 import org.hibernate.*;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Example;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
@@ -11,31 +13,23 @@ import java.util.List;
 
 public abstract class GenericHibernateDAO<T, ID extends Serializable>
 		implements GenericDAO<T, ID> {
-
-	private Class<T> persistentClass;
-	@Autowired
+    @Autowired
 	protected SessionFactory sessionFactory;
 
-	public GenericHibernateDAO() {
-		this.persistentClass = (Class<T>) ((ParameterizedType) getClass()
-				.getGenericSuperclass()).getActualTypeArguments()[0];
-	}
+	public GenericHibernateDAO() {}
 
-	public Class<T> getPersistentClass() {
-		return persistentClass;
-	}
+	public abstract IBuilder getBuilder();
 
+    /**
+     * Works only with identifiers specified by Id. Do not use this method, if you expect
+     * entity to be nonexistent.
+     *
+     * @param id id of the object.
+     * @return Existing object
+     */
 	@SuppressWarnings("unchecked")
-	public T findById(ID id, boolean lock) {
-		T entity;
-		if (lock)
-			entity = (T) sessionFactory.getCurrentSession().load(getPersistentClass(), id,
-					LockOptions.UPGRADE);
-		else
-			entity = (T) sessionFactory.getCurrentSession().load(getPersistentClass(), id);
-
-        flush();
-		return entity;
+	public T findById(ID id) {
+		return findSingleByCriteria(Restrictions.eq("id",id));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -45,14 +39,38 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 
 	@SuppressWarnings("unchecked")
 	public List<T> findByExample(T exampleInstance, String[] excludeProperty) {
-		Criteria crit = sessionFactory.getCurrentSession().createCriteria(getPersistentClass());
-		Example example = Example.create(exampleInstance);
+        Criteria crit = getBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession());
+        Example example = Example.create(exampleInstance);
 		for (String exclude : excludeProperty) {
 			example.excludeProperty(exclude);
 		}
 		crit.add(example);
 		return crit.list();
 	}
+
+    /**
+     * Use this inside subclasses as a convenience method.
+     */
+    @SuppressWarnings("unchecked")
+    public List<T> findByCriteria(Criterion... criterion) {
+        Criteria crit = getBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession());
+        for (Criterion c : criterion) {
+            crit.add(c);
+        }
+        return crit.list();
+    }
+
+    /**
+     * Use this inside subclasses as a convenience method.
+     */
+    @SuppressWarnings("unchecked")
+    public T findSingleByCriteria(Criterion... criterion) {
+        Criteria crit = getBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession());
+        for (Criterion c : criterion) {
+            crit.add(c);
+        }
+        return (T) crit.uniqueResult();
+    }
 
 	@SuppressWarnings("unchecked")
 	public T makePersistent(T entity) {
@@ -93,28 +111,4 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 	public void clear() {
 		sessionFactory.getCurrentSession().clear();
 	}
-
-	/**
-	 * Use this inside subclasses as a convenience method.
-	 */
-	@SuppressWarnings("unchecked")
-	public List<T> findByCriteria(Criterion... criterion) {
-		Criteria crit = sessionFactory.getCurrentSession().createCriteria(getPersistentClass());
-		for (Criterion c : criterion) {
-			crit.add(c);
-		}
-		return crit.list();
-	}
-
-    /**
-     * Use this inside subclasses as a convenience method.
-     */
-    @SuppressWarnings("unchecked")
-    public T findSingleByCriteria(Criterion... criterion) {
-        Criteria crit = sessionFactory.getCurrentSession().createCriteria(getPersistentClass());
-        for (Criterion c : criterion) {
-            crit.add(c);
-        }
-        return (T) crit.uniqueResult();
-    }
 }

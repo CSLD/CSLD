@@ -86,7 +86,7 @@ public class ImageServiceImpl implements ImageService {
                         int id = attributes.getParameters().get(RESOURCE_REFERENCE_ID_PARAM_NAME).toInt();
 
                         // Load
-                        IEntityWithImage entity = dao.findById(id, false);
+                        IEntityWithImage entity = dao.findById(id);
                         getImageResource(entity).respond(attributes);
                     }
                 };

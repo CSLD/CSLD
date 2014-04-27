@@ -35,7 +35,7 @@ public class CsldUserServiceImpl implements CsldUserService {
 
     @Override
     public CsldUser getById(Integer id) {
-        return csldUserDao.findById(id, false);
+        return csldUserDao.findById(id);
     }
 
     @Override

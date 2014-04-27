@@ -98,7 +98,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Game> getGamesCommentedByUser(int userId) {
-        return commentDAO.getGamesCommentedByUser(userId);
+        return gameService.getGamesCommentedByUser(userId);
     }
 
 }

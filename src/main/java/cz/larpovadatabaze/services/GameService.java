@@ -55,4 +55,6 @@ public interface GameService extends GenericService<Game>, IIconReferenceProvide
      * @return Currently logged user can edit game
      */
     boolean canEditGame(Game game);
+
+    List<Game> getGamesCommentedByUser(int userId);
 }

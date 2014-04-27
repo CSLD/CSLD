@@ -63,7 +63,7 @@ public class PhotoServiceImpl implements PhotoService {
 
     @Override
     public Photo get(int id) {
-        return photoDao.findById(id, false);
+        return photoDao.findById(id);
     }
 
     /**

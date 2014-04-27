@@ -48,7 +48,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game getById(Integer id) {
-        return gameDAO.findById(id, false);
+        return gameDAO.findById(id);
     }
 
     @Override
@@ -234,6 +234,11 @@ public class GameServiceImpl implements GameService {
         }
 
         return false;
+    }
+
+    @Override
+    public List<Game> getGamesCommentedByUser(int userId) {
+        return gameDAO.getGamesCommentedByUser(userId);
     }
 
     @Override
