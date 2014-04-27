@@ -13,6 +13,7 @@ import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,31 +92,6 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void editGame(Game game) {
-        gameDAO.saveOrUpdate(game);
-    }
-
-    @Override
-    public List<Game> getRated(long first, long amountPerPage){
-        return gameDAO.getRated(first, amountPerPage);
-    }
-
-    @Override
-    public List<Game> getOrderedByName(long first, long amountPerPage) {
-        return gameDAO.getOrderedByName(first, amountPerPage);
-    }
-
-    @Override
-    public List<Game> getRatedAmount(long first, long amountPerPage) {
-        return gameDAO.getRatedAmount(first, amountPerPage);
-    }
-
-    @Override
-    public List<Game> getCommentedAmount(long first, long amountPerPage) {
-        return gameDAO.getCommentedAmount(first, amountPerPage);
-    }
-
-    @Override
     public List<Game> getSimilar(Game game) {
         return gameDAO.getSimilar(game);
     }
@@ -138,11 +114,6 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Game getBestGame(CsldUser actualAuthor) {
-        return gameDAO.getBestGame(actualAuthor);
-    }
-
-    @Override
     public Game getRandomGame() {
         return gameDAO.getRandomGame();
     }
@@ -158,7 +129,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<Game> getFilteredGames(FilterGame filterGame, List<Label> labels, int offset, int limit, String orderBy) {
+    public List<Game> getFilteredGames(FilterGame filterGame, List<Label> labels, int offset, int limit, Order orderBy) {
         return gameDAO.getFilteredGames(filterGame, labels, offset, limit, orderBy);
     }
 
@@ -187,12 +158,10 @@ public class GameServiceImpl implements GameService {
         return gameDAO.getAmountOfGamesOfGroup(csldGroup);
     }
 
-
-
     public boolean saveOrUpdate(Game game) {
         game.setAdded(new Timestamp(new Date().getTime()));
 
-        CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
+        CsldUser logged = (CsldAuthenticatedWebSession.get()).getLoggedUser();
         game.setAddedBy(logged);
 
         if(game.getAmountOfComments() == null){
@@ -231,11 +200,7 @@ public class GameServiceImpl implements GameService {
                         game.setVideo(null);
                     }
 
-                    if(addGame(game)) {
-                        return true;
-                    } else {
-                        return false;
-                    }
+                    return addGame(game);
                 } catch (Exception e) {
                     throw new IllegalStateException("Unable to write file", e);
                 }
@@ -248,11 +213,7 @@ public class GameServiceImpl implements GameService {
                 game.setVideo(null);
             }
 
-            if(addGame(game)) {
-                return true;
-            } else {
-                return false;
-            }
+            return addGame(game);
         }
 
         return false;
