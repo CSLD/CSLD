@@ -27,6 +27,7 @@ import org.apache.wicket.model.*;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.hibernate.HibernateException;
 
 import java.util.*;
 
@@ -179,10 +180,15 @@ public class GameDetail extends CsldBasePage {
      */
     public GameDetail(PageParameters params){
         try {
-            // If the game is deleted and i don't have sufficient rights redirect me to game deletetd page.
-            setDefaultModel(new GameModel(params.get(ID_PARAM).to(Integer.class)));
+            int gameId = params.get(ID_PARAM).to(Integer.class);
+            // If the game is deleted and I don't have sufficient rights redirect me to game deleted page.
+            if(gameService.getById(gameId) == null){
+                throw new RestartResponseException(GameWasDeleted.class);
+            }
+
+            setDefaultModel(new GameModel(gameId));
         } catch (NumberFormatException ex) {
-            throw new RestartResponseException(HomePage.class);
+            throw new RestartResponseException(ListGame.class);
         }
     }
 
