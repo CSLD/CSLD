@@ -31,7 +31,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import java.util.*;
 
 /**
- *
+ * TODO: Pokud je hra smazana a dostane se sem nekdo, je potreba zobrazit misto chyby informaci o tom, ze je hra smazana.
  */
 public class GameDetail extends CsldBasePage {
     private static final String ID_PARAM = "id";
@@ -179,7 +179,8 @@ public class GameDetail extends CsldBasePage {
      */
     public GameDetail(PageParameters params){
         try {
-        setDefaultModel(new GameModel(params.get(ID_PARAM).to(Integer.class)));
+            // If the game is deleted and i don't have sufficient rights redirect me to game deletetd page.
+            setDefaultModel(new GameModel(params.get(ID_PARAM).to(Integer.class)));
         } catch (NumberFormatException ex) {
             throw new RestartResponseException(HomePage.class);
         }

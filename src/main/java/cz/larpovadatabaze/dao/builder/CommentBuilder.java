@@ -1,17 +1,17 @@
 package cz.larpovadatabaze.dao.builder;
 
+import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.security.CsldRoles;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
-public class GameBuilder implements IBuilder {
+public class CommentBuilder implements IBuilder {
     DetachedCriteria baseCriteria;
 
-    public GameBuilder() {
-        baseCriteria = DetachedCriteria.forClass(Game.class, "game");
+    public CommentBuilder() {
+        baseCriteria = DetachedCriteria.forClass(Comment.class, "comment");
         withDeletedRestriction();
     }
 
@@ -23,7 +23,8 @@ public class GameBuilder implements IBuilder {
         CsldUser loggedUser = CsldAuthenticatedWebSession.get().getLoggedUser();
         if(loggedUser == null || loggedUser.getRole() < CsldRoles.getRoleByName("Editor")){
             // Only games that were not deleted will be shown.
-            baseCriteria.add(Restrictions.eq("deleted", false));
+            baseCriteria.createAlias("comment.game", "game")
+                    .add(Restrictions.eq("game.deleted", false));
         }
     }
 

@@ -336,6 +336,18 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
         this.photoAuthor = photoAuthor;
     }
 
+    private boolean deleted;
+
+    @Column(name="deleted")
+    @Basic
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

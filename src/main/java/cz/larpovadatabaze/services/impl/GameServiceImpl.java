@@ -184,26 +184,25 @@ public class GameServiceImpl implements GameService {
         }
 
         final List<FileUpload> uploads = (game.getImage() != null)?game.getImage().getFileUpload():null;
-        if (uploads != null) {
-            for (FileUpload upload : uploads) {
-                String filePath = fileService.saveImageFileAndReturnPath(upload, imageResizingStrategyFactoryService.getCuttingSquareStrategy(GAME_ICON_SIZE, 50)).path;
-                try {
-                    Image image = new Image();
-                    image.setPath(filePath);
-                    game.setImage(image);
+        if (uploads != null && uploads.size() > 0) {
+            FileUpload upload = uploads.get(0);
+            String filePath = fileService.saveImageFileAndReturnPath(upload, imageResizingStrategyFactoryService.getCuttingSquareStrategy(GAME_ICON_SIZE, 50)).path;
+            try {
+                Image image = new Image();
+                image.setPath(filePath);
+                game.setImage(image);
 
-                    if(game.getVideo() == null ||
-                            game.getVideo().getPath() == null ||
-                            game.getVideo().getPath().equals("") ||
-                            game.getVideo().getPath().equals("Video")){
-                        //TODO problem when internationalizating.
-                        game.setVideo(null);
-                    }
-
-                    return addGame(game);
-                } catch (Exception e) {
-                    throw new IllegalStateException("Unable to write file", e);
+                if(game.getVideo() == null ||
+                        game.getVideo().getPath() == null ||
+                        game.getVideo().getPath().equals("") ||
+                        game.getVideo().getPath().equals("Video")){
+                    //TODO problem when internationalizating.
+                    game.setVideo(null);
                 }
+
+                return addGame(game);
+            } catch (Exception e) {
+                throw new IllegalStateException("Unable to write file", e);
             }
         } else {
             if(game.getVideo() == null ||
@@ -215,8 +214,6 @@ public class GameServiceImpl implements GameService {
 
             return addGame(game);
         }
-
-        return false;
     }
 
     @Override
@@ -239,6 +236,17 @@ public class GameServiceImpl implements GameService {
     @Override
     public List<Game> getGamesCommentedByUser(int userId) {
         return gameDAO.getGamesCommentedByUser(userId);
+    }
+
+    @Override
+    public void hideGame(Integer gameId) {
+        // TODO: Possibly take somehow care of nonexistent game.
+        Game game = gameDAO.findById(gameId);
+        if(game == null) {
+            return;
+        }
+        game.setDeleted(true);
+        gameDAO.saveOrUpdate(game);
     }
 
     @Override

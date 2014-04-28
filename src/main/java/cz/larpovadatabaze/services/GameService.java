@@ -57,4 +57,11 @@ public interface GameService extends GenericService<Game>, IIconReferenceProvide
     boolean canEditGame(Game game);
 
     List<Game> getGamesCommentedByUser(int userId);
+
+    /**
+     * It takes care of hiding game, so that regular users don't see it.
+     *
+     * @param gameId Id of the fame to hide.
+     */
+    void hideGame(Integer gameId);
 }

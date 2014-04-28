@@ -1,13 +1,10 @@
 package cz.larpovadatabaze.dao;
 
 import cz.larpovadatabaze.api.GenericHibernateDAO;
-import cz.larpovadatabaze.dao.builder.GenericBuilder;
+import cz.larpovadatabaze.dao.builder.CommentBuilder;
 import cz.larpovadatabaze.dao.builder.IBuilder;
 import cz.larpovadatabaze.entities.Comment;
-import cz.larpovadatabaze.entities.Game;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -16,13 +13,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- *
+ * TODO: Do not return comments of hidden games.
  */
 @Repository
 public class CommentDAO extends GenericHibernateDAO<Comment, Integer>{
     @Override
     public IBuilder getBuilder() {
-        return new GenericBuilder<Comment>(Comment.class);
+        return new CommentBuilder();
     }
 
     /**
