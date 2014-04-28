@@ -1,5 +1,8 @@
 package cz.larpovadatabaze.services.impl;
 
+import cz.larpovadatabaze.Csld;
+import cz.larpovadatabaze.api.ResourceLoader;
+import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.dao.GameDAO;
 import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
@@ -10,7 +13,10 @@ import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.services.ImageService;
+import cz.larpovadatabaze.utils.Strings;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
+import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
@@ -239,13 +245,27 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void hideGame(Integer gameId) {
-        // TODO: Possibly take somehow care of nonexistent game.
+    public boolean isHidden(int gameId) {
+        Game game = getById(gameId);
+        return game != null && game.isDeleted();
+    }
+
+    @Override
+    public String getTextStateOfGame(int gameId) {
+        if(isHidden(gameId)) {
+            return Strings.getResourceString(CsldBasePage.class, "game.delete");
+        } else {
+            return Strings.getResourceString(Csld.class, "game.show");
+        }
+    }
+
+    @Override
+    public void toggleGameState(int gameId) {
         Game game = gameDAO.findById(gameId);
         if(game == null) {
             return;
         }
-        game.setDeleted(true);
+        game.setDeleted(!game.isDeleted());
         gameDAO.saveOrUpdate(game);
     }
 

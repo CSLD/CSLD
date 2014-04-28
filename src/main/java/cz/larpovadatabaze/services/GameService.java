@@ -59,9 +59,25 @@ public interface GameService extends GenericService<Game>, IIconReferenceProvide
     List<Game> getGamesCommentedByUser(int userId);
 
     /**
-     * It takes care of hiding game, so that regular users don't see it.
+     * It returns whether the game with given id is hidden. It returns hidden if this game does not exist.
      *
-     * @param gameId Id of the fame to hide.
+     * @param gameId Id of the game
+     * @return False if the fame is visible and exists.
      */
-    void hideGame(Integer gameId);
+    boolean isHidden(int gameId);
+
+    /**
+     * Returns text version of hide/show game based on the game state.
+     *
+     * @param gameId Id of the game
+     * @return String representing text to show/hide game
+     */
+    String getTextStateOfGame(int gameId);
+
+    /**
+     * It changes state of the game from hidden to shown and back.
+     *
+     * @param gameId Id which state will be shown.
+     */
+    void toggleGameState(int gameId);
 }
