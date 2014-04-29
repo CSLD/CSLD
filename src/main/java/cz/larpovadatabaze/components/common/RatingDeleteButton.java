@@ -1,7 +1,6 @@
 package cz.larpovadatabaze.components.common;
 
 import cz.larpovadatabaze.components.page.game.ListGame;
-import cz.larpovadatabaze.components.panel.admin.AdminAllRatingsPanel;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.services.RatingService;
 import cz.larpovadatabaze.utils.UserUtils;
