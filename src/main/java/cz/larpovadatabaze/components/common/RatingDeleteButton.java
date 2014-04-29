@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.components.common;
 
 import cz.larpovadatabaze.components.page.game.ListGame;
+import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.services.RatingService;
 import cz.larpovadatabaze.utils.UserUtils;
@@ -19,8 +20,11 @@ public class RatingDeleteButton extends AbstractCsldPanel<Rating> {
     @SpringBean
     private RatingService ratingService;
 
-    public RatingDeleteButton(String id, IModel<Rating> model) {
+    private IModel<Game> gameModel;
+
+    public RatingDeleteButton(String id, IModel<Rating> model, IModel<Game> gameModel) {
         super(id, model);
+        this.gameModel = gameModel;
     }
 
     @Override
@@ -41,7 +45,7 @@ public class RatingDeleteButton extends AbstractCsldPanel<Rating> {
 
                 ratingService.delete(rating);
 
-                throw new RestartResponseException(ListGame.class);
+                gameModel.detach();
             }
         };
         button.setOutputMarkupId(true);

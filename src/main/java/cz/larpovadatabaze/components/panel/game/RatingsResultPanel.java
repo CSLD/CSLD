@@ -165,7 +165,7 @@ public class RatingsResultPanel extends Panel {
         super.onConfigure();
 
         // Refresh my rating
-        CsldUser logged = (CsldAuthenticatedWebSession.get()).getLoggedUser();
+        CsldUser logged = CsldAuthenticatedWebSession.get().getLoggedUser();
         if(logged != null){
             try {
                 Rating mine = ratingService.getUserRatingOfGame(logged.getId(), model.getObject().getId());

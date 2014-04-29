@@ -11,6 +11,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -28,24 +29,40 @@ public class AdminAllRatingsPanel extends Panel {
     CsldUserService csldUserService;
 
     private IModel<Game> gameModel;
+    private OrderedDetachableRatingModel orderedDetachableRatingModel;
 
     public AdminAllRatingsPanel(String id, IModel<Game> gameModel) {
         super(id);
         this.gameModel = gameModel;
     }
 
+    private class OrderedDetachableRatingModel extends AbstractReadOnlyModel<List<Rating>> {
+        private List<Rating> ratings;
+
+        @Override
+        public List<Rating> getObject() {
+            if(ratings == null) recompute();
+            return ratings;
+        }
+
+        public void recompute() {
+            List<Rating> ratings = gameModel.getObject().getRatings();
+            Collections.sort(ratings, new Comparator<Rating>() {
+                @Override
+                public int compare(Rating o1, Rating o2) {
+                    return o2.getRating() - o1.getRating();
+                }
+            });
+            this.ratings = ratings;
+        }
+    }
+
     @Override
     protected void onInitialize() {
         super.onInitialize();
 
-        List<Rating> orderedRatings = gameModel.getObject().getRatings();
-        Collections.sort(orderedRatings, new Comparator<Rating>() {
-            @Override
-            public int compare(Rating o1, Rating o2) {
-                return o2.getRating() - o1.getRating();
-            }
-        });
-        add(new ListView<Rating>("listUsers", orderedRatings) {
+        orderedDetachableRatingModel = new OrderedDetachableRatingModel();
+        add(new ListView<Rating>("listUsers", orderedDetachableRatingModel) {
             @Override
             protected void populateItem(ListItem<Rating> item) {
                 Rating rating = item.getModelObject();
@@ -56,7 +73,7 @@ public class AdminAllRatingsPanel extends Panel {
                 item.add(new BookmarkableLinkWithLabel("userDetail", UserDetail.class,
                         Model.of(user.getPerson().getName()), Model.of(params)));
 
-                item.add(new RatingDeleteButton("ratingHiddenButton", item.getModel()));
+                item.add(new RatingDeleteButton("ratingHiddenButton", item.getModel(), gameModel));
 
                 item.add(new Label("rating", Model.of(rating.getRating())));
             }
@@ -66,6 +83,8 @@ public class AdminAllRatingsPanel extends Panel {
 
     @Override
     protected void onConfigure() {
+        orderedDetachableRatingModel.recompute();
+
         setVisibilityAllowed(csldUserService.isLoggedAtLeastEditor());
     }
 }
