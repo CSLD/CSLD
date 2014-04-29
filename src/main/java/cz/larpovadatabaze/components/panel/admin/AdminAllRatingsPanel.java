@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.components.panel.admin;
 
 import cz.larpovadatabaze.components.common.BookmarkableLinkWithLabel;
+import cz.larpovadatabaze.components.common.RatingDeleteButton;
 import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
@@ -55,9 +56,12 @@ public class AdminAllRatingsPanel extends Panel {
                 item.add(new BookmarkableLinkWithLabel("userDetail", UserDetail.class,
                         Model.of(user.getPerson().getName()), Model.of(params)));
 
+                item.add(new RatingDeleteButton("ratingHiddenButton", item.getModel()));
+
                 item.add(new Label("rating", Model.of(rating.getRating())));
             }
-        });
+        }.setOutputMarkupId(true));
+        setOutputMarkupId(true);
     }
 
     @Override

@@ -2,7 +2,6 @@ package cz.larpovadatabaze.services.impl;
 
 import cz.larpovadatabaze.dao.RatingDAO;
 import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.entities.UserPlayedGame;
 import cz.larpovadatabaze.services.CsldUserService;
@@ -110,7 +109,9 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public List<Game> getGamesRatedByUser(int userId){
-         return ratingDAO.getGamesRatedByUser(userId);
+    public void delete(Rating rating) {
+        ratingDAO.makeTransient(rating);
+
+        gameService.evictGame(rating.getGameId());
     }
 }

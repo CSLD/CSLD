@@ -21,5 +21,11 @@ public interface RatingService extends GenericService<Rating> {
 
     List<Rating> getRatingsOfUser(CsldUser logged, CsldUser actual);
 
-    List<Game> getGamesRatedByUser(int userId);
+    /**
+     * Deletes rating from the database. Associated game is also evicted from the hibernate
+     * cache as some values are computer by triggers.
+     *
+     * @param rating rating to hide.
+     */
+    void delete(Rating rating);
 }

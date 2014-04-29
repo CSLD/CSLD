@@ -270,6 +270,11 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public List<Game> getGamesRatedByUser(int userId) {
+        return gameDAO.getGamesRatedByUser(userId);
+    }
+
+    @Override
     public ResourceReference getIconReference() {
         synchronized (this) {
             if (iconResourceReference == null) {

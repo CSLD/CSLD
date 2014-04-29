@@ -9,8 +9,10 @@ import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.models.FilterGame;
-import org.hibernate.*;
-import org.hibernate.criterion.CriteriaQuery;
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -236,6 +238,16 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
         }
 
         return (Long) criteria.uniqueResult();
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Game> getGamesRatedByUser(int userId) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = getBuilder().build().getExecutableCriteria(session)
+                .createAlias("game.ratings","ratings")
+                .add(Restrictions.eq("ratings.userId", userId));
+
+        return criteria.list();
     }
 
     @Override
