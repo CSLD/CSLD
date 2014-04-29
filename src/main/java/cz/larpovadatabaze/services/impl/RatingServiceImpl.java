@@ -2,7 +2,6 @@ package cz.larpovadatabaze.services.impl;
 
 import cz.larpovadatabaze.dao.RatingDAO;
 import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.entities.UserPlayedGame;
 import cz.larpovadatabaze.services.CsldUserService;
@@ -14,7 +13,9 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -75,6 +76,7 @@ public class RatingServiceImpl implements RatingService {
 
     @Override
     public void saveOrUpdate(Rating actualRating) {
+        actualRating.setAdded(new Timestamp(new Date().getTime()));
         ratingDAO.saveOrUpdate(actualRating);
 
         // Mark that user played game
@@ -110,7 +112,9 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public List<Game> getGamesRatedByUser(int userId){
-         return ratingDAO.getGamesRatedByUser(userId);
+    public void delete(Rating rating) {
+        ratingDAO.makeTransient(rating);
+
+        gameService.evictGame(rating.getGameId());
     }
 }

@@ -1,9 +1,7 @@
 package cz.larpovadatabaze.dao.builder;
 
-import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.security.CsldRoles;
+import cz.larpovadatabaze.utils.UserUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
@@ -20,10 +18,9 @@ public class GameBuilder implements IBuilder {
      * This one is added by default. So be careful when using it.
      */
     public void withDeletedRestriction(){
-        CsldUser loggedUser = CsldAuthenticatedWebSession.get().getLoggedUser();
-        if(loggedUser == null || loggedUser.getRole() < CsldRoles.getRoleByName("Editor")){
+        if(!UserUtils.isEditor()){
             // Only games that were not deleted will be shown.
-            baseCriteria.add(Restrictions.eq("deleted", false));
+            baseCriteria.add(Restrictions.eqOrIsNull("deleted", false));
         }
     }
 

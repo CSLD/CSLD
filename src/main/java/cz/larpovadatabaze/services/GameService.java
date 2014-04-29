@@ -80,4 +80,12 @@ public interface GameService extends GenericService<Game>, IIconReferenceProvide
      * @param gameId Id which state will be shown.
      */
     void toggleGameState(int gameId);
+
+    /**
+     * It returns list of all games given user rated.
+     *
+     * @param userId Id of the user.
+     * @return List of all rated games.
+     */
+    List<Game> getGamesRatedByUser(int userId);
 }

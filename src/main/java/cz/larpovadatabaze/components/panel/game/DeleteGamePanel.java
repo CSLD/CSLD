@@ -44,8 +44,8 @@ public class DeleteGamePanel extends Panel {
         AjaxLink<CsldBasePage> deleteGame = new AjaxLink<CsldBasePage>("deleteGame") {
             @Override
             public void onClick(AjaxRequestTarget ajaxRequestTarget) {
-                deletedGameLabelModel.setObject(gameService.getTextStateOfGame(gameId));
                 gameService.toggleGameState(gameId);
+                deletedGameLabelModel.setObject(gameService.getTextStateOfGame(gameId));
                 ajaxRequestTarget.add(DeleteGamePanel.this);
             }
         };
