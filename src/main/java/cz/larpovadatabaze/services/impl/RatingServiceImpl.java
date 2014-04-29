@@ -13,7 +13,9 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -74,6 +76,7 @@ public class RatingServiceImpl implements RatingService {
 
     @Override
     public void saveOrUpdate(Rating actualRating) {
+        actualRating.setAdded(new Timestamp(new Date().getTime()));
         ratingDAO.saveOrUpdate(actualRating);
 
         // Mark that user played game
