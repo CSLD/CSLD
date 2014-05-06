@@ -16,10 +16,7 @@ import java.io.FileNotFoundException;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 17.4.13
- * Time: 19:02
+ *
  */
 @Repository
 public class ImageServiceImpl implements ImageService {
@@ -89,7 +86,7 @@ public class ImageServiceImpl implements ImageService {
                         int id = attributes.getParameters().get(RESOURCE_REFERENCE_ID_PARAM_NAME).toInt();
 
                         // Load
-                        IEntityWithImage entity = dao.findById(id, false);
+                        IEntityWithImage entity = dao.findById(id);
                         getImageResource(entity).respond(attributes);
                     }
                 };

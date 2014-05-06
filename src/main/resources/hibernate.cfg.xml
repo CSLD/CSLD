@@ -3,10 +3,10 @@
 <hibernate-configuration>
     <session-factory>
         <property name="hibernate.current_session_context_class">
-            org.hibernate.context.ThreadLocalSessionContext
+            org.hibernate.context.internal.ThreadLocalSessionContext
         </property>
         <property name="hibernate.cache.provider_class">
-            org.hibernate.cache.NoCacheProvider
+            org.hibernate.cache.internal.NoCachingRegionFactory
         </property>
         <property name="hibernate.show_sql">false</property>
         <property name="hibernate.format_sql">false</property>

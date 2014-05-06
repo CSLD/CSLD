@@ -35,7 +35,7 @@ public class CsldUserServiceImpl implements CsldUserService {
 
     @Override
     public CsldUser getById(Integer id) {
-        return csldUserDao.findById(id, false);
+        return csldUserDao.findById(id);
     }
 
     @Override
@@ -46,15 +46,6 @@ public class CsldUserServiceImpl implements CsldUserService {
     @Override
     public void flush() {
         csldUserDao.flush();
-    }
-
-    public List<CsldUser> getAuthorsByGames(){
-        return csldUserDao.getAuthorsByGames();
-    }
-
-    @Override
-    public List<CsldUser> getAuthorsByGames(long first, long amountPerPage) {
-        return csldUserDao.getAuthorsByGames(first, amountPerPage);
     }
 
     @Override

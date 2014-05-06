@@ -13,10 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 15.5.13
- * Time: 21:43
+ *
  */
 @Repository
 public class CommentServiceImpl implements CommentService {
@@ -47,7 +44,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Comment> getFirstChoices(String startsWith, int maxChoices) {
-        throw new UnsupportedOperationException("This does not support autocompletion");
+        throw new UnsupportedOperationException("Comments does not support autocompletion");
     }
 
     @Override
@@ -101,7 +98,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Game> getGamesCommentedByUser(int userId) {
-        return commentDAO.getGamesCommentedByUser(userId);
+        return gameService.getGamesCommentedByUser(userId);
     }
 
 }

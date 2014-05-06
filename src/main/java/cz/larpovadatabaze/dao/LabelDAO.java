@@ -1,6 +1,8 @@
 package cz.larpovadatabaze.dao;
 
 import cz.larpovadatabaze.api.GenericHibernateDAO;
+import cz.larpovadatabaze.dao.builder.GenericBuilder;
+import cz.larpovadatabaze.dao.builder.IBuilder;
 import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import org.hibernate.Criteria;
@@ -14,6 +16,11 @@ import java.util.List;
  */
 @Repository
 public class LabelDAO extends GenericHibernateDAO<Label, Integer> {
+    @Override
+    public IBuilder getBuilder() {
+        return new GenericBuilder<Label>(Label.class);
+    }
+
     /**
      * Used when autoCompletable field is used.
      *
@@ -22,7 +29,7 @@ public class LabelDAO extends GenericHibernateDAO<Label, Integer> {
      */
     @SuppressWarnings("unchecked")
     public List<Label> getByAutoCompletable(String labelName) throws WrongParameterException {
-        Criteria uniqueLabel = sessionFactory.getCurrentSession().createCriteria(Label.class).add(
+        Criteria uniqueLabel = getBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession()).add(
                 Restrictions.eq("name", labelName)
         );
         return uniqueLabel.list();

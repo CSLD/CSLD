@@ -1,6 +1,5 @@
 package cz.larpovadatabaze.services.impl;
 
-import cz.larpovadatabaze.dao.GameDAO;
 import cz.larpovadatabaze.dao.LabelDAO;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Label;
@@ -21,9 +20,6 @@ import java.util.List;
 public class LabelServiceImpl implements LabelService {
     @Autowired
     private LabelDAO labelDAO;
-
-    @Autowired
-    private GameDAO gameDAO;
 
     public List<Label> getAll(){
         return labelDAO.findAll();
@@ -100,7 +96,7 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public Label getById(int filterLabel) {
-        return labelDAO.findById(filterLabel, false);
+        return labelDAO.findById(filterLabel);
     }
 
     @Override

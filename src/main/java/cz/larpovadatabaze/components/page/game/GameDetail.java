@@ -2,6 +2,7 @@ package cz.larpovadatabaze.components.page.game;
 
 import cz.larpovadatabaze.components.common.tabs.TabsComponentPanel;
 import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.components.panel.YouTubePanel;
 import cz.larpovadatabaze.components.panel.admin.AdminAllRatingsPanel;
 import cz.larpovadatabaze.components.panel.game.*;
@@ -16,6 +17,7 @@ import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -25,11 +27,12 @@ import org.apache.wicket.model.*;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.hibernate.HibernateException;
 
 import java.util.*;
 
 /**
- *
+ * TODO: Pokud je hra smazana a dostane se sem nekdo, je potreba zobrazit misto chyby informaci o tom, ze je hra smazana.
  */
 public class GameDetail extends CsldBasePage {
     private static final String ID_PARAM = "id";
@@ -176,7 +179,17 @@ public class GameDetail extends CsldBasePage {
      * Constructor - initialize just model
      */
     public GameDetail(PageParameters params){
-        setDefaultModel(new GameModel(params.get(ID_PARAM).to(Integer.class)));
+        try {
+            int gameId = params.get(ID_PARAM).to(Integer.class);
+            // If the game is deleted and I don't have sufficient rights redirect me to game deleted page.
+            if(gameService.getById(gameId) == null){
+                throw new RestartResponseException(GameWasDeleted.class);
+            }
+
+            setDefaultModel(new GameModel(gameId));
+        } catch (NumberFormatException ex) {
+            throw new RestartResponseException(ListGame.class);
+        }
     }
 
     @Override

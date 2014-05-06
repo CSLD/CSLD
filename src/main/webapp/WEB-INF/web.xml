@@ -14,7 +14,7 @@
     </listener>
     <filter>
         <filter-name>opensessioninview</filter-name>
-        <filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
+        <filter-class>org.springframework.orm.hibernate4.support.OpenSessionInViewFilter</filter-class>
     </filter>
 
     <filter>
@@ -63,4 +63,9 @@
         <resource-env-ref-name>csld/dataDir</resource-env-ref-name>
         <resource-env-ref-type>java.lang.String</resource-env-ref-type>
     </resource-env-ref>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error404</location>
+    </error-page>
 </web-app>

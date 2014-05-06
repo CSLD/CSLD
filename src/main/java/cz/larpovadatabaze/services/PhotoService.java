@@ -5,10 +5,7 @@ import cz.larpovadatabaze.entities.Photo;
 import org.apache.wicket.util.upload.FileItem;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 6.9.13
- * Time: 22:58
+ *
  */
 public interface PhotoService extends GenericService<Photo> {
     public static final int MAX_PHOTO_WIDTH = 1600;

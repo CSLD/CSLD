@@ -8,10 +8,7 @@ import cz.larpovadatabaze.exceptions.WrongParameterException;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 9.4.13
- * Time: 11:26
+ *
  */
 public interface RatingService extends GenericService<Rating> {
     public Rating getUserRatingOfGame(Integer userId, Integer gameId) throws WrongParameterException;
@@ -22,9 +19,13 @@ public interface RatingService extends GenericService<Rating> {
 
     int getAmountOfRatings();
 
-    Integer getRatingsForGame(Integer id);
-
     List<Rating> getRatingsOfUser(CsldUser logged, CsldUser actual);
 
-    List<Game> getGamesRatedByUser(int userId);
+    /**
+     * Deletes rating from the database. Associated game is also evicted from the hibernate
+     * cache as some values are computer by triggers.
+     *
+     * @param rating rating to hide.
+     */
+    void delete(Rating rating);
 }

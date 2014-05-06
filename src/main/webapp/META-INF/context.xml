@@ -2,7 +2,7 @@
     <Resource name="jdbc/csld"
               auth="Container"
               type="javax.sql.DataSource"
-              username="csld" password="hesloKDbCsldTxt"
+              username="csld" password="csld"
               driverClassName="org.postgresql.Driver"
               url="jdbc:postgresql://localhost/csld"
               maxActive="20" maxIdle="10"/>

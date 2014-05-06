@@ -1,21 +1,30 @@
 package cz.larpovadatabaze.components.panel.game;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.game.DeleteGamePage;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.security.CsldRoles;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import cz.larpovadatabaze.services.GameService;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * This panel contains link for deleting the game.
  */
 public class DeleteGamePanel extends Panel {
+    @SpringBean
+    private GameService gameService;
 
     private final int gameId;
+    private Model<String> deletedGameLabelModel;
 
+    // It would probably be better, if I created some model, and linked one element to this link, which will change its content based
+    // on the actual state of the model, as well as behavior will be changed according to that model.
     public DeleteGamePanel(String id, int gameId) {
         super(id);
         this.gameId = gameId;
@@ -27,14 +36,29 @@ public class DeleteGamePanel extends Panel {
 
         PageParameters params = new PageParameters();
         params.add("id", gameId);
-        BookmarkablePageLink<CsldBasePage> pageLink =
-                new BookmarkablePageLink<CsldBasePage>("deleteGame", DeleteGamePage.class, params);
-        add(pageLink);
+
+        deletedGameLabelModel = Model.of(gameService.getTextStateOfGame(gameId));
+        Label deleteGameLabel = new Label("deleteGameLabel", deletedGameLabelModel);
+        deleteGameLabel.setOutputMarkupId(true);
+
+        AjaxLink<CsldBasePage> deleteGame = new AjaxLink<CsldBasePage>("deleteGame") {
+            @Override
+            public void onClick(AjaxRequestTarget ajaxRequestTarget) {
+                gameService.toggleGameState(gameId);
+                deletedGameLabelModel.setObject(gameService.getTextStateOfGame(gameId));
+                ajaxRequestTarget.add(DeleteGamePanel.this);
+            }
+        };
+        deleteGame.add(deleteGameLabel);
+        deleteGame.setOutputMarkupId(true);
+
+        add(deleteGame);
+        setOutputMarkupId(true);
     }
 
     @Override
     protected void onConfigure() {
-        CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
+        CsldUser logged = CsldAuthenticatedWebSession.get().getLoggedUser();
         boolean visible = false;
         if(logged != null){
             if(logged.getRole() > CsldRoles.USER.getRole()) {

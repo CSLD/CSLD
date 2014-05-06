@@ -9,6 +9,8 @@ import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.hibernate.NullPrecedence;
+import org.hibernate.criterion.Order;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -47,7 +49,7 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
                             filterLabels,
                             firstL.intValue(),
                             ((Long)amountPerPage).intValue(),
-                            " order by game.name "),
+                            Order.asc("name")),
                         firstL.intValue()
             ).iterator();
         } else if(property.equals("year")) {
@@ -57,7 +59,7 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
                             filterLabels,
                             firstL.intValue(),
                             ((Long)amountPerPage).intValue(),
-                            " order by year desc nulls last"),
+                            Order.desc("year").nulls(NullPrecedence.LAST)),
                     firstL.intValue()
             ).iterator();
         } else if(property.equals("rating")) {
@@ -67,7 +69,7 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
                             filterLabels,
                             firstL.intValue(),
                             ((Long)amountPerPage).intValue(),
-                            " order by game.total_rating desc "),
+                            Order.desc("totalRating")),
                     firstL.intValue()
             ).iterator();
         } else if(property.equals("ratingAmount")) {
@@ -77,7 +79,7 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
                             filterLabels,
                             firstL.intValue(),
                             ((Long)amountPerPage).intValue(),
-                            " order by game.amount_of_ratings desc "),
+                            Order.desc("amountOfRatings")),
                     firstL.intValue()
             ).iterator();
         } else if(property.equals("added")) {
@@ -87,7 +89,7 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
                             filterLabels,
                             firstL.intValue(),
                             ((Long)amountPerPage).intValue(),
-                            " order by game.added desc "),
+                            Order.desc("added")),
                     firstL.intValue()
             ).iterator();
         } else {
@@ -97,7 +99,7 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
                             filterLabels,
                             firstL.intValue(),
                             ((Long)amountPerPage).intValue(),
-                            " order by game.amount_of_comments desc "),
+                            Order.desc("amountOfComments")),
                     firstL.intValue()
             ).iterator();
         }

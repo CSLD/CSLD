@@ -76,7 +76,7 @@ public class ListGamePanel extends Panel {
             if(userId == 0) {
                 return new ArrayList<Game>();
             } else {
-                return ratingService.getGamesRatedByUser(userId);
+                return gameService.getGamesRatedByUser(userId);
             }
         }
     }

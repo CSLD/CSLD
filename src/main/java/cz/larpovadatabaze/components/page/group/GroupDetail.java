@@ -11,6 +11,7 @@ import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.providers.SortableAnnotatedProvider;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.GroupService;
+import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
@@ -40,7 +41,11 @@ public class GroupDetail extends CsldBasePage {
     }
 
     public GroupDetail(PageParameters params){
-        setDefaultModel(new GroupModel(params.get("id").to(Integer.class)));
+        try {
+            setDefaultModel(new GroupModel(params.get("id").to(Integer.class)));
+        } catch (NumberFormatException ex) {
+            throw new RestartResponseException(ListGroup.class);
+        }
     }
 
     @Override

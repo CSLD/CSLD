@@ -93,7 +93,7 @@ public class RatingsPanel extends Panel {
     }
 
     private CsldUser getLoggedUser() {
-        return ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
+        return CsldAuthenticatedWebSession.get().getLoggedUser();
     }
 
     private int getLoggedUserId() {

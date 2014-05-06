@@ -13,10 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 6.9.13
- * Time: 22:58
+ *
  */
 @Repository
 public class PhotoServiceImpl implements PhotoService {
@@ -27,9 +24,6 @@ public class PhotoServiceImpl implements PhotoService {
 
     @Autowired
     private FileService fileService;
-
-    @Autowired
-    private ImageService imageService;
 
     @Autowired
     private GameService gameService;
@@ -69,7 +63,7 @@ public class PhotoServiceImpl implements PhotoService {
 
     @Override
     public Photo get(int id) {
-        return photoDao.findById(id, false);
+        return photoDao.findById(id);
     }
 
     /**
