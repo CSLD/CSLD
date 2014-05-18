@@ -111,7 +111,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
                 super.onSubmit(target, form);
 
                 // Process video
-                Game game = CreateOrUpdateGamePanel.this.getModelObject();
+                Game game = (Game) form.getModelObject();
                 String videoURL = videoService.getEmbedingURL(videoField.getConvertedInput());
                 if (videoURL == null) {
                     // Bad URL - TODO - does not work - TODO
