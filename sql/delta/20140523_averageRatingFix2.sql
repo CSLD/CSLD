@@ -15,3 +15,6 @@ BEGIN
   RETURN NEW;
 END
 $function$;
+
+update csld_game set average_rating = (select avg(rating) from csld_rating where csld_rating.game_id=csld_game.id)*10;
+update csld_game set average_rating = 0 where average_rating is null;
