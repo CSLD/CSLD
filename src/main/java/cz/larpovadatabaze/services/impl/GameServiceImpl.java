@@ -253,9 +253,9 @@ public class GameServiceImpl implements GameService {
     @Override
     public String getTextStateOfGame(int gameId) {
         if(isHidden(gameId)) {
-            return Strings.getResourceString(CsldBasePage.class, "game.delete");
+            return Strings.getResourceString(CsldBasePage.class, "game.show");
         } else {
-            return Strings.getResourceString(Csld.class, "game.show");
+            return Strings.getResourceString(CsldBasePage.class, "game.delete");
         }
     }
 
@@ -267,6 +267,11 @@ public class GameServiceImpl implements GameService {
         }
         game.setDeleted(!game.isDeleted());
         gameDAO.saveOrUpdate(game);
+    }
+
+    @Override
+    public List<Game> getGamesRatedByUser(int userId) {
+        return gameDAO.getGamesRatedByUser(userId);
     }
 
     @Override

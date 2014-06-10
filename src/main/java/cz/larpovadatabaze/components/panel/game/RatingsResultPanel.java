@@ -42,8 +42,6 @@ public class RatingsResultPanel extends Panel {
     private Model<Integer> myRating;
     private RatingsArrayModel ratingsArrayModel;
 
-    private PlayedPanel playedPanel;
-
     /**
      * Model to provide color for the game
      */
@@ -121,9 +119,7 @@ public class RatingsResultPanel extends Panel {
 
         setOutputMarkupId(true);
 
-        Game game = model.getObject();
-
-        playedPanel = new PlayedPanel("playedPanel", model, new Component[] { componentToRefresh, playedToRefresh });
+        PlayedPanel playedPanel = new PlayedPanel("playedPanel", model, new Component[]{componentToRefresh, playedToRefresh});
         add(playedPanel);
 
         Label finalRating = new Label("ratingResult", new RatingResultModel());
@@ -169,7 +165,7 @@ public class RatingsResultPanel extends Panel {
         super.onConfigure();
 
         // Refresh my rating
-        CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
+        CsldUser logged = CsldAuthenticatedWebSession.get().getLoggedUser();
         if(logged != null){
             try {
                 Rating mine = ratingService.getUserRatingOfGame(logged.getId(), model.getObject().getId());

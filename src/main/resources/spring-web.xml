@@ -52,6 +52,7 @@ http://www.springframework.org/schema/jee http://www.springframework.org/schema/
 				<prop key="hibernate.hbm2ddl.auto">validate</prop>
                 <prop key="autocommmit">true</prop>
                 <prop key="hibernate.cfgfile">/hibernate.cfg.xml</prop>
+                <prop key="hibernate.show_sql">true</prop>
 			</props>
 		</property>
 		<property name="annotatedClasses">

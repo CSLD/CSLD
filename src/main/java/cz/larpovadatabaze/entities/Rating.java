@@ -2,9 +2,9 @@ package cz.larpovadatabaze.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
- * Created by IntelliJ IDEA.
  * User: Jakub Balhar
  * Date: 27.3.13
  * Time: 14:01
@@ -23,6 +23,23 @@ public class Rating implements Serializable {
 
     public void setRating(Integer rating) {
         this.rating = rating;
+    }
+
+    private Timestamp added;
+
+    @Column(
+            name = "added",
+            nullable = false,
+            insertable = true,
+            updatable = true
+    )
+    @Basic
+    public Timestamp getAdded() {
+        return added;
+    }
+
+    public void setAdded(Timestamp added) {
+        this.added = added;
     }
 
     @Override

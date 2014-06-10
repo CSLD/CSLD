@@ -6,12 +6,10 @@ import cz.larpovadatabaze.dao.builder.IBuilder;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.type.OrderedSetType;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -66,7 +64,7 @@ public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
     public CsldUser authenticate(String username, String password) {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = getBuilder().build().getExecutableCriteria(session)
-                .add(Restrictions.eq("username",username))
+                .add(Restrictions.eq("person.email",username))
                 .add(Restrictions.eq("password",password));
 
         return (CsldUser) criteria.uniqueResult();
