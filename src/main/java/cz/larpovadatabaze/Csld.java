@@ -35,12 +35,19 @@ import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
+import org.apache.wicket.core.request.handler.BookmarkableListenerInterfaceRequestHandler;
+import org.apache.wicket.core.request.handler.ListenerInterfaceRequestHandler;
+import org.apache.wicket.core.request.mapper.MountedMapper;
 import org.apache.wicket.markup.html.IPackageResourceGuard;
 import org.apache.wicket.markup.html.SecurePackageResourceGuard;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.IRequestHandler;
+import org.apache.wicket.request.Url;
+import org.apache.wicket.request.component.IRequestablePage;
 import org.apache.wicket.request.cycle.AbstractRequestCycleListener;
 import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.mapper.info.PageComponentInfo;
+import org.apache.wicket.request.mapper.parameter.PageParametersEncoder;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +74,28 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     private static final String DEFAULT_ENCODING = "UTF-8";
     private ApplicationContext ctx;
 
+    public class MountedMapperWithoutPageComponentInfo extends MountedMapper {
+
+        public MountedMapperWithoutPageComponentInfo(String mountPath, Class<? extends IRequestablePage> pageClass) {
+            super(mountPath, pageClass, new PageParametersEncoder());
+        }
+
+        @Override
+        protected void encodePageComponentInfo(Url url, PageComponentInfo info) {
+            // do nothing so that component info does not get rendered in url
+        }
+
+        @Override
+        public Url mapHandler(IRequestHandler requestHandler)
+        {
+            if (requestHandler instanceof ListenerInterfaceRequestHandler ||
+                    requestHandler instanceof BookmarkableListenerInterfaceRequestHandler) {
+                return null;
+            } else {
+                return super.mapHandler(requestHandler);
+            }
+        }
+    }
     /**
      * Constructor
      */
@@ -177,7 +206,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         mountPage("/skupiny", ListGroup.class);
 
         mountPage("/detail-game", GameDetailOld.class);
-        mountPage("/larp/${name}/${id}", GameDetail.class);
+        mount(new MountedMapperWithoutPageComponentInfo("/larp/${name}/${id}", GameDetail.class));
         mountPage("/detail-author", UserDetail.class);
         mountPage("/detail-user", UserDetail.class);
         mountPage("/detail-group", GroupDetail.class);

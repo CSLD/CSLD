@@ -179,6 +179,7 @@ public class GameDetail extends CsldBasePage {
      * Constructor - initialize just model
      */
     public GameDetail(PageParameters params){
+        setVersioned(false);
         try {
             int gameId = params.get(ID_PARAM).to(Integer.class);
             // If the game is deleted and I don't have sufficient rights redirect me to game deleted page.
