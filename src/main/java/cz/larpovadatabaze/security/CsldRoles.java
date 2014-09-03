@@ -9,7 +9,9 @@ package cz.larpovadatabaze.security;
 public enum CsldRoles {
     USER("User", 1),
     EDITOR("Editor", 2),
-    ADMIN("Admin", 3);
+    ADMIN("Admin", 3),
+    AUTHOR("Author", 4),
+    ANONYMOUS("Anonymous", 0);
 
     private String roleName;
     private Short role;

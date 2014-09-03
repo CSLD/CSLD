@@ -7,8 +7,11 @@ import cz.larpovadatabaze.components.panel.YouTubePanel;
 import cz.larpovadatabaze.components.panel.admin.AdminAllRatingsPanel;
 import cz.larpovadatabaze.components.panel.game.*;
 import cz.larpovadatabaze.components.panel.photo.PhotoPanel;
+import cz.larpovadatabaze.components.panel.user.CheckBoxSelectionUsers;
 import cz.larpovadatabaze.components.panel.user.SimpleListUsersPanel;
+import cz.larpovadatabaze.dto.SelectedUser;
 import cz.larpovadatabaze.entities.*;
+import cz.larpovadatabaze.security.CsldRoles;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.HbUtils;
@@ -157,25 +160,6 @@ public class GameDetail extends CsldBasePage {
     }
 
     /**
-     * Model for users who want to play the game. (Might get GameModel as constructor parameter to be extra clean, but we use the one stored in the page.)
-     * The downside is it does not cache results so getObject() may be costly.
-     */
-    private class WantedByModel extends AbstractReadOnlyModel<List<CsldUser>> {
-
-        @Override
-        public List<CsldUser> getObject() {
-            List<CsldUser> wantedBy = new ArrayList<CsldUser>();
-            for(UserPlayedGame played : getModel().getObject().getPlayed()){
-                if(played.getStateEnum().equals(UserPlayedGame.UserPlayedGameState.WANT_TO_PLAY)) {
-                    wantedBy.add(played.getPlayerOfGame());
-                }
-            }
-
-            return wantedBy;
-        }
-    }
-
-    /**
      * Constructor - initialize just model
      */
     public GameDetail(PageParameters params){
@@ -284,8 +268,12 @@ public class GameDetail extends CsldBasePage {
 
         super.onInitialize();
 
-        final SimpleListUsersPanel wantedToPlay =  new SimpleListUsersPanel("wantsToPlay", new WantedByModel());
-        wantedToPlay.setOutputMarkupId(true);
+        SendInformation sendInformation = new SendInformation("contact"){
+            @Override
+            public Game getGame() {
+                return getModel().getObject();
+            }
+        };
 
         add(new GameDetailPanel("gameDetail", getModel()));
 
@@ -300,7 +288,7 @@ public class GameDetail extends CsldBasePage {
         WebMarkupContainer ratingsContainerPanel = new WebMarkupContainer("ratingsContainerPanel");
         ratingsContainerPanel.setOutputMarkupId(true);
 
-        ratingsResult = new RatingsResultPanel("ratingsResults", getModel(), ratingsContainerPanel, wantedToPlay);
+        ratingsResult = new RatingsResultPanel("ratingsResults", getModel(), ratingsContainerPanel, sendInformation.getWantedToPlay());
         ratingsResult.setOutputMarkupId(true);
         ratingsContainerPanel.add(ratingsResult);
 
@@ -335,7 +323,7 @@ public class GameDetail extends CsldBasePage {
 
         add(new AdminAllRatingsPanel("ratingsOfUsersPanel", getModel()));
 
-        add(wantedToPlay);
+        add(sendInformation);
     }
 
     /**

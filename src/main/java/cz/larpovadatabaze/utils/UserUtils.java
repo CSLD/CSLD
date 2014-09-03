@@ -43,4 +43,13 @@ public class UserUtils {
 
         return user.getRole().equals(CsldRoles.EDITOR.getRole());
     }
+
+    /**
+     * User is Editor or Admin.
+     *
+     * @return True if user is editor or admin.
+     */
+    public static boolean isAtLeastEditor() {
+        return isEditor() || isAdmin();
+    }
 }
