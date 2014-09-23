@@ -121,6 +121,12 @@ public class SendInformation extends Panel {
         add(sendInfo);
     }
 
+    @Override
+    protected void onConfigure() {
+        super.onConfigure();
+        setVisibilityAllowed(UserUtils.isSignedIn());
+    }
+
     /**
      * This method will usually be overwritten.
      *
