@@ -30,7 +30,7 @@ public class CheckBoxSelectionUsers extends Panel {
 
     public CheckBoxSelectionUsers(String id, IModel<List<CsldUser>> pModel) {
         super(id);
-        List<SelectedUser> users = new ArrayList<>();
+        List<SelectedUser> users = new ArrayList<SelectedUser>();
         for(CsldUser user: pModel.getObject()){
             SelectedUser userDto = new SelectedUser();
             userDto.setUserName(user.getPerson().getName());
@@ -71,12 +71,12 @@ public class CheckBoxSelectionUsers extends Panel {
                 params.add("id", user.getId());
 
                 final BookmarkablePageLink<CsldUser> authorName =
-                        new BookmarkablePageLink<>("user", UserDetail.class, params);
+                        new BookmarkablePageLink<CsldUser>("user", UserDetail.class, params);
 
                 authorName.add(new Label("userName", user.getUserName()));
                 authorName.add(new Label("userNickname", user.getNickName()));
 
-                List<CsldRoles> allowedRoles = new ArrayList<>();
+                List<CsldRoles> allowedRoles = new ArrayList<CsldRoles>();
                 allowedRoles.add(CsldRoles.ADMIN);
                 allowedRoles.add(CsldRoles.EDITOR);
                 allowedRoles.add(CsldRoles.AUTHOR);
