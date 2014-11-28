@@ -8,11 +8,16 @@
     <form wicket:id="sendInfoForm">
         <div wicket:id="feedback"></div>
 
-        <textarea wicket:id="mailBody"></textarea>
+        <div class="sendInfoText">
+            <textarea wicket:id="mailBody"></textarea>
+        </div>
+        <div>
+            <input type="submit" wicket:message="value:game.sendButton">
+        </div>
 
-        <input type="submit" wicket:message="value:game.sendButton">
-
-        <div class="nadpisSekce"><wicket:message key="game.wishesToPlay">Chtějí hrát</wicket:message></div>
+        <div class="nadpisSekce">
+            <wicket:message key="game.wishesToPlay">Chtějí hrát</wicket:message>
+        </div>
         <div wicket:id="wantsToPlay"></div>
     </form>
 </wicket:panel>

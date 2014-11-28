@@ -2698,3 +2698,12 @@ a.active.wantToPlay.button:after{
 .rated, .commented {
     font-weight: bold;
 }
+
+.feedbackPanelINFO {
+    list-style-type: none;
+    font-weight: bold;
+}
+
+.sendInfoText {
+    width: 90%;
+}
