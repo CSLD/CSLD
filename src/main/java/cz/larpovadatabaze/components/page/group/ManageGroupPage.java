@@ -28,7 +28,7 @@ public class ManageGroupPage extends CsldBasePage {
 
         boolean isVisible = CsldAuthenticatedWebSession.get().isSignedIn();
         if(isVisible){
-            CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
+            CsldUser logged = CsldAuthenticatedWebSession.get().getLoggedUser();
             if(logged.getRole() <= CsldRoles.USER.getRole()){
                 if(!group.getAdministrators().contains(logged)){
                     isVisible = false;

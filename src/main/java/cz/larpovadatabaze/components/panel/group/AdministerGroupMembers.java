@@ -76,7 +76,7 @@ public abstract class AdministerGroupMembers extends Panel {
         RepeatableInputPanel<CsldUser> authors = new RepeatableInputPanel<CsldUser>("administrators", userIFactory,
                 userIValidator, group.getAdministrators(), csldUserService);
         administerGroup.add(authors);
-        administratorsOfGroup = authors.getModelObject();
+        //administratorsOfGroup = authors.getModelObject();
     }
 
     protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}
