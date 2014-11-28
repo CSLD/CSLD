@@ -36,7 +36,8 @@ public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
     public List<CsldUser> getAuthorsByBestGame(Long first, Long amountPerPage) {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = getBuilder().build().getExecutableCriteria(session)
-                .addOrder(Order.desc("bestGame.totalRating"))
+                .createAlias("bestGame", "best")
+                .addOrder(Order.desc("best.totalRating"))
                 .setFirstResult(first.intValue())
                 .setMaxResults(amountPerPage.intValue());
 
