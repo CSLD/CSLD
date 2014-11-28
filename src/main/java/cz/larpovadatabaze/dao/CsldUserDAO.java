@@ -75,7 +75,6 @@ public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
     public List<CsldUser> getOrderedUsersByName(Long first, Long amountPerPage) {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = getBuilder().build().getExecutableCriteria(session)
-                .createAlias("csldUser.person", "person")
                 .addOrder(Order.asc("person.name"))
                 .setFirstResult(first.intValue())
                 .setMaxResults(amountPerPage.intValue());
@@ -98,7 +97,7 @@ public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
     public List<CsldUser> getOrderedUsersByPlayed(Long first, Long amountPerPage) {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = getBuilder().build().getExecutableCriteria(session)
-                .addOrder(Order.desc("amountOfComments"))
+                .addOrder(Order.desc("amountOfPlayed"))
                 .setFirstResult(first.intValue())
                 .setMaxResults(amountPerPage.intValue());
 
