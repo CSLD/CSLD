@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(schema = "public", name="csld_photo")
-public class Photo implements Serializable {
+public class Photo implements Serializable, IEntityWithImage {
     private Integer id;
 
     @Column(name = "id", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
@@ -145,6 +145,12 @@ public class Photo implements Serializable {
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     public Image getImage() {
         return image;
+    }
+
+    @Override
+    @Transient
+    public IPredefinedImage getDefaultImage() {
+        return PredefinedImage.DEFAULT_GAME_ICON;
     }
 
     public void setImage(Image image) {
