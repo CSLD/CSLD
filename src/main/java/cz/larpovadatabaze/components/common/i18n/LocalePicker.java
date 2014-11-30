@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.common.i18n;
 
+import cz.larpovadatabaze.utils.AvailableLocale;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.form.Button;
@@ -27,7 +28,7 @@ public class LocalePicker extends Panel{
 
         // Set default Locale based on actual Locale.
 
-        List<Locale> locales = Arrays.asList(Locale.ENGLISH, Locale.forLanguageTag("cs"));
+        List<Locale> locales = new AvailableLocale().availableLocale();
         final DropDownChoice<Locale> changeLocale =
                 new DropDownChoice<Locale>("changeLocale", new Model<Locale>(Session.get().getLocale()), locales);
         StatelessForm form = new StatelessForm("form"){

@@ -1460,7 +1460,7 @@ a.stitekNapoveda:hover span {
     width: 322px;
 }
 
-.nadpisFiltr {
+.nadpisFiltr, .titleLang {
     width: 330px;
     font-size: 11pt;
     font-weight: bold;
@@ -1469,12 +1469,14 @@ a.stitekNapoveda:hover span {
     text-align: center;
 }
 
+
+
 .pravaCast#Zebricky .hraciFiltr {
     margin-left: 100px;
     margin-top: -8px;
 }
 
-.pravaCast#Zebricky .delkaFiltr {
+.pravaCast#Zebricky .delkaFiltr, .pravaCast#Zebricky .langFilter {
     margin-left: 20px;
     margin-top: -8px;
 }

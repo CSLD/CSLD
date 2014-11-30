@@ -16,6 +16,7 @@ import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.GroupService;
 import cz.larpovadatabaze.services.VideoService;
+import cz.larpovadatabaze.utils.AvailableLocale;
 import cz.larpovadatabaze.validator.AtLeastOneRequiredLabelValidator;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -98,9 +99,8 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         createOrUpdateGame.add(addFeedbackPanel(videoField = new TextField<String>("video.path"), createOrUpdateGame, "videoPathFeedback"));
         createOrUpdateGame.add(addFeedbackPanel(new ImagePanel("image"), createOrUpdateGame, "imageFeedback"));
 
-        List<Locale> locales = Arrays.asList(Locale.ENGLISH, Locale.forLanguageTag("cz"));
         final DropDownChoice<Locale> changeLocale =
-                new DropDownChoice<Locale>("lang", locales);
+                new DropDownChoice<Locale>("lang", new AvailableLocale().availableLocale());
         createOrUpdateGame.add(addFeedbackPanel(changeLocale, createOrUpdateGame, "langFeedback"));
 
         addAuthorsInput(createOrUpdateGame, game);
