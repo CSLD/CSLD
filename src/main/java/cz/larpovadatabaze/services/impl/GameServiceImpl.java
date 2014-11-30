@@ -14,6 +14,7 @@ import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.Strings;
+import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -126,7 +127,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public List<Game> getLastGames(int amountOfGames) {
-        return gameDAO.getLastGames(amountOfGames);
+        return gameDAO.getLastGames(amountOfGames, Session.get().getLocale());
     }
 
     @Override

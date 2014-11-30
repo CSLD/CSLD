@@ -8,6 +8,7 @@ import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.ImageService;
+import org.apache.wicket.Session;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -20,6 +21,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.jsoup.Jsoup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -92,9 +94,13 @@ public class LastGamesPanel extends Panel {
 
         List<Game> toShow = gameService.getLastGames(EXPANDED_AMOUNT_LAST_GAMES);
 
-        // XXX - this will throw exception if we ever have toofew games - XXX
-        add(new GamesListView("visibleGamesView", toShow.subList(0, INITIAL_AMOUNT_LAST_GAMES)));
-        add(new GamesListView("hiddenGamesView", toShow.subList(INITIAL_AMOUNT_LAST_GAMES, toShow.size())));
+        if(toShow.size() >= INITIAL_AMOUNT_LAST_GAMES) {
+            add(new GamesListView("visibleGamesView", toShow.subList(0, INITIAL_AMOUNT_LAST_GAMES)));
+            add(new GamesListView("hiddenGamesView", toShow.subList(INITIAL_AMOUNT_LAST_GAMES, toShow.size())));
+        } else {
+            add(new GamesListView("visibleGamesView", toShow));
+            add(new GamesListView("hiddenGamesView", new ArrayList<Game>()));
+        }
 
         final BookmarkablePageLink<CsldBasePage> allGames =
                 new BookmarkablePageLink<CsldBasePage>("allGames", ListLastGames.class);

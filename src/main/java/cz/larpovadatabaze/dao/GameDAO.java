@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  *
@@ -51,11 +52,13 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Game> getLastGames(int amountOfGames) {
+    public List<Game> getLastGames(int amountOfGames, Locale locale) {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = new GameBuilder().build().getExecutableCriteria(session)
                 .setMaxResults(amountOfGames)
                 .addOrder(Order.desc("added"));
+
+        criteria.add(Restrictions.eq("lang", locale.getLanguage()));
 
         return criteria.list();
     }
