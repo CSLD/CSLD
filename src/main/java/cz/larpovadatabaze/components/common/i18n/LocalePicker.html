@@ -1,0 +1,13 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+    <!--
+    It contains select for choosing language used on the page at the moment.
+    It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/common/i18n/LocalePicker.html
+    Code - cz.larpovadatabaze.components.common.i18n.LocalePicker.html
+    -->
+
+     <form wicket:id="form">
+         <select wicket:id="changeLocale"></select>
+
+         <input type="submit" wicket:id="submit" wicket:message="value:locale.change"/>
+     </form>
+</wicket:panel>

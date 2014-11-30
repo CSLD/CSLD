@@ -69,6 +69,7 @@ public class GameDetailPanel extends AbstractCsldPanel<Game> {
         add(new Label("hours"));
         add(new Label("days"));
         add(new Label("year"));
+        add(new Label("lang"));
 
         add(new ExternalLink("webGameLink", Model.of(game.getWeb()), Model.of(game.getWeb())));
 

@@ -1,32 +1,12 @@
 <wicket:extend xmlns:wicket="http://wicket.apache.org">
     <script type="text/javascript">
 
-        $(document).ready(function () {
-            var total = $('#nivoSlider img').length;
-            var rand = Math.floor(Math.random() * total);
-            jQuery(window).load(function () {
-                jQuery("#nivoSlider").nivoSlider({
-                    effect:'boxRainGrow',
-                    slices:15,
-                    boxCols:8,
-                    boxRows:4,
-                    animSpeed:500,
-                    pauseTime:6000,
-                    startSlide:rand,
-                    directionNav:true,
-                    controlNav:false,
-                    controlNavThumbs:false,
-                    pauseOnHover:false,
-                    manualAdvance:false
-                });
-            });
-        });
 
     </script>
 
     <div class="levaCast">
         <div id="nivoSlider" class="nivoSlider">
-            <img wicket:id="randomImages" width="642" height="435" alt="" />
+            <img wicket:id="randomImages" width="642" height="435" alt=""/>
         </div>
 
         <div style="clear:both; width:100%;"></div>
@@ -132,5 +112,28 @@
                 }
             });
         });
+
+        (function () {
+            var j = jQuery.noConflict();
+            j(window).load(function () {
+                var total = j('#nivoSlider img').length;
+                var rand = Math.floor(Math.random() * total);
+
+                j("#nivoSlider").nivoSlider({
+                    effect: 'boxRainGrow',
+                    slices: 15,
+                    boxCols: 8,
+                    boxRows: 4,
+                    animSpeed: 500,
+                    pauseTime: 6000,
+                    startSlide: rand,
+                    directionNav: true,
+                    controlNav: false,
+                    controlNavThumbs: false,
+                    pauseOnHover: false,
+                    manualAdvance: false
+                });
+            });
+        })();
     </script>
 </wicket:extend>

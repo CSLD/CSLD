@@ -2707,3 +2707,9 @@ a.active.wantToPlay.button:after{
 .sendInfoText {
     width: 90%;
 }
+
+#languageChanger {
+    position: absolute;
+    top: 13px;
+    left: 680px;
+}
