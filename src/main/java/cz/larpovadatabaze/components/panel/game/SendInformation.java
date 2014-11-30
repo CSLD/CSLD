@@ -113,12 +113,18 @@ public class SendInformation extends Panel {
         FeedbackPanel panel = new FeedbackPanel("feedback");
         sendInfo.add(panel);
 
-        TextArea<String> emailText = new TextArea<>("mailBody", new PropertyModel<String>(this, "mail"));
+        TextArea<String> emailText = new TextArea<String>("mailBody", new PropertyModel<String>(this, "mail"));
         sendInfo.add(emailText);
 
         sendInfo.add(wantedToPlay);
 
         add(sendInfo);
+    }
+
+    @Override
+    protected void onConfigure() {
+        super.onConfigure();
+        setVisibilityAllowed(UserUtils.isSignedIn());
     }
 
     /**
