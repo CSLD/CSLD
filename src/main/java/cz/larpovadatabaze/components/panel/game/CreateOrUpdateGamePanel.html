@@ -235,6 +235,23 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
 
     <tr>
         <td>
+            <select wicket:id="lang" title="Jazyk" wicket:message="title:game.lang"/>
+        </td>
+        <td class="popis">
+            <label for="web">
+                <wicket:message key="game.lang">Jazyk</wicket:message>
+            </label>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2" class="error">
+            <span wicket:id="langFeedback"></span>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
             <input class="textbox" type="text" wicket:id="galleryURL" title="" wicket:message="title:form.galleryURL"/>
         </td>
         <td class="popis">

@@ -8,6 +8,7 @@ import cz.larpovadatabaze.models.FilterGame;
 import cz.larpovadatabaze.providers.SortableGameProvider;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.*;
+import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.OrderByBorder;
@@ -101,7 +102,7 @@ public class ListGamePanel extends Panel {
             commentsModel = new CommentsModel(0);
         }
 
-        sgp = new SortableGameProvider(gameService, label);
+        sgp = new SortableGameProvider(gameService, label, Session.get().getLocale());
         final DataView<Game> propertyList = new DataView<Game>("listGames", sgp) {
             @Override
             protected void populateItem(Item<Game> item) {

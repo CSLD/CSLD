@@ -182,6 +182,10 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
             if(filterGame.getMaxPlayers() != null){
                 criteria.add(Restrictions.le("players",filterGame.getMaxPlayers()));
             }
+
+            if(filterGame.getLanguage() != null) {
+                criteria.add(Restrictions.eq("lang", filterGame.getLanguage().getLanguage()));
+            }
         }
         if (orderBy != null) {
             criteria.addOrder(orderBy);

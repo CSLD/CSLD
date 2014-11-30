@@ -4,6 +4,7 @@ import cz.larpovadatabaze.entities.Label;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Locale;
 
 /**
  *
@@ -16,6 +17,15 @@ public class FilterGame implements Serializable {
     private Double minPlayers = 0d;
     private Double maxPlayers;
     private List<Label> filterByLabels;
+    private Locale language;
+
+    public Locale getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Locale language) {
+        this.language = language;
+    }
 
     public List<Label> getFilterByLabels() {
         return filterByLabels;

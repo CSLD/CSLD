@@ -36,6 +36,10 @@ import org.apache.wicket.util.lang.Bytes;
 import org.apache.wicket.validation.IValidator;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+
 /**
  * This panel is used when you want to create or update game in the database.
  * It encapsulates relevant createOrUpdateGame with associated HTML markup.
@@ -93,6 +97,11 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("bothRole").setLabel(Model.of("Počet obojetných")), createOrUpdateGame, "bothRoleFeedback"));
         createOrUpdateGame.add(addFeedbackPanel(videoField = new TextField<String>("video.path"), createOrUpdateGame, "videoPathFeedback"));
         createOrUpdateGame.add(addFeedbackPanel(new ImagePanel("image"), createOrUpdateGame, "imageFeedback"));
+
+        List<Locale> locales = Arrays.asList(Locale.ENGLISH, Locale.forLanguageTag("cz"));
+        final DropDownChoice<Locale> changeLocale =
+                new DropDownChoice<Locale>("lang", locales);
+        createOrUpdateGame.add(addFeedbackPanel(changeLocale, createOrUpdateGame, "langFeedback"));
 
         addAuthorsInput(createOrUpdateGame, game);
         addGroupsInput(createOrUpdateGame, game);

@@ -348,6 +348,18 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
         this.deleted = deleted;
     }
 
+    private String lang;
+
+    @Column(name="lang")
+    @Basic
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
