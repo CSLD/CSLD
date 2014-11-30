@@ -5,12 +5,12 @@ import cz.larpovadatabaze.components.panel.home.LastCommentsPanel;
 import cz.larpovadatabaze.components.panel.home.LastGamesPanel;
 import cz.larpovadatabaze.components.panel.home.RandomLarpPanel;
 import cz.larpovadatabaze.components.panel.home.StatisticsPanel;
+import cz.larpovadatabaze.entities.Photo;
+import cz.larpovadatabaze.services.PhotoService;
+import cz.larpovadatabaze.services.impl.ImageServiceImpl;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.repeater.RepeatingView;
-import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.List;
