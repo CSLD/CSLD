@@ -11,6 +11,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * TODO: Do not return comments of hidden games.
@@ -45,18 +46,31 @@ public class CommentDAO extends GenericHibernateDAO<Comment, Integer>{
     }
 
     @SuppressWarnings("unchecked")
-    public List<Comment> getLastComments(int maxComments) {
-        return getLastComments(0, maxComments);
+    public List<Comment> getLastComments(int maxComments, Locale locale) {
+        return getLastComments(0, maxComments, locale);
     }
 
-    @SuppressWarnings("unchecked")
-    public List<Comment> getLastComments(int first, int count) {
+    public List<Comment> getLastComments(int first, int count, Locale locale){
         Criteria criteria = getBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession())
                 .add(Restrictions.eq("hidden", false))
+                .createAlias("game", "commentedGame")
                 .addOrder(Order.desc("added"))
                 .setMaxResults(count)
                 .setFirstResult(first);
 
+        if(locale != null) {
+            criteria.add(Restrictions.eq("commentedGame.lang", locale.getLanguage()));
+        }
+
         return criteria.list();
+    }
+
+    public long getAmountOfComments(Locale locale) {
+        Criteria criteria = getBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession())
+                .createAlias("game", "commentedGame")
+                .setProjection(Projections.rowCount());
+        criteria.add(Restrictions.eq("commentedGame.lang", locale.getLanguage()));
+
+        return ((Long)criteria.uniqueResult()).intValue();
     }
 }

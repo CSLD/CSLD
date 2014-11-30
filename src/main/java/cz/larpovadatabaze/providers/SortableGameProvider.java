@@ -26,6 +26,13 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
     private List<Label> filterLabels = new ArrayList<Label>();
     private int filterLabel = -1;
 
+    public SortableGameProvider(GameService gameService, String defaultSort, Locale locale) {
+        this(gameService, defaultSort);
+        if(locale != null) {
+            filterGame.setLanguage(locale);
+        }
+    }
+
     public SortableGameProvider(GameService gameService, String defaultSort) {
         this.gameService = gameService;
         setSort(defaultSort, SortOrder.ASCENDING);
@@ -39,10 +46,6 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
         if(locale != null) {
             filterGame.setLanguage(locale);
         }
-    }
-
-    public SortableGameProvider(GameService gameService, Label filterLabel) {
-        this(gameService, filterLabel, Locale.forLanguageTag("cs"));
     }
 
     @Override

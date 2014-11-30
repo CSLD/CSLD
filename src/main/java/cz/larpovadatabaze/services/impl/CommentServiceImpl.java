@@ -7,10 +7,12 @@ import cz.larpovadatabaze.services.CommentService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.log4j.Logger;
+import org.apache.wicket.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  *
@@ -61,12 +63,12 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Comment> getLastComments(int amount) {
-        return commentDAO.getLastComments(amount);
+        return commentDAO.getLastComments(amount, Session.get().getLocale());
     }
 
     @Override
-    public List<Comment> getLastComments(long first, long count) {
-        return commentDAO.getLastComments(((Long)first).intValue(), ((Long)count).intValue());
+    public List<Comment> getLastComments(long first, long count, Locale locale) {
+        return commentDAO.getLastComments(((Long)first).intValue(), ((Long)count).intValue(), locale);
     }
 
     @Override
@@ -99,6 +101,11 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<Game> getGamesCommentedByUser(int userId) {
         return gameService.getGamesCommentedByUser(userId);
+    }
+
+    @Override
+    public long getAmountOfComments(Locale locale) {
+        return commentDAO.getAmountOfComments(locale);
     }
 
 }
