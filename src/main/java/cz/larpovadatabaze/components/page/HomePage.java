@@ -9,8 +9,10 @@ import cz.larpovadatabaze.entities.Photo;
 import cz.larpovadatabaze.services.PhotoService;
 import cz.larpovadatabaze.services.impl.ImageServiceImpl;
 import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.List;
@@ -43,5 +45,6 @@ public class HomePage extends CsldBasePage {
     @Override
     public void renderHead(IHeaderResponse response) {
         super.renderHead(response);
+        response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class, "js/homePage.js")));
     }
 }

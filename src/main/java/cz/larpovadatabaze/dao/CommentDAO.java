@@ -53,7 +53,6 @@ public class CommentDAO extends GenericHibernateDAO<Comment, Integer>{
     public List<Comment> getLastComments(int first, int count, Locale locale){
         Criteria criteria = getBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession())
                 .add(Restrictions.eq("hidden", false))
-                .createAlias("game", "commentedGame")
                 .addOrder(Order.desc("added"))
                 .setMaxResults(count)
                 .setFirstResult(first);

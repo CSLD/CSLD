@@ -101,8 +101,7 @@ public abstract class CsldBasePage extends WebPage {
         response.render(JavaScriptHeaderItem.forReference(TinyMCESettings.javaScriptReference()));
 
         response.render(JavaScriptHeaderItem.forReference(JQueryUIResourceReference.get()));
-        response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"js/jquery.nivo.slider.js")));
-
+        response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"js/jquery.slides.min.js")));
 
         response.render(CssHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"css/nivo-slider.css")));
         response.render(CssHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"css/style.css")));
