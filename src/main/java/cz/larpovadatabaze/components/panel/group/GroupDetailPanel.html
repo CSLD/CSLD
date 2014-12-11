@@ -25,9 +25,20 @@
         <table wicket:id="groupAuthors">
             <tr>
                 <td>
-                    <a wicket:id="groupAuthor"><span wicket:id="groupAuthorNickname"></span> <span wicket:id="groupAuthorName"></span></a>
+                    <a wicket:id="link"><span wicket:id="nickname"></span> <span wicket:id="name"></span></a>
                 </td>
             </tr>
         </table>
+
+        <wicket:enclosure child="groupAdministrators">
+            <h2><wicket:message key="group.administrators">Administrátoři skupiny</wicket:message></h2>
+            <table wicket:id="groupAdministrators">
+                <tr>
+                    <td>
+                        <a wicket:id="link"><span wicket:id="nickname"></span> <span wicket:id="name"></span></a>
+                    </td>
+                </tr>
+            </table>
+        </wicket:enclosure>
     </div>
 </wicket:panel>
