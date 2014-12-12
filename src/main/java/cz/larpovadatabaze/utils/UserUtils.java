@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.utils;
 
+import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.security.CsldRoles;
@@ -51,5 +52,22 @@ public class UserUtils {
      */
     public static boolean isAtLeastEditor() {
         return isEditor() || isAdmin();
+    }
+
+    public static boolean isAdminOfGroup(CsldGroup group) {
+        boolean isVisible = CsldAuthenticatedWebSession.get().isSignedIn();
+        if(isVisible){
+            CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
+            if(logged == null){
+                isVisible = false;
+            }
+            if(logged != null && logged.getRole() <= CsldRoles.USER.getRole()){
+                if(!group.getAdministrators().contains(logged)){
+                    isVisible = false;
+                }
+            }
+        }
+
+        return isVisible;
     }
 }
