@@ -1,10 +1,36 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import org.apache.wicket.ajax.AjaxEventBehavior;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.extensions.ajax.markup.html.autocomplete.GenericFactory;
+import org.apache.wicket.extensions.ajax.markup.html.autocomplete.GenericValidator;
+import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IFactory;
+import org.apache.wicket.extensions.ajax.markup.html.autocomplete.RepeatableInputPanel;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.lang.Bytes;
+import org.apache.wicket.validation.IValidator;
+
+import java.util.Locale;
+
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
 import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.behavior.ErrorClassAppender;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
+import cz.larpovadatabaze.components.common.JSPingBehavior;
 import cz.larpovadatabaze.components.panel.ImagePanel;
 import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
 import cz.larpovadatabaze.components.panel.group.CreateOrUpdateGroupPanel;
@@ -17,29 +43,9 @@ import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.GroupService;
 import cz.larpovadatabaze.services.VideoService;
 import cz.larpovadatabaze.utils.AvailableLocale;
+import cz.larpovadatabaze.utils.UserUtils;
 import cz.larpovadatabaze.validator.AtLeastOneRequiredLabelValidator;
-import org.apache.wicket.ajax.AjaxEventBehavior;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.extensions.ajax.markup.html.autocomplete.GenericFactory;
-import org.apache.wicket.extensions.ajax.markup.html.autocomplete.GenericValidator;
-import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IFactory;
-import org.apache.wicket.extensions.ajax.markup.html.autocomplete.RepeatableInputPanel;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
-import org.apache.wicket.markup.html.form.*;
-import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.lang.Bytes;
-import org.apache.wicket.validation.IValidator;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * This panel is used when you want to create or update game in the database.
@@ -157,6 +163,10 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         }.add(new TinyMceAjaxSubmitModifier()));
 
         add(createOrUpdateGame);
+
+        if (UserUtils.isSignedIn()) {
+            add(new JSPingBehavior());
+        }
     }
 
     private FormComponent addFeedbackPanel(FormComponent addFeedbackTo, Form addingFeedbackTo, String nameOfFeedbackPanel){
