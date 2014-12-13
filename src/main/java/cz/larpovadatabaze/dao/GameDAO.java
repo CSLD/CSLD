@@ -141,7 +141,9 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
                 .addOrder(Order.desc("totalRating"))
                 .setMaxResults(5);
 
-        return criteria.list();
+        List<Game> similarGames  = criteria.list();
+        similarGames.remove(game);
+        return similarGames;
     }
 
     /**
