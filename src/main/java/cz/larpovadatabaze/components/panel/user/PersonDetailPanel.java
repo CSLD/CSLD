@@ -6,6 +6,7 @@ import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Person;
 import cz.larpovadatabaze.entities.UserPlayedGame;
 import cz.larpovadatabaze.services.ImageService;
+import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -33,6 +34,10 @@ public class PersonDetailPanel extends AbstractCsldPanel<CsldUser> {
         Person person = user.getPerson();
         add(new Label("nickname",person.getNickNameView()));
         add(new Label("name",person.getName()));
+
+        Label emailLabel = new Label("email", person.getEmail());
+        emailLabel.setVisibilityAllowed(UserUtils.isAtLeastEditor());
+        add(emailLabel);
 
         Integer age = person.getAge();
         add(new Label("age",age).setVisible(age != null));
