@@ -1,17 +1,32 @@
 package cz.larpovadatabaze.entities;
 
-import cz.larpovadatabaze.api.Identifiable;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import cz.larpovadatabaze.api.Identifiable;
 
 
 /**
@@ -358,6 +373,30 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
 
     public void setLang(String lang) {
         this.lang = lang;
+    }
+
+    private boolean ratingsDisabled;
+
+    @Column(name="ratingsDisabled")
+    @Basic
+    public boolean isRatingsDisabled() {
+        return ratingsDisabled;
+    }
+
+    public void setRatingsDisabled(boolean ratingsDisabled) {
+        this.ratingsDisabled = ratingsDisabled;
+    }
+
+    private boolean commentsDisabled;
+
+    @Column(name="commentsDisabled")
+    @Basic
+    public boolean isCommentsDisabled() {
+        return commentsDisabled;
+    }
+
+    public void setCommentsDisabled(boolean commentsDisabled) {
+        this.commentsDisabled = commentsDisabled;
     }
 
     @Override

@@ -30,13 +30,14 @@ import cz.larpovadatabaze.components.common.tabs.TabsComponentPanel;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.panel.YouTubePanel;
 import cz.larpovadatabaze.components.panel.admin.AdminAllRatingsPanel;
-import cz.larpovadatabaze.components.panel.game.CanNotRatePanel;
 import cz.larpovadatabaze.components.panel.game.CommentsListPanel;
 import cz.larpovadatabaze.components.panel.game.CommentsPanel;
 import cz.larpovadatabaze.components.panel.game.DeleteGamePanel;
 import cz.larpovadatabaze.components.panel.game.EditGamePanel;
 import cz.larpovadatabaze.components.panel.game.GameDetailPanel;
 import cz.larpovadatabaze.components.panel.game.GameListPanel;
+import cz.larpovadatabaze.components.panel.game.LoginToRatePanel;
+import cz.larpovadatabaze.components.panel.game.RatingsDisabledPanel;
 import cz.larpovadatabaze.components.panel.game.RatingsPanel;
 import cz.larpovadatabaze.components.panel.game.RatingsResultPanel;
 import cz.larpovadatabaze.components.panel.game.SendInformation;
@@ -312,7 +313,14 @@ public class GameDetail extends CsldBasePage {
         ratingsPanel = new RatingsPanel("ratingsPanel", getModel(), ratingsContainerPanel);
         ratingsContainerPanel.add(ratingsPanel);
 
-        ratingsContainerPanel.add(new CanNotRatePanel("canNotRatePanel"));
+        if (getModel().getObject().isRatingsDisabled()) {
+            // Cannot rate because ratings are disabled
+            ratingsContainerPanel.add(new RatingsDisabledPanel("canNotRatePanel"));
+        }
+        else {
+            // Check whether user logged in and show appropriate message if applicable
+            ratingsContainerPanel.add(new LoginToRatePanel("canNotRatePanel"));
+        }
 
         addAuthorRatePanel(ratingsContainerPanel);
 

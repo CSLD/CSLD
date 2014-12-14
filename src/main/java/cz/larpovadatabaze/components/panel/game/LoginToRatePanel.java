@@ -1,14 +1,15 @@
 package cz.larpovadatabaze.components.panel.game;
 
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import org.apache.wicket.markup.html.panel.Panel;
+
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 
 /**
  * This panel is shown when user does not have right to rate the game.
  * Therefore when he is not logged.
  */
-public class CanNotRatePanel extends Panel {
-    public CanNotRatePanel(String id) {
+public class LoginToRatePanel extends Panel {
+    public LoginToRatePanel(String id) {
         super(id);
     }
 
