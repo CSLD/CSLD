@@ -9,6 +9,6 @@ import java.util.Locale;
  */
 public class AvailableLocale {
     public List<Locale> availableLocale(){
-        return Arrays.asList(Locale.ENGLISH, Locale.forLanguageTag("cs"));
+        return Arrays.asList(Locale.ENGLISH, Locale.forLanguageTag("cs"), Locale.GERMAN);
     }
 }
