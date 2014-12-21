@@ -3,6 +3,8 @@ package cz.larpovadatabaze.services.impl;
 import cz.larpovadatabaze.dao.CommentDAO;
 import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.lang.LanguageSolver;
+import cz.larpovadatabaze.lang.LocaleProvider;
 import cz.larpovadatabaze.services.CommentService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.utils.UserUtils;
@@ -11,6 +13,7 @@ import org.apache.wicket.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -21,11 +24,9 @@ import java.util.Locale;
 public class CommentServiceImpl implements CommentService {
     private static final Logger logger = Logger.getLogger(CommentServiceImpl.class);
 
-    @Autowired
-    private CommentDAO commentDAO;
-
-    @Autowired
-    private GameService gameService;
+    @Autowired private CommentDAO commentDAO;
+    @Autowired private GameService gameService;
+    @Autowired private LanguageSolver languageSolver;
 
     @Override
     public List<Comment> getAll() {
@@ -63,12 +64,12 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Comment> getLastComments(int amount) {
-        return commentDAO.getLastComments(amount, Session.get().getLocale());
+        return commentDAO.getLastComments(amount, languageSolver.getTextLangForUser());
     }
 
     @Override
     public List<Comment> getLastComments(long first, long count, Locale locale) {
-        return commentDAO.getLastComments(((Long)first).intValue(), ((Long)count).intValue(), locale);
+        return commentDAO.getLastComments(((Long)first).intValue(), ((Long)count).intValue(), languageSolver.getTextLangForUser());
     }
 
     @Override

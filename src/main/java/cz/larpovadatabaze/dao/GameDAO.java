@@ -52,13 +52,13 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Game> getLastGames(int amountOfGames, Locale locale) {
+    public List<Game> getLastGames(int amountOfGames, List<String> locales) {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = new GameBuilder().build().getExecutableCriteria(session)
                 .setMaxResults(amountOfGames)
                 .addOrder(Order.desc("added"));
 
-        criteria.add(Restrictions.eq("lang", locale.getLanguage()));
+        criteria.add(Restrictions.in("lang", locales));
 
         return criteria.list();
     }

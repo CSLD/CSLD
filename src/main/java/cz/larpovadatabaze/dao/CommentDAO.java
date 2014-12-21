@@ -46,19 +46,19 @@ public class CommentDAO extends GenericHibernateDAO<Comment, Integer>{
     }
 
     @SuppressWarnings("unchecked")
-    public List<Comment> getLastComments(int maxComments, Locale locale) {
+    public List<Comment> getLastComments(int maxComments, List<String> locale) {
         return getLastComments(0, maxComments, locale);
     }
 
-    public List<Comment> getLastComments(int first, int count, Locale locale){
+    public List<Comment> getLastComments(int first, int count, List<String> locales){
         Criteria criteria = getBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession())
                 .add(Restrictions.eq("hidden", false))
                 .addOrder(Order.desc("added"))
                 .setMaxResults(count)
                 .setFirstResult(first);
 
-        if(locale != null) {
-            criteria.add(Restrictions.eq("commentedGame.lang", locale.getLanguage()));
+        if(locales != null) {
+            criteria.add(Restrictions.in("commentedGame.lang", locales));
         }
 
         return criteria.list();
