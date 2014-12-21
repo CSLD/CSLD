@@ -1,21 +1,15 @@
 package cz.larpovadatabaze.components.panel.user;
 
-import cz.larpovadatabaze.api.ValidatableForm;
-import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
-import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
-import cz.larpovadatabaze.behavior.ErrorClassAppender;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Image;
-import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.FileService;
-import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
-import cz.larpovadatabaze.utils.Pwd;
-import cz.larpovadatabaze.validator.UniqueUserValidator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
-import org.apache.wicket.markup.html.form.*;
+import org.apache.wicket.markup.html.form.EmailTextField;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.form.PasswordTextField;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
@@ -27,10 +21,22 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
-import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import cz.larpovadatabaze.api.ValidatableForm;
+import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
+import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
+import cz.larpovadatabaze.behavior.ErrorClassAppender;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Image;
+import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.FileService;
+import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
+import cz.larpovadatabaze.utils.Pwd;
+import cz.larpovadatabaze.validator.UniqueUserValidator;
+import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 /**
  * Panel used for registering new user or adding new Author into the database.
@@ -96,6 +102,9 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
                 new PasswordTextField("passwordAgain", new PropertyModel<String>(this, "passwordAgain"));
         passwordAgain.setRequired(true);
         createOrUpdateUser.add(addFeedbackPanel(passwordAgain, createOrUpdateUser, "passwordAgainFeedback"));
+
+        ReCaptchaComponent reCaptcha = new ReCaptchaComponent("reCaptcha", new Model());
+        createOrUpdateUser.add(addFeedbackPanel(reCaptcha, createOrUpdateUser, "reCaptchaFeedback"));
 
         createOrUpdateUser.add(new AjaxButton("submit"){
             @Override

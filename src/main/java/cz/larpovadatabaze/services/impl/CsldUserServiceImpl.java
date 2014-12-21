@@ -1,14 +1,9 @@
 package cz.larpovadatabaze.services.impl;
 
-import cz.larpovadatabaze.dao.CsldUserDAO;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.exceptions.WrongParameterException;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.security.CsldRoles;
-import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.ImageService;
-import cz.larpovadatabaze.utils.Pwd;
-import cz.larpovadatabaze.utils.RandomString;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.wicket.ajax.json.JSONObject;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
@@ -20,11 +15,28 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.UUID;
 
+import cz.larpovadatabaze.dao.CsldUserDAO;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.exceptions.WrongParameterException;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.security.CsldRoles;
+import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.ImageService;
+import cz.larpovadatabaze.utils.Pwd;
+import cz.larpovadatabaze.utils.RandomString;
+
 /**
  *
  */
 @Repository
 public class CsldUserServiceImpl implements CsldUserService {
+    /**
+     * Re-Captcha config - maybe move keys somewhere else?
+     */
+    private static final String RE_CAPTCHA_VERIFY_URL="https://www.google.com/recaptcha/api/siteverify";
+    private static final String RE_CAPTCHA_SITE_KEY ="6LeEiv8SAAAAABn8qvmZGkez0Lpp-Pbak_Jr6T1t";
+    private static final String RE_CAPTCHA_SECRET_KEY ="6LeEiv8SAAAAAAE2ikmbiEJhv5XdVaI4_TiPPEt6";
+
     @Autowired
     private CsldUserDAO csldUserDao;
 
@@ -172,5 +184,34 @@ public class CsldUserServiceImpl implements CsldUserService {
             }
         }
         return userIconReference;
+    }
+
+    @Override
+    public String getReCaptchaSiteKey() {
+        return RE_CAPTCHA_SITE_KEY;
+    }
+
+    @Override
+    public boolean checkReCaptcha(String response, String remoteIp) throws ReCaptchaTechnicalException {
+        HttpClient client = new HttpClient();
+        PostMethod post = new PostMethod(RE_CAPTCHA_VERIFY_URL);
+        post.addParameter("secret", RE_CAPTCHA_SECRET_KEY);
+        post.addParameter("response", response);
+        post.addParameter("remoteip", remoteIp);
+
+        try {
+            int code = client.executeMethod(post);
+            if (code != HttpStatus.SC_OK) {
+                throw new Exception("Could not send request: "+post.getStatusLine());
+            }
+
+            String responseFromGoogle = post.getResponseBodyAsString();
+            JSONObject responseObject = new JSONObject(responseFromGoogle);
+            return responseObject.getBoolean("success");
+
+        }
+        catch(Exception e) {
+            throw new ReCaptchaTechnicalException(e);
+        }
     }
 }
