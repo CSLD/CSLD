@@ -44,7 +44,7 @@ import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.GroupService;
 import cz.larpovadatabaze.services.VideoService;
-import cz.larpovadatabaze.utils.AvailableLocale;
+import cz.larpovadatabaze.lang.CodeLocaleProvider;
 import cz.larpovadatabaze.utils.UserUtils;
 import cz.larpovadatabaze.validator.AtLeastOneRequiredLabelValidator;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
@@ -122,7 +122,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         });
 
         final DropDownChoice<Locale> changeLocale =
-                new DropDownChoice<Locale>("lang", new AvailableLocale().availableLocale());
+                new DropDownChoice<Locale>("lang", new CodeLocaleProvider().availableLocale());
         createOrUpdateGame.add(addFeedbackPanel(changeLocale, createOrUpdateGame, "langFeedback"));
 
         addAuthorsInput(createOrUpdateGame, game);

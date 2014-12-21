@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.components.common.i18n;
 
-import cz.larpovadatabaze.utils.AvailableLocale;
+import cz.larpovadatabaze.lang.CodeLocaleProvider;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.form.Button;
@@ -9,7 +9,6 @@ import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -28,7 +27,7 @@ public class LocalePicker extends Panel{
 
         // Set default Locale based on actual Locale.
 
-        List<Locale> locales = new AvailableLocale().availableLocale();
+        List<Locale> locales = new CodeLocaleProvider().availableLocale();
         final DropDownChoice<Locale> changeLocale =
                 new DropDownChoice<Locale>("changeLocale", new Model<Locale>(Session.get().getLocale()), locales);
         StatelessForm form = new StatelessForm("form"){

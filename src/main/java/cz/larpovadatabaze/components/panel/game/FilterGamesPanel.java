@@ -3,7 +3,7 @@ package cz.larpovadatabaze.components.panel.game;
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.models.FilterGame;
-import cz.larpovadatabaze.utils.AvailableLocale;
+import cz.larpovadatabaze.lang.CodeLocaleProvider;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -12,7 +12,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.Model;
 
 import java.util.List;
 import java.util.Locale;
@@ -37,7 +36,7 @@ public abstract class FilterGamesPanel extends Panel {
         ChooseLabelsPanel labels = new ChooseLabelsPanel("filterByLabels");
         filterGames.add(labels);
 
-        List<Locale> locales = new AvailableLocale().availableLocale();
+        List<Locale> locales = new CodeLocaleProvider().availableLocale();
         if(filterGames.getModelObject().getLanguage() == null) {
             filterGames.getModelObject().setLanguage(Session.get().getLocale());
         }

@@ -78,7 +78,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
                 .setMaxResults(1);
 
         Game result = (Game) criteria.uniqueResult();
-        if(result == null) {
+        if(result == null && getAmountOfGames() > 0) {
             return getRandomGame();
         } else {
             return result;

@@ -6,9 +6,11 @@ import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.behavior.ErrorClassAppender;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Image;
+import cz.larpovadatabaze.entities.Language;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
+import cz.larpovadatabaze.lang.CodeLocaleProvider;
 import cz.larpovadatabaze.utils.Pwd;
 import cz.larpovadatabaze.validator.UniqueUserValidator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -29,8 +31,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Panel used for registering new user or adding new Author into the database.
@@ -91,6 +95,11 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
         PasswordTextField password = new PasswordTextField("password");
         password.setRequired(true);
         createOrUpdateUser.add(addFeedbackPanel(password, createOrUpdateUser, "passwordFeedback"));
+
+        final ListMultipleChoice<Language> changeLocale =
+                new ListMultipleChoice<Language>("userHasLanguages",
+                        new CodeLocaleProvider().availableLanguages());
+        createOrUpdateUser.add(addFeedbackPanel(changeLocale, createOrUpdateUser, "userHasLanguagesFeedback"));
 
         PasswordTextField passwordAgain =
                 new PasswordTextField("passwordAgain", new PropertyModel<String>(this, "passwordAgain"));

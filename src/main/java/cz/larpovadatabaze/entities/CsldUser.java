@@ -233,6 +233,31 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable, I
         this.playedGames = playedGames;
     }
 
+    private List<Language> userHasLanguages;
+
+    @SuppressWarnings("JpaAttributeTypeInspection")
+    @ManyToMany(
+            fetch = FetchType.LAZY ,
+            cascade = javax.persistence.CascadeType.ALL
+    )
+    @Cascade(CascadeType.SAVE_UPDATE)
+    @JoinTable(
+            name="csld_user_has_languages", schema="public",
+            joinColumns = {
+                    @JoinColumn(name="id_user", nullable = false)
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name="language", nullable = false)
+            }
+    )
+    public List<Language> getUserHasLanguages() {
+        return userHasLanguages;
+    }
+
+    public void setUserHasLanguages(List<Language> userHasLanguages) {
+        this.userHasLanguages = userHasLanguages;
+    }
+
     private List<Comment> commented;
 
     @OneToMany(mappedBy = "user")
@@ -288,6 +313,7 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable, I
         emptyUser.setPerson(Person.getEmptyPerson());
         emptyUser.setPlayedGames(new ArrayList<UserPlayedGame>());
         emptyUser.setRole(CsldRoles.USER.getRole());
+        emptyUser.setUserHasLanguages(new ArrayList<Language>());
         return emptyUser;
     }
 }

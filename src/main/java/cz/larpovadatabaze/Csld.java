@@ -20,10 +20,8 @@ import cz.larpovadatabaze.converters.CsldUserConverter;
 import cz.larpovadatabaze.converters.GameConverter;
 import cz.larpovadatabaze.converters.GroupConverter;
 import cz.larpovadatabaze.converters.LabelConverter;
-import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Label;
+import cz.larpovadatabaze.entities.*;
+import cz.larpovadatabaze.lang.CodeLocaleProvider;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.GameService;
@@ -185,6 +183,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         locator.set(Game.class, new GameConverter(gameService));
         locator.set(CsldGroup.class, new GroupConverter(groupService));
         locator.set(Label.class, new LabelConverter(labelService));
+        locator.set(Language.class, new CodeLocaleProvider());
 
         return locator;
 
