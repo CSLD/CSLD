@@ -44,6 +44,7 @@
         <jettyContextFile>${basedir}/src/test/config/jetty.xml</jettyContextFile>
         <javax.mail.version>1.4.7</javax.mail.version>
         <postgresql.version>9.1-901.jdbc4</postgresql.version>
+        <http.client.version>3.1</http.client.version>
     </properties>
 
     <dependencies>
@@ -98,6 +99,11 @@
             <groupId>org.wicketstuff</groupId>
             <artifactId>wicketstuff-simile-timeline</artifactId>
             <version>${wicket.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>${http.client.version}</version>
         </dependency>
 
         <!-- SPRING DEPENDENCIES -->
