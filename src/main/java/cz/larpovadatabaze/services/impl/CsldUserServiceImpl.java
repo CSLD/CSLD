@@ -28,7 +28,7 @@ import cz.larpovadatabaze.utils.RandomString;
 /**
  *
  */
-@Repository
+@Repository(value = "csldUserService")
 public class CsldUserServiceImpl implements CsldUserService {
     /**
      * Re-Captcha config - maybe move keys somewhere else?
