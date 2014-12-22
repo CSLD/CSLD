@@ -70,7 +70,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     private LabelService labelService;
 
     private static final String DEFAULT_ENCODING = "UTF-8";
-    private ApplicationContext ctx;
+    private static ApplicationContext ctx;
 
     public class MountedMapperWithoutPageComponentInfo extends MountedMapper {
 
@@ -242,6 +242,10 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.ctx = applicationContext;
+    }
+
+    public static ApplicationContext getApplicationContext() {
+        return ctx;
     }
 
     protected boolean isDevelopmentMode() {
