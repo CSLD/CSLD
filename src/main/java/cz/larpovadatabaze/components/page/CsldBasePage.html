@@ -56,19 +56,14 @@
 <div class="menu">
     <span class="polozky">
         <span class="mezera"></span>
-        <a wicket:id="list-game"><wicket:message key="rankings">Žebříčky</wicket:message></a>
-        <a wicket:id="list-authors"><wicket:message key="authors">Autoři</wicket:message></a>
-        <a wicket:id="list-users"><wicket:message key="users">Uživatelé</wicket:message></a>
-        <a wicket:id="list-groups"><wicket:message key="groups">Skupiny</wicket:message></a>
-        <a wicket:id="about"><wicket:message key="aboutDb">O databázi</wicket:message></a>
+        <a class="menuItem" wicket:id="list-game"><wicket:message key="rankings">Žebříčky</wicket:message></a>
+        <a class="menuItem" wicket:id="list-authors"><wicket:message key="authors">Autoři</wicket:message></a>
+        <a class="menuItem" wicket:id="list-users"><wicket:message key="users">Uživatelé</wicket:message></a>
+        <a class="menuItem" wicket:id="list-groups"><wicket:message key="groups">Skupiny</wicket:message></a>
+        <a class="menuItem" wicket:id="about"><wicket:message key="aboutDb">O databázi</wicket:message></a>
         <span wicket:id="adminPanel"></span>
     </span>
-    <span id="languageChanger" wicket:id="languagePicker">
-        <!--
-        This panel is found in package: cz.larpovadatabaze.components.common.i18n.LocalePicker.html
-        https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/common/i18n/LocalePicker.html
-        -->
-    </span>
+    <wicket:container wicket:id="languagePicker" />
     <span id="divProHledani" wicket:id="searchBox">
         <!--
         This panel is found in package: cz.larpovadatabaze.components.panel.search.SearchBoxPanel.html

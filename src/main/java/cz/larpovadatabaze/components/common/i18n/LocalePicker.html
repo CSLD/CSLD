@@ -1,13 +1,30 @@
-<wicket:panel xmlns:wicket="http://wicket.apache.org">
+<html xmlns:wicket="http://wicket.apache.org">
+
+<wicket:panel>
     <!--
     It contains select for choosing language used on the page at the moment.
     It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/common/i18n/LocalePicker.html
     Code - cz.larpovadatabaze.components.common.i18n.LocalePicker.html
     -->
+    <ul class="localePicker">
+        <li wicket:id="locales" class="localePickerItem">
+        </li>
+    </ul>
 
-     <form wicket:id="form">
-         <select wicket:id="changeLocale"></select>
-
-         <input type="submit" wicket:id="submit" wicket:message="value:locale.change"/>
-     </form>
 </wicket:panel>
+
+<!-- Fragment for selected item -->
+<wicket:fragment wicket:id="localeItemSelected">
+    <img wicket:id="flag" class="localeItemImage" />
+    <span wicket:id="name"></span>
+</wicket:fragment>
+
+<!-- Fragment for available item -->
+<wicket:fragment wicket:id="localeItemAvailable">
+    <a wicket:id="link" class="localePickerLink">
+        <img wicket:id="flag" class="localeItemImage" />
+        <span wicket:id="name"></span>
+    </a>
+</wicket:fragment>
+
+</html>
