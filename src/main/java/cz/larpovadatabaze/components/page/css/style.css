@@ -2753,3 +2753,15 @@ img.localeItemImage {
     height: 16px;
     margin: 2px 5px 2px 2px;
 }
+
+
+#gameInfoWithLink {
+    position: absolute;
+    z-index: 10;
+    width: 642px;
+    text-align: center;
+    background-color: #F0F0F0;
+    opacity: 0.4;
+    font-weight: bold;
+    font-size: 20px;
+}

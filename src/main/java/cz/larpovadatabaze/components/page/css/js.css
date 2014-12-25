@@ -3,7 +3,7 @@
     height: 300px;
 }
 
-#chooser>.column {
+#chooser > .column {
     position: relative;
     width: 50%;
     height: 100%;
@@ -39,7 +39,7 @@
     cursor: pointer;
 }
 
-.obsah>#description {
+.obsah > #description {
     width: 100%;
 }
 
@@ -58,13 +58,13 @@
     background-color: #37B2F0;
 }
 
-#labels div{
+#labels div {
     padding: 3px;
     margin: 4px 3px 5px;
     float: left;
 }
 
-#labels div.empty{
+#labels div.empty {
     padding: 0px;
     margin: 0px;
     border: 0px;
@@ -91,7 +91,7 @@ input.below {
     top: 10px;
 }
 
-.obrazekHraBunka form{
+.obrazekHraBunka form {
     position: relative;
     top: 10px;
 }

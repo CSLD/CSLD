@@ -40,9 +40,9 @@ $(function () {
         }
     });
 
-    $('#nivoSlider').slidesjs({
+    /*$('#nivoSlider').slidesjs({
         width: 642,
         height: 420,
         navigation: true
-    });
+    });*/
 });
