@@ -1,5 +1,7 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import cz.larpovadatabaze.entities.*;
+import cz.larpovadatabaze.lang.LocaleProvider;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -36,10 +38,6 @@ import cz.larpovadatabaze.components.common.JSPingBehavior;
 import cz.larpovadatabaze.components.panel.ImagePanel;
 import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
 import cz.larpovadatabaze.components.panel.group.CreateOrUpdateGroupPanel;
-import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Video;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.GroupService;
@@ -62,6 +60,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
     GroupService groupService;
     @SpringBean
     VideoService videoService;
+    LocaleProvider localeProvider = new CodeLocaleProvider();
 
     private ChooseLabelsPanel chooseLabels;
     private TextField<String> videoField;
@@ -158,6 +157,15 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
                     }
                     game.getVideo().setPath(videoURL);
                 }
+
+                //Process language
+                Locale toBeSaved = localeProvider.transformToLocale(game.getLang());
+                GameHasLanguages firstLanguage = new GameHasLanguages();
+                firstLanguage.setGame(game);
+                firstLanguage.setLanguageForGame(new Language(toBeSaved));
+                firstLanguage.setName(game.getName());
+                firstLanguage.setDescription(game.getDescription());
+                game.getAvailableLanguages().add(firstLanguage);
 
                 if(createOrUpdateGame.isValid()){
                     if(gameService.saveOrUpdate(game)){

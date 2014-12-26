@@ -1,5 +1,8 @@
 package cz.larpovadatabaze.entities;
 
+import cz.larpovadatabaze.lang.CodeLocaleProvider;
+import cz.larpovadatabaze.lang.LocaleProvider;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -16,9 +19,16 @@ public class Language implements Serializable {
     private Locale language;
     @ManyToMany(mappedBy = "userHasLanguages")
     private List<CsldUser> users;
+    @OneToMany(mappedBy = "languageForGame")
+    private List<GameHasLanguages> gameHasLanguages;
 
     public Language(Locale language) {
         this.language = language;
+    }
+
+    public Language(String language) {
+        LocaleProvider provider = new CodeLocaleProvider();
+        this.language = provider.transformToLocale(language);
     }
 
     public Language() {
@@ -38,6 +48,14 @@ public class Language implements Serializable {
 
     public void setUsers(List<CsldUser> users) {
         this.users = users;
+    }
+
+    public List<GameHasLanguages> getGameHasLanguages() {
+        return gameHasLanguages;
+    }
+
+    public void setGameHasLanguages(List<GameHasLanguages> gameHasLanguages) {
+        this.gameHasLanguages = gameHasLanguages;
     }
 
     @Override

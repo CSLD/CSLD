@@ -64,12 +64,12 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Comment> getLastComments(int amount) {
-        return commentDAO.getLastComments(amount, languageSolver.getTextLangForUser());
+        return commentDAO.getLastComments(amount, languageSolver.getLanguagesForUser());
     }
 
     @Override
     public List<Comment> getLastComments(long first, long count, Locale locale) {
-        return commentDAO.getLastComments(((Long)first).intValue(), ((Long)count).intValue(), languageSolver.getTextLangForUser());
+        return commentDAO.getLastComments(((Long)first).intValue(), ((Long)count).intValue(), languageSolver.getLanguagesForUser());
     }
 
     @Override

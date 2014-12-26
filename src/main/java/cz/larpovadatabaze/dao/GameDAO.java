@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -52,13 +53,13 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Game> getLastGames(int amountOfGames, List<String> locales) {
+    public List<Game> getLastGames(int amountOfGames, List<Locale> locales) {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = new GameBuilder().build().getExecutableCriteria(session)
                 .setMaxResults(amountOfGames)
                 .addOrder(Order.desc("added"));
 
-        criteria.add(Restrictions.in("lang", locales));
+        addLanguageRestriction(criteria, locales);
 
         return criteria.list();
     }
@@ -189,7 +190,9 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
             }
 
             if(filterGame.getLanguage() != null) {
-                criteria.add(Restrictions.eq("lang", filterGame.getLanguage().getLanguage()));
+                List<Locale> languages = new ArrayList<Locale>();
+                languages.add(filterGame.getLanguage());
+                addLanguageRestriction(criteria, languages);
             }
         }
         if (orderBy != null) {
@@ -237,7 +240,9 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
             }
 
             if(filterGame.getLanguage() != null) {
-                criteria.add(Restrictions.eq("lang", filterGame.getLanguage().getLanguage()));
+                List<Locale> languages = new ArrayList<Locale>();
+                languages.add(filterGame.getLanguage());
+                addLanguageRestriction(criteria, languages);
             }
         }
         criteria.setProjection(Projections.rowCount());
@@ -284,5 +289,12 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
             ex.printStackTrace();
             return false;
         }
+    }
+
+    private void addLanguageRestriction(Criteria criteria, List<Locale> locales) {
+        criteria
+                .createCriteria("availableLanguages")
+                .createCriteria("languageForGame")
+                .add(Restrictions.in("language", locales));
     }
 }

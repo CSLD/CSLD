@@ -120,7 +120,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public List<Game> getLastGames(int amountOfGames) {
-        return gameDAO.getLastGames(amountOfGames, languageSolver.getTextLangForUser());
+        return gameDAO.getLastGames(amountOfGames, languageSolver.getLanguagesForUser());
     }
 
     @Override

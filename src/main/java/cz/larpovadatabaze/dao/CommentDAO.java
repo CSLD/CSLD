@@ -10,6 +10,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -46,11 +47,11 @@ public class CommentDAO extends GenericHibernateDAO<Comment, Integer>{
     }
 
     @SuppressWarnings("unchecked")
-    public List<Comment> getLastComments(int maxComments, List<String> locale) {
+    public List<Comment> getLastComments(int maxComments, List<Locale> locale) {
         return getLastComments(0, maxComments, locale);
     }
 
-    public List<Comment> getLastComments(int first, int count, List<String> locales){
+    public List<Comment> getLastComments(int first, int count, List<Locale> locales){
         Criteria criteria = getBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession())
                 .add(Restrictions.eq("hidden", false))
                 .addOrder(Order.desc("added"))
@@ -58,7 +59,7 @@ public class CommentDAO extends GenericHibernateDAO<Comment, Integer>{
                 .setFirstResult(first);
 
         if(locales != null) {
-            criteria.add(Restrictions.in("commentedGame.lang", locales));
+            addLocaleLimitation(criteria, locales);
         }
 
         return criteria.list();
@@ -68,8 +69,17 @@ public class CommentDAO extends GenericHibernateDAO<Comment, Integer>{
         Criteria criteria = getBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession())
                 .createAlias("game", "commentedGame")
                 .setProjection(Projections.rowCount());
-        criteria.add(Restrictions.eq("commentedGame.lang", locale.getLanguage()));
+        List<Locale> locales = new ArrayList<Locale>();
+        locales.add(locale);
+        addLocaleLimitation(criteria, locales);
 
         return ((Long)criteria.uniqueResult()).intValue();
+    }
+
+    private void addLocaleLimitation(Criteria criteria, List<Locale> locales) {
+        criteria
+                .createCriteria("commentedGame.availableLanguages")
+                .createCriteria("languageForGame")
+                .add(Restrictions.in("language", locales));
     }
 }

@@ -9,6 +9,7 @@ import cz.larpovadatabaze.components.panel.home.RandomLarpPanel;
 import cz.larpovadatabaze.components.panel.home.StatisticsPanel;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Photo;
+import cz.larpovadatabaze.lang.Translator;
 import cz.larpovadatabaze.services.PhotoService;
 import cz.larpovadatabaze.services.impl.ImageServiceImpl;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -29,6 +30,8 @@ public class HomePage extends CsldBasePage {
     private PhotoService photoService;
     @SpringBean
     private ImageServiceImpl imageService;
+    @SpringBean
+    private Translator<Game> gameTranslator;
 
     public HomePage(){
         add(new LastGamesPanel("lastGames"));
@@ -42,7 +45,7 @@ public class HomePage extends CsldBasePage {
         List<Photo> randomPhotos = photoService.getRandomPhotos(1);
         for(Photo photo: randomPhotos) {
             images.add(new Image(images.newChildId(), imageService.getImageResource(photo)));
-            Game gameAssociatedWithImage = photo.getGame();
+            Game gameAssociatedWithImage = gameTranslator.translate(photo.getGame());
             add(new BookmarkableLinkWithLabel(
                     "linkToThisGame",
                     GameDetail.class,
