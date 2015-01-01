@@ -559,17 +559,6 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
         this.labels = labels;
     }
 
-    private List<GameHasLanguages> gameHasLanguages;
-
-    @OneToMany(mappedBy = "game")
-    public List<GameHasLanguages> getGameHasLanguages() {
-        return gameHasLanguages;
-    }
-
-    public void setGameHasLanguages(List<GameHasLanguages> gameHasLanguages) {
-        this.gameHasLanguages = gameHasLanguages;
-    }
-
     private Video video;
 
     @ManyToOne(cascade = javax.persistence.CascadeType.ALL)

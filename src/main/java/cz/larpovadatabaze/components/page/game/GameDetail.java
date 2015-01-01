@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.page.game;
 
+import cz.larpovadatabaze.components.panel.game.*;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -30,17 +31,6 @@ import cz.larpovadatabaze.components.common.tabs.TabsComponentPanel;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.panel.YouTubePanel;
 import cz.larpovadatabaze.components.panel.admin.AdminAllRatingsPanel;
-import cz.larpovadatabaze.components.panel.game.CommentsListPanel;
-import cz.larpovadatabaze.components.panel.game.CommentsPanel;
-import cz.larpovadatabaze.components.panel.game.DeleteGamePanel;
-import cz.larpovadatabaze.components.panel.game.EditGamePanel;
-import cz.larpovadatabaze.components.panel.game.GameDetailPanel;
-import cz.larpovadatabaze.components.panel.game.GameListPanel;
-import cz.larpovadatabaze.components.panel.game.LoginToRatePanel;
-import cz.larpovadatabaze.components.panel.game.RatingsDisabledPanel;
-import cz.larpovadatabaze.components.panel.game.RatingsPanel;
-import cz.larpovadatabaze.components.panel.game.RatingsResultPanel;
-import cz.larpovadatabaze.components.panel.game.SendInformation;
 import cz.larpovadatabaze.components.panel.photo.PhotoPanel;
 import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldUser;
@@ -331,6 +321,8 @@ public class GameDetail extends CsldBasePage {
 
         DeleteGamePanel deleteGamePanel = new DeleteGamePanel("deleteGamePanel", getModel().getObject().getId());
         add(deleteGamePanel);
+
+        add(new TranslateGamePanel("translateGamePanel", getModel()));
 
         add(new GameListPanel("similarGames", new LoadableDetachableModel<List<? extends Game>>() {
             @Override

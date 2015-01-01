@@ -45,7 +45,7 @@ public class ActualLanguageGameTranslator implements Translator<Game> {
     }
 
     private void translateIntoDefault(Game toTranslate) {
-        List<GameHasLanguages> translationsForGame =  toTranslate.getGameHasLanguages();
+        List<GameHasLanguages> translationsForGame =  toTranslate.getAvailableLanguages();
 
         toTranslate.setDescription(translationsForGame.get(0).getDescription());
         toTranslate.setName(translationsForGame.get(0).getName());
