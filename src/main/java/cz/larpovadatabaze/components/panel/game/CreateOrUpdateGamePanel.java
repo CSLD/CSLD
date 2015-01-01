@@ -170,12 +170,15 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
                     game.setAvailableLanguages(new ArrayList<GameHasLanguages>());
                     toBeSaved = sessionLanguageSolver.getLanguagesForUser().get(0);
                 }
-                GameHasLanguages firstLanguage = new GameHasLanguages();
-                firstLanguage.setGame(game);
-                firstLanguage.setLanguageForGame(new Language(toBeSaved));
-                firstLanguage.setName(game.getName());
-                firstLanguage.setDescription(game.getDescription());
-                game.getAvailableLanguages().add(firstLanguage);
+
+                if(game.getAvailableLanguages().isEmpty()) {
+                    GameHasLanguages firstLanguage = new GameHasLanguages();
+                    firstLanguage.setGame(game);
+                    firstLanguage.setLanguageForGame(new Language(toBeSaved));
+                    firstLanguage.setName(game.getName());
+                    firstLanguage.setDescription(game.getDescription());
+                    game.getAvailableLanguages().add(firstLanguage);
+                }
 
                 if(createOrUpdateGame.isValid()){
                     if(gameService.saveOrUpdate(game)){
