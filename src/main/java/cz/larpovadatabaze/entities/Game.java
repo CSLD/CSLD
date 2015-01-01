@@ -15,20 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import cz.larpovadatabaze.api.Identifiable;
 
@@ -638,7 +625,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
 
     private List<GameHasLanguages> availableLanguages;
 
-    @OneToMany(mappedBy = "game")
+    @OneToMany(mappedBy = "game",fetch = FetchType.EAGER)
     @Cascade(CascadeType.ALL)
     public List<GameHasLanguages> getAvailableLanguages() {
         return availableLanguages;
