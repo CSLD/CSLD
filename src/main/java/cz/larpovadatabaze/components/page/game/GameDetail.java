@@ -173,6 +173,9 @@ public class GameDetail extends CsldBasePage {
     public GameDetail(PageParameters params){
         setVersioned(false);
         try {
+            if(params.isEmpty()) {
+                throw new RestartResponseException(ListGame.class);
+            }
             int gameId = params.get(ID_PARAM).to(Integer.class);
             // If the game is deleted and I don't have sufficient rights redirect me to game deleted page.
             if(gameService.getById(gameId) == null){

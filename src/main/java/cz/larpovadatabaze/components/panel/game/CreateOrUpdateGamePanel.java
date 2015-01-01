@@ -1,7 +1,9 @@
 package cz.larpovadatabaze.components.panel.game;
 
 import cz.larpovadatabaze.entities.*;
+import cz.larpovadatabaze.lang.LanguageSolver;
 import cz.larpovadatabaze.lang.LocaleProvider;
+import cz.larpovadatabaze.lang.SessionLanguageSolver;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -27,6 +29,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Bytes;
 import org.apache.wicket.validation.IValidator;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 import cz.larpovadatabaze.api.ValidatableForm;
@@ -61,6 +64,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
     @SpringBean
     VideoService videoService;
     LocaleProvider localeProvider = new CodeLocaleProvider();
+    LanguageSolver sessionLanguageSolver = new SessionLanguageSolver();
 
     private ChooseLabelsPanel chooseLabels;
     private TextField<String> videoField;
@@ -159,7 +163,13 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
                 }
 
                 //Process language
-                Locale toBeSaved = localeProvider.transformToLocale(game.getLang());
+                Locale toBeSaved;
+                if(game.getLang() != null) {
+                    toBeSaved = localeProvider.transformToLocale(game.getLang());
+                } else {
+                    game.setAvailableLanguages(new ArrayList<GameHasLanguages>());
+                    toBeSaved = sessionLanguageSolver.getLanguagesForUser().get(0);
+                }
                 GameHasLanguages firstLanguage = new GameHasLanguages();
                 firstLanguage.setGame(game);
                 firstLanguage.setLanguageForGame(new Language(toBeSaved));
