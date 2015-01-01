@@ -1,0 +1,69 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+    <!--
+    This panel shows result of rating of a game. It has background based on the rating and the amount of rating as
+    number.
+    It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/game/RatingsResultPanel.html
+    Code - cz.larpovadatabaze.components.panel.game.RatingsResultPanel.html
+    -->
+    <style type="text/css">
+        a.active.played.button:after{
+            /* TODO Fix me for other languages.  */
+            content: "I played";
+            font-size: 10px;
+            position: relative;
+            bottom: 3px;
+            left: 3px;
+
+        }
+        a.active.didnt.button:after{
+            /* TODO Fix me for other languages.  */
+            content: "I didn't play";
+            font-size: 10px;
+            position: relative;
+            bottom: 3px;
+            left: 3px;
+        }
+        a.active.wantToPlay.button:after{
+            /* TODO Fix me for other languages.  */
+            content: "I want to play";
+            font-size: 10px;
+            position: relative;
+            bottom: 3px;
+            left: 3px;
+        }
+    </style>
+
+    <div class="container">
+        <div wicket:id="playedPanel"></div>
+        <div class="inner">
+            <div class="rating">
+                <span wicket:id="ratingResult" class="rating-num">8.4</span>
+
+                <div class="rating-users">
+                    <i class="icon-user"></i> <span wicket:id="amountOfResults">100</span> celkem
+                </div>
+                <div>Vaše hodnocení je: <span wicket:id="myResult">8</span></div>
+
+            </div>
+
+            <div class="histo">
+
+                <wicket:container wicket:id="starsAndBars">
+                    <div class="histo-rate">
+
+                        <span class="histo-star"> <i class="active fa fa-star"></i> <wicket:container wicket:id="number" /> </span>
+                        <span class="bar-block">
+                          <span wicket:id="bar" class="bar">
+                            <span></span>&nbsp;
+                          </span>
+                        </span>
+                    </div>
+                </wicket:container>
+
+            </div>
+        </div>
+
+
+    </div>
+
+</wicket:panel>

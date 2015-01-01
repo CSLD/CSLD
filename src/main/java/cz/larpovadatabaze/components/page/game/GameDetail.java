@@ -246,19 +246,19 @@ public class GameDetail extends CsldBasePage {
         tabContentType = new Vector<TabContentType>();
 
         // Comments
-        models.add(Model.of("Komentáře"));
+        models.add(Model.of(getString("comments")));
         tabContentType.add(TabContentType.COMMENTS);
 
         // Photos
         Game g = getModel().getObject();
         if (((g.getPhotos() != null) && (!g.getPhotos().isEmpty())) || gameService.canEditGame(g)) {
-            models.add(Model.of("Fotky"));
+            models.add(Model.of(getString("photos")));
             tabContentType.add(TabContentType.PHOTOS);
         }
 
         // Video
         if (g.getVideo() != null) {
-            models.add(Model.of("Video"));
+            models.add(Model.of(getString("video")));
             tabContentType.add(TabContentType.VIDEO);
         }
 

@@ -5,6 +5,33 @@
     It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/game/RatingsResultPanel.html
     Code - cz.larpovadatabaze.components.panel.game.RatingsResultPanel.html
     -->
+    <style type="text/css">
+        a.active.played.button:after{
+            /* TODO Fix me for other languages.  */
+            content: "Hrál jsem";
+            font-size: 10px;
+            position: relative;
+            bottom: 3px;
+            left: 3px;
+
+        }
+        a.active.didnt.button:after{
+            /* TODO Fix me for other languages.  */
+            content: "Nehrál jsem";
+            font-size: 10px;
+            position: relative;
+            bottom: 3px;
+            left: 3px;
+        }
+        a.active.wantToPlay.button:after{
+            /* TODO Fix me for other languages.  */
+            content: "Chci hrát";
+            font-size: 10px;
+            position: relative;
+            bottom: 3px;
+            left: 3px;
+        }
+    </style>
 
     <div class="container">
         <div wicket:id="playedPanel"></div>
