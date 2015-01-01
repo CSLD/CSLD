@@ -15,6 +15,10 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * The Played Panel has three states of being. Either the player does not have any
  * interest in game or the player played the game, or the player is interested in
@@ -122,12 +126,19 @@ public class PlayedPanel extends Panel {
         // Update in DB
         UserPlayedGame stateOfGame = model.getObject();
         stateOfGame.setStateEnum(state);
-        stateOfGame.setPlayerOfGame(((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser());
+        stateOfGame.setPlayerOfGame((CsldAuthenticatedWebSession.get()).getLoggedUser());
         userPlayedGameService.saveOrUpdate(stateOfGame);
 
         // Refresh model and components and gameModel
         gameModel.detach();
-        target.add(componentsToRefresh);
+        // Clean empty placeholders from componentsToRefresh.
+        List<Component> actComponents = new ArrayList<Component>();
+        for(Component component: componentsToRefresh) {
+            if(component != null) {
+                actComponents.add(component);
+            }
+        }
+        target.add(actComponents.toArray(new Component[]{}));
     }
 
     @Override

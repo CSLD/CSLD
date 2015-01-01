@@ -10,7 +10,9 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * TODO: Do not return comments of hidden games.
@@ -45,18 +47,39 @@ public class CommentDAO extends GenericHibernateDAO<Comment, Integer>{
     }
 
     @SuppressWarnings("unchecked")
-    public List<Comment> getLastComments(int maxComments) {
-        return getLastComments(0, maxComments);
+    public List<Comment> getLastComments(int maxComments, List<Locale> locale) {
+        return getLastComments(0, maxComments, locale);
     }
 
-    @SuppressWarnings("unchecked")
-    public List<Comment> getLastComments(int first, int count) {
+    public List<Comment> getLastComments(int first, int count, List<Locale> locales){
         Criteria criteria = getBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession())
                 .add(Restrictions.eq("hidden", false))
                 .addOrder(Order.desc("added"))
                 .setMaxResults(count)
                 .setFirstResult(first);
 
+        if(locales != null) {
+            addLocaleLimitation(criteria, locales);
+        }
+
         return criteria.list();
+    }
+
+    public long getAmountOfComments(Locale locale) {
+        Criteria criteria = getBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession())
+                .createAlias("game", "commentedGame")
+                .setProjection(Projections.rowCount());
+        List<Locale> locales = new ArrayList<Locale>();
+        locales.add(locale);
+        addLocaleLimitation(criteria, locales);
+
+        return ((Long)criteria.uniqueResult()).intValue();
+    }
+
+    private void addLocaleLimitation(Criteria criteria, List<Locale> locales) {
+        criteria
+                .createCriteria("commentedGame.availableLanguages")
+                .createCriteria("languageForGame")
+                .add(Restrictions.in("language", locales));
     }
 }

@@ -16,6 +16,10 @@ http://www.springframework.org/schema/jee http://www.springframework.org/schema/
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
+    <bean id="props" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations" value="classpath:mail.properties"/>
+    </bean>
+
     <bean id="transactionManager"
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
@@ -27,9 +31,18 @@ http://www.springframework.org/schema/jee http://www.springframework.org/schema/
     </bean>
 
   	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/csld"/>
-    
+
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-    	<property name="session"><jee:jndi-lookup jndi-name="mail/Session"/></property>
+        <property name="host" value="${mail.host}"/>
+        <property name="port" value="${mail.port}"/>
+        <property name="username" value="${mail.username}"/>
+        <property name="password" value="${mail.password}"/>
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">${mail.smtp.auth}</prop>
+                <prop key="mail.smtp.starttls.enable">${mail.smtp.starttls.enable}</prop>
+            </props>
+        </property>
     </bean>
 
     <bean id="templateMessage" class="org.springframework.mail.SimpleMailMessage">
@@ -40,6 +53,12 @@ http://www.springframework.org/schema/jee http://www.springframework.org/schema/
     <bean id="mailService" class="cz.larpovadatabaze.utils.MailClient">
         <property name="mailSender" ref="mailSender"/>
         <property name="templateMessage" ref="templateMessage"/>
+    </bean>
+
+    <bean id="localeProvider" class="cz.larpovadatabaze.lang.DbSessionLanguageSolver"/>
+
+    <bean id="gameTranslator" class="cz.larpovadatabaze.lang.ActualLanguageGameTranslator">
+        <constructor-arg name="whatLanguagesToUse" ref="localeProvider"/>
     </bean>
 
 	<!-- Hibernate session factory -->
@@ -70,6 +89,8 @@ http://www.springframework.org/schema/jee http://www.springframework.org/schema/
                 <value>cz.larpovadatabaze.entities.Rating</value>
                 <value>cz.larpovadatabaze.entities.UserPlayedGame</value>
                 <value>cz.larpovadatabaze.entities.Video</value>
+                <value>cz.larpovadatabaze.entities.Language</value>
+                <value>cz.larpovadatabaze.entities.GameHasLanguages</value>
 			</list>
 		</property>
 	</bean>

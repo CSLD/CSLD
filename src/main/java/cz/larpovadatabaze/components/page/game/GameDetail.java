@@ -1,19 +1,6 @@
 package cz.larpovadatabaze.components.page.game;
 
-import cz.larpovadatabaze.components.common.tabs.TabsComponentPanel;
-import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.HomePage;
-import cz.larpovadatabaze.components.panel.YouTubePanel;
-import cz.larpovadatabaze.components.panel.admin.AdminAllRatingsPanel;
 import cz.larpovadatabaze.components.panel.game.*;
-import cz.larpovadatabaze.components.panel.photo.PhotoPanel;
-import cz.larpovadatabaze.components.panel.user.SimpleListUsersPanel;
-import cz.larpovadatabaze.entities.*;
-import cz.larpovadatabaze.services.GameService;
-import cz.larpovadatabaze.services.ImageService;
-import cz.larpovadatabaze.utils.HbUtils;
-import cz.larpovadatabaze.utils.Strings;
-import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -23,13 +10,37 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Fragment;
-import org.apache.wicket.model.*;
+import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.hibernate.HibernateException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Vector;
+
+import cz.larpovadatabaze.components.common.JSPingBehavior;
+import cz.larpovadatabaze.components.common.tabs.TabsComponentPanel;
+import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.panel.YouTubePanel;
+import cz.larpovadatabaze.components.panel.admin.AdminAllRatingsPanel;
+import cz.larpovadatabaze.components.panel.photo.PhotoPanel;
+import cz.larpovadatabaze.entities.Comment;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.Video;
+import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.ImageService;
+import cz.larpovadatabaze.utils.HbUtils;
+import cz.larpovadatabaze.utils.Strings;
+import cz.larpovadatabaze.utils.UserUtils;
 
 /**
  * TODO: Pokud je hra smazana a dostane se sem nekdo, je potreba zobrazit misto chyby informaci o tom, ze je hra smazana.
@@ -157,25 +168,6 @@ public class GameDetail extends CsldBasePage {
     }
 
     /**
-     * Model for users who want to play the game. (Might get GameModel as constructor parameter to be extra clean, but we use the one stored in the page.)
-     * The downside is it does not cache results so getObject() may be costly.
-     */
-    private class WantedByModel extends AbstractReadOnlyModel<List<CsldUser>> {
-
-        @Override
-        public List<CsldUser> getObject() {
-            List<CsldUser> wantedBy = new ArrayList<CsldUser>();
-            for(UserPlayedGame played : getModel().getObject().getPlayed()){
-                if(played.getStateEnum().equals(UserPlayedGame.UserPlayedGameState.WANT_TO_PLAY)) {
-                    wantedBy.add(played.getPlayerOfGame());
-                }
-            }
-
-            return wantedBy;
-        }
-    }
-
-    /**
      * Constructor - initialize just model
      */
     public GameDetail(PageParameters params){
@@ -284,8 +276,12 @@ public class GameDetail extends CsldBasePage {
 
         super.onInitialize();
 
-        final SimpleListUsersPanel wantedToPlay =  new SimpleListUsersPanel("wantsToPlay", new WantedByModel());
-        wantedToPlay.setOutputMarkupId(true);
+        SendInformation sendInformation = new SendInformation("contact"){
+            @Override
+            public Game getGame() {
+                return getModel().getObject();
+            }
+        };
 
         add(new GameDetailPanel("gameDetail", getModel()));
 
@@ -300,14 +296,21 @@ public class GameDetail extends CsldBasePage {
         WebMarkupContainer ratingsContainerPanel = new WebMarkupContainer("ratingsContainerPanel");
         ratingsContainerPanel.setOutputMarkupId(true);
 
-        ratingsResult = new RatingsResultPanel("ratingsResults", getModel(), ratingsContainerPanel, wantedToPlay);
+        ratingsResult = new RatingsResultPanel("ratingsResults", getModel(), ratingsContainerPanel, sendInformation.getWantedToPlay());
         ratingsResult.setOutputMarkupId(true);
         ratingsContainerPanel.add(ratingsResult);
 
         ratingsPanel = new RatingsPanel("ratingsPanel", getModel(), ratingsContainerPanel);
         ratingsContainerPanel.add(ratingsPanel);
 
-        ratingsContainerPanel.add(new CanNotRatePanel("canNotRatePanel"));
+        if (getModel().getObject().isRatingsDisabled()) {
+            // Cannot rate because ratings are disabled
+            ratingsContainerPanel.add(new RatingsDisabledPanel("canNotRatePanel"));
+        }
+        else {
+            // Check whether user logged in and show appropriate message if applicable
+            ratingsContainerPanel.add(new LoginToRatePanel("canNotRatePanel"));
+        }
 
         addAuthorRatePanel(ratingsContainerPanel);
 
@@ -318,6 +321,8 @@ public class GameDetail extends CsldBasePage {
 
         DeleteGamePanel deleteGamePanel = new DeleteGamePanel("deleteGamePanel", getModel().getObject().getId());
         add(deleteGamePanel);
+
+        add(new TranslateGamePanel("translateGamePanel", getModel()));
 
         add(new GameListPanel("similarGames", new LoadableDetachableModel<List<? extends Game>>() {
             @Override
@@ -335,7 +340,11 @@ public class GameDetail extends CsldBasePage {
 
         add(new AdminAllRatingsPanel("ratingsOfUsersPanel", getModel()));
 
-        add(wantedToPlay);
+        add(sendInformation);
+
+        if (UserUtils.isSignedIn()) {
+            add(new JSPingBehavior());
+        }
     }
 
     /**

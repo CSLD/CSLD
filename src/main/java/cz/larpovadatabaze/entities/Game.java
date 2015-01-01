@@ -1,17 +1,36 @@
 package cz.larpovadatabaze.entities;
 
-import cz.larpovadatabaze.api.Identifiable;
+import cz.larpovadatabaze.lang.ActualLanguageGameTranslator;
+import cz.larpovadatabaze.lang.DbSessionLanguageSolver;
+import cz.larpovadatabaze.lang.Translator;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import cz.larpovadatabaze.api.Identifiable;
 
 
 /**
@@ -20,7 +39,7 @@ import java.util.List;
 @Entity
 @Table(schema = "public", name="csld_game")
 public class Game implements Serializable, Identifiable, IAutoCompletable, IEntityWithImage {
-    public Game(){}
+    public Game(){ }
 
     private Integer id;
 
@@ -41,39 +60,62 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
         this.id = id;
     }
 
+    @Transient
     private String name;
 
-    @Column(
-            name = "name",
-            nullable = false,
-            insertable = true,
-            updatable = true,
-            length = 2147483647)
-    @Basic
+    @Transient
     public String getName() {
+        if(name == null) {
+            new ActualLanguageGameTranslator(new DbSessionLanguageSolver()).translate(this);
+        }
         return name;
     }
 
+    @Transient
     public void setName(String name) {
         this.name = name;
+        defaultLanguage.setName(name);
     }
 
+    @Transient
     private String description;
 
-    @Column(
-            name = "description",
-            nullable = true,
-            insertable = true,
-            updatable = true,
-            length = 2147483647
-    )
-    @Basic
+    @Transient
     public String getDescription() {
+        if(description == null) {
+            new ActualLanguageGameTranslator(new DbSessionLanguageSolver()).translate(this);
+        }
         return description;
     }
 
+    @Transient
     public void setDescription(String description) {
         this.description = description;
+        defaultLanguage.setDescription(description);
+    }
+
+    @Transient
+    private String lang;
+    @Transient
+    private GameHasLanguages defaultLanguage = new GameHasLanguages();
+
+    @Transient
+    public String getLang() {
+        if(lang == null) {
+            new ActualLanguageGameTranslator(new DbSessionLanguageSolver()).translate(this);
+        }
+        return lang;
+    }
+
+    @Transient
+    public void setLang(String lang) {
+        this.lang = lang;
+        defaultLanguage.setGame(this);
+        defaultLanguage.setLanguageForGame(new Language(lang));
+        if(availableLanguages  == null) {
+            availableLanguages = new ArrayList<GameHasLanguages>();
+        }
+        availableLanguages.add(defaultLanguage);
     }
 
     private Integer year;
@@ -348,6 +390,30 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
         this.deleted = deleted;
     }
 
+    private boolean ratingsDisabled;
+
+    @Column(name="ratingsDisabled")
+    @Basic
+    public boolean isRatingsDisabled() {
+        return ratingsDisabled;
+    }
+
+    public void setRatingsDisabled(boolean ratingsDisabled) {
+        this.ratingsDisabled = ratingsDisabled;
+    }
+
+    private boolean commentsDisabled;
+
+    @Column(name="commentsDisabled")
+    @Basic
+    public boolean isCommentsDisabled() {
+        return commentsDisabled;
+    }
+
+    public void setCommentsDisabled(boolean commentsDisabled) {
+        this.commentsDisabled = commentsDisabled;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -392,7 +458,6 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
 
     @JoinTable(
             name = "csld_game_has_author",
-            catalog = "",
             schema = "public",
             joinColumns = @JoinColumn(
                     name = "id_game",
@@ -416,7 +481,6 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
 
     @JoinTable(
             name = "csld_game_has_group",
-            catalog = "",
             schema = "public",
             joinColumns = @JoinColumn(
                     name = "id_game",
@@ -475,7 +539,6 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
 
     @JoinTable(
             name = "csld_game_has_label",
-            catalog = "",
             schema = "public",
             joinColumns = @JoinColumn(
                     name = "id_game",
@@ -571,6 +634,18 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
 
     public void setPlayed(List<UserPlayedGame> played) {
         this.played = played;
+    }
+
+    private List<GameHasLanguages> availableLanguages;
+
+    @OneToMany(mappedBy = "game")
+    @Cascade(CascadeType.ALL)
+    public List<GameHasLanguages> getAvailableLanguages() {
+        return availableLanguages;
+    }
+
+    public void setAvailableLanguages(List<GameHasLanguages> availableLanguages) {
+        this.availableLanguages = availableLanguages;
     }
 
     @Override

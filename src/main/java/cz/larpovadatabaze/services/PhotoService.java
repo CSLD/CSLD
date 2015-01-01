@@ -4,6 +4,8 @@ import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Photo;
 import org.apache.wicket.util.upload.FileItem;
 
+import java.util.List;
+
 /**
  *
  */
@@ -28,4 +30,11 @@ public interface PhotoService extends GenericService<Photo> {
      * @return True when photo added, false when maximum number of photos reached.
      */
     boolean createNewPhotoForGame(Game game, FileItem fileItem);
+
+    /**
+     * It returns given amount of random photos from the database.
+     *
+     * @param amount
+     */
+    List<Photo> getRandomPhotos(int amount);
 }

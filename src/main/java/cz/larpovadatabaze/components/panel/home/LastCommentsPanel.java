@@ -25,6 +25,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.jsoup.Jsoup;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -117,8 +118,13 @@ public class LastCommentsPanel extends Panel {
 
         List<Comment> toShow = commentService.getLastComments(EXPANDED_LAST_COMMENTS);
 
-        add(new CommentsView("visibleComments", toShow.subList(0, INITIAL_LAST_COMMENTS)));
-        add(new CommentsView("hiddenComments", toShow.subList(INITIAL_LAST_COMMENTS, toShow.size())));
+        if(toShow.size() >= INITIAL_LAST_COMMENTS) {
+            add(new CommentsView("visibleComments", toShow.subList(0, INITIAL_LAST_COMMENTS)));
+            add(new CommentsView("hiddenComments", toShow.subList(INITIAL_LAST_COMMENTS, toShow.size())));
+        } else {
+            add(new CommentsView("visibleComments", toShow));
+            add(new CommentsView("hiddenComments", new ArrayList<Comment>()));
+        }
 
         final BookmarkablePageLink<CsldBasePage> allComments =
                 new BookmarkablePageLink<CsldBasePage>("allComments", ListComments.class);

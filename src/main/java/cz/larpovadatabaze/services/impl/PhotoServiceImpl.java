@@ -106,4 +106,9 @@ public class PhotoServiceImpl implements PhotoService {
 
         return true;
     }
+
+    @Override
+    public List<Photo> getRandomPhotos(int amount) {
+        return photoDao.getRandom(amount);
+    }
 }

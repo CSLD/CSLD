@@ -1,22 +1,7 @@
 package cz.larpovadatabaze.components.panel.game;
 
-import cz.larpovadatabaze.api.ValidatableForm;
-import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
-import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
-import cz.larpovadatabaze.behavior.ErrorClassAppender;
-import cz.larpovadatabaze.components.common.AbstractCsldPanel;
-import cz.larpovadatabaze.components.panel.ImagePanel;
-import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
-import cz.larpovadatabaze.components.panel.group.CreateOrUpdateGroupPanel;
-import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Video;
-import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.GameService;
-import cz.larpovadatabaze.services.GroupService;
-import cz.larpovadatabaze.services.VideoService;
-import cz.larpovadatabaze.validator.AtLeastOneRequiredLabelValidator;
+import cz.larpovadatabaze.entities.*;
+import cz.larpovadatabaze.lang.LocaleProvider;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -26,7 +11,14 @@ import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IFactory;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.RepeatableInputPanel;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
-import org.apache.wicket.markup.html.form.*;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
@@ -34,6 +26,25 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Bytes;
 import org.apache.wicket.validation.IValidator;
+
+import java.util.Locale;
+
+import cz.larpovadatabaze.api.ValidatableForm;
+import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
+import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
+import cz.larpovadatabaze.behavior.ErrorClassAppender;
+import cz.larpovadatabaze.components.common.AbstractCsldPanel;
+import cz.larpovadatabaze.components.common.JSPingBehavior;
+import cz.larpovadatabaze.components.panel.ImagePanel;
+import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
+import cz.larpovadatabaze.components.panel.group.CreateOrUpdateGroupPanel;
+import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.GroupService;
+import cz.larpovadatabaze.services.VideoService;
+import cz.larpovadatabaze.lang.CodeLocaleProvider;
+import cz.larpovadatabaze.utils.UserUtils;
+import cz.larpovadatabaze.validator.AtLeastOneRequiredLabelValidator;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 /**
@@ -49,6 +60,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
     GroupService groupService;
     @SpringBean
     VideoService videoService;
+    LocaleProvider localeProvider = new CodeLocaleProvider();
 
     private ChooseLabelsPanel chooseLabels;
     private TextField<String> videoField;
@@ -93,6 +105,24 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("bothRole").setLabel(Model.of("Počet obojetných")), createOrUpdateGame, "bothRoleFeedback"));
         createOrUpdateGame.add(addFeedbackPanel(videoField = new TextField<String>("video.path"), createOrUpdateGame, "videoPathFeedback"));
         createOrUpdateGame.add(addFeedbackPanel(new ImagePanel("image"), createOrUpdateGame, "imageFeedback"));
+        createOrUpdateGame.add(new CheckBox("ratingsDisabled") {
+            @Override
+            protected void onComponentTag(ComponentTag tag) {
+                super.onComponentTag(tag);
+                tag.put("value", "on"); // Force value to "on", otherwise multipart form won't work
+            }
+        });
+        createOrUpdateGame.add(new CheckBox("commentsDisabled") {
+            @Override
+            protected void onComponentTag(ComponentTag tag) {
+                super.onComponentTag(tag);
+                tag.put("value", "on"); // Force value to "on", otherwise multipart form won't work
+            }
+        });
+
+        final DropDownChoice<Locale> changeLocale =
+                new DropDownChoice<Locale>("lang", new CodeLocaleProvider().availableLocale());
+        createOrUpdateGame.add(addFeedbackPanel(changeLocale, createOrUpdateGame, "langFeedback"));
 
         addAuthorsInput(createOrUpdateGame, game);
         addGroupsInput(createOrUpdateGame, game);
@@ -128,6 +158,15 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
                     game.getVideo().setPath(videoURL);
                 }
 
+                //Process language
+                Locale toBeSaved = localeProvider.transformToLocale(game.getLang());
+                GameHasLanguages firstLanguage = new GameHasLanguages();
+                firstLanguage.setGame(game);
+                firstLanguage.setLanguageForGame(new Language(toBeSaved));
+                firstLanguage.setName(game.getName());
+                firstLanguage.setDescription(game.getDescription());
+                game.getAvailableLanguages().add(firstLanguage);
+
                 if(createOrUpdateGame.isValid()){
                     if(gameService.saveOrUpdate(game)){
                         onCsldAction(target, form);
@@ -148,6 +187,10 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         }.add(new TinyMceAjaxSubmitModifier()));
 
         add(createOrUpdateGame);
+
+        if (UserUtils.isSignedIn()) {
+            add(new JSPingBehavior());
+        }
     }
 
     private FormComponent addFeedbackPanel(FormComponent addFeedbackTo, Form addingFeedbackTo, String nameOfFeedbackPanel){

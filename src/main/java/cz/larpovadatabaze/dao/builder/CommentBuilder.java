@@ -12,6 +12,7 @@ public class CommentBuilder implements IBuilder {
 
     public CommentBuilder() {
         baseCriteria = DetachedCriteria.forClass(Comment.class, "comment");
+        baseCriteria.createAlias("comment.game", "commentedGame");
         withDeletedRestriction();
     }
 
@@ -23,8 +24,7 @@ public class CommentBuilder implements IBuilder {
         CsldUser loggedUser = CsldAuthenticatedWebSession.get().getLoggedUser();
         if(loggedUser == null || loggedUser.getRole() < CsldRoles.getRoleByName("Editor")){
             // Only games that were not deleted will be shown.
-            baseCriteria.createAlias("comment.game", "game")
-                    .add(Restrictions.eq("game.deleted", false));
+            baseCriteria.add(Restrictions.eq("commentedGame.deleted", false));
         }
     }
 

@@ -1,0 +1,27 @@
+<wicket:extend xmlns:wicket="http://wicket.apache.org">
+    <div class="levaCast">
+        <div wicket:id="translations" class="translations">
+            <form wicket:id="translation">
+                <div><input type="text" wicket:id="name"></div>
+                <div><textarea wicket:id="description"></textarea></div>
+                <div><select wicket:id="languageForGame"></select></div>
+                <div><input type="button" wicket:id="updateLanguage" wicket:message="value:language.update"/></div>
+                <div><input type="button" wicket:id="removeLanguage" wicket:message="value:language.remove"/></div>
+            </form>
+        </div>
+        <div>
+            <form wicket:id="addLanguage">
+                <input type="button" wicket:id="addAnotherLanguage" wicket:message="value:language.add"/>
+            </form>
+        </div>
+    </div>
+
+    <div class="pravaCast">
+        <div class="praveMenu">
+            <div class="nadpisMenu"><wicket:message key="game.translate">Translate game</wicket:message></div>
+        </div>
+        <div class="sekce">
+            <wicket:message key="game.translateInstructions">On the left side you can add or remove translation to different languages for your game.</wicket:message>
+        </div>
+    </div>
+</wicket:extend>

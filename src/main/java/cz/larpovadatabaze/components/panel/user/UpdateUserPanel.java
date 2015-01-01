@@ -5,6 +5,8 @@ import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
 import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Image;
+import cz.larpovadatabaze.entities.Language;
+import cz.larpovadatabaze.lang.CodeLocaleProvider;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
@@ -89,6 +91,11 @@ public class UpdateUserPanel extends Panel {
                 new PasswordTextField("passwordAgain", new PropertyModel<String>(this, "passwordAgain"));
         passwordAgain.setRequired(false);
         createOrUpdateUser.add(addFeedbackPanel(passwordAgain, createOrUpdateUser, "passwordAgainFeedback"));
+
+        final ListMultipleChoice<Language> changeLocale =
+                new ListMultipleChoice<Language>("userHasLanguages",
+                        new CodeLocaleProvider().availableLanguages());
+        createOrUpdateUser.add(addFeedbackPanel(changeLocale, createOrUpdateUser, "userHasLanguagesFeedback"));
 
         createOrUpdateUser.add(new AjaxButton("submit"){
             @Override

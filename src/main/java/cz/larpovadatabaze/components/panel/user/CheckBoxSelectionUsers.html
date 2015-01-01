@@ -1,0 +1,18 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+    <!--
+    This Panel gets List of Users and simply creates list of them with links to their details and checkboxes in front of them.
+    It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/user/CheckBoxSelectionUsers.html
+    Code - cz.larpovadatabaze.components.panel.user.CheckBoxSelectionUsers.html
+    -->
+    <table wicket:id="users">
+        <!-- Beginning of repetitive content for every User -->
+        <tr>
+            <td>
+                <input type="checkbox" wicket:id="selectUser" />
+                <a wicket:id="user"><span wicket:id="userNickname"></span> <span
+                        wicket:id="userName"></span></a>
+            </td>
+        </tr>
+        <!-- End of repetitive content for every User -->
+    </table>
+</wicket:panel>

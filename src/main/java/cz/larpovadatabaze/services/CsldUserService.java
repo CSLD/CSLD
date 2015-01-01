@@ -1,9 +1,9 @@
 package cz.larpovadatabaze.services;
 
+import java.util.List;
+
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
-
-import java.util.List;
 
 /**
  *
@@ -11,6 +11,12 @@ import java.util.List;
 public interface CsldUserService extends GenericService<CsldUser>, IIconReferenceProvider<CsldUser> {
     public static final int USER_IMAGE_SIZE=120;
     public static final int USER_IMAGE_LEFTTOP_PERCENT=10;
+
+    public static class ReCaptchaTechnicalException extends Exception {
+        public ReCaptchaTechnicalException(Throwable throwable) {
+            super(throwable);
+        }
+    }
 
     public CsldUser getById(Integer id);
 
@@ -56,4 +62,21 @@ public interface CsldUserService extends GenericService<CsldUser>, IIconReferenc
      * @return
      */
     boolean saveOrUpdateNewAuthor(CsldUser author);
+
+    /**
+\     * @return Site key for re-captcha
+     */
+    String getReCaptchaSiteKey();
+
+    /**
+     * Checks re-captcha response
+     *
+     * @param response Re-captcha response from post
+     * @param remoteIp User ip
+     *
+     * @return Whether re-captcha is valid
+     *
+     * @throws ReCaptchaTechnicalException When there are technical problems connecting to re-captcha
+     */
+    boolean checkReCaptcha(String response, String remoteIp) throws ReCaptchaTechnicalException;
 }

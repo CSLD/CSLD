@@ -232,7 +232,7 @@ h2{
     margin-left: 25px;
 }
 
-.menu a {
+.menu a.menuItem {
     text-decoration: none;
     padding:  5px 25px;
     color: #F8F8F8;
@@ -242,14 +242,14 @@ h2{
     left: -10px;
     line-height: 48px;
 }
-.menu a:last-child {
+.menu a.menuItem:last-child {
     border: 0;
     }
-.menu a:hover{
+.menu a.menuItem:hover{
   color: #CC333F;
   text-shadow: 1px 1px 1px white;
 }
-.menu a:first-letter{
+.menu a.menuItem:first-letter{
   text-transform: uppercase;
 }
 
@@ -1460,7 +1460,7 @@ a.stitekNapoveda:hover span {
     width: 322px;
 }
 
-.nadpisFiltr {
+.nadpisFiltr, .titleLang {
     width: 330px;
     font-size: 11pt;
     font-weight: bold;
@@ -1469,12 +1469,14 @@ a.stitekNapoveda:hover span {
     text-align: center;
 }
 
+
+
 .pravaCast#Zebricky .hraciFiltr {
     margin-left: 100px;
     margin-top: -8px;
 }
 
-.pravaCast#Zebricky .delkaFiltr {
+.pravaCast#Zebricky .delkaFiltr, .pravaCast#Zebricky .langFilter {
     margin-left: 20px;
     margin-top: -8px;
 }
@@ -2697,4 +2699,69 @@ a.active.wantToPlay.button:after{
 
 .rated, .commented {
     font-weight: bold;
+}
+
+.feedbackPanelINFO {
+    list-style-type: none;
+    font-weight: bold;
+}
+
+.sendInfoText {
+    width: 90%;
+}
+
+ul.localePicker {
+    position: absolute;
+    top: -1px;
+    left: 725px;
+    height: 20px;
+    border: 1px solid black;
+    background: white;
+    overflow: hidden;
+    padding: 0;
+}
+
+ul.localePicker:hover {
+    height: auto;
+}
+
+li.localePickerItem {
+    width: 60px;
+    height: 20px;
+    list-style-type: none;
+    line-height: 23px;
+    padding: 0;
+    margin: 0;
+    vertical-align: middle;
+    font-family: Sans, Arial;
+}
+
+a.localePickerLink {
+    display: block;
+    text-decoration: none;
+    color: black;
+}
+
+a.localePickerLink:hover {
+    text-decoration: none;
+    background-color: #37b2f0;
+}
+
+img.localeItemImage {
+    float: left;
+    width: 24px;
+    height: 16px;
+    margin: 2px 5px 2px 2px;
+}
+
+
+#gameInfoWithLink {
+    position: absolute;
+    z-index: 10;
+    width: 642px;
+    text-align: center;
+    background-color: #F0F0F0;
+    opacity: 0.4;
+    font-weight: bold;
+    font-size: 20px;
 }

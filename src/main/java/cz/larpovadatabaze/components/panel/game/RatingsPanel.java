@@ -1,11 +1,5 @@
 package cz.larpovadatabaze.components.panel.game;
 
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Rating;
-import cz.larpovadatabaze.exceptions.WrongParameterException;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.RatingService;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -16,6 +10,13 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.Rating;
+import cz.larpovadatabaze.exceptions.WrongParameterException;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.services.RatingService;
 
 /**
  * This panel contains Slider which allows user to rate game. It also has info about rating the game, if the game was
@@ -132,7 +133,7 @@ public class RatingsPanel extends Panel {
     protected void onConfigure() {
         super.onConfigure();
         model.detach(); // Refresh model data
-        setVisibilityAllowed(CsldAuthenticatedWebSession.get().isSignedIn());
+        setVisibilityAllowed(CsldAuthenticatedWebSession.get().isSignedIn() && !gameModel.getObject().isRatingsDisabled());
     }
 
     private class StarLabel extends Label{

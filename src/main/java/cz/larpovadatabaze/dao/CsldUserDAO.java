@@ -3,15 +3,20 @@ package cz.larpovadatabaze.dao;
 import cz.larpovadatabaze.api.GenericHibernateDAO;
 import cz.larpovadatabaze.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.dao.builder.IBuilder;
+import cz.larpovadatabaze.dto.UserRatesOwnGameDto;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,7 +41,8 @@ public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
     public List<CsldUser> getAuthorsByBestGame(Long first, Long amountPerPage) {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = getBuilder().build().getExecutableCriteria(session)
-                .addOrder(Order.desc("bestGame.totalRating"))
+                .createAlias("bestGame", "best")
+                .addOrder(Order.desc("best.totalRating"))
                 .setFirstResult(first.intValue())
                 .setMaxResults(amountPerPage.intValue());
 
@@ -74,7 +80,6 @@ public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
     public List<CsldUser> getOrderedUsersByName(Long first, Long amountPerPage) {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = getBuilder().build().getExecutableCriteria(session)
-                .createAlias("csldUser.person", "person")
                 .addOrder(Order.asc("person.name"))
                 .setFirstResult(first.intValue())
                 .setMaxResults(amountPerPage.intValue());
@@ -97,7 +102,7 @@ public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
     public List<CsldUser> getOrderedUsersByPlayed(Long first, Long amountPerPage) {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = getBuilder().build().getExecutableCriteria(session)
-                .addOrder(Order.desc("amountOfComments"))
+                .addOrder(Order.desc("amountOfPlayed"))
                 .setFirstResult(first.intValue())
                 .setMaxResults(amountPerPage.intValue());
 
@@ -162,5 +167,17 @@ public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
                     Restrictions.ilike("person.nickname", "%" + startsWith + "%")));
 
         return criteria.list();
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<UserRatesOwnGameDto> getUsersWhoRatesOwnGames() {
+        Session session = sessionFactory.getCurrentSession();
+        Query q = session.createSQLQuery("select game.name as \"gameName\", usr.name as \"userName\", usr.email as \"userEmail\", " +
+                "id_user as \"userId\", id_game as \"gameId\"    from csld_game_has_author cgha join csld_rating cr" +
+                "          on cgha.id_user = cr.user_id and cgha.id_game = cr.game_id " +
+                "  join csld_game game on game.id = cgha.id_game " +
+                "  join csld_csld_user usr on usr.id = cgha.id_user");
+        q.setResultTransformer(Transformers.aliasToBean(UserRatesOwnGameDto.class));
+        return q.list();
     }
 }

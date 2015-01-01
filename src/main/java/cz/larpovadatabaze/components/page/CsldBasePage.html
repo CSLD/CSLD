@@ -34,7 +34,7 @@
     <wicket:link>
         <img src="img/logo50.png" id="logoNadpis" />
         <a href="/">
-            <img src="img/nadpis.png" id="nadpisHlavni">
+            <img src="img/nadpis_en.png" id="nadpisHlavni">
         </a>
     </wicket:link>
 
@@ -56,13 +56,14 @@
 <div class="menu">
     <span class="polozky">
         <span class="mezera"></span>
-        <a wicket:id="list-game"><wicket:message key="rankings">Žebříčky</wicket:message></a>
-        <a wicket:id="list-authors"><wicket:message key="authors">Autoři</wicket:message></a>
-        <a wicket:id="list-users"><wicket:message key="users">Uživatelé</wicket:message></a>
-        <a wicket:id="list-groups"><wicket:message key="groups">Skupiny</wicket:message></a>
-        <a wicket:id="about"><wicket:message key="aboutDb">O databázi</wicket:message></a>
+        <a class="menuItem" wicket:id="list-game"><wicket:message key="rankings">Žebříčky</wicket:message></a>
+        <a class="menuItem" wicket:id="list-authors"><wicket:message key="authors">Autoři</wicket:message></a>
+        <a class="menuItem" wicket:id="list-users"><wicket:message key="users">Uživatelé</wicket:message></a>
+        <a class="menuItem" wicket:id="list-groups"><wicket:message key="groups">Skupiny</wicket:message></a>
+        <a class="menuItem" wicket:id="about"><wicket:message key="aboutDb">O databázi</wicket:message></a>
         <span wicket:id="adminPanel"></span>
     </span>
+    <wicket:container wicket:id="languagePicker" />
     <span id="divProHledani" wicket:id="searchBox">
         <!--
         This panel is found in package: cz.larpovadatabaze.components.panel.search.SearchBoxPanel.html

@@ -4,6 +4,7 @@ import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.Game;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by IntelliJ IDEA.
@@ -20,11 +21,13 @@ public interface CommentService extends GenericService<Comment> {
 
     int getAmountOfComments();
 
-    List<Comment> getLastComments(long first, long count);
+    List<Comment> getLastComments(long first, long count, Locale locale);
 
     void hideComment(Comment comment);
 
     void unHideComment(Comment comment);
 
     List<Game> getGamesCommentedByUser(int userId);
+
+    long getAmountOfComments(Locale locale);
 }

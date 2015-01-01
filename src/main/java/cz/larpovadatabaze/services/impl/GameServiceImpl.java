@@ -6,6 +6,7 @@ import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.dao.GameDAO;
 import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
+import cz.larpovadatabaze.lang.LanguageSolver;
 import cz.larpovadatabaze.models.FilterGame;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.security.CsldRoles;
@@ -14,6 +15,7 @@ import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.Strings;
+import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -35,20 +37,12 @@ import java.util.*;
 public class GameServiceImpl implements GameService {
     private static final int GAME_ICON_SIZE=120;
 
-    @Autowired
-    private GameDAO gameDAO;
-
-    @Autowired
-    private SessionFactory sessionFactory;
-
-    @Autowired
-    private FileService fileService;
-
-    @Autowired
-    private ImageResizingStrategyFactoryService imageResizingStrategyFactoryService;
-
-    @Autowired
-    private ImageService imageService;
+    @Autowired private GameDAO gameDAO;
+    @Autowired private SessionFactory sessionFactory;
+    @Autowired private FileService fileService;
+    @Autowired private ImageResizingStrategyFactoryService imageResizingStrategyFactoryService;
+    @Autowired private ImageService imageService;
+    @Autowired private LanguageSolver languageSolver;
 
     private ResourceReference iconResourceReference;
 
@@ -126,7 +120,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public List<Game> getLastGames(int amountOfGames) {
-        return gameDAO.getLastGames(amountOfGames);
+        return gameDAO.getLastGames(amountOfGames, languageSolver.getLanguagesForUser());
     }
 
     @Override

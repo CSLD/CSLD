@@ -67,22 +67,12 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
     </tr>
 
     <tr>
-        <td style="width:200px">
-            <div wicket:id="image"></div>
-        </td>
-        <td class="popis">
-            <label for="image">
-                <wicket:message key="form.game.image">Obrázek</wicket:message>
-            </label>
-        </td>
+        <th colspan="2">
+            <wicket:message key="form.game.section.required" />
+        </th>
     </tr>
 
-    <tr>
-        <td colspan="2" class="error">
-            <span wicket:id="imageFeedback"></span>
-        </td>
-    </tr>
-
+    <!-- Name -->
     <tr>
         <td>
             <input class="textbox" type="text" wicket:id="name" title="Jméno" wicket:message="title:form.name"/>
@@ -100,6 +90,43 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
         </td>
     </tr>
 
+    <!-- Tags -->
+    <tr>
+        <td colspan="2">
+            <div class="stitky popis"><wicket:message key="form.game.labels">Označte štítky, které vystihují Váš larp. Pokud nespadá jednoznačně pod jednu kategorii, vyberte jich více.</wicket:message></div>
+            <div wicket:id="labels"></div>
+            <div style="width:100%;" wicket:id="labelsFeedback"></div>
+            <input type="button" value="Nový štítek" wicket:message="value:form.newLabel" wicket:id="createLabel"/>
+
+            <div style="clear:both; width:100%; margin-bottom: 5px;"></div>
+        </td>
+    </tr>
+
+    <!-- Description -->
+    <tr>
+        <td colspan="2">
+            <textarea class="textarea"
+                      title="Zde zadejte popis hry"
+                      name="popis"
+                      id="popis"
+                      wicket:id="description"
+                      wicket:message="title:form.game.description"
+                      style="width:100%;"
+                      rows=8
+                    ></textarea>
+            <span wicket:id="descriptionFeedback"></span>
+
+            <div style="clear:both; width:100%;"></div>
+        </td>
+    </tr>
+
+    <tr>
+        <th colspan="2">
+            <wicket:message key="form.game.section.extended" />
+        </th>
+    </tr>
+
+    <!-- Authors -->
     <tr>
         <td>
             <div wicket:id="authors"></div>
@@ -118,6 +145,7 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
         </td>
     </tr>
 
+    <!-- Group -->
     <tr>
         <td>
             <div wicket:id="groupAuthor"></div>
@@ -136,6 +164,7 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
         </td>
     </tr>
 
+    <!-- Year -->
     <tr>
         <td>
             <input class="textbox" type="text" wicket:id="year" title="Rok" wicket:message="title:form.year"/>
@@ -153,6 +182,33 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
         </td>
     </tr>
 
+    <!-- Lang -->
+    <tr>
+        <td>
+            <select wicket:id="lang" title="Jazyk" wicket:message="title:game.lang"/>
+        </td>
+        <td class="popis">
+            <label for="lang">
+                <wicket:message key="game.lang">Jazyk</wicket:message>
+            </label>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2" class="error">
+            <span wicket:id="langFeedback"></span>
+        </td>
+    </tr>
+
+    <!-- Statistics -->
+    <tr>
+        <th colspan="2">
+            <wicket:message key="form.game.section.statistics" />
+        </th>
+    </tr>
+
+
+    <!-- Players -->
     <tr>
         <td>
             <input class="textbox" type="text" wicket:id="players" title="Hráči"
@@ -171,6 +227,7 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
         </td>
     </tr>
 
+    <!-- Men/women/both role -->
     <tr>
         <td>
             <input style="width:28%" class="textbox" type="text" wicket:id="menRole" title="Mužské"
@@ -195,6 +252,7 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
         </td>
     </tr>
 
+    <!-- Hours -->
     <tr>
         <td>
             <input style="width:43%" class="textbox" type="text" wicket:id="hours" title="Hodiny"
@@ -217,6 +275,32 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
     </tr>
 
     <tr>
+        <th colspan="2">
+            <wicket:message key="form.game.section.presentation" />
+        </th>
+    </tr>
+
+    <!-- Image -->
+    <tr>
+        <td style="width:200px">
+            <div wicket:id="image"></div>
+        </td>
+        <td class="popis">
+            <label for="image">
+                <wicket:message key="form.game.image">Obrázek</wicket:message>
+            </label>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2" class="error">
+            <span wicket:id="imageFeedback"></span>
+        </td>
+    </tr>
+
+
+    <!--  Web -->
+    <tr>
         <td>
             <input class="textbox" type="text" wicket:id="web" title="Web" wicket:message="title:form.web"/>
         </td>
@@ -233,6 +317,7 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
         </td>
     </tr>
 
+    <!-- Gallery -->
     <tr>
         <td>
             <input class="textbox" type="text" wicket:id="galleryURL" title="" wicket:message="title:form.galleryURL"/>
@@ -250,6 +335,7 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
         </td>
     </tr>
 
+    <!-- Photo author -->
     <tr>
         <td>
             <input class="textbox" type="text" wicket:id="photoAuthor" title="" wicket:message="title:form.photoAuthor"/>
@@ -267,6 +353,7 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
         </td>
     </tr>
 
+    <!-- Video -->
     <tr>
         <td>
             <input class="textbox" type="text" wicket:id="video.path" title="video"
@@ -285,28 +372,37 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
         </td>
     </tr>
 
+    <!-- Settings -->
+    <tr>
+        <wicket:message key="form.game.section.settings" />
+    </tr>
+
+    <!-- Ratings disabled -->
+    <tr>
+        <td>
+            <input type="checkbox" wicket:id="ratingsDisabled" /><wicket:message key="form.ratingsDisabled" />
+        </td>
+        <td class="popis">
+            <label for="ratingsDisabled">
+                <wicket:message key="form.game.ratingsDisabled" />
+            </label>
+        </td>
+    </tr>
+
+    <!-- Comments disabled -->
+    <tr>
+        <td>
+            <input type="checkbox" wicket:id="commentsDisabled" /><wicket:message key="form.commentsDisabled" />
+        </td>
+        <td class="popis">
+            <label for="commentsDisabled">
+                <wicket:message key="form.game.commentsDisabled" />
+            </label>
+        </td>
+    </tr>
+
     </tbody>
 </table>
-
-<div class="stitky popis"><wicket:message key="form.game.labels">Označte štítky, které vystihují Váš larp. Pokud nespadá jednoznačně pod jednu kategorii, vyberte jich více.</wicket:message></div>
-<div wicket:id="labels"></div>
-<div style="width:100%;" wicket:id="labelsFeedback"></div>
-<input type="button" value="Nový štítek" wicket:message="value:form.newLabel" wicket:id="createLabel"/>
-
-<div style="clear:both; width:100%; margin-bottom: 5px;"></div>
-
-<textarea class="textarea"
-          title="Zde zadejte popis hry"
-          name="popis"
-          id="popis"
-          wicket:id="description"
-          wicket:message="title:form.game.description"
-          style="width:100%;"
-          rows=8
-    ></textarea>
-<span wicket:id="descriptionFeedback"></span>
-
-<div style="clear:both; width:100%;"></div>
 
 <input type="button" class="pridatHruButton" value="Uložit" wicket:message="value:form.save"
        wicket:id="submit" id="submitButton"/>

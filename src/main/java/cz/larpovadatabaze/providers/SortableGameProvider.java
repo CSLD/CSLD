@@ -15,6 +15,7 @@ import org.hibernate.criterion.Order;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 /**
  *
@@ -25,15 +26,25 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
     private List<Label> filterLabels = new ArrayList<Label>();
     private int filterLabel = -1;
 
+    public SortableGameProvider(GameService gameService, String defaultSort, Locale locale) {
+        this(gameService, defaultSort);
+        if(locale != null) {
+            filterGame.setLanguage(locale);
+        }
+    }
+
     public SortableGameProvider(GameService gameService, String defaultSort) {
         this.gameService = gameService;
         setSort(defaultSort, SortOrder.ASCENDING);
     }
 
-    public SortableGameProvider(GameService gameService, Label filterLabel) {
+    public SortableGameProvider(GameService gameService, Label filterLabel, Locale locale) {
         this(gameService, "year");
         if(filterLabel != null) {
             filterLabels.add(filterLabel);
+        }
+        if(locale != null) {
+            filterGame.setLanguage(locale);
         }
     }
 

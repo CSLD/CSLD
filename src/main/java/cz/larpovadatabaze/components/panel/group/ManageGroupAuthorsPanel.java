@@ -1,7 +1,5 @@
 package cz.larpovadatabaze.components.panel.group;
 
-import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.entities.GroupHasMember;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -10,26 +8,30 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 
 import java.util.List;
+
+import cz.larpovadatabaze.entities.GroupHasMember;
 
 /**
  * This Panel shows list of users allowing you to add new ones into it and removing existing ones.
  * When adding new users to this list it also wants additional information like since and to which date.
  */
 public class ManageGroupAuthorsPanel extends Panel {
-    private List<GroupHasMember> groupMembers;
+    private final IModel<List<GroupHasMember>> model;
 
-    public ManageGroupAuthorsPanel(String id, CsldGroup group) {
+    public ManageGroupAuthorsPanel(String id, IModel<List<GroupHasMember>> model) {
         super(id);
-
-        groupMembers = group.getMembers();
-        init();
+        this.model = model;
     }
 
-    private void init() {
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
+
         // Create List of members
         createListOfMembers();
         //Create addButton - onClick it shows modal window adding author.
@@ -37,7 +39,7 @@ public class ManageGroupAuthorsPanel extends Panel {
     }
 
     private void createListOfMembers() {
-        ListView<GroupHasMember> membersOfGroup = new ListView<GroupHasMember>("groupMembers", groupMembers) {
+        ListView<GroupHasMember> membersOfGroup = new ListView<GroupHasMember>("groupMembers", model) {
             @Override
             protected void populateItem(ListItem<GroupHasMember> item) {
                 final GroupHasMember member = item.getModelObject();
@@ -53,7 +55,7 @@ public class ManageGroupAuthorsPanel extends Panel {
                 remove.add(new AjaxEventBehavior("click") {
                     @Override
                     protected void onEvent(AjaxRequestTarget target) {
-                        groupMembers.remove(member);
+                        model.getObject().remove(member);
                         target.add(ManageGroupAuthorsPanel.this);
                     }
                 });
@@ -75,7 +77,7 @@ public class ManageGroupAuthorsPanel extends Panel {
                 addAuthorModal.close(target);
 
                 GroupHasMember newMember = (GroupHasMember) form.getModelObject();
-                groupMembers.add(newMember);
+                model.getObject().add(newMember);
 
                 target.add(ManageGroupAuthorsPanel.this);
             }
@@ -96,6 +98,6 @@ public class ManageGroupAuthorsPanel extends Panel {
     }
 
     public List<GroupHasMember> getGroupMembers() {
-        return groupMembers;
+        return model.getObject();
     }
 }

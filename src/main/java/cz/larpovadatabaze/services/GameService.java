@@ -9,6 +9,7 @@ import cz.larpovadatabaze.models.FilterGame;
 import org.hibernate.criterion.Order;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  *

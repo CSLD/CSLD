@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org" xmlns="http://www.w3.org/1999/xhtml" prefix="og: http://ogp.me/ns#">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title wicket:id="pageTitle"></title>
+    <wicket:link>
+        <link rel="shortcut icon" href="img/logo16.ico">
+        <link rel="image_src" href="img/logo50.png" wicket:id="previewImageTag1" />
+        <meta property="og:image" content="img/logo50.png" wicket:id="previewImageTag2" />
+    </wicket:link>
+    <meta name="keywords" content="larp, databáze, čr, česko, slovensko">
+    <meta name="description" content="Všechny larpy na jednom místě. Larpová databáze.">
+
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-37900730-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+
+    </script>
+</head>
+
+<body>
+<div class="page">
+
+    <!-- HEADER -->
+
+    <wicket:link>
+        <img src="img/logo50.png" id="logoNadpis" />
+        <a href="/">
+            <img src="img/nadpis_cz.png" id="nadpisHlavni">
+        </a>
+    </wicket:link>
+
+    <div wicket:id="login" id="loginBox">
+        <!--
+        This panel is found in package: cz.larpovadatabaze.components.panel.user.LoginBoxPanel.html
+        https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/user/LoginBoxPanel.html
+        -->
+    </div>
+    <div wicket:id="loggedInfo" id="loginBoxPrihlaseny">
+        <!--
+        This panel is found in package: cz.larpovadatabaze.components.panel.user.LoggedBoxPanel.html
+        https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/user/LoggedBoxPanel.html
+        -->
+    </div>
+
+    <div style="clear: both"></div>
+
+    <div class="menu">
+    <span class="polozky">
+        <span class="mezera"></span>
+        <a class="menuItem" wicket:id="list-game"><wicket:message key="rankings">Žebříčky</wicket:message></a>
+        <a class="menuItem" wicket:id="list-authors"><wicket:message key="authors">Autoři</wicket:message></a>
+        <a class="menuItem" wicket:id="list-users"><wicket:message key="users">Uživatelé</wicket:message></a>
+        <a class="menuItem" wicket:id="list-groups"><wicket:message key="groups">Skupiny</wicket:message></a>
+        <a class="menuItem" wicket:id="about"><wicket:message key="aboutDb">O databázi</wicket:message></a>
+        <span wicket:id="adminPanel"></span>
+    </span>
+    <span id="languageChanger" wicket:id="languagePicker">
+        <!--
+        This panel is found in package: cz.larpovadatabaze.components.common.i18n.LocalePicker.html
+        https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/common/i18n/LocalePicker.html
+        -->
+    </span>
+    <span id="divProHledani" wicket:id="searchBox">
+        <!--
+        This panel is found in package: cz.larpovadatabaze.components.panel.search.SearchBoxPanel.html
+        https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/search/SearchBoxPanel.html
+        -->
+    </span>
+    </div>
+    <div style="margin-top: 20px;"></div>
+
+    <wicket:child>
+        <!--
+        The content of every other page in app, wchich is descendant of CsldBasePage goes here.
+        -->
+    </wicket:child>
+
+
+    <!-- FOOTER -->
+    <div class="footer">
+        &copy; larpovadatabaze.cz, 2012 | database coding: Jakub Balhar | design coding: <a href="http://hrajularpy.cz">Michal
+        Havelka</a> <br/>
+        layout: Jakub Siegel | PR: Petr Kuběnský | HR: Filip Appl <br/>
+        Thanks to all of you!
+    </div>
+
+</div>
+</body>
+</html>

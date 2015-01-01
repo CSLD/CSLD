@@ -2,11 +2,12 @@ package cz.larpovadatabaze.entities;
 
 import org.hibernate.annotations.Type;
 
+import java.io.Serializable;
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import java.io.Serializable;
-import java.util.Date;
 
 /**
  *
@@ -104,6 +105,7 @@ public class GroupHasMember implements Serializable {
 
     public void setUser(CsldUser user) {
         this.user = user;
+        this.userId = (user==null)?null:user.getId();
     }
 
     private CsldGroup group;
@@ -122,5 +124,6 @@ public class GroupHasMember implements Serializable {
 
     public void setGroup(CsldGroup group) {
         this.group = group;
+        this.groupId = (group==null)?null:group.getId();
     }
 }

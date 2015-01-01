@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.components.page;
 
 import com.googlecode.wicket.jquery.core.resource.JQueryUIResourceReference;
+import cz.larpovadatabaze.components.common.i18n.LocalePicker;
 import cz.larpovadatabaze.components.page.about.AboutDatabase;
 import cz.larpovadatabaze.components.page.author.ListAuthor;
 import cz.larpovadatabaze.components.page.game.ListGame;
@@ -82,6 +83,7 @@ public abstract class CsldBasePage extends WebPage {
         add(new BookmarkablePageLink<CsldBasePage>("list-groups", ListGroup.class));
         add(new BookmarkablePageLink<CsldBasePage>("about", AboutDatabase.class));
 
+        add(new LocalePicker("languagePicker"));
         add(new SearchBoxPanel("searchBox"));
     }
 
@@ -96,14 +98,10 @@ public abstract class CsldBasePage extends WebPage {
     public void renderHead(IHeaderResponse response) {
         response.render(JavaScriptHeaderItem.forReference(getApplication().getJavaScriptLibrarySettings()
                 .getJQueryReference()));
-        response.render(JavaScriptHeaderItem.forReference(getApplication().getJavaScriptLibrarySettings()
-                .getJQueryReference()));
         response.render(JavaScriptHeaderItem.forReference(TinyMCESettings.javaScriptReference()));
 
         response.render(JavaScriptHeaderItem.forReference(JQueryUIResourceReference.get()));
-        response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"js/jquery.nivo.slider.pack.js")));
-        response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"js/jquery.nivo.slider.js")));
-
+        response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"js/jquery.slides.min.js")));
 
         response.render(CssHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"css/nivo-slider.css")));
         response.render(CssHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"css/style.css")));

@@ -1,12 +1,6 @@
 package cz.larpovadatabaze.components.panel.game;
 
-import cz.larpovadatabaze.api.ValidatableForm;
-import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
-import cz.larpovadatabaze.entities.Comment;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.CommentService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -17,15 +11,26 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
-import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 import java.sql.Timestamp;
+
+import cz.larpovadatabaze.api.ValidatableForm;
+import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
+import cz.larpovadatabaze.entities.Comment;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.services.CommentService;
+import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 /**
  * This panel allows user to Comment given game
  */
 public class CommentsPanel extends Panel {
-    @SpringBean
+    private final String VARIATION_DISABLED = "disabled";
+    private final String VARIATION_EDIT = "edit";
+
+        @SpringBean
     CommentService commentService;
 
     private TextArea<String> commentContent;
@@ -137,34 +142,41 @@ public class CommentsPanel extends Panel {
     protected void onInitialize() {
         super.onInitialize();
 
-        ValidatableForm<Comment> commentForm = new ValidatableForm<Comment>("comment"){};
-        commentForm.setOutputMarkupId(true);
+        if (VARIATION_EDIT.equals(getVariation())) {
+            ValidatableForm<Comment> commentForm = new ValidatableForm<Comment>("comment"){};
+            commentForm.setOutputMarkupId(true);
 
-        commentContent = new TextArea<String>("textOfComment", model);
-        commentContent.add(new CSLDTinyMceBehavior());
-        commentContent.setOutputMarkupId(true);
-        AjaxButton addComment = new AjaxButton("addComment"){
-            @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                // Reload game
-                gameModel.detach();
+            commentContent = new TextArea<String>("textOfComment", model);
+            commentContent.add(new CSLDTinyMceBehavior());
+            commentContent.setOutputMarkupId(true);
+            AjaxButton addComment = new AjaxButton("addComment"){
+                @Override
+                protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                    // Reload game
+                    gameModel.detach();
 
-                // Refresh panels
-                target.add(this);
-                target.add(refreshOnChange);
-            }
-        };
-        addComment.setOutputMarkupId(true);
-        addComment.add(new TinyMceAjaxSubmitModifier());
+                    // Refresh panels
+                    target.add(this);
+                    target.add(refreshOnChange);
+                }
+            };
+            addComment.setOutputMarkupId(true);
+            addComment.add(new TinyMceAjaxSubmitModifier());
 
-        commentForm.add(commentContent);
-        commentForm.add(addComment);
+            commentForm.add(commentContent);
+            commentForm.add(addComment);
 
-        add(commentForm);
+            add(commentForm);
+        }
     }
 
     protected void onConfigure() {
         setVisibilityAllowed(CsldAuthenticatedWebSession.get().isSignedIn());
+    }
+
+    @Override
+    public String getVariation() {
+        return (gameModel.getObject().isCommentsDisabled() && StringUtils.isEmpty(model.getObject()))? VARIATION_DISABLED : VARIATION_EDIT;
     }
 
     protected void onCsldAction(AjaxRequestTarget target){}
