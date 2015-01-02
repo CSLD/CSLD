@@ -1,7 +1,6 @@
 package cz.larpovadatabaze;
 
 import cz.larpovadatabaze.components.page.HomePage;
-import cz.larpovadatabaze.components.page.TestPage;
 import cz.larpovadatabaze.components.page.about.AboutDatabase;
 import cz.larpovadatabaze.components.page.admin.Administration;
 import cz.larpovadatabaze.components.page.admin.ManageLabelsPage;
@@ -225,7 +224,6 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         mountPage("/admin/manage-users", ManageUserRightsPage.class);
 
         mountPage("/home", HomePage.class);
-        mountPage("/test", TestPage.class);
         mountPage("/game-was-deleted", GameWasDeleted.class);
 
         mountPage("/error404", Error404Page.class);
