@@ -25,23 +25,23 @@
                     <div style="clear:both;"></div>
                 </div>
                 <div class="popisek">
-                    <span wicket:id="players" id="playersAmount">80</span> hráčů,
-                    <span wicket:id="menRole" id="menRole">0</span> mužů,
-                    <span wicket:id="womenRole" id="womenRole">0</span> žen,
-                    <span wicket:id="bothRole" id="bothRole">0</span> obojetných
+                    <span wicket:id="players" id="playersAmount">80</span> <wicket:message key="game.detail.players">hráčů</wicket:message>,
+                    <span wicket:id="menRole" id="menRole">0</span> <wicket:message key="game.detail.men">mužů</wicket:message>,
+                    <span wicket:id="womenRole" id="womenRole">0</span> <wicket:message key="game.detail.women">žen</wicket:message>,
+                    <span wicket:id="bothRole" id="bothRole">0</span> <wicket:message key="game.detail.both">obojetných</wicket:message>
                 </div>
                 <div class="popisek">
-                    <span wicket:id="hours" id="hours">5</span> hodin,
-                    <span wicket:id="days" id="days">0</span> dnů,
+                    <span wicket:id="hours" id="hours">5</span> <wicket:message key="game.detail.hours">hodin</wicket:message>,
+                    <span wicket:id="days" id="days">0</span> <wicket:message key="game.detail.days">dnů</wicket:message>,
                     <span wicket:id="year" id="year">2012</span>
                 </div>
                 <div class="popisek">
                     Web: <a wicket:id="webGameLink"></a><br />
-                    <wicket:enclosure child="webGalleryLink">Galerie: <a wicket:id="webGalleryLink"></a><br /></wicket:enclosure>
-                    <wicket:enclosure child="photoAuthor">Autor fotografií: <wicket:container wicket:id="photoAuthor" /></wicket:enclosure>
+                    <wicket:enclosure child="webGalleryLink"><wicket:message key="form.galleryURL">Galerie</wicket:message>: <a wicket:id="webGalleryLink"></a><br /></wicket:enclosure>
+                    <wicket:enclosure child="photoAuthor"><wicket:message key="game.detail.photos.author">Autor fotografií</wicket:message>: <wicket:container wicket:id="photoAuthor" /></wicket:enclosure>
                 </div>
                 <div class="popisek">
-                    <wicket:message key="authorsCapitalized">Autoři:</wicket:message>
+                    <wicket:message key="authorsCapitalized"><wicket:message key="game.detail.author">Autoři</wicket:message>:</wicket:message>
                     <wicket:container wicket:id="authors"><wicket:container wicket:id="separator" /><a wicket:id="authorDetailLink"><wicket:container wicket:id="authorName"></wicket:container></a></wicket:container>
                 </div>
                 <div style="clear:both;"></div>

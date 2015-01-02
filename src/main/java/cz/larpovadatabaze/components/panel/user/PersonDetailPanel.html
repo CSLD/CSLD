@@ -13,12 +13,12 @@
                 <div class="jmenoUzivatel">
                     <span wicket:id="nickname" class="strong"></span> <span wicket:id="name"></span> <span wicket:id="email"></span>
                 </div>
-                <wicket:enclosure child="age"><div class="popisek"><span wicket:id="age"></span> let</div></wicket:enclosure>
+                <wicket:enclosure child="age"><div class="popisek"><span wicket:id="age"></span> <wicket:message key="author.years">let</wicket:message></div></wicket:enclosure>
                 <div class="popisek">
                     <span wicket:id="city"></span>
                 </div>
                 <div class="popisek">
-                    Hráč <span wicket:id="played"></span> larpů, tvůrce <span wicket:id="organized"></span> larpů
+                    <wicket:message key="game.player">Hráč</wicket:message> <span wicket:id="played"></span> <wicket:message key="game.larps">larpů</wicket:message>, <wicket:message key="game.creator">tvůrce</wicket:message> <span wicket:id="organized"></span> <wicket:message key="game.larps">larpů</wicket:message>
                 </div>
             </td>
         </tr>

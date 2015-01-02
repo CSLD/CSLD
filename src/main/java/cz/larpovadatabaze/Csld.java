@@ -9,6 +9,7 @@ import cz.larpovadatabaze.components.page.admin.ManageUserRightsPage;
 import cz.larpovadatabaze.components.page.author.CreateOrUpdateAuthorPage;
 import cz.larpovadatabaze.components.page.author.ListAuthor;
 import cz.larpovadatabaze.components.page.error.Error404Page;
+import cz.larpovadatabaze.components.page.error.Error500Page;
 import cz.larpovadatabaze.components.page.game.*;
 import cz.larpovadatabaze.components.page.group.CreateOrUpdateGroupPage;
 import cz.larpovadatabaze.components.page.group.GroupDetail;
@@ -228,6 +229,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         mountPage("/game-was-deleted", GameWasDeleted.class);
 
         mountPage("/error404", Error404Page.class);
+        mountPage("/error500", Error500Page.class);
     }
 
     private void mountResources() {
