@@ -1,7 +1,6 @@
 package cz.larpovadatabaze;
 
 import cz.larpovadatabaze.components.page.HomePage;
-import cz.larpovadatabaze.components.page.TestPage;
 import cz.larpovadatabaze.components.page.about.AboutDatabase;
 import cz.larpovadatabaze.components.page.admin.Administration;
 import cz.larpovadatabaze.components.page.admin.ManageLabelsPage;
