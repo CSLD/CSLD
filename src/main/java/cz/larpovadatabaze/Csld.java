@@ -224,7 +224,6 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         mountPage("/admin/manage-users", ManageUserRightsPage.class);
 
         mountPage("/home", HomePage.class);
-        mountPage("/test", TestPage.class);
         mountPage("/game-was-deleted", GameWasDeleted.class);
 
         mountPage("/error404", Error404Page.class);
