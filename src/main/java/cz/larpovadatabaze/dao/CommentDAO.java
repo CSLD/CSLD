@@ -67,7 +67,6 @@ public class CommentDAO extends GenericHibernateDAO<Comment, Integer>{
 
     public long getAmountOfComments(Locale locale) {
         Criteria criteria = getBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession())
-                .createAlias("game", "commentedGame")
                 .setProjection(Projections.rowCount());
         List<Locale> locales = new ArrayList<Locale>();
         locales.add(locale);
