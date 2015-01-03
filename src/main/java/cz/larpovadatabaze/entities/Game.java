@@ -1,8 +1,6 @@
 package cz.larpovadatabaze.entities;
 
-import cz.larpovadatabaze.lang.ActualLanguageGameTranslator;
-import cz.larpovadatabaze.lang.DbSessionLanguageSolver;
-import cz.larpovadatabaze.lang.Translator;
+import cz.larpovadatabaze.lang.*;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -97,11 +95,20 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     @Transient
     public void setLang(String lang) {
         this.lang = lang;
-        defaultLanguage.setGame(this);
-        defaultLanguage.setLanguageForGame(new Language(lang));
         if(availableLanguages  == null) {
             availableLanguages = new ArrayList<GameHasLanguages>();
         }
+        LocaleProvider provider = new CodeLocaleProvider();
+        Locale actualLanguage = provider.transformToLocale(lang);
+        for(GameHasLanguages language: availableLanguages) {
+            // Ignore already added language.
+            if(language.getLanguageForGame().getLanguage().equals(actualLanguage)){
+                return;
+            }
+        }
+
+        defaultLanguage.setGame(this);
+        defaultLanguage.setLanguageForGame(new Language(lang));
         availableLanguages.add(defaultLanguage);
     }
 
