@@ -24,14 +24,13 @@ public class UpdateUserPage extends CsldBasePage {
         CsldUser csldUser  = null;
         if(!params.isEmpty()){
             Integer id = params.get("id").to(Integer.class);
-            CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
-            if(logged.getId().intValue() == id){
-                csldUser = logged;
-            } else {
-                csldUser = csldUserService.getById(id);
-                if(HbUtils.isProxy(csldUser)){
-                    csldUser = HbUtils.deproxy(csldUser);
-                }
+            CsldUser logged = CsldAuthenticatedWebSession.get().getLoggedUser();
+            if(logged.getId().intValue() != id){
+                throw new RestartResponseException(HomePage.class);
+            }
+            csldUser = csldUserService.getById(id);
+            if(HbUtils.isProxy(csldUser)){
+                csldUser = HbUtils.deproxy(csldUser);
             }
         }
         final boolean isNew = (csldUser == null);
