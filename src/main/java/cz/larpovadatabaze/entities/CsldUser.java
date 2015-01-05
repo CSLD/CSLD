@@ -237,7 +237,7 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable, I
 
     @SuppressWarnings("JpaAttributeTypeInspection")
     @ManyToMany(
-            fetch = FetchType.LAZY ,
+            fetch = FetchType.EAGER ,
             cascade = javax.persistence.CascadeType.ALL
     )
     @Cascade(CascadeType.SAVE_UPDATE)
