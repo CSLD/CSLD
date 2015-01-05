@@ -125,6 +125,8 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
             }
         });
 
+        getApplicationSettings().setInternalErrorPage(Error500Page.class);
+
         getComponentInstantiationListeners().add(new SpringComponentInjector(this, ctx, true));
         getMarkupSettings().setDefaultMarkupEncoding(DEFAULT_ENCODING);
         getMarkupSettings().setStripWicketTags(true);
@@ -148,7 +150,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
             @Override
             public void onBeginRequest(RequestCycle cycle) {
                 super.onBeginRequest(cycle);
-                CsldAuthenticatedWebSession session = (CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get();
+                CsldAuthenticatedWebSession session = CsldAuthenticatedWebSession.get();
                 if (session.isClearRequested()) {
                     session.clear();
                     session.setClearRequested(false);
@@ -234,14 +236,9 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         mountResource("/user-icon", csldUserService.getIconReference());
     }
 
-
-    public static String getBaseContext(){
-        return "upload/";
-    }
-
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.ctx = applicationContext;
+        ctx = applicationContext;
     }
 
     public static ApplicationContext getApplicationContext() {
