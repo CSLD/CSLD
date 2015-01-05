@@ -48,6 +48,8 @@
     <filter-mapping>
         <filter-name>wicket-spring-hibernate</filter-name>
         <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>ERROR</dispatcher>
     </filter-mapping>
 
     <resource-ref>
@@ -73,9 +75,5 @@
     <error-page>
         <error-code>404</error-code>
         <location>/error404</location>
-    </error-page>
-
-    <error-page>
-        <location>/error500</location>
     </error-page>
 </web-app>
