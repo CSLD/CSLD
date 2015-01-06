@@ -57,7 +57,7 @@ http://www.springframework.org/schema/jee http://www.springframework.org/schema/
 
     <bean id="localeProvider" class="cz.larpovadatabaze.lang.DbSessionLanguageSolver"/>
 
-    <bean id="gameTranslator" class="cz.larpovadatabaze.lang.ActualLanguageGameTranslator">
+    <bean id="gameTranslator" class="cz.larpovadatabaze.lang.TranslatableEntityTranslator">
         <constructor-arg name="whatLanguagesToUse" ref="localeProvider"/>
     </bean>
 
@@ -91,6 +91,7 @@ http://www.springframework.org/schema/jee http://www.springframework.org/schema/
                 <value>cz.larpovadatabaze.entities.Video</value>
                 <value>cz.larpovadatabaze.entities.Language</value>
                 <value>cz.larpovadatabaze.entities.GameHasLanguages</value>
+                <value>cz.larpovadatabaze.entities.LabelHasLanguages</value>
 			</list>
 		</property>
 	</bean>

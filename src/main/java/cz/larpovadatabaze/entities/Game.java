@@ -23,7 +23,7 @@ import cz.larpovadatabaze.api.Identifiable;
  */
 @Entity
 @Table(schema = "public", name="csld_game")
-public class Game implements Serializable, Identifiable, IAutoCompletable, IEntityWithImage {
+public class Game implements Serializable, Identifiable, IAutoCompletable, IEntityWithImage, TranslatableEntity {
     public Game(){ }
 
     private Integer id;
@@ -46,12 +46,15 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     }
 
     @Transient
+    private GameHasLanguages defaultLanguage = new GameHasLanguages();
+
+    @Transient
     private String name;
 
     @Transient
     public String getName() {
         if(name == null) {
-            new ActualLanguageGameTranslator(new DbSessionLanguageSolver()).translate(this);
+            new TranslatableEntityTranslator(new DbSessionLanguageSolver()).translate(this);
         }
         return name;
     }
@@ -68,7 +71,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     @Transient
     public String getDescription() {
         if(description == null) {
-            new ActualLanguageGameTranslator(new DbSessionLanguageSolver()).translate(this);
+            new TranslatableEntityTranslator(new DbSessionLanguageSolver()).translate(this);
         }
         return description;
     }
@@ -78,16 +81,13 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
         this.description = description;
         defaultLanguage.setDescription(description);
     }
-
     @Transient
     private String lang;
-    @Transient
-    private GameHasLanguages defaultLanguage = new GameHasLanguages();
 
     @Transient
     public String getLang() {
         if(lang == null) {
-            new ActualLanguageGameTranslator(new DbSessionLanguageSolver()).translate(this);
+            new TranslatableEntityTranslator(new DbSessionLanguageSolver()).translate(this);
         }
         return lang;
     }
@@ -102,13 +102,13 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
         Locale actualLanguage = provider.transformToLocale(lang);
         for(GameHasLanguages language: availableLanguages) {
             // Ignore already added language.
-            if(language.getLanguageForGame().getLanguage().equals(actualLanguage)){
+            if(language.getLanguage().getLanguage().equals(actualLanguage)){
                 return;
             }
         }
 
         defaultLanguage.setGame(this);
-        defaultLanguage.setLanguageForGame(new Language(lang));
+        defaultLanguage.setLanguage(new Language(lang));
         availableLanguages.add(defaultLanguage);
     }
 
@@ -408,6 +408,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
         this.commentsDisabled = commentsDisabled;
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -640,6 +641,14 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
 
     public void setAvailableLanguages(List<GameHasLanguages> availableLanguages) {
         this.availableLanguages = availableLanguages;
+    }
+
+    @Transient
+    public List<TranslationEntity> getLanguages(){
+        if(availableLanguages == null) {
+            return null;
+        }
+        return new ArrayList<TranslationEntity>(availableLanguages);
     }
 
     @Override

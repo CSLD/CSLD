@@ -281,8 +281,8 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
 
         try{
             Session session = sessionFactory.getCurrentSession();
-            Game item2 = (Game) session.get(Game.class, entity.getId());
-            Game item3 = (Game) session.merge(entity);
+            session.get(Game.class, entity.getId());
+            session.merge(entity);
             flush();
             return true;
         } catch (HibernateException ex){
@@ -291,10 +291,10 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
         }
     }
 
-    private void addLanguageRestriction(Criteria criteria, List<Locale> locales) {
+    private void addLanguageRestriction(Criteria criteria, List<Locale> languages) {
         criteria
                 .createCriteria("availableLanguages")
-                .createCriteria("languageForGame")
-                .add(Restrictions.in("language", locales));
+                .createCriteria("language")
+                .add(Restrictions.in("language", languages));
     }
 }

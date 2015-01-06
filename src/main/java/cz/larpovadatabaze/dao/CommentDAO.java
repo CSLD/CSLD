@@ -78,7 +78,7 @@ public class CommentDAO extends GenericHibernateDAO<Comment, Integer>{
     private void addLocaleLimitation(Criteria criteria, List<Locale> locales) {
         criteria
                 .createCriteria("commentedGame.availableLanguages")
-                .createCriteria("languageForGame")
+                .createCriteria("language")
                 .add(Restrictions.in("language", locales));
     }
 }

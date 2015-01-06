@@ -2,7 +2,7 @@ package cz.larpovadatabaze.lang;
 
 import java.util.Collection;
 
-public interface Translator<T> {
+public interface Translator<T extends TranslatableEntity> {
     /**
      * It allows you to toTranslate given entity.
      *
