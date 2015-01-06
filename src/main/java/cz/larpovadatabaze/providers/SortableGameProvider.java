@@ -60,7 +60,7 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
                             filterLabels,
                             firstL.intValue(),
                             ((Long)amountPerPage).intValue(),
-                            Order.asc("name")),
+                            Order.desc("year").nulls(NullPrecedence.LAST)),
                         firstL.intValue()
             ).iterator();
         } else if(property.equals("year")) {
