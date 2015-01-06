@@ -175,7 +175,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
                 if(game.getAvailableLanguages().isEmpty()) {
                     GameHasLanguages firstLanguage = new GameHasLanguages();
                     firstLanguage.setGame(game);
-                    firstLanguage.setLanguageForGame(new Language(toBeSaved));
+                    firstLanguage.setLanguage(new Language(toBeSaved));
                     firstLanguage.setName(game.getName());
                     firstLanguage.setDescription(game.getDescription());
                     game.getAvailableLanguages().add(firstLanguage);
@@ -184,7 +184,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
                     List<GameHasLanguages> actualLanguages = game.getAvailableLanguages();
                     Language actualToSave = new Language(toBeSaved);
                     for(GameHasLanguages language: actualLanguages) {
-                        if(language.getLanguageForGame().equals(actualToSave)){
+                        if(language.getLanguage().equals(actualToSave)){
                             language.setName(game.getName());
                             language.setDescription(game.getDescription());
                         }

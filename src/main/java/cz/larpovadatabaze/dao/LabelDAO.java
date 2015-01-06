@@ -6,10 +6,13 @@ import cz.larpovadatabaze.dao.builder.IBuilder;
 import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 
 /**
  *
@@ -33,5 +36,32 @@ public class LabelDAO extends GenericHibernateDAO<Label, Integer> {
                 Restrictions.eq("name", labelName)
         );
         return uniqueLabel.list();
+    }
+
+    public List<Label> findAll(List<Locale> languages) {
+        Criteria allLabels = getBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession());
+        addFilterByLanguage(allLabels, languages);
+        return allLabels.list();
+    }
+
+    public List<Label> getRequired(List<Locale> languagesForUser) {
+        Criteria requiredLabels = getBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession());
+            requiredLabels.add(Restrictions.eq("required", true));
+        addFilterByLanguage(requiredLabels, languagesForUser);
+        return requiredLabels.list();
+    }
+
+    public List<Label> getOptional(List<Locale> languagesForUser) {
+        Criteria requiredLabels = getBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession());
+        requiredLabels.add(Restrictions.eq("required", false));
+        addFilterByLanguage(requiredLabels, languagesForUser);
+        return requiredLabels.list();
+    }
+
+    private void addFilterByLanguage(Criteria criteria, List<Locale> languages) {
+        criteria
+                .createCriteria("labelHasLanguages")
+                .createCriteria("language")
+                .add(Restrictions.in("language", new HashSet(languages)));
     }
 }

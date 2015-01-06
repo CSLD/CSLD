@@ -19,8 +19,10 @@ public class Language implements Serializable {
     private Locale language;
     @ManyToMany(mappedBy = "userHasLanguages")
     private List<CsldUser> users;
-    @OneToMany(mappedBy = "languageForGame")
+    @OneToMany(mappedBy = "language")
     private List<GameHasLanguages> gameHasLanguages;
+    @OneToMany(mappedBy = "language")
+    private List<LabelHasLanguages> labelHasLanguages;
 
     public Language(Locale language) {
         this.language = language;
@@ -56,6 +58,14 @@ public class Language implements Serializable {
 
     public void setGameHasLanguages(List<GameHasLanguages> gameHasLanguages) {
         this.gameHasLanguages = gameHasLanguages;
+    }
+
+    public List<LabelHasLanguages> getLabelHasLanguages() {
+        return labelHasLanguages;
+    }
+
+    public void setLabelHasLanguages(List<LabelHasLanguages> labelHasLanguages) {
+        this.labelHasLanguages = labelHasLanguages;
     }
 
     @Override

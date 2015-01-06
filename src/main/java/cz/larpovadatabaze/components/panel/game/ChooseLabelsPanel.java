@@ -28,7 +28,7 @@ public class ChooseLabelsPanel extends FormComponentPanel<ArrayList<cz.larpovada
         super(id, null);
         buttons = new ArrayList<LabelButton>();
 
-        CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
+        CsldUser logged = CsldAuthenticatedWebSession.get().getLoggedUser();
 
         add(new SimpleListViewer("requiredLabels", labelService.getAuthorizedRequired(logged)));
         add(new SimpleListViewer("otherLabels", labelService.getAuthorizedOptional(logged)));
@@ -36,7 +36,7 @@ public class ChooseLabelsPanel extends FormComponentPanel<ArrayList<cz.larpovada
 
     public void reload(AjaxRequestTarget target) {
         buttons = new ArrayList<LabelButton>();
-        CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
+        CsldUser logged = CsldAuthenticatedWebSession.get().getLoggedUser();
 
         ((ListView)get("requiredLabels")).setList(labelService.getAuthorizedRequired(logged));
         ((ListView)get("otherLabels")).setList(labelService.getAuthorizedOptional(logged));

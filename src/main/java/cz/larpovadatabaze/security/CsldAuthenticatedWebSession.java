@@ -9,6 +9,7 @@ import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.hibernate.HibernateException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -43,7 +44,12 @@ public class CsldAuthenticatedWebSession extends AuthenticatedWebSession {
     @Override
     public boolean authenticate(final String username, final String password)
     {
-        CsldUser authenticated = csldUserService.getByEmail(username);
+        CsldUser authenticated =  null;
+        try {
+            authenticated = csldUserService.getByEmail(username);
+        } catch(HibernateException ex) {
+            authenticated = null;
+        }
         if(authenticated == null) {
             return false;
         }
