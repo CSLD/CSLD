@@ -58,6 +58,15 @@ public class LabelDAO extends GenericHibernateDAO<Label, Integer> {
         return requiredLabels.list();
     }
 
+    public Label getByName(String name) {
+        Criteria label = getBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession());
+        label
+                .createCriteria("labelHasLanguages")
+                .add(Restrictions.eq("name", name));
+
+        return (Label) label.uniqueResult();
+    }
+
     private void addFilterByLanguage(Criteria criteria, List<Locale> languages) {
         criteria
                 .createCriteria("labelHasLanguages")
