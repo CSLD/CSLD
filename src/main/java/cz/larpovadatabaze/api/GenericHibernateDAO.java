@@ -80,7 +80,7 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 
 	public void makeTransient(T entity) {
         Transaction tx = sessionFactory.getCurrentSession().beginTransaction();
-		sessionFactory.getCurrentSession().delete(entity);
+        sessionFactory.getCurrentSession().delete(entity);
         sessionFactory.getCurrentSession().flush();
         tx.commit();
 	}

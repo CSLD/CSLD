@@ -75,6 +75,7 @@ public class Language implements Serializable {
 
         Language language1 = (Language) o;
 
+        if (language == null && language1.getLanguage() != null) return false;
         if (!language.equals(language1.language)) return false;
 
         return true;

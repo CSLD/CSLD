@@ -1,16 +1,23 @@
 package cz.larpovadatabaze.components.page.game;
 
+import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.GameHasLanguages;
 import cz.larpovadatabaze.entities.Language;
 import cz.larpovadatabaze.lang.CodeLocaleProvider;
+import cz.larpovadatabaze.lang.LanguageSolver;
+import cz.larpovadatabaze.lang.LocaleProvider;
+import cz.larpovadatabaze.lang.SessionLanguageSolver;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.utils.HbUtils;
 import org.apache.log4j.Logger;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -20,8 +27,10 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 import java.util.List;
 import java.util.Locale;
@@ -31,11 +40,12 @@ public class TranslateGame extends CsldBasePage {
     private final static Logger logger = Logger.getLogger(GameDetail.class);
     private ListView<GameHasLanguages> translationsShow;
     private LanguagesModel languagesModel;
+    private LanguageSolver sessionLanguageSolver = new SessionLanguageSolver();
 
     @SpringBean
     GameService gameService;
 
-    private class LanguagesModel extends LoadableDetachableModel<List<GameHasLanguages>> {
+    private class LanguagesModel extends LoadableDetachableModel<Game> {
         // Game id. We could also store id as page property.
         private int gameId;
 
@@ -44,19 +54,8 @@ public class TranslateGame extends CsldBasePage {
         }
 
         @Override
-        protected List<GameHasLanguages> load() {
+        protected Game load() {
             logger.debug("Loading languages for id "+gameId);
-
-            Game game = gameService.getById(gameId);
-            if(HbUtils.isProxy(game)){
-                game = HbUtils.deproxy(game);
-            }
-
-            return game.getAvailableLanguages();
-        }
-
-        protected Game getGame(){
-            logger.debug("Loading game for id "+gameId);
 
             Game game = gameService.getById(gameId);
             if(HbUtils.isProxy(game)){
@@ -71,7 +70,7 @@ public class TranslateGame extends CsldBasePage {
         try {
             int gameId = params.get(ID_PARAM).to(Integer.class);
             languagesModel = new LanguagesModel(gameId);
-            setDefaultModel(languagesModel);
+            setDefaultModel(new CompoundPropertyModel<Object>(languagesModel));
         } catch (NumberFormatException ex) {
             throw new RestartResponseException(ListGame.class);
         }
@@ -81,64 +80,35 @@ public class TranslateGame extends CsldBasePage {
     protected void onInitialize() {
         super.onInitialize();
 
-        translationsShow = new ListView<GameHasLanguages>("translations", (IModel<List<GameHasLanguages>>) getDefaultModel()) {
-            private TextField<String> name;
-            private TextArea<String> description;
-            private DropDownChoice<Language> actualLanguage;
-
+        translationsShow = new ListView<GameHasLanguages>("availableLanguages") {
             @Override
-            protected void populateItem(ListItem<GameHasLanguages> item) {
+            protected void populateItem(final ListItem<GameHasLanguages> item) {
                 GameHasLanguages language = item.getModelObject();
 
                 Form infoAboutLanguage = new Form<GameHasLanguages>("translation", new CompoundPropertyModel<GameHasLanguages>(language));
-                infoAboutLanguage.add(name = new TextField<String>("name"));
-                infoAboutLanguage.add(description = new TextArea<String>("description"));
-                infoAboutLanguage.add(actualLanguage = new DropDownChoice<Language>("language",new CodeLocaleProvider().availableLanguages()));
-
-                infoAboutLanguage.add(new AjaxButton("updateLanguage") {
-                    @Override
-                    protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                        Game toModify = TranslateGame.this.languagesModel.getGame();
-                        List<GameHasLanguages> allLangs = toModify.getAvailableLanguages();
-                        boolean updatedLanguage = false;
-                        for(GameHasLanguages lang: allLangs) {
-                            if(lang.getLanguage().equals(actualLanguage.getConvertedInput())){
-                                lang.setName(name.getConvertedInput());
-                                lang.setDescription(description.getConvertedInput());
-                                updatedLanguage = true;
-                            }
-                        }
-                        if(!updatedLanguage) {
-                            GameHasLanguages gameHasLanguages = new GameHasLanguages();
-                            gameHasLanguages.setGame(toModify);
-                            gameHasLanguages.setName(name.getConvertedInput());
-                            gameHasLanguages.setDescription(description.getConvertedInput());
-                            gameHasLanguages.setLanguage(actualLanguage.getConvertedInput());
-                            toModify.getAvailableLanguages().add(gameHasLanguages);
-                        }
-                        gameService.saveOrUpdate(toModify);
-                        target.add(TranslateGame.this);
-                    }
-                });
+                infoAboutLanguage.add(new TextField<String>("name"));
+                infoAboutLanguage.add(new TextArea<String>("description").add(new CSLDTinyMceBehavior()));
+                infoAboutLanguage.add(new Label("language"));
 
                 infoAboutLanguage.add(new AjaxButton("removeLanguage") {
                     @Override
                     protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                        Game toModify = TranslateGame.this.languagesModel.getGame();
+                        Game toModify = TranslateGame.this.languagesModel.getObject();
                         List<GameHasLanguages> allLangs = toModify.getAvailableLanguages();
                         if(allLangs.size() <= 1 ) {
                             return;
                         }
-                        GameHasLanguages toRemove = null;
-                        for(GameHasLanguages lang: allLangs) {
-                            if(lang.getLanguage().equals(actualLanguage.getConvertedInput())){
+                        GameHasLanguages toRemove = item.getModel().getObject();
+                        translationsShow.getModelObject().remove(toRemove);
+                        for(GameHasLanguages lang: toModify.getAvailableLanguages()){
+                            if(lang.getLanguage().equals(toRemove.getLanguage())){
                                 toRemove = lang;
                             }
                         }
-                        if(toRemove != null) {
-                            toModify.getAvailableLanguages().remove(toRemove);
-                        }
-                        gameService.deleteTranslation(toModify, actualLanguage.getConvertedInput());
+                        toModify.getAvailableLanguages().remove(toRemove);
+                        gameService.deleteTranslation(toRemove);
+                        translationsShow.setModelObject(toModify.getAvailableLanguages());
+                        translationsShow.removeAll();
                         target.add(TranslateGame.this);
                     }
                 });
@@ -147,17 +117,29 @@ public class TranslateGame extends CsldBasePage {
             }
         };
         translationsShow.setOutputMarkupId(true);
+        translationsShow.setReuseItems(true);
         add(translationsShow);
 
         Form addLanguage = new Form("addLanguage");
-
+        final DropDownChoice<Language> actualLang = new DropDownChoice<Language>("language", Model.of(new Language()), new CodeLocaleProvider().availableLanguages());
+        addLanguage.add(actualLang);
         addLanguage.add(new AjaxButton("addAnotherLanguage") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 GameHasLanguages language = new GameHasLanguages();
-                Game toUpdate = TranslateGame.this.languagesModel.getGame();
+                Game toUpdate = TranslateGame.this.languagesModel.getObject();
+                language.setName("");
+                language.setDescription("");
                 language.setGame(toUpdate);
-                toUpdate.getAvailableLanguages().add(language);
+                language.setLanguage(actualLang.getConvertedInput());
+                for(GameHasLanguages lang: toUpdate.getAvailableLanguages()){
+                    if(lang.getLanguage().equals(language.getLanguage())){
+                        return;
+                    }
+                }
+                translationsShow.getModelObject().add(language);
+                //toUpdate.getAvailableLanguages().add(language);
+                //gameService.saveOrUpdate(toUpdate);
                 target.add(TranslateGame.this);
             }
         });

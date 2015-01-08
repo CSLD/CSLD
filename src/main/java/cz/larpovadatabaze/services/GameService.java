@@ -87,5 +87,5 @@ public interface GameService extends GenericService<Game>, IIconReferenceProvide
      */
     List<Game> getGamesRatedByUser(int userId);
 
-    void deleteTranslation(Game toModify, Language convertedInput);
+    void deleteTranslation(GameHasLanguages toRemove);
 }

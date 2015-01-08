@@ -1,14 +1,11 @@
 package cz.larpovadatabaze.components.panel.game;
 
 import cz.larpovadatabaze.components.common.BookmarkableLinkWithLabel;
-import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.game.CreateOrUpdateGamePage;
 import cz.larpovadatabaze.components.page.game.TranslateGame;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.security.CsldRoles;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -57,6 +54,6 @@ public class
             }
         }
 
-        setVisibilityAllowed(false);
+        setVisibilityAllowed(isVisible);
     }
 }

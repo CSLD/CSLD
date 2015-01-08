@@ -4,6 +4,7 @@ import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.api.ResourceLoader;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.dao.GameDAO;
+import cz.larpovadatabaze.dao.GameHasLanguageDao;
 import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.lang.LanguageSolver;
@@ -43,6 +44,7 @@ public class GameServiceImpl implements GameService {
     @Autowired private ImageResizingStrategyFactoryService imageResizingStrategyFactoryService;
     @Autowired private ImageService imageService;
     @Autowired private LanguageSolver languageSolver;
+    @Autowired private GameHasLanguageDao gameHasLanguageDao;
 
     private ResourceReference iconResourceReference;
 
@@ -269,8 +271,8 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void deleteTranslation(Game toModify, Language convertedInput) {
-        gameDAO.deleteTranslation(toModify, convertedInput);
+    public void deleteTranslation(GameHasLanguages toRemove) {
+        gameHasLanguageDao.makeTransient(toRemove);
     }
 
     @Override
