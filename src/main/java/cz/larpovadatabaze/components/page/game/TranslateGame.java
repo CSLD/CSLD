@@ -43,7 +43,6 @@ public class TranslateGame extends CsldBasePage {
     private final static Logger logger = Logger.getLogger(GameDetail.class);
     private ListView<GameHasLanguages> translationsShow;
     private LanguagesModel languagesModel;
-    private LanguageSolver sessionLanguageSolver = new SessionLanguageSolver();
 
     @SpringBean
     GameService gameService;
