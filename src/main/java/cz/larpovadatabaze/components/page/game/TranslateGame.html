@@ -1,10 +1,15 @@
 <wicket:extend xmlns:wicket="http://wicket.apache.org">
     <div class="levaCast">
         <div wicket:id="availableLanguages" class="translations">
+            <div class="translationHeader"><wicket:message key="game.translation"></wicket:message></div>
             <form wicket:id="translation">
-                <div><input type="text" wicket:id="name"></div>
-                <div><textarea wicket:id="description"></textarea></div>
-                <div wicket:id="language"></div>
+                <div><b><wicket:message key="form.game.name"></wicket:message>:</b> <input type="text" wicket:id="name"></div>
+                <div><b><wicket:message key="form.game.description"></wicket:message></b></div>
+                <div class="line"><textarea
+                        style="width:100%;"
+                        rows=8 wicket:id="description"></textarea></div>
+                <div ><wicket:message key="game.lang"></wicket:message><span wicket:id="language"></span></div>
+                <div><input type="button" wicket:id="updateLanguage" wicket:message="value:language.update"/></div>
                 <div><input type="button" wicket:id="removeLanguage" wicket:message="value:language.remove"/></div>
             </form>
         </div>
@@ -12,7 +17,6 @@
             <form wicket:id="addLanguage">
                 <select wicket:id="language"></select>
                 <input type="button" wicket:id="addAnotherLanguage" wicket:message="value:language.add"/>
-                <div><input type="button" wicket:id="updateLanguage" wicket:message="value:language.update"/></div>
             </form>
         </div>
     </div>

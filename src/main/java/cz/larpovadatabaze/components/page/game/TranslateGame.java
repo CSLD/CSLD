@@ -17,6 +17,8 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -29,6 +31,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
@@ -80,7 +83,7 @@ public class TranslateGame extends CsldBasePage {
     protected void onInitialize() {
         super.onInitialize();
 
-        translationsShow = new ListView<GameHasLanguages>("availableLanguages") {
+        translationsShow = new ListView<GameHasLanguages>("availableLanguages", languagesModel.load().getAvailableLanguages()) {
             @Override
             protected void populateItem(final ListItem<GameHasLanguages> item) {
                 GameHasLanguages language = item.getModelObject();
@@ -89,6 +92,27 @@ public class TranslateGame extends CsldBasePage {
                 infoAboutLanguage.add(new TextField<String>("name"));
                 infoAboutLanguage.add(new TextArea<String>("description").add(new CSLDTinyMceBehavior()));
                 infoAboutLanguage.add(new Label("language"));
+
+                infoAboutLanguage.add(new AjaxSubmitLink("updateLanguage") {
+                    @Override
+                    protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                        Game toModify = TranslateGame.this.languagesModel.getObject();
+                        GameHasLanguages langToSave = (GameHasLanguages) getForm().getModelObject();
+                        boolean wasUpdate = false;
+                        for(GameHasLanguages lang: toModify.getAvailableLanguages()){
+                            if(lang.getLanguage().equals(langToSave.getLanguage())){
+                                lang.setDescription(langToSave.getDescription());
+                                lang.setName(langToSave.getName());
+                                wasUpdate = true;
+                            }
+                        }
+                        if(!wasUpdate) {
+                            toModify.getAvailableLanguages().add(langToSave);
+                        }
+                        gameService.saveOrUpdate(toModify);
+                        target.add(TranslateGame.this);
+                    }
+                }.add(new TinyMceAjaxSubmitModifier()));
 
                 infoAboutLanguage.add(new AjaxButton("removeLanguage") {
                     @Override
@@ -145,5 +169,12 @@ public class TranslateGame extends CsldBasePage {
         });
 
         add(addLanguage);
+    }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        response.render(CssHeaderItem.forReference(new PackageResourceReference(TranslateGame.class, "TranslateGame.css")));
+
+        super.renderHead(response);
     }
 }
