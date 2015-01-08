@@ -1,9 +1,6 @@
 package cz.larpovadatabaze.services;
 
-import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Label;
+import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.models.FilterGame;
 import org.hibernate.criterion.Order;
@@ -89,4 +86,6 @@ public interface GameService extends GenericService<Game>, IIconReferenceProvide
      * @return List of all rated games.
      */
     List<Game> getGamesRatedByUser(int userId);
+
+    void deleteTranslation(Game toModify, Language convertedInput);
 }

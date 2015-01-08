@@ -81,7 +81,8 @@ public class TranslatableEntityTranslator implements Translator<TranslatableEnti
         Language actualLanguage = new Language(actualLanguageProvider.getLanguagesForUser().get(0));
         List<TranslationEntity> translationsForGame = toTranslate.getLanguages();
         for(TranslationEntity language: translationsForGame) {
-            if(language.getLanguage().equals(actualLanguage)) {
+            if(language.getLanguage() != null &&
+                    language.getLanguage().equals(actualLanguage)) {
                 translateUsingEntity(toTranslate, language);
                 return true;
             }

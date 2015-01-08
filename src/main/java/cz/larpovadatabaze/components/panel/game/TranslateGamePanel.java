@@ -15,7 +15,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-public class TranslateGamePanel extends Panel {
+public class
+        TranslateGamePanel extends Panel {
     private IModel<Game> model;
 
     public TranslateGamePanel(String id, IModel<Game> model) {
@@ -56,7 +57,6 @@ public class TranslateGamePanel extends Panel {
             }
         }
 
-        // Invisible until improved so it works.
         setVisibilityAllowed(false);
     }
 }

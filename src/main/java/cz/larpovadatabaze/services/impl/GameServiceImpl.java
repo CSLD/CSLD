@@ -269,6 +269,11 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public void deleteTranslation(Game toModify, Language convertedInput) {
+        gameDAO.deleteTranslation(toModify, convertedInput);
+    }
+
+    @Override
     public ResourceReference getIconReference() {
         synchronized (this) {
             if (iconResourceReference == null) {
