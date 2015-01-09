@@ -62,6 +62,7 @@ http://www.springframework.org/schema/jee http://www.springframework.org/schema/
     </bean>
 
     <bean id="gameHasLanguageDao" class="cz.larpovadatabaze.dao.GameHasLanguageDao"></bean>
+    <bean id="labelHasLanguagesDao" class="cz.larpovadatabaze.dao.LabelHasLanguageDao"></bean>
 
 	<!-- Hibernate session factory -->
 	<bean id="sessionFactory"

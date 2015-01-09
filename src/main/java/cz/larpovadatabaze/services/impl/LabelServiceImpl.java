@@ -1,8 +1,10 @@
 package cz.larpovadatabaze.services.impl;
 
 import cz.larpovadatabaze.dao.LabelDAO;
+import cz.larpovadatabaze.dao.LabelHasLanguageDao;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Label;
+import cz.larpovadatabaze.entities.LabelHasLanguages;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.lang.LanguageSolver;
 import cz.larpovadatabaze.lang.SessionLanguageSolver;
@@ -21,6 +23,7 @@ import java.util.List;
 @Repository
 public class LabelServiceImpl implements LabelService {
     @Autowired private LabelDAO labelDAO;
+    @Autowired private LabelHasLanguageDao labelHasLanguagesDao;
     private LanguageSolver languageSolver = new SessionLanguageSolver();
 
     public List<Label> getAll(){
@@ -97,6 +100,11 @@ public class LabelServiceImpl implements LabelService {
     @Override
     public Label getById(int filterLabel) {
         return labelDAO.findById(filterLabel);
+    }
+
+    @Override
+    public void deleteTranslation(LabelHasLanguages toRemove) {
+        labelHasLanguagesDao.makeTransient(toRemove);
     }
 
     @Override

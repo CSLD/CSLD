@@ -1,15 +1,18 @@
-package cz.larpovadatabaze.components.page.game;
+package cz.larpovadatabaze.components.page.admin;
 
 import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.GameHasLanguages;
+import cz.larpovadatabaze.entities.LabelHasLanguages;
 import cz.larpovadatabaze.entities.Language;
 import cz.larpovadatabaze.lang.CodeLocaleProvider;
 import cz.larpovadatabaze.lang.LanguageSolver;
 import cz.larpovadatabaze.lang.LocaleProvider;
 import cz.larpovadatabaze.lang.SessionLanguageSolver;
 import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.LabelService;
 import cz.larpovadatabaze.utils.HbUtils;
 import org.apache.log4j.Logger;
 import org.apache.wicket.RestartResponseException;
@@ -38,16 +41,16 @@ import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 import java.util.List;
 import java.util.Locale;
 
-public class TranslateGame extends CsldBasePage {
-    private static final String ID_PARAM = "id";
-    private final static Logger logger = Logger.getLogger(TranslateGame.class);
-    private ListView<GameHasLanguages> translationsShow;
+public class TranslateLabel extends CsldBasePage {
+    public static final String ID_PARAM = "id";
+    private final static Logger logger = Logger.getLogger(TranslateLabel.class);
+    private ListView<LabelHasLanguages> translationsShow;
     private LanguagesModel languagesModel;
 
     @SpringBean
-    GameService gameService;
+    LabelService labelService;
 
-    private class LanguagesModel extends LoadableDetachableModel<Game> {
+    private class LanguagesModel extends LoadableDetachableModel<cz.larpovadatabaze.entities.Label> {
         // Game id. We could also store id as page property.
         private int gameId;
 
@@ -56,25 +59,25 @@ public class TranslateGame extends CsldBasePage {
         }
 
         @Override
-        protected Game load() {
+        protected cz.larpovadatabaze.entities.Label load() {
             logger.debug("Loading languages for id "+gameId);
 
-            Game game = gameService.getById(gameId);
-            if(HbUtils.isProxy(game)){
-                game = HbUtils.deproxy(game);
+            cz.larpovadatabaze.entities.Label label = labelService.getById(gameId);
+            if(HbUtils.isProxy(label)){
+                label = HbUtils.deproxy(label);
             }
 
-            return game;
+            return label;
         }
     }
 
-    public TranslateGame(PageParameters params) {
+    public TranslateLabel(PageParameters params) {
         try {
-            int gameId = params.get(ID_PARAM).to(Integer.class);
-            languagesModel = new LanguagesModel(gameId);
+            int labelId = params.get(ID_PARAM).to(Integer.class);
+            languagesModel = new LanguagesModel(labelId);
             setDefaultModel(new CompoundPropertyModel<Object>(languagesModel));
         } catch (NumberFormatException ex) {
-            throw new RestartResponseException(ListGame.class);
+            throw new RestartResponseException(HomePage.class);
         }
     }
 
@@ -82,12 +85,12 @@ public class TranslateGame extends CsldBasePage {
     protected void onInitialize() {
         super.onInitialize();
 
-        translationsShow = new ListView<GameHasLanguages>("availableLanguages", languagesModel.load().getAvailableLanguages()) {
+        translationsShow = new ListView<LabelHasLanguages>("labelHasLanguages", languagesModel.load().getLabelHasLanguages()) {
             @Override
-            protected void populateItem(final ListItem<GameHasLanguages> item) {
-                GameHasLanguages language = item.getModelObject();
+            protected void populateItem(final ListItem<LabelHasLanguages> item) {
+                LabelHasLanguages language = item.getModelObject();
 
-                Form infoAboutLanguage = new Form<GameHasLanguages>("translation", new CompoundPropertyModel<GameHasLanguages>(language));
+                Form infoAboutLanguage = new Form<LabelHasLanguages>("translation", new CompoundPropertyModel<LabelHasLanguages>(language));
                 infoAboutLanguage.add(new TextField<String>("name"));
                 infoAboutLanguage.add(new TextArea<String>("description").add(new CSLDTinyMceBehavior()));
                 infoAboutLanguage.add(new Label("language"));
@@ -95,10 +98,10 @@ public class TranslateGame extends CsldBasePage {
                 infoAboutLanguage.add(new AjaxSubmitLink("updateLanguage") {
                     @Override
                     protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                        Game toModify = TranslateGame.this.languagesModel.getObject();
-                        GameHasLanguages langToSave = (GameHasLanguages) getForm().getModelObject();
+                        cz.larpovadatabaze.entities.Label toModify = TranslateLabel.this.languagesModel.getObject();
+                        LabelHasLanguages langToSave = (LabelHasLanguages) getForm().getModelObject();
                         boolean wasUpdate = false;
-                        for(GameHasLanguages lang: toModify.getAvailableLanguages()){
+                        for(LabelHasLanguages lang: toModify.getLabelHasLanguages()){
                             if(lang.getLanguage().equals(langToSave.getLanguage())){
                                 lang.setDescription(langToSave.getDescription());
                                 lang.setName(langToSave.getName());
@@ -106,33 +109,33 @@ public class TranslateGame extends CsldBasePage {
                             }
                         }
                         if(!wasUpdate) {
-                            toModify.getAvailableLanguages().add(langToSave);
+                            toModify.getLabelHasLanguages().add(langToSave);
                         }
-                        gameService.saveOrUpdate(toModify);
-                        target.add(TranslateGame.this);
+                        labelService.saveOrUpdate(toModify);
+                        target.add(TranslateLabel.this);
                     }
                 }.add(new TinyMceAjaxSubmitModifier()));
 
                 infoAboutLanguage.add(new AjaxButton("removeLanguage") {
                     @Override
                     protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                        Game toModify = TranslateGame.this.languagesModel.getObject();
-                        List<GameHasLanguages> allLangs = toModify.getAvailableLanguages();
+                        cz.larpovadatabaze.entities.Label toModify = TranslateLabel.this.languagesModel.getObject();
+                        List<LabelHasLanguages> allLangs = toModify.getLabelHasLanguages();
                         if(allLangs.size() <= 1 ) {
                             return;
                         }
-                        GameHasLanguages toRemove = item.getModel().getObject();
+                        LabelHasLanguages toRemove = item.getModel().getObject();
                         translationsShow.getModelObject().remove(toRemove);
-                        for(GameHasLanguages lang: toModify.getAvailableLanguages()){
+                        for(LabelHasLanguages lang: toModify.getLabelHasLanguages()){
                             if(lang.getLanguage().equals(toRemove.getLanguage())){
                                 toRemove = lang;
                             }
                         }
-                        toModify.getAvailableLanguages().remove(toRemove);
-                        gameService.deleteTranslation(toRemove);
-                        translationsShow.setModelObject(toModify.getAvailableLanguages());
+                        toModify.getLabelHasLanguages().remove(toRemove);
+                        labelService.deleteTranslation(toRemove);
+                        translationsShow.setModelObject(toModify.getLabelHasLanguages());
                         translationsShow.removeAll();
-                        target.add(TranslateGame.this);
+                        target.add(TranslateLabel.this);
                     }
                 });
 
@@ -149,21 +152,21 @@ public class TranslateGame extends CsldBasePage {
         addLanguage.add(new AjaxButton("addAnotherLanguage") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                GameHasLanguages language = new GameHasLanguages();
-                Game toUpdate = TranslateGame.this.languagesModel.getObject();
+                LabelHasLanguages language = new LabelHasLanguages();
+                cz.larpovadatabaze.entities.Label toUpdate = TranslateLabel.this.languagesModel.getObject();
                 language.setName("");
                 language.setDescription("");
-                language.setGame(toUpdate);
+                language.setLabel(toUpdate);
                 language.setLanguage(actualLang.getConvertedInput());
-                for(GameHasLanguages lang: toUpdate.getAvailableLanguages()){
+                for(LabelHasLanguages lang: toUpdate.getLabelHasLanguages()){
                     if(lang.getLanguage().equals(language.getLanguage())){
                         return;
                     }
                 }
                 translationsShow.getModelObject().add(language);
                 //toUpdate.getAvailableLanguages().add(language);
-                //labelService.saveOrUpdate(toUpdate);
-                target.add(TranslateGame.this);
+                //gameService.saveOrUpdate(toUpdate);
+                target.add(TranslateLabel.this);
             }
         });
 
@@ -172,7 +175,7 @@ public class TranslateGame extends CsldBasePage {
 
     @Override
     public void renderHead(IHeaderResponse response) {
-        response.render(CssHeaderItem.forReference(new PackageResourceReference(TranslateGame.class, "TranslateGame.css")));
+        response.render(CssHeaderItem.forReference(new PackageResourceReference(TranslateLabel.class, "TranslateLabel.css")));
 
         super.renderHead(response);
     }
