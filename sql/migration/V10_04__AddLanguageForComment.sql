@@ -1,0 +1,1 @@
+Alter table csld_comment add column lang VARCHAR(10) not null default 'cs';

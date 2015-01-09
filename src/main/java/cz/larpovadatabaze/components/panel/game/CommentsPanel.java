@@ -1,5 +1,7 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import cz.larpovadatabaze.lang.LanguageSolver;
+import cz.larpovadatabaze.lang.SessionLanguageSolver;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -40,6 +42,8 @@ public class CommentsPanel extends Panel {
     private final CommentTextModel model;
 
     private final Component[] refreshOnChange;
+
+    private LanguageSolver sessionLanguageSolver = new SessionLanguageSolver();
 
     /**
      * Model for comment text. Works with the complete comment, which it caches
@@ -107,6 +111,7 @@ public class CommentsPanel extends Panel {
                         ex.printStackTrace();
                     }
                 } else {
+                    actualComment.setLang(sessionLanguageSolver.getTextLangForUser().get(0));
                     actualComment.setComment(Jsoup.clean(newComment, Whitelist.basic()));
                     if (actualComment.getAdded() == null) {
                         actualComment.setAdded(new Timestamp(System.currentTimeMillis()));
