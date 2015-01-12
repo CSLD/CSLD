@@ -95,6 +95,7 @@ http://www.springframework.org/schema/jee http://www.springframework.org/schema/
                 <value>cz.larpovadatabaze.entities.Language</value>
                 <value>cz.larpovadatabaze.entities.GameHasLanguages</value>
                 <value>cz.larpovadatabaze.entities.LabelHasLanguages</value>
+                <value>cz.larpovadatabaze.entities.GroupHasLanguage</value>
 			</list>
 		</property>
 	</bean>

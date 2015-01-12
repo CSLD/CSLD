@@ -4,6 +4,7 @@ import cz.larpovadatabaze.api.GenericHibernateDAO;
 import cz.larpovadatabaze.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.dao.builder.IBuilder;
 import cz.larpovadatabaze.entities.CsldGroup;
+import cz.larpovadatabaze.entities.Language;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  *
@@ -31,9 +33,11 @@ public class GroupDAO extends GenericHibernateDAO<CsldGroup, Integer> {
     }
 
     @SuppressWarnings("unchecked")
-    public List<CsldGroup> orderedByName(Long first, Long amountPerPage) {
+    public List<CsldGroup> orderedByName(Long first, Long amountPerPage, List<Locale> locales) {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = getBuilder().build().getExecutableCriteria(session)
+                .createCriteria("groupHasLanguages")
+                .add(Restrictions.in("language.language", locales))
                 .addOrder(Order.asc("name"))
                 .setFirstResult(first.intValue())
                 .setMaxResults(amountPerPage.intValue());
@@ -55,9 +59,11 @@ public class GroupDAO extends GenericHibernateDAO<CsldGroup, Integer> {
         return uniqueGroup.list();
     }
 
-    public int getAmountOfGroups() {
+    public int getAmountOfGroups(List<Locale> locales) {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = getBuilder().build().getExecutableCriteria(session)
+                .createCriteria("groupHasLanguages")
+                .add(Restrictions.in("language.language", locales))
                 .setProjection(Projections.rowCount());
 
         return ((Long)criteria.uniqueResult()).intValue();
@@ -86,5 +92,14 @@ public class GroupDAO extends GenericHibernateDAO<CsldGroup, Integer> {
                 .add(Restrictions.ilike("name","%"+startsWith+"%"));
 
         return query.list();
+    }
+
+    public List<CsldGroup> findByName(String name) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = getBuilder().build().getExecutableCriteria(session)
+                .createCriteria("groupHasLanguages")
+                .add(Restrictions.eq("name", name));
+
+        return criteria.list();
     }
 }

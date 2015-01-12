@@ -4,6 +4,8 @@ import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.Image;
+import cz.larpovadatabaze.lang.CodeLocaleProvider;
+import cz.larpovadatabaze.lang.LocaleProvider;
 import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.GroupService;
 import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
@@ -12,6 +14,7 @@ import cz.larpovadatabaze.validator.UniqueGroupValidator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
+import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
@@ -25,6 +28,7 @@ import org.apache.wicket.util.lang.Bytes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Encapsulation of form used for creating groups. It may be used on more than one place. It can also be used for
@@ -85,6 +89,16 @@ public abstract class CreateOrUpdateGroupPanel extends Panel {
         createGroup.add(imageFeedback);
         name.add(new AjaxFeedbackUpdatingBehavior("blur", imageFeedback));
         createGroup.add(fileUploadField);
+
+        List<String> availableLanguages = new ArrayList<String>();
+        LocaleProvider provider = new CodeLocaleProvider();
+        List<Locale> availableLocale = provider.availableLocale();
+        for(Locale available: availableLocale) {
+            availableLanguages.add(provider.transformLocaleToName(available));
+        }
+        final DropDownChoice<String> changeLocale =
+                new DropDownChoice<String>("lang", availableLanguages);
+        createGroup.add(changeLocale);
 
         createGroup.add(new AjaxButton("submit"){
             @Override
