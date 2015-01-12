@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.components.page.game;
 
 import cz.larpovadatabaze.components.panel.game.*;
+import cz.larpovadatabaze.lang.LanguageSolver;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -48,6 +49,8 @@ public class GameDetail extends CsldBasePage {
 
     @SpringBean
     GameService gameService;
+    @SpringBean
+    LanguageSolver localeProvider;
 
     private RatingsResultPanel ratingsResult;
     private RatingsPanel ratingsPanel;
@@ -151,7 +154,13 @@ public class GameDetail extends CsldBasePage {
                 }
             }
 
-            Set<Comment> unique = new HashSet<Comment>(res);
+            Set<Comment> unique = new HashSet<Comment>();
+            List<String> actualLanguages = localeProvider.getTextLangForUser();
+            for(Comment comment: res){
+                if(actualLanguages.contains(comment.getLang())) {
+                    unique.add(comment);
+                }
+            }
             res = new ArrayList<Comment>(unique);
 
             // Sort

@@ -59,7 +59,11 @@ public class CommentDAO extends GenericHibernateDAO<Comment, Integer>{
                 .setFirstResult(first);
 
         if(locales != null) {
-            addLocaleLimitation(criteria, locales);
+            List<String> allNeededLanguages = new ArrayList<String>();
+            for(Locale locale: locales) {
+                allNeededLanguages.add(locale.getLanguage());
+            }
+            criteria.add(Restrictions.in("lang", allNeededLanguages));
         }
 
         return criteria.list();
@@ -76,9 +80,10 @@ public class CommentDAO extends GenericHibernateDAO<Comment, Integer>{
     }
 
     private void addLocaleLimitation(Criteria criteria, List<Locale> locales) {
-        criteria
-                .createCriteria("commentedGame.availableLanguages")
-                .createCriteria("language")
-                .add(Restrictions.in("language", locales));
+        List<String> allNeededLanguages = new ArrayList<String>();
+        for(Locale locale: locales) {
+            allNeededLanguages.add(locale.getLanguage());
+        }
+        criteria.add(Restrictions.in("lang", allNeededLanguages));
     }
 }
