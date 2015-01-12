@@ -92,7 +92,7 @@ public class LastGamesPanel extends Panel {
     public void onInitialize() {
         super.onInitialize();
 
-        List<Game> toShow = gameService.getLastGames(EXPANDED_AMOUNT_LAST_GAMES);
+        List<Game> toShow = new ArrayList<Game>(gameService.getLastGames(EXPANDED_AMOUNT_LAST_GAMES));
 
         if(toShow.size() >= INITIAL_AMOUNT_LAST_GAMES) {
             add(new GamesListView("visibleGamesView", toShow.subList(0, INITIAL_AMOUNT_LAST_GAMES)));

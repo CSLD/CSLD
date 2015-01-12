@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.components.page.game;
 
 import cz.larpovadatabaze.components.panel.game.*;
+import cz.larpovadatabaze.lang.LanguageSolver;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -20,11 +21,7 @@ import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 
 import cz.larpovadatabaze.components.common.JSPingBehavior;
 import cz.larpovadatabaze.components.common.tabs.TabsComponentPanel;
@@ -52,6 +49,8 @@ public class GameDetail extends CsldBasePage {
 
     @SpringBean
     GameService gameService;
+    @SpringBean
+    LanguageSolver localeProvider;
 
     private RatingsResultPanel ratingsResult;
     private RatingsPanel ratingsPanel;
@@ -154,6 +153,15 @@ public class GameDetail extends CsldBasePage {
                     res.add(c);
                 }
             }
+
+            Set<Comment> unique = new HashSet<Comment>();
+            List<String> actualLanguages = localeProvider.getTextLangForUser();
+            for(Comment comment: res){
+                if(actualLanguages.contains(comment.getLang())) {
+                    unique.add(comment);
+                }
+            }
+            res = new ArrayList<Comment>(unique);
 
             // Sort
             Collections.sort(res, new Comparator<Comment>() {
