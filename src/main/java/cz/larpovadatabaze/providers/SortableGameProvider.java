@@ -113,7 +113,7 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
         }
     }
 
-    private Collection<Game> setStart(Collection<Game> games, int first){
+    private List<Game> setStart(List<Game> games, int first){
         for(Game game: games){
             game.setFirst(first);
         }

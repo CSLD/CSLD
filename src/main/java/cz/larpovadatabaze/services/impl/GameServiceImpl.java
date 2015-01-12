@@ -131,8 +131,8 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Collection<Game> getFilteredGames(FilterGame filterGame, List<Label> labels, int offset, int limit, Order orderBy) {
-        return new HashSet<Game>(gameDAO.getFilteredGames(filterGame, labels, offset, limit, orderBy));
+    public List<Game> getFilteredGames(FilterGame filterGame, List<Label> labels, int offset, int limit, Order orderBy) {
+        return gameDAO.getFilteredGames(filterGame, labels, offset, limit, orderBy);
     }
 
     @Override

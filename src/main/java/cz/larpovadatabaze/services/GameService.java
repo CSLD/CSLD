@@ -36,7 +36,7 @@ public interface GameService extends GenericService<Game>, IIconReferenceProvide
 
     int getAmountOfGames();
 
-    Collection<Game> getFilteredGames(FilterGame filterGame, List<Label> labels, int offset, int limit, Order orderBy);
+    List<Game> getFilteredGames(FilterGame filterGame, List<Label> labels, int offset, int limit, Order orderBy);
 
     long getAmountOfFilteredGames(FilterGame filterGame, List<Label> filterLabels);
 
