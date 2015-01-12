@@ -60,7 +60,7 @@ public class ListGamePanel extends Panel {
             if(userId == 0) {
                 return new ArrayList<Game>();
             } else {
-                return commentService.getGamesCommentedByUser(userId);
+                return new ArrayList<Game>(commentService.getGamesCommentedByUser(userId));
             }
         }
     }
@@ -77,7 +77,7 @@ public class ListGamePanel extends Panel {
             if(userId == 0) {
                 return new ArrayList<Game>();
             } else {
-                return gameService.getGamesRatedByUser(userId);
+                return new ArrayList<Game>(gameService.getGamesRatedByUser(userId));
             }
         }
     }

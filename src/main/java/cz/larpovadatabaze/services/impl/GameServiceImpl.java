@@ -121,8 +121,8 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<Game> getLastGames(int amountOfGames) {
-        return gameDAO.getLastGames(amountOfGames, languageSolver.getLanguagesForUser());
+    public Collection<Game> getLastGames(int amountOfGames) {
+        return new HashSet<Game>(gameDAO.getLastGames(amountOfGames, languageSolver.getLanguagesForUser()));
     }
 
     @Override
@@ -131,8 +131,8 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<Game> getFilteredGames(FilterGame filterGame, List<Label> labels, int offset, int limit, Order orderBy) {
-        return gameDAO.getFilteredGames(filterGame, labels, offset, limit, orderBy);
+    public Collection<Game> getFilteredGames(FilterGame filterGame, List<Label> labels, int offset, int limit, Order orderBy) {
+        return new HashSet<Game>(gameDAO.getFilteredGames(filterGame, labels, offset, limit, orderBy));
     }
 
     @Override
@@ -141,13 +141,13 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<Game> getGamesOfAuthor(CsldUser author, int first, int count) {
-        return gameDAO.getGamesOfAuthor(author, first, count);
+    public Collection<Game> getGamesOfAuthor(CsldUser author, int first, int count) {
+        return new HashSet<Game>(gameDAO.getGamesOfAuthor(author, first, count));
     }
 
     @Override
-    public List<Game> getGamesOfGroup(CsldGroup csldGroup, int first, int count) {
-        return gameDAO.getGamesOfGroup(csldGroup, first, count);
+    public Collection<Game> getGamesOfGroup(CsldGroup csldGroup, int first, int count) {
+        return new HashSet<Game>(gameDAO.getGamesOfGroup(csldGroup, first, count));
     }
 
     @Override
@@ -236,8 +236,8 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<Game> getGamesCommentedByUser(int userId) {
-        return gameDAO.getGamesCommentedByUser(userId);
+    public Collection<Game> getGamesCommentedByUser(int userId) {
+        return new HashSet<Game>(gameDAO.getGamesCommentedByUser(userId));
     }
 
     @Override
@@ -266,8 +266,8 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<Game> getGamesRatedByUser(int userId) {
-        return gameDAO.getGamesRatedByUser(userId);
+    public Collection<Game> getGamesRatedByUser(int userId) {
+        return new HashSet<Game>(gameDAO.getGamesRatedByUser(userId));
     }
 
     @Override

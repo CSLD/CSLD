@@ -5,6 +5,7 @@ import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.models.FilterGame;
 import org.hibernate.criterion.Order;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
@@ -31,17 +32,17 @@ public interface GameService extends GenericService<Game>, IIconReferenceProvide
 
     Game getRandomGame();
 
-    List<Game> getLastGames(int amountOfGames);
+    Collection<Game> getLastGames(int amountOfGames);
 
     int getAmountOfGames();
 
-    List<Game> getFilteredGames(FilterGame filterGame, List<Label> labels, int offset, int limit, Order orderBy);
+    Collection<Game> getFilteredGames(FilterGame filterGame, List<Label> labels, int offset, int limit, Order orderBy);
 
     long getAmountOfFilteredGames(FilterGame filterGame, List<Label> filterLabels);
 
-    List<Game> getGamesOfAuthor(CsldUser author, int first, int count);
+    Collection<Game> getGamesOfAuthor(CsldUser author, int first, int count);
 
-    List<Game> getGamesOfGroup(CsldGroup csldGroup, int first, int count);
+    Collection<Game> getGamesOfGroup(CsldGroup csldGroup, int first, int count);
 
     long getAmountOfGamesOfAuthor(CsldUser author);
 
@@ -54,7 +55,7 @@ public interface GameService extends GenericService<Game>, IIconReferenceProvide
      */
     boolean canEditGame(Game game);
 
-    List<Game> getGamesCommentedByUser(int userId);
+    Collection<Game> getGamesCommentedByUser(int userId);
 
     /**
      * It returns whether the game with given id is hidden. It returns hidden if this game does not exist.
@@ -85,7 +86,7 @@ public interface GameService extends GenericService<Game>, IIconReferenceProvide
      * @param userId Id of the user.
      * @return List of all rated games.
      */
-    List<Game> getGamesRatedByUser(int userId);
+    Collection<Game> getGamesRatedByUser(int userId);
 
     void deleteTranslation(GameHasLanguages toRemove);
 }

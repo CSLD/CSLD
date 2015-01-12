@@ -13,9 +13,7 @@ import org.apache.wicket.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  *
@@ -63,13 +61,13 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> getLastComments(int amount) {
-        return commentDAO.getLastComments(amount, languageSolver.getLanguagesForUser());
+    public Collection<Comment> getLastComments(int amount) {
+        return new HashSet<Comment>(commentDAO.getLastComments(amount, languageSolver.getLanguagesForUser()));
     }
 
     @Override
-    public List<Comment> getLastComments(long first, long count, Locale locale) {
-        return commentDAO.getLastComments(((Long)first).intValue(), ((Long)count).intValue(), languageSolver.getLanguagesForUser());
+    public Collection<Comment> getLastComments(long first, long count, Locale locale) {
+        return new HashSet<Comment>(commentDAO.getLastComments(((Long)first).intValue(), ((Long)count).intValue(), languageSolver.getLanguagesForUser()));
     }
 
     @Override
@@ -100,7 +98,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Game> getGamesCommentedByUser(int userId) {
+    public Collection<Game> getGamesCommentedByUser(int userId) {
         return gameService.getGamesCommentedByUser(userId);
     }
 

@@ -116,7 +116,7 @@ public class LastCommentsPanel extends Panel {
     protected void onInitialize() {
         super.onInitialize();
 
-        List<Comment> toShow = commentService.getLastComments(EXPANDED_LAST_COMMENTS);
+        List<Comment> toShow = new ArrayList<Comment>(commentService.getLastComments(EXPANDED_LAST_COMMENTS));
 
         if(toShow.size() >= INITIAL_LAST_COMMENTS) {
             add(new CommentsView("visibleComments", toShow.subList(0, INITIAL_LAST_COMMENTS)));
