@@ -20,11 +20,7 @@ import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 
 import cz.larpovadatabaze.components.common.JSPingBehavior;
 import cz.larpovadatabaze.components.common.tabs.TabsComponentPanel;
@@ -154,6 +150,9 @@ public class GameDetail extends CsldBasePage {
                     res.add(c);
                 }
             }
+
+            Set<Comment> unique = new HashSet<Comment>(res);
+            res = new ArrayList<Comment>(unique);
 
             // Sort
             Collections.sort(res, new Comparator<Comment>() {
