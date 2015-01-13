@@ -62,12 +62,12 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Collection<Comment> getLastComments(int amount) {
-        return new HashSet<Comment>(commentDAO.getLastComments(amount, languageSolver.getLanguagesForUser()));
+        return new LinkedHashSet<Comment>(commentDAO.getLastComments(amount, languageSolver.getLanguagesForUser()));
     }
 
     @Override
     public Collection<Comment> getLastComments(long first, long count, Locale locale) {
-        return new HashSet<Comment>(commentDAO.getLastComments(((Long)first).intValue(), ((Long)count).intValue(), languageSolver.getLanguagesForUser()));
+        return new LinkedHashSet<Comment>(commentDAO.getLastComments(((Long)first).intValue(), ((Long)count).intValue(), languageSolver.getLanguagesForUser()));
     }
 
     @Override

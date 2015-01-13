@@ -101,7 +101,7 @@ public class GameServiceImpl implements GameService {
     @Override
     public List<Game> gamesOfAuthors(Game game) {
         // TODO sort games by rating.
-        Set<Game> games = new HashSet<Game>();
+        Set<Game> games = new LinkedHashSet<Game>();
         for(CsldUser author: game.getAuthors()){
             games.addAll(author.getAuthorOf());
         }
@@ -122,7 +122,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Collection<Game> getLastGames(int amountOfGames) {
-        return new HashSet<Game>(gameDAO.getLastGames(amountOfGames, languageSolver.getLanguagesForUser()));
+        return new LinkedHashSet<Game>(gameDAO.getLastGames(amountOfGames, languageSolver.getLanguagesForUser()));
     }
 
     @Override
@@ -142,12 +142,12 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Collection<Game> getGamesOfAuthor(CsldUser author, int first, int count) {
-        return new HashSet<Game>(gameDAO.getGamesOfAuthor(author, first, count));
+        return new LinkedHashSet<Game>(gameDAO.getGamesOfAuthor(author, first, count));
     }
 
     @Override
     public Collection<Game> getGamesOfGroup(CsldGroup csldGroup, int first, int count) {
-        return new HashSet<Game>(gameDAO.getGamesOfGroup(csldGroup, first, count));
+        return new LinkedHashSet<Game>(gameDAO.getGamesOfGroup(csldGroup, first, count));
     }
 
     @Override
@@ -237,7 +237,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Collection<Game> getGamesCommentedByUser(int userId) {
-        return new HashSet<Game>(gameDAO.getGamesCommentedByUser(userId));
+        return new LinkedHashSet<Game>(gameDAO.getGamesCommentedByUser(userId));
     }
 
     @Override
@@ -267,7 +267,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Collection<Game> getGamesRatedByUser(int userId) {
-        return new HashSet<Game>(gameDAO.getGamesRatedByUser(userId));
+        return new LinkedHashSet<Game>(gameDAO.getGamesRatedByUser(userId));
     }
 
     @Override
