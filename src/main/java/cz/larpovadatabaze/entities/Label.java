@@ -185,7 +185,7 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
 
     private List<LabelHasLanguages> labelHasLanguages;
 
-    @OneToMany(mappedBy = "label",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "label")
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     public List<LabelHasLanguages> getLabelHasLanguages() {
         return labelHasLanguages;
