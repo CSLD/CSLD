@@ -54,6 +54,7 @@ public class GroupDAO extends GenericHibernateDAO<CsldGroup, Integer> {
     @SuppressWarnings("unchecked")
     public List<CsldGroup> getByAutoCompletable(String groupName) throws WrongParameterException {
         Criteria uniqueGroup = getBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession())
+                .createCriteria("groupHasLanguages")
                 .add(Restrictions.eq("name", groupName));
 
         return uniqueGroup.list();
@@ -89,6 +90,7 @@ public class GroupDAO extends GenericHibernateDAO<CsldGroup, Integer> {
         Session session = sessionFactory.getCurrentSession();
         Criteria query = getBuilder().build().getExecutableCriteria(session)
                 .setMaxResults(maxChoices)
+                .createCriteria("groupHasLanguages")
                 .add(Restrictions.ilike("name","%"+startsWith+"%"));
 
         return query.list();
