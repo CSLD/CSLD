@@ -21,6 +21,8 @@ if (this.CSLDGallery === undefined) {
             this._$btnSave = this._$gallery.find('input[name=save]');
             this._$btnCancel = this._$gallery.find('input[name=cancel]');
             this._$btnOrder = this._$gallery.find('input[name=order]');
+            this._$btnPublish = this._$gallery.find('input[name=publish]');
+            this._$btnHide = this._$gallery.find('input[name=unpublish]');
 
             var wantedId = window.CSLDGallery.selectedId[componentId];
             var itemToSelect = null;
@@ -63,6 +65,8 @@ if (this.CSLDGallery === undefined) {
             this._$btnSave.click(this._actionSave.bind(this));
             this._$btnCancel.click(this._actionCancel.bind(this));
             this._$btnOrder.click(this._actionOrder.bind(this));
+            this._$btnPublish.click(this._actionPublish.bind(this));
+            this._$btnHide.click(this._actionHide.bind(this));
         }
 
 
@@ -363,6 +367,31 @@ if (this.CSLDGallery === undefined) {
                 this._$descriptionText.text(newDescription);
                 this._resetEditingUI();
             }
+        }
+
+        /**
+         * Publish this photo for showing on the front page.
+         * @private
+         */
+        CSLDGallery.prototype._actionPublish = function() {
+            var d = this._$current.data(this._DATA_KEY);
+            Wicket.Ajax.post({ u: this._actionURL, ep: {
+                "action": 'publish',
+                "imageId": d.id
+            }});
+        }
+
+        /**
+         * Hide this photo from the homePage
+         *
+         * @private
+         */
+        CSLDGallery.prototype._actionHide = function() {
+            var d = this._$current.data(this._DATA_KEY);
+            Wicket.Ajax.post({ u: this._actionURL, ep: {
+                "action": 'hide',
+                "imageId": d.id
+            }});
         }
 
         /**
