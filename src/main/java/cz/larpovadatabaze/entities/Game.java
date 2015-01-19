@@ -643,6 +643,23 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
         this.availableLanguages = availableLanguages;
     }
 
+    public Photo coverPhoto;
+
+    @ManyToOne
+    @JoinColumn(
+            name = "cover_photo",
+            referencedColumnName = "id",
+            insertable = true,
+            updatable = true
+    )
+    public Photo getCoverPhoto() {
+        return coverPhoto;
+    }
+
+    public void setCoverPhoto(Photo coverPhoto) {
+        this.coverPhoto = coverPhoto;
+    }
+
     @Transient
     public List<TranslationEntity> getLanguages(){
         if(availableLanguages == null) {
