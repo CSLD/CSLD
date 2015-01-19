@@ -97,6 +97,10 @@ public class UpdateUserPanel extends Panel {
                         new CodeLocaleProvider().availableLanguages());
         createOrUpdateUser.add(addFeedbackPanel(changeLocale, createOrUpdateUser, "userHasLanguagesFeedback"));
 
+        DropDownChoice<Language> defaultLanguage =
+                new DropDownChoice<Language>("defaultLang", new CodeLocaleProvider().availableLanguages());
+        createOrUpdateUser.add(defaultLanguage);
+
         createOrUpdateUser.add(new AjaxButton("submit"){
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {

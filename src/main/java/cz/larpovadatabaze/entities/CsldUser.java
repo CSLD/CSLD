@@ -269,6 +269,24 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable, I
         this.commented = commented;
     }
 
+    private Language defaultLang;
+
+    @ManyToOne(cascade = javax.persistence.CascadeType.ALL)
+    @JoinColumn(
+            name="default_lang",
+            referencedColumnName = "language",
+            insertable = true,
+            updatable = true
+    )
+    @Cascade(CascadeType.SAVE_UPDATE)
+    public Language getDefaultLang() {
+        return defaultLang;
+    }
+
+    public void setDefaultLang(Language defaultLang) {
+        this.defaultLang = defaultLang;
+    }
+
     private Image image;
 
     @ManyToOne(cascade= javax.persistence.CascadeType.ALL)

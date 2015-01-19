@@ -5,8 +5,10 @@ import cz.larpovadatabaze.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.dao.builder.IBuilder;
 import cz.larpovadatabaze.dto.UserRatesOwnGameDto;
 import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
@@ -179,5 +181,33 @@ public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
                 "  join csld_csld_user usr on usr.id = cgha.id_user");
         q.setResultTransformer(Transformers.aliasToBean(UserRatesOwnGameDto.class));
         return q.list();
+    }
+
+
+
+    @Override
+    public boolean saveOrUpdate(CsldUser entity) {
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            session.saveOrUpdate(entity);
+            flush();
+            return true;
+        } catch (HibernateException ex){
+            ex.printStackTrace();
+        }
+
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            session.get(Game.class, entity.getId());
+            if(entity.getDefaultLang() != null) {
+                session.merge(entity.getDefaultLang());
+            }
+            session.merge(entity);
+            flush();
+            return true;
+        } catch (HibernateException ex){
+            ex.printStackTrace();
+            return false;
+        }
     }
 }
