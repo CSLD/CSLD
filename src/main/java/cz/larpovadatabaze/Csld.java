@@ -161,6 +161,12 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
                     session.clear();
                     session.setClearRequested(false);
                 }
+                if(session.isSignedIn()) {
+                    Language userChosenLocale = session.getLoggedUser().getDefaultLang();
+                    if(userChosenLocale != null) {
+                        session.setLocale(userChosenLocale.getLanguage());
+                    }
+                }
             }
         });
 

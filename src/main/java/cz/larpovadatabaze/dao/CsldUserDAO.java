@@ -6,6 +6,7 @@ import cz.larpovadatabaze.dao.builder.IBuilder;
 import cz.larpovadatabaze.dto.UserRatesOwnGameDto;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.Language;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -15,6 +16,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -26,6 +28,8 @@ import java.util.List;
  */
 @Repository
 public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
+    @Autowired private LanguageDao languageDao;
+
     @Override
     public IBuilder getBuilder() {
         return new GenericBuilder<CsldUser>(CsldUser.class);
@@ -189,18 +193,9 @@ public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
     public boolean saveOrUpdate(CsldUser entity) {
         try{
             Session session = sessionFactory.getCurrentSession();
-            session.saveOrUpdate(entity);
-            flush();
-            return true;
-        } catch (HibernateException ex){
-            ex.printStackTrace();
-        }
-
-        try{
-            Session session = sessionFactory.getCurrentSession();
             session.get(Game.class, entity.getId());
             if(entity.getDefaultLang() != null) {
-                session.merge(entity.getDefaultLang());
+                entity.setDefaultLang(languageDao.findByLocale(entity.getDefaultLang().getLanguage()));
             }
             session.merge(entity);
             flush();
