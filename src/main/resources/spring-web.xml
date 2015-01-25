@@ -61,9 +61,9 @@ http://www.springframework.org/schema/jee http://www.springframework.org/schema/
         <constructor-arg name="whatLanguagesToUse" ref="localeProvider"/>
     </bean>
 
-    <bean id="languageDao" class="cz.larpovadatabaze.dao.LanguageDao"></bean>
-    <bean id="gameHasLanguageDao" class="cz.larpovadatabaze.dao.GameHasLanguageDao"></bean>
-    <bean id="labelHasLanguagesDao" class="cz.larpovadatabaze.dao.LabelHasLanguageDao"></bean>
+    <bean id="languageDao" class="cz.larpovadatabaze.dao.LanguageDao"/>
+    <bean id="gameHasLanguageDao" class="cz.larpovadatabaze.dao.GameHasLanguageDao"/>
+    <bean id="labelHasLanguagesDao" class="cz.larpovadatabaze.dao.LabelHasLanguageDao"/>
 
 	<!-- Hibernate session factory -->
 	<bean id="sessionFactory"

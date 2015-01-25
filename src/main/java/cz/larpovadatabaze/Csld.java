@@ -74,6 +74,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     private GroupService groupService;
     @Autowired
     private LabelService labelService;
+    private CodeLocaleProvider locales = new CodeLocaleProvider();
 
     private static final String DEFAULT_ENCODING = "UTF-8";
     private static ApplicationContext ctx;
@@ -160,12 +161,6 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
                 if (session.isClearRequested()) {
                     session.clear();
                     session.setClearRequested(false);
-                }
-                if(session.isSignedIn()) {
-                    Language userChosenLocale = session.getLoggedUser().getDefaultLang();
-                    if(userChosenLocale != null) {
-                        session.setLocale(userChosenLocale.getLanguage());
-                    }
                 }
             }
         });

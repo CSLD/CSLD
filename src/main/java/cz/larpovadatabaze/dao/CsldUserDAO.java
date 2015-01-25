@@ -186,23 +186,4 @@ public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
         q.setResultTransformer(Transformers.aliasToBean(UserRatesOwnGameDto.class));
         return q.list();
     }
-
-
-
-    @Override
-    public boolean saveOrUpdate(CsldUser entity) {
-        try{
-            Session session = sessionFactory.getCurrentSession();
-            session.get(Game.class, entity.getId());
-            if(entity.getDefaultLang() != null) {
-                entity.setDefaultLang(languageDao.findByLocale(entity.getDefaultLang().getLanguage()));
-            }
-            session.merge(entity);
-            flush();
-            return true;
-        } catch (HibernateException ex){
-            ex.printStackTrace();
-            return false;
-        }
-    }
 }

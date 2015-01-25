@@ -1,7 +1,5 @@
 package cz.larpovadatabaze.services.impl;
 
-import cz.larpovadatabaze.Csld;
-import cz.larpovadatabaze.api.ResourceLoader;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.dao.GameDAO;
 import cz.larpovadatabaze.dao.GameHasLanguageDao;
@@ -16,10 +14,7 @@ import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.Strings;
-import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
-import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;

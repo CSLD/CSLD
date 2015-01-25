@@ -7,6 +7,7 @@ import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Image;
 import cz.larpovadatabaze.entities.Language;
 import cz.larpovadatabaze.lang.CodeLocaleProvider;
+import cz.larpovadatabaze.lang.LocaleProvider;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
@@ -29,7 +30,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * This panel allows editing of user.
@@ -97,8 +100,13 @@ public class UpdateUserPanel extends Panel {
                         new CodeLocaleProvider().availableLanguages());
         createOrUpdateUser.add(addFeedbackPanel(changeLocale, createOrUpdateUser, "userHasLanguagesFeedback"));
 
-        DropDownChoice<Language> defaultLanguage =
-                new DropDownChoice<Language>("defaultLang", new CodeLocaleProvider().availableLanguages());
+        LocaleProvider locales = new CodeLocaleProvider();
+        List<String> availableLocales = new ArrayList<String>();
+        for(Locale locale: locales.availableLocale()){
+            availableLocales.add(locale.getLanguage());
+        }
+        DropDownChoice<String> defaultLanguage =
+                new DropDownChoice<String>("defaultLang", availableLocales);
         createOrUpdateUser.add(defaultLanguage);
 
         createOrUpdateUser.add(new AjaxButton("submit"){

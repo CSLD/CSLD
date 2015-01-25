@@ -1,7 +1,6 @@
 package cz.larpovadatabaze.components.panel.game;
 
 import cz.larpovadatabaze.api.ValidatableForm;
-import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.lang.CodeLocaleProvider;
 import cz.larpovadatabaze.lang.LanguageSolver;
@@ -18,7 +17,6 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 import java.util.ArrayList;
 import java.util.List;
