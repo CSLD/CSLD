@@ -40,7 +40,7 @@ public class ListUser extends CsldBasePage {
                 item.add(moderatorLinkContent);
 
                 final Label commentedGames = new Label("commentedGames", moderator.getAmountOfComments());
-                final Label playedGames = new Label("playedGames", moderator.getAmountOfPlayed());
+                final Label playedGames = new Label("onlyPlayed", moderator.getAmountOfPlayed());
                 item.add(commentedGames);
                 item.add(playedGames);
             }
