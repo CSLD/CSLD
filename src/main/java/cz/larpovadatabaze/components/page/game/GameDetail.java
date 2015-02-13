@@ -150,6 +150,7 @@ public class GameDetail extends CsldBasePage {
                     if (c.getHidden()) {
                         if (!c.getUserId().equals(thisUserId)) continue; // Hidden comment and user is not creator - hide
                     }
+                    // If language doesn't equal the chosen one then ignore it.
                     res.add(c);
                 }
             }
