@@ -62,7 +62,7 @@ public class RatingsResultPanel extends Panel {
 
         @Override
         public String getObject() {
-            double ratingOfGame = model.getObject().getAverageRating() != null ? model.getObject().getAverageRating()/10 : 0;
+            double ratingOfGame = model.getObject().getAverageRating() != null ? model.getObject().getAverageRating()/10d : 0;
             return df.format(ratingOfGame);
         }
     }
