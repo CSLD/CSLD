@@ -1,7 +1,6 @@
 package cz.larpovadatabaze.components.page.user;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.panel.admin.AdminAllRatingsPanel;
 import cz.larpovadatabaze.components.panel.game.CommentsListPanel;
 import cz.larpovadatabaze.components.panel.game.GameListPanel;
 import cz.larpovadatabaze.components.panel.game.ListGamesWithAnnotations;

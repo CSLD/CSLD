@@ -21,6 +21,7 @@ public class CsldAuthenticatedWebSession extends AuthenticatedWebSession {
     private Roles actualRoles;
     private Integer loggedUserId;
     private CsldUser csldUser;
+    private boolean setLanguage = true;
 
     @SpringBean
     private CsldUserService csldUserService;
@@ -35,6 +36,14 @@ public class CsldAuthenticatedWebSession extends AuthenticatedWebSession {
     {
         super(request);
         Injector.get().inject(this);
+    }
+
+    public boolean isSetLanguage() {
+        return setLanguage;
+    }
+
+    public void setSetLanguage(boolean setLanguage) {
+        this.setLanguage = setLanguage;
     }
 
     /**
@@ -86,6 +95,8 @@ public class CsldAuthenticatedWebSession extends AuthenticatedWebSession {
             return false;
         }
     }
+
+
 
     public CsldUser getLoggedUser() {
         if(!isSignedIn()){

@@ -16,7 +16,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**

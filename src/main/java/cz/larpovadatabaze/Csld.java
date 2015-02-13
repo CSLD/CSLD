@@ -74,6 +74,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     private GroupService groupService;
     @Autowired
     private LabelService labelService;
+    private CodeLocaleProvider locales = new CodeLocaleProvider();
 
     private static final String DEFAULT_ENCODING = "UTF-8";
     private static ApplicationContext ctx;
