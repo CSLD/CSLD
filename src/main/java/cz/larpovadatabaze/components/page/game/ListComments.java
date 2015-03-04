@@ -76,7 +76,7 @@ public class ListComments extends CsldBasePage{
                 Label commentDate = new Label("commentDate", Model.of(formatDate.format(dateOfComment)));
                 item.add(commentDate);
 
-                String gameRatingColor = Rating.getColorOf(game.getTotalRating());
+                String gameRatingColor = Rating.getColorOf(game.getAverageRating());
                 Label gameRating = new Label("gameRating","");
                 gameRating.add(new AttributeAppender("class", Model.of(gameRatingColor), " "));
                 item.add(gameRating);

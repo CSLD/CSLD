@@ -67,7 +67,7 @@ public class GamesResultsPanel extends Panel {
                 gameLink.add(gameLinkImage);
                 item.add(gameLink);
 
-                String gameRatingColor = Rating.getColorOf(game.getTotalRating());
+                String gameRatingColor = Rating.getColorOf(game.getAverageRating());
                 Label gameRating = new Label("gameRating","");
                 gameRating.add(new AttributeAppender("class", Model.of(gameRatingColor), " "));
                 item.add(gameRating);
