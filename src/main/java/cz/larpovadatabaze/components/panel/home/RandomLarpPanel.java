@@ -72,7 +72,7 @@ public class RandomLarpPanel extends AbstractCsldPanel<Game> {
         if(rating == null){
             rating = 0d;
         }
-        String gameRatingColor = Rating.getColorOf(Math.round(rating));
+        String gameRatingColor = Rating.getColorOf(game.getAverageRating());
         Label gameRating = new Label("gameRating","");
         gameRating.add(new AttributeAppender("class", Model.of(gameRatingColor), " "));
         add(gameRating);
