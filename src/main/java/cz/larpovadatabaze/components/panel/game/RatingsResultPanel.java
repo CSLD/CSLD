@@ -49,7 +49,7 @@ public class RatingsResultPanel extends Panel {
 
         @Override
         public String getObject() {
-            double ratingOfGame = model.getObject().getTotalRating() != null ? model.getObject().getTotalRating() : 0;
+            double ratingOfGame = model.getObject().getAverageRating() != null ? model.getObject().getAverageRating() : 0;
             return Rating.getColorOf(ratingOfGame);
         }
     }
