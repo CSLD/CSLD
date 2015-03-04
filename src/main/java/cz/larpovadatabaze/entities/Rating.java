@@ -137,9 +137,11 @@ public class Rating implements Serializable {
     }
 
     public static String getColorOf(Double gameAsAverageRating){
-        double gameAverage = gameAsAverageRating;
+        double gameAverage;
         if(gameAsAverageRating == null) {
             gameAverage = 0;
+        } else {
+            gameAverage = gameAsAverageRating;
         }
         String gameRatingColor = "notrated";
         if(gameAverage > 0){
