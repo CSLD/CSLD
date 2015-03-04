@@ -173,6 +173,9 @@ public class GameServiceImpl implements GameService {
         if(game.getTotalRating() == null){
             game.setTotalRating(0d);
         }
+        if(game.getAverageRating() == null){
+            game.setAverageRating(0d);
+        }
         if(game.getDescription() != null){
             game.setDescription(Jsoup.clean(game.getDescription(), Whitelist.basic()));
         }
