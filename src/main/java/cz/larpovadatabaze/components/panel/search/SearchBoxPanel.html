@@ -5,9 +5,14 @@
     It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/search/SearchBoxPanel.html
     Code - cz.larpovadatabaze.components.panel.search.SearchBoxPanel.html
     -->
-    <form wicket:id="search">
-        <input wicket:id="searchExpression" type="text" class="hledatBox" id="search_pwd" name="searchGame" title="Hledat">
-        <label for="search"><i class="fa fa-search"></i></label>
-        <input wicket:id="sendSearch" id="search" type="submit" class="glass" value="">
-    </form>
+    <div class="nav navbar-nav navbar-right hidden-sm">
+        <form wicket:id="search" class="navbar-form navbar-left" role="search">
+            <div class="input-group">
+                <input wicket:id="searchExpression" type="text" class="form-control" placeholder="Hledaný výraz">
+                          <span class="input-group-btn">
+                              <button type="submit"  wicket:id="sendSearch" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+                          </span>
+            </div>
+        </form>
+    </div>
 </wicket:panel>

@@ -1,17 +1,11 @@
 <wicket:panel xmlns:wicket="http://wicket.apache.org">
-    <!--
-    It shows links to the registration and login page.
-    It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/user/LoginBoxPanel.html
-    Code - cz.larpovadatabaze.components.panel.user.LoginBoxPanel.html
-    -->
-    <table>
-        <tbody>
-        <tr>
-            <td class="obsah">
-                <div class="popisek"><a wicket:id="register"><wicket:message key="user.register">Registrace</wicket:message></a></div>
-                <div class="popisek"><a wicket:id="signIn"><wicket:message key="user.login">Přihlášení</wicket:message></a></div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <li class="dropdown visible-md hidden-xs visible-sm hidden-lg">
+        <a wicket:id="login1" class="dropdown-toggle" data-toggle="dropdown"><wicket:message key="user.login">Přihlášení</wicket:message> <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <li><a wicket:id="login2"><wicket:message key="user.login">Přihlášení</wicket:message></a></li>
+            <li><a wicket:id="register2"><wicket:message key="user.register">Registrace</wicket:message></a></li>
+        </ul>
+    </li>
+    <li class="hidden-md hidden-sm visible-lg visible-xs"><a wicket:id="login3"><wicket:message key="user.login">Přihlášení</wicket:message></a></li>
+    <li class="hidden-md hidden-sm visible-lg visible-xs"><a wicket:id="register3"><wicket:message key="user.register">Registrace</wicket:message></a></li>
 </wicket:panel>

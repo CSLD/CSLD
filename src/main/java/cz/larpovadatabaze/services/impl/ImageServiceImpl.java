@@ -1,11 +1,5 @@
 package cz.larpovadatabaze.services.impl;
 
-import cz.larpovadatabaze.api.GenericHibernateDAO;
-import cz.larpovadatabaze.dao.ImageDAO;
-import cz.larpovadatabaze.entities.IEntityWithImage;
-import cz.larpovadatabaze.entities.Image;
-import cz.larpovadatabaze.services.FileService;
-import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.request.resource.ResourceReference;
@@ -14,6 +8,13 @@ import org.springframework.stereotype.Repository;
 
 import java.io.FileNotFoundException;
 import java.util.List;
+
+import cz.larpovadatabaze.api.GenericHibernateDAO;
+import cz.larpovadatabaze.dao.ImageDAO;
+import cz.larpovadatabaze.entities.IEntityWithImage;
+import cz.larpovadatabaze.entities.Image;
+import cz.larpovadatabaze.services.FileService;
+import cz.larpovadatabaze.services.ImageService;
 
 /**
  *
@@ -58,6 +59,7 @@ public class ImageServiceImpl implements ImageService {
         return new PackageResourceReference(image.getBaseClass(), image.getPath()).getResource();
     }
 
+    @Override
     public IResource getImageResource(Image image, IEntityWithImage.IPredefinedImage defaultImage) {
         if (image != null) {
             try {
@@ -71,6 +73,7 @@ public class ImageServiceImpl implements ImageService {
         else return getPredefinedImageResource(defaultImage);
     }
 
+    @Override
     public IResource getImageResource(IEntityWithImage entity) {
         return getImageResource(entity.getImage(), entity.getDefaultImage());
     }

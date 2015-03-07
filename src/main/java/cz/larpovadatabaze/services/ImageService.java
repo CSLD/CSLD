@@ -1,10 +1,11 @@
 package cz.larpovadatabaze.services;
 
+import org.apache.wicket.request.resource.IResource;
+import org.apache.wicket.request.resource.ResourceReference;
+
 import cz.larpovadatabaze.api.GenericHibernateDAO;
 import cz.larpovadatabaze.entities.IEntityWithImage;
 import cz.larpovadatabaze.entities.Image;
-import org.apache.wicket.request.resource.IResource;
-import org.apache.wicket.request.resource.ResourceReference;
 
 /**
  *
@@ -27,4 +28,8 @@ public interface ImageService extends GenericService<Image> {
      * named with string in constant RESOURCE_REFERENCE_ID_PARAM_NAME (see above)
      */
     public ResourceReference createImageTypeResourceReference(GenericHibernateDAO<? extends IEntityWithImage, Integer> dao);
+
+    IResource getImageResource(Image image, IEntityWithImage.IPredefinedImage defaultImage);
+
+    IResource getImageResource(IEntityWithImage entity);
 }

@@ -1,14 +1,5 @@
 package cz.larpovadatabaze.dao;
 
-import cz.larpovadatabaze.api.GenericHibernateDAO;
-import cz.larpovadatabaze.dao.builder.GameBuilder;
-import cz.larpovadatabaze.dao.builder.IBuilder;
-import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Label;
-import cz.larpovadatabaze.exceptions.WrongParameterException;
-import cz.larpovadatabaze.models.FilterGame;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -23,6 +14,16 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import cz.larpovadatabaze.api.GenericHibernateDAO;
+import cz.larpovadatabaze.dao.builder.GameBuilder;
+import cz.larpovadatabaze.dao.builder.IBuilder;
+import cz.larpovadatabaze.entities.CsldGroup;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.Label;
+import cz.larpovadatabaze.exceptions.WrongParameterException;
+import cz.larpovadatabaze.models.FilterGame;
 
 /**
  *
@@ -58,6 +59,18 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
         Criteria criteria = new GameBuilder().build().getExecutableCriteria(session)
                 .setMaxResults(amountOfGames)
                 .addOrder(Order.desc("added"));
+
+        addLanguageRestriction(criteria, locales);
+
+        return criteria.list();
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Game> getMostPopularGames(int amountOfGames, List<Locale> locales) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = new GameBuilder().build().getExecutableCriteria(session)
+            .setMaxResults(amountOfGames)
+            .addOrder(Order.desc("totalRating"));
 
         addLanguageRestriction(criteria, locales);
 

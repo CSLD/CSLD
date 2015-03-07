@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title wicket:id="pageTitle"></title>
     <wicket:link>
-        <link rel="shortcut icon" href="img/logo16.ico">
+        <link rel="shortcut icon" href="img/favicon.ico">
         <link rel="image_src" href="img/logo50.png" wicket:id="previewImageTag1" />
         <meta property="og:image" content="img/logo50.png" wicket:id="previewImageTag2" />
     </wicket:link>
@@ -24,70 +24,148 @@
         })();
 
     </script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
 
 <body>
-<div class="page">
-
 <!-- HEADER -->
 
-    <wicket:link>
-        <img src="img/logo50.png" id="logoNadpis" />
-        <a href="/">
-            <img src="img/nadpis_en.png" id="nadpisHlavni">
-        </a>
-    </wicket:link>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <wicket:link>
+                <a class="navbar-brand" href="/">
+                    <img class="logo" src="img/ld-logo.png" height="25" />
+                </a>
+            </wicket:link>
+        </div>
 
-<div wicket:id="login" id="loginBox">
-    <!--
-    This panel is found in package: cz.larpovadatabaze.components.panel.user.LoginBoxPanel.html
-    https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/user/LoginBoxPanel.html
-    -->
-</div>
-<div wicket:id="loggedInfo" id="loginBoxPrihlaseny">
-    <!--
-    This panel is found in package: cz.larpovadatabaze.components.panel.user.LoggedBoxPanel.html
-    https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/user/LoggedBoxPanel.html
-    -->
-</div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="visible-md visible-sm visible-xs visible-lg">
+                    <a class="menuItem" wicket:id="list-game"><wicket:message key="rankings">Žebříčky</wicket:message></a>
+                </li>
+                <li class="visible-md visible-sm visible-xs visible-lg">
+                    <a class="menuItem" wicket:id="list-authors"><wicket:message key="authors">Autoři</wicket:message></a>
+                </li>
+                <li class="visible-md visible-sm visible-xs visible-lg">
+                    <a class="menuItem" wicket:id="list-users"><wicket:message key="users">Uživatelé</wicket:message></a>
+                </li>
+                <li class="visible-md visible-sm visible-xs visible-lg">
+                    <a class="menuItem" wicket:id="list-groups"><wicket:message key="groups">Skupiny</wicket:message></a>
+                </li>
+                <wicket:container wicket:id="adminPanel" />
+            </ul>
 
-<div style="clear: both"></div>
+            <!-- Login / user info box -->
+            <ul class="nav navbar-nav navbar-right">
+                <li class="hidden-md visible-sm hidden-xs"><a href="#"><span class="glyphicon glyphicon-search"></span></a></li> <!-- TODO - Flankey dodá popup - TODO -->
+                <li class="visible-md visible-sm visible-xs visible-lg">
+                    <a class="menuItem" wicket:id="about"><wicket:message key="aboutDb">O databázi</wicket:message></a>
+                </li>
 
-<div class="menu">
-    <span class="polozky">
-        <span class="mezera"></span>
-        <a class="menuItem" wicket:id="list-game"><wicket:message key="rankings">Žebříčky</wicket:message></a>
-        <a class="menuItem" wicket:id="list-authors"><wicket:message key="authors">Autoři</wicket:message></a>
-        <a class="menuItem" wicket:id="list-users"><wicket:message key="users">Uživatelé</wicket:message></a>
-        <a class="menuItem" wicket:id="list-groups"><wicket:message key="groups">Skupiny</wicket:message></a>
-        <a class="menuItem" wicket:id="about"><wicket:message key="aboutDb">O databázi</wicket:message></a>
-        <span wicket:id="adminPanel"></span>
-    </span>
-    <wicket:container wicket:id="languagePicker" />
-    <span id="divProHledani" wicket:id="searchBox">
-        <!--
-        This panel is found in package: cz.larpovadatabaze.components.panel.search.SearchBoxPanel.html
-        https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/search/SearchBoxPanel.html
-        -->
-    </span>
-</div>
-<div style="margin-top: 20px;"></div>
+                <!-- User pannel or login links -->
+                <wicket:container wicket:id="user" />
 
-<wicket:child>
-    <!--
-    The content of every other page in app, wchich is descendant of CsldBasePage goes here.
-    -->
-</wicket:child>
+                <li id="languageChanger">
+                    <wicket:container wicket:id="languagePicker" />
+                </li>
+            </ul>
 
+            <wicket:container id="divProHledani" wicket:id="searchBox">
+                <!--
+                This panel is found in package: cz.larpovadatabaze.components.panel.search.SearchBoxPanel.html
+                https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/search/SearchBoxPanel.html
+                -->
+            </wicket:container>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<article>
+    <div class="main-content">
+        <wicket:child>
+            <!--
+            The content of every other page in app, wchich is descendant of CsldBasePage goes here.
+            -->
+        </wicket:child>
+    </div>
+</article>
 
 <!-- FOOTER -->
-<div class="footer">
-    &copy; larpovadatabaze.cz, 2012 | database coding: Jakub Balhar | design coding: <a href="http://hrajularpy.cz">Michal
-    Havelka</a> <br/>
-    layout: Jakub Siegel | PR: Petr Kuběnský | HR: Filip Appl <br/>
-    Thanks to all of you!
-</div>
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <p>&copy; 2013&ndash;2015 Larpová databáze / <a href="#">Mapa webu</a> / <a href="#">Ochrana osobních údajů</a>
+                </p>
+            </div>
 
-</div>
+            <div class="col-md-3 text-left links">
+                <p>
+
+                </p>
+            </div>
+
+            <!-- Social Links TODO - fill them in - TODO -->
+            <div class="col-md-3">
+                <ul class="footer-socials list-inline">
+                    <li>
+                        <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Facebook">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Skype">
+                            <i class="fa fa-skype"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Google Plus">
+                            <i class="fa fa-google-plus"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Linkedin">
+                            <i class="fa fa-linkedin"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Pinterest">
+                            <i class="fa fa-pinterest"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Twitter">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Dribbble">
+                            <i class="fa fa-dribbble"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- End Social Links -->
+
+        </div>
+        <p class="text-muted signature">Tým LD:&nbsp; Jakub Balhar &bull; Michal Havelka &bull; Petr Kuběnský &bull; Filip Appl &bull; Tomáš Felcman &bull; Michal Kára</p>
+    </div>
+</footer>
+
 </body>
 </html>

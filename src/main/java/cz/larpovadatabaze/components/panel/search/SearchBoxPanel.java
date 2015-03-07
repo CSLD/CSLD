@@ -1,6 +1,5 @@
 package cz.larpovadatabaze.components.panel.search;
 
-import cz.larpovadatabaze.components.page.search.SearchResults;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
@@ -8,6 +7,8 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+
+import cz.larpovadatabaze.components.page.search.SearchResultsPage;
 
 /**
  * Box containing field for queryString and submitting button.
@@ -41,6 +42,6 @@ public class SearchBoxPanel extends Panel {
         PageParameters params = new PageParameters();
         params.add(QUERY_PARAMETER_NAME, searchText);
 
-        throw new RestartResponseException(SearchResults.class, params);
+        throw new RestartResponseException(SearchResultsPage.class, params);
     }
 }

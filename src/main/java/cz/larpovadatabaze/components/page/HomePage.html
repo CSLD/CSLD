@@ -1,67 +1,70 @@
 <wicket:extend xmlns:wicket="http://wicket.apache.org">
-    <div class="levaCast">
-        <div wicket:id="linkToThisGame" id="gameInfoWithLink"></div>
 
-        <div id="nivoSlider" class="nivoSlider">
-            <img wicket:id="randomImages" width="642" height="435" alt=""/>
-        </div>
+    <!-- Advertisements -->
+    <wicket:container wicket:id="advertisements" />
 
-        <div style="clear:both; width:100%;"></div>
+    <div class="profile_bar recent-games">
+        <div class="container">
+            <div class="row">
 
-        <div id="vypisy">
-            <div class="sloupecLevy">
-                <div wicket:id="lastGames">
-                    <!--
-                    This panel is found in package: cz.larpovadatabaze.components.panel.home.LastGamesPanel.html
-                    https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/home/LastGamesPanel.html
-                    -->
-                </div>
-            </div>
-            <div class="sloupecPravy">
-                <div wicket:id="lastComments">
-                    <!--
-                    This panel is found in package: cz.larpovadatabaze.components.panel.home.LastCommentsPanel.html
-                    https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/home/LastCommentsPanel.html
-                    -->
-                </div>
+                <!-- Recent games -->
+                <wicket:container wicket:id="recentGames" />
+
+                <!-- larp.cz calendar -->
+                <wicket:container wicket:id="calendar" />
             </div>
         </div>
     </div>
 
-    <div class="pravaCast">
-        <div class="praveMenu">
-            <div class="nadpisMenu">
-                <wicket:message key="home.navigation">rychlá navigace</wicket:message>
-            </div>
-        </div>
-
-        <div class="sekce" wicket:id="createGamePanel">
-            <!--
-            This panel is found in package: cz.larpovadatabaze.components.panel.game.AddGamePanel.html
-            https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/AddGamePanel.html
-            -->
-        </div>
-
-        <div class="sekce">
-            <div class="nadpisSekce"><wicket:message key="game.calendar">Kalendář akcí</wicket:message></div>
-            <div id="kalendarObsah">
-                <!-- obsah z javascriptu v "hlavicce" -->
-            </div>
-            <div class="viceOdkazKalendar"><a href="http://kalendar.larp.cz" target="_blank"> více ...</a></div>
-        </div>
-
-        <div class="sekce" wicket:id="randomLarpPanel">
-            <!--
-            This panel is found in package: cz.larpovadatabaze.components.panel.home.RandomLarpPanel.html
-            https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/home/RandomLarpPanel.html
-            -->
-        </div>
-
-        <div class="sekce" wicket:id="statisticsPanel">
-            <!--
-            This panel is found in package: cz.larpovadatabaze.components.panel.home.StatisticsPanel.html
-            https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/home/StatisticsPanel.html
-            -->
+    <!-- Profile bar -->
+    <div class="profile_bar switcher home">
+        <div class="container">
+            <div class="small_bar">Recent<div class="active glyphicon glyphicon-home"></div></div><div class="small_bar">Kalendář akcí<div class="glyphicon glyphicon-home"></div></div><div class="small_bar">Statistiky<div class="glyphicon glyphicon-home"></div></div>
         </div>
     </div>
+
+    <!-- Comments -->
+    <wicket:container wicket:id="lastComments" />
+
+    <!-- something -->
+    <div class="profile_bar events">
+        <div class="container">
+
+            <div class="col-md-12">
+
+                <div class="heading-testimonials">
+                    Something (maybe slider)
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- end of something -->
+
+    <!-- pinteresting tweets .D -->
+    <div class="container main">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="heading-testimonials">
+                    News from LARPers
+                </div>
+
+                WHERE TO GET THIS?
+            </div>
+        </div>
+
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <a href="#"><div class="view-more-btn">+ View more</div></a>
+            </div>
+        </div>
+        <div class="col-md-4">
+        </div>
+    </div>
+
+    <wicket:container wicket:id="recentPhotos" />
+
 </wicket:extend>

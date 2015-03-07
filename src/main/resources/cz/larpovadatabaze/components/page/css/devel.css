@@ -1,0 +1,78 @@
+/* CSS rules added by developers */
+
+/**
+ * HACK: Hack for overflowing navbar
+ */
+.navbar {
+    max-height: 51px;
+}
+
+/**
+ * HACK: Recent game name wrapping fix
+ */
+.recent-game {
+    max-width: 195px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/**
+ * HACK: Limit width of calendar place
+ * XXX: The solution is not a very nice one...
+ */
+.calendar-place {
+    display: inline-block;
+    line-height: 8px;
+    max-width: 85px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/**
+ * LEGACY: Language picker
+ */
+
+ul.localePicker {
+    height: 20px;
+    border: 1px solid black;
+    background: white;
+    overflow: hidden;
+    padding: 0;
+}
+
+ul.localePicker:hover {
+    height: auto;
+}
+
+li.localePickerItem {
+    width: 60px;
+    height: 20px;
+    list-style-type: none;
+    line-height: 23px;
+    padding: 0;
+    margin: 0;
+    vertical-align: middle;
+    font-family: Sans, Arial;
+}
+
+a.localePickerLink {
+    display: block;
+    text-decoration: none;
+    color: black;
+}
+
+a.localePickerLink:hover {
+    text-decoration: none;
+    background-color: #37b2f0;
+}
+
+img.localeItemImage {
+    float: left;
+    width: 24px;
+    height: 16px;
+    margin: 2px 5px 2px 2px;
+}
+
+

@@ -1,32 +1,5 @@
 package cz.larpovadatabaze;
 
-import cz.larpovadatabaze.components.page.HomePage;
-import cz.larpovadatabaze.components.page.TestPage;
-import cz.larpovadatabaze.components.page.about.AboutDatabase;
-import cz.larpovadatabaze.components.page.admin.Administration;
-import cz.larpovadatabaze.components.page.admin.ManageLabelsPage;
-import cz.larpovadatabaze.components.page.admin.ManageUserRightsPage;
-import cz.larpovadatabaze.components.page.author.CreateOrUpdateAuthorPage;
-import cz.larpovadatabaze.components.page.author.ListAuthor;
-import cz.larpovadatabaze.components.page.error.Error404Page;
-import cz.larpovadatabaze.components.page.game.*;
-import cz.larpovadatabaze.components.page.group.CreateOrUpdateGroupPage;
-import cz.larpovadatabaze.components.page.group.GroupDetail;
-import cz.larpovadatabaze.components.page.group.ListGroup;
-import cz.larpovadatabaze.components.page.group.ManageGroupPage;
-import cz.larpovadatabaze.components.page.search.SearchResults;
-import cz.larpovadatabaze.components.page.user.*;
-import cz.larpovadatabaze.converters.CsldUserConverter;
-import cz.larpovadatabaze.converters.GameConverter;
-import cz.larpovadatabaze.converters.GroupConverter;
-import cz.larpovadatabaze.converters.LabelConverter;
-import cz.larpovadatabaze.entities.*;
-import cz.larpovadatabaze.lang.CodeLocaleProvider;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.GameService;
-import cz.larpovadatabaze.services.GroupService;
-import cz.larpovadatabaze.services.LabelService;
 import org.apache.log4j.Logger;
 import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
@@ -52,6 +25,51 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
+
+import cz.larpovadatabaze.components.page.HomePage;
+import cz.larpovadatabaze.components.page.TestPage;
+import cz.larpovadatabaze.components.page.about.AboutDatabasePage;
+import cz.larpovadatabaze.components.page.admin.Administration;
+import cz.larpovadatabaze.components.page.admin.ManageLabelsPage;
+import cz.larpovadatabaze.components.page.admin.ManageUserRightsPage;
+import cz.larpovadatabaze.components.page.author.CreateOrUpdateAuthorPage;
+import cz.larpovadatabaze.components.page.author.ListAuthor;
+import cz.larpovadatabaze.components.page.error.Error404Page;
+import cz.larpovadatabaze.components.page.game.CreateOrUpdateGamePage;
+import cz.larpovadatabaze.components.page.game.GameDetail;
+import cz.larpovadatabaze.components.page.game.GameDetailOld;
+import cz.larpovadatabaze.components.page.game.GameWasDeleted;
+import cz.larpovadatabaze.components.page.game.ListComments;
+import cz.larpovadatabaze.components.page.game.ListGame;
+import cz.larpovadatabaze.components.page.game.ListLastGames;
+import cz.larpovadatabaze.components.page.group.CreateOrUpdateGroupPage;
+import cz.larpovadatabaze.components.page.group.GroupDetail;
+import cz.larpovadatabaze.components.page.group.ListGroup;
+import cz.larpovadatabaze.components.page.group.ManageGroupPage;
+import cz.larpovadatabaze.components.page.search.SearchResultsPage;
+import cz.larpovadatabaze.components.page.user.CreateOrUpdateUserPage;
+import cz.larpovadatabaze.components.page.user.CsldSignInPage;
+import cz.larpovadatabaze.components.page.user.ForgotPassword;
+import cz.larpovadatabaze.components.page.user.ListUser;
+import cz.larpovadatabaze.components.page.user.ResetPassword;
+import cz.larpovadatabaze.components.page.user.SignOut;
+import cz.larpovadatabaze.components.page.user.UpdateUserPage;
+import cz.larpovadatabaze.components.page.user.UserDetail;
+import cz.larpovadatabaze.converters.CsldUserConverter;
+import cz.larpovadatabaze.converters.GameConverter;
+import cz.larpovadatabaze.converters.GroupConverter;
+import cz.larpovadatabaze.converters.LabelConverter;
+import cz.larpovadatabaze.entities.CsldGroup;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.Label;
+import cz.larpovadatabaze.entities.Language;
+import cz.larpovadatabaze.lang.CodeLocaleProvider;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.GroupService;
+import cz.larpovadatabaze.services.LabelService;
 
 /**
  * Application object for your web application. If you want to run this application without deploying, run the Start class.
@@ -213,9 +231,9 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         mountPage("/last-comments", ListComments.class);
         mountPage("/last-games", ListLastGames.class);
         mountPage("/manage-group", ManageGroupPage.class);
-        mountPage("/search", SearchResults.class);
+        mountPage("/search", SearchResultsPage.class);
 
-        mountPage("/oDatabazi", AboutDatabase.class);
+        mountPage("/oDatabazi", AboutDatabasePage.class);
         mountPage("/reset", ResetPassword.class);
         mountPage("/forgot-password", ForgotPassword.class);
 

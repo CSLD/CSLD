@@ -4,53 +4,56 @@
     It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/home/LastCommentsPanel.html
     Code - cz.larpovadatabaze.components.panel.home.LastCommentsPanel.html
     -->
-    <div class="nadpis">
-        <wicket:message key="game.lastComments">Poslední komentáře</wicket:message>
-    </div>
+    <div class="container main">
 
-    <wicket:container wicket:id="visibleComments">
-        <wicket:container wicket:id="comment" />
-    </wicket:container>
+        <div class="row">
+            <div class="col-md-12">
 
-    <a href="#" class="moreLink" onclick="$(this).hide(); $('#hiddenComments').slideDown(); return false;">
-        <wicket:message key="comments.more">Více...</wicket:message>
-    </a>
+                <div class="heading-testimonials">
+                    <wicket:message key="game.lastComments">Poslední komentáře</wicket:message>
+                </div>
 
-    <div id="hiddenComments" style="display: none">
-        <wicket:container wicket:id="hiddenComments">
-            <wicket:container wicket:id="comment" />
-        </wicket:container>
+                <div class="row comments">
 
-        <div>
-            <a wicket:id="allComments" class="moreLink"><wicket:message key="comments.last">Poslední komentáře</wicket:message></a>
+                    <wicket:container wicket:id="visibleComments">
+                        <wicket:container wicket:id="comment" />
+                    </wicket:container>
+
+                    <div class="jsHiddenComments" style="display: none">
+                        <wicket:container wicket:id="hiddenComments">
+                            <wicket:container wicket:id="comment" />
+                        </wicket:container>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <a href="#" onclick="$(this).hide(); $('.jsHiddenComments').slideDown(); return false;"><div class="view-more-btn">+ <wicket:message key="comments.more">Více...</wicket:message></div></a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                </div>
+            </div>
         </div>
     </div>
 
     <wicket:fragment wicket:id="commentFragment">
-        <div class="pridanaHra">
-            <div class="HraIkonka" style="float:left; height: 100%;">
-                <a wicket:id="commenterIconLink">
-                    <img style='width: 75px; height: 75px;' wicket:id="commenterIcon" class="obrazekPopis">
-                </a><br/>
-
-                <div class="datum" wicket:id="commentDate">08.08.2013</div>
-            </div>
-            <div class="obsah" style="float:left; width: 70%;">
-                <span class="nadpisHra">
-                    <a wicket:id="commenterLink">
-                        <span wicket:id="commenterName">Lucie</span>
-                    </a>
-                </span> o hře &nbsp;
-                <span class="ctverecek" wicket:id="gameRating"></span>
-                <a wicket:id="gameLink">
-                    <span wicket:id="gameName" class="nadpisHra">Cesta dlouhým dnem do noci</span>
-                </a>
-
-                <div class="popisek komentar">
-                    <div class="commentInner">
-                        <wicket:container wicket:id="commentsContent" />
-                        <a wicket:id="gameMoreLink" class="HraKomentarVice">...více</a>
+        <div class="col-md-4" >
+            <div id="testimonials-2" class="testimonials testimonials-v1">
+                <div class="carousel-inner">
+                    <div class="item active">
+                        <p class="rounded" wicket:id="commentsContent"></p>
+                        <div class="testimonial-info">
+                            <img class="rounded-x" wicket:id="commenterIcon" alt="" />
+                            <span class="testimonial-author">
+                                <a href="#" wicket:id="commenterLink"><wicket:container wicket:id="commenterName" /></a>
+                                <em>o larpu <a href="hell-on-wheels" wicket:id="gameLink"><div class="game-square great" wicket:id="gameRating"></div><wicket:container wicket:id="gameName" /></a></em>
+                                <span class="comment-date" wicket:id="commentDate"></span>
+                            </span>
                         </div>
+                    </div>
                 </div>
             </div>
         </div>

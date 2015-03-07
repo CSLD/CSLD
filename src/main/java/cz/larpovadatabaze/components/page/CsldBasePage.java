@@ -19,7 +19,7 @@ import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.request.resource.PackageResourceReference;
 
 import cz.larpovadatabaze.components.common.i18n.LocalePicker;
-import cz.larpovadatabaze.components.page.about.AboutDatabase;
+import cz.larpovadatabaze.components.page.about.AboutDatabasePage;
 import cz.larpovadatabaze.components.page.author.ListAuthor;
 import cz.larpovadatabaze.components.page.game.ListGame;
 import cz.larpovadatabaze.components.page.group.ListGroup;
@@ -75,17 +75,25 @@ public abstract class CsldBasePage extends WebPage {
         previewImageTag2.add(new AttributeModifier("content", previewImageURL));
         add(previewImageTag2);
 
-        add(new LoginBoxPanel("login"));
-        add(new LoggedBoxPanel("loggedInfo"));
-        add(new AdminPanel("adminPanel"));
-
         add(new BookmarkablePageLink<CsldBasePage>("list-game", ListGame.class));
         add(new BookmarkablePageLink<CsldBasePage>("list-authors", ListAuthor.class));
         add(new BookmarkablePageLink<CsldBasePage>("list-users", ListUser.class));
         add(new BookmarkablePageLink<CsldBasePage>("list-groups", ListGroup.class));
-        add(new BookmarkablePageLink<CsldBasePage>("about", AboutDatabase.class));
+        add(new AdminPanel("adminPanel"));
+
+
+        add(new BookmarkablePageLink<CsldBasePage>("about", AboutDatabasePage.class));
+
+        // Add user panel or login links
+        if (CsldAuthenticatedWebSession.get().isSignedIn()) {
+            add(new LoggedBoxPanel("user"));
+        }
+        else {
+            add(new LoginBoxPanel("user"));
+        }
 
         add(new LocalePicker("languagePicker"));
+
         add(new SearchBoxPanel("searchBox"));
     }
 
@@ -93,7 +101,7 @@ public abstract class CsldBasePage extends WebPage {
     protected void setHeaders(WebResponse response) {
         super.setHeaders(response);
         //Protection against ClickJacking, prevents the page from being rendered in an iframe element
-        response.setHeader("X-Frame-Options","deny");
+        response.setHeader("X-Frame-Options", "deny");
     }
 
     @Override
@@ -103,12 +111,12 @@ public abstract class CsldBasePage extends WebPage {
         response.render(JavaScriptHeaderItem.forReference(TinyMCESettings.javaScriptReference()));
 
         response.render(JavaScriptHeaderItem.forReference(JQueryUIResourceReference.get()));
-        response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"js/jquery.slides.min.js")));
+//        response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"js/jquery.slides.min.js"))); // XXX - is this still needed?
 
-        response.render(CssHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"css/nivo-slider.css")));
-//        response.render(CssHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"css/style.css")));
-        response.render(CssHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"css/style.css")));
-        response.render(CssHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"css/smoothness/jquery-ui-1.8.24.custom.css")));
+//        response.render(CssHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"css/nivo-slider.css")));
+
+        response.render(CssHeaderItem.forReference(CsldCssResourceReference.get()));
+
         super.renderHead(response);
     }
 }

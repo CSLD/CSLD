@@ -1,26 +1,16 @@
 package cz.larpovadatabaze.components.page;
 
-import cz.larpovadatabaze.components.common.BookmarkableLinkWithLabel;
-import cz.larpovadatabaze.components.page.game.GameDetail;
-import cz.larpovadatabaze.components.panel.game.AddGamePanel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import cz.larpovadatabaze.components.panel.home.AdvertisementPanel;
+import cz.larpovadatabaze.components.panel.home.LarpCzCalendarPanel;
 import cz.larpovadatabaze.components.panel.home.LastCommentsPanel;
-import cz.larpovadatabaze.components.panel.home.LastGamesPanel;
-import cz.larpovadatabaze.components.panel.home.RandomLarpPanel;
-import cz.larpovadatabaze.components.panel.home.StatisticsPanel;
+import cz.larpovadatabaze.components.panel.home.RecentGamesPanel;
+import cz.larpovadatabaze.components.panel.home.RecentPhotosPanel;
 import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Photo;
 import cz.larpovadatabaze.lang.Translator;
 import cz.larpovadatabaze.services.PhotoService;
 import cz.larpovadatabaze.services.impl.ImageServiceImpl;
-import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
-import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.repeater.RepeatingView;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.request.resource.PackageResourceReference;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import java.util.List;
 
 /**
  *
@@ -34,10 +24,18 @@ public class HomePage extends CsldBasePage {
     private Translator<Game> gameTranslator;
 
     public HomePage(){
-        add(new LastGamesPanel("lastGames"));
+
+        add(new AdvertisementPanel("advertisements"));
+
+        add(new RecentGamesPanel("recentGames"));
+
+        add(new LarpCzCalendarPanel("calendar"));
+
         add(new LastCommentsPanel("lastComments"));
 
-        add(new AddGamePanel("createGamePanel"));
+        add(new RecentPhotosPanel("recentPhotos"));
+
+        /*
         add(new RandomLarpPanel("randomLarpPanel"));
         add(new StatisticsPanel("statisticsPanel"));
 
@@ -53,12 +51,6 @@ public class HomePage extends CsldBasePage {
                     Model.of(GameDetail.paramsForGame(gameAssociatedWithImage))));
         }
         add(images);
-
-    }
-
-    @Override
-    public void renderHead(IHeaderResponse response) {
-        super.renderHead(response);
-        response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class, "js/homePage.js")));
+        */
     }
 }

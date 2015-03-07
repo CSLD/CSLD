@@ -1,22 +1,17 @@
 package cz.larpovadatabaze.components.page.about;
 
-import cz.larpovadatabaze.Csld;
-import cz.larpovadatabaze.components.page.HomePage;
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
+
+import cz.larpovadatabaze.Csld;
 
 /**
  *
  */
-public class AboutDatabaseTest {
+public class AboutDatabasePageTest {
     private WicketTester tester;
 
     @Autowired
@@ -31,7 +26,7 @@ public class AboutDatabaseTest {
 
     @Test
     public void testHomePageBasicRender() {
-        tester.startPage(AboutDatabase.class);
-        tester.assertRenderedPage(AboutDatabase.class);
+        tester.startPage(AboutDatabasePage.class);
+        tester.assertRenderedPage(AboutDatabasePage.class);
     }
 }
