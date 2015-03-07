@@ -1,17 +1,7 @@
 package cz.larpovadatabaze.components.page;
 
 import com.googlecode.wicket.jquery.core.resource.JQueryUIResourceReference;
-import cz.larpovadatabaze.components.common.i18n.LocalePicker;
-import cz.larpovadatabaze.components.page.about.AboutDatabase;
-import cz.larpovadatabaze.components.page.author.ListAuthor;
-import cz.larpovadatabaze.components.page.game.ListGame;
-import cz.larpovadatabaze.components.page.group.ListGroup;
-import cz.larpovadatabaze.components.page.user.ListUser;
-import cz.larpovadatabaze.components.panel.search.SearchBoxPanel;
-import cz.larpovadatabaze.components.panel.user.AdminPanel;
-import cz.larpovadatabaze.components.panel.user.LoggedBoxPanel;
-import cz.larpovadatabaze.components.panel.user.LoginBoxPanel;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.authentication.IAuthenticationStrategy;
 import org.apache.wicket.markup.head.CssHeaderItem;
@@ -27,6 +17,18 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.request.resource.PackageResourceReference;
+
+import cz.larpovadatabaze.components.common.i18n.LocalePicker;
+import cz.larpovadatabaze.components.page.about.AboutDatabase;
+import cz.larpovadatabaze.components.page.author.ListAuthor;
+import cz.larpovadatabaze.components.page.game.ListGame;
+import cz.larpovadatabaze.components.page.group.ListGroup;
+import cz.larpovadatabaze.components.page.user.ListUser;
+import cz.larpovadatabaze.components.panel.search.SearchBoxPanel;
+import cz.larpovadatabaze.components.panel.user.AdminPanel;
+import cz.larpovadatabaze.components.panel.user.LoggedBoxPanel;
+import cz.larpovadatabaze.components.panel.user.LoginBoxPanel;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import wicket.contrib.tinymce.settings.TinyMCESettings;
 
 /**
@@ -104,6 +106,7 @@ public abstract class CsldBasePage extends WebPage {
         response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"js/jquery.slides.min.js")));
 
         response.render(CssHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"css/nivo-slider.css")));
+//        response.render(CssHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"css/style.css")));
         response.render(CssHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"css/style.css")));
         response.render(CssHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"css/smoothness/jquery-ui-1.8.24.custom.css")));
         super.renderHead(response);
