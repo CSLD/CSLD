@@ -92,7 +92,7 @@ public abstract class CsldBasePage extends WebPage {
             add(new LoginBoxPanel("user"));
         }
 
-        add(new LocalePicker("languagePicker"));
+        add(new LocalePicker("localePicker"));
 
         add(new SearchBoxPanel("searchBox"));
     }

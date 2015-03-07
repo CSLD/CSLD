@@ -53,13 +53,25 @@ public class RecentGamesPanel extends Panel {
         // Add recent games
         List<Game> recentGames = gameService.getLastGames(AMOUNT_OF_GAMES);
         for(int i=0; i<6; i++) {
-            carousel.add(createGameBox("recent" + (i + 1), recentGames.get(i)));
+            String id = "recent" + (i + 1);
+            if (recentGames.size() > i) {
+                carousel.add(createGameBox(id, recentGames.get(i)));
+            }
+            else {
+                carousel.add(new Label(id, "").setVisible(false));
+            }
         }
 
         // Add most popular games
         List<Game> mostPopularGames = gameService.getMostPopularGames(AMOUNT_OF_GAMES);
         for(int i=0; i<6; i++) {
-            carousel.add(createGameBox("popular" + (i + 1), mostPopularGames.get(i)));
+            String id = "popular" + (i + 1);
+            if (recentGames.size() > i) {
+                carousel.add(createGameBox(id, mostPopularGames.get(i)));
+            }
+            else {
+                carousel.add(new Label(id, "").setVisible(false));
+            }
         }
     }
 

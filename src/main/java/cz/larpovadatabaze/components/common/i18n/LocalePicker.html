@@ -6,25 +6,24 @@
     It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/common/i18n/LocalePicker.html
     Code - cz.larpovadatabaze.components.common.i18n.LocalePicker.html
     -->
-    <ul class="localePicker">
-        <li wicket:id="locales" class="localePickerItem">
-        </li>
-    </ul>
-
+    <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <span wicket:id="name"></span>
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <wicket:container wicket:id="locales" />
+        </ul>
+    </div>
 </wicket:panel>
-
-<!-- Fragment for selected item -->
-<wicket:fragment wicket:id="localeItemSelected">
-    <img wicket:id="flag" class="localeItemImage" />
-    <span wicket:id="name"></span>
-</wicket:fragment>
 
 <!-- Fragment for available item -->
 <wicket:fragment wicket:id="localeItemAvailable">
-    <a wicket:id="link" class="localePickerLink">
-        <img wicket:id="flag" class="localeItemImage" />
-        <span wicket:id="name"></span>
-    </a>
+    <li>
+        <a wicket:id="link" class="localePickerLink">
+            <span wicket:id="name"></span>
+        </a>
+    </li>
 </wicket:fragment>
 
 </html>

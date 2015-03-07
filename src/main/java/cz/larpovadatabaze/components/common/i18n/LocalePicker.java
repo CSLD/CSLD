@@ -36,15 +36,13 @@ public class LocalePicker extends Panel{
     protected void onInitialize() {
         super.onInitialize();
 
+        // Draw current locale
+        Locale currentLocale = Session.get().getLocale();
+//        add(createLocaleFlag(currentLocale));
+        add(createLocaleLabel(currentLocale));
+
         // Create view
         RepeatingView locales = new RepeatingView("locales");
-
-        // Draw current locale
-        Fragment currentLocalePanel = new Fragment(locales.newChildId(), "localeItemSelected", this);
-        Locale currentLocale = Session.get().getLocale();
-        currentLocalePanel.add(createLocaleFlag(currentLocale));
-        currentLocalePanel.add(createLocaleLabel(currentLocale));
-        locales.add(currentLocalePanel);
 
         // Draw other locales
         for(Locale locale : new CodeLocaleProvider().availableLocale()) {
@@ -57,9 +55,9 @@ public class LocalePicker extends Panel{
                         throw new RestartResponseException(getPage().getPageClass());
                     }
                 };
-                localePanel.add(link);
-                link.add(createLocaleFlag(locale));
+//                link.add(createLocaleFlag(locale));
                 link.add(createLocaleLabel(locale));
+                localePanel.add(link);
                 locales.add(localePanel);
             }
         }
