@@ -1,13 +1,6 @@
 /* CSS rules added by developers */
 
 /**
- * HACK: Hack for overflowing navbar
- */
-.navbar {
-    max-height: 51px;
-}
-
-/**
  * HACK: Recent game name wrapping fix
  */
 .recent-game {

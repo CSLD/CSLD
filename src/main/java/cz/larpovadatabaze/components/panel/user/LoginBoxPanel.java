@@ -22,7 +22,6 @@ public class LoginBoxPanel extends AbstractCsldPanel<CsldUser> {
         super.onInitialize();
 
         // Add login / logout links
-        add(new BookmarkablePageLink<CsldBasePage>("login1", CsldSignInPage.class));
         add(new BookmarkablePageLink<CsldBasePage>("login2", CsldSignInPage.class));
         add(new BookmarkablePageLink<CsldBasePage>("login3", CsldSignInPage.class));
         add(new BookmarkablePageLink<CsldBasePage>("register2", CreateOrUpdateUserPage.class));

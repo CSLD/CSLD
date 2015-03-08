@@ -30,7 +30,8 @@
                 </div>
                 <div class="col-md-4">
                     <div class="row">
-                        <a href="#" onclick="$(this).hide(); $('.jsHiddenComments').slideDown(); return false;"><div class="view-more-btn">+ <wicket:message key="comments.more">Více...</wicket:message></div></a>
+                    <a href="#" class="jsMoreComments" onclick="$('.jsMoreComments').hide(); $('.jsLessComments').show(); $('.jsHiddenComments').slideDown(); return false;"><div class="view-more-btn">+ <wicket:message key="comments.more">Více...</wicket:message></div></a>
+                    <a href="#" class="jsLessComments" style="display: none;" onclick="$('.jsLessComments').hide(); $('.jsMoreComments').show(); $('.jsHiddenComments').slideUp(); return false;"><div class="view-more-btn">+ <wicket:message key="comments.less">Méně...</wicket:message></div></a>
                     </div>
                 </div>
                 <div class="col-md-4">

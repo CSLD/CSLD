@@ -24,7 +24,6 @@ import cz.larpovadatabaze.components.page.OwlCarouselResourceReference;
 import cz.larpovadatabaze.components.page.game.CreateOrUpdateGamePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.entities.Advertisement;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 
 /**
  * User: Michal Kara Date: 7.3.15 Time: 18:43
@@ -109,10 +108,6 @@ public class AdvertisementPanel extends AbstractCsldPanel<List<Advertisement>> {
 
         // Add add link
         add(new BookmarkablePageLink<CsldBasePage>("addGameLink", CreateOrUpdateGamePage.class));
-    }
-
-    protected void onConfigure() {
-        setVisibilityAllowed(CsldAuthenticatedWebSession.get().isSignedIn());
     }
 
     @Override

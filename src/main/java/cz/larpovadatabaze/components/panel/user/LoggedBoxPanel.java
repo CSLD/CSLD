@@ -49,10 +49,6 @@ public class LoggedBoxPanel extends AbstractCsldPanel<CsldUser> {
         // Add user info
         Integer loggedUserId = getModelObject().getId();
 
-        PageParameters params = new PageParameters();
-        params.add("id", loggedUserId);
-        final BookmarkablePageLink<CsldBasePage> loggedUserLink =
-            new BookmarkablePageLink<CsldBasePage>("loggedUserLink", UserDetail.class, params);
         final Label loggedUserName = new Label("loggedUserName", new AbstractReadOnlyModel<String>() {
             @Override
             public String getObject() {
@@ -60,17 +56,18 @@ public class LoggedBoxPanel extends AbstractCsldPanel<CsldUser> {
             }
         });
 
-        loggedUserLink.add(new UserIcon("loggedUserImage", getModel()));
-        loggedUserLink.add(loggedUserName);
+        add(new UserIcon("loggedUserImage", getModel()));
+        add(loggedUserName);
+
+        PageParameters params = new PageParameters(); params.add("id", loggedUserId);
+        final BookmarkablePageLink<CsldBasePage> loggedUserLink =
+            new BookmarkablePageLink<CsldBasePage>("loggedUserLink", UserDetail.class, params);
         add(loggedUserLink);
 
 
         // Add user buttons
-        add(new BookmarkablePageLink<CsldBasePage>("settings1", UpdateUserPage.class, params));
-        add(new BookmarkablePageLink<CsldBasePage>("settings2", UpdateUserPage.class, params));
-        add(new BookmarkablePageLink<CsldBasePage>("settings3", UpdateUserPage.class, params));
-        add(new BookmarkablePageLink<CsldBasePage>("logout2", SignOut.class));
-        add(new BookmarkablePageLink<CsldBasePage>("logout3", SignOut.class));
+        add(new BookmarkablePageLink<CsldBasePage>("settings", UpdateUserPage.class, params));
+        add(new BookmarkablePageLink<CsldBasePage>("logout", SignOut.class));
     }
 
 }
