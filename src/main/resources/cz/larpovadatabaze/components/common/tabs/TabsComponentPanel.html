@@ -1,7 +1,10 @@
 <wicket:panel xmlns:wicket="http://wicket.apache.org">
-    <ul class="cmpTabs" wicket:id="wrapper">
-        <li wicket:id="tabs">
-            <a wicket:id="link"><wicket:container wicket:id="label" /></a>
-        </li>
-    </ul>
+    <div class="profile_bar switcher">
+        <div class="container" wicket:id="wrapper">
+            <div class="small_bar" wicket:id="tabs">
+                <a wicket:id="link"><wicket:container wicket:id="label" /></a>
+                <div wicket:id="marker" class="glyphicon glyphicon-home"></div>
+            </div>
+        </div>
+    </div>
 </wicket:panel>

@@ -1,16 +1,7 @@
 package cz.larpovadatabaze.components.panel.game;
 
-import cz.larpovadatabaze.components.common.AbstractCsldPanel;
-import cz.larpovadatabaze.components.common.icons.GameIcon;
-import cz.larpovadatabaze.components.common.social.SocialShareButtons;
-import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.group.GroupDetail;
-import cz.larpovadatabaze.components.page.user.UserDetail;
-import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.services.ImageService;
 import org.apache.commons.lang.StringUtils;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
@@ -24,6 +15,17 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.List;
+
+import cz.larpovadatabaze.components.common.AbstractCsldPanel;
+import cz.larpovadatabaze.components.common.social.SocialShareButtons;
+import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.page.game.ListGame;
+import cz.larpovadatabaze.components.page.group.GroupDetail;
+import cz.larpovadatabaze.components.page.user.UserDetail;
+import cz.larpovadatabaze.entities.CsldGroup;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.services.ImageService;
 
 /**
  * This panel shows basic information about the game, like its duration, description.
@@ -43,45 +45,38 @@ public class GameDetailPanel extends AbstractCsldPanel<Game> {
 
         Game game = getModelObject();
 
-        final GameIcon gameIcon = new GameIcon("gameImage", getModel());
-        add(gameIcon);
+        // Name
         add(new Label("name"));
 
-        List<cz.larpovadatabaze.entities.Label> labels = game.getLabels();
-        ListView<cz.larpovadatabaze.entities.Label> view = new ListView<cz.larpovadatabaze.entities.Label>("labels", labels) {
-            @Override
-            protected void populateItem(ListItem<cz.larpovadatabaze.entities.Label> item) {
-                cz.larpovadatabaze.entities.Label label = item.getModelObject();
-                Label labelC = new Label("label", label.getName());
-                item.add(labelC);
-                Label tooltip = new Label("tooltip", label.getDescription());
-                tooltip.setVisible(StringUtils.isNotBlank(label.getDescription()));
-                item.add(tooltip);
-            }
-        };
-        add(view);
-
+        // Players etc
         add(new Label("players"));
         add(new Label("menRole"));
         add(new Label("womenRole"));
         add(new Label("bothRole"));
 
+        // How long the game is
         add(new Label("hours"));
         add(new Label("days"));
         add(new Label("year"));
-        add(new Label("lang"));
 
-        add(new ExternalLink("webGameLink", Model.of(game.getWeb()), Model.of(game.getWeb())));
+        // Web link
+        add(new ExternalLink("webGameLink", Model.of(game.getWeb()), Model.of(game.getWeb())).setVisible(StringUtils.isNotBlank(game.getWeb())));
 
+        // Gallery
         String galleryURL = game.getGalleryURL();
         ExternalLink webGalleryLink = new ExternalLink("webGalleryLink", Model.of(galleryURL), Model.of(galleryURL));
         webGalleryLink.setVisible(StringUtils.isNotBlank(galleryURL));
         add(webGalleryLink);
 
+        // Photo author
         Label photoAuthor = new Label("photoAuthor");
         photoAuthor.setVisible(StringUtils.isNotBlank(game.getPhotoAuthor()));
         add(photoAuthor);
 
+        // Language
+        add(new Label("lang"));
+
+        // Authors
         List<CsldUser> authors = game.getAuthors();
         ListView<CsldUser> authorsList = new ListView<CsldUser>("authors",authors) {
             @Override
@@ -103,6 +98,7 @@ public class GameDetailPanel extends AbstractCsldPanel<Game> {
         };
         add(authorsList);
 
+        // Groups
         List<CsldGroup> groups = game.getGroupAuthor();
         ListView<CsldGroup> groupsList = new ListView<CsldGroup>("authorsGroups",groups) {
             @Override
@@ -121,11 +117,30 @@ public class GameDetailPanel extends AbstractCsldPanel<Game> {
             }
         };
         add(groupsList);
+        add(new WebMarkupContainer("dash").setVisible(groups.isEmpty())); // Dash when groups are empty
 
+        // Description
         Label description = new Label("description");
         description.setEscapeModelStrings(false);
         add(description);
 
+        // Social share button
         add(new SocialShareButtons("socialShareButtons"));
+
+        // Labels
+        List<cz.larpovadatabaze.entities.Label> labels = game.getLabels();
+        ListView<cz.larpovadatabaze.entities.Label> view = new ListView<cz.larpovadatabaze.entities.Label>("labels", labels) {
+            @Override
+            protected void populateItem(ListItem<cz.larpovadatabaze.entities.Label> item) {
+                cz.larpovadatabaze.entities.Label label = item.getModelObject();
+
+                BookmarkablePageLink link = new BookmarkablePageLink<CsldBasePage>("link", ListGame.class, ListGame.getParametersForLabel(label.getId()));
+                item.add(link);
+
+                Label labelC = new Label("label", label.getName());
+                link.add(labelC);
+            }
+        };
+        add(view);
     }
 }

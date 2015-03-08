@@ -2362,15 +2362,6 @@ a.active.wantToPlay.button:after{
     margin-top: 10px;
 }
 
-.shareButtons .fb-like {
-    top: -6px;
-}
-
-.shareButtons .twitter-share-button {
-    position: relative;
-    top: -2px;
-}
-
 .administration li {
     list-style-type: none;
     margin: 5px 0;

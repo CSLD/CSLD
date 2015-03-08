@@ -1,114 +1,162 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:extend>
-
-<div class="levaCast" id="game">
-    <div wicket:id="gameDetail">
-        <!--
-        This panel is found in package: cz.larpovadatabaze.components.panel.game.GameDetailPanel.html
-        https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/GameDetailPanel.html
-        -->
-    </div>
-
-    <wicket:container wicket:id="tabs" />
-    <div wicket:id="tabContent">
-        <wicket:container wicket:id="tabContentPanel" />
-    </div>
-</div>
-
-<!-- PRAVE MENU -->
-
-<div class="pravaCast" id="game">
-    <div class="praveMenu">
-        <div class="nadpisMenu"><wicket:message key="game.panel">Herní panel</wicket:message></div>
-    </div>
-
-    <div class="sekce" wicket:id="editGamePanel">
-        <!--
-        This panel is found in package: cz.larpovadatabaze.components.panel.game.EditGamePanel.html
-        https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/EditGamePanel.html
-        -->
-    </div>
-
-    <div class="sekce" wicket:id="deleteGamePanel">
-        <!--
-        This panel is found in package: cz.larpovadatabaze.components.panel.game.DeleteGamePanel.html
-        https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/DeleteGamePanel.html
-        -->
-    </div>
-
-    <div wicket:id="ratingsContainerPanel">
-        <div wicket:id="ratingsResults">
-            <!--
-            This panel is found in package: cz.larpovadatabaze.components.panel.game.RatingsResultPanel.html
-            https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/RatingsResultPanel.html
-            -->
+    <wicket:enclosure child="mainPicture">
+        <div class="main_picture">
+            <!-- if main profile picture is not uploaded, then this block is hidden -->
+            <img class="media-object img-responsive" wicket:id="mainPicture" alt="">
         </div>
-        <div class="sekce" wicket:id="canNotRatePanel">
-            <!--
-            This panel is found in package: cz.larpovadatabaze.components.panel.game.LoginToRatePanel.html
-            https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/LoginToRatePanel.html
-            -->
-        </div>
-        <div class="sekce" wicket:id="ratingsPanel">
-            <!--
-            This panel is found in package: cz.larpovadatabaze.components.panel.game.LoginToRatePanel.html
-            https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/LoginToRatePanel.html
-            -->
-        </div>
-        <form class="sekce" wicket:id="authorRatePanel" >
-            <p><wicket:message key="Rating.author" /></p>
-            <input type="button" wicket:id="authorRate" style="width: 100%" />
-        </form>
-    </div>
+    </wicket:enclosure>
 
-    <div class="sekce">
-        <div class="nadpisSekce"><wicket:message key="game.similar">Podobné larpy</wicket:message></div>
-        <div wicket:id="similarGames">
-            <!--
-            This panel is found in package: cz.larpovadatabaze.components.panel.game.GameListPanel.html
-            https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/GameListPanel.html
-            -->
+
+    <div class="profile_bar">
+        <div class="container">
+            <div class="row">
+                <div wicket:id="gameDetail">
+                    <!--
+                    This panel is found in package: cz.larpovadatabaze.components.panel.game.GameDetailPanel.html
+                    https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/GameDetailPanel.html
+                    -->
+                </div>
+
+                <div class="col-md-4" wicket:id="ratingsContainerPanel">
+                    <div class="panel-body scores">
+                        <div class="row" wicket:id="ratingsResults">
+                            <!--
+                            This panel is found in package: cz.larpovadatabaze.components.panel.game.RatingsResultPanel.html
+                            https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/RatingsResultPanel.html
+                            -->
+
+                        </div>
+                    </div>
+
+                    <div class="panel-footer" wicket:id="canNotRatePanel">
+                        <!--
+                        This panel is found in package: cz.larpovadatabaze.components.panel.game.LoginToRatePanel.html
+                        https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/LoginToRatePanel.html
+                        -->
+                    </div>
+
+                    <div class="panel-footer" wicket:id="ratingsPanel">
+                        <!--
+                        This panel is found in package: cz.larpovadatabaze.components.panel.game.LoginToRatePanel.html
+                        https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/RatingsPanel.html
+                        -->
+                    </div>
+
+                    <form class="pane-footer" wicket:id="authorRatePanel">
+                        <p>
+                            <wicket:message key="Rating.author"/>
+                        </p>
+                        <input type="button" wicket:id="authorRate" style="width: 100%"/>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="sekce">
-        <div class="nadpisSekce"><wicket:message key="game.authorsLarps">Larpy autorů</wicket:message></div>
-        <div wicket:id="gamesOfAuthors">
-            <!--
-            This panel is found in package: cz.larpovadatabaze.components.panel.game.GameListPanel.html
-            https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/GameListPanel.html
-            -->
+
+    <wicket:container wicket:id="tabs"/>
+
+    <div class="container main">
+
+        <div class="row">
+            <div class="col-md-9" wicket:id="tabContent">
+                <div class="panel panel-default comments" wicket:id="tabContentPanel">
+                </div>
+            </div>
+            <div class="col-md-3 game-meta">
+                <div class="row">
+                    <div class="col-md-12 col-xs-12 col-sm-6" wicket:id="editGamePanel">
+                        <!--
+                        This panel is found in package: cz.larpovadatabaze.components.panel.game.EditGamePanel.html
+                        https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/EditGamePanel.html
+                        -->
+                    </div>
+
+                    <div class="col-md-12 col-xs-12 col-sm-6" wicket:id="deleteGamePanel">
+                        <!--
+                        This panel is found in package: cz.larpovadatabaze.components.panel.game.DeleteGamePanel.html
+                        https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/DeleteGamePanel.html
+                        -->
+                    </div>
+
+                    <div class="col-md-12 col-xs-12 col-sm-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h2 class="panel-title">
+                                    <wicket:message key="game.similar">Podobné larpy</wicket:message>
+                                </h2>
+                            </div>
+                            <div class="panel-body" wicket:id="similarGames">
+                                <!--
+                                This panel is found in package: cz.larpovadatabaze.components.panel.game.GameListPanel.html
+                                https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/GameListPanel.html
+                                -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 col-xs-12 col-sm-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h2 class="panel-title">
+                                    <wicket:message key="game.authorsLarps">Larpy autorů</wicket:message>
+                                </h2>
+                            </div>
+                            <div class="panel-body" wicket:id="gamesOfAuthors">
+                                <!--
+                                This panel is found in package: cz.larpovadatabaze.components.panel.game.GameListPanel.html
+                                https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/GameListPanel.html
+                                -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 col-xs-12 col-sm-6" wicket:id="contactEnclosure">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h2 class="panel-title">
+                                    <wicket:message key="game.contact">Kontaktovat</wicket:message>
+                                </h2>
+                            </div>
+                            <div class="panel-body" wicket:id="contact">
+                                <!--
+                                This panel is found in package: cz.larpovadatabaze.components.panel.game.SendInformation.html
+                                https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/user/SendInformation.html
+                                -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 col-xs-12 col-sm-6" wicket:id="ratingsOfUsersPanelEnclosure">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h2 class="panel-title">
+                                    <wicket:message key="game.rating">Hodnocení</wicket:message>
+                                </h2>
+                            </div>
+                            <div class="panel-body" wicket:id="ratingsOfUsersPanel">
+                                <!--
+                                This panel is found in package: cz.larpovadatabaze.components.panel.admin.AdminAllRatingsPanel.html
+                                https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/admin/AdminAllRatingsPanel.html
+                                -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-    <div class="sekce">
-        <div class="nadpisSekce"><wicket:message key="game.contact">Kontaktovat</wicket:message></div>
-        <div wicket:id="contact">
-            <!--
-            This panel is found in package: cz.larpovadatabaze.components.panel.game.SendInformation.html
-            https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/user/SendInformation.html
-            -->
-        </div>
-
-
-    </div>
-
-    <div class="sekce" wicket:id="ratingsOfUsersPanel">
-        <!--
-        This panel is found in package: cz.larpovadatabaze.components.panel.admin.AdminAllRatingsPanel.html
-        https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/admin/AdminAllRatingsPanel.html
-        -->
-    </div>
-</div>
 
     <wicket:fragment wicket:id="comments">
-        <div wicket:id="addComment">
+        <div wicket:id="addComment"  style="margin-bottom: 20px">
             <!--
             This panel is found in package: cz.larpovadatabaze.components.panel.game.CommentsPanel.html
             https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/CommentsPanel.html
             -->
         </div>
-        <div wicket:id="commentsList" class="komentare">
+
+        <div wicket:id="commentsList" class="list-group">
             <!--
             This panel is found in package: cz.larpovadatabaze.components.panel.game.CommentsListPanel.html
             https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/CommentsListPanel.html

@@ -7,7 +7,9 @@ import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.EnclosureContainer;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
@@ -62,6 +64,9 @@ public class GameDetail extends CsldBasePage {
 
     @SpringBean
     GameService gameService;
+
+    @SpringBean
+    ImageService imageService;
 
     private RatingsResultPanel ratingsResult;
     private RatingsPanel ratingsPanel;
@@ -286,12 +291,16 @@ public class GameDetail extends CsldBasePage {
 
         super.onInitialize();
 
-        SendInformation sendInformation = new SendInformation("contact"){
-            @Override
-            public Game getGame() {
-                return getModel().getObject();
-            }
-        };
+        Game game = (Game)getDefaultModelObject();
+        if ((game.getImage() == null) || (game.getImage() == game.getDefaultImage())) {
+            // No main picture
+            add(new WebMarkupContainer("mainPicture").setVisible(false));
+        }
+        else {
+            // Add main picture
+            add(new Image("mainPicture", imageService.getImageResource(game.getImage(), game.getDefaultImage())));
+        }
+
 
         add(new GameDetailPanel("gameDetail", getModel()));
 
@@ -306,7 +315,11 @@ public class GameDetail extends CsldBasePage {
         WebMarkupContainer ratingsContainerPanel = new WebMarkupContainer("ratingsContainerPanel");
         ratingsContainerPanel.setOutputMarkupId(true);
 
-        ratingsResult = new RatingsResultPanel("ratingsResults", getModel(), ratingsContainerPanel, sendInformation.getWantedToPlay());
+        // Prepare contact panel - we need it in ratings
+        SendInformation contact = new SendInformation("contact", getModel());
+
+        // Ratings result
+        ratingsResult = new RatingsResultPanel("ratingsResults", getModel(), ratingsContainerPanel, contact.getWantedToPlay());
         ratingsResult.setOutputMarkupId(true);
         ratingsContainerPanel.add(ratingsResult);
 
@@ -346,9 +359,16 @@ public class GameDetail extends CsldBasePage {
             }
         }));
 
-        add(new AdminAllRatingsPanel("ratingsOfUsersPanel", getModel()));
+        // Contact
+        EnclosureContainer contactEnclosure = new EnclosureContainer("contactEnclosure", contact);
+        contactEnclosure.add(contact);
+        add(contactEnclosure);
 
-        add(sendInformation);
+        // Ratings of users for admin
+        AdminAllRatingsPanel adminRatingsPanel = new AdminAllRatingsPanel("ratingsOfUsersPanel", getModel());
+        EnclosureContainer ratingsOfUsersPanelEnclosure = new EnclosureContainer("ratingsOfUsersPanelEnclosure", adminRatingsPanel);
+        ratingsOfUsersPanelEnclosure.add(adminRatingsPanel);
+        add(ratingsOfUsersPanelEnclosure);
 
         if (UserUtils.isSignedIn()) {
             add(new JSPingBehavior());

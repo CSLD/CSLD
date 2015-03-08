@@ -5,60 +5,69 @@
     It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/game/GameDetailPanel.html
     Code - cz.larpovadatabaze.components.panel.game.GameDetailPanel.html
     -->
-    <table class="poleHra">
-        <tr>
-            <td class="obrazekHraBunka">
-                <div>
-                    <img wicket:id="gameImage" class="obrazekHra" alt="">
-                </div>
+    <div class="col-md-8 col-sm-12 col-xs-12">
+        <div class="row">
+            <div class="col-md-8 col-sm-12 col-xs-12">
+                <h1 wicket:id="name"></h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-sm-4 col-xs-12">
+                <p>
+                    <wicket:container wicket:id="players" /> hráčů,
+                    <wicket:container wicket:id="menRole" /> mužů,
+                    <wicket:container wicket:id="womenRole" /> žen,
+                    <wicket:container wicket:id="bothRole" /> obojetných
+                </p>
+                <p>
+                    <wicket:container wicket:id="hours" /> hodin,
+                    <wicket:container wicket:id="days" /> dnů,
+                    <wicket:container wicket:id="year" />
+                </p>
+                <wicket:enclosure child="webGameLink">
+                    <p>Web: <a wicket:id="webGameLink"></a></p>
+                </wicket:enclosure>
+                <wicket:enclosure child="webGalleryLink">
+                    <p>Galerie: <a wicket:id="webGalleryLink"></a></p>
+                </wicket:enclosure>
+                <wicket:enclosure child="photoAuthor">
+                    <p>Autor fotografií: <wicket:container wicket:id="photoAuthor" /></p>
+                </wicket:enclosure>
+                <p>
+                    <wicket:message key="game.lang">Jazyk:</wicket:message>
+                    <wicket:container wicket:id="lang" />
+                </p>
+            </div>
 
-            </td>
-            <td class="bunkaHra">
-                <div class="nadpisHra">
-                    <span id="nazevHry" wicket:id="name">Doriathské války</span>
-                </div>
-                <div class="popisek">
-                    <div wicket:id="labels" id="labels" class="cmpGameLabelContainer cmpGameLabel">
-                        <span wicket:id="label"></span>
-                        <div wicket:id="tooltip" class="tooltip"></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                </div>
-                <div class="popisek">
-                    <span wicket:id="players" id="playersAmount">80</span> hráčů,
-                    <span wicket:id="menRole" id="menRole">0</span> mužů,
-                    <span wicket:id="womenRole" id="womenRole">0</span> žen,
-                    <span wicket:id="bothRole" id="bothRole">0</span> obojetných
-                </div>
-                <div class="popisek">
-                    <span wicket:id="hours" id="hours">5</span> hodin,
-                    <span wicket:id="days" id="days">0</span> dnů,
-                    <span wicket:id="year" id="year">2012</span>
-                </div>
-                <div class="popisek">
-                    Web: <a wicket:id="webGameLink"></a><br />
-                    <wicket:enclosure child="webGalleryLink">Galerie: <a wicket:id="webGalleryLink"></a><br /></wicket:enclosure>
-                    <wicket:enclosure child="photoAuthor">Autor fotografií: <wicket:container wicket:id="photoAuthor" /></wicket:enclosure>
-                </div>
-                <div class="popisek">
-                    <wicket:message key="authorsCapitalized">Autoři:</wicket:message>
+
+            <div class="col-md-7 col-sm-7 col-xs-12">
+                <p>
+                    <strong><wicket:message key="authorsCapitalized">Autoři:</wicket:message></strong>
                     <wicket:container wicket:id="authors"><wicket:container wicket:id="separator" /><a wicket:id="authorDetailLink"><wicket:container wicket:id="authorName"></wicket:container></a></wicket:container>
-                </div>
-                <div style="clear:both;"></div>
-                <div class="popisek">
+                </p>
+                <p>
                     <wicket:message key="group.group">Skupiny:</wicket:message>
                     <wicket:container wicket:id="authorsGroups"><wicket:container wicket:id="separator" /><a wicket:id="authorGroupDetailLink"><wicket:container wicket:id="authorGroupName"></wicket:container></a></wicket:container>
-                </div>
-                <div class="popisek">
-                    <wicket:message key="game.lang">Jazyk:</wicket:message>
-                    <span wicket:id="lang" id="lang">Čestina</span>
-                </div>
-            </td>
-        </tr>
-    </table>
+                    <wicket:container wicket:id="dash">&mdash;</wicket:container>
+                </p>
 
-    <div class="obsah">
-        <div wicket:id="description" id="description">Popis hry</div>
-        <div class="shareButtons"><wicket:container wicket:id="socialShareButtons" /></div>
+            </div>
+        </div>
+
+        <div class="row description">
+            <div class="col-md-11 col-sm-11 col-xs-12">
+                <div class="line"></div>
+                <wicket:container wicket:id="description" />
+                <div class="line"></div>
+                <p class="tags">
+                    <wicket:container wicket:id="socialShareButtons" />
+
+                    <wicket:container wicket:id="labels">
+                        <a href="#" class="btn btn-default btn-xs" wicket:id="link"><wicket:container wicket:id="label" /></a>
+                    </wicket:container>
+                </p>
+            </div>
+        </div>
     </div>
+
 </wicket:panel>

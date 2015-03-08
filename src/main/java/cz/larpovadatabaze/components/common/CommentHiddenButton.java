@@ -1,14 +1,16 @@
 package cz.larpovadatabaze.components.common;
 
-import cz.larpovadatabaze.entities.Comment;
-import cz.larpovadatabaze.services.CommentService;
-import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import cz.larpovadatabaze.entities.Comment;
+import cz.larpovadatabaze.services.CommentService;
+import cz.larpovadatabaze.utils.UserUtils;
 
 /**
  * User: Michal Kara
@@ -47,12 +49,16 @@ public class CommentHiddenButton extends AbstractCsldPanel<Comment> {
         };
         button.setOutputMarkupId(true);
 
-        button.add(new AttributeAppender("class", new AbstractReadOnlyModel<String>() {
+        WebMarkupContainer icon = new WebMarkupContainer("icon");
+        add(icon);
+        icon.add(new AttributeAppender("class", new AbstractReadOnlyModel<String>() {
             @Override
             public String getObject() {
-                return Boolean.TRUE.equals(CommentHiddenButton.this.getModelObject().getHidden())?"hidden":"";
+                return Boolean.TRUE.equals(CommentHiddenButton.this.getModelObject().getHidden())?"fa-eye-slash":"fa-eye";
             }
         }," "));
+
+        button.add(icon);
 
         add(button);
     }

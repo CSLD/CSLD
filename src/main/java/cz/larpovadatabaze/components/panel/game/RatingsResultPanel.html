@@ -5,38 +5,18 @@
     It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/game/RatingsResultPanel.html
     Code - cz.larpovadatabaze.components.panel.game.RatingsResultPanel.html
     -->
-
-    <div class="container">
-        <div wicket:id="playedPanel"></div>
-        <div class="inner">
-            <div class="rating">
-                <span wicket:id="ratingResult" class="rating-num">8.4</span>
-
-                <div class="rating-users">
-                    <i class="icon-user"></i> <span wicket:id="amountOfResults">100</span> celkem
-                </div>
-                <div>Vaše hodnocení je: <span wicket:id="myResult">8</span></div>
-
-            </div>
-
-            <div class="histo">
-
-                <wicket:container wicket:id="starsAndBars">
-                    <div class="histo-rate">
-
-                        <span class="histo-star"> <i class="active fa fa-star"></i> <wicket:container wicket:id="number" /> </span>
-                        <span class="bar-block">
-                          <span wicket:id="bar" class="bar">
-                            <span></span>&nbsp;
-                          </span>
-                        </span>
-                    </div>
-                </wicket:container>
-
-            </div>
-        </div>
-
-
+    <div class="col-xs-5">
+        <div class="alert alert-info score" wicket:id="ratingResult">9.7</div>
+        <p class="text-center">Vaše hodnocení: <wicket:container wicket:id="myResult">4</wicket:container></p>
+        <p class="text-center"><wicket:container wicket:id="amountOfResults">75</wicket:container> celkem</p>
+        <br>
+        <p class="text-center" wicket:id="playedPanel">
+        </p>
     </div>
-
+    <div class="col-xs-7">
+        <wicket:container wicket:id="starsAndBars">
+            <div class="pull-left"><wicket:container wicket:id="number" /></div>
+            <div class="progress"><div wicket:id="bar" class="progress-bar progress-bar" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style="width: 85%;"></div> </div>
+        </wicket:container>
+    </div>
 </wicket:panel>

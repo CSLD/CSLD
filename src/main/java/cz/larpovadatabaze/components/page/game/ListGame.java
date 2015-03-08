@@ -1,5 +1,15 @@
 package cz.larpovadatabaze.components.page.game;
 
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.List;
+
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.panel.game.AddGamePanel;
 import cz.larpovadatabaze.components.panel.game.FilterGamesPanel;
@@ -10,15 +20,6 @@ import cz.larpovadatabaze.models.FilterGame;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.LabelService;
-import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import java.util.List;
 
 /**
  *
@@ -108,5 +109,16 @@ public class ListGame extends CsldBasePage {
                 listGamePanel.reload(target, filterGame, labels);
             }
         });
+    }
+
+    /**
+     * @param labelId Label ID
+     *
+     * @return Page parameters to show games with this labe;
+     */
+    public static PageParameters getParametersForLabel(Integer labelId) {
+        PageParameters pp = new PageParameters();
+        pp.add("label", labelId);
+        return pp;
     }
 }

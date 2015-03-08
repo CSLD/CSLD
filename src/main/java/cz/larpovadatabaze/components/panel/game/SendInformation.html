@@ -4,20 +4,23 @@
     It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/game/SendInformation.html
     Code - cz.larpovadatabaze.components.panel.game.SendInformation.html
     -->
-
     <form wicket:id="sendInfoForm">
-        <div wicket:id="feedback"></div>
+        <div class="panel-body">
+            <div wicket:id="feedback"></div>
 
-        <div class="sendInfoText">
-            <textarea wicket:id="mailBody"></textarea>
-        </div>
-        <div>
-            <input type="submit" wicket:message="value:game.sendButton">
+            <div class="sendInfoText">
+                <textarea wicket:id="mailBody"></textarea>
+            </div>
+            <div>
+                <input type="submit" wicket:message="value:game.sendButton">
+            </div>
         </div>
 
-        <div class="nadpisSekce">
-            <wicket:message key="game.wishesToPlay">Chtějí hrát</wicket:message>
+        <div class="panel-heading">
+            <h2 class="panel-title"><wicket:message key="game.wishesToPlay">Chtějí hrát</wicket:message></h2>
         </div>
-        <div wicket:id="wantsToPlay"></div>
+
+        <div wicket:id="wantsToPlay" class="panel-body">
+        </div>
     </form>
 </wicket:panel>

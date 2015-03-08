@@ -1,13 +1,8 @@
 package cz.larpovadatabaze.components.panel.game;
 
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Rating;
-import cz.larpovadatabaze.exceptions.WrongParameterException;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.RatingService;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -24,6 +19,13 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.Rating;
+import cz.larpovadatabaze.exceptions.WrongParameterException;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.services.RatingService;
 
 /**
  * This panel shows result of rating of a game. It has background based on the rating and the amount of rating as
@@ -119,19 +121,18 @@ public class RatingsResultPanel extends Panel {
 
         setOutputMarkupId(true);
 
-        PlayedPanel playedPanel = new PlayedPanel("playedPanel", model, new Component[]{componentToRefresh, playedToRefresh});
-        add(playedPanel);
-
+        // Rating result
         Label finalRating = new Label("ratingResult", new RatingResultModel());
         finalRating.add(new AttributeAppender("class",new RatingColorModel(), " "));
         finalRating.setOutputMarkupId(true);
         add(finalRating);
 
-        // This is example of model refreshed on configure
+        // My result
         myRating = Model.of(0);
         Label myResult = new Label("myResult", myRating);
         add(myResult);
 
+        // Amount of results
         Label amountOfResults = new Label("amountOfResults", new AbstractReadOnlyModel<Integer>() {
             @Override
             public Integer getObject() {
@@ -139,6 +140,10 @@ public class RatingsResultPanel extends Panel {
             }
         });
         add(amountOfResults);
+
+        // Played panel
+        PlayedPanel playedPanel = new PlayedPanel("playedPanel", model, new Component[]{componentToRefresh, playedToRefresh});
+        add(playedPanel);
 
         ratingsArrayModel = new RatingsArrayModel();
 
@@ -150,11 +155,21 @@ public class RatingsResultPanel extends Panel {
             @Override
             protected void populateItem(ListItem<Integer> item) {
                 // Add label
-                item.add(new Label("number", item.getModel()));
+                final int n = item.getModelObject();
+                item.add(new Label("number", n));
 
-                // Add class to the bar
-                WebMarkupContainer bar = new WebMarkupContainer("bar");
-                bar.add(new AttributeAppender("class", Model.of("bar"+item.getModelObject()), " "));
+                // Add class && width to the bar
+                WebMarkupContainer bar = new WebMarkupContainer("bar") {
+                    @Override
+                    protected void onComponentTag(ComponentTag tag) {
+                        super.onComponentTag(tag);
+
+                        int percent = ratingsArrayModel.getObject()[n-1];
+                        tag.put("class", tag.getAttribute("class")+" "+Rating.getColorOf(n*10));
+                        tag.put("aria-valuenow", percent);
+                        tag.put("style", "width: "+percent+"%");
+                    }
+                };
                 item.add(bar);
             }
         });

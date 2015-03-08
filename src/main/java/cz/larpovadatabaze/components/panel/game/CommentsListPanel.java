@@ -1,16 +1,5 @@
 package cz.larpovadatabaze.components.panel.game;
 
-import cz.larpovadatabaze.components.common.CommentHiddenButton;
-import cz.larpovadatabaze.components.common.icons.UserIcon;
-import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.game.GameDetail;
-import cz.larpovadatabaze.components.page.user.UserDetail;
-import cz.larpovadatabaze.entities.Comment;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Rating;
-import cz.larpovadatabaze.services.CommentService;
-import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -28,6 +17,18 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import cz.larpovadatabaze.components.common.CommentHiddenButton;
+import cz.larpovadatabaze.components.common.icons.UserIcon;
+import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.page.game.GameDetail;
+import cz.larpovadatabaze.components.page.user.UserDetail;
+import cz.larpovadatabaze.entities.Comment;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.Rating;
+import cz.larpovadatabaze.services.CommentService;
+import cz.larpovadatabaze.services.ImageService;
 
 /**
  * This Panel shows List of comments. Everything about comment is shown and the
@@ -92,39 +93,42 @@ public class CommentsListPanel extends Panel {
                 Date dateOfComment = new Date();
                 dateOfComment.setTime(actualComment.getAdded().getTime());
 
-                Label commentDate = new Label("commentDate", Model.of(formatDate.format(dateOfComment)));
-                item.add(commentDate);
-                Label commentsContent = new Label("commentsContent", Model.of(actualComment.getComment()));
-                commentsContent.setEscapeModelStrings(false);
-                item.add(commentsContent);
-
+                // Hide comment button
                 item.add(new CommentHiddenButton("commentHiddenButton", item.getModel()));
 
+                // Author link
                 CsldUser authorOfComment = actualComment.getUser();
+                PageParameters params = new PageParameters();
+                params.add("id", authorOfComment.getId());
+                final BookmarkablePageLink<CsldBasePage> authorLink =
+                    new BookmarkablePageLink<CsldBasePage>("authorLink", UserDetail.class, params);
+                item.add(authorLink);
 
-                final UserIcon authorsAvatar = new UserIcon("authorsAvatar", new AbstractReadOnlyModel<CsldUser>() {
+                // Author image
+                final UserIcon authorsAvatar = new UserIcon("avatar", new AbstractReadOnlyModel<CsldUser>() {
                     @Override
                     public CsldUser getObject() {
                         return item.getModelObject().getUser();
                     }
                 });
-                item.add(authorsAvatar);
+                authorLink.add(authorsAvatar);
 
-                PageParameters params = new PageParameters();
-                params.add("id", authorOfComment.getId());
-                final BookmarkablePageLink<CsldBasePage> commentAuthorsDetail =
-                        new BookmarkablePageLink<CsldBasePage>("authorsDetail", UserDetail.class, params);
-                Label authorsNick = new Label("authorsNick", Model.of(authorOfComment.getPerson().getNickNameView()));
-                Label authorsName = new Label("authorsName", Model.of(authorOfComment.getPerson().getName()));
+                // Author nick && name
+                authorLink.add(new Label("nick", Model.of(authorOfComment.getPerson().getNickNameView())));
+                authorLink.add(new Label("name", Model.of(authorOfComment.getPerson().getName())));
 
-                commentAuthorsDetail.add(authorsNick);
-                commentAuthorsDetail.add(authorsName);
+                // Date
+                Label commentDate = new Label("commentDate", Model.of(formatDate.format(dateOfComment)));
+                item.add(commentDate);
+
+                // Content
+                Label commentsContent = new Label("commentsContent", Model.of(actualComment.getComment()));
+                commentsContent.setEscapeModelStrings(false);
+                item.add(commentsContent);
 
                 WebMarkupContainer gameLabel = createGameDetailLink(actualComment.getGame());
                 gameLabel.setVisibilityAllowed(showGame);
                 item.add(gameLabel);
-
-                item.add(commentAuthorsDetail);
             }
         };
         add(commentList);

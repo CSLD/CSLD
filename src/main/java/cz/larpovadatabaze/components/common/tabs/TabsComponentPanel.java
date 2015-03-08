@@ -63,15 +63,7 @@ public class TabsComponentPanel extends Panel {
             protected void populateItem(final ListItem<Integer> item) {
                 final int idx = item.getModelObject();
 
-                // Add appender to set the active css class
-                item.add(new AttributeAppender("class", new AbstractReadOnlyModel<String>() {
-                    @Override
-                    public String getObject() {
-                        return (item.getModelObject().equals(TabsComponentPanel.this.getDefaultModelObject())) ? ACTIVE_CLASS : "";
-                    }
-                }, " "));
-
-                // Label
+                // Link
                 AjaxLink link = new AjaxLink<Integer>("link", Model.of(idx)) {
                     @Override
                     public void onClick(AjaxRequestTarget ajaxRequestTarget) {
@@ -84,7 +76,19 @@ public class TabsComponentPanel extends Panel {
                 };
                 item.add(link);
 
+                // Label within link
                 link.add(new Label("label", labelModels[idx]));
+
+                // Marker of active item
+                // Add appender to set the active css class
+                WebMarkupContainer marker = new WebMarkupContainer("marker");
+                marker.add(new AttributeAppender("class", new AbstractReadOnlyModel<String>() {
+                    @Override
+                    public String getObject() {
+                        return (item.getModelObject().equals(TabsComponentPanel.this.getDefaultModelObject())) ? ACTIVE_CLASS : "";
+                    }
+                }, " "));
+                item.add(marker);
             }
         });
     }

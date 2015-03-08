@@ -1,22 +1,9 @@
 package cz.larpovadatabaze.components.panel.game;
 
-import cz.larpovadatabaze.components.panel.user.CheckBoxSelectionUsers;
-import cz.larpovadatabaze.dto.SelectedUser;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Label;
-import cz.larpovadatabaze.entities.UserPlayedGame;
-import cz.larpovadatabaze.security.CsldRoles;
-import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.GameService;
-import cz.larpovadatabaze.utils.MailClient;
-import cz.larpovadatabaze.utils.UserUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
@@ -25,10 +12,21 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import java.util.ArrayList;
 import java.util.List;
 
+import cz.larpovadatabaze.components.common.AbstractCsldPanel;
+import cz.larpovadatabaze.components.panel.user.CheckBoxSelectionUsers;
+import cz.larpovadatabaze.dto.SelectedUser;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.UserPlayedGame;
+import cz.larpovadatabaze.security.CsldRoles;
+import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.utils.MailClient;
+import cz.larpovadatabaze.utils.UserUtils;
+
 /**
  *  This one really should contain also the CheckboxSelection Users.
  */
-public class SendInformation extends Panel {
+public class SendInformation extends AbstractCsldPanel<Game> {
     @SpringBean
     private MailClient mailClient;
     @SpringBean
@@ -47,7 +45,7 @@ public class SendInformation extends Panel {
         @Override
         public List<CsldUser> getObject() {
             List<CsldUser> wantedBy = new ArrayList<CsldUser>();
-            for(UserPlayedGame played : getGame().getPlayed()){
+            for(UserPlayedGame played : getModelObject().getPlayed()){
                 if(played.getStateEnum().equals(UserPlayedGame.UserPlayedGameState.WANT_TO_PLAY)) {
                     wantedBy.add(played.getPlayerOfGame());
                 }
@@ -61,8 +59,8 @@ public class SendInformation extends Panel {
     private String mail;
     private CheckBoxSelectionUsers wantedToPlay;
 
-    public SendInformation(String id) {
-        super(id);
+    public SendInformation(String id, IModel<Game> model) {
+        super(id, model);
     }
 
     @Override
@@ -76,7 +74,7 @@ public class SendInformation extends Panel {
                     return CsldRoles.EDITOR;
                 } else if(UserUtils.isAdmin()) {
                     return CsldRoles.ADMIN;
-                } else if(gameService.canEditGame(getGame())) {
+                } else if(gameService.canEditGame(getModelObject())) {
                     return CsldRoles.AUTHOR;
                 } else if(UserUtils.isSignedIn()) {
                     return CsldRoles.USER;
@@ -91,19 +89,19 @@ public class SendInformation extends Panel {
         Form sendInfo = new Form("sendInfoForm") {
             @Override
             protected void onSubmit() {
-                if(gameService.canEditGame(getGame())){
+                if(gameService.canEditGame(SendInformation.this.getModelObject())){
                     List<SelectedUser> recipients = getAllSelected();
                     for(SelectedUser recipient: recipients){
                         mailClient.sendMail(
-                                String.format("Tento email je zaslan z larpove databaze od autora hry %s.\n%s",getGame().getName(),mail),
+                                String.format("Tento email je zaslan z larpove databaze od autora hry %s.\n%s",SendInformation.this.getModelObject().getName(),mail),
                                 recipient.getEmail());
                     }
                 } else {
                     CsldUser loggedUser = UserUtils.getLoggedUser();
-                    for(CsldUser author: getGame().getAuthors()){
+                    for(CsldUser author: SendInformation.this.getModelObject().getAuthors()){
                         mailClient.sendMail(
                                 String.format("Tento email je zaslan z larpove databaze od uzivatele %s ke hre %s.\n%s",
-                                        loggedUser.getPerson().getEmail(), getGame().getName(), mail),author.getPerson().getEmail());
+                                        loggedUser.getPerson().getEmail(), SendInformation.this.getModelObject().getName(), mail),author.getPerson().getEmail());
                     }
                 }
                 info("Mail byl uspesne odeslan.");
@@ -135,6 +133,4 @@ public class SendInformation extends Panel {
     public List<SelectedUser> getAllSelected(){
         return wantedToPlay.getSelectedUsers();
     }
-
-    public Game getGame(){return Game.getEmptyGame();}
 }
