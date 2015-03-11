@@ -252,3 +252,19 @@ ul.rating li{
 .notrated {
     background-color: #CCC;
 }
+.dropdown-menu > li{
+    list-style: none;
+}
+.btn.btn-default.dropdown-toggle.lang{
+    margin-top: 16px;
+    padding: 0px 6px;
+}
+@media (max-width: 760px) {
+
+.btn.btn-default.dropdown-toggle.lang{
+    margin-left: 12px;
+    }
+}
+.navbar-collapse {
+  max-height: 385px;
+}
