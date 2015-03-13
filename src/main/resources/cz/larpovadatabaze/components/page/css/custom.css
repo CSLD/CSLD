@@ -56,8 +56,7 @@ body{
 
 }
 
-.panel-default>.panel-heading {
-    color: ;
+.panel-default .panel-heading {
     background-color: transparent;
     border-bottom: 1px solid transparent;
 }
@@ -122,11 +121,17 @@ a:focus {
 }
 .comment-user-nickname{
     background-color: #16b093;
+    border-radius: 0px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;      
 }
 .comment-user-name{
-    background-color: white;
+    background-color: #f4f4f4;
     color: #7F7F7F;
-    left: 4px;
+    left: 0px;
+    border-radius: 0px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;   
 }
 .comment-date{
     margin-left: 70px;
@@ -292,6 +297,12 @@ a:focus {
 }
 .profile_bar.events{
     margin-bottom: 20px;
+}
+.profile_bar.switcher a{
+ color:#AFAFAF;   
+}
+.profile_bar.switcher a:hover{
+ color:#6dc8b7;   
 }
 .glyphicon.glyphicon-home{
     color: #EFEFEF;
@@ -824,6 +835,22 @@ div.recent-game-players{
     padding-top:  1px;
     border-radius: 4px;
 }
+.row.recent-games.played div.item{
+    background-color: #f4f4f4;   
+}
+.row.recent-games.played div.item:hover{
+    background-color: #E8E8E8;   
+}
+.row.recent-games.played .testimonials .testimonial-info{
+    color: #6F6F6F;
+}
+.created-games-list{
+    position: relative;
+    top: -10px;
+}
+.view-more-btn.played{
+     margin: 10px;
+}
 #owl, #owl-2{
     cursor: pointer;
 }
@@ -848,4 +875,11 @@ div.recent-game-players{
     .recent-event-pad {
         padding-right: 15px;
     }
+}
+.ratingNum{
+    display: inline-block;
+    float: right;
+}
+.footer-socials{
+    cursor: pointer;
 }
