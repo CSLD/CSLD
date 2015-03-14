@@ -2,7 +2,6 @@ package cz.larpovadatabaze.components.page;
 
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import cz.larpovadatabaze.components.panel.home.AdvertisementPanel;
 import cz.larpovadatabaze.components.panel.home.LarpCzCalendarPanel;
 import cz.larpovadatabaze.components.panel.home.LastCommentsPanel;
 import cz.larpovadatabaze.components.panel.home.RecentGamesPanel;
@@ -24,9 +23,6 @@ public class HomePage extends CsldBasePage {
     private Translator<Game> gameTranslator;
 
     public HomePage(){
-
-        add(new AdvertisementPanel("advertisements"));
-
         add(new RecentGamesPanel("recentGames"));
 
         add(new LarpCzCalendarPanel("calendar"));

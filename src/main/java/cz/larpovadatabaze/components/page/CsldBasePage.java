@@ -3,6 +3,7 @@ package cz.larpovadatabaze.components.page;
 import com.googlecode.wicket.jquery.core.resource.JQueryUIResourceReference;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.authentication.IAuthenticationStrategy;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -24,6 +25,7 @@ import cz.larpovadatabaze.components.page.author.ListAuthor;
 import cz.larpovadatabaze.components.page.game.ListGame;
 import cz.larpovadatabaze.components.page.group.ListGroup;
 import cz.larpovadatabaze.components.page.user.ListUser;
+import cz.larpovadatabaze.components.panel.home.AdvertisementPanel;
 import cz.larpovadatabaze.components.panel.search.SearchBoxPanel;
 import cz.larpovadatabaze.components.panel.user.AdminPanel;
 import cz.larpovadatabaze.components.panel.user.LoggedBoxPanel;
@@ -95,6 +97,17 @@ public abstract class CsldBasePage extends WebPage {
         add(new LocalePicker("localePicker"));
 
         add(new SearchBoxPanel("searchBox"));
+
+        add(provideAdvertisementsPanel("advertisements"));
+    }
+
+    /**
+     * @param id Desired component id
+     *
+     * @return Advertisement component. Usually it is games slider, but it can be anything else.
+     */
+    protected Component provideAdvertisementsPanel(String id) {
+        return new AdvertisementPanel(id);
     }
 
     @Override

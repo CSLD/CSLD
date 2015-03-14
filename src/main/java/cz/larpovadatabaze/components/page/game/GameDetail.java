@@ -210,6 +210,23 @@ public class GameDetail extends CsldBasePage {
         return previewImageUrlModel;
     }
 
+    @Override
+    protected Component provideAdvertisementsPanel(String id) {
+        Game game = getModel().getObject();
+        if (getModel().getObject().getImage() == null) {
+            // Nothing visible
+            return new WebMarkupContainer("id").setVisible(false);
+        }
+        else {
+            // Send main picture
+            Fragment f = new Fragment(id, "mainPicture", this);
+
+            f.add(new Image("mainPicture", imageService.getImageResource(game.getImage(), game.getDefaultImage())));
+
+            return f;
+        }
+    }
+
     private void addOrReplaceTabContentPanel() {
         Fragment fragment;
 
@@ -290,17 +307,6 @@ public class GameDetail extends CsldBasePage {
         };
 
         super.onInitialize();
-
-        Game game = (Game)getDefaultModelObject();
-        if ((game.getImage() == null) || (game.getImage() == game.getDefaultImage())) {
-            // No main picture
-            add(new WebMarkupContainer("mainPicture").setVisible(false));
-        }
-        else {
-            // Add main picture
-            add(new Image("mainPicture", imageService.getImageResource(game.getImage(), game.getDefaultImage())));
-        }
-
 
         add(new GameDetailPanel("gameDetail", getModel()));
 

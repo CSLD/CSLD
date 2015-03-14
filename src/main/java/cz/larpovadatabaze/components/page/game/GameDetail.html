@@ -1,13 +1,5 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:extend>
-    <wicket:enclosure child="mainPicture">
-        <div class="main_picture">
-            <!-- if main profile picture is not uploaded, then this block is hidden -->
-            <img class="media-object img-responsive" wicket:id="mainPicture" alt="">
-        </div>
-    </wicket:enclosure>
-
-
     <div class="profile_bar">
         <div class="container">
             <div class="row">
@@ -183,6 +175,15 @@
             </iframe>
         </div>
     </wicket:fragment>
+
+    <wicket:fragment wicket:id="mainPicture">
+        <div class="main_picture">
+            <!-- if main profile picture is not uploaded, then this block is hidden -->
+            <img class="media-object img-responsive" wicket:id="mainPicture" alt="">
+        </div>
+    </wicket:fragment>
+
+
 
 </wicket:extend>
 
