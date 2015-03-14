@@ -32,26 +32,28 @@ public class GameBoxPanel extends AbstractCsldPanel<Game> {
 
         Game game = getModelObject();
 
+        // Link
+        final BookmarkablePageLink<CsldBasePage> gameLinkContent =
+            new BookmarkablePageLink<CsldBasePage>("gameLink", GameDetail.class, GameDetail.paramsForGame(game));
+        add(gameLinkContent);
+
         // Rating
         String gameRatingColor = Rating.getColorOf(game.getTotalRating());
         Label gameRating = new Label("gameRating", ratingFormat.format(game.getTotalRating() / 10));
         gameRating.add(new AttributeAppender("class", Model.of(gameRatingColor), " "));
-        add(gameRating);
+        gameLinkContent.add(gameRating);
 
         // Link && name
-        final BookmarkablePageLink<CsldBasePage> gameLinkContent =
-            new BookmarkablePageLink<CsldBasePage>("gameLink", GameDetail.class, GameDetail.paramsForGame(game));
         final Label gameName = new Label("gameName", game.getName());
         gameLinkContent.add(gameName);
-        add(gameLinkContent);
 
         // Number of players
-        add(new Label("players", game.getPlayers()));
+        gameLinkContent.add(new Label("players", game.getPlayers()));
 
         // Comments
-        add(new Label("comments", game.getAmountOfComments()));
+        gameLinkContent.add(new Label("comments", game.getAmountOfComments()));
 
         // Ratings
-        add(new Label("ratings", game.getAmountOfRatings()));
+        gameLinkContent.add(new Label("ratings", game.getAmountOfRatings()));
     }
 }
