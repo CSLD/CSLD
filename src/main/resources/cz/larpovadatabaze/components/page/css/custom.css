@@ -136,6 +136,10 @@ a:focus {
 .comment-date{
     margin-left: 70px;
 }
+.row.details{
+    position: relative;
+    top: -3px;       
+}
 .comment-user-picture{
     margin-right: 15px;
 }
