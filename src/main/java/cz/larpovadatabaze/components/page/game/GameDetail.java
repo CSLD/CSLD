@@ -213,15 +213,15 @@ public class GameDetail extends CsldBasePage {
     @Override
     protected Component provideAdvertisementsPanel(String id) {
         Game game = getModel().getObject();
-        if (getModel().getObject().getImage() == null) {
+        if (game.getCoverPhoto() == null) {
             // Nothing visible
-            return new WebMarkupContainer("id").setVisible(false);
+            return new WebMarkupContainer(id).setVisible(false);
         }
         else {
             // Send main picture
             Fragment f = new Fragment(id, "mainPicture", this);
 
-            f.add(new Image("mainPicture", imageService.getImageResource(game.getImage(), game.getDefaultImage())));
+            f.add(new Image("mainPicture", imageService.getImageResource(game.getCoverPhoto(), null)));
 
             return f;
         }

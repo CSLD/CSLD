@@ -1,8 +1,5 @@
 package cz.larpovadatabaze.entities;
 
-import cz.larpovadatabaze.lang.ActualLanguageGameTranslator;
-import cz.larpovadatabaze.lang.DbSessionLanguageSolver;
-import cz.larpovadatabaze.lang.Translator;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -13,7 +10,6 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -31,6 +27,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import cz.larpovadatabaze.api.Identifiable;
+import cz.larpovadatabaze.lang.ActualLanguageGameTranslator;
+import cz.larpovadatabaze.lang.DbSessionLanguageSolver;
 
 
 /**
@@ -524,6 +522,25 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     public Image getImage() {
         return image;
     }
+
+
+    private Image coverPhoto;
+
+    @ManyToOne(cascade = javax.persistence.CascadeType.ALL)
+    @JoinColumn(
+        name = "cover_photo",
+        referencedColumnName = "id",
+        insertable = true,
+        updatable = true
+    )
+    public Image getCoverPhoto() {
+        return coverPhoto;
+    }
+
+    public void setCoverPhoto(Image image) {
+        this.coverPhoto = image;
+    }
+
 
     @Override
     @Transient
