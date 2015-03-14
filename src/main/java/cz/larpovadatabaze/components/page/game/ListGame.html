@@ -1,29 +1,52 @@
 <wicket:extend xmlns:wicket="http://wicket.apache.org">
-    <div class="levaCast" id="Zebricky">
-        <div class="sekce sekceZebricky">
-            <div class="nadpisStranky">
+
+<div class="levaCast zebricky">
+    <div class="profile_bar">
+        <div class="container">
+            <div class="row">
+            <div>
                 <i class="fa fa-bars"></i><wicket:message key="game.charts">Žebříčky</wicket:message>
             </div>
-            <div class="podzebricky">
-                <a wicket:id="all"><div><wicket:message key="game.all">Všechny</wicket:message></div></a>
-                <a wicket:id="chamber"><div><wicket:message key="game.chamber">Komorní</wicket:message></div></a>
-                <a wicket:id="dramatic"><div><wicket:message key="game.dramatic">Dramatické</wicket:message></div></a>
-                <a wicket:id="battle"><div><wicket:message key="game.battle">Bitvy</wicket:message></div></a>
-                <a wicket:id="world"><div><wicket:message key="game.world">Světy</wicket:message></div></a>
-                <a wicket:id="city"><div><wicket:message key="game.city">Městské</wicket:message></div></a>
-                <a wicket:id="group"><div><wicket:message key="game.group">Družinovky</wicket:message></div></a>
+              
             </div>
+        </div>
+    </div>
+
+    <!-- TODO - what this should do? -->
+    <div class="profile_bar switcher">
+        <div class="container">
+            <div class="podzebricky">
+                <a class="" wicket:id="all"><div class="btn btn-default btn-xs"><wicket:message key="game.all">Všechny</wicket:message></div></a>
+                <a wicket:id="chamber"><div class="btn btn-default btn-xs"><wicket:message key="game.chamber">Komorní</wicket:message></div></a>
+                <a wicket:id="dramatic"><div class="btn btn-default btn-xs"><wicket:message key="game.dramatic">Dramatické</wicket:message></div></a>
+                <a wicket:id="battle"><div class="btn btn-default btn-xs"><wicket:message key="game.battle">Bitvy</wicket:message></div></a>
+                <a wicket:id="world"><div class="btn btn-default btn-xs"><wicket:message key="game.world">Světy</wicket:message></div></a>
+                <a wicket:id="city"><div class="btn btn-default btn-xs"><wicket:message key="game.city">Městské</wicket:message></div></a>
+                <a wicket:id="group"><div class="btn btn-default btn-xs"><wicket:message key="game.group">Družinovky</wicket:message></div></a>
+            </div>  
+        </div>
+    </div>
+
+    <div class="container main">
+
+        <div class="row">
+
+           <div class="col-md-8">
+            
+            
+            
+
+
             <div wicket:id="listGame">
                 <!--
                 This panel is found in package: cz.larpovadatabaze.components.panel.game.ListGamePanel.html
                 https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/ListGamePanel.html
                 -->
             </div>
-        </div>
-    </div>
-
-    <div class="pravaCast" id="Zebricky">
-        <div class="praveMenu">
+   
+        </div>               
+        <div class="col-md-4">
+        <div>   
             <div class="nadpisMenu"><wicket:message key="filters.filters">filtry</wicket:message></div>
         </div>
         <div class="sekce" wicket:id="addGame">
@@ -32,11 +55,18 @@
             https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/AddGamePanel.html
             -->
         </div>
+
         <div class="sekce" wicket:id="filterGames">
             <!--
             This panel is found in package: cz.larpovadatabaze.components.panel.game.FilterGamesPanel.html
             https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/FilterGamesPanel.html
             -->
-        </div>
+
+        </div>   
+
+      </div> 
     </div>
+
+    </div>    
+</div>
 </wicket:extend>

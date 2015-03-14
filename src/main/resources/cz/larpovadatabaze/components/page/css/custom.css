@@ -452,7 +452,6 @@ footer .container .footer-socials a:hover{
     margin: 0;
 }
 .testimonials .testimonial-info {
-    color: #16b093;
     padding: 0 15px;
     margin-top: 18px;
 }
@@ -660,10 +659,10 @@ footer .container .footer-socials a:hover{
 .profile_bar .testimonials .testimonial-info img {
     border: solid 1px #5F5F5F;
 }
-.profile_bar .testimonials a {
+.profile_bar a .testimonials {
     color: silver;
 }
-.profile_bar .testimonials a:hover{
+.profile_bar div.item:hover{
     color: #6dc8b7;
 }
 .profile_bar .testimonials .testimonial-info em {
@@ -845,7 +844,13 @@ div.recent-game-players{
 .row.recent-games.played div.item:hover{
     background-color: #E8E8E8;   
 }
-.row.recent-games.played .testimonials .testimonial-info{
+.row.recent-games div.item:hover{
+    background-color: #383838;   
+}
+.row.recent-games .recent-game{
+    color: silver;   
+}
+.row.recent-games.played .recent-game{
     color: #6F6F6F;
 }
 .created-games-list{
@@ -886,4 +891,196 @@ div.recent-game-players{
 }
 .footer-socials{
     cursor: pointer;
+}
+
+/* zebricky */
+.levaCast.zebricky .icon-star{
+  color: #00A0B0;  
+}
+.levaCast.zebricky .sekcezebricky {
+    margin-top: 0px;
+    padding-top: 10px;
+}
+
+.levaCast.zebricky .polozkaZebricek {
+    margin-top: 0px;
+}
+.levaCast table {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    border-spacing: 0px;
+}
+.levaCast.zebricky table {
+    width: 100%;
+}
+.levaCast tr:nth-child(odd){
+    background-color: #F8F8F8;
+}
+.levaCast tr:hover,
+ .levaCast tr:nth-child(odd):hover{
+    background-color: rgba(0,160,176,0.2);
+}
+.levaCast td {
+    border-bottom-width: 1px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-top-width: 0px;
+    padding: 2px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin: 0;
+    border-color: #EFEFEF;
+    border-style: solid;
+    text-align: left;
+}
+.levaCast.zebricky td{
+    text-align: right;  
+}
+.levaCast.zebricky td:first-child {
+    width: 10px;
+}
+.levaCast.zebricky td:nth-of-type(2) {
+    text-align: left;
+}
+.levaCast.zebricky td:nth-of-type(3) {
+    text-align: center;
+}
+.levaCast.zebricky td:nth-of-type(4) {
+    text-align: center;
+}
+.levaCast.zebricky td:last-child {
+    padding-right: 5px;
+}
+ thead td, thead, th{
+    background-color: #FEFEFE;
+}
+ thead td:nth-child(even){
+}
+.levaCast.zebricky .poradi {
+    text-align: right;
+}
+
+.levaCast.zebricky .larp {
+}
+
+.levaCast.zebricky .larpOdkaz {
+    color: #214c61;
+    font-weight: bold;
+}
+
+.levaCast.zebricky .hodnoceni {
+    text-align: center;
+}
+
+.levaCast.zebricky .pocet_hodnoceni {
+    text-align: right;
+    position: relative;
+    vertical-align: middle;
+    padding-right: 5px;
+}
+.levaCast.zebricky .fa-bars,
+ .levaCast#uzivatel .fa-bars{
+    color: #6dc8b7;
+    margin-right: 8px;
+}
+.levaCast.zebricky .fa-star-half-full,
+ .levaCast.zebricky .fa-comments-o{
+    color: #6dc8b7;
+    font-size: 14px;
+}
+#levaCastOdatabazi .fa-question{
+    color: #6dc8b7;  
+}
+#Autori .fa-user,
+ #Uzivatele .fa-user,
+  #Autori .fa-user,
+   #Autori .fa-pencil,
+    #Skupiny .fa-users{
+    color: #6dc8b7;
+    margin-right: 5px;
+}
+.levaCast.zebricky .pocet_hodnoceni span {
+    margin-right: 2px;
+}
+.levaCast#game tr:hover, 
+.levaCast#game tr:nth-child(odd), 
+.levaCast#game td {
+  background-color: transparent;
+  border: none;
+}
+.levaCast#game table.poleHra{
+  width: 100%;
+}
+.levaCast#game .poleHra tr{
+    background-color: #F8F8F8;    
+}
+.sekce .fa-plus{
+    color: #00A0B0;  
+}
+#divProHledani .fa-search{
+  color: #00A0B0;
+  position: absolute;
+  right: 1px;
+  top: 4px;
+  z-index: 20;
+  text-shadow:  none;
+  font-size: 14px;
+}
+.napovedazebricky {
+    font-size: 10pt;
+    color: #535353;
+    text-align: center;
+    width: 80px;
+}
+.podzebricky .btn{
+    margin: 3px 0px 0 0;
+}
+
+
+/* navigator */
+.navigator{
+  text-align: center;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 11px;  
+  cursor: pointer;
+}
+.navigator a{
+background-color: #FCFCFC;
+border-radius: 2px;
+border: 1px none;
+margin: 2px;
+box-shadow: 0 0 1px 1px #E0E0E0;
+padding:  2px 6px 2px 6px;
+text-align: center;
+}
+
+@media all and (max-width: 614px) {
+    table, thead, tbody, th, td, tr { 
+		display: block; 
+    }
+}
+
+input[type=button]{
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  border: 1px solid transparent;
+  padding: 1px 5px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+  color: #333;
+  background-color: #F4F4F4;
+}
+.cmpGameLabelContainer{
+    display: inline-block;
 }
