@@ -45,6 +45,11 @@ public class ListGamesWithAnnotations extends Panel {
                 gameNo = 2;
             }
         }
+
+        if (gameNo == 2) {
+            // Add empty last right container
+            lastRow.add(new WebMarkupContainer("game2").setVisible(false));
+        }
 //        add(new PagingNavigator("navigator", gamesView));
     }
 }
