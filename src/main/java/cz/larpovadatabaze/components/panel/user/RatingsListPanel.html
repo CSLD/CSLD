@@ -5,18 +5,15 @@
     It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/user/RatingsListPanel.html
     Code - cz.larpovadatabaze.components.panel.user.RatingsListPanel.html
     -->
-    <div wicket:id="listGames">
-        <!-- Beginning of repetitive content for every Rating -->
-        <div class="obsahPolozka">
-            <span wicket:id="myRating" class="ratingNum"></span>
 
-            <div wicket:id="gameRating" class="ctverecek"></div>
-
+    <ul class="rating">
+        <li wicket:id="listGames">
+            <div style="float: right;" wicket:id="myRating"></div>
+            <div wicket:id="gameRating" class="game-square"></div>
             <a wicket:id="gameDetail">
-                <span wicket:id="gameName"></span>
-                (<span wicket:id="gameYear"></span>)
+                <wicket:container wicket:id="gameName" />
+                (<wicket:container wicket:id="gameYear" />)
             </a>
-        </div>
-        <!-- End of repetitive content for every Rating -->
-    </div>
+        </li>
+    </ul>
 </wicket:panel>

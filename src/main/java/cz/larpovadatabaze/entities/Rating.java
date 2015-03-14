@@ -1,8 +1,16 @@
 package cz.larpovadatabaze.entities;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * User: Jakub Balhar
@@ -12,7 +20,7 @@ import java.sql.Timestamp;
 @IdClass(RatingPK.class)
 @Table(schema = "public", name="csld_rating")
 @Entity
-public class Rating implements Serializable {
+public class Rating implements IGameWithRating, Serializable {
     private Integer rating;
 
     @Column(name = "rating", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)

@@ -1,13 +1,31 @@
 package cz.larpovadatabaze.components.page.user;
 
+import org.apache.wicket.RestartResponseException;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.panel.admin.AdminAllRatingsPanel;
 import cz.larpovadatabaze.components.panel.game.CommentsListPanel;
 import cz.larpovadatabaze.components.panel.game.GameListPanel;
 import cz.larpovadatabaze.components.panel.game.ListGamesWithAnnotations;
 import cz.larpovadatabaze.components.panel.user.PersonDetailPanel;
 import cz.larpovadatabaze.components.panel.user.RatingsListPanel;
-import cz.larpovadatabaze.entities.*;
+import cz.larpovadatabaze.entities.Comment;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.GameWithoutRating;
+import cz.larpovadatabaze.entities.IGameWithRating;
+import cz.larpovadatabaze.entities.UserPlayedGame;
 import cz.larpovadatabaze.providers.SortableAnnotatedProvider;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.CsldUserService;
@@ -15,15 +33,6 @@ import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.RatingService;
 import cz.larpovadatabaze.utils.HbUtils;
 import cz.larpovadatabaze.utils.UserUtils;
-import org.apache.wicket.RestartResponseException;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -119,47 +128,34 @@ public class UserDetail extends CsldBasePage {
             user = HbUtils.deproxy(user);
         }
 
-        WebMarkupContainer ratingLabel = new WebMarkupContainer("ratingLabel");
-        add(ratingLabel);
+        // Fill played games from rated games
+        List<IGameWithRating> playedGames = new ArrayList<IGameWithRating>();
+        playedGames.addAll(ratingService.getRatingsOfUser(logged, user));
 
-        List<Game> playedGames = new ArrayList<Game>();
+        // Build set of rated games IDs
+        Set<Integer> ratedGamesIds = new HashSet<Integer>();
+        for(IGameWithRating r : playedGames) {
+            ratedGamesIds.add(r.getGame().getId());
+        }
+
+        // Pass user's games, build list of wanted games, add played games to ratings
         List<Game> wantedGames = new ArrayList<Game>();
-        for(UserPlayedGame played: user.getPlayedGames()){
+        for(UserPlayedGame played : user.getPlayedGames()){
             if(played.getStateEnum().equals(UserPlayedGame.UserPlayedGameState.WANT_TO_PLAY)){
+                // Add to wanted games
                 wantedGames.add(played.getPlayedBy());
             } else if(played.getStateEnum().equals(UserPlayedGame.UserPlayedGameState.PLAYED)) {
-                playedGames.add(played.getPlayedBy());
-            } else {
-
-            }
-        }
-
-        if(logged == null || (!logged.getId().equals(user.getId()) && !csldUserService.isLoggedAtLeastEditor())) {
-            // Do not show rated games
-            add(new WebMarkupContainer("ratedGames").setVisible(false));
-            ratingLabel.setVisible(false);
-        }
-        else {
-            // Load ratings
-            List<Rating> myRatings = ratingService.getRatingsOfUser(logged, user);
-            Collections.sort(myRatings, new Comparator<Rating>() {
-                @Override
-                public int compare(Rating o1, Rating o2) {
-                    return o2.getRating() - o1.getRating();
+                if (!ratedGamesIds.contains(played.getGameId())) {
+                    // Add to list of played games, without rating
+                    playedGames.add(new GameWithoutRating(played.getPlayedBy()));
                 }
-            });
-            add(new RatingsListPanel("ratedGames", Model.ofList(myRatings)));
-
-            // From played games, remove those that are rated, so they do not show twice
-            Set<Game> playedGamesSet = new HashSet<Game>(playedGames);
-            for(Rating r : myRatings) {
-                playedGamesSet.remove(r.getGame());
             }
-            playedGames.clear();
-            playedGames.addAll(playedGamesSet);
         }
-        add(new GameListPanel("playedGames",Model.ofList(playedGames)));
 
+        // Add player games
+        add(new RatingsListPanel("ratedGames", Model.ofList(playedGames)));
+
+        // Add wanted games
         add(new GameListPanel("wantedGamesPanel",Model.ofList(wantedGames)));
     }
 }
