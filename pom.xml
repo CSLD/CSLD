@@ -45,6 +45,7 @@
         <javax.mail.version>1.4.7</javax.mail.version>
         <postgresql.version>9.3-1102-jdbc41</postgresql.version>
         <http.client.version>3.1</http.client.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
@@ -313,6 +314,7 @@
                     <target>1.6</target>
                     <optimize>true</optimize>
                     <debug>true</debug>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
             <plugin>
@@ -379,6 +381,14 @@
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>3.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.4.3</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
             </plugin>
         </plugins>
     </build>
