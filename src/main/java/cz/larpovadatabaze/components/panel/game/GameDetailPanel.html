@@ -38,6 +38,18 @@
                     <wicket:container wicket:id="lang" />
                 </p>
             </div>
+
+            <div class="col-md-7 col-sm-7 col-xs-12">
+                <p>
+                    <strong><wicket:message key="authorsCapitalized">Autoři:</wicket:message></strong>
+                    <wicket:container wicket:id="authors"><wicket:container wicket:id="separator" /><a wicket:id="authorDetailLink"><wicket:container wicket:id="authorName"></wicket:container></a></wicket:container>
+                </p>
+                <p>
+                    <wicket:message key="group.group">Skupiny:</wicket:message>
+                    <wicket:container wicket:id="authorsGroups"><wicket:container wicket:id="separator" /><a wicket:id="authorGroupDetailLink"><wicket:container wicket:id="authorGroupName"></wicket:container></a></wicket:container>
+                    <wicket:container wicket:id="dash">&mdash;</wicket:container>
+                </p>
+            </div>
         </div>
 
         <div class="row description">
