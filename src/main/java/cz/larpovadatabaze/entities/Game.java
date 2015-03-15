@@ -1,6 +1,5 @@
 package cz.larpovadatabaze.entities;
 
-import cz.larpovadatabaze.lang.*;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -11,12 +10,31 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import cz.larpovadatabaze.api.Identifiable;
-import cz.larpovadatabaze.lang.ActualLanguageGameTranslator;
+import cz.larpovadatabaze.lang.CodeLocaleProvider;
 import cz.larpovadatabaze.lang.DbSessionLanguageSolver;
+import cz.larpovadatabaze.lang.LocaleProvider;
+import cz.larpovadatabaze.lang.TranslatableEntity;
+import cz.larpovadatabaze.lang.TranslatableEntityTranslator;
+import cz.larpovadatabaze.lang.TranslationEntity;
 
 
 /**
@@ -519,24 +537,6 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     )
     public Image getImage() {
         return image;
-    }
-
-
-    private Image coverPhoto;
-
-    @ManyToOne(cascade = javax.persistence.CascadeType.ALL)
-    @JoinColumn(
-        name = "cover_photo",
-        referencedColumnName = "id",
-        insertable = true,
-        updatable = true
-    )
-    public Image getCoverPhoto() {
-        return coverPhoto;
-    }
-
-    public void setCoverPhoto(Image image) {
-        this.coverPhoto = image;
     }
 
 

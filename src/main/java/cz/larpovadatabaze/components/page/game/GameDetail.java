@@ -1,7 +1,5 @@
 package cz.larpovadatabaze.components.page.game;
 
-import cz.larpovadatabaze.components.panel.game.*;
-import cz.larpovadatabaze.lang.LanguageSolver;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -23,18 +21,37 @@ import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.Vector;
 
 import cz.larpovadatabaze.components.common.JSPingBehavior;
 import cz.larpovadatabaze.components.common.tabs.TabsComponentPanel;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.panel.YouTubePanel;
 import cz.larpovadatabaze.components.panel.admin.AdminAllRatingsPanel;
+import cz.larpovadatabaze.components.panel.game.CommentsListPanel;
+import cz.larpovadatabaze.components.panel.game.CommentsPanel;
+import cz.larpovadatabaze.components.panel.game.DeleteGamePanel;
+import cz.larpovadatabaze.components.panel.game.EditGamePanel;
+import cz.larpovadatabaze.components.panel.game.GameDetailPanel;
+import cz.larpovadatabaze.components.panel.game.GameListPanel;
+import cz.larpovadatabaze.components.panel.game.LoginToRatePanel;
+import cz.larpovadatabaze.components.panel.game.RatingsDisabledPanel;
+import cz.larpovadatabaze.components.panel.game.RatingsPanel;
+import cz.larpovadatabaze.components.panel.game.RatingsResultPanel;
+import cz.larpovadatabaze.components.panel.game.SendInformation;
+import cz.larpovadatabaze.components.panel.game.TranslateGamePanel;
 import cz.larpovadatabaze.components.panel.photo.PhotoPanel;
 import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Video;
+import cz.larpovadatabaze.lang.LanguageSolver;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.HbUtils;
@@ -223,7 +240,7 @@ public class GameDetail extends CsldBasePage {
             // Send main picture
             Fragment f = new Fragment(id, "mainPicture", this);
 
-            f.add(new Image("mainPicture", imageService.getImageResource(game.getCoverPhoto(), null)));
+            f.add(new Image("mainPicture", imageService.getImageResource(game.getCoverPhoto().getImage(), null)));
 
             return f;
         }

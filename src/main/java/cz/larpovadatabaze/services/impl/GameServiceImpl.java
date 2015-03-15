@@ -1,10 +1,31 @@
 package cz.larpovadatabaze.services.impl;
 
-import cz.larpovadatabaze.Csld;
-import cz.larpovadatabaze.api.ResourceLoader;
+import org.apache.wicket.markup.html.form.upload.FileUpload;
+import org.apache.wicket.request.resource.ResourceReference;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.dao.GameDAO;
-import cz.larpovadatabaze.entities.*;
+import cz.larpovadatabaze.dao.GameHasLanguageDao;
+import cz.larpovadatabaze.entities.CsldGroup;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.GameHasLanguages;
+import cz.larpovadatabaze.entities.Image;
+import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.lang.LanguageSolver;
 import cz.larpovadatabaze.models.FilterGame;
@@ -15,14 +36,6 @@ import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.Strings;
-import org.apache.wicket.markup.html.form.upload.FileUpload;
-import org.apache.wicket.request.resource.ResourceReference;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Order;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 
 /**
  *
@@ -114,7 +127,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Collection<Game> getLastGames(int amountOfGames) {
+    public List<Game> getLastGames(int amountOfGames) {
         return gameDAO.getLastGames(amountOfGames, languageSolver.getLanguagesForUser());
     }
 

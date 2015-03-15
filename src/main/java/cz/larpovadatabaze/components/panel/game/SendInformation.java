@@ -93,18 +93,18 @@ public class SendInformation extends AbstractCsldPanel<Game> {
                     List<SelectedUser> recipients = getAllSelected();
                     for(SelectedUser recipient: recipients){
                         mailClient.sendMail(
-                                String.format(getString("mail.from.author"),getGame().getName(),mail),
+                                String.format(getString("mail.from.author"),SendInformation.this.getModelObject().getName(),mail),
                                 recipient.getEmail(),
-                                String.format(getString("mail.from.author.subject"), getGame().getName()));
+                                String.format(getString("mail.from.author.subject"), SendInformation.this.getModelObject().getName()));
                     }
                 } else {
                     CsldUser loggedUser = UserUtils.getLoggedUser();
                     for(CsldUser author: SendInformation.this.getModelObject().getAuthors()){
                         mailClient.sendMail(
                                 String.format(getString("mail.from.user"),
-                                        loggedUser.getPerson().getEmail(), getGame().getName(), mail),
+                                        loggedUser.getPerson().getEmail(), SendInformation.this.getModelObject().getName(), mail),
                                 author.getPerson().getEmail(),
-                                String.format(getString("mail.from.user.subject"), loggedUser.getPerson().getName(), getGame().getName()));
+                                String.format(getString("mail.from.user.subject"), loggedUser.getPerson().getName(), SendInformation.this.getModelObject().getName()));
                     }
                 }
                 info(getString("mail.success"));

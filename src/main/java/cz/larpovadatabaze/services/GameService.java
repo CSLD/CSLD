@@ -1,15 +1,17 @@
 package cz.larpovadatabaze.services;
 
-import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Label;
-import cz.larpovadatabaze.exceptions.WrongParameterException;
-import cz.larpovadatabaze.models.FilterGame;
+import org.hibernate.criterion.Order;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
+
+import cz.larpovadatabaze.entities.CsldGroup;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.GameHasLanguages;
+import cz.larpovadatabaze.entities.Label;
+import cz.larpovadatabaze.exceptions.WrongParameterException;
+import cz.larpovadatabaze.models.FilterGame;
 
 /**
  *
@@ -34,7 +36,7 @@ public interface GameService extends GenericService<Game>, IIconReferenceProvide
 
     Game getRandomGame();
 
-    Collection<Game> getLastGames(int amountOfGames);
+    List<Game> getLastGames(int amountOfGames);
 
     int getAmountOfGames();
 

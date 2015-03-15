@@ -11,7 +11,9 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import cz.larpovadatabaze.components.page.OwlCarouselResourceReference;
@@ -43,11 +45,12 @@ public class RecentGamesPanel extends Panel {
         add(carousel);
 
         // Add recent games
-        List<Game> recentGames = gameService.getLastGames(AMOUNT_OF_GAMES);
+        Collection<Game> recentGames = gameService.getLastGames(AMOUNT_OF_GAMES);
+        Iterator<Game> gameIterator = recentGames.iterator();
         for(int i=0; i<6; i++) {
             String id = "recent" + (i + 1);
-            if (recentGames.size() > i) {
-                carousel.add(createGameBox(id, recentGames.get(i)));
+            if (gameIterator.hasNext()) {
+                carousel.add(createGameBox(id, gameIterator.next()));
             }
             else {
                 carousel.add(new Label(id, "").setVisible(false));
