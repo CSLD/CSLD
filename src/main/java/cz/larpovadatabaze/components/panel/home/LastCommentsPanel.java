@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.components.panel.home;
 
 import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import cz.larpovadatabaze.behavior.dotdotdot.DotDotDotBehavior;
 import cz.larpovadatabaze.components.common.icons.UserIcon;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
@@ -39,7 +41,7 @@ public class LastCommentsPanel extends Panel {
     @SpringBean
     ImageService imageService;
 
-    private static final int MAX_CHARS_IN_COMMENT = 150;
+    private static final int MAX_CHARS_IN_COMMENT = 300;
     private static int INITIAL_LAST_COMMENTS = 6;
     private static int EXPANDED_LAST_COMMENTS = 15;
 
@@ -58,12 +60,26 @@ public class LastCommentsPanel extends Panel {
             Fragment f = new Fragment("comment", "commentFragment", LastCommentsPanel.this);
             item.add(f);
 
+            // Create game parameters
+            PageParameters gameParams = GameDetail.paramsForGame(game);
+
+            // Comment wrapper
+            WebMarkupContainer commentWrapper = new WebMarkupContainer("commentWrapper");
+            f.add(commentWrapper);
+
+            // "More" link after the comment
+            BookmarkablePageLink moreLink = new BookmarkablePageLink("moreLink", GameDetail.class, gameParams);
+            commentWrapper.add(moreLink);
+
             // Content
             String commentToShow = Jsoup.parse(comment.getComment()).text();
             if(commentToShow.length() > MAX_CHARS_IN_COMMENT){
                 commentToShow = commentToShow.substring(0,MAX_CHARS_IN_COMMENT);
             }
-            f.add(new Label("commentsContent", Model.of(commentToShow)).setEscapeModelStrings(false));
+            Label commentsContent = new Label("commentsContent", Model.of(commentToShow));
+            commentsContent.setEscapeModelStrings(false);
+            commentWrapper.add(commentsContent);
+            commentWrapper.add(new DotDotDotBehavior().setAfterComponentId(moreLink.getMarkupId(true)));
 
             // User icon
             final UserIcon commenterIcon = new UserIcon("commenterIcon", new AbstractReadOnlyModel<CsldUser>() {
@@ -84,7 +100,6 @@ public class LastCommentsPanel extends Panel {
             f.add(commenterLink);
 
             // Game link
-            PageParameters gameParams = GameDetail.paramsForGame(game);
             final BookmarkablePageLink<CsldBasePage> gameLink = new BookmarkablePageLink<CsldBasePage>("gameLink", GameDetail.class, gameParams);
             f.add(gameLink);
 
