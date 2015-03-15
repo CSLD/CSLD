@@ -690,20 +690,24 @@ footer .container .footer-socials a:hover{
     color: #F0F0F0;
     font-weight: bold;
     width: 40px;
-    display: inline-block;
+    display: block;
     margin-bottom: 0px;
     float: left;
+    white-space: nowrap;
 }
 .events .row.recent-games div.item{
     padding-bottom: 20px;
 }
 .recent-game{
-    display: inline-block;
-    margin-left: 8px;
     font-size: 12px;
     font-weight: bold;
     padding-top: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-bottom: 4px;
 }
+
 .events .recent-game{
     font-size: 11px;
     margin-left: 0px;

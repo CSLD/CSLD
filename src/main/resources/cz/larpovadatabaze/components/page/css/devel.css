@@ -1,26 +1,12 @@
 /* CSS rules added by developers */
 
 /**
- * HACK: Recent game name wrapping fix
- */
-.recent-game {
-    max-width: 195px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-/**
  * HACK: Limit width of calendar place
  * XXX: The solution is not a very nice one...
  */
 .calendar-place {
-    display: inline-block;
     line-height: 8px;
     max-width: 85px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
 /**
