@@ -1,16 +1,18 @@
 package cz.larpovadatabaze.entities;
 
+import cz.larpovadatabaze.lang.TranslationEntity;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "csld_game_has_languages", schema = "public")
-public class GameHasLanguages implements Serializable {
+public class GameHasLanguages implements Serializable, TranslationEntity {
     private Integer id;
     private String name;
     private String description;
     private Game game;
-    private Language languageForGame;
+    private Language language;
 
     @Column(
             name = "id",
@@ -61,11 +63,11 @@ public class GameHasLanguages implements Serializable {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "language", referencedColumnName = "language", nullable = false)
-    public Language getLanguageForGame() {
-        return languageForGame;
+    public Language getLanguage() {
+        return language;
     }
 
-    public void setLanguageForGame(Language languageForGame) {
-        this.languageForGame = languageForGame;
+    public void setLanguage(Language languageForGame) {
+        this.language = languageForGame;
     }
 }

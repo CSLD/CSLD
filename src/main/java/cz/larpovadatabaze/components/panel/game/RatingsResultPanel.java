@@ -64,7 +64,7 @@ public class RatingsResultPanel extends Panel {
 
         @Override
         public String getObject() {
-            double ratingOfGame = model.getObject().getTotalRating() != null ? model.getObject().getTotalRating()/10 : 0;
+            double ratingOfGame = model.getObject().getAverageRating() != null ? model.getObject().getAverageRating()/10d : 0;
             return df.format(ratingOfGame);
         }
     }
@@ -136,7 +136,7 @@ public class RatingsResultPanel extends Panel {
         Label amountOfResults = new Label("amountOfResults", new AbstractReadOnlyModel<Integer>() {
             @Override
             public Integer getObject() {
-                return model.getObject().getRatings().size();
+                return model.getObject().getAmountOfRatings();
             }
         });
         add(amountOfResults);

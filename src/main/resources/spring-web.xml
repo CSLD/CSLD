@@ -57,9 +57,13 @@ http://www.springframework.org/schema/jee http://www.springframework.org/schema/
 
     <bean id="localeProvider" class="cz.larpovadatabaze.lang.DbSessionLanguageSolver"/>
 
-    <bean id="gameTranslator" class="cz.larpovadatabaze.lang.ActualLanguageGameTranslator">
+    <bean id="gameTranslator" class="cz.larpovadatabaze.lang.TranslatableEntityTranslator">
         <constructor-arg name="whatLanguagesToUse" ref="localeProvider"/>
     </bean>
+
+    <bean id="languageDao" class="cz.larpovadatabaze.dao.LanguageDao"/>
+    <bean id="gameHasLanguageDao" class="cz.larpovadatabaze.dao.GameHasLanguageDao"/>
+    <bean id="labelHasLanguagesDao" class="cz.larpovadatabaze.dao.LabelHasLanguageDao"/>
 
 	<!-- Hibernate session factory -->
 	<bean id="sessionFactory"
@@ -71,7 +75,7 @@ http://www.springframework.org/schema/jee http://www.springframework.org/schema/
 				<prop key="hibernate.hbm2ddl.auto">validate</prop>
                 <prop key="autocommmit">true</prop>
                 <prop key="hibernate.cfgfile">/hibernate.cfg.xml</prop>
-                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.show_sql">false</prop>
 			</props>
 		</property>
 		<property name="annotatedClasses">
@@ -91,6 +95,8 @@ http://www.springframework.org/schema/jee http://www.springframework.org/schema/
                 <value>cz.larpovadatabaze.entities.Video</value>
                 <value>cz.larpovadatabaze.entities.Language</value>
                 <value>cz.larpovadatabaze.entities.GameHasLanguages</value>
+                <value>cz.larpovadatabaze.entities.LabelHasLanguages</value>
+                <value>cz.larpovadatabaze.entities.GroupHasLanguage</value>
 			</list>
 		</property>
 	</bean>

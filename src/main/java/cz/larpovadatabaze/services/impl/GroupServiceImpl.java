@@ -3,6 +3,7 @@ package cz.larpovadatabaze.services.impl;
 import cz.larpovadatabaze.dao.GroupDAO;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
+import cz.larpovadatabaze.lang.LanguageSolver;
 import cz.larpovadatabaze.services.GroupService;
 import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.request.resource.ResourceReference;
@@ -21,6 +22,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Autowired
     private ImageService imageService;
+    @Autowired private LanguageSolver languageSolver;
 
     private ResourceReference iconResourceReference;
 
@@ -36,12 +38,12 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<CsldGroup> getUnique(CsldGroup example) {
-        return groupDAO.findByExample(example, new String[]{});
+        return groupDAO.findByName(example.getName());
     }
 
     @Override
     public List<CsldGroup> orderedByName(long first, long amountPerPage) {
-        return groupDAO.orderedByName(first, amountPerPage);
+        return groupDAO.orderedByName(first, amountPerPage, languageSolver.getLanguagesForUser());
     }
 
     @Override
@@ -71,7 +73,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public int getAmountOfGroups() {
-        return groupDAO.getAmountOfGroups();
+        return groupDAO.getAmountOfGroups(languageSolver.getLanguagesForUser());
     }
 
     @Override

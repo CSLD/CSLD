@@ -1,9 +1,13 @@
 package cz.larpovadatabaze.services.impl;
 
 import cz.larpovadatabaze.dao.LabelDAO;
+import cz.larpovadatabaze.dao.LabelHasLanguageDao;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Label;
+import cz.larpovadatabaze.entities.LabelHasLanguages;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
+import cz.larpovadatabaze.lang.LanguageSolver;
+import cz.larpovadatabaze.lang.SessionLanguageSolver;
 import cz.larpovadatabaze.services.LabelService;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
@@ -18,8 +22,9 @@ import java.util.List;
  */
 @Repository
 public class LabelServiceImpl implements LabelService {
-    @Autowired
-    private LabelDAO labelDAO;
+    @Autowired private LabelDAO labelDAO;
+    @Autowired private LabelHasLanguageDao labelHasLanguagesDao;
+    private LanguageSolver languageSolver = new SessionLanguageSolver();
 
     public List<Label> getAll(){
         return labelDAO.findAll();
@@ -31,15 +36,13 @@ public class LabelServiceImpl implements LabelService {
     }
 
     public List<Label> getRequired(){
-        Criterion[] criterions = new Criterion[1];
-        criterions[0] = Restrictions.eq("required", true);
-        return labelDAO.findByCriteria(criterions);
+        // Introduce languages.
+        return labelDAO.getRequired(languageSolver.getLanguagesForUser());
     }
 
     public List<Label> getOptional(){
-        Criterion[] criterions = new Criterion[1];
-        criterions[0] = Restrictions.eq("required", false);
-        return labelDAO.findByCriteria(criterions);
+        // Introduce languages.
+        return labelDAO.getOptional(languageSolver.getLanguagesForUser());
     }
 
     @Override
@@ -49,9 +52,9 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public List<Label> getAuthorizedRequired(CsldUser authorizedTo) {
-        List<Label> optionalLabels = getRequired();
+        List<Label> requiredLabels = getRequired();
         List<Label> labels = new ArrayList<Label>();
-        for(Label label: optionalLabels){
+        for(Label label: requiredLabels){
             if(label.getAuthorized() != null && !label.getAuthorized()) {
                 if(!label.getAddedBy().equals(authorizedTo)) {
                     continue;
@@ -86,7 +89,7 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public Label getByName(String name) {
-        return labelDAO.findSingleByCriteria(Restrictions.eq("name",name));
+        return labelDAO.getByName(name);
     }
 
     @Override
@@ -97,6 +100,11 @@ public class LabelServiceImpl implements LabelService {
     @Override
     public Label getById(int filterLabel) {
         return labelDAO.findById(filterLabel);
+    }
+
+    @Override
+    public void deleteTranslation(LabelHasLanguages toRemove) {
+        labelHasLanguagesDao.makeTransient(toRemove);
     }
 
     @Override

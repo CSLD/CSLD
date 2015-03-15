@@ -4,24 +4,25 @@
     It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/user/PersonDetailPanel.html
     Code - cz.larpovadatabaze.components.panel.user.PersonDetailPanel.html
     -->
-    <div class="col-md-1 col-sm-2  col-xs-12">
-        <img class="media-object user-picture" wicket:id="userImage">
-    </div>
-    <div class="col-md-11 col-sm-10 col-xs-12">
-        <div class="row">
-            <div class="col-md-10 col-sm-12 col-xs-12">
-                <h1><span wicket:id="nickname" class="strong"></span> <span wicket:id="name"></span> <span wicket:id="email"></span></h1>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-10 col-sm-10 col-xs-12">
-                <p>Hráč <span wicket:id="played"></span> larpů, tvůrce <span wicket:id="organized"></span> larpů /
-                    <wicket:enclosure child="age"><span wicket:id="age"></span> let</wicket:enclosure>
-                </p>
-                <p></p>
-            </div>
-        </div>
-    </div>
+    <table>
+        <tr>
+            <td>
+                <img wicket:id="userImage" class="obrazekUzivatel">
+            </td>
+            <td class="bunkaUzivatel">
+                <div class="jmenoUzivatel">
+                    <span wicket:id="nickname" class="strong"></span> <span wicket:id="name"></span> <span wicket:id="email"></span>
+                </div>
+                <wicket:enclosure child="age"><div class="popisek"><span wicket:id="age"></span> <wicket:message key="author.years">let</wicket:message></div></wicket:enclosure>
+                <div class="popisek">
+                    <span wicket:id="city"></span>
+                </div>
+                <div class="popisek">
+                    <wicket:message key="game.player">Hráč</wicket:message> <span wicket:id="played"></span> <wicket:message key="game.larps">larpů</wicket:message>, <wicket:message key="game.creator">tvůrce</wicket:message> <span wicket:id="organized"></span> <wicket:message key="game.larps">larpů</wicket:message>
+                </div>
+            </td>
+        </tr>
+    </table>
 
-
+    <div class="obsah" wicket:id="description"></div>
 </wicket:panel>

@@ -142,6 +142,14 @@ public class GalleryPanel extends Panel {
                         int id = params.getParameterValue("imageId").toInt();
                         manager.setImageDescription(id, params.getParameterValue("newDescription").toString());
                     }
+                    else if("publish".equals(action)) {
+                        int id = params.getParameterValue("imageId").toInt();
+                        manager.publishPhoto(id);
+                    }
+                    else if("hide".equals(action)) {
+                        int id = params.getParameterValue("imageId").toInt();
+                        manager.hidePhotoFromFront(id);
+                    }
                     else if ("delete".equals(action)) {
                         int id = params.getParameterValue("imageId").toInt();
                         manager.deleteImage(id);

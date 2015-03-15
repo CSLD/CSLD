@@ -1,5 +1,11 @@
 package cz.larpovadatabaze.dao;
 
+import cz.larpovadatabaze.api.GenericHibernateDAO;
+import cz.larpovadatabaze.dao.builder.GameBuilder;
+import cz.larpovadatabaze.dao.builder.IBuilder;
+import cz.larpovadatabaze.entities.*;
+import cz.larpovadatabaze.exceptions.WrongParameterException;
+import cz.larpovadatabaze.models.FilterGame;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -275,7 +281,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     public List<Game> getGamesRatedByUser(int userId) {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = getBuilder().build().getExecutableCriteria(session)
-                .createAlias("game.ratings","ratings")
+                .createAlias("game.ratings", "ratings")
                 .add(Restrictions.eq("ratings.userId", userId));
 
         return criteria.list();
@@ -294,8 +300,8 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
 
         try{
             Session session = sessionFactory.getCurrentSession();
-            Game item2 = (Game) session.get(Game.class, entity.getId());
-            Game item3 = (Game) session.merge(entity);
+            session.get(Game.class, entity.getId());
+            session.merge(entity);
             flush();
             return true;
         } catch (HibernateException ex){
@@ -304,10 +310,20 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
         }
     }
 
-    private void addLanguageRestriction(Criteria criteria, List<Locale> locales) {
+    public void deleteTranslation(Game toModify, Language convertedInput) {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(GameHasLanguages.class);
+        criteria.add(Restrictions.eq("game.id",toModify.getId()));
+        criteria.add(Restrictions.eq("language", convertedInput));
+        GameHasLanguages lang = (GameHasLanguages) criteria.uniqueResult();
+
+        sessionFactory.getCurrentSession().delete(lang);
+        sessionFactory.getCurrentSession().flush();
+    }
+
+    private void addLanguageRestriction(Criteria criteria, List<Locale> languages) {
         criteria
                 .createCriteria("availableLanguages")
-                .createCriteria("languageForGame")
-                .add(Restrictions.in("language", locales));
+                .createCriteria("language")
+                .add(Restrictions.in("language", languages));
     }
 }

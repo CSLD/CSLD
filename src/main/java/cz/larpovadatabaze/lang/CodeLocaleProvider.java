@@ -16,7 +16,7 @@ public class CodeLocaleProvider implements LocaleProvider, IConverter<Language> 
     private List<Locale> availableLocales;
 
     public CodeLocaleProvider(){
-       this(Arrays.asList(Locale.ENGLISH, Locale.forLanguageTag("cs"), Locale.GERMAN));
+       this(Arrays.asList(Locale.ENGLISH, Locale.forLanguageTag("cs"), Locale.GERMAN, Locale.ITALY));
     }
 
     public CodeLocaleProvider(List<Locale> availableLocales) {

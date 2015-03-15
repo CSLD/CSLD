@@ -1,9 +1,37 @@
 package cz.larpovadatabaze;
 
+import cz.larpovadatabaze.components.page.HomePage;
+import cz.larpovadatabaze.components.page.about.AboutDatabase;
+import cz.larpovadatabaze.components.page.admin.Administration;
+import cz.larpovadatabaze.components.page.admin.ManageLabelsPage;
+import cz.larpovadatabaze.components.page.admin.ManageUserRightsPage;
+import cz.larpovadatabaze.components.page.author.CreateOrUpdateAuthorPage;
+import cz.larpovadatabaze.components.page.author.ListAuthor;
+import cz.larpovadatabaze.components.page.error.Error404Page;
+import cz.larpovadatabaze.components.page.error.Error500Page;
+import cz.larpovadatabaze.components.page.game.*;
+import cz.larpovadatabaze.components.page.group.CreateOrUpdateGroupPage;
+import cz.larpovadatabaze.components.page.group.GroupDetail;
+import cz.larpovadatabaze.components.page.group.ListGroup;
+import cz.larpovadatabaze.components.page.group.ManageGroupPage;
+import cz.larpovadatabaze.components.page.search.SearchResults;
+import cz.larpovadatabaze.components.page.user.*;
+import cz.larpovadatabaze.converters.CsldUserConverter;
+import cz.larpovadatabaze.converters.GameConverter;
+import cz.larpovadatabaze.converters.GroupConverter;
+import cz.larpovadatabaze.converters.LabelConverter;
+import cz.larpovadatabaze.entities.*;
+import cz.larpovadatabaze.lang.CodeLocaleProvider;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.GroupService;
+import cz.larpovadatabaze.services.LabelService;
 import org.apache.log4j.Logger;
 import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.RuntimeConfigurationType;
+import org.apache.wicket.Session;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.core.request.handler.BookmarkableListenerInterfaceRequestHandler;
@@ -13,6 +41,8 @@ import org.apache.wicket.markup.html.IPackageResourceGuard;
 import org.apache.wicket.markup.html.SecurePackageResourceGuard;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.IRequestHandler;
+import org.apache.wicket.request.Request;
+import org.apache.wicket.request.Response;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.component.IRequestablePage;
 import org.apache.wicket.request.cycle.AbstractRequestCycleListener;
@@ -25,51 +55,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
-
-import cz.larpovadatabaze.components.page.HomePage;
-import cz.larpovadatabaze.components.page.TestPage;
-import cz.larpovadatabaze.components.page.about.AboutDatabasePage;
-import cz.larpovadatabaze.components.page.admin.Administration;
-import cz.larpovadatabaze.components.page.admin.ManageLabelsPage;
-import cz.larpovadatabaze.components.page.admin.ManageUserRightsPage;
-import cz.larpovadatabaze.components.page.author.CreateOrUpdateAuthorPage;
-import cz.larpovadatabaze.components.page.author.ListAuthor;
-import cz.larpovadatabaze.components.page.error.Error404Page;
-import cz.larpovadatabaze.components.page.game.CreateOrUpdateGamePage;
-import cz.larpovadatabaze.components.page.game.GameDetail;
-import cz.larpovadatabaze.components.page.game.GameDetailOld;
-import cz.larpovadatabaze.components.page.game.GameWasDeleted;
-import cz.larpovadatabaze.components.page.game.ListComments;
-import cz.larpovadatabaze.components.page.game.ListGame;
-import cz.larpovadatabaze.components.page.game.ListLastGames;
-import cz.larpovadatabaze.components.page.group.CreateOrUpdateGroupPage;
-import cz.larpovadatabaze.components.page.group.GroupDetail;
-import cz.larpovadatabaze.components.page.group.ListGroup;
-import cz.larpovadatabaze.components.page.group.ManageGroupPage;
-import cz.larpovadatabaze.components.page.search.SearchResultsPage;
-import cz.larpovadatabaze.components.page.user.CreateOrUpdateUserPage;
-import cz.larpovadatabaze.components.page.user.CsldSignInPage;
-import cz.larpovadatabaze.components.page.user.ForgotPassword;
-import cz.larpovadatabaze.components.page.user.ListUser;
-import cz.larpovadatabaze.components.page.user.ResetPassword;
-import cz.larpovadatabaze.components.page.user.SignOut;
-import cz.larpovadatabaze.components.page.user.UpdateUserPage;
-import cz.larpovadatabaze.components.page.user.UserDetail;
-import cz.larpovadatabaze.converters.CsldUserConverter;
-import cz.larpovadatabaze.converters.GameConverter;
-import cz.larpovadatabaze.converters.GroupConverter;
-import cz.larpovadatabaze.converters.LabelConverter;
-import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Label;
-import cz.larpovadatabaze.entities.Language;
-import cz.larpovadatabaze.lang.CodeLocaleProvider;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.GameService;
-import cz.larpovadatabaze.services.GroupService;
-import cz.larpovadatabaze.services.LabelService;
 
 /**
  * Application object for your web application. If you want to run this application without deploying, run the Start class.
@@ -86,6 +71,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     private GroupService groupService;
     @Autowired
     private LabelService labelService;
+    private CodeLocaleProvider locales = new CodeLocaleProvider();
 
     private static final String DEFAULT_ENCODING = "UTF-8";
     private static ApplicationContext ctx;
@@ -143,6 +129,8 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
             }
         });
 
+        getApplicationSettings().setInternalErrorPage(Error500Page.class);
+
         getComponentInstantiationListeners().add(new SpringComponentInjector(this, ctx, true));
         getMarkupSettings().setDefaultMarkupEncoding(DEFAULT_ENCODING);
         getMarkupSettings().setStripWicketTags(true);
@@ -166,7 +154,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
             @Override
             public void onBeginRequest(RequestCycle cycle) {
                 super.onBeginRequest(cycle);
-                CsldAuthenticatedWebSession session = (CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get();
+                CsldAuthenticatedWebSession session = CsldAuthenticatedWebSession.get();
                 if (session.isClearRequested()) {
                     session.clear();
                     session.setClearRequested(false);
@@ -242,24 +230,19 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         mountPage("/admin/manage-users", ManageUserRightsPage.class);
 
         mountPage("/home", HomePage.class);
-        mountPage("/test", TestPage.class);
         mountPage("/game-was-deleted", GameWasDeleted.class);
 
         mountPage("/error404", Error404Page.class);
+        mountPage("/error500", Error500Page.class);
     }
 
     private void mountResources() {
         mountResource("/user-icon", csldUserService.getIconReference());
     }
 
-
-    public static String getBaseContext(){
-        return "upload/";
-    }
-
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.ctx = applicationContext;
+        ctx = applicationContext;
     }
 
     public static ApplicationContext getApplicationContext() {
@@ -268,4 +251,15 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
 
     protected boolean isDevelopmentMode() {
         return RuntimeConfigurationType.DEVELOPMENT.equals(this.getConfigurationType());
-    }}
+    }
+
+    @Override
+    public Session newSession(Request request, Response response) {
+        Session session = super.newSession(request, response);
+        List<Locale> availableLocale = new CodeLocaleProvider().availableLocale();
+        if(!availableLocale.contains(session.getLocale())){
+            session.setLocale(Locale.forLanguageTag("cs"));
+        }
+        return session;
+    }
+}

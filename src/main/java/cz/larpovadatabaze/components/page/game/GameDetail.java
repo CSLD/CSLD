@@ -1,5 +1,7 @@
 package cz.larpovadatabaze.components.page.game;
 
+import cz.larpovadatabaze.components.panel.game.*;
+import cz.larpovadatabaze.lang.LanguageSolver;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -21,28 +23,13 @@ import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 
 import cz.larpovadatabaze.components.common.JSPingBehavior;
 import cz.larpovadatabaze.components.common.tabs.TabsComponentPanel;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.panel.YouTubePanel;
 import cz.larpovadatabaze.components.panel.admin.AdminAllRatingsPanel;
-import cz.larpovadatabaze.components.panel.game.CommentsListPanel;
-import cz.larpovadatabaze.components.panel.game.CommentsPanel;
-import cz.larpovadatabaze.components.panel.game.DeleteGamePanel;
-import cz.larpovadatabaze.components.panel.game.EditGamePanel;
-import cz.larpovadatabaze.components.panel.game.GameDetailPanel;
-import cz.larpovadatabaze.components.panel.game.GameListPanel;
-import cz.larpovadatabaze.components.panel.game.LoginToRatePanel;
-import cz.larpovadatabaze.components.panel.game.RatingsDisabledPanel;
-import cz.larpovadatabaze.components.panel.game.RatingsPanel;
-import cz.larpovadatabaze.components.panel.game.RatingsResultPanel;
-import cz.larpovadatabaze.components.panel.game.SendInformation;
 import cz.larpovadatabaze.components.panel.photo.PhotoPanel;
 import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldUser;
@@ -64,6 +51,8 @@ public class GameDetail extends CsldBasePage {
 
     @SpringBean
     GameService gameService;
+    @SpringBean
+    LanguageSolver localeProvider;
 
     @SpringBean
     ImageService imageService;
@@ -166,9 +155,19 @@ public class GameDetail extends CsldBasePage {
                     if (c.getHidden()) {
                         if (!c.getUserId().equals(thisUserId)) continue; // Hidden comment and user is not creator - hide
                     }
+                    // If language doesn't equal the chosen one then ignore it.
                     res.add(c);
                 }
             }
+
+            Set<Comment> unique = new HashSet<Comment>();
+            List<String> actualLanguages = localeProvider.getTextLangForUser();
+            for(Comment comment: res){
+                if(actualLanguages.contains(comment.getLang())) {
+                    unique.add(comment);
+                }
+            }
+            res = new ArrayList<Comment>(unique);
 
             // Sort
             Collections.sort(res, new Comparator<Comment>() {
@@ -188,6 +187,9 @@ public class GameDetail extends CsldBasePage {
     public GameDetail(PageParameters params){
         setVersioned(false);
         try {
+            if(params.isEmpty()) {
+                throw new RestartResponseException(ListGame.class);
+            }
             int gameId = params.get(ID_PARAM).to(Integer.class);
             // If the game is deleted and I don't have sufficient rights redirect me to game deleted page.
             if(gameService.getById(gameId) == null){
@@ -275,19 +277,19 @@ public class GameDetail extends CsldBasePage {
         tabContentType = new Vector<TabContentType>();
 
         // Comments
-        models.add(Model.of("Komentáře"));
+        models.add(Model.of(getString("comments")));
         tabContentType.add(TabContentType.COMMENTS);
 
         // Photos
         Game g = getModel().getObject();
         if (((g.getPhotos() != null) && (!g.getPhotos().isEmpty())) || gameService.canEditGame(g)) {
-            models.add(Model.of("Fotky"));
+            models.add(Model.of(getString("photos")));
             tabContentType.add(TabContentType.PHOTOS);
         }
 
         // Video
         if (g.getVideo() != null) {
-            models.add(Model.of("Video"));
+            models.add(Model.of(getString("video")));
             tabContentType.add(TabContentType.VIDEO);
         }
 
@@ -350,6 +352,8 @@ public class GameDetail extends CsldBasePage {
 
         DeleteGamePanel deleteGamePanel = new DeleteGamePanel("deleteGamePanel", getModel().getObject().getId());
         add(deleteGamePanel);
+
+        add(new TranslateGamePanel("translateGamePanel", getModel()));
 
         add(new GameListPanel("similarGames", new LoadableDetachableModel<List<? extends Game>>() {
             @Override

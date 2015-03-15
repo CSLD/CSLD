@@ -165,6 +165,20 @@ public class PhotoPanel extends Panel {
             g.setPhotos(newPhotos);
             gameService.saveOrUpdate(g);
         }
+
+        @Override
+        public void publishPhoto(int id) {
+            Photo p = photoService.get(id);
+            p.setFeatured(true);
+            photoService.saveOrUpdate(p);
+        }
+
+        @Override
+        public void hidePhotoFromFront(int id) {
+            Photo p = photoService.get(id);
+            p.setFeatured(false);
+            photoService.saveOrUpdate(p);
+        }
     }
 
     public PhotoPanel(String id, IModel<Game> model) {

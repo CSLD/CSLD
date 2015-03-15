@@ -3,6 +3,7 @@ package cz.larpovadatabaze.services;
 import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.Game;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
@@ -17,17 +18,17 @@ public interface CommentService extends GenericService<Comment> {
 
     void saveOrUpdate(Comment actualComment);
 
-    List<Comment> getLastComments(int amount);
+    Collection<Comment> getLastComments(int amount);
 
     int getAmountOfComments();
 
-    List<Comment> getLastComments(long first, long count, Locale locale);
+    Collection<Comment> getLastComments(long first, long count, Locale locale);
 
     void hideComment(Comment comment);
 
     void unHideComment(Comment comment);
 
-    List<Game> getGamesCommentedByUser(int userId);
+    Collection<Game> getGamesCommentedByUser(int userId);
 
     long getAmountOfComments(Locale locale);
 }

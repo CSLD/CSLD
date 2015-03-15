@@ -14,43 +14,29 @@
         <div class="row">
             <div class="col-md-4 col-sm-4 col-xs-12">
                 <p>
-                    <wicket:container wicket:id="players" /> hráčů,
-                    <wicket:container wicket:id="menRole" /> mužů,
-                    <wicket:container wicket:id="womenRole" /> žen,
-                    <wicket:container wicket:id="bothRole" /> obojetných
+                    <wicket:container wicket:id="players" /> <wicket:message key="game.detail.players">hráčů</wicket:message>,
+                    <wicket:container wicket:id="menRole" /> <wicket:message key="game.detail.men">mužů</wicket:message>,
+                    <wicket:container wicket:id="womenRole" /> <wicket:message key="game.detail.women">žen</wicket:message>,
+                    <wicket:container wicket:id="bothRole" /> <wicket:message key="game.detail.both">obojetných</wicket:message>
                 </p>
                 <p>
-                    <wicket:container wicket:id="hours" /> hodin,
-                    <wicket:container wicket:id="days" /> dnů,
+                    <wicket:container wicket:id="hours" /> <wicket:message key="game.detail.hours">hodin</wicket:message>,
+                    <wicket:container wicket:id="days" /> <wicket:message key="game.detail.days">dnů</wicket:message>,
                     <wicket:container wicket:id="year" />
                 </p>
                 <wicket:enclosure child="webGameLink">
                     <p>Web: <a wicket:id="webGameLink"></a></p>
                 </wicket:enclosure>
                 <wicket:enclosure child="webGalleryLink">
-                    <p>Galerie: <a wicket:id="webGalleryLink"></a></p>
+                    <p><wicket:message key="form.galleryURL">Galerie</wicket:message>: <a wicket:id="webGalleryLink"></a></p>
                 </wicket:enclosure>
                 <wicket:enclosure child="photoAuthor">
-                    <p>Autor fotografií: <wicket:container wicket:id="photoAuthor" /></p>
+                    <p><wicket:message key="game.detail.photos.author">Autor fotografií</wicket:message>: <wicket:container wicket:id="photoAuthor" /></p>
                 </wicket:enclosure>
                 <p>
                     <wicket:message key="game.lang">Jazyk:</wicket:message>
                     <wicket:container wicket:id="lang" />
                 </p>
-            </div>
-
-
-            <div class="col-md-7 col-sm-7 col-xs-12">
-                <p>
-                    <strong><wicket:message key="authorsCapitalized">Autoři:</wicket:message></strong>
-                    <wicket:container wicket:id="authors"><wicket:container wicket:id="separator" /><a wicket:id="authorDetailLink"><wicket:container wicket:id="authorName"></wicket:container></a></wicket:container>
-                </p>
-                <p>
-                    <wicket:message key="group.group">Skupiny:</wicket:message>
-                    <wicket:container wicket:id="authorsGroups"><wicket:container wicket:id="separator" /><a wicket:id="authorGroupDetailLink"><wicket:container wicket:id="authorGroupName"></wicket:container></a></wicket:container>
-                    <wicket:container wicket:id="dash">&mdash;</wicket:container>
-                </p>
-
             </div>
         </div>
 

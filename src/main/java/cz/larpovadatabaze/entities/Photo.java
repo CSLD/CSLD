@@ -88,6 +88,18 @@ public class Photo implements Serializable, IEntityWithImage {
         this.fullHeight = fullHeight;
     }
 
+    private boolean featured;
+
+    @Column(name="featured")
+    @Basic
+    public boolean isFeatured() {
+        return featured;
+    }
+
+    public void setFeatured(boolean featured) {
+        this.featured = featured;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

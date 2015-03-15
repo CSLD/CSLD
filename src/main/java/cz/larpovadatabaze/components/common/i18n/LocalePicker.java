@@ -1,5 +1,7 @@
 package cz.larpovadatabaze.components.common.i18n;
 
+import cz.larpovadatabaze.lang.LocaleProvider;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -35,6 +37,15 @@ public class LocalePicker extends Panel{
     @Override
     protected void onInitialize() {
         super.onInitialize();
+        LocaleProvider localeProvider = new CodeLocaleProvider();
+        CsldAuthenticatedWebSession session = CsldAuthenticatedWebSession.get();
+        if(session.isSignedIn()) {
+            String userChosenLang = session.getLoggedUser().getDefaultLang();
+            if (userChosenLang != null && session.isSetLanguage()) {
+                session.setLocale(localeProvider.transformToLocale(userChosenLang));
+                session.setSetLanguage(false);
+            }
+        }
 
         // Draw current locale
         Locale currentLocale = Session.get().getLocale();

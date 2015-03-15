@@ -1,7 +1,9 @@
 package cz.larpovadatabaze.components.panel.game;
 
 import cz.larpovadatabaze.entities.*;
+import cz.larpovadatabaze.lang.LanguageSolver;
 import cz.larpovadatabaze.lang.LocaleProvider;
+import cz.larpovadatabaze.lang.SessionLanguageSolver;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -12,13 +14,7 @@ import org.apache.wicket.extensions.ajax.markup.html.autocomplete.RepeatableInpu
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
 import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.FormComponent;
-import org.apache.wicket.markup.html.form.RequiredTextField;
-import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
@@ -27,6 +23,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Bytes;
 import org.apache.wicket.validation.IValidator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import cz.larpovadatabaze.api.ValidatableForm;
@@ -61,6 +59,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
     @SpringBean
     VideoService videoService;
     LocaleProvider localeProvider = new CodeLocaleProvider();
+    LanguageSolver sessionLanguageSolver = new SessionLanguageSolver();
 
     private ChooseLabelsPanel chooseLabels;
     private TextField<String> videoField;
@@ -120,8 +119,14 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
             }
         });
 
-        final DropDownChoice<Locale> changeLocale =
-                new DropDownChoice<Locale>("lang", new CodeLocaleProvider().availableLocale());
+        List<String> availableLanguages = new ArrayList<String>();
+        LocaleProvider provider = new CodeLocaleProvider();
+        List<Locale> availableLocale = provider.availableLocale();
+        for(Locale available: availableLocale) {
+            availableLanguages.add(provider.transformLocaleToName(available));
+        }
+        final DropDownChoice<String> changeLocale =
+                new DropDownChoice<String>("lang", availableLanguages);
         createOrUpdateGame.add(addFeedbackPanel(changeLocale, createOrUpdateGame, "langFeedback"));
 
         addAuthorsInput(createOrUpdateGame, game);
@@ -159,13 +164,32 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
                 }
 
                 //Process language
-                Locale toBeSaved = localeProvider.transformToLocale(game.getLang());
-                GameHasLanguages firstLanguage = new GameHasLanguages();
-                firstLanguage.setGame(game);
-                firstLanguage.setLanguageForGame(new Language(toBeSaved));
-                firstLanguage.setName(game.getName());
-                firstLanguage.setDescription(game.getDescription());
-                game.getAvailableLanguages().add(firstLanguage);
+                Locale toBeSaved;
+                if(game.getLang() != null) {
+                    toBeSaved = localeProvider.transformToLocale(game.getLang());
+                } else {
+                    game.setAvailableLanguages(new ArrayList<GameHasLanguages>());
+                    toBeSaved = sessionLanguageSolver.getLanguagesForUser().get(0);
+                }
+
+                if(game.getAvailableLanguages().isEmpty()) {
+                    GameHasLanguages firstLanguage = new GameHasLanguages();
+                    firstLanguage.setGame(game);
+                    firstLanguage.setLanguage(new Language(toBeSaved));
+                    firstLanguage.setName(game.getName());
+                    firstLanguage.setDescription(game.getDescription());
+                    game.getAvailableLanguages().add(firstLanguage);
+                } else {
+                    // Find existing locale
+                    List<GameHasLanguages> actualLanguages = game.getAvailableLanguages();
+                    Language actualToSave = new Language(toBeSaved);
+                    for(GameHasLanguages language: actualLanguages) {
+                        if(language.getLanguage().equals(actualToSave)){
+                            language.setName(game.getName());
+                            language.setDescription(game.getDescription());
+                        }
+                    }
+                }
 
                 if(createOrUpdateGame.isValid()){
                     if(gameService.saveOrUpdate(game)){

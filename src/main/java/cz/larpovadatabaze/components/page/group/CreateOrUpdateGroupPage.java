@@ -35,11 +35,7 @@ public class CreateOrUpdateGroupPage extends CsldBasePage {
             protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
                 super.onCsldAction(target, form);
 
-                CsldGroup group = (CsldGroup) form.getModelObject();
-                PageParameters params = new PageParameters();
-                params.add("id", group.getId());
-
-                throw new RestartResponseException(GroupDetail.class, params);
+                throw new RestartResponseException(ListGroup.class);
             }
         });
     }

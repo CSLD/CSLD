@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.api;
 
 import cz.larpovadatabaze.dao.builder.IBuilder;
+import cz.larpovadatabaze.entities.Language;
 import org.hibernate.*;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Example;
@@ -36,6 +37,10 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 	public List<T> findAll() {
 		return findByCriteria();
 	}
+
+    public List<T> findByExample(T exampleInstance) {
+        return findByExample(exampleInstance, new String[]{});
+    }
 
 	@SuppressWarnings("unchecked")
 	public List<T> findByExample(T exampleInstance, String[] excludeProperty) {
@@ -80,7 +85,7 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 
 	public void makeTransient(T entity) {
         Transaction tx = sessionFactory.getCurrentSession().beginTransaction();
-		sessionFactory.getCurrentSession().delete(entity);
+        sessionFactory.getCurrentSession().delete(entity);
         sessionFactory.getCurrentSession().flush();
         tx.commit();
 	}

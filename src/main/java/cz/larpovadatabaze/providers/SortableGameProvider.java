@@ -12,10 +12,7 @@ import org.apache.wicket.model.Model;
 import org.hibernate.NullPrecedence;
 import org.hibernate.criterion.Order;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  *
@@ -52,7 +49,7 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
     public Iterator<? extends Game> iterator(long first, long amountPerPage) {
         SortParam<String> sortings = getSort();
         String property = sortings.getProperty();
-        Long firstL = (Long) first;
+        Long firstL = first;
         if(property.equals("form.wholeName")){
             return setStart(
                     gameService.getFilteredGames(
@@ -60,7 +57,7 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
                             filterLabels,
                             firstL.intValue(),
                             ((Long)amountPerPage).intValue(),
-                            Order.asc("name")),
+                            Order.desc("year").nulls(NullPrecedence.LAST)),
                         firstL.intValue()
             ).iterator();
         } else if(property.equals("year")) {
