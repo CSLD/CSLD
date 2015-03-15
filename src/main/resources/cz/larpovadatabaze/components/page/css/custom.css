@@ -1065,26 +1065,3 @@ text-align: center;
 		display: block; 
     }
 }
-
-input[type=button]{
-  display: inline-block;
-  margin-bottom: 0;
-  font-weight: normal;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  border: 1px solid transparent;
-  padding: 1px 5px;
-  font-size: 12px;
-  line-height: 1.5;
-  border-radius: 3px;
-  color: #333;
-  background-color: #F4F4F4;
-}
-.cmpGameLabelContainer{
-    display: inline-block;
-}
