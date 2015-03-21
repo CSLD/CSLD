@@ -6,7 +6,7 @@
     It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/game/ListGamePanel.html
     Code - cz.larpovadatabaze.components.panel.game.ListGamePanel.html
     -->
-    <table>
+    <table class="hide">
         <thead>
         <tr>
             <td></td>
@@ -27,30 +27,52 @@
             </td>
         </tr>
         </thead>
-        <tbody>
-        <tr wicket:id="listGames" class="polozkaZebricek">
+        </table>
+    
             <!-- Beginning of repetitive content for every Game -->
-            <td class="poradi">
-                <span wicket:id="order"></span>
-            </td>
-            <td class="larp">
-                <a wicket:id="gameLink" class="larpOdkaz">
+            <div class="row listGames" wicket:id="listGames">
+                
+            <div class="col-md-2 col-sm-2 col-xs-12">
+            <div class="t-data info poradi recent-games">
+                <span class="hide" wicket:id="order"></span>
+                <div class="alert alert-info score average"><span wicket:id="rating">94</span><span class="average"> / &empty;<span wicket:id="average">94</span></span></div>
+            </div>
+            </div>
+
+            <div class="col-md-7 col-sm-7 col-xs-12">            
+            <div class="t-data info larp">
+                <span>
+                 <a wicket:id="gameLink" class="larpOdkaz">
                     <span wicket:id="gameName"></span>
-                </a>
-            </td>
-            <td><span wicket:id="gameYear"></span></td>
-            <td class="hodnoceni"><span wicket:id="rating">94</span> (&empty;<span wicket:id="average">94</span>)</td>
-            <td class="pocet_hodnoceni">
+                 </a>
+                <br>
+                  Fantasy, Historic, Postapo
+                </span>
+            </div>
+            </div>
+            
+            <div class="col-md-1 col-sm-1 col-xs-4">
+            <div class="t-data info detail">
+                <span wicket:id="gameYear"></span>
+            </div>
+            </div>
+
+            <div class="col-md-1 col-sm-1 col-xs-4">            
+            <div class="t-data info detail">
                 <span wicket:id="ratings"></span>x <i class="fa fa-star-half-full"></i>
-            </td>
-            <td class="pocet_hodnoceni">
+            </div>
+            </div>
+            
+            <div class="col-md-1 col-sm-1 col-xs-4">                
+            <div class="t-data info detail">
                 <span wicket:id="comments"></span><i class="fa fa-comments-o"></i>
-            </td>
-            <!-- End of repetitive content for every Game -->
-        </tr>
-        </tbody>
-    </table>
+            </div>
+            </div>
+                             
+            </div>
+            <!-- End of repetitive content for every Game -->          
+    
     <div class="navigator">
-    <span wicket:id="navigator">[dataview navigator]</span>
+        <span wicket:id="navigator">[dataview navigator]</span>
     </div>
 </wicket:panel>

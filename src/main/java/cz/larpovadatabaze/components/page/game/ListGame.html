@@ -1,21 +1,35 @@
 <wicket:extend xmlns:wicket="http://wicket.apache.org">
 
 <div class="levaCast zebricky">
+    
+    <!-- TODO - list of main sorting parameters -->
     <div class="profile_bar">
         <div class="container">
             <div class="row">
             <div>
-                <i class="fa fa-bars"></i><wicket:message key="game.charts">Žebříčky</wicket:message>
+                <span class="hide"><wicket:message key="game.charts">LARPs</wicket:message></span>
+                <a class=""><div class="btn btn-default gameFiltr btn-xs">Popular newest</div></a>
+                <a class=""><div class="btn btn-default gameFiltr btn-xs">Popular</div></a>
+                <a class=""><div class="btn btn-default gameFiltr btn-xs">Newest</div></a>
+                <a class=""><div class="btn btn-default gameFiltr btn-xs">Most rated</div></a>                
+                <a class=""><div class="btn btn-default gameFiltr btn-xs">Most commented</div></a>             
             </div>
               
             </div>
         </div>
     </div>
 
-    <!-- TODO - what this should do? -->
+    <!-- TODO - list of selected filter check boxes -->
     <div class="profile_bar switcher">
         <div class="container">
             <div class="podzebricky">
+                <a class=""><div class="btn btn-default btn-xs">Postapo <i class="fa fa-remove"></i></div></a>
+                <a class=""><div class="btn btn-default btn-xs">Western <i class="fa fa-remove"></i></div></a>
+                <a class=""><div class="btn btn-default btn-xs">Fantasy <i class="fa fa-remove"></i></div></a>
+                <a class=""><div class="btn btn-default btn-xs">Comedy <i class="fa fa-remove"></i></div></a>                
+                <a class=""><div class="btn btn-default btn-xs">Airsoft <i class="fa fa-remove"></i></div></a>                
+            </div> 
+            <div class="podzebricky hide">              
                 <a class="" wicket:id="all"><div class="btn btn-default btn-xs"><wicket:message key="game.all">Všechny</wicket:message></div></a>
                 <wicket:container wicket:id="requiredLabels">
                     <a wicket:id="requiredOne"><div class="btn btn-default btn-xs" wicket:id="text"></div></a>
@@ -28,7 +42,7 @@
 
         <div class="row">
 
-           <div class="col-md-8">
+           <div class="col-md-10 col-sm-10 col-xs-12">
             
                 <div wicket:id="listGame">
                     <!--
@@ -38,11 +52,11 @@
                 </div>
    
             </div>
-            <div class="col-md-4">
+            <div class="col-md-2 col-sm-2 col-xs-12">
                 <div>
-                    <div class="nadpisMenu"><wicket:message key="filters.filters">filtry</wicket:message></div>
+                    <div class="nadpisMenu hide"><wicket:message key="filters.filters">filtry</wicket:message></div>
                 </div>
-                <div class="sekce" wicket:id="addGame">
+                <div class="sekce hide" wicket:id="addGame">
                     <!--
                     This panel is found in package: cz.larpovadatabaze.components.panel.game.AddGamePanel.html
                     https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/AddGamePanel.html

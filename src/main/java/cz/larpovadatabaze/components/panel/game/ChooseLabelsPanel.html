@@ -5,7 +5,7 @@
     It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/game/ChooseLabelsPanel.html
     Code - cz.larpovadatabaze.components.panel.game.ChooseLabelsPanel.html
     -->
-    <div id="labelsChooserPanel">
+    <div id="labelsChooserPanel" class="hide">
         <div wicket:id="requiredLabels" class="cmpGameLabelContainer">  <!-- This contains list of Labels. -->
             <input type="button" class="btn btn-default btn-xs" wicket:id="name" />
             <div class="tooltip" wicket:id="tooltip"></div>
@@ -18,4 +18,77 @@
             <div class="tooltip" wicket:id="tooltip"></div>
         </div>
     </div>
+
+   
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h2 class="panel-title">
+                                    Popular tags
+                                </h2>
+                            </div>
+                            <div class="panel-body">
+
+                                <label class="checkbox"><input type="checkbox" name="gameLabel" value="label" checked><i></i>Western    </label>
+                                <label class="checkbox"><input type="checkbox" name="gameLabel" value="label" checked><i></i>Fantasy    </label>
+                                <label class="checkbox"><input type="checkbox" name="gameLabel" value="label" ><i></i>Historic          </label>
+                                <label class="checkbox"><input type="checkbox" name="gameLabel" value="label" ><i></i>Sci-Fi            </label>
+                                <label class="checkbox"><input type="checkbox" name="gameLabel" value="label" ><i></i>Horor             </label>
+                                <label class="checkbox"><input type="checkbox" name="gameLabel" value="label" checked><i></i>Postapo    </label>
+                                <label class="checkbox"><input type="checkbox" name="gameLabel" value="label" ><i></i>Simulation        </label>
+                                <label class="checkbox"><input type="checkbox" name="gameLabel" value="label" ><i></i>Dramatic          </label>                                
+                                
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h2 class="panel-title">
+                                    Genre tags
+                                </h2>
+                            </div>
+                            <div class="panel-body">
+
+                                <label class="checkbox"><input type="checkbox" name="gameLabel" value="label" ><i></i>Steampunk            </label>
+                                <label class="checkbox"><input type="checkbox" name="gameLabel" value="label" ><i></i>Cyberpunk            </label>
+                                <label class="checkbox"><input type="checkbox" name="gameLabel" value="label" ><i></i>Orwell               </label>
+                                <label class="checkbox"><input type="checkbox" name="gameLabel" value="label" ><i></i>Tolkien              </label>                                
+                                
+                            </div>
+                        </div>    
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h2 class="panel-title">
+                                    Language tags
+                                </h2>
+                            </div>
+                            <div class="panel-body">
+
+                                <label class="checkbox"><input type="checkbox" name="gameLabel" value="label" checked><i></i>English     </label>
+                                <label class="checkbox"><input type="checkbox" name="gameLabel" value="label" checked><i></i>Czech       </label>
+                                <label class="checkbox"><input type="checkbox" name="gameLabel" value="label" ><i></i>Italian            </label>
+                                <label class="checkbox"><input type="checkbox" name="gameLabel" value="label" ><i></i>Poland             </label> 
+                                
+                            </div>
+                        </div>     
+    
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h2 class="panel-title">
+                                    Other tags
+                                </h2>
+                            </div>
+                            <div class="panel-body">
+
+                                <label class="checkbox"><input type="checkbox" name="gameLabel" value="label" ><i></i>Present           </label>
+                                <label class="checkbox"><input type="checkbox" name="gameLabel" value="label" ><i></i>Musical           </label>
+                                <label class="checkbox"><input type="checkbox" name="gameLabel" value="label" ><i></i>Battle            </label>
+                                <label class="checkbox"><input type="checkbox" name="gameLabel" value="label" ><i></i>Jeep              </label>
+                                <label class="checkbox"><input type="checkbox" name="gameLabel" value="label" ><i></i>Party             </label>
+
+                            </div>
+                        <div class="view-more-btn">+ Show all</div>
+                        </div>                           
+
+    
 </wicket:panel>

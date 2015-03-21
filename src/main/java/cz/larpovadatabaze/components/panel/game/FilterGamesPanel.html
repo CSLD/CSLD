@@ -10,7 +10,7 @@
         });
     </script>
     <form wicket:id="filterForm">
-        <div class="sekce">
+        <div class="hide">
             <div class="nadpisFiltr"><wicket:message key="game.amountOfPlayers">Počty hráčů</wicket:message></div>
             <div class="hraciFiltr">
                 <input wicket:id="minPlayers" class="textbox blur" type="number" title="min" value=""
@@ -33,7 +33,7 @@
                 <select wicket:id="language"></select>
             </div>
         </div>
-        <div class="sekce">
+        <div class="sky-form gameListing">
             <div wicket:id="filterByLabels">
                 <!--
                 This panel is found in package: cz.larpovadatabaze.components.panel.game.ChooseLabelsPanel.html
@@ -41,7 +41,7 @@
                 -->
             </div>
             <input wicket:id="submit" type="button"
-                   class="filtrovatButton" title="filtrovat" wicket:message="value:game.filter" value="Filtrovat" />
+                   class="btn btn-default btn-xs" title="filtrovat" wicket:message="value:game.filter" value="Filtrovat" />
         </div>
     </form>
 </wicket:panel>

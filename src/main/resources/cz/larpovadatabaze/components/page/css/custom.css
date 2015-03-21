@@ -53,11 +53,11 @@ body{
 .panel-default{
     background-color: transparent;
     border-color: transparent;
-
+    border: 0px;
 }
 
 .panel-default .panel-heading {
-    background-color: transparent;
+    background-color: #F4F4F4;
     border-bottom: 1px solid transparent;
 }
 .panel-title {
@@ -157,6 +157,60 @@ a:focus {
 .btn-default {
     color: #333;
     background-color: #F4F4F4;
+}
+.btn-default.gameFiltr{
+  background-color: #202020;
+  border: 0px;
+  border-radius: 4px;
+  color: whitesmoke;
+  font-size: 12px;
+  padding: 5px;
+  margin: 3px 0;
+
+}
+@media (min-width: 440px) {
+    .btn-default.gameFiltr {
+        font-size: 12px;
+        padding: 3px 6px 4px 6px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  position: relative;
+  bottom: -18px;
+  margin-right: 2px;  
+    }
+}
+@media (min-width: 540px) {
+    .btn-default.gameFiltr {
+        font-size: 14px;
+        padding: 3px 9px 4px 9px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  position: relative;
+  bottom: -18px;
+  margin-right: 2px;  
+    }
+}
+@media (min-width: 620px) {
+    .btn-default.gameFiltr {
+        font-size: 14px;
+        padding: 3px 15px 4px 15px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  position: relative;
+  bottom: -18px;
+  margin-right: 2px;  
+    }
+}
+@media (min-width: 1000px) {
+    .btn-default.gameFiltr {
+        font-size: 17px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  padding: 3px 30px 4px 30px;
+  position: relative;
+  bottom: -18px;
+  margin-right: 2px;        
+    }
 }
 .btn.play{
     width: 100%;
@@ -695,6 +749,13 @@ footer .container .footer-socials a:hover{
     float: left;
     white-space: nowrap;
 }
+.poradi.recent-games .alert {
+    width: 100%;
+    font-size: 16px;
+}
+.poradi.recent-games .alert .average{
+    font-size: 10px;
+}
 .events .row.recent-games div.item{
     padding-bottom: 20px;
 }
@@ -901,87 +962,24 @@ div.recent-game-players{
 .levaCast.zebricky .icon-star{
   color: #00A0B0;  
 }
-.levaCast.zebricky .sekcezebricky {
-    margin-top: 0px;
-    padding-top: 10px;
-}
-
-.levaCast.zebricky .polozkaZebricek {
-    margin-top: 0px;
-}
-.levaCast table {
-    border: 0;
-    padding: 0;
-    margin: 0;
-    border-spacing: 0px;
-}
-.levaCast.zebricky table {
-    width: 100%;
-}
-.levaCast tr:nth-child(odd){
+.levaCast .row.listGames{
     background-color: #F8F8F8;
+    margin-bottom: 5px;
 }
-.levaCast tr:hover,
- .levaCast tr:nth-child(odd):hover{
+.levaCast .table-row:hover{
     background-color: rgba(0,160,176,0.2);
 }
-.levaCast td {
-    border-bottom-width: 1px;
-    border-left-width: 0px;
-    border-right-width: 0px;
-    border-top-width: 0px;
-    padding: 2px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    margin: 0;
-    border-color: #EFEFEF;
-    border-style: solid;
-    text-align: left;
+.levaCast .t-data.info{
+  display: flex;
+  align-items: center;
+  height: 60px;
 }
-.levaCast.zebricky td{
-    text-align: right;  
+.levaCast .t-data.info.detail{
+    justify-content: center;
 }
-.levaCast.zebricky td:first-child {
-    width: 10px;
-}
-.levaCast.zebricky td:nth-of-type(2) {
-    text-align: left;
-}
-.levaCast.zebricky td:nth-of-type(3) {
-    text-align: center;
-}
-.levaCast.zebricky td:nth-of-type(4) {
-    text-align: center;
-}
-.levaCast.zebricky td:last-child {
-    padding-right: 5px;
-}
- thead td, thead, th{
-    background-color: #FEFEFE;
-}
- thead td:nth-child(even){
-}
-.levaCast.zebricky .poradi {
-    text-align: right;
-}
-
-.levaCast.zebricky .larp {
-}
-
 .levaCast.zebricky .larpOdkaz {
     color: #214c61;
     font-weight: bold;
-}
-
-.levaCast.zebricky .hodnoceni {
-    text-align: center;
-}
-
-.levaCast.zebricky .pocet_hodnoceni {
-    text-align: right;
-    position: relative;
-    vertical-align: middle;
-    padding-right: 5px;
 }
 .levaCast.zebricky .fa-bars,
  .levaCast#uzivatel .fa-bars{
@@ -996,46 +994,9 @@ div.recent-game-players{
 #levaCastOdatabazi .fa-question{
     color: #6dc8b7;  
 }
-#Autori .fa-user,
- #Uzivatele .fa-user,
-  #Autori .fa-user,
-   #Autori .fa-pencil,
-    #Skupiny .fa-users{
-    color: #6dc8b7;
-    margin-right: 5px;
-}
-.levaCast.zebricky .pocet_hodnoceni span {
+
+.levaCast.zebricky .info.detail span {
     margin-right: 2px;
-}
-.levaCast#game tr:hover, 
-.levaCast#game tr:nth-child(odd), 
-.levaCast#game td {
-  background-color: transparent;
-  border: none;
-}
-.levaCast#game table.poleHra{
-  width: 100%;
-}
-.levaCast#game .poleHra tr{
-    background-color: #F8F8F8;    
-}
-.sekce .fa-plus{
-    color: #00A0B0;  
-}
-#divProHledani .fa-search{
-  color: #00A0B0;
-  position: absolute;
-  right: 1px;
-  top: 4px;
-  z-index: 20;
-  text-shadow:  none;
-  font-size: 14px;
-}
-.napovedazebricky {
-    font-size: 10pt;
-    color: #535353;
-    text-align: center;
-    width: 80px;
 }
 .podzebricky .btn{
     margin: 3px 0px 0 0;
@@ -1045,7 +1006,6 @@ div.recent-game-players{
 /* navigator */
 .navigator{
   text-align: center;
-  margin-top: 10px;
   font-weight: bold;
   font-size: 11px;  
   cursor: pointer;
@@ -1059,14 +1019,11 @@ box-shadow: 0 0 1px 1px #E0E0E0;
 padding:  2px 6px 2px 6px;
 text-align: center;
 }
-
-@media all and (max-width: 614px) {
-    table, thead, tbody, th, td, tr { 
-		display: block; 
-    }
+.navigator{
+    display: inline-block;
+    margin: 12px 0px;
+    float: right;
 }
-
-
 /**/
 /* defaults */
 /**/
@@ -1269,6 +1226,12 @@ text-align: center;
 	line-height: 27px;
 	color: #404040;
 	cursor: pointer;
+}
+.sky-form.gameListing{
+        border: 0px;
+}
+.sky-form.gameListing .checkbox{
+        font-size: 12px;
 }
 .sky-form .radio:last-child,
 .sky-form .checkbox:last-child {
