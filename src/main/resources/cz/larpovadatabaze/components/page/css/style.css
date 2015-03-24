@@ -12,14 +12,12 @@ a{
 a:hover{
     text-decoration: none;
 }
-nav form.navbar-form {
-    margin-left: 15px;
-}
 
 nav .navbar-form {
-    width: 230px;
+    width: 225px;
     padding-right: 25px;
 }
+
 nav .navbar-brand{
     font-family: Lobster;
     font-size: 2em;
