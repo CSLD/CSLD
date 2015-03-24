@@ -5,12 +5,15 @@
     It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/author/AddAuthorPanel.html
     Code - cz.larpovadatabaze.components.panel.author.AddAuthorPanel.html
     -->
-
-            <div class="pridatPopis">
-                <a wicket:id="createAuthorIcon"><i class="fa fa-plus"></i></a>
-                <a wicket:id="createAuthor">
-                    <wicket:message key="addAuthor">Přidat autora</wicket:message>
-                </a>
-            </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h2 class="panel-title">
+                                    <a class="hide" wicket:id="createAuthorIcon"></a>
+                                    <a class="btn btn-default" wicket:id="createAuthor">
+                                        <span><i class="fa fa-user-plus"></i> <wicket:message key="addAuthor">Přidat autora</wicket:message></span>
+                                    </a>
+                                </h2>
+                            </div>
+                        </div> 
 
 </wicket:panel>

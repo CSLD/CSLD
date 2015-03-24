@@ -225,6 +225,10 @@ a:focus {
     background-color: #6dc8b7;
     border-color: #6F6F6F;
 }
+.fullWidth{
+    text-align: center;
+    width: 100%;
+}
 .progress {
     background-color: #3F3F3F;
 }
@@ -855,7 +859,6 @@ div.recent-game-players{
     background-color:  #BD2430;
 }
 .view-more-btn{
-
     padding: 6px;
     border-radius: 4px;
     font-size: 10px;
@@ -868,6 +871,9 @@ div.recent-game-players{
 }
 .view-more-btn:hover{
     background-color:  #E0E0E0;
+}
+.gameListing .view-more-btn{
+    margin-bottom: 0px;
 }
 .fancy {
     line-height: 0.2;
@@ -959,7 +965,7 @@ div.recent-game-players{
 }
 
 /* zebricky */
-.levaCast.zebricky .icon-star{
+.levaCast .icon-star{
   color: #00A0B0;  
 }
 .levaCast .row.listGames{
@@ -977,26 +983,30 @@ div.recent-game-players{
 .levaCast .t-data.info.detail{
     justify-content: center;
 }
-.levaCast.zebricky .larpOdkaz {
+.levaCast a.larpOdkaz {
     color: #214c61;
     font-weight: bold;
 }
-.levaCast.zebricky .fa-bars,
+.levaCast .fa-bars,
  .levaCast#uzivatel .fa-bars{
     color: #6dc8b7;
     margin-right: 8px;
 }
-.levaCast.zebricky .fa-star-half-full,
- .levaCast.zebricky .fa-comments-o{
+.levaCast .fa-star-half-full,
+ .levaCast .fa-comments-o,
+  .levaCast .fa-pencil-square{
     color: #6dc8b7;
-    font-size: 14px;
+    font-size: 15px;
 }
 #levaCastOdatabazi .fa-question{
     color: #6dc8b7;  
 }
-
-.levaCast.zebricky .info.detail span {
-    margin-right: 2px;
+.levaCast .fa-pencil-square{
+    position: relative;
+    top: 1px;
+}
+.levaCast .info.detail span {
+    margin-right: 3px;
 }
 .podzebricky .btn{
     margin: 3px 0px 0 0;
