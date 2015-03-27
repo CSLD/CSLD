@@ -5,6 +5,7 @@
     Code - cz.larpovadatabaze.components.panel.user.CreateOrUpdateUserPanel.html
     -->
     <script type="text/javascript">
+        /*
         $(document).ready(function () {
             $("input, textarea").each(function (idx, elm) {
                 if($(elm).attr("type") == "file"){
@@ -36,172 +37,97 @@
                 });
             });
         });
+        */
     </script>
 
-    <form class="cmxform" id="PridatHru" wicket:id="addUser">
-        <table>
-            <tr>
-                <td>
-                    <input class="textbox required email" type="email" wicket:id="person.email" title="Email" wicket:message="title:form.email"/>
-                </td>
-                <td class="popis">
-                    <wicket:message key="form.loginMail">E-mail slouží zároveň jako login</wicket:message>
-                </td>
-            </tr>
-
-            <tr>
-                <td colspan="2" class="error">
-                    <span wicket:id="emailFeedback"></span>
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <input class="textbox required" type="password" wicket:id="password" />
-                </td>
-                <td class="popis">
-                    <wicket:message key="form.description.password">Zadejte vaše heslo</wicket:message>
-                </td>
-            </tr>
-
-            <tr>
-                <td colspan="2" class="error">
-                    <span wicket:id="passwordFeedback"></span>
-
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <input class="textbox required" type="password" wicket:id="passwordAgain" />
-                </td>
-                <td class="popis">
-                    <wicket:message key="form.description.passwordAgain">Zadejte vaše heslo znovu pro kontrolu</wicket:message>
-                </td>
-            </tr>
-
-            <tr>
-                <td colspan="2" class="error">
-                    <span wicket:id="passwordAgainFeedback"></span>
-
-                </td>
-            </tr>
-
-            <tr>
-                <td>
+    <form class="sky-form" novalidate="novalidate" wicket:id="addUser">
+        <header><wicket:message key="user.register">Registrace</wicket:message></header>
+        <fieldset>
+            <section>
+                <label class="input">
+                    <i class="icon-append fa fa-envelope"></i>
+                    <input type="email" wicket:id="person.email" wicket:message="placeholder:form.email"/>
+                    <b class="tooltip tooltip-bottom-right"><wicket:message key="form.loginMail">E-mail slouží zároveň jako login</wicket:message></b>
+                </label>
+            </section>
+            <section>
+                <label class="input">
+                    <i class="icon-append fa fa-lock"></i>
+                    <input type="password" wicket:id="password" />
+                    <b class="tooltip tooltip-bottom-right"><wicket:message key="form.description.password">Zadejte vaše heslo</wicket:message></b>
+                </label>
+            </section>
+            <section>
+                <label class="input">
+                    <i class="icon-append fa fa-lock"></i>
+                    <input type="password" wicket:id="passwordAgain" />
+                    <b class="tooltip tooltip-bottom-right"><wicket:message key="form.description.passwordAgain">Zadejte vaše heslo znovu pro kontrolu</wicket:message></b>
+                </label>
+            </section>
+        </fieldset>
+        <fieldset>
+            <section>
+                <label class="input">
                     <input type="file" wicket:id="image"/>
-                </td>
-                <td class="popis">
-                    <wicket:message key="form.description.image">Vyberte svoji profilovou fotografii o rozměrech 120x120px. Maximální velikost fotografie jsou 2MB.</wicket:message>
-                </td>
-            </tr>
-
-            <tr>
-                <td colspan="2" class="error">
-                    <span wicket:id="imageFeedback"></span>
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <input class="textbox required" type="text" wicket:id="person.name" title="Jméno" wicket:message="title:form.name"/>
-                </td>
-                <td class="popis">
-                    <wicket:message key="form.description.wholeName">Zadejte své celé jméno</wicket:message>
-                </td>
-            </tr>
-
-            <tr>
-                <td colspan="2" class="error">
-                    <span wicket:id="nameFeedback"></span>
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <input class="textbox required" type="text" wicket:id="person.nickname" title="Přezdívka" wicket:message="title:form.nickname"/>
-                </td>
-                <td class="popis">
-                    <wicket:message key="form.description.nickname">Chcete-li, zadejte svoji přezdívku</wicket:message>
-                </td>
-            </tr>
-
-            <tr>
-                <td colspan="2" class="error">
-                    <span wicket:id="nicknameFeedback"></span>
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <input class="textbox required" type="text" wicket:id="person.city" title="Město" wicket:message="title:form.city"/>
-                </td>
-                <td class="popis">
-                    <wicket:message key="form.description.city">Chcete-li, zadejte město, ve kterém bydlíte (studujete, pracujete, ...)</wicket:message>
-                </td>
-            </tr>
-
-            <tr>
-                <td colspan="2" class="error">
-                    <span wicket:id="cityFeedback"></span>
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <input class="textbox required" type="text" wicket:id="person.birthDate" title="dd.mm.YYYY" wicket:message="title:form.dateOfBirthProg"/>
-                </td>
-                <td class="popis">
-                    <wicket:message key="form.description.dateOfBirth">Chcete-li, zadejte své datum narození ve formátu DD.MM.YYYY</wicket:message>
-                </td>
-            </tr>
-
-            <tr>
-                <td colspan="2" class="error">
-                    <span wicket:id="birthDateFeedback"></span>
-                </td>
-            </tr>
-
-            <tr>
-                <td>
+                    <b class="tooltip tooltip-bottom-right"><wicket:message key="form.description.image">Vyberte svoji profilovou fotografii o rozměrech 120x120px. Maximální velikost fotografie jsou 2MB.</wicket:message></b>
+                </label>
+            </section>
+            <div class="row">
+                <section class="col col-6">
+                    <label class="input">
+                        <input type="text" wicket:id="person.name" wicket:message="placeholder:form.name"/>
+                        <b class="tooltip tooltip-bottom-right"><wicket:message key="form.description.wholeName">Zadejte své celé jméno</wicket:message></b>
+                    </label>
+                </section>
+                <section class="col col-6">
+                    <label class="input">
+                        <input type="text" wicket:id="person.nickname" wicket:message="placeholder:form.nickname"/>
+                        <b class="tooltip tooltip-bottom-right"><wicket:message key="form.description.nickname">Chcete-li, zadejte svoji přezdívku</wicket:message></b>
+                    </label>
+                </section>
+            </div>
+            <div class="row">
+                <section class="col col-6">
+                    <label class="input">
+                        <input type="text" wicket:id="person.city" wicket:message="placeholder:form.city"/>
+                        <b class="tooltip tooltip-bottom-right"><wicket:message key="form.description.city">Chcete-li, zadejte město, ve kterém bydlíte (studujete, pracujete, ...)</wicket:message></b>
+                    </label>
+                </section>
+                <section class="col col-6">
+                    <label class="input">
+                        <input type="text" wicket:id="person.birthDate" wicket:message="placeholder:form.dateOfBirthProg"/>
+                        <b class="tooltip tooltip-bottom-right"><wicket:message key="form.description.dateOfBirth">Chcete-li, zadejte své datum narození ve formátu DD.MM.YYYY</wicket:message></b>
+                    </label>
+                </section>
+            </div>
+            <section>
+                <label class="input">
                     <select wicket:id="userHasLanguages"></select>
-                </td>
-                <td class="popis">
-                    <wicket:message key="form.description.userHasLanguages">Vyberte jazyky, které vás zajímají</wicket:message>
-                </td>
-            </tr>
-
-            <tr>
-                <td colspan="2" class="error">
-                    <span wicket:id="userHasLanguagesFeedback"></span>
-                </td>
-            </tr>
-
-            <tr>
-                <td>
+                    <b class="tooltip tooltip-bottom-right"><wicket:message key="form.description.userHasLanguages">Vyberte jazyky, které vás zajímají</wicket:message></b>
+                </label>
+            </section>
+            <section>
+                <label class="input">
                     <div wicket:id="reCaptcha"></div>
-                </td>
-                <td class="popis">
-                    <wicket:message key="form.description.reCaptcha"></wicket:message>
-                </td>
-            </tr>
-
-            <tr>
-                <td colspan="2" class="error">
-                    <span wicket:id="reCaptchaFeedback"></span>
-                </td>
-            </tr>
-        </table>
-
-        <div>
-            <textarea class="textarea" style="width: 100%" name="popis" id="popis"
-                      wicket:id="person.description" title="Napište něco o sobě"
-                      wicket:message="title:form.description.about"></textarea>
-            <span wicket:id="descriptionFeedback"></span>
-        </div>
-
-        <div style="clear:both; width:100%;"></div>
-
-        <input class="pridatHruButton" type="button" value="Registrovat" wicket:message="value:form.register" wicket:id="submit" id="submitButton"/>
+                    <b class="tooltip tooltip-bottom-right"><wicket:message key="form.description.reCaptcha"></wicket:message></b>
+                </label>
+            </section>
+            <section>
+                <label class="input">
+                    <textarea class="textarea" wicket:id="person.description"s wicket:message="placholder:form.description.about"></textarea>
+                </label>
+            </section>
+            <section>
+                <input class="btn-u" type="button" wicket:message="value:form.register" wicket:id="submit" />
+            </section>
+        </fieldset>
     </form>
+
+    <div>
+        <wicket:message key="user.welcome">Vítejte na česko-slovenské larpové databázi. Po vyplnění krátkého
+            formuláře vlevo se stanete registrovaným uživatelem a můžete tak využít všech funkcí jako hodnocení a a
+            komentování jednotlivých larpů, stejně jako jejich zařazení do vaší larpotéky.
+        </wicket:message>
+    </div>
+
 </wicket:panel>

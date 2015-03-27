@@ -58,7 +58,7 @@ import cz.larpovadatabaze.components.page.user.CsldSignInPage;
 import cz.larpovadatabaze.components.page.user.ForgotPassword;
 import cz.larpovadatabaze.components.page.user.ListUser;
 import cz.larpovadatabaze.components.page.user.ResetPassword;
-import cz.larpovadatabaze.components.page.user.SignOut;
+import cz.larpovadatabaze.components.page.user.SignOutPage;
 import cz.larpovadatabaze.components.page.user.UpdateUserPage;
 import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.converters.CsldUserConverter;
@@ -217,7 +217,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     }
 
     private void mountPages() {
-        mountPage("/sign-out", SignOut.class);
+        mountPage("/sign-out", SignOutPage.class);
         mountPage("/sign-in", CsldSignInPage.class);
         mountPage("/register", CreateOrUpdateUserPage.class);
         mountPage("/edit-user", UpdateUserPage.class);

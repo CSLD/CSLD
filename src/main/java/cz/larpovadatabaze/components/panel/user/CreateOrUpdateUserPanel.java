@@ -1,7 +1,31 @@
 package cz.larpovadatabaze.components.panel.user;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.extensions.markup.html.form.DateTextField;
+import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
+import org.apache.wicket.markup.html.form.EmailTextField;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.form.ListMultipleChoice;
+import org.apache.wicket.markup.html.form.PasswordTextField;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.upload.FileUpload;
+import org.apache.wicket.markup.html.form.upload.FileUploadField;
+import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import cz.larpovadatabaze.api.ValidatableForm;
-import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
 import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.behavior.ErrorClassAppender;
 import cz.larpovadatabaze.entities.CsldUser;
@@ -13,26 +37,7 @@ import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.utils.Pwd;
 import cz.larpovadatabaze.validator.UniqueUserValidator;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.extensions.markup.html.form.DateTextField;
-import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
-import org.apache.wicket.markup.html.form.*;
-import org.apache.wicket.markup.html.form.upload.FileUpload;
-import org.apache.wicket.markup.html.form.upload.FileUploadField;
-import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
-import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Panel used for registering new user or adding new Author into the database.
@@ -97,7 +102,7 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
         PasswordTextField passwordAgain =
                 new PasswordTextField("passwordAgain", new PropertyModel<String>(this, "passwordAgain"));
         passwordAgain.setRequired(true);
-        createOrUpdateUser.add(addFeedbackPanel(passwordAgain, createOrUpdateUser, "passwordAgainFeedback"));
+       createOrUpdateUser.add(addFeedbackPanel(passwordAgain, createOrUpdateUser, "passwordAgainFeedback"));
         final ListMultipleChoice<Language> changeLocale =
                 new ListMultipleChoice<Language>("userHasLanguages",
                         new CodeLocaleProvider().availableLanguages());
@@ -134,10 +139,10 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
 
     private FormComponent addFeedbackPanel(FormComponent addFeedbackTo, Form addingFeedbackTo, String nameOfFeedbackPanel){
         ComponentFeedbackMessageFilter filter = new ComponentFeedbackMessageFilter(addFeedbackTo);
-        final FeedbackPanel feedbackPanel = new FeedbackPanel(nameOfFeedbackPanel, filter);
-        feedbackPanel.setOutputMarkupId(true);
-        addingFeedbackTo.add(feedbackPanel);
-        addFeedbackTo.add(new AjaxFeedbackUpdatingBehavior("blur", feedbackPanel));
+//        final FeedbackPanel feedbackPanel = new FeedbackPanel(nameOfFeedbackPanel, filter);
+//        feedbackPanel.setOutputMarkupId(true);
+//        addingFeedbackTo.add(feedbackPanel);
+//        addFeedbackTo.add(new AjaxFeedbackUpdatingBehavior("blur", feedbackPanel));
         addFeedbackTo.add(new ErrorClassAppender());
         return addFeedbackTo;
     }

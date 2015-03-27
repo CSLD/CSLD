@@ -3,42 +3,39 @@
 This panel is found in package: cz.larpovadatabaze.components.panel.user.SignInPanel.html
 It is external panel, and therefore it is not found on GitHub
 -->
-<html xmlns:wicket="http://wicket.apache.org">
+<html xmlns:wicket="http://wicket.apache.org" xmlns:wicker="http://wicket.apache.org">
 <body>
 <wicket:panel>
-    <div class="sekce" style="display: inline-block; padding: 6px; margin-bottom: 15px;">
-        <span wicket:id="feedback"/>
-        <form wicket:id="signInForm">
-            <table>
-                <tr>
-                    <td align="right"><wicket:message key="form.email">Email:</wicket:message></td>
-                    <td>
-                        <input wicket:id="username" type="text"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="right"><wicket:message key="form.password">Password:</wicket:message></td>
-                    <td>
-                        <input wicket:id="password" type="password"/>
-                    </td>
-                </tr>
-                <tr wicket:id="rememberMeRow">
-                    <td></td>
-                    <td> <input wicket:id="rememberMe" type="checkbox" /><wicket:message key="form.rememberMe">Remember Me</wicket:message></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <input type="submit" name="submit" wicket:id="submitButton" />
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td style="padding-top: 10px;"><a wicket:id="forgotPassword" style="color: #00A0B0;" ><wicket:message key="user.forgottenPassword">Zapomenuté heslo</wicket:message></a></td>
-                </tr>
-            </table>
-        </form>
-    </div>
+    <wicker:enclosure child="feedback">
+        <span>
+            <wicket:container wicket:id="feedback" />
+        </span>
+    </wicker:enclosure>
+    <form wicket:id="signInForm" class="sky-form" novalidate="novalidate">
+        <fieldset>
+            <section>
+                <label class="input">
+                    <input wicket:id="username" type="text" wicket:message="placeholder:form.email"/>
+                </label>
+            </section>
+            <section>
+                <label class="input">
+                    <input wicket:id="password" type="password" wicket:message="placeholder:form.password"/>
+                </label>
+            </section>
+            <section wicket:id="rememberMeRow">
+                <label class="checkbox">
+                    <input wicket:id="rememberMe" type="checkbox" /><i></i><wicket:message key="form.rememberMe">Remember Me</wicket:message>
+                </label>
+            </section>
+            <section>
+                <a wicket:id="forgotPassword" style="color: #00A0B0;" ><wicket:message key="user.forgottenPassword">Zapomenuté heslo</wicket:message></a>
+            </section>
+            <section>
+                <input type="submit" name="submit" class="btn-u" wicket:id="submitButton" />
+            </section>
+        </fieldset>
+    </form>
 </wicket:panel>
 </body>
 </html>

@@ -1,33 +1,15 @@
 <wicket:extend xmlns:wicket="http://wicket.apache.org">
-    <div class="levaCast">
-        <div class="sekce" style="margin-top: 0;">
-            <div class="nadpisStranky">
-                <img wicket:id="settingsIcon" class="ikonaStranky" alt="">
-                <wicket:message key="user.register">Registrace</wicket:message>
-            </div>
-
-            <div wicket:id="createOrUpdateUser">
-                <!--
-                This panel is found in package: cz.larpovadatabaze.components.panel.user.CreateOrUpdateUserPanel.html
-                https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/user/CreateOrUpdateUserPanel.html
-                -->
+    <div class="container main">
+        <div class="row">
+            <div class="col-md-12">
+                <wicket:container wicket:id="createOrUpdateUser">
+                    <!--
+                    This panel is found in package: cz.larpovadatabaze.components.panel.user.CreateOrUpdateUserPanel.html
+                    https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/user/CreateOrUpdateUserPanel.html
+                    -->
+                </wicket:container>
             </div>
         </div>
     </div>
 
-    <div class="pravaCast">
-        <div class="praveMenu">
-            <div class="nadpisMenu">
-                <wicket:message key="user.help">Nápověda</wicket:message>
-            </div>
-        </div>
-        <div class="sekce">
-            <wicket:message key="user.welcome">Vítejte na česko-slovenské larpové databázi. Po vyplnění krátkého
-                formuláře vlevo se stanete registrovaným uživatelem a můžete tak využít všech funkcí jako hodnocení a a
-                komentování jednotlivých larpů, stejně jako jejich zařazení do vaší larpotéky.
-            </wicket:message>
-        </div>
-    </div>
-
-    <div style="clear: both"></div>
 </wicket:extend>

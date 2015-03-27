@@ -10,7 +10,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.common.icons.UserIcon;
 import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.user.SignOut;
+import cz.larpovadatabaze.components.page.user.SignOutPage;
 import cz.larpovadatabaze.components.page.user.UpdateUserPage;
 import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.entities.CsldUser;
@@ -67,7 +67,7 @@ public class LoggedBoxPanel extends AbstractCsldPanel<CsldUser> {
 
         // Add user buttons
         add(new BookmarkablePageLink<CsldBasePage>("settings", UpdateUserPage.class, params));
-        add(new BookmarkablePageLink<CsldBasePage>("logout", SignOut.class));
+        add(new BookmarkablePageLink<CsldBasePage>("logout", SignOutPage.class));
     }
 
 }
