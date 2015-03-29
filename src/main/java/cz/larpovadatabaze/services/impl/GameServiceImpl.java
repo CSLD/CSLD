@@ -3,7 +3,6 @@ package cz.larpovadatabaze.services.impl;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Order;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,6 @@ import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.GameHasLanguages;
 import cz.larpovadatabaze.entities.Image;
-import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.lang.LanguageSolver;
 import cz.larpovadatabaze.models.FilterGame;
@@ -142,13 +140,13 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<Game> getFilteredGames(FilterGame filterGame, List<Label> labels, int offset, int limit, Order orderBy) {
-        return gameDAO.getFilteredGames(filterGame, labels, offset, limit, orderBy);
+    public List<Game> getFilteredGames(FilterGame filterGame, int offset, int limit) {
+        return gameDAO.getFilteredGames(filterGame, offset, limit);
     }
 
     @Override
-    public long getAmountOfFilteredGames(FilterGame filterGame, List<Label> labels) {
-        return gameDAO.getAmountOfFilteredGames(filterGame, labels);
+    public long getAmountOfFilteredGames(FilterGame filterGame) {
+        return gameDAO.getAmountOfFilteredGames(filterGame);
     }
 
     @Override

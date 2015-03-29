@@ -1,23 +1,12 @@
 package cz.larpovadatabaze.components.panel.game;
 
-import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.game.GameDetail;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.models.FilterGame;
-import cz.larpovadatabaze.providers.SortableGameProvider;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.*;
-import org.apache.wicket.Session;
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AttributeAppender;
-import org.apache.wicket.extensions.markup.html.repeater.data.sort.OrderByBorder;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -26,12 +15,26 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import cz.larpovadatabaze.components.common.AbstractCsldPanel;
+import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.page.game.GameDetail;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.models.FilterGame;
+import cz.larpovadatabaze.providers.SortableGameProvider;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.services.CommentService;
+import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.LabelService;
+import cz.larpovadatabaze.services.RatingService;
+
 /**
  * It contains all games in a pageable list, there are four possible ways to order
  * the list. Order alphabetically, Order by rating or order by amount of ratings, or
  * by amount of comments.
  */
-public class ListGamePanel extends Panel {
+public class ListGamePanel extends AbstractCsldPanel<FilterGame> {
     @SpringBean
     GameService gameService;
     @SpringBean
@@ -48,50 +51,13 @@ public class ListGamePanel extends Panel {
     private RatingsModel ratingsModel;
     private CommentsModel commentsModel;
 
-    private class CommentsModel extends LoadableDetachableModel<List<Game>> {
-        final int userId;
-
-        private CommentsModel(int userId) {
-            this.userId = userId;
-        }
-
-        @Override
-        protected List<Game> load() {
-            if(userId == 0) {
-                return new ArrayList<Game>();
-            } else {
-                return new ArrayList<Game>(commentService.getGamesCommentedByUser(userId));
-            }
-        }
+    public ListGamePanel(String id, IModel<FilterGame> model) {
+        super(id, model);
     }
 
-    private class RatingsModel extends LoadableDetachableModel<List<Game>> {
-        final int userId;
-
-        private RatingsModel(int userId) {
-            this.userId = userId;
-        }
-
-        @Override
-        protected List<Game> load() {
-            if(userId == 0) {
-                return new ArrayList<Game>();
-            } else {
-                return new ArrayList<Game>(gameService.getGamesRatedByUser(userId));
-            }
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public ListGamePanel(String id, int filterLabel) {
-        super(id);
-
-        cz.larpovadatabaze.entities.Label label;
-        if(filterLabel != -1){
-            label = labelService.getById(filterLabel);
-        } else {
-            label = null;
-        }
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
 
         CsldUser loggedUser =  CsldAuthenticatedWebSession.get().getLoggedUser();
         if(loggedUser != null) {
@@ -102,7 +68,7 @@ public class ListGamePanel extends Panel {
             commentsModel = new CommentsModel(0);
         }
 
-        sgp = new SortableGameProvider(gameService, label, Session.get().getLocale());
+        sgp = new SortableGameProvider(getModel());
         final DataView<Game> propertyList = new DataView<Game>("listGames", sgp) {
             @Override
             protected void populateItem(Item<Game> item) {
@@ -145,69 +111,42 @@ public class ListGamePanel extends Panel {
         propertyList.setOutputMarkupId(true);
         propertyList.setItemsPerPage(25L);
 
-        add(new OrderByBorder("orderByName", "form.wholeName", sgp) {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            protected void onSortChanged() {
-                propertyList.setCurrentPage(0);
-            }
-        });
-
-        add(new OrderByBorder("orderByYear", "year", sgp)
-        {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            protected void onSortChanged()
-            {
-                propertyList.setCurrentPage(0);
-            }
-        });
-
-        add(new OrderByBorder("orderByRating", "rating", sgp)
-        {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            protected void onSortChanged()
-            {
-                propertyList.setCurrentPage(0);
-            }
-        });
-
-        add(new OrderByBorder("orderByRatingAmount", "ratingAmount", sgp)
-        {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            protected void onSortChanged()
-            {
-                propertyList.setCurrentPage(0);
-            }
-        });
-
-
-        add(new OrderByBorder("orderByCommentAmount", "commentAmount", sgp)
-        {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            protected void onSortChanged()
-            {
-                propertyList.setCurrentPage(0);
-            }
-        });
-
-
         add(propertyList);
         PagingNavigator paging = new PagingNavigator("navigator", propertyList);
         add(paging);
     }
 
-    public void reload(AjaxRequestTarget target, FilterGame filterGame, List<cz.larpovadatabaze.entities.Label> labels) {
-        sgp.setFilters(filterGame, labels);
+    private class CommentsModel extends LoadableDetachableModel<List<Game>> {
+        final int userId;
 
-        target.add(ListGamePanel.this);
+        private CommentsModel(int userId) {
+            this.userId = userId;
+        }
+
+        @Override
+        protected List<Game> load() {
+            if(userId == 0) {
+                return new ArrayList<Game>();
+            } else {
+                return new ArrayList<Game>(commentService.getGamesCommentedByUser(userId));
+            }
+        }
+    }
+
+    private class RatingsModel extends LoadableDetachableModel<List<Game>> {
+        final int userId;
+
+        private RatingsModel(int userId) {
+            this.userId = userId;
+        }
+
+        @Override
+        protected List<Game> load() {
+            if(userId == 0) {
+                return new ArrayList<Game>();
+            } else {
+                return new ArrayList<Game>(gameService.getGamesRatedByUser(userId));
+            }
+        }
     }
 }

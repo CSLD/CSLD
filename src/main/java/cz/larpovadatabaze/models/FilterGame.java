@@ -1,85 +1,64 @@
 package cz.larpovadatabaze.models;
 
-import cz.larpovadatabaze.entities.Label;
-
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import cz.larpovadatabaze.entities.Label;
 
 /**
  *
  */
 public class FilterGame implements Serializable {
-    private Double minHours = 0d;
-    private Double maxHours;
-    private Double minDays = 0d;
-    private Double maxDays;
-    private Double minPlayers = 0d;
-    private Double maxPlayers;
-    private List<Label> filterByLabels;
-    private Locale language;
 
-    public Locale getLanguage() {
-        return language;
+    public static enum OrderBy {
+        NUM_RATINGS_DESC,
+        ADDED_DESC,
+        RATING_DESC,
+        NUM_COMMENTS_DESC
     }
 
-    public void setLanguage(Locale language) {
-        this.language = language;
+    private List<Label> requiredLabels = new ArrayList<Label>();
+    private List<Label> otherLabels = new ArrayList<Label>();
+    private List<Locale> languages = new ArrayList<Locale>();
+    private boolean showOnlyNew;
+    private boolean showArchived;
+    private OrderBy orderBy = OrderBy.NUM_RATINGS_DESC;
+
+    public List<Label> getRequiredLabels() {
+        return requiredLabels;
     }
 
-    public List<Label> getFilterByLabels() {
-        return filterByLabels;
+    public List<Label> getOtherLabels() {
+        return otherLabels;
     }
 
-    public void setFilterByLabels(List<Label> filterByLabels) {
-        this.filterByLabels = filterByLabels;
+    public List<Locale> getLanguages() {
+        return languages;
     }
 
-    public Double getMinHours() {
-        return minHours;
+    public boolean isShowOnlyNew() {
+        return showOnlyNew;
     }
 
-    public void setMinHours(Double minHours) {
-        this.minHours = minHours;
+    public void setShowOnlyNew(boolean showOnlyNew) {
+        this.showOnlyNew = showOnlyNew;
     }
 
-    public Double getMaxHours() {
-        return maxHours;
+    public boolean isShowArchived() {
+        return showArchived;
     }
 
-    public void setMaxHours(Double maxHours) {
-        this.maxHours = maxHours;
+    public void setShowArchived(boolean showArchived) {
+        this.showArchived = showArchived;
     }
 
-    public Double getMinDays() {
-        return minDays;
+    public OrderBy getOrderBy() {
+        return orderBy;
     }
 
-    public void setMinDays(Double minDays) {
-        this.minDays = minDays;
-    }
-
-    public Double getMaxDays() {
-        return maxDays;
-    }
-
-    public void setMaxDays(Double maxDays) {
-        this.maxDays = maxDays;
-    }
-
-    public Double getMinPlayers() {
-        return minPlayers;
-    }
-
-    public void setMinPlayers(Double minPlayers) {
-        this.minPlayers = minPlayers;
-    }
-
-    public Double getMaxPlayers() {
-        return maxPlayers;
-    }
-
-    public void setMaxPlayers(Double maxPlayers) {
-        this.maxPlayers = maxPlayers;
+    public void setOrderBy(OrderBy orderBy) {
+        this.orderBy = orderBy;
     }
 }

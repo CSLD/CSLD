@@ -1,23 +1,20 @@
 package cz.larpovadatabaze.dao;
 
-import cz.larpovadatabaze.api.GenericHibernateDAO;
-import cz.larpovadatabaze.dao.builder.GameBuilder;
-import cz.larpovadatabaze.dao.builder.IBuilder;
-import cz.larpovadatabaze.entities.*;
-import cz.larpovadatabaze.exceptions.WrongParameterException;
-import cz.larpovadatabaze.models.FilterGame;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -27,7 +24,9 @@ import cz.larpovadatabaze.dao.builder.IBuilder;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.GameHasLanguages;
 import cz.larpovadatabaze.entities.Label;
+import cz.larpovadatabaze.entities.Language;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.models.FilterGame;
 
@@ -39,6 +38,16 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     @Qualifier("sessionFactory")
     @Autowired
     private SessionFactory sessionFactory;
+
+    /**
+     * How old game is considered new
+     */
+    private final static int YEARS_NEW = 2;
+
+    /**
+     * How old game is considered old
+     */
+    private final static int YEARS_OLD = 5;
 
     @Override
     public IBuilder getBuilder() {
@@ -62,11 +71,13 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     @SuppressWarnings("unchecked")
     public List<Game> getLastGames(int amountOfGames, List<Locale> locales) {
         Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = new GameBuilder().build().getExecutableCriteria(session)
+        DetachedCriteria dc = new GameBuilder().build();
+
+        addLanguageRestriction(dc, locales);
+
+        Criteria criteria = dc.getExecutableCriteria(session)
                 .setMaxResults(amountOfGames)
                 .addOrder(Order.desc("added"));
-
-        addLanguageRestriction(criteria, locales);
 
         return criteria.list();
     }
@@ -74,11 +85,14 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     @SuppressWarnings("unchecked")
     public List<Game> getMostPopularGames(int amountOfGames, List<Locale> locales) {
         Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = new GameBuilder().build().getExecutableCriteria(session)
+
+        DetachedCriteria dc = new GameBuilder().build();
+
+        addLanguageRestriction(dc, locales);
+
+        Criteria criteria = dc.getExecutableCriteria(session)
             .setMaxResults(amountOfGames)
             .addOrder(Order.desc("totalRating"));
-
-        addLanguageRestriction(criteria, locales);
 
         return criteria.list();
     }
@@ -182,97 +196,106 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
         return criteria.list();
     }
 
+    private Integer[] getLabelIds(List<Label> labels) {
+        Integer[] labelIds = new Integer[labels.size()];
+        for(int i = 0; i < labels.size(); i++) {
+            labelIds[i] = labels.get(i).getId();
+        }
+        return labelIds;
+    }
+
+    private void addLabelCriteria(DetachedCriteria criteria, List<Label> labels) {
+        if (!labels.isEmpty()) {
+            DetachedCriteria dc = DetachedCriteria.forClass(Game.class, "game2");
+            dc.createAlias("game2.labels","labels");
+            dc.add(Restrictions.in("labels.id", getLabelIds(labels)));
+            dc.add(Restrictions.eqProperty("game2.labels", "game.id"));
+            dc.setProjection(Projections.id());
+            criteria.add(Subqueries.exists(dc));
+        }
+    }
+
+    /**
+     * Applies filter in FilterGame object to the criteria. Order is not affected.
+     *
+     * @param criteria Criteria to affect
+     * @param filterGame Filter to use
+     */
+    private void applyGameFilter(DetachedCriteria criteria, FilterGame filterGame) {
+        addLabelCriteria(criteria, filterGame.getRequiredLabels());
+        addLabelCriteria(criteria, filterGame.getOtherLabels());
+
+        if (!filterGame.getLanguages().isEmpty()) {
+            addLanguageRestriction(criteria, filterGame.getLanguages());
+        }
+
+        Integer yearLimit;
+        if (filterGame.isShowArchived()) {
+            yearLimit = null;
+        }
+        else {
+            if (filterGame.isShowOnlyNew()) {
+                yearLimit = YEARS_NEW;
+            }
+            else {
+                yearLimit = YEARS_OLD;
+            }
+        }
+
+        if (yearLimit != null) {
+            // Show games from this & last year
+            criteria.add(Restrictions.gt("year", new GregorianCalendar().get(Calendar.YEAR)-2));
+        }
+    }
+
     @SuppressWarnings("unchecked")
-    public List<Game> getFilteredGames(FilterGame filterGame, List<Label> labels, int first, int count, Order orderBy){
+    public List<Game> getFilteredGames(FilterGame filterGame, int first, int count){
         Session session = sessionFactory.getCurrentSession();
 
+        DetachedCriteria subQueryCriteria = new GameBuilder().build();
+
+        applyGameFilter(subQueryCriteria, filterGame);
+
+        subQueryCriteria.setProjection(Projections.id());
+
         Criteria criteria = new GameBuilder().build().getExecutableCriteria(session);
-        if (filterGame != null) {
-            if(filterGame.getMinDays() != 0){
-                criteria.add(Restrictions.ge("days", filterGame.getMinDays()));
-            }
-            if(filterGame.getMinHours() != 0){
-                criteria.add(Restrictions.ge("hours", filterGame.getMinHours()));
-            }
-            if(filterGame.getMinPlayers() != 0){
-                criteria.add(Restrictions.ge("players", filterGame.getMinPlayers()));
-            }
 
-            if(filterGame.getMaxDays() != null){
-                criteria.add(Restrictions.le("days",filterGame.getMaxDays()));
-            }
-            if(filterGame.getMaxHours() != null){
-                criteria.add(Restrictions.le("hours",filterGame.getMaxHours()));
-            }
-            if(filterGame.getMaxPlayers() != null){
-                criteria.add(Restrictions.le("players",filterGame.getMaxPlayers()));
-            }
+        criteria.add(Subqueries.propertyIn("id", subQueryCriteria));
 
-            if(filterGame.getLanguage() != null) {
-                List<Locale> languages = new ArrayList<Locale>();
-                languages.add(filterGame.getLanguage());
-                addLanguageRestriction(criteria, languages);
-            }
+        switch(filterGame.getOrderBy()) {
+            case ADDED_DESC:
+                criteria.addOrder(Order.desc("added"));
+                break;
+            case NUM_COMMENTS_DESC:
+                criteria.addOrder(Order.desc("amountOfComments"));
+                break;
+            case NUM_RATINGS_DESC:
+                criteria.addOrder(Order.desc("amountOfRatings"));
+                break;
+            case RATING_DESC:
+                criteria.addOrder(Order.desc("totalRating"));
         }
-        if (orderBy != null) {
-            criteria.addOrder(orderBy);
-        }
+
+        criteria.addOrder(Order.desc("id"));
+
         if (count > 0) {
             criteria.setFirstResult(first)
                     .setMaxResults(count);
-        }
-        if(labels.size() > 0){
-            Integer[] labelIds = new Integer[labels.size()];
-            for(int i = 0; i < labels.size(); i++) {
-                labelIds[i] = labels.get(i).getId();
-            }
-            criteria.createAlias("game.labels","labels");
-            criteria.add(Restrictions.in("labels.id", labelIds));
         }
 
         return criteria.list();
     }
 
-    public long getAmountOfFilteredGames(FilterGame filterGame, List<Label> labels) {
+    public long getAmountOfFilteredGames(FilterGame filterGame) {
         Session session = sessionFactory.getCurrentSession();
 
-        Criteria criteria = new GameBuilder().build().getExecutableCriteria(session);
-        if (filterGame != null) {
-            if(filterGame.getMinDays() != 0){
-                criteria.add(Restrictions.ge("days", filterGame.getMinDays()));
-            }
-            if(filterGame.getMinHours() != 0){
-                criteria.add(Restrictions.ge("hours", filterGame.getMinHours()));
-            }
-            if(filterGame.getMinPlayers() != 0){
-                criteria.add(Restrictions.ge("players", filterGame.getMinPlayers()));
-            }
+        DetachedCriteria dc = new GameBuilder().build();
 
-            if(filterGame.getMaxDays() != null){
-                criteria.add(Restrictions.le("days",filterGame.getMaxDays()));
-            }
-            if(filterGame.getMaxHours() != null){
-                criteria.add(Restrictions.le("hours",filterGame.getMaxHours()));
-            }
-            if(filterGame.getMaxPlayers() != null){
-                criteria.add(Restrictions.le("players",filterGame.getMaxPlayers()));
-            }
+        applyGameFilter(dc, filterGame);
 
-            if(filterGame.getLanguage() != null) {
-                List<Locale> languages = new ArrayList<Locale>();
-                languages.add(filterGame.getLanguage());
-                addLanguageRestriction(criteria, languages);
-            }
-        }
-        criteria.setProjection(Projections.rowCount());
-        if(labels.size() > 0){
-            Integer[] labelIds = new Integer[labels.size()];
-            for(int i = 0; i < labels.size(); i++) {
-                labelIds[i] = labels.get(i).getId();
-            }
-            criteria.createAlias("game.labels","labels");
-            criteria.add(Restrictions.in("labels.id", labelIds));
-        }
+        Criteria criteria = dc.getExecutableCriteria(session);
+
+        criteria.setProjection(Projections.countDistinct("id"));
 
         return (Long) criteria.uniqueResult();
     }
@@ -320,7 +343,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
         sessionFactory.getCurrentSession().flush();
     }
 
-    private void addLanguageRestriction(Criteria criteria, List<Locale> languages) {
+    private void addLanguageRestriction(DetachedCriteria criteria, List<Locale> languages) {
         criteria
                 .createCriteria("availableLanguages")
                 .createCriteria("language")

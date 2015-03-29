@@ -1,116 +1,53 @@
 package cz.larpovadatabaze.providers;
 
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Label;
-import cz.larpovadatabaze.models.FilterGame;
-import cz.larpovadatabaze.services.GameService;
-import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
-import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.hibernate.NullPrecedence;
-import org.hibernate.criterion.Order;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.models.FilterGame;
+import cz.larpovadatabaze.services.GameService;
 
 /**
  *
  */
 public class SortableGameProvider extends SortableDataProvider<Game, String> {
+
+    @SpringBean
     private GameService gameService;
-    private FilterGame filterGame = new FilterGame();
-    private List<Label> filterLabels = new ArrayList<Label>();
-    private int filterLabel = -1;
 
-    public SortableGameProvider(GameService gameService, String defaultSort, Locale locale) {
-        this(gameService, defaultSort);
-        if(locale != null) {
-            filterGame.setLanguage(locale);
-        }
+    private IModel<FilterGame> filterModel;
+
+    public SortableGameProvider(FilterGame.OrderBy defaultSort, Locale locale) {
+        Injector.get().inject(this);
+        this.filterModel = new Model(new FilterGame());
+
+        filterModel.getObject().setOrderBy(defaultSort);
+        filterModel.getObject().getLanguages().add(locale);
     }
 
-    public SortableGameProvider(GameService gameService, String defaultSort) {
-        this.gameService = gameService;
-        setSort(defaultSort, SortOrder.ASCENDING);
-    }
-
-    public SortableGameProvider(GameService gameService, Label filterLabel, Locale locale) {
-        this(gameService, "year");
-        if(filterLabel != null) {
-            filterLabels.add(filterLabel);
-        }
-        if(locale != null) {
-            filterGame.setLanguage(locale);
-        }
+    public SortableGameProvider(IModel<FilterGame> filterModel) {
+        Injector.get().inject(this);
+        this.filterModel = filterModel;
     }
 
     @Override
     public Iterator<? extends Game> iterator(long first, long amountPerPage) {
-        SortParam<String> sortings = getSort();
-        String property = sortings.getProperty();
         Long firstL = first;
-        if(property.equals("form.wholeName")){
-            return setStart(
-                    gameService.getFilteredGames(
-                            filterGame,
-                            filterLabels,
-                            firstL.intValue(),
-                            ((Long)amountPerPage).intValue(),
-                            Order.desc("year").nulls(NullPrecedence.LAST)),
-                        firstL.intValue()
-            ).iterator();
-        } else if(property.equals("year")) {
-            return setStart(
-                    gameService.getFilteredGames(
-                            filterGame,
-                            filterLabels,
-                            firstL.intValue(),
-                            ((Long)amountPerPage).intValue(),
-                            Order.desc("year").nulls(NullPrecedence.LAST)),
-                    firstL.intValue()
-            ).iterator();
-        } else if(property.equals("rating")) {
-            return setStart(
-                    gameService.getFilteredGames(
-                            filterGame,
-                            filterLabels,
-                            firstL.intValue(),
-                            ((Long)amountPerPage).intValue(),
-                            Order.desc("totalRating")),
-                    firstL.intValue()
-            ).iterator();
-        } else if(property.equals("ratingAmount")) {
-            return setStart(
-                    gameService.getFilteredGames(
-                            filterGame,
-                            filterLabels,
-                            firstL.intValue(),
-                            ((Long)amountPerPage).intValue(),
-                            Order.desc("amountOfRatings")),
-                    firstL.intValue()
-            ).iterator();
-        } else if(property.equals("added")) {
-            return setStart(
-                    gameService.getFilteredGames(
-                            filterGame,
-                            filterLabels,
-                            firstL.intValue(),
-                            ((Long)amountPerPage).intValue(),
-                            Order.desc("added")),
-                    firstL.intValue()
-            ).iterator();
-        } else {
-            return setStart(
-                    gameService.getFilteredGames(
-                            filterGame,
-                            filterLabels,
-                            firstL.intValue(),
-                            ((Long)amountPerPage).intValue(),
-                            Order.desc("amountOfComments")),
-                    firstL.intValue()
-            ).iterator();
-        }
+
+        return setStart(
+                gameService.getFilteredGames(
+                        filterModel.getObject(),
+                        firstL.intValue(),
+                        ((Long)amountPerPage).intValue()),
+                firstL.intValue()
+        ).iterator();
     }
 
     private List<Game> setStart(List<Game> games, int first){
@@ -120,18 +57,9 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
         return games;
     }
 
-    public void setFilters(FilterGame filters, List<Label> labels) {
-        filterGame = filters;
-        filterLabels = labels;
-        setSort("rating", SortOrder.ASCENDING);
-    }
-
     @Override
     public long size() {
-        return gameService.getAmountOfFilteredGames(
-                filterGame,
-                filterLabels
-        );
+        return gameService.getAmountOfFilteredGames(filterModel.getObject());
     }
 
     @Override

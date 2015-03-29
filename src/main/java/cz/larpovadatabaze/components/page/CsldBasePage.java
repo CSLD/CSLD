@@ -22,7 +22,7 @@ import org.apache.wicket.request.resource.PackageResourceReference;
 import cz.larpovadatabaze.components.common.i18n.LocalePicker;
 import cz.larpovadatabaze.components.page.about.AboutDatabasePage;
 import cz.larpovadatabaze.components.page.author.ListAuthor;
-import cz.larpovadatabaze.components.page.game.ListGame;
+import cz.larpovadatabaze.components.page.game.ListGamePage;
 import cz.larpovadatabaze.components.page.group.ListGroup;
 import cz.larpovadatabaze.components.page.user.ListUser;
 import cz.larpovadatabaze.components.panel.home.AdvertisementPanel;
@@ -80,7 +80,7 @@ public abstract class CsldBasePage extends WebPage {
         previewImageTag2.add(new AttributeModifier("content", previewImageURL));
         add(previewImageTag2);
 
-        add(new BookmarkablePageLink<CsldBasePage>("list-game", ListGame.class));
+        add(new BookmarkablePageLink<CsldBasePage>("list-game", ListGamePage.class));
         add(new BookmarkablePageLink<CsldBasePage>("list-authors", ListAuthor.class));
         add(new BookmarkablePageLink<CsldBasePage>("list-users", ListUser.class));
         add(new BookmarkablePageLink<CsldBasePage>("list-groups", ListGroup.class));

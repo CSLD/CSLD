@@ -19,7 +19,7 @@ import java.util.List;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.common.social.SocialShareButtons;
 import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.game.ListGame;
+import cz.larpovadatabaze.components.page.game.ListGamePage;
 import cz.larpovadatabaze.components.page.group.GroupDetail;
 import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.entities.CsldGroup;
@@ -134,7 +134,7 @@ public class GameDetailPanel extends AbstractCsldPanel<Game> {
             protected void populateItem(ListItem<cz.larpovadatabaze.entities.Label> item) {
                 cz.larpovadatabaze.entities.Label label = item.getModelObject();
 
-                BookmarkablePageLink link = new BookmarkablePageLink<CsldBasePage>("link", ListGame.class, ListGame.getParametersForLabel(label.getId()));
+                BookmarkablePageLink link = new BookmarkablePageLink<CsldBasePage>("link", ListGamePage.class, ListGamePage.getParametersForLabel(label.getId()));
                 item.add(link);
 
                 Label labelC = new Label("label", label.getName());

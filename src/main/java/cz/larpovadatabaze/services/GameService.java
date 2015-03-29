@@ -1,7 +1,5 @@
 package cz.larpovadatabaze.services;
 
-import org.hibernate.criterion.Order;
-
 import java.util.Collection;
 import java.util.List;
 
@@ -9,7 +7,6 @@ import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.GameHasLanguages;
-import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.models.FilterGame;
 
@@ -40,9 +37,9 @@ public interface GameService extends GenericService<Game>, IIconReferenceProvide
 
     int getAmountOfGames();
 
-    List<Game> getFilteredGames(FilterGame filterGame, List<Label> labels, int offset, int limit, Order orderBy);
+    List<Game> getFilteredGames(FilterGame filterGame, int offset, int limit);
 
-    long getAmountOfFilteredGames(FilterGame filterGame, List<Label> filterLabels);
+    long getAmountOfFilteredGames(FilterGame filterGame);
 
     Collection<Game> getGamesOfAuthor(CsldUser author, int first, int count);
 

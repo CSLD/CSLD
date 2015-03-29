@@ -1,0 +1,56 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+    <!--
+    It contains basic characteristics of the game and allows user to filter by them.
+    It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/game/FilterGamesSidePanel.htmlhtml
+    Code - cz.larpovadatabaze.components.panel.game.FilterGamesSidePanelanel.html
+    -->
+    <form wicket:id="filterForm">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">
+                    <label class="checkbox"><input type="checkbox" wicket:id="showArchived"><i></i><wicket:message key="game.filter.includeArchived" /></label>
+                </h2>
+            </div>
+        </div>
+
+        <!-- Required labels -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">
+                    <wicket:message key="label.required">Popular tags</wicket:message>
+                </h2>
+            </div>
+
+            <div class="panel-body" wicket:id="requiredLabels">
+            </div>
+        </div>
+
+        <!-- Other labels -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">
+                    <wicket:message key="label.optional">Popular tags</wicket:message>
+                </h2>
+            </div>
+
+            <div class="panel-body" wicket:id="otherLabels">
+            </div>
+        </div>
+
+        <!-- Languages -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">
+                    <wicket:message key="game.filter.languages">Languages</wicket:message>
+                </h2>
+            </div>
+
+            <div class="panel-body">
+                <wicket:container wicket:id="languages">
+                    <label class="checkbox"><input type="checkbox" wicket:id="checkbox"><i></i><wicket:container wicket:id="label" /></label>
+                </wicket:container>
+            </div>
+        </div>
+
+    </form>
+</wicket:panel>
