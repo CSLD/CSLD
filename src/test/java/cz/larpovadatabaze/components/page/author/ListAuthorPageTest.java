@@ -1,16 +1,11 @@
 package cz.larpovadatabaze.components.page.author;
 
-import cz.larpovadatabaze.Csld;
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -22,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
                 "file:src/test/resources/spring-test.xml"
         }
 )
-public class ListAuthorTest {
+public class ListAuthorPageTest {
     private WicketTester tester;
 
     @Before
@@ -32,7 +27,7 @@ public class ListAuthorTest {
 
     @Test
     public void testHomePageBasicRender() {
-        tester.startPage(ListAuthor.class);
-        tester.assertRenderedPage(ListAuthor.class);
+        tester.startPage(ListAuthorPage.class);
+        tester.assertRenderedPage(ListAuthorPage.class);
     }
 }
