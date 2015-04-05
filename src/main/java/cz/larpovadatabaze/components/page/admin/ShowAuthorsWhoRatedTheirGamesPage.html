@@ -1,0 +1,26 @@
+1<wicket:extend xmlns:wicket="http://wicket.apache.org">
+
+    <div class="container main">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="userWhoRatedGame" style="display: table">
+                    <div style="display: table-row">
+                        <div style="display: table-cell">
+                            <wicket:message key="game.game">Hra</wicket:message>
+                        </div>
+                        <div style="display: table-cell">
+                            <wicket:message key="author.author">Hra</wicket:message>
+                        </div>
+                    </div>
+                    <div style="display: table-row-group" wicket:id="authorsRatedOwnGames">
+                        <div style="display: table-row">
+                            <div style="display: table-cell"><span wicket:id="email"></span></div>
+                            <div style="display: table-cell"><span wicket:id="user"></span></div>
+                            <div style="display: table-cell"><span wicket:id="game"></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</wicket:extend>

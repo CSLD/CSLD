@@ -2397,6 +2397,36 @@ text-align: center;
   padding: 0.2em 0 0.3em;
 }
 
+/**
+ * Edit dialog for labels on admin page
+ */
+.cmpEditDialog {
+    position: fixed;
+    left: 100px;
+    top: 100px;
+    width: 400px;
+    z-index: 100;
+    padding: 15px;
+    background: #F0F0F0;
+    border: 1px solid #808080;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.cmpEditDialog textarea {
+    width: 100%;
+    height: 200px;
+}
+
+/**
+ * Button state for labels on admin page
+ */
+#manageLabels input[type=button].selected {
+    background-color: rgb(55, 178, 240);
+    color: rgb(0, 0, 0) !important;
+}
+
+
 /*Fix for datepicker's responsive issue on resolution 1024x768*/
 .ui-datepicker-calendar a,
 .ui-datepicker-calendar span {

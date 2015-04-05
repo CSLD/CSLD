@@ -1,12 +1,13 @@
 package cz.larpovadatabaze.components.panel.user;
 
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.panel.Panel;
+
 import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.admin.Administration;
+import cz.larpovadatabaze.components.page.admin.AdministrationPage;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.security.CsldRoles;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.panel.Panel;
 
 /**
  * It is only link to the administration page.
@@ -16,7 +17,7 @@ public class AdminPanel extends Panel {
         super(id);
 
         BookmarkablePageLink<CsldBasePage> pageLink =
-                new BookmarkablePageLink<CsldBasePage>("administration", Administration.class);
+                new BookmarkablePageLink<CsldBasePage>("administration", AdministrationPage.class);
         add(pageLink);
     }
 

@@ -34,7 +34,7 @@ import java.util.Locale;
 
 import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.components.page.about.AboutDatabasePage;
-import cz.larpovadatabaze.components.page.admin.Administration;
+import cz.larpovadatabaze.components.page.admin.AdministrationPage;
 import cz.larpovadatabaze.components.page.admin.ManageLabelsPage;
 import cz.larpovadatabaze.components.page.admin.ManageUserRightsPage;
 import cz.larpovadatabaze.components.page.author.CreateOrUpdateAuthorPage;
@@ -244,7 +244,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         mountPage("/reset", ResetPassword.class);
         mountPage("/forgot-password", ForgotPassword.class);
 
-        mountPage("/admin", Administration.class);
+        mountPage("/admin", AdministrationPage.class);
         mountPage("/admin/manage-labels", ManageLabelsPage.class);
         mountPage("/admin/manage-users", ManageUserRightsPage.class);
 
