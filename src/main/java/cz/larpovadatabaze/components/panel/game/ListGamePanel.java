@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.components.panel.game;
 
 import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
@@ -20,6 +21,7 @@ import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.models.FilterGame;
 import cz.larpovadatabaze.providers.SortableGameProvider;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
@@ -87,13 +89,18 @@ public class ListGamePanel extends AbstractCsldPanel<FilterGame> {
                 item.add(gameYear);
 
                 Long totalRating = Math.round(game.getTotalRating());
+
+                WebMarkupContainer ratingWrapper = new WebMarkupContainer("ratingWrapper");
+                item.add(ratingWrapper);
+                ratingWrapper.add(new AttributeAppender("class", Model.of(Rating.getColorOf(totalRating)), " "));
+
                 DecimalFormat df = new DecimalFormat("0.0");
                 final Label gameRating = new Label("rating", Model.of(df.format((double) totalRating / 10d)));
-                item.add(gameRating);
+                ratingWrapper.add(gameRating);
 
                 Long averageRating = (totalRating == 0)?0:Math.round(game.getAverageRating());
                 final Label average = new Label("average", Model.of(df.format((double) averageRating / 10d)));
-                item.add(average);
+                ratingWrapper.add(average);
 
                 final Label gameRatings = new Label("ratings", game.getAmountOfRatings());
                 if(ratingsModel.getObject().contains(game)){

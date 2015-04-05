@@ -757,7 +757,7 @@ footer .container .footer-socials a:hover{
     width: 100%;
     font-size: 16px;
 }
-.poradi.recent-games .alert .average{
+.poradi.recent-games .alert .averageRating {
     font-size: 10px;
 }
 .events .row.recent-games div.item{
