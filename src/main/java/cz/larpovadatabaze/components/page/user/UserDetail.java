@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.components.panel.game.CommentsListPanel;
 import cz.larpovadatabaze.components.panel.game.GameListPanel;
 import cz.larpovadatabaze.components.panel.game.ListGamesWithAnnotations;
@@ -105,7 +106,7 @@ public class UserDetail extends CsldBasePage {
 
     public UserDetail(PageParameters params){
         if(params.get("id") == null || params.get("id").isEmpty()){
-            throw new RestartResponseException(ListUser.class);
+            throw new RestartResponseException(HomePage.class);
         }
         setDefaultModel(new UserModel(params.get("id").to(Integer.class)));
     }

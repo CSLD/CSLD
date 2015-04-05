@@ -63,10 +63,10 @@
                     <a class="menuItem" wicket:id="list-authors"><wicket:message key="authors">Autoři</wicket:message></a>
                 </li>
                 <li class="visible-md visible-sm visible-xs visible-lg">
-                    <a class="menuItem" wicket:id="list-users"><wicket:message key="users">Uživatelé</wicket:message></a>
+                    <a class="menuItem" wicket:id="list-groups"><wicket:message key="groups">Skupiny</wicket:message></a>
                 </li>
                 <li class="visible-md visible-sm visible-xs visible-lg">
-                    <a class="menuItem" wicket:id="list-groups"><wicket:message key="groups">Skupiny</wicket:message></a>
+                    <a class="menuItem" wicket:id="about"><wicket:message key="aboutDb">O databázi</wicket:message></a>
                 </li>
                 <wicket:container wicket:id="adminPanel" />
             </ul>
@@ -74,9 +74,6 @@
             <!-- Login / user info box -->
             <ul class="nav navbar-nav navbar-right">
                 <li class="hidden-md visible-sm hidden-xs"><a href="#"><span class="glyphicon glyphicon-search"></span></a></li> <!-- TODO - Flankey dodá popup - TODO -->
-                <li class="visible-md visible-sm visible-xs visible-lg">
-                    <a class="menuItem" wicket:id="about"><wicket:message key="aboutDb">O databázi</wicket:message></a>
-                </li>
 
                 <!-- User pannel or login links -->
                 <wicket:container wicket:id="user" />

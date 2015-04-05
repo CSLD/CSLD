@@ -56,7 +56,6 @@ import cz.larpovadatabaze.components.page.search.SearchResultsPage;
 import cz.larpovadatabaze.components.page.user.CreateOrUpdateUserPage;
 import cz.larpovadatabaze.components.page.user.CsldSignInPage;
 import cz.larpovadatabaze.components.page.user.ForgotPassword;
-import cz.larpovadatabaze.components.page.user.ListUser;
 import cz.larpovadatabaze.components.page.user.ResetPassword;
 import cz.larpovadatabaze.components.page.user.SignOutPage;
 import cz.larpovadatabaze.components.page.user.UpdateUserPage;
@@ -228,7 +227,6 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
 
         mountPage("/zebricky", ListGamePage.class);
         mountPage("/autori", ListAuthorPage.class);
-        mountPage("/uzivatele", ListUser.class);
         mountPage("/skupiny", ListGroup.class);
 
         mountPage("/detail-game", GameDetailOld.class);
