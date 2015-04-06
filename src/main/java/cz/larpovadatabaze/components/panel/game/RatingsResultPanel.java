@@ -1,7 +1,6 @@
 package cz.larpovadatabaze.components.panel.game;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
@@ -9,7 +8,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -20,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
@@ -31,13 +30,12 @@ import cz.larpovadatabaze.services.RatingService;
  * This panel shows result of rating of a game. It has background based on the rating and the amount of rating as
  * number.
  */
-public class RatingsResultPanel extends Panel {
+public class RatingsResultPanel extends AbstractCsldPanel<Game> {
     private static final int NUM_RATINGS = 10;
 
     @SpringBean
     RatingService ratingService;
 
-    private final IModel<Game> model;
     private final Component componentToRefresh;
     private final Component playedToRefresh;
 
@@ -51,7 +49,7 @@ public class RatingsResultPanel extends Panel {
 
         @Override
         public String getObject() {
-            double ratingOfGame = model.getObject().getTotalRating() != null ? model.getObject().getTotalRating() : 0;
+            double ratingOfGame = getModelObject().getTotalRating() != null ? getModelObject().getTotalRating() : 0;
             return Rating.getColorOf(ratingOfGame);
         }
     }
@@ -64,7 +62,7 @@ public class RatingsResultPanel extends Panel {
 
         @Override
         public String getObject() {
-            double ratingOfGame = model.getObject().getAverageRating() != null ? model.getObject().getAverageRating()/10d : 0;
+            double ratingOfGame = getModelObject().getAverageRating() != null ? getModelObject().getAverageRating()/10d : 0;
             return df.format(ratingOfGame);
         }
     }
@@ -83,8 +81,8 @@ public class RatingsResultPanel extends Panel {
         public void recompute() {
             array = new int[10];
             Arrays.fill(array,0);
-            if(model.getObject().getAmountOfRatings() > 3) {
-                for(Rating rating: model.getObject().getRatings()) {
+            if(getModelObject().getAmountOfRatings() > 3) {
+                for(Rating rating: getModelObject().getRatings()) {
                     array[rating.getRating() - 1]++;
                 }
                 int maxRatings = 0;
@@ -109,8 +107,7 @@ public class RatingsResultPanel extends Panel {
     /****************************************************************************/
 
     public RatingsResultPanel(String id, IModel<Game> model, Component componentToRefresh, Component playedToRefresh) {
-        super(id);
-        this.model = model;
+        super(id, model);
         this.componentToRefresh = componentToRefresh;
         this.playedToRefresh = playedToRefresh;
     }
@@ -122,10 +119,7 @@ public class RatingsResultPanel extends Panel {
         setOutputMarkupId(true);
 
         // Rating result
-        Label finalRating = new Label("ratingResult", new RatingResultModel());
-        finalRating.add(new AttributeAppender("class",new RatingColorModel(), " "));
-        finalRating.setOutputMarkupId(true);
-        add(finalRating);
+        add(new GameRatingBoxPanel("ratingBox", getModel()));
 
         // My result
         myRating = Model.of(0);
@@ -136,13 +130,13 @@ public class RatingsResultPanel extends Panel {
         Label amountOfResults = new Label("amountOfResults", new AbstractReadOnlyModel<Integer>() {
             @Override
             public Integer getObject() {
-                return model.getObject().getAmountOfRatings();
+                return getModelObject().getAmountOfRatings();
             }
         });
         add(amountOfResults);
 
         // Played panel
-        PlayedPanel playedPanel = new PlayedPanel("playedPanel", model, new Component[]{componentToRefresh, playedToRefresh});
+        PlayedPanel playedPanel = new PlayedPanel("playedPanel", getModel(), new Component[]{componentToRefresh, playedToRefresh});
         add(playedPanel);
 
         ratingsArrayModel = new RatingsArrayModel();
@@ -183,7 +177,7 @@ public class RatingsResultPanel extends Panel {
         CsldUser logged = CsldAuthenticatedWebSession.get().getLoggedUser();
         if(logged != null){
             try {
-                Rating mine = ratingService.getUserRatingOfGame(logged.getId(), model.getObject().getId());
+                Rating mine = ratingService.getUserRatingOfGame(logged.getId(), getModelObject().getId());
                 if(mine != null){
                     myRating.setObject(mine.getRating());
                 } else {
