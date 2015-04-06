@@ -1918,6 +1918,10 @@ text-align: center;
 	font: 300 18px/27px 'Open Sans', Helvetica, Arial, sans-serif;
 	text-align: center;
 }
+.sky-form.sky-labels .checkbox{
+    font-size: 13px;
+    margin-bottom: 2px;
+}
 
 
 /**/

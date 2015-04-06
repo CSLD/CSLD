@@ -1,43 +1,94 @@
 <wicket:extend xmlns:wicket="http://wicket.apache.org">
-    <div class="levaCast" id="Skupiny">
-        <div class="sekce sekceAutori">
-            <div class="nadpisStranky">
-                <wicket:link>
-                    <i class="fa fa-users"></i><wicket:message key="group.group">Skupiny</wicket:message>
-                </wicket:link>
-            </div>
-            <table>
-                <thead>
-                    <td></td>
-                    <td><wicket:message key="form.name">Jméno</wicket:message></td>
-                    <td><wicket:message key="form.averageOfAllGames">Průměrné hodnocení her</wicket:message></td>
-                    <td><wicket:message key="form.amountOfGames">Počet hodnocených her</wicket:message></td>
-                </thead>
-                <tr wicket:id="listGroups">
-                    <!-- Beginning of repetitive part for every group -->
-                    <td></td>
-                    <td><a wicket:id="groupDetail"><span wicket:id="groupName"></span></a></td>
-                    <td><span wicket:id="averageOfAllGames"></span></td>
-                    <td><span wicket:id="amountOfGames"></span></td>
-                    <!-- End of repetitive part for every group -->
-                </tr>
-            </table>
-            <div class="navigator">
-            <span wicket:id="navigator">[dataview navigator]</span>
+
+    <div class="profile_bar">
+        <div class="container">
+            <div class="row">
+                <div>
+                    <a class="">
+                        <div class="btn btn-default gameFiltr btn-xs">Group name</div>
+                    </a>
+                    <a class="">
+                        <div class="btn btn-default gameFiltr btn-xs"># of LARPS</div>
+                    </a>
+                    <a class="">
+                        <div class="btn btn-default gameFiltr btn-xs">Rating &Oslash;</div>
+                    </a>
+                </div>
+
             </div>
         </div>
     </div>
 
-    <div class="pravaCast" id="Skupiny">
-        <div class="praveMenu">
-            <div class="nadpisMenu"><wicket:message key="group.group">Skupiny</wicket:message></div>
-        </div>
+    <div class="profile_bar switcher">
+        <div class="container">
 
-        <div class="sekce" wicket:id="addGroup">
-            <!--
-            This panel is found in package: cz.larpovadatabaze.components.panel.group.AddGroupPanel.html
-            https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/group/AddGroupPanel.html
-            -->
         </div>
     </div>
+
+    <div class="container main">
+
+        <div class="row">
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="levaCast" id="Autori">
+
+            <div class="col-md-6 col-sm-5 col-xs-12">                    
+                    <!-- Beginning of repetitive content for every author -->
+                    <div class="row listGames" wicket:id="listGroups">
+
+                        <div class="col-md-4 col-sm-6 col-xs-10">
+                            <div class="t-data info recent-games">
+
+                                <a class="larpOdkaz" wicket:id="groupDetail">
+                                    <span ></span>
+                                    <span class="AutorJmeno" wicket:id="groupName"></span>
+                                </a>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-3 col-xs-2">
+                            <div class="t-data info detail recent-games">
+
+                                <span><span wicket:id="amountOfGames"></span><i class="fa fa-pencil-square"></i></span>
+
+                            </div>
+                        </div>
+
+                   
+                            <div class="col-md-5 col-sm-3 col-xs-12">
+                                <div class="t-data info poradi recent-games">
+                                    <div class="alert alert-info score average">&Oslash;&nbsp;<span wicket:id="averageOfAllGames"></span></div>
+                                </div>
+                            </div>
+
+                    </div>
+                    <!-- End of repetitive content for every author -->
+                    </div>
+
+                    <div class="navigator">
+                        <span wicket:id="navigator">[dataview navigator]</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-md-2 col-sm-2 col-xs-12 hide">
+                <div class="pravaCast" id="Autori" >
+                    <div class="praveMenu">
+                        <div class="nadpisMenu"><wicket:message key="group.group">Skupiny</wicket:message></div>
+                    </div>
+
+                    <div class="sekce" wicket:id="addGroup">
+                        <!--
+                        This panel is found in package: cz.larpovadatabaze.components.panel.group.AddGroupPanel.html
+                        https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/group/AddGroupPanel.html
+                        -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 </wicket:extend>
