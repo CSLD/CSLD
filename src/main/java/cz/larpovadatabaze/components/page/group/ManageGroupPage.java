@@ -52,7 +52,7 @@ public class ManageGroupPage extends CsldBasePage {
             }
         }
         if(!isVisible) {
-            throw new RestartResponseException(ListGroup.class);
+            throw new RestartResponseException(ListGroupPage.class);
         }
 
         add(new AdministerGroupMembers("manageGroup", (IModel<CsldGroup>)getDefaultModel()) {

@@ -48,7 +48,7 @@ public class GroupDetail extends CsldBasePage {
         try {
             setDefaultModel(new GroupModel(params.get("id").to(Integer.class)));
         } catch (NumberFormatException ex) {
-            throw new RestartResponseException(ListGroup.class);
+            throw new RestartResponseException(ListGroupPage.class);
         }
     }
 

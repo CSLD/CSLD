@@ -50,7 +50,7 @@ import cz.larpovadatabaze.components.page.game.ListGamePage;
 import cz.larpovadatabaze.components.page.game.ListLastGames;
 import cz.larpovadatabaze.components.page.group.CreateOrUpdateGroupPage;
 import cz.larpovadatabaze.components.page.group.GroupDetail;
-import cz.larpovadatabaze.components.page.group.ListGroup;
+import cz.larpovadatabaze.components.page.group.ListGroupPage;
 import cz.larpovadatabaze.components.page.group.ManageGroupPage;
 import cz.larpovadatabaze.components.page.search.SearchResultsPage;
 import cz.larpovadatabaze.components.page.user.CreateOrUpdateUserPage;
@@ -227,7 +227,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
 
         mountPage("/zebricky", ListGamePage.class);
         mountPage("/autori", ListAuthorPage.class);
-        mountPage("/skupiny", ListGroup.class);
+        mountPage("/skupiny", ListGroupPage.class);
 
         mountPage("/detail-game", GameDetailOld.class);
         mount(new MountedMapperWithoutPageComponentInfo("/larp/${name}/${id}", GameDetail.class));

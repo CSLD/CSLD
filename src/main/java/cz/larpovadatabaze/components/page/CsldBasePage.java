@@ -23,7 +23,7 @@ import cz.larpovadatabaze.components.common.i18n.LocalePicker;
 import cz.larpovadatabaze.components.page.about.AboutDatabasePage;
 import cz.larpovadatabaze.components.page.author.ListAuthorPage;
 import cz.larpovadatabaze.components.page.game.ListGamePage;
-import cz.larpovadatabaze.components.page.group.ListGroup;
+import cz.larpovadatabaze.components.page.group.ListGroupPage;
 import cz.larpovadatabaze.components.panel.home.AdvertisementPanel;
 import cz.larpovadatabaze.components.panel.search.SearchBoxPanel;
 import cz.larpovadatabaze.components.panel.user.AdminPanel;
@@ -81,7 +81,7 @@ public abstract class CsldBasePage extends WebPage {
 
         add(new BookmarkablePageLink<CsldBasePage>("list-game", ListGamePage.class));
         add(new BookmarkablePageLink<CsldBasePage>("list-authors", ListAuthorPage.class));
-        add(new BookmarkablePageLink<CsldBasePage>("list-groups", ListGroup.class));
+        add(new BookmarkablePageLink<CsldBasePage>("list-groups", ListGroupPage.class));
         add(new BookmarkablePageLink<CsldBasePage>("about", AboutDatabasePage.class));
         add(new AdminPanel("adminPanel"));
 
