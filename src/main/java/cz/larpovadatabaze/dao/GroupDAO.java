@@ -1,23 +1,23 @@
 package cz.larpovadatabaze.dao;
 
-import cz.larpovadatabaze.api.GenericHibernateDAO;
-import cz.larpovadatabaze.dao.builder.GenericBuilder;
-import cz.larpovadatabaze.dao.builder.IBuilder;
-import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.entities.Language;
-import cz.larpovadatabaze.exceptions.WrongParameterException;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Locale;
+
+import cz.larpovadatabaze.api.GenericHibernateDAO;
+import cz.larpovadatabaze.dao.builder.GenericBuilder;
+import cz.larpovadatabaze.dao.builder.IBuilder;
+import cz.larpovadatabaze.entities.CsldGroup;
+import cz.larpovadatabaze.exceptions.WrongParameterException;
 
 /**
  *
@@ -41,6 +41,24 @@ public class GroupDAO extends GenericHibernateDAO<CsldGroup, Integer> {
                 .addOrder(Order.asc("name"))
                 .setFirstResult(first.intValue())
                 .setMaxResults(amountPerPage.intValue());
+
+        return criteria.list();
+    }
+
+    public List<CsldGroup> orderedByGameCountDesc(Long first, Long amountPerPage, List<Locale> locales) {
+        Session session = sessionFactory.getCurrentSession();
+
+          Criteria criteria = getBuilder().build().getExecutableCriteria(session)
+            .createAlias("authorsOf", "authors")
+            .createCriteria("groupHasLanguages")
+            .add(Restrictions.in("language.language", locales))
+            .setFirstResult(first.intValue())
+            .setMaxResults(amountPerPage.intValue())
+            .setProjection(Projections.projectionList().add(Projections.count("authors.id"), "numGames").add(Projections.groupProperty("id")));
+
+        criteria.setResultTransformer(Transformers.aliasToBean(CsldGroup.class));
+
+        criteria.addOrder(Order.desc("numGames"));
 
         return criteria.list();
     }

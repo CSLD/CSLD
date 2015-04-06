@@ -46,12 +46,14 @@ public class ListGroupPage extends CsldBasePage {
 
         // Sort links
         profileBar = new WebMarkupContainer("profileBar");
+        profileBar.setOutputMarkupId(true);
         add(profileBar);
         profileBar.add(new SortAjaxLink("orderByName", "name"));
-        profileBar.add(new SortAjaxLink("orderByNumber", "name"));
+        profileBar.add(new SortAjaxLink("orderByNumber", "gameCount"));
         profileBar.add(new SortAjaxLink("orderByRating", "name"));
 
         main = new WebMarkupContainer("main");
+        main.setOutputMarkupId(true);
         add(main);
         final DataView<CsldGroup> groupList = new DataView<CsldGroup>("listGroups", sgp) {
 

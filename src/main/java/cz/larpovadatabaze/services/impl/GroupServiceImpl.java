@@ -1,16 +1,17 @@
 package cz.larpovadatabaze.services.impl;
 
+import org.apache.wicket.request.resource.ResourceReference;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
 import cz.larpovadatabaze.dao.GroupDAO;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.lang.LanguageSolver;
 import cz.larpovadatabaze.services.GroupService;
 import cz.larpovadatabaze.services.ImageService;
-import org.apache.wicket.request.resource.ResourceReference;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 /**
  *
@@ -44,6 +45,11 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public List<CsldGroup> orderedByName(long first, long amountPerPage) {
         return groupDAO.orderedByName(first, amountPerPage, languageSolver.getLanguagesForUser());
+    }
+
+    @Override
+    public List<CsldGroup> orderedByGameCountDesc(long first, long amountPerPage) {
+        return groupDAO.orderedByGameCountDesc(first, amountPerPage, languageSolver.getLanguagesForUser());
     }
 
     @Override

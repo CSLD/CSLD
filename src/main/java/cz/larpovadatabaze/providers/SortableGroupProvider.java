@@ -1,7 +1,5 @@
 package cz.larpovadatabaze.providers;
 
-import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.services.GroupService;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
@@ -9,6 +7,9 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 import java.util.Iterator;
+
+import cz.larpovadatabaze.entities.CsldGroup;
+import cz.larpovadatabaze.services.GroupService;
 
 /**
  * Created by IntelliJ IDEA.
@@ -28,9 +29,10 @@ public class SortableGroupProvider extends SortableDataProvider<CsldGroup, Strin
     public Iterator<? extends CsldGroup> iterator(long first, long amountPerPage) {
         SortParam<String> sortings = getSort();
         String property = sortings.getProperty();
-        if(property.equals("default")){
-            return groupService.orderedByName(first, amountPerPage).iterator();
-        } else {
+        if ("gameCount".equals(property)) {
+            return groupService.orderedByGameCountDesc(first, amountPerPage).iterator();
+        }
+        else {
             return groupService.orderedByName(first, amountPerPage).iterator();
         }
     }
