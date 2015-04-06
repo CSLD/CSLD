@@ -95,8 +95,6 @@ public class ListGamePage extends CsldBasePage {
             }
         }
 
-        // Non-required label (or ALL) selected - add to filter all required labels.
-        filterRequiredLabels.addAll(requiredLabels);
         if (labelId != ALL) {
             // Non-required label selected - add it to narrow filter
             filterOtherLabels.add(labelService.getById(labelId));
