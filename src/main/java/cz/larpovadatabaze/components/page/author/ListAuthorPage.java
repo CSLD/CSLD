@@ -1,7 +1,5 @@
 package cz.larpovadatabaze.components.page.author;
 
-import org.apache.wicket.behavior.AttributeAppender;
-import org.apache.wicket.extensions.markup.html.repeater.data.sort.OrderByBorder;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -18,9 +16,9 @@ import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.user.UserDetail;
 import cz.larpovadatabaze.components.panel.author.AuthorsPanel;
 import cz.larpovadatabaze.components.panel.game.GameNameAndLabelsPanel;
+import cz.larpovadatabaze.components.panel.game.GameRatingBoxPanel;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.providers.SortableAuthorProvider;
 import cz.larpovadatabaze.services.CsldUserService;
 
@@ -64,12 +62,7 @@ public class ListAuthorPage extends CsldBasePage {
                     bestGameWrapper.setVisible(false);
                 }
                 else {
-                    WebMarkupContainer ratingWrapper = new WebMarkupContainer("ratingWrapper");
-                    bestGameWrapper.add(ratingWrapper);
-                    ratingWrapper.add(new AttributeAppender("class", Model.of(Rating.getColorOf(bestGame.getTotalRating())), " "));
-
-                    final Label bestGameRating = new Label("rating", ratingFormat.format(bestGame.getTotalRating()/10d));
-                    ratingWrapper.add(bestGameRating);
+                    bestGameWrapper.add(new GameRatingBoxPanel("ratingBox", Model.of(bestGame)));
 
                     // Name and labels
                     bestGameWrapper.add(new GameNameAndLabelsPanel("nameAndLabels", Model.of(bestGame)));
@@ -91,6 +84,7 @@ public class ListAuthorPage extends CsldBasePage {
         add(propertyList);
         add(new PagingNavigator("navigator", propertyList));
 
+        /*
         add(new OrderByBorder("orderByName", "form.wholeName", sap)
         {
             private static final long serialVersionUID = 1L;
@@ -112,6 +106,7 @@ public class ListAuthorPage extends CsldBasePage {
                 propertyList.setCurrentPage(0);
             }
         });
+        */
 
         add(new AuthorsPanel("addAuthorPanel"));
     }

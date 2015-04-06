@@ -9,7 +9,6 @@ import org.apache.wicket.model.Model;
 
 import java.util.Iterator;
 
-import cz.larpovadatabaze.components.panel.GameBoxPanel;
 import cz.larpovadatabaze.entities.Game;
 
 /**

@@ -1,7 +1,6 @@
 package cz.larpovadatabaze.components.panel.game;
 
 import org.apache.wicket.behavior.AttributeAppender;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
 import org.apache.wicket.markup.repeater.Item;
@@ -11,14 +10,12 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.models.FilterGame;
 import cz.larpovadatabaze.providers.SortableGameProvider;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
@@ -73,27 +70,13 @@ public class ListGamePanel extends AbstractCsldPanel<FilterGame> {
             protected void populateItem(Item<Game> item) {
                 Game game = item.getModelObject();
                 int itemIndex = game.getFirst() + item.getIndex() + 1;
-                final Label orderLabel = new Label("order", itemIndex);
-                item.add(orderLabel);
 
                 item.add(new GameNameAndLabelsPanel("nameAndLabels", item.getModel()));
 
                 final Label gameYear = new Label("gameYear", Model.of(game.getYear()));
                 item.add(gameYear);
 
-                Long totalRating = Math.round(game.getTotalRating());
-
-                WebMarkupContainer ratingWrapper = new WebMarkupContainer("ratingWrapper");
-                item.add(ratingWrapper);
-                ratingWrapper.add(new AttributeAppender("class", Model.of(Rating.getColorOf(totalRating)), " "));
-
-                DecimalFormat df = new DecimalFormat("0.0");
-                final Label gameRating = new Label("rating", Model.of(df.format((double) totalRating / 10d)));
-                ratingWrapper.add(gameRating);
-
-                Long averageRating = (totalRating == 0)?0:Math.round(game.getAverageRating());
-                final Label average = new Label("average", Model.of(df.format((double) averageRating / 10d)));
-                ratingWrapper.add(average);
+                item.add(new GameRatingBoxWithAveragePanel("ratingBox", item.getModel()));
 
                 final Label gameRatings = new Label("ratings", game.getAmountOfRatings());
                 if(ratingsModel.getObject().contains(game)){

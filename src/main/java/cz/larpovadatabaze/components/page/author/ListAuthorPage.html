@@ -31,19 +31,6 @@
 
             <div class="col-md-10 col-sm-10 col-xs-12">
                 <div class="levaCast" id="Autori">
-
-                    <div class="nadpisStranky hide">
-                        <i class="fa fa-user"></i><i class="fa fa-pencil"></i>
-                        <wicket:message key="authorsCapitalized">Autoři</wicket:message>
-                    </div>
-
-                    <div class="hide" wicket:id="orderByName">
-                        <wicket:message key="form.name">Jméno</wicket:message>
-                    </div>
-                    <div class="hide" wicket:id="orderByBestGame">
-                        <wicket:message key="author.bestGames">Nejlepší hra autora</wicket:message>
-                    </div>
-
                     <!-- Beginning of repetitive content for every author -->
                     <div class="row listGames" wicket:id="listAuthor">
 
@@ -69,7 +56,7 @@
                         <wicket:container wicket:id="bestGameWrapper">
                             <div class="col-md-1 col-sm-2 col-xs-12">
                                 <div class="t-data info poradi recent-games">
-                                    <div class="alert alert-info score" wicket:id="ratingWrapper"><span wicket:id="rating">6.3</span></div>
+                                    <wicket:container wicket:id="ratingBox" />
                                 </div>
                             </div>
 

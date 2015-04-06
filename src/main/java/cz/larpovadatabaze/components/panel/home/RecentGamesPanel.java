@@ -17,7 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import cz.larpovadatabaze.components.page.OwlCarouselResourceReference;
-import cz.larpovadatabaze.components.panel.GameBoxPanel;
+import cz.larpovadatabaze.components.panel.game.GameBoxPanel;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.services.GameService;
 
