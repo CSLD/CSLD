@@ -2,6 +2,7 @@ package cz.larpovadatabaze.components.page.game;
 
 import cz.larpovadatabaze.components.panel.game.*;
 import cz.larpovadatabaze.lang.LanguageSolver;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -196,8 +197,9 @@ public class GameDetail extends CsldBasePage {
                 throw new RestartResponseException(GameWasDeleted.class);
             }
 
-            if(params.get("lang") != null){
+            if(!params.get("lang").isNull()){
                 lang = params.get("lang").toString();
+                CsldAuthenticatedWebSession.get().setLocale(Locale.forLanguageTag(lang));
             }
 
             setDefaultModel(new GameModel(gameId));
