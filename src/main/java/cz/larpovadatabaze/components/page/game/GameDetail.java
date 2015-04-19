@@ -65,6 +65,8 @@ public class GameDetail extends CsldBasePage {
 
     private IModel<String> previewImageUrlModel;
 
+    private String lang;
+
     /**
      * Model for selected tab number
      */
@@ -120,6 +122,9 @@ public class GameDetail extends CsldBasePage {
             if(HbUtils.isProxy(game)){
             }    game = HbUtils.deproxy(game);
 
+            if(lang != null) {
+                game.overrideLang = lang;
+            }
 
             return game;
         }
@@ -189,6 +194,10 @@ public class GameDetail extends CsldBasePage {
             // If the game is deleted and I don't have sufficient rights redirect me to game deleted page.
             if(gameService.getById(gameId) == null){
                 throw new RestartResponseException(GameWasDeleted.class);
+            }
+
+            if(params.get("lang") != null){
+                lang = params.get("lang").toString();
             }
 
             setDefaultModel(new GameModel(gameId));
