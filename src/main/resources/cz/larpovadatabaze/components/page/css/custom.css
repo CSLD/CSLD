@@ -85,7 +85,7 @@ h1 {
     font-weight: bold;
 }
 a {
-    color: #6dc8b7;
+    color: #98DBCF;
     text-decoration: none;
 }
 a:hover{
@@ -96,6 +96,7 @@ a:focus {
     outline:  none !important;
 }
 .container.main{
+    padding-top: 15px;
     padding-bottom: 15px;
 }
 .container.main a{
@@ -111,7 +112,13 @@ a:focus {
 .game-meta a:hover{
     color: #16b093;
 }
-
+.container.main ul.rating a{
+    color: #0F0F0F;   
+    line-height: 20px;
+}
+.container.main ul.rating a:hover{
+    color: #5F5F5F;    
+}
 .panel-footer {
     padding: 10px 15px;
     background-color: transparent;
@@ -338,7 +345,7 @@ a:focus {
 .profile_bar.switcher{
     background-color: #3F3F3F;
     position: relative;
-    margin-bottom: 25px;
+    margin-bottom: 10px;
     z-index: 1;
     box-shadow: 0px 0px 1px 2px #CFCFCF;
     font-weight: bold;
@@ -526,15 +533,24 @@ footer .container .footer-socials a:hover{
     font-style: normal;
 }
 
-.testimonials .testimonial-info img {
-    width: 60px;
+.testimonials .testimonial-info img, .obrazekModerator {
+    width: 50px;
     float: left;
-    height: 60px;
+    height: 50px;
     padding: 2px;
     margin-right: 15px;
     border: solid 1px #ccc;
 }
-
+.obrazekModerator{
+    border-radius: 25px;
+    margin-top: 8px;
+}
+.moderators-table{
+    margin-top: 15px
+}
+.napisteNam{
+    margin-top: 6px;
+}
 .testimonials .testimonial-author {
     overflow: hidden;
 }
@@ -2383,7 +2399,13 @@ text-align: center;
   margin: 0 auto;
   padding: 0 auto;
 }
-
+.sky-form.gamepanel{
+    background-color: #F6F6F6;
+}
+.sky-form.gamepanel .form-explain{
+    color: grey;
+    font-size: 0.8em;
+}
 .btn-u.button-uploading:after {
   top: 6px;
 }
@@ -2396,11 +2418,6 @@ text-align: center;
 .btn-u.btn-u-xs.button-uploading:after {
   top: 2px;
 }
-
-.label {
-  padding: 0.2em 0 0.3em;
-}
-
 /**
  * Edit dialog for labels on admin page
  */
@@ -2436,6 +2453,41 @@ text-align: center;
 .ui-datepicker-calendar span {
   width: 26px;
   color: #404040;
+}
+.ui-widget{
+    font-size: 1em !important;
+}
+.ui-corner-all, .ui-corner-bottom, .ui-corner-top{
+   border-radius: 0px !important; 
+}
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+   border: 0px solid #888888; 
+   background: white url("") 50% 50% repeat-x; 
+   font-weight: normal;
+}
+.ui-widget h3{
+       padding: 10px;
+       padding-left: 30px;
+}
+.ui-accordion .ui-accordion-content {
+  padding: 1em 2.2em;
+  border-top: 0;
+  margin-top: -2px;
+  position: relative;
+  top: 1px;
+  margin-bottom: 2px;
+  overflow: auto;
+  display: none;
+  zoom: 1;
+}
+.ui-widget-content {
+  border: 0px solid #fff;
+  background: #ffffff url("") 50% 50% repeat-x;
+  color: #666;
+}
+#accordion{
+    margin-top: 15px;
+    margin-bottom: 25px;
 }
 
 

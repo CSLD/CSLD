@@ -5,20 +5,24 @@
     It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/about/AboutDbPanel.html
     Code - cz.larpovadatabaze.components.panel.about.AboutDbPanel.html
     -->
-    <div class="praveMenu">
-        <div class="nadpisMenu">
-            <wicket:message key="contacts">kontakty</wicket:message>
-        </div>
-    </div>
 
-    <div class="sekce">
-        <div class="nadpisSekce">
-            <wicket:message key="writeUs">Napište nám</wicket:message>
+
+    <h2 class="panel-title hide"><wicket:message key="contacts">Kontakty</wicket:message></h2>
+
+            
+    <div class="panel panel-default">
+
+        <div class="panel-heading">    
+        <div class="sekce">
+            <h2 class="panel-title"><wicket:message key="writeUs">Napište nám</wicket:message></h2>
+            
+            <div class="napisteNam"><a href="mailto: larpovadatabaze@gmail.com">
+                <wicket:message key="larpMail">larpovadatabaze@gmail.com</wicket:message>
+            </a></div>
         </div>
-        <div class="napisteNam"><a href="mailto: larpovadatabaze@gmail.com">
-            <wicket:message key="larpMail">larpovadatabaze@gmail.com</wicket:message>
-        </a></div>
+        </div>
     </div>
+    
     <div class="sekce" wicket:id="administrators">
         <!--
         This panel is found in package: cz.larpovadatabaze.components.panel.about.AdministratorPanel.html

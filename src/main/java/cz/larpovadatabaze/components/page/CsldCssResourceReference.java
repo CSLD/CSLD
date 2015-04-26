@@ -23,10 +23,10 @@ public class CsldCssResourceReference extends CssResourceReference {
         return Arrays.asList(
             new HeaderItem[] {
                 JavaScriptHeaderItem.forReference(BootstrapResourceReference.get()), // We need bootstrap
+                CssHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"css/smoothness/jquery-ui-1.8.24.custom.css")),
                 CssHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"css/style.css")),
                 CssHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"css/custom.css")),
-                CssHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"css/hint.css")),
-                CssHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"css/smoothness/jquery-ui-1.8.24.custom.css"))
+                CssHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"css/hint.css"))
             }
         );
     }

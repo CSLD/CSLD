@@ -20,9 +20,27 @@
 
         <div class="row">
 
-           <div class="col-md-12">
+           <div class="col-md-10">
         
-    <div id="levaCastPridatHru">
+                <div id="levaCastPridatHru">
+                <form action="" id="sky-form4" class="sky-form gamepanel">
+                    <header><i class="fa fa-life-ring"></i> Help</header>
+                    <fieldset>   
+                            <section>
+                                <wicket:message key="info.moreLabels">Je záměrem, aby každý larp měl více štítků</wicket:message>
+                            </section>
+                            <section>
+                                <wicket:message key="info.oneRequired">Každý larp musí mít alespoň jeden štítek ze sekce povinné</wicket:message>
+                            </section>
+                            <section>
+                                <wicket:message key="info.labels">Pokud larp nespadá jednoznačně pod jeden štítků, zaškrtněte jich více a upřesněte rozdíl v popisu</wicket:message>
+                            </section>
+                            <section>
+                                <wicket:message key="info.newLabel">Každý nový štítek musí být schválen moderátorem</wicket:message>
+                            </section>
+                    </fieldset>
+                </form>
+
         <div wicket:id="createOrUpdateGame">
             <!--
             This panel is found in package: cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
@@ -32,20 +50,6 @@
     
     </div>
 
-    <div id="pravaCastPridatHru">
-        <div class="praveMenu">
-            <div class="nadpisMenu">nápověda</div>
-        </div>
-        <div class="sekce">
-            <ul>
-                <li><wicket:message key="info.moreLabels">Je záměrem, aby každý larp měl více štítků</wicket:message></li>
-                <li><wicket:message key="info.oneRequired">Každý larp musí mít alespoň jeden štítek ze sekce povinné</wicket:message></li>
-                <li><wicket:message key="info.labels">Pokud larp nespadá jednoznačně pod jeden štítků, zaškrtněte jich více a upřesněte rozdíl v popisu</wicket:message>
-                </li>
-                <li><wicket:message key="info.newLabel">Každý nový štítek musí být schválen moderátorem</wicket:message></li>
-            </ul>
-        </div>
-    </div>
             
     </div>        
     </div>

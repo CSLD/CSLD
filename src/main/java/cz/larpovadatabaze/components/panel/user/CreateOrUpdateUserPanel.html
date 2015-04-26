@@ -40,9 +40,15 @@
         */
     </script>
 
-    <form class="sky-form" novalidate="novalidate" wicket:id="addUser">
+    <form class="sky-form gamepanel" novalidate="novalidate" wicket:id="addUser">
         <header><wicket:message key="user.register">Registrace</wicket:message></header>
         <fieldset>
+    <section>
+        <wicket:message key="user.welcome">Vítejte na česko-slovenské larpové databázi. Po vyplnění krátkého
+            formuláře vlevo se stanete registrovaným uživatelem a můžete tak využít všech funkcí jako hodnocení a a
+            komentování jednotlivých larpů, stejně jako jejich zařazení do vaší larpotéky.
+        </wicket:message>
+    </section>
             <section>
                 <label class="input">
                     <i class="icon-append fa fa-envelope"></i>
@@ -123,11 +129,6 @@
         </fieldset>
     </form>
 
-    <div>
-        <wicket:message key="user.welcome">Vítejte na česko-slovenské larpové databázi. Po vyplnění krátkého
-            formuláře vlevo se stanete registrovaným uživatelem a můžete tak využít všech funkcí jako hodnocení a a
-            komentování jednotlivých larpů, stejně jako jejich zařazení do vaší larpotéky.
-        </wicket:message>
-    </div>
+
 
 </wicket:panel>

@@ -48,13 +48,27 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
         });
     });
 </script>
+    
+    <form action="" id="sky-form4" class="sky-form gamepanel" novalidate="novalidate" wicket:id="addGame">
+        <header><i class="fa fa-plus"></i> <wicket:message key="game.add">Přidat hru</wicket:message></header>
+        
+        <fieldset>                                                                    
+        <wicket:message key="form.game.section.required"/>
+        </fieldset> 
 
-    <form action="" id="sky-form4" class="sky-form" novalidate="novalidate" wicket:id="addGame">
-        <header><i class="fa fa-plus"></i><wicket:message key="game.add">Přidat hru</wicket:message></header>
-        <fieldset>                  
+            <fieldset>                  
+                <label class="input">
+                    <i class="icon-append fa fa-folder-open"></i>                                
+                    <input type="text" name="larpName" placeholder="LARP name">
+                <b class="tooltip tooltip-bottom-right">Zadejte název hry</b>
+                </label> 
+                <br>          
 
-                                                      
-            <section class="hide">                                        
+            <wicket:message key="form.game.section.extended" />
+            </fieldset>         
+        
+        <fieldset class="hide">       
+            <section>                                        
             <div wicket:id="feedback"></div>
 
 
@@ -87,13 +101,11 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
                     ></textarea>
             <span wicket:id="descriptionFeedback"></span>
         </section>
-
-            <wicket:message key="form.game.section.extended" />
         </fieldset>
 
                             <fieldset>
                                 <div class="row">
-                                <section class="col col-4">
+                                <section class="col col-6">
                                     <label class="input">
                                         <i class="icon-append fa fa-user-plus"></i>
                                         
@@ -104,7 +116,7 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
                                         <b class="tooltip tooltip-bottom-right"><wicket:message key="form.game.authors">Autoři</wicket:message></b>
                                     </label>
                                 </section>            
-                                <section class="col col-4">
+                                <section class="col col-6">
                                     <label class="input">
                                         <i class="icon-append fa fa-users"></i>
                                         
@@ -117,7 +129,7 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
                                 </section>
                                 </div>    
                                 <div class="row">
-                                <section class="col col-4">
+                                <section class="col col-6">
                                     <label class="input">
                                         <i class="icon-append fa fa-calendar"></i>
                                         
@@ -127,7 +139,7 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
                                         <b class="tooltip tooltip-bottom-right"><wicket:message key="form.game.year">Rok</wicket:message></b>
                                     </label>
                                 </section>            
-                                <section class="col col-4">
+                                <section class="col col-6">
                                     <label class="select">
                                         <select name="language">
                                             <option value="0" selected="" disabled="">Language</option>
@@ -140,17 +152,111 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
                                     </label>
                                 </section>
                                 </div>
+
+                                <div class="row">
+                                    <section class="col col-3">
+                                        <label class="input">
+                                            <i class="icon-append fa fa-street-view"></i>
+                                            <input type="text" name="pocetHracu" placeholder="hráčů">
+                                        <b class="tooltip tooltip-bottom-right">Zadejte celkový počet</b>
+                                        </label>
+                                    </section>
+                                    <section class="col col-3">
+                                        <label class="input">
+                                            <i class="icon-append fa fa-venus"></i>
+                                            <input type="text" name="pocetZeny" placeholder="ženských rolí">
+                                        <b class="tooltip tooltip-bottom-right">Zadejte celkový počet</b>
+                                        </label>
+                                    </section> 
+                                    <section class="col col-3">
+                                        <label class="input">
+                                            <i class="icon-append fa fa-mars"></i>
+                                            <input type="text" name="pocetMuzi" placeholder="mužských rolí">
+                                        <b class="tooltip tooltip-bottom-right">Zadejte celkový počet</b>
+                                        </label>
+                                    </section>                                    
+                                    <section class="col col-3">
+                                        <label class="input">
+                                            <i class="icon-append fa fa-transgender"></i>
+                                            <input type="text" name="pocetZeny" placeholder="obojetných rolí">
+                                        <b class="tooltip tooltip-bottom-right">Zadejte celkový počet</b>
+                                        </label>
+                                    </section>
+                                </div> 
+                            <wicket:message key="form.game.section.presentation" />                               
                             </fieldset>        
         
-            
+                            <fieldset>           
+                                <div class="row">
+                                    <section class="col col-6">
+                                        <label class="input">
+                                            <i class="icon-append fa fa-upload"></i>                                
+                                            <input type="text" name="uvodniFotka" placeholder="Upload cover photo">
+                                        <b class="tooltip tooltip-bottom-right">(OPTIONAL) Vyberte širokoúhlé cover photo hry o poměru stran cca 16:4 s maximální velikostí 2MB</b>
+                                        </label>
+                                    </section>
+                                    <section class="col col-6">
+                                        <label class="input">
+                                            <i class="icon-append fa fa-external-link-square"></i> 
+                                            <input type="text" name="webPage" placeholder="Web page of the game">
+                                        <b class="tooltip tooltip-bottom-right">Zadejte webovou stránku hry</b>
+                                        </label>
+                                    </section> 
+                                    <section class="col col-4">
+                                        <label class="input">
+                                            <i class="icon-append fa fa-user-secret"></i>
+                                            <input type="text" name="photoAutgor" placeholder="Author of photos">
+                                        <b class="tooltip tooltip-bottom-right">Zadejte autora fotografií ze hry</b>
+                                        </label>
+                                    </section>                                    
+                                    <section class="col col-4">
+                                        <label class="input">
+                                            <i class="icon-append fa fa-picture-o"></i>
+                                            <input type="text" name="photoGallery" placeholder="Photo gallery page">
+                                        <b class="tooltip tooltip-bottom-right">Zadejte webovou adresu plné galerie fotografií ze hry</b>
+                                        </label>
+                                    </section>
+                                    <section class="col col-4">
+                                        <label class="input">
+                                            <i class="icon-append fa fa-video-camera"></i>
+                                            <input type="text" name="gameVideo" placeholder="Game video link">
+                                        <b class="tooltip tooltip-bottom-right">Zde můžete zadat video z YouTube - adresu z adresního řádku prohlížeče nebo odkaz pro sdílení</b>
+                                        </label>
+                                    </section>                                     
+                                </div>                             
+                                <wicket:message key="form.game.section.settings" />
+                            </fieldset> 
 
-            
+                            <fieldset>                  
+                                <section>
+                                    <label class="checkbox"><input type="checkbox" name="disableRating" id="disableRating"><i></i><strong>Zakázat hodnocení</strong>
+                                        <br><span class="form-explain">( Již existující hodnocení budou zachována, uživatelé je však nebudou moci měnit, ani nebude možné přidávat nová hodnocení )</span>
+                                    </label>
+                                    
+                                    <label class="checkbox"><input type="checkbox" name="disableComments" id="disableComments"><i></i><strong>Zakázat komentování</strong>
+                                        <br><span class="form-explain">( Pokud nějaké komentáře ke hře již existují, budou nadále vidět a jejich autoři je budou moci upravovat, nebude ale možno přidávat komentáře nové )</span>
+                                    </label>
+                                    
+                                    <label class="checkbox"><input type="checkbox" name="stillRunning" id="stillRunning"><i></i>Still running
+                                        <br><span class="form-explain">( Check this if larp is still in state of active runs )</span>
+                                        <!-- this forces larp out of archive if it has atleast one new comment during past year --> 
+                                    </label>
+                                </section> 
+                                <section>    
+                                        <br><button type="submit" class="btn-u">Submit</button>                              
+                                </section>                                                           
+                            </fieldset>        
+        
+        
+        
+        
+        
+        
+        
+        <div class="hide">
             <label for="year">
-                
+                         <span wicket:id="yearFeedback"></span>   
             </label>
-
-            <span wicket:id="yearFeedback"></span>
-
 
     <!-- Lang -->
 
@@ -168,7 +274,6 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
 
             <wicket:message key="form.game.section.statistics" />
 
-
             <input class="textbox" type="text" wicket:id="players" title="Hráči"
                    wicket:message="title:form.players"/>
 
@@ -177,8 +282,6 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
             </label>
 
             <span wicket:id="playersFeedback"></span>
-
-
 
             <input style="width:28%" class="textbox" type="text" wicket:id="menRole" title="Mužské"
                    wicket:message="title:form.menRole"/>
@@ -192,65 +295,44 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
                 <wicket:message key="form.game.roles">Mužské role</wicket:message>
             </label>
 
-
             <span wicket:id="menRoleFeedback"></span>
             <span wicket:id="womenRoleFeedback"></span>
             <span wicket:id="bothRoleFeedback"></span>
-
-
-
+            
             <input style="width:43%" class="textbox" type="text" wicket:id="hours" title="Hodiny"
                    wicket:message="title:form.hours"/>
             <input style="width:43%" class="textbox" type="text" wicket:id="days" title="Dny"
                    wicket:message="title:form.days"/>
-
             
             <label for="hours">
                 <wicket:message key="form.game.time">Hodiny</wicket:message>
             </label>
 
-
-
             <span wicket:id="hoursFeedback"></span>
             <span wicket:id="daysFeedback"></span>
-
-
-
-            <wicket:message key="form.game.section.presentation" />
-
-
-
+ 
             <div wicket:id="image"></div>
 
             <label for="image">
                 <wicket:message key="form.game.image">Obrázek</wicket:message>
             </label>
 
-
             <span wicket:id="imageFeedback"></span>
 
-
-
             <input class="textbox" type="text" wicket:id="web" title="Web" wicket:message="title:form.web"/>
-
-            
+           
             <label for="web">
                 <wicket:message key="form.game.web">Web</wicket:message>
             </label>
-
-            
+          
             <span wicket:id="webFeedback"></span>
 
-
-
             <input class="textbox" type="text" wicket:id="galleryURL" title="" wicket:message="title:form.galleryURL"/>
-
-            
+          
             <label for="galleryURL">
                 <wicket:message key="form.game.galleryURL">Galerie</wicket:message>
             </label>
-
-  
+ 
             <span wicket:id="galleryFeedback"></span>
 
             <input class="textbox" type="text" wicket:id="photoAuthor" title="" wicket:message="title:form.photoAuthor"/>
@@ -273,10 +355,7 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
 
             <span wicket:id="videoPathFeedback"></span>
 
-        <wicket:message key="form.game.section.settings" />
-   
-        
-            <input type="checkbox" wicket:id="ratingsDisabled" /><wicket:message key="form.ratingsDisabled" />
+       <input type="checkbox" wicket:id="ratingsDisabled" /><wicket:message key="form.ratingsDisabled" />
 
             
             <label for="ratingsDisabled">
@@ -293,82 +372,9 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
 
             <input type="button" class="pridatHruButton" value="Uložit" wicket:message="value:form.save"
            wicket:id="submit" id="submitButton"/>
-
-
+   </div>
+   
+    
     </form>
-
-    <form action="" id="sky-form4" class="sky-form" novalidate="novalidate">
-                            <header>Registration form</header>
-                            
-                            <fieldset>                  
-                                <section>
-                                    <label class="input">
-                                        <i class="icon-append fa fa-user"></i>
-                                        <input type="text" name="username" placeholder="Username">
-                                        <b class="tooltip tooltip-bottom-right">Needed to enter the website</b>
-                                    </label>
-                                </section>
-                                
-                                <section>
-                                    <label class="input">
-                                        <i class="icon-append fa fa-envelope"></i>
-                                        <input type="email" name="email" placeholder="Email address">
-                                        <b class="tooltip tooltip-bottom-right">Needed to verify your account</b>
-                                    </label>
-                                </section>
-                                
-                                <section>
-                                    <label class="input">
-                                        <i class="icon-append fa fa-lock"></i>
-                                        <input type="password" name="password" placeholder="Password" id="password">
-                                        <b class="tooltip tooltip-bottom-right">Don't forget your password</b>
-                                    </label>
-                                </section>
-                                
-                                <section>
-                                    <label class="input">
-                                        <i class="icon-append fa fa-lock"></i>
-                                        <input type="password" name="passwordConfirm" placeholder="Confirm password">
-                                        <b class="tooltip tooltip-bottom-right">Don't forget your password</b>
-                                    </label>
-                                </section>
-                            </fieldset>
-                                
-                            <fieldset>
-                                <div class="row">
-                                    <section class="col col-6">
-                                        <label class="input">
-                                            <input type="text" name="firstname" placeholder="First name">
-                                        </label>
-                                    </section>
-                                    <section class="col col-6">
-                                        <label class="input">
-                                            <input type="text" name="lastname" placeholder="Last name">
-                                        </label>
-                                    </section>
-                                </div>
-                                
-                                <section>
-                                    <label class="select">
-                                        <select name="gender">
-                                            <option value="0" selected="" disabled="">Gender</option>
-                                            <option value="1">Male</option>
-                                            <option value="2">Female</option>
-                                            <option value="3">Other</option>
-                                        </select>
-                                        <i></i>
-                                    </label>
-                                </section>
-                                
-                                <section>
-                                    <label class="checkbox"><input type="checkbox" name="subscription" id="subscription"><i></i>I want to receive news and  special offers</label>
-                                    <label class="checkbox"><input type="checkbox" name="terms" id="terms"><i></i>I agree with the Terms and Conditions</label>
-                                </section> 
-                                <section>    
-                                        <br><button type="submit" class="btn-u">Submit</button>                              
-                                </section>
-                            </fieldset>
-
-                        </form>
 
 </wicket:panel>

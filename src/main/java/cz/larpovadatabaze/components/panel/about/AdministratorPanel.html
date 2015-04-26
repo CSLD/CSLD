@@ -4,7 +4,11 @@
     It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/about/AdministratorPanel.html
     Code - cz.larpovadatabaze.components.panel.about.AdministratorPanel.html
     -->
-    <div class="nadpisSekce"><wicket:message key="administrators">Administrátoři</wicket:message></div>
+<div class="panel panel-default">
+
+    <div class="panel-heading">
+        <h2 class="panel-title"><wicket:message key="administrators">Administrátoři</wicket:message></h2>
+
     <table>
         <tr wicket:id="listAdministrator">
             <!-- Beginning of repetitive part for every administrator -->
@@ -27,4 +31,6 @@
             <!-- End of repetitive part for every administrator -->
         </tr>
     </table>
+    </div>
+</div>
 </wicket:panel>
