@@ -1,9 +1,5 @@
 package cz.larpovadatabaze.components.panel.game;
 
-import cz.larpovadatabaze.entities.*;
-import cz.larpovadatabaze.lang.LanguageSolver;
-import cz.larpovadatabaze.lang.LocaleProvider;
-import cz.larpovadatabaze.lang.SessionLanguageSolver;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -14,11 +10,17 @@ import org.apache.wicket.extensions.ajax.markup.html.autocomplete.RepeatableInpu
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
 import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.markup.html.form.*;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Bytes;
 import org.apache.wicket.validation.IValidator;
@@ -36,11 +38,21 @@ import cz.larpovadatabaze.components.common.JSPingBehavior;
 import cz.larpovadatabaze.components.panel.ImagePanel;
 import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
 import cz.larpovadatabaze.components.panel.group.CreateOrUpdateGroupPanel;
+import cz.larpovadatabaze.entities.CsldGroup;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.GameHasLanguages;
+import cz.larpovadatabaze.entities.Label;
+import cz.larpovadatabaze.entities.Language;
+import cz.larpovadatabaze.entities.Video;
+import cz.larpovadatabaze.lang.CodeLocaleProvider;
+import cz.larpovadatabaze.lang.LanguageSolver;
+import cz.larpovadatabaze.lang.LocaleProvider;
+import cz.larpovadatabaze.lang.SessionLanguageSolver;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.GroupService;
 import cz.larpovadatabaze.services.VideoService;
-import cz.larpovadatabaze.lang.CodeLocaleProvider;
 import cz.larpovadatabaze.utils.UserUtils;
 import cz.larpovadatabaze.validator.AtLeastOneRequiredLabelValidator;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
@@ -79,30 +91,90 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
             game.getVideo().setType(0);
         }
 
+        // Form
         final ValidatableForm<Game> createOrUpdateGame = new ValidatableForm<Game>("addGame", new CompoundPropertyModel<Game>(game));
         createOrUpdateGame.setOutputMarkupId(true);
         createOrUpdateGame.setMultiPart(true);
         createOrUpdateGame.setMaxSize(Bytes.kilobytes(1024));
+
+        // Messages
         ComponentFeedbackMessageFilter filter = new ComponentFeedbackMessageFilter(createOrUpdateGame);
         createOrUpdateGame.add(new FeedbackPanel("feedback", filter).setOutputMarkupId(true));
 
-        createOrUpdateGame.add(addFeedbackPanel(new RequiredTextField<String>("name").setLabel(Model.of("Jméno")), createOrUpdateGame, "nameFeedback"));
-        TextArea description = (TextArea) new TextArea<String>("description").setRequired(true).setLabel(Model.of("Popis"));
+        // Name
+        createOrUpdateGame.add(new RequiredTextField<String>("name"));
+
+        // Labels
+        chooseLabels = new ChooseLabelsPanel("labels", new AbstractReadOnlyModel<List<Label>>() {
+            @Override
+            public List<Label> getObject() {
+                return getModelObject().getLabels();
+            }
+        });
+        chooseLabels.add(new AtLeastOneRequiredLabelValidator());
+        createOrUpdateGame.add(chooseLabels);
+
+        addCreateLabelButton(createOrUpdateGame);
+
+        // Description
+        TextArea description = (TextArea) new TextArea<String>("description").setRequired(true);
         description.add(new CSLDTinyMceBehavior());
-        createOrUpdateGame.add(addFeedbackPanel(description, createOrUpdateGame, "descriptionFeedback"));
+        createOrUpdateGame.add(description);
 
+        // Year
+        createOrUpdateGame.add(new TextField<Integer>("year"));
 
-        createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("year").setLabel(Model.of("Rok")), createOrUpdateGame, "yearFeedback"));
-        createOrUpdateGame.add(addFeedbackPanel(new TextField<String>("web"), createOrUpdateGame, "webFeedback"));
-        createOrUpdateGame.add(addFeedbackPanel(new TextField<String>("galleryURL"), createOrUpdateGame, "galleryFeedback"));
-        createOrUpdateGame.add(addFeedbackPanel(new TextField<String>("photoAuthor"), createOrUpdateGame, "photoAuthorFeedback"));
-        createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("hours").setLabel(Model.of("Hodiny")), createOrUpdateGame, "hoursFeedback"));
-        createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("days").setLabel(Model.of("Dny")), createOrUpdateGame, "daysFeedback"));
-        createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("players").setLabel(Model.of("Počet hráčů")), createOrUpdateGame, "playersFeedback"));
-        createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("menRole").setLabel(Model.of("Počet mužů")), createOrUpdateGame, "menRoleFeedback"));
-        createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("womenRole").setLabel(Model.of("Počet žen")), createOrUpdateGame, "womenRoleFeedback"));
-        createOrUpdateGame.add(addFeedbackPanel(new TextField<Integer>("bothRole").setLabel(Model.of("Počet obojetných")), createOrUpdateGame, "bothRoleFeedback"));
-        createOrUpdateGame.add(addFeedbackPanel(videoField = new TextField<String>("video.path"), createOrUpdateGame, "videoPathFeedback"));
+        // Language
+        List<String> availableLanguages = new ArrayList<String>();
+        LocaleProvider provider = new CodeLocaleProvider();
+        List<Locale> availableLocale = provider.availableLocale();
+        for(Locale available: availableLocale) {
+            availableLanguages.add(provider.transformLocaleToName(available));
+        }
+        final DropDownChoice<String> changeLocale = new DropDownChoice<String>("lang", availableLanguages);
+        createOrUpdateGame.add(changeLocale);
+
+        // Players
+        createOrUpdateGame.add(new TextField<Integer>("players"));
+
+        // Men role
+        createOrUpdateGame.add(new TextField<Integer>("menRole"));
+
+        // Women role
+        createOrUpdateGame.add(new TextField<Integer>("womenRole"));
+
+        // Both role
+        createOrUpdateGame.add(new TextField<Integer>("bothRole"));
+
+        // TODO - image
+
+        // Web
+        createOrUpdateGame.add(new TextField<String>("web"));
+
+        // Photo author
+        createOrUpdateGame.add(new TextField<String>("photoAuthor"));
+
+        // Gallery URL
+        createOrUpdateGame.add(new TextField<String>("galleryURL"));
+
+        // Video path
+        createOrUpdateGame.add(videoField = new TextField<String>("video", new IModel<String>() {
+            @Override
+            public String getObject() {
+                return (getModelObject().getVideo()==null)?"":getModelObject().getVideo().getPath();
+            }
+
+            @Override
+            public void setObject(String object) {
+                // Will be processed on submit
+            }
+
+            @Override
+            public void detach() {
+            }
+        }));
+
+        // Ratings disabled
         createOrUpdateGame.add(addFeedbackPanel(new ImagePanel("image"), createOrUpdateGame, "imageFeedback"));
         createOrUpdateGame.add(new CheckBox("ratingsDisabled") {
             @Override
@@ -111,6 +183,8 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
                 tag.put("value", "on"); // Force value to "on", otherwise multipart form won't work
             }
         });
+
+        // Comments disabled
         createOrUpdateGame.add(new CheckBox("commentsDisabled") {
             @Override
             protected void onComponentTag(ComponentTag tag) {
@@ -119,26 +193,13 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
             }
         });
 
-        List<String> availableLanguages = new ArrayList<String>();
-        LocaleProvider provider = new CodeLocaleProvider();
-        List<Locale> availableLocale = provider.availableLocale();
-        for(Locale available: availableLocale) {
-            availableLanguages.add(provider.transformLocaleToName(available));
-        }
-        final DropDownChoice<String> changeLocale =
-                new DropDownChoice<String>("lang", availableLanguages);
-        createOrUpdateGame.add(addFeedbackPanel(changeLocale, createOrUpdateGame, "langFeedback"));
 
         addAuthorsInput(createOrUpdateGame, game);
         addGroupsInput(createOrUpdateGame, game);
 
-        chooseLabels = new ChooseLabelsPanel("labels");
-        chooseLabels.add(new AtLeastOneRequiredLabelValidator());
-        createOrUpdateGame.add(addFeedbackPanel(chooseLabels, createOrUpdateGame, "labelsFeedback"));
-
         addCreateGroupButton(createOrUpdateGame);
         addCreateAuthorButton(createOrUpdateGame);
-        addCreateLabelButton(createOrUpdateGame);
+
 
         createOrUpdateGame.add(new AjaxButton("submit"){
             @Override
