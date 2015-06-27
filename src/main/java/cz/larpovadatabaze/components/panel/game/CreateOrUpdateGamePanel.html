@@ -1,10 +1,12 @@
 <wicket:panel xmlns:wicket="http://wicket.apache.org">
+
 <!--
 This panel is used when you want to create or update game in the database.
 It encapsulates relevant createOrUpdateGame with associated HTML markup.
 It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/game/CreateOrUpdateGamePanel.html
 Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
 -->
+
 <div wicket:id="createGroup">
     <!-- This will contain popup modal window with CreateOrUpdateGroupPanel -->
 </div>
@@ -14,6 +16,26 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
 <div wicket:id="createLabel">
     <!-- This will contain popup modal window with CreateOrUpdateLabelPanel -->
 </div>
+
+<form action="" id="sky-form4" class="sky-form gamepanel" novalidate="novalidate" wicket:id="addGame">
+    <div class="row">
+
+        <div class="col-md-10">
+            <header><i class="fa fa-life-ring"></i> Help</header>
+            <fieldset>
+                <section>
+                    <wicket:message key="info.moreLabels">Je záměrem, aby každý larp měl více štítků</wicket:message>
+                </section>
+                <section>
+                    <wicket:message key="info.oneRequired">Každý larp musí mít alespoň jeden štítek ze sekce povinné</wicket:message>
+                </section>
+                <section>
+                    <wicket:message key="info.labels">Pokud larp nespadá jednoznačně pod jeden štítků, zaškrtněte jich více a upřesněte rozdíl v popisu</wicket:message>
+                </section>
+                <section>
+                    <wicket:message key="info.newLabel">Každý nový štítek musí být schválen moderátorem</wicket:message>
+                </section>
+            </fieldset>
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -49,199 +71,218 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
     });
 </script>
 
-<form action="" id="sky-form4" class="sky-form gamepanel" novalidate="novalidate" wicket:id="addGame">
-<header><i class="fa fa-plus"></i>
-    <wicket:message key="game.add">Přidat hru</wicket:message>
-</header>
+            <header><i class="fa fa-plus"></i>
+                <wicket:message key="game.add">Přidat hru</wicket:message>
+            </header>
 
-<fieldset>
-    <wicket:message key="form.game.section.required"/>
-</fieldset>
+            <fieldset>
+                <wicket:message key="form.game.section.required"/>
+            </fieldset>
 
-<fieldset>
-    <div wicket:id="feedback"></div>
+            <fieldset>
+                <div wicket:id="feedback"></div>
 
-    <label class="input">
-        <i class="icon-append fa fa-folder-open"></i>
-        <input type="text" wicket:id="name" wicket:message="placeholder:form.name">
-        <b class="tooltip tooltip-bottom-right"><wicket:message key="form.game.nameHint" /></b>
-    </label>
-    <br>
+                <label class="input">
+                    <i class="icon-append fa fa-folder-open"></i>
+                    <input type="text" wicket:id="name" wicket:message="placeholder:form.name">
+                    <b class="tooltip tooltip-bottom-right">
+                        <wicket:message key="form.game.nameHint"/>
+                    </b>
+                </label>
+                <br>
 
-    <wicket:message key="form.game.labels"></wicket:message>
+                <textarea class="textarea"
+                          wicket:id="description"
+                          wicket:message="title:form.game.description"
+                          style="width:100%;"
+                          rows=8
+                        ></textarea>
 
-    <div wicket:id="labels"></div>
-    <input type="button" value="Nový štítek" wicket:message="value:form.newLabel" wicket:id="createLabel"/>
+                <wicket:message key="form.game.section.extended"/>
+            </fieldset>
 
-    <textarea class="textarea"
-              wicket:id="description"
-              wicket:message="title:form.game.description"
-              style="width:100%;"
-              rows=8
-            ></textarea>
+            <fieldset>
+                <div class="row">
+                    <section class="col col-6">
+                        <label class="input">
+                            <i class="icon-append fa fa-user-plus" wicket:id="createAuthorBtn"></i>
 
-    <wicket:message key="form.game.section.extended"/>
-</fieldset>
 
-<fieldset>
-    <div class="row">
-        <section class="col col-6">
-            <label class="input">
-                <i class="icon-append fa fa-user-plus"></i>
+                            <input type="text" wicket:id="authors" placeholder="Author">
+                            <b class="tooltip tooltip-bottom-right">
+                                <wicket:message key="form.game.authors">Autoři</wicket:message>
+                            </b>
+                        </label>
+                    </section>
+                    <section class="col col-6">
+                        <label class="input">
+                            <i class="icon-append fa fa-users" wicket:id="createGroup" wicket:messsage="tooltip:form.newGroup"></i>
 
-                <div class="hide" wicket:id="authors"></div>
-                <input class="hide" type="button" value="Nový autor" wicket:message="value:form.newAuthor" wicket:id="createAuthor"/>
+                            <input type="text" name="groupAuthor" wicket:id="groupAuthor" placeholder="Author Group">
+                            <b class="tooltip tooltip-bottom-right">
+                                <wicket:message key="form.game.authorGroups">Autorské skupiny</wicket:message>
+                            </b>
+                        </label>
+                    </section>
+                </div>
+                <div class="row">
+                    <section class="col col-6">
+                        <label class="input">
+                            <i class="icon-append fa fa-calendar"></i>
 
-                <input type="text" name="author" placeholder="Author">
-                <b class="tooltip tooltip-bottom-right">
-                    <wicket:message key="form.game.authors">Autoři</wicket:message>
-                </b>
-            </label>
-        </section>
-        <section class="col col-6">
-            <label class="input">
-                <i class="icon-append fa fa-users"></i>
+                            <input type="text" wicket:id="year" wicket:message="placeholder:form.game.year"/>
+                            <b class="tooltip tooltip-bottom-right">
+                                <wicket:message key="form.game.yearHint">Rok</wicket:message>
+                            </b>
+                        </label>
+                    </section>
+                    <section class="col col-6">
+                        <label class="select">
+                            <select wicket:id="lang"></select>
+                            <i></i>
+                        </label>
+                    </section>
+                </div>
 
-                <div class="hide" wicket:id="groupAuthor"></div>
-                <input class="hide" type="button" value="Nová skupina" wicket:messsage="value:form.newGroup" wicket:id="createGroup"/>
+                <div class="row">
+                    <section class="col col-3">
+                        <label class="input">
+                            <i class="icon-append fa fa-street-view"></i>
+                            <input type="text" wicket:id="players" wicket:message="placeholder:form.game.players">
+                            <b class="tooltip tooltip-bottom-right">
+                                <wicket:message key="form.game.playersHint"/>
+                            </b>
+                        </label>
+                    </section>
+                    <section class="col col-3">
+                        <label class="input">
+                            <i class="icon-append fa fa-venus"></i>
+                            <input type="text" wicket:id="womenRole" wicket:message="placeholder:form.game.womenRole">
+                            <b class="tooltip tooltip-bottom-right">
+                                <wicket:message key="form.game.womenRoleHint"/>
+                            </b>
+                        </label>
+                    </section>
+                    <section class="col col-3">
+                        <label class="input">
+                            <i class="icon-append fa fa-mars"></i>
+                            <input type="text" wicket:id="menRole" wicket:message="placeholder:form.game.menRole">
+                            <b class="tooltip tooltip-bottom-right">
+                                <wicket:message key="form.game.menRoleHint"/>
+                            </b>
+                        </label>
+                    </section>
+                    <section class="col col-3">
+                        <label class="input">
+                            <i class="icon-append fa fa-transgender"></i>
+                            <input type="text" wicket:id="bothRole" wicket:message="placeholder:form.game.bothRole">
+                            <b class="tooltip tooltip-bottom-right">
+                                <wicket:message key="form.game.bothRoleHint"/>
+                            </b>
+                        </label>
+                    </section>
+                </div>
+                <wicket:message key="form.game.section.presentation"/>
+            </fieldset>
 
-                <input type="text" name="groupAuthor" placeholder="Author Group">
-                <b class="tooltip tooltip-bottom-right">
-                    <wicket:message key="form.game.authorGroups">Autorské skupiny</wicket:message>
-                </b>
-            </label>
-        </section>
+            <fieldset>
+                <div class="row">
+                    <section class="col col-6">
+                        <label class="input">
+                            <i class="icon-append fa fa-upload"></i>
+                            <input type="text" name="uvodniFotka" placeholder="Upload cover photo">
+                            <b class="tooltip tooltip-bottom-right">(OPTIONAL) Vyberte širokoúhlé cover photo hry o poměru stran cca 16:4 s maximální velikostí 2MB</b>
+                        </label>
+                    </section>
+                    <section class="col col-6">
+                        <label class="input">
+                            <i class="icon-append fa fa-external-link-square"></i>
+                            <input type="text" wicket:id="web" wicket:message="placeholder:form.game.web">
+                            <b class="tooltip tooltip-bottom-right">
+                                <wicket:message key="form.game.webHint"/>
+                            </b>
+                        </label>
+                    </section>
+                    <section class="col col-4">
+                        <label class="input">
+                            <i class="icon-append fa fa-user-secret"></i>
+                            <input type="text" wicket:id="photoAuthor" wicket:message="placeholder:form.game.photoAuthor">
+                            <b class="tooltip tooltip-bottom-right">
+                                <wicket:message key="form.game.photoAuthorHint"/>
+                            </b>
+                        </label>
+                    </section>
+                    <section class="col col-4">
+                        <label class="input">
+                            <i class="icon-append fa fa-picture-o"></i>
+                            <input type="text" wicket:id="galleryURL" wicket:message="placeholder:form.game.galleryURL">
+                            <b class="tooltip tooltip-bottom-right">
+                                <wicket:message key="form.game.galleryURLHint"/>
+                            </b>
+                        </label>
+                    </section>
+                    <section class="col col-4">
+                        <label class="input">
+                            <i class="icon-append fa fa-video-camera"></i>
+                            <input type="text" wicket:id="video" wicket:message="placeholder:form.game.video">
+                            <b class="tooltip tooltip-bottom-right">
+                                <wicket:message key="form.game.videoHint"/>
+                            </b>
+                        </label>
+                    </section>
+                </div>
+                <wicket:message key="form.game.section.settings"/>
+            </fieldset>
+
+            <fieldset>
+                <section>
+                    <label class="checkbox"><input type="checkbox" wicket:id="ratingsDisabled"><i></i><strong>
+                        <wicket:message key="form.game.ratingsDisabled"/>
+                    </strong>
+                        <br><span class="form-explain"><wicket:message key="form.game.ratingsDisabledHint"/></span>
+                    </label>
+
+                    <label class="checkbox"><input type="checkbox" wicket:id="commentsDisabled"><i></i><strong>
+                        <wicket:message key="form.game.commentsDisabled"/>
+                    </strong>
+                        <br><span class="form-explain"><wicket:message key="form.game.commentsDisabledHint"/></span>
+                    </label>
+
+                    <!-- this will force larp out of archive if it has at least one new comment during past year
+                        requires change in model - we should add it later
+                    <label class="checkbox"><input type="checkbox" name="stillRunning" id="stillRunning"><i></i>Still running
+                        <br><span class="form-explain">( Check this if larp is still in state of active runs )</span>
+                    </label>
+                    -->
+                </section>
+                <section>
+                    <br>
+                    <input type="button" class="btn-u" wicket:message="value:form.save"
+                           wicket:id="submit" id="submitButton"/>
+                </section>
+            </fieldset>
+
+
+            <div class="hide">
+                <!-- Statistics -->
+                <div wicket:id="image"></div>
+
+                <label for="image">
+                    <wicket:message key="form.game.image">Obrázek</wicket:message>
+                </label>
+
+                <span wicket:id="imageFeedback"></span>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <wicket:message key="form.game.labels"></wicket:message>
+
+            <div wicket:id="labels"></div>
+            <input type="button" value="Nový štítek" wicket:message="value:form.newLabel" wicket:id="createLabel"/>
+        </div>
     </div>
-    <div class="row">
-        <section class="col col-6">
-            <label class="input">
-                <i class="icon-append fa fa-calendar"></i>
-
-                <input type="text" wicket:id="year" wicket:message="placeholder:form.game.year" />
-                <b class="tooltip tooltip-bottom-right">
-                    <wicket:message key="form.game.yearHint">Rok</wicket:message>
-                </b>
-            </label>
-        </section>
-        <section class="col col-6">
-            <label class="select">
-                <select wicket:id="lang"></select>
-                <i></i>
-            </label>
-        </section>
-    </div>
-
-    <div class="row">
-        <section class="col col-3">
-            <label class="input">
-                <i class="icon-append fa fa-street-view"></i>
-                <input type="text" wicket:id="players" wicket:message="placeholder:form.game.players">
-                <b class="tooltip tooltip-bottom-right"><wicket:message key="form.game.playersHint" /></b>
-            </label>
-        </section>
-        <section class="col col-3">
-            <label class="input">
-                <i class="icon-append fa fa-venus"></i>
-                <input type="text" wicket:id="womenRole" wicket:message="placeholder:form.game.womenRole">
-                <b class="tooltip tooltip-bottom-right"><wicket:message key="form.game.womenRoleHint" /></b>
-            </label>
-        </section>
-        <section class="col col-3">
-            <label class="input">
-                <i class="icon-append fa fa-mars"></i>
-                <input type="text" wicket:id="menRole" wicket:message="placeholder:form.game.menRole">
-                <b class="tooltip tooltip-bottom-right"><wicket:message key="form.game.menRoleHint" /></b>
-            </label>
-        </section>
-        <section class="col col-3">
-            <label class="input">
-                <i class="icon-append fa fa-transgender"></i>
-                <input type="text" wicket:id="bothRole" wicket:message="placeholder:form.game.bothRole">
-                <b class="tooltip tooltip-bottom-right"><wicket:message key="form.game.bothRoleHint" /></b>
-            </label>
-        </section>
-    </div>
-    <wicket:message key="form.game.section.presentation"/>
-</fieldset>
-
-<fieldset>
-    <div class="row">
-        <section class="col col-6">
-            <label class="input">
-                <i class="icon-append fa fa-upload"></i>
-                <input type="text" name="uvodniFotka" placeholder="Upload cover photo">
-                <b class="tooltip tooltip-bottom-right">(OPTIONAL) Vyberte širokoúhlé cover photo hry o poměru stran cca 16:4 s maximální velikostí 2MB</b>
-            </label>
-        </section>
-        <section class="col col-6">
-            <label class="input">
-                <i class="icon-append fa fa-external-link-square"></i>
-                <input type="text" wicket:id="web" wicket:message="placeholder:form.game.web">
-                <b class="tooltip tooltip-bottom-right"><wicket:message key="form.game.webHint" /></b>
-            </label>
-        </section>
-        <section class="col col-4">
-            <label class="input">
-                <i class="icon-append fa fa-user-secret"></i>
-                <input type="text" wicket:id="photoAuthor" wicket:message="placeholder:form.game.photoAuthor">
-                <b class="tooltip tooltip-bottom-right"><wicket:message key="form.game.photoAuthorHint" /></b>
-            </label>
-        </section>
-        <section class="col col-4">
-            <label class="input">
-                <i class="icon-append fa fa-picture-o"></i>
-                <input type="text" wicket:id="galleryURL" wicket:message="placeholder:form.game.galleryURL">
-                <b class="tooltip tooltip-bottom-right"><wicket:message key="form.game.galleryURLHint" /></b>
-            </label>
-        </section>
-        <section class="col col-4">
-            <label class="input">
-                <i class="icon-append fa fa-video-camera"></i>
-                <input type="text" wicket:id="video" wicket:message="placeholder:form.game.video">
-                <b class="tooltip tooltip-bottom-right"><wicket:message key="form.game.videoHint" /></b>
-            </label>
-        </section>
-    </div>
-    <wicket:message key="form.game.section.settings"/>
-</fieldset>
-
-<fieldset>
-    <section>
-        <label class="checkbox"><input type="checkbox" wicket:id="ratingsDisabled"><i></i><strong><wicket:message key="form.game.ratingsDisabled" /></strong>
-            <br><span class="form-explain"><wicket:message key="form.game.ratingsDisabledHint" /></span>
-        </label>
-
-        <label class="checkbox"><input type="checkbox" wicket:id="commentsDisabled"><i></i><strong><wicket:message key="form.game.commentsDisabled" /></strong>
-            <br><span class="form-explain"><wicket:message key="form.game.commentsDisabledHint" /></span>
-        </label>
-
-        <!-- this will force larp out of archive if it has at least one new comment during past year
-            requires change in model - we should add it later
-        <label class="checkbox"><input type="checkbox" name="stillRunning" id="stillRunning"><i></i>Still running
-            <br><span class="form-explain">( Check this if larp is still in state of active runs )</span>
-        </label>
-        -->
-    </section>
-    <section>
-        <br>
-        <input type="button" class="btn-u" wicket:message="value:form.save"
-               wicket:id="submit" id="submitButton"/>
-    </section>
-</fieldset>
-
-
-<div class="hide">
-    <!-- Statistics -->
-    <div wicket:id="image"></div>
-
-    <label for="image">
-        <wicket:message key="form.game.image">Obrázek</wicket:message>
-    </label>
-
-    <span wicket:id="imageFeedback"></span>
-</div>
-
-
 </form>
+
 
 </wicket:panel>

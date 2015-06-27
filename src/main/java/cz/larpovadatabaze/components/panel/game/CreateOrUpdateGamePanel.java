@@ -3,10 +3,6 @@ package cz.larpovadatabaze.components.panel.game;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.extensions.ajax.markup.html.autocomplete.GenericFactory;
-import org.apache.wicket.extensions.ajax.markup.html.autocomplete.GenericValidator;
-import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IFactory;
-import org.apache.wicket.extensions.ajax.markup.html.autocomplete.RepeatableInputPanel;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
 import org.apache.wicket.markup.ComponentTag;
@@ -21,11 +17,12 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Bytes;
-import org.apache.wicket.validation.IValidator;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
@@ -35,6 +32,8 @@ import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.behavior.ErrorClassAppender;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.common.JSPingBehavior;
+import cz.larpovadatabaze.components.common.multiac.IMultiAutoCompleteSource;
+import cz.larpovadatabaze.components.common.multiac.MultiAutoCompleteComponent;
 import cz.larpovadatabaze.components.panel.ImagePanel;
 import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
 import cz.larpovadatabaze.components.panel.group.CreateOrUpdateGroupPanel;
@@ -62,6 +61,8 @@ import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
  * It encapsulates relevant createOrUpdateGame with associated HTML markup.
  */
 public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
+    private static final int AUTOCOMPLETE_CHOICES = 10;
+
     @SpringBean
     GameService gameService;
     @SpringBean
@@ -194,7 +195,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         });
 
 
-        addAuthorsInput(createOrUpdateGame, game);
+        addAuthorsInput(createOrUpdateGame);
         addGroupsInput(createOrUpdateGame, game);
 
         addCreateGroupButton(createOrUpdateGame);
@@ -340,7 +341,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         createAuthorModal.setTitle("Vytvořit autora");
         createAuthorModal.setCookieName("create-author");
 
-        createOrUpdateGame.add(new AjaxButton("createAuthor"){}.setOutputMarkupId(true).add(new AjaxEventBehavior("click") {
+        createOrUpdateGame.add(new AjaxButton("createAuthorBtn"){}.setOutputMarkupId(true).add(new AjaxEventBehavior("click") {
             @Override
             protected void onEvent(AjaxRequestTarget target) {
                 createAuthorModal.setContent(new CreateOrUpdateAuthorPanel(createAuthorModal.getContentId(), null){
@@ -356,20 +357,44 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
     }
 
     private void addGroupsInput(Form<Game> createOrUpdateGame, Game game) {
+        /*
         IFactory<CsldGroup> groupIFactory = new GenericFactory<CsldGroup>(CsldGroup.class);
         IValidator<CsldGroup> groupIValidator = new GenericValidator<CsldGroup>(groupService);
+        */
 
-        RepeatableInputPanel<CsldGroup> groups = new RepeatableInputPanel<CsldGroup>("groupAuthor", groupIFactory,
-                groupIValidator, game.getGroupAuthor(), groupService);
+        MultiAutoCompleteComponent<CsldGroup> groups = new MultiAutoCompleteComponent<CsldGroup>("groupAuthor", new PropertyModel<List<CsldGroup>>(getModelObject(), "groupAuthor"), new IMultiAutoCompleteSource<CsldGroup>() {
+            @Override
+            public Collection<CsldGroup> getChoices(String input) {
+                return groupService.getFirstChoices(input, AUTOCOMPLETE_CHOICES);
+            }
+
+            @Override
+            public CsldGroup getObjectById(Long id) {
+                return groupService.getById(id.intValue());
+            }
+        });
+
         createOrUpdateGame.add(groups);
     }
 
-    private void addAuthorsInput(Form createOrUpdateGame, Game game){
+    private void addAuthorsInput(Form createOrUpdateGame){
+        /*
         IFactory<CsldUser> userIFactory = new GenericFactory<CsldUser>(CsldUser.class);
         IValidator<CsldUser> userIValidator = new GenericValidator<CsldUser>(csldUserService);
+        */
 
-        RepeatableInputPanel<CsldUser> authors = new RepeatableInputPanel<CsldUser>("authors", userIFactory,
-                userIValidator, game.getAuthors(), csldUserService);
+        MultiAutoCompleteComponent<CsldUser> authors = new MultiAutoCompleteComponent<CsldUser>("authors", new PropertyModel<List<CsldUser>>(getModelObject(), "authors"), new IMultiAutoCompleteSource<CsldUser>() {
+            @Override
+            public Collection<CsldUser> getChoices(String input) {
+                return csldUserService.getFirstChoices(input.toLowerCase(), AUTOCOMPLETE_CHOICES);
+            }
+
+            @Override
+            public CsldUser getObjectById(Long id) {
+                return csldUserService.getById(id.intValue());
+            }
+        });
+
         createOrUpdateGame.add(authors);
     }
 
