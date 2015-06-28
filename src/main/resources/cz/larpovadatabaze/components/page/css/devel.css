@@ -200,3 +200,10 @@
 
 
 /* end of gallery */
+
+/* Error reporting */
+
+.sky-form .input input.error, .sky-form .select select.error, .sky-form .textarea textarea.error, .sky-form .textarea.error iframe {
+    background: #fff0f0;
+}
+

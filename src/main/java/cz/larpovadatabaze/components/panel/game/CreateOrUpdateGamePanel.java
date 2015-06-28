@@ -6,6 +6,7 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
 import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -14,7 +15,6 @@ import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
@@ -31,6 +31,7 @@ import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
 import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.behavior.ErrorClassAppender;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
+import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
 import cz.larpovadatabaze.components.common.JSPingBehavior;
 import cz.larpovadatabaze.components.common.multiac.IMultiAutoCompleteSource;
 import cz.larpovadatabaze.components.common.multiac.MultiAutoCompleteComponent;
@@ -103,27 +104,46 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         createOrUpdateGame.add(new FeedbackPanel("feedback", filter).setOutputMarkupId(true));
 
         // Name
-        createOrUpdateGame.add(new RequiredTextField<String>("name"));
+        RequiredTextField name = new RequiredTextField<String>("name");
+        createOrUpdateGame.add(name);
+        createOrUpdateGame.add(new CsldFeedbackMessageLabel("nameFeedback", name, "form.game.nameHint"));
+
 
         // Labels
-        chooseLabels = new ChooseLabelsPanel("labels", new AbstractReadOnlyModel<List<Label>>() {
+        chooseLabels = new ChooseLabelsPanel("labels", new IModel<List<Label>>() {
             @Override
             public List<Label> getObject() {
                 return getModelObject().getLabels();
             }
+
+            @Override
+            public void setObject(List<Label> object) {
+                getModelObject().setLabels(object);
+            }
+
+            @Override
+            public void detach() {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
         });
         chooseLabels.add(new AtLeastOneRequiredLabelValidator());
         createOrUpdateGame.add(chooseLabels);
+        createOrUpdateGame.add(new FeedbackPanel("labelsFeedback", new ComponentFeedbackMessageFilter(chooseLabels)));
 
         addCreateLabelButton(createOrUpdateGame);
 
         // Description
+        WebMarkupContainer descriptionWrapper = new WebMarkupContainer("descriptionWrapper");
+        createOrUpdateGame.add(descriptionWrapper);
         TextArea description = (TextArea) new TextArea<String>("description").setRequired(true);
         description.add(new CSLDTinyMceBehavior());
-        createOrUpdateGame.add(description);
+        descriptionWrapper.add(description);
+        descriptionWrapper.add(new CsldFeedbackMessageLabel("descriptionFeedback", description, descriptionWrapper, "form.game.descriptionHint"));
 
         // Year
-        createOrUpdateGame.add(new TextField<Integer>("year"));
+        TextField<Integer> year = new TextField<Integer>("year");
+        createOrUpdateGame.add(year);
+        createOrUpdateGame.add(new CsldFeedbackMessageLabel("yearFeedback", year, "form.game.yearHint"));
 
         // Language
         List<String> availableLanguages = new ArrayList<String>();
@@ -132,31 +152,46 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         for(Locale available: availableLocale) {
             availableLanguages.add(provider.transformLocaleToName(available));
         }
-        final DropDownChoice<String> changeLocale = new DropDownChoice<String>("lang", availableLanguages);
-        createOrUpdateGame.add(changeLocale);
+        final DropDownChoice<String> lang = new DropDownChoice<String>("lang", availableLanguages);
+        createOrUpdateGame.add(lang);
+        createOrUpdateGame.add(new CsldFeedbackMessageLabel("langFeedback", lang, null));
 
         // Players
-        createOrUpdateGame.add(new TextField<Integer>("players"));
-
-        // Men role
-        createOrUpdateGame.add(new TextField<Integer>("menRole"));
+        TextField<Integer> players = new TextField<Integer>("players");
+        createOrUpdateGame.add(players);
+        createOrUpdateGame.add(new CsldFeedbackMessageLabel("playersFeedback", players, "form.game.playersHint"));
 
         // Women role
-        createOrUpdateGame.add(new TextField<Integer>("womenRole"));
+        TextField<Integer> womenRole = new TextField<Integer>("womenRole");
+        createOrUpdateGame.add(womenRole);
+        createOrUpdateGame.add(new CsldFeedbackMessageLabel("womenRoleFeedback", womenRole, "form.game.womenRoleHint"));
+
+        // Men role
+        TextField<Integer> menRole = new TextField<Integer>("menRole");
+        createOrUpdateGame.add(menRole);
+        createOrUpdateGame.add(new CsldFeedbackMessageLabel("menRoleFeedback", menRole, "form.game.menRoleHint"));
 
         // Both role
-        createOrUpdateGame.add(new TextField<Integer>("bothRole"));
+        TextField<Integer> bothRole = new TextField<Integer>("bothRole");
+        createOrUpdateGame.add(bothRole);
+        createOrUpdateGame.add(new CsldFeedbackMessageLabel("bothRoleFeedback", bothRole, "form.game.bothRoleHint"));
 
         // TODO - image
 
         // Web
-        createOrUpdateGame.add(new TextField<String>("web"));
+        TextField<String> web = new TextField<String>("web");
+        createOrUpdateGame.add(web);
+        createOrUpdateGame.add(new CsldFeedbackMessageLabel("webFeedback", web, "form.game.webHint"));
 
         // Photo author
-        createOrUpdateGame.add(new TextField<String>("photoAuthor"));
+        TextField<String> photoAuthor = new TextField<String>("photoAuthor");
+        createOrUpdateGame.add(photoAuthor);
+        createOrUpdateGame.add(new CsldFeedbackMessageLabel("photoAuthorFeedback", photoAuthor, "form.game.photoAuthorHint"));
 
         // Gallery URL
-        createOrUpdateGame.add(new TextField<String>("galleryURL"));
+        TextField<String> galleryURL = new TextField<String>("galleryURL");
+        createOrUpdateGame.add(galleryURL);
+        createOrUpdateGame.add(new CsldFeedbackMessageLabel("galleryURLFeedback", galleryURL, "form.game.galleryURLHint"));
 
         // Video path
         createOrUpdateGame.add(videoField = new TextField<String>("video", new IModel<String>() {
@@ -174,6 +209,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
             public void detach() {
             }
         }));
+        createOrUpdateGame.add(new CsldFeedbackMessageLabel("videoFeedback", videoField, "form.game.videoHint"));
 
         // Ratings disabled
         createOrUpdateGame.add(addFeedbackPanel(new ImagePanel("image"), createOrUpdateGame, "imageFeedback"));

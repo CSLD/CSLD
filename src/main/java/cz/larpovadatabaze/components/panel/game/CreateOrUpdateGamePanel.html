@@ -85,19 +85,21 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
                 <label class="input">
                     <i class="icon-append fa fa-folder-open"></i>
                     <input type="text" wicket:id="name" wicket:message="placeholder:form.name">
-                    <b class="tooltip tooltip-bottom-right">
-                        <wicket:message key="form.game.nameHint"/>
-                    </b>
+                    <b class="tooltip tooltip-bottom-right" wicket:id="nameFeedback"></b>
                 </label>
                 <br>
 
-                <textarea class="textarea"
-                          wicket:id="description"
-                          wicket:message="title:form.game.description"
-                          style="width:100%;"
-                          rows=8
-                        ></textarea>
+                <label class="textarea" wicket:id="descriptionWrapper">
+                    <textarea class="textarea"
+                              wicket:id="description"
+                              wicket:message="title:form.game.description"
+                              style="width:100%;"
+                              rows=8
+                            ></textarea>
+                    <b wicket:id="descriptionFeedback"></b>
+                </label>
 
+                <br>
                 <wicket:message key="form.game.section.extended"/>
             </fieldset>
 
@@ -131,15 +133,14 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
                             <i class="icon-append fa fa-calendar"></i>
 
                             <input type="text" wicket:id="year" wicket:message="placeholder:form.game.year"/>
-                            <b class="tooltip tooltip-bottom-right">
-                                <wicket:message key="form.game.yearHint">Rok</wicket:message>
-                            </b>
+                            <b class="tooltip tooltip-bottom-right" wicket:id="yearFeedback"></b>
                         </label>
                     </section>
                     <section class="col col-6">
                         <label class="select">
                             <select wicket:id="lang"></select>
                             <i></i>
+                            <b wicket:id="langFeedback"></b>
                         </label>
                     </section>
                 </div>
@@ -149,36 +150,28 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
                         <label class="input">
                             <i class="icon-append fa fa-street-view"></i>
                             <input type="text" wicket:id="players" wicket:message="placeholder:form.game.players">
-                            <b class="tooltip tooltip-bottom-right">
-                                <wicket:message key="form.game.playersHint"/>
-                            </b>
+                            <b class="tooltip tooltip-bottom-right" wicket:id="playersFeedback"></b>
                         </label>
                     </section>
                     <section class="col col-3">
                         <label class="input">
                             <i class="icon-append fa fa-venus"></i>
                             <input type="text" wicket:id="womenRole" wicket:message="placeholder:form.game.womenRole">
-                            <b class="tooltip tooltip-bottom-right">
-                                <wicket:message key="form.game.womenRoleHint"/>
-                            </b>
+                            <b class="tooltip tooltip-bottom-right" wicket:id="womenRoleFeedback"></b>
                         </label>
                     </section>
                     <section class="col col-3">
                         <label class="input">
                             <i class="icon-append fa fa-mars"></i>
                             <input type="text" wicket:id="menRole" wicket:message="placeholder:form.game.menRole">
-                            <b class="tooltip tooltip-bottom-right">
-                                <wicket:message key="form.game.menRoleHint"/>
-                            </b>
+                            <b class="tooltip tooltip-bottom-right" wicket:id="menRoleFeedback"></b>
                         </label>
                     </section>
                     <section class="col col-3">
                         <label class="input">
                             <i class="icon-append fa fa-transgender"></i>
                             <input type="text" wicket:id="bothRole" wicket:message="placeholder:form.game.bothRole">
-                            <b class="tooltip tooltip-bottom-right">
-                                <wicket:message key="form.game.bothRoleHint"/>
-                            </b>
+                            <b class="tooltip tooltip-bottom-right" wicket:id="bothRoleFeedback"></b>
                         </label>
                     </section>
                 </div>
@@ -198,36 +191,28 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
                         <label class="input">
                             <i class="icon-append fa fa-external-link-square"></i>
                             <input type="text" wicket:id="web" wicket:message="placeholder:form.game.web">
-                            <b class="tooltip tooltip-bottom-right">
-                                <wicket:message key="form.game.webHint"/>
-                            </b>
+                            <b class="tooltip tooltip-bottom-right" wicket:id="webFeedback"></b>
                         </label>
                     </section>
                     <section class="col col-4">
                         <label class="input">
                             <i class="icon-append fa fa-user-secret"></i>
                             <input type="text" wicket:id="photoAuthor" wicket:message="placeholder:form.game.photoAuthor">
-                            <b class="tooltip tooltip-bottom-right">
-                                <wicket:message key="form.game.photoAuthorHint"/>
-                            </b>
+                            <b class="tooltip tooltip-bottom-right" wicket:id="photoAuthorFeedback"></b>
                         </label>
                     </section>
                     <section class="col col-4">
                         <label class="input">
                             <i class="icon-append fa fa-picture-o"></i>
                             <input type="text" wicket:id="galleryURL" wicket:message="placeholder:form.game.galleryURL">
-                            <b class="tooltip tooltip-bottom-right">
-                                <wicket:message key="form.game.galleryURLHint"/>
-                            </b>
+                            <b class="tooltip tooltip-bottom-right" wicket:id="galleryURLFeedback"></b>
                         </label>
                     </section>
                     <section class="col col-4">
                         <label class="input">
                             <i class="icon-append fa fa-video-camera"></i>
                             <input type="text" wicket:id="video" wicket:message="placeholder:form.game.video">
-                            <b class="tooltip tooltip-bottom-right">
-                                <wicket:message key="form.game.videoHint"/>
-                            </b>
+                            <b class="tooltip tooltip-bottom-right" wicket:id="videoFeedback"></b>
                         </label>
                     </section>
                 </div>
@@ -277,6 +262,7 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
 
         <div class="col-md-2">
             <wicket:message key="form.game.labels"></wicket:message>
+            <div wicket:id="labelsFeedback"></div>
 
             <div wicket:id="labels"></div>
             <input type="button" value="Nový štítek" wicket:message="value:form.newLabel" wicket:id="createLabel"/>

@@ -174,6 +174,10 @@ public class MultiAutoCompleteComponent<T extends Identifiable & IAutoCompletabl
 
     @Override
     protected List<T> convertValue(String[] value) throws ConversionException {
+        if (value == null) {
+            return null;
+        }
+
         List<T> res = new ArrayList<T>();
         for(String id : value) {
             res.add(source.getObjectById(Long.parseLong(id)));
