@@ -113,12 +113,12 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         chooseLabels = new ChooseLabelsPanel("labels", new IModel<List<Label>>() {
             @Override
             public List<Label> getObject() {
-                return getModelObject().getLabels();
+                return createOrUpdateGame.getModelObject().getLabels();
             }
 
             @Override
             public void setObject(List<Label> object) {
-                getModelObject().setLabels(object);
+                createOrUpdateGame.getModelObject().setLabels(object);
             }
 
             @Override
