@@ -526,28 +526,10 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
         this.photos = photos;
     }
 
-    private Image image;
-
-    @ManyToOne(cascade = javax.persistence.CascadeType.ALL)
-    @JoinColumn(
-            name = "image",
-            referencedColumnName = "id",
-            insertable = true,
-            updatable = true
-    )
-    public Image getImage() {
-        return image;
-    }
-
-
     @Override
     @Transient
     public IPredefinedImage getDefaultImage() {
         return PredefinedImage.DEFAULT_GAME_ICON;
-    }
-
-    public void setImage(Image image) {
-        this.image = image;
     }
 
     private List<Label> labels;
@@ -663,21 +645,27 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
         this.availableLanguages = availableLanguages;
     }
 
-    public Photo coverPhoto;
+    public Image coverImage;
 
-    @ManyToOne
+    @ManyToOne(cascade = javax.persistence.CascadeType.ALL)
     @JoinColumn(
-            name = "cover_photo",
-            referencedColumnName = "id",
-            insertable = true,
-            updatable = true
+        name = "cover_image",
+        referencedColumnName = "id",
+        insertable = true,
+        updatable = true
     )
-    public Photo getCoverPhoto() {
-        return coverPhoto;
+    public Image getCoverImage() {
+        return coverImage;
     }
 
-    public void setCoverPhoto(Photo coverPhoto) {
-        this.coverPhoto = coverPhoto;
+    public void setCoverImage(Image coverImage) {
+        this.coverImage = coverImage;
+    }
+
+    @Override
+    @Transient
+    public Image getImage() {
+        return coverImage;
     }
 
     @Transient
@@ -700,7 +688,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
         emptyGame.setAuthors(new ArrayList<CsldUser>());
         emptyGame.setComments(new ArrayList<Comment>());
         emptyGame.setLabels(new ArrayList<Label>());
-        emptyGame.setImage(null);
+        emptyGame.setCoverImage(null);
         emptyGame.setPhotos(new ArrayList<Photo>());
         emptyGame.setPlayed(new ArrayList<UserPlayedGame>());
         emptyGame.setRatings(new ArrayList<Rating>());

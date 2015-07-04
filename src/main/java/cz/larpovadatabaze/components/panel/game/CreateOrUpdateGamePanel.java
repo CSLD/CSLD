@@ -10,7 +10,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
@@ -27,15 +26,13 @@ import java.util.List;
 import java.util.Locale;
 
 import cz.larpovadatabaze.api.ValidatableForm;
-import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
 import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
-import cz.larpovadatabaze.behavior.ErrorClassAppender;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
 import cz.larpovadatabaze.components.common.JSPingBehavior;
 import cz.larpovadatabaze.components.common.multiac.IMultiAutoCompleteSource;
 import cz.larpovadatabaze.components.common.multiac.MultiAutoCompleteComponent;
-import cz.larpovadatabaze.components.panel.ImagePanel;
+import cz.larpovadatabaze.components.panel.CoverImagePanel;
 import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
 import cz.larpovadatabaze.components.panel.group.CreateOrUpdateGroupPanel;
 import cz.larpovadatabaze.entities.CsldGroup;
@@ -213,8 +210,10 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         }));
         createOrUpdateGame.add(new CsldFeedbackMessageLabel("videoFeedback", videoField, "form.game.videoHint"));
 
+        // Cover photo
+        createOrUpdateGame.add(new CoverImagePanel("coverImage"));
+
         // Ratings disabled
-        createOrUpdateGame.add(new ImagePanel("image"));
         createOrUpdateGame.add(new CheckBox("ratingsDisabled") {
             @Override
             protected void onComponentTag(ComponentTag tag) {
@@ -315,16 +314,6 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         if (UserUtils.isSignedIn()) {
             add(new JSPingBehavior());
         }
-    }
-
-    private FormComponent addFeedbackPanel(FormComponent addFeedbackTo, Form addingFeedbackTo, String nameOfFeedbackPanel){
-        ComponentFeedbackMessageFilter filter = new ComponentFeedbackMessageFilter(addFeedbackTo);
-        final FeedbackPanel feedbackPanel = new FeedbackPanel(nameOfFeedbackPanel, filter);
-        feedbackPanel.setOutputMarkupId(true);
-        addingFeedbackTo.add(feedbackPanel);
-        addFeedbackTo.add(new AjaxFeedbackUpdatingBehavior("blur", feedbackPanel));
-        addFeedbackTo.add(new ErrorClassAppender());
-        return addFeedbackTo;
     }
 
     private void addCreateLabelButton(Form<Game> createOrUpdateGame) {

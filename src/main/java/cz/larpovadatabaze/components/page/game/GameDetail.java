@@ -9,7 +9,7 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.EnclosureContainer;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.image.NonCachingImage;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
@@ -232,7 +232,7 @@ public class GameDetail extends CsldBasePage {
     @Override
     protected Component provideAdvertisementsPanel(String id) {
         Game game = getModel().getObject();
-        if (game.getCoverPhoto() == null) {
+        if (game.getCoverImage() == null) {
             // Nothing visible
             return new WebMarkupContainer(id).setVisible(false);
         }
@@ -240,7 +240,7 @@ public class GameDetail extends CsldBasePage {
             // Send main picture
             Fragment f = new Fragment(id, "mainPicture", this);
 
-            f.add(new Image("mainPicture", imageService.getImageResource(game.getCoverPhoto().getImage(), null)));
+            f.add(new NonCachingImage("mainPicture", imageService.getImageResource(game.getCoverImage(), null)));
 
             return f;
         }

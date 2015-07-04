@@ -86,8 +86,8 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public boolean addGame(Game game) {
-        if (game.getImage() != null) {
-            if (game.getImage().getPath() == null) game.setImage(null);
+        if (game.getCoverImage() != null) {
+            if (game.getCoverImage().getPath() == null) game.setCoverImage(null);
         }
         if(game.getWeb() != null && !game.getWeb().isEmpty() && (!game.getWeb().startsWith("http://") &&
                 !game.getWeb().startsWith("https://"))) {
@@ -194,14 +194,14 @@ public class GameServiceImpl implements GameService {
             game.setDescription(Jsoup.clean(game.getDescription(), Whitelist.basic()));
         }
 
-        final List<FileUpload> uploads = (game.getImage() != null)?game.getImage().getFileUpload():null;
+        final List<FileUpload> uploads = (game.getCoverImage() != null)?game.getCoverImage().getFileUpload():null;
         if (uploads != null && uploads.size() > 0) {
             FileUpload upload = uploads.get(0);
-            String filePath = fileService.saveImageFileAndReturnPath(upload, imageResizingStrategyFactoryService.getCuttingSquareStrategy(GAME_ICON_SIZE, 50)).path;
+            String filePath = fileService.saveImageFileAndReturnPath(upload, imageResizingStrategyFactoryService.getCoverImageStrategy()).path;
             try {
                 Image image = new Image();
                 image.setPath(filePath);
-                game.setImage(image);
+                game.setCoverImage(image);
 
                 if(game.getVideo() == null ||
                         game.getVideo().getPath() == null ||

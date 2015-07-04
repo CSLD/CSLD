@@ -43,4 +43,9 @@ public interface ImageResizingStrategyFactoryService {
      * @return Strategy that will convert image using specified parameters
      */
     public IImageResizingStrategy getCuttingSquareStrategy(int sideSize, float leftTopPercent);
+
+    /**
+     * @return Strategy for cutting cover image
+     */
+    public IImageResizingStrategy getCoverImageStrategy();
 }

@@ -90,11 +90,13 @@ public class MultiAutoCompleteComponent<T extends Identifiable & IAutoCompletabl
             // Set initial values
             JSONArray values = new JSONArray();
 
-            for(T v : getModelObject()) {
-                JSONObject value = new JSONObject();
-                value.put("id", v.getId());
-                value.put("name", v.getAutoCompleteData());
-                values.put(value);
+            if (getModelObject() != null) {
+                for(T v : getModelObject()) {
+                    JSONObject value = new JSONObject();
+                    value.put("id", v.getId());
+                    value.put("name", v.getAutoCompleteData());
+                    values.put(value);
+                }
             }
 
             args.put("value", values.toString());

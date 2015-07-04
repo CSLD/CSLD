@@ -15,7 +15,7 @@ public interface IEntityWithImage {
     }
 
     /**
-     * @return Image associated with the entity or NULL when default sould be used
+     * @return Image associated with the entity or NULL when default should be used
      */
     Image getImage();
 

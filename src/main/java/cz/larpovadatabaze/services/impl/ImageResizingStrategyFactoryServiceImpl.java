@@ -2,10 +2,12 @@ package cz.larpovadatabaze.services.impl;
 
 import com.mortennobel.imagescaling.DimensionConstrain;
 import com.mortennobel.imagescaling.ResampleOp;
-import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
+
 import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
+
+import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
 
 /**
  * User: Michal Kara
@@ -52,6 +54,31 @@ public class ImageResizingStrategyFactoryServiceImpl implements ImageResizingStr
                 // Create, copy and save image
                 BufferedImage previewImage = new BufferedImage(sideSize, sideSize, BufferedImage.TYPE_3BYTE_BGR);
                 previewImage.getGraphics().drawImage(sourceImage, 0, 0, sideSize, sideSize, sx1, sy1, sx2, sy2, null);
+                return previewImage;
+            }
+        };
+    }
+
+    @Override
+    public IImageResizingStrategy getCoverImageStrategy() {
+        return new IImageResizingStrategy() {
+            @Override
+            public BufferedImage convertImage(BufferedImage sourceImage) {
+                int sw = sourceImage.getWidth();
+                int sh = sourceImage.getHeight();
+
+                double requiredRatio = 6d;
+
+                if ((((double)sw)/sh) >= requiredRatio) {
+                    // Image is shorter than needed - use source image
+                    return sourceImage;
+                }
+
+                // Cut image
+                int resH = (int)(((double)sw)/requiredRatio);
+
+                BufferedImage previewImage = new BufferedImage(sw, resH, BufferedImage.TYPE_3BYTE_BGR);
+                previewImage.getGraphics().drawImage(sourceImage, 0, 0, sw, resH, 0, 0, sw, resH, null);
                 return previewImage;
             }
         };
