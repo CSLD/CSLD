@@ -1,21 +1,24 @@
 <wicket:extend xmlns:wicket="http://wicket.apache.org">
-    <div class="levaCast" id="vyhledavani">
-        <div class="nadpisStranky">
-            <wicket:link>
-                <img src="glass_icon.png" class="ikonaStranky"><wicket:message key="search.title">Vyhledávání</wicket:message>
-            </wicket:link>
+    <div class="levaCast">
+        <div class="profile_bar">
+            <div class="container">
+                <wicket:link>
+                    <img src="glass_icon.png" class="ikonaStranky"><wicket:message key="search.title">Vyhledávání</wicket:message>
+                </wicket:link>
+            </div>
         </div>
-        <wicket:container wicket:id="games">
+        <div class="container main">
+            <wicket:container wicket:id="games">
+            </wicket:container>
+
             <!--
-            This panel is found in package: cz.larpovadatabaze.components.panel.search.GamesResultsPanel.html
-            https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/search/GamesResultsPanel.html
+            <wicket:container wicket:id="users" style="margin-bottom: 10px">
+                <!--
+                This panel is found in package: cz.larpovadatabaze.components.panel.search.UserResultsPanel.html
+                https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/search/UserResultsPanel.html
+                -->
+            </wicket:container>
             -->
-        </wicket:container>
-        <wicket:container wicket:id="users" style="margin-bottom: 10px">
-            <!--
-            This panel is found in package: cz.larpovadatabaze.components.panel.search.UserResultsPanel.html
-            https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/search/UserResultsPanel.html
-            -->
-        </wicket:container>
+        </div>
     </div>
 </wicket:extend>

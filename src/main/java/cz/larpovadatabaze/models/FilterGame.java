@@ -25,6 +25,7 @@ public class FilterGame implements Serializable {
     private boolean showOnlyNew;
     private boolean showArchived;
     private OrderBy orderBy = OrderBy.NUM_RATINGS_DESC;
+    private String name;
 
     public List<Label> getRequiredLabels() {
         return requiredLabels;
@@ -60,5 +61,13 @@ public class FilterGame implements Serializable {
 
     public void setOrderBy(OrderBy orderBy) {
         this.orderBy = orderBy;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

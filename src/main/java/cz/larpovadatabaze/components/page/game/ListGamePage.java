@@ -4,6 +4,7 @@ import org.apache.commons.lang.WordUtils;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -15,12 +16,14 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import java.util.List;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.panel.game.AbstractListGamePanel;
 import cz.larpovadatabaze.components.panel.game.FilterGameTabsPanel;
 import cz.larpovadatabaze.components.panel.game.FilterGamesSidePanel;
-import cz.larpovadatabaze.components.panel.game.ListGamePanel;
 import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.models.FilterGame;
+import cz.larpovadatabaze.providers.SortableGameProvider;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.LabelService;
@@ -42,7 +45,7 @@ public class ListGamePage extends CsldBasePage {
     private FilterGameTabsPanel tabsPanel;
     private WebMarkupContainer requiredLabelsWrapper;
     private FilterGamesSidePanel sidePanel;
-    private ListGamePanel listGamePanel;
+    private AbstractListGamePanel listGamePanel;
 
     public ListGamePage(PageParameters params) {
         initModel(params);
@@ -153,7 +156,12 @@ public class ListGamePage extends CsldBasePage {
             }
         });
 
-        listGamePanel = new ListGamePanel("listGame", filterModel);
+        listGamePanel = new AbstractListGamePanel<FilterGame>("listGame", filterModel) {
+            @Override
+            protected SortableDataProvider<Game, String> getDataProvider() {
+                return new SortableGameProvider(getModel());
+            }
+        };
         listGamePanel.setOutputMarkupId(true);
         add(listGamePanel);
 
