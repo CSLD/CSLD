@@ -62,20 +62,20 @@ public class ImageResizingStrategyFactoryServiceImpl implements ImageResizingStr
     @Override
     public IImageResizingStrategy getCoverImageStrategy() {
         return new IImageResizingStrategy() {
+            private static final double REQUIRED_RATIO = 6d;
+
             @Override
             public BufferedImage convertImage(BufferedImage sourceImage) {
                 int sw = sourceImage.getWidth();
                 int sh = sourceImage.getHeight();
 
-                double requiredRatio = 6d;
-
-                if ((((double)sw)/sh) >= requiredRatio) {
+                if ((((double)sw)/sh) >= REQUIRED_RATIO) {
                     // Image is shorter than needed - use source image
                     return sourceImage;
                 }
 
                 // Cut image
-                int resH = (int)(((double)sw)/requiredRatio);
+                int resH = (int)(((double)sw)/REQUIRED_RATIO);
 
                 BufferedImage previewImage = new BufferedImage(sw, resH, BufferedImage.TYPE_3BYTE_BGR);
                 previewImage.getGraphics().drawImage(sourceImage, 0, 0, sw, resH, 0, 0, sw, resH, null);
