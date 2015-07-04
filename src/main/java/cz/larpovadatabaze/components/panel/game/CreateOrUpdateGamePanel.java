@@ -128,7 +128,9 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         });
         chooseLabels.add(new AtLeastOneRequiredLabelValidator());
         createOrUpdateGame.add(chooseLabels);
-        createOrUpdateGame.add(new FeedbackPanel("labelsFeedback", new ComponentFeedbackMessageFilter(chooseLabels)));
+        WebMarkupContainer labelsFeedbackWrapper = new WebMarkupContainer("labelsFeedbackWrapper");
+        createOrUpdateGame.add(labelsFeedbackWrapper);
+        labelsFeedbackWrapper.add(new CsldFeedbackMessageLabel("labelsFeedback", chooseLabels, labelsFeedbackWrapper, null));
 
         addCreateLabelButton(createOrUpdateGame);
 
@@ -212,7 +214,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         createOrUpdateGame.add(new CsldFeedbackMessageLabel("videoFeedback", videoField, "form.game.videoHint"));
 
         // Ratings disabled
-        createOrUpdateGame.add(addFeedbackPanel(new ImagePanel("image"), createOrUpdateGame, "imageFeedback"));
+        createOrUpdateGame.add(new ImagePanel("image"));
         createOrUpdateGame.add(new CheckBox("ratingsDisabled") {
             @Override
             protected void onComponentTag(ComponentTag tag) {
@@ -293,7 +295,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
                     if(gameService.saveOrUpdate(game)){
                         onCsldAction(target, form);
                     } else {
-                        error(getLocalizer().getString("game.cantAdd", this));
+                        error(getLocalizer().getString("game.cantAdd", form));
                         target.add(getParent());
                     }
                 }

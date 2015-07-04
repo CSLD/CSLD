@@ -183,8 +183,8 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
                     <section class="col col-6">
                         <label class="input">
                             <i class="icon-append fa fa-upload"></i>
-                            <input type="text" name="uvodniFotka" placeholder="Upload cover photo">
-                            <b class="tooltip tooltip-bottom-right">(OPTIONAL) Vyberte širokoúhlé cover photo hry o poměru stran cca 16:4 s maximální velikostí 2MB</b>
+                            <wicket:container wicket:id="image" />
+                            <b class="tooltip tooltip-bottom-right"><wicket:message key="form.game.imageHint" /></b>
                         </label>
                     </section>
                     <section class="col col-6">
@@ -247,22 +247,13 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
                 </section>
             </fieldset>
 
-
-            <div class="hide">
-                <!-- Statistics -->
-                <div wicket:id="image"></div>
-
-                <label for="image">
-                    <wicket:message key="form.game.image">Obrázek</wicket:message>
-                </label>
-
-                <span wicket:id="imageFeedback"></span>
-            </div>
         </div>
 
         <div class="col-md-2">
             <wicket:message key="form.game.labels"></wicket:message>
-            <div wicket:id="labelsFeedback"></div>
+            <div wicket:id="labelsFeedbackWrapper" class="errorWrapper">
+                <wicket:container wicket:id="labelsFeedback" />
+            </div>
 
             <div wicket:id="labels"></div>
             <input type="button" value="Nový štítek" wicket:message="value:form.newLabel" wicket:id="createLabel"/>

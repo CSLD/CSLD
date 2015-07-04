@@ -207,3 +207,12 @@
     background: #fff0f0;
 }
 
+.errorWrapper {
+    display: none;
+}
+
+.errorWrapper.error {
+    display: block;
+    margin: 10px 0;
+    color: red;
+}
