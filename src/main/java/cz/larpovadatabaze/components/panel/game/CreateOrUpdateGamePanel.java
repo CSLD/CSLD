@@ -52,6 +52,7 @@ import cz.larpovadatabaze.services.GroupService;
 import cz.larpovadatabaze.services.VideoService;
 import cz.larpovadatabaze.utils.UserUtils;
 import cz.larpovadatabaze.validator.AtLeastOneRequiredLabelValidator;
+import cz.larpovadatabaze.validator.NonEmptyAuthorsValidator;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 /**
@@ -232,11 +233,14 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         });
 
 
-        addAuthorsInput(createOrUpdateGame);
+        WebMarkupContainer authorsWrapper = new WebMarkupContainer("authorsWrapper");
+        createOrUpdateGame.add(authorsWrapper);
+
+        addAuthorsInput(authorsWrapper);
         addGroupsInput(createOrUpdateGame, game);
 
         addCreateGroupButton(createOrUpdateGame);
-        addCreateAuthorButton(createOrUpdateGame);
+        addCreateAuthorButton(authorsWrapper);
 
 
         createOrUpdateGame.add(new AjaxButton("submit"){
@@ -361,14 +365,14 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         }));
     }
 
-    private void addCreateAuthorButton(Form<Game> createOrUpdateGame) {
+    private void addCreateAuthorButton(WebMarkupContainer authorsWrapper) {
         final ModalWindow createAuthorModal;
         add(createAuthorModal = new ModalWindow("createAuthor"));
 
         createAuthorModal.setTitle("Vytvořit autora");
         createAuthorModal.setCookieName("create-author");
 
-        createOrUpdateGame.add(new AjaxButton("createAuthorBtn"){}.setOutputMarkupId(true).add(new AjaxEventBehavior("click") {
+        authorsWrapper.add(new AjaxButton("createAuthorBtn"){}.setOutputMarkupId(true).add(new AjaxEventBehavior("click") {
             @Override
             protected void onEvent(AjaxRequestTarget target) {
                 createAuthorModal.setContent(new CreateOrUpdateAuthorPanel(createAuthorModal.getContentId(), null){
@@ -404,7 +408,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         createOrUpdateGame.add(groups);
     }
 
-    private void addAuthorsInput(Form createOrUpdateGame){
+    private void addAuthorsInput(WebMarkupContainer authorsWrapper){
         /*
         IFactory<CsldUser> userIFactory = new GenericFactory<CsldUser>(CsldUser.class);
         IValidator<CsldUser> userIValidator = new GenericValidator<CsldUser>(csldUserService);
@@ -422,7 +426,11 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
             }
         });
 
-        createOrUpdateGame.add(authors);
+        authorsWrapper.add(authors);
+
+        authors.add(new NonEmptyAuthorsValidator());
+
+        authorsWrapper.add(new CsldFeedbackMessageLabel("authorsFeedback", authors, authorsWrapper, "form.game.authors"));
     }
 
     protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}

@@ -66,7 +66,7 @@ public class CsldFeedbackMessageLabel extends Label {
             }
         }
         else {
-            // Built and set messages
+            // Build and set messages
             StringBuilder messages = new StringBuilder();
 
             classModel.setObject(null); // Not an error

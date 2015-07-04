@@ -106,14 +106,12 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
             <fieldset>
                 <div class="row">
                     <section class="col col-6">
-                        <label class="input">
+                        <label class="input" wicket:id="authorsWrapper">
                             <i class="icon-append fa fa-user-plus" wicket:id="createAuthorBtn"></i>
 
 
                             <input type="text" wicket:id="authors" placeholder="Author">
-                            <b class="tooltip tooltip-bottom-right">
-                                <wicket:message key="form.game.authors">Autoři</wicket:message>
-                            </b>
+                            <b class="tooltip tooltip-bottom-right" wicket:id="authorsFeedback"></b>
                         </label>
                     </section>
                     <section class="col col-6">
