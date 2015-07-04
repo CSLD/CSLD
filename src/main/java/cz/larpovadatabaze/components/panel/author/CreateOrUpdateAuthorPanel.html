@@ -4,35 +4,39 @@
     It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/author/CreateOrUpdateAuthorPanel.html
     Code - cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel.html
     -->
-    <form wicket:id="addUser">
+    <form class="sky-form gamepanel" novalidate="novalidate" wicket:id="addUser">
         <fieldset>
-            <div>
-                <label for="email"><wicket:message key="form.email">Email</wicket:message></label>
-                <input type="email" wicket:id="person.email"/>
-                <span class="feedback" wicket:id="emailFeedback"></span>
-            </div>
+            <section>
+                <label class="input">
+                    <i class="icon-append fa fa-envelope"></i>
+                    <input type="email" wicket:id="person.email" wicket:message="placeholder:form.email" />
+                    <b class="tooltip tooltip-bottom-right" wicket:id="emailFeedback"></b>
+                </label>
+            </section>
 
-            <div>
-                <label for="name"><wicket:message key="form.wholeName">Celé jméno</wicket:message></label>
-                <input type="text" wicket:id="person.name"/>
-                <span class="feedback" wicket:id="nameFeedback"></span>
-            </div>
+            <section>
+                <label class="input">
+                    <input type="text" wicket:id="person.name" wicket:message="placeholder:form.wholeName" />
+                    <b class="tooltip tooltip-bottom-right" wicket:id="nameFeedback"></b>
+                </label>
+            </section>
 
-            <div>
-                <label for="nickname"><wicket:message key="form.nickname">Přezdívka</wicket:message></label>
-                <input type="text" wicket:id="person.nickname"/>
-                <span class="feedback" wicket:id="nicknameFeedback"></span>
-            </div>
+            <section>
+                <label class="input">
+                    <input type="text" wicket:id="person.nickname" wicket:message="placeholder:form.nickname" />
+                    <b class="tooltip tooltip-bottom-right" wicket:id="nicknameFeedback"></b>
+                </label>
+            </section>
 
-            <div>
-                <label for="description"><wicket:message key="form.description">Popis</wicket:message></label>
-                <textarea wicket:id="person.description"></textarea>
-                <span class="feedback" wicket:id="descriptionFeedback"></span>
-            </div>
+            <section>
+                <label class="textarea">
+                    <textarea class="textarea" wicket:id="person.description" wicket:message="placeholder:form.description"></textarea>
+                </label>
+            </section>
 
-            <div>
-                <input type="button" value="Uložit" wicket:message="value:save" wicket:id="submit"/>
-            </div>
+            <section>
+                <input type="button" class="btn-u" wicket:message="value:form.save" wicket:id="submit"/>
+            </section>
 
         </fieldset>
     </form>

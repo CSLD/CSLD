@@ -22,7 +22,7 @@ import cz.larpovadatabaze.components.common.CommentHiddenButton;
 import cz.larpovadatabaze.components.common.icons.UserIcon;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
-import cz.larpovadatabaze.components.page.user.UserDetail;
+import cz.larpovadatabaze.components.page.user.UserDetailPage;
 import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
@@ -101,7 +101,7 @@ public class CommentsListPanel extends Panel {
                 PageParameters params = new PageParameters();
                 params.add("id", authorOfComment.getId());
                 final BookmarkablePageLink<CsldBasePage> authorLink =
-                    new BookmarkablePageLink<CsldBasePage>("authorLink", UserDetail.class, params);
+                    new BookmarkablePageLink<CsldBasePage>("authorLink", UserDetailPage.class, params);
                 item.add(authorLink);
 
                 // Author image

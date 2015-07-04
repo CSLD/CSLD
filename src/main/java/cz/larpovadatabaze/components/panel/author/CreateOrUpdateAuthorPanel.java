@@ -1,26 +1,22 @@
 package cz.larpovadatabaze.components.panel.author;
 
-import cz.larpovadatabaze.api.ValidatableForm;
-import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
-import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.utils.Pwd;
-import cz.larpovadatabaze.utils.RandomString;
-import cz.larpovadatabaze.validator.UniqueUserValidator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
-import org.apache.wicket.markup.html.form.*;
-import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.markup.html.form.EmailTextField;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
-import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
-import java.util.UUID;
+import cz.larpovadatabaze.api.ValidatableForm;
+import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.validator.UniqueUserValidator;
+import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 /**
  * Panel used for registering new author or adding new Author into the database.
@@ -42,20 +38,20 @@ public abstract class CreateOrUpdateAuthorPanel extends Panel {
         createOrUpdateUser.setMultiPart(true);
         createOrUpdateUser.setOutputMarkupId(true);
 
+        EmailTextField email = new EmailTextField("person.email");
+        email.add(new UniqueUserValidator(false, csldUserService));
+        createOrUpdateUser.add(addFeedbackPanel(email, createOrUpdateUser, "emailFeedback", "form.loginMail"));
+
         TextField<String> name = new TextField<String>("person.name");
         name.setRequired(true);
-        createOrUpdateUser.add(addFeedbackPanel(name, createOrUpdateUser, "nameFeedback"));
+        createOrUpdateUser.add(addFeedbackPanel(name, createOrUpdateUser, "nameFeedback", "form.description.wholeName"));
 
 
         TextField<String> nickname = new TextField<String>("person.nickname");
-        createOrUpdateUser.add(addFeedbackPanel(nickname, createOrUpdateUser, "nicknameFeedback"));
-
-        EmailTextField email = new EmailTextField("person.email");
-        email.add(new UniqueUserValidator(false, csldUserService));
-        createOrUpdateUser.add(addFeedbackPanel(email, createOrUpdateUser, "emailFeedback"));
+        createOrUpdateUser.add(addFeedbackPanel(nickname, createOrUpdateUser, "nicknameFeedback", "form.description.nickname"));
 
         TextArea<String> description = new TextArea<String>("person.description");
-        createOrUpdateUser.add(addFeedbackPanel(description, createOrUpdateUser, "descriptionFeedback"));
+        createOrUpdateUser.add(description);
 
         createOrUpdateUser.add(new AjaxButton("submit"){
             @Override
@@ -73,12 +69,8 @@ public abstract class CreateOrUpdateAuthorPanel extends Panel {
         add(createOrUpdateUser);
     }
 
-    private FormComponent addFeedbackPanel(FormComponent addFeedbackTo, Form addingFeedbackTo, String nameOfFeedbackPanel){
-        ComponentFeedbackMessageFilter filter = new ComponentFeedbackMessageFilter(addFeedbackTo);
-        final FeedbackPanel feedbackPanel = new FeedbackPanel(nameOfFeedbackPanel, filter);
-        feedbackPanel.setOutputMarkupId(true);
-        addingFeedbackTo.add(feedbackPanel);
-        addFeedbackTo.add(new AjaxFeedbackUpdatingBehavior("blur", feedbackPanel));
+    private FormComponent addFeedbackPanel(FormComponent addFeedbackTo, Form addingFeedbackTo, String feedbackId, String defaultKey){
+        addingFeedbackTo.add(new CsldFeedbackMessageLabel(feedbackId, addingFeedbackTo, defaultKey));
         return addFeedbackTo;
     }
 

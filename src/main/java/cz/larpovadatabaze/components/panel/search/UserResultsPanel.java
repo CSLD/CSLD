@@ -1,12 +1,5 @@
 package cz.larpovadatabaze.components.panel.search;
 
-import cz.larpovadatabaze.components.common.icons.UserIcon;
-import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.user.UserDetail;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.ImageService;
-import cz.larpovadatabaze.utils.Strings;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -19,6 +12,14 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import cz.larpovadatabaze.components.common.icons.UserIcon;
+import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.page.user.UserDetailPage;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.ImageService;
+import cz.larpovadatabaze.utils.Strings;
 
 /**
  * It shows user results of search.
@@ -64,13 +65,13 @@ public class UserResultsPanel extends Panel {
                 params.add("id", actualUser.getId());
 
                 final BookmarkablePageLink<CsldBasePage> moderatorLink =
-                        new BookmarkablePageLink<CsldBasePage>("authorLink", UserDetail.class, params);
+                        new BookmarkablePageLink<CsldBasePage>("authorLink", UserDetailPage.class, params);
                 final UserIcon moderatorImage = new UserIcon("authorLinkImage", item.getModel());
                 moderatorLink.add(moderatorImage);
                 item.add(moderatorLink);
 
                 final BookmarkablePageLink<CsldBasePage> moderatorLinkContent =
-                        new BookmarkablePageLink<CsldBasePage>("authorLinkContent", UserDetail.class, params);
+                        new BookmarkablePageLink<CsldBasePage>("authorLinkContent", UserDetailPage.class, params);
                 final Label moderatorNick = new Label("authorNick", actualUser.getPerson().getNickNameView());
                 final Label moderatorName = new Label("authorName", actualUser.getPerson().getName());
                 moderatorLinkContent.add(moderatorNick);
@@ -99,7 +100,7 @@ public class UserResultsPanel extends Panel {
                 params.add("id", actualUser.getId());
 
                 final BookmarkablePageLink<CsldBasePage> moderatorLinkContent =
-                        new BookmarkablePageLink<CsldBasePage>("authorShortLink", UserDetail.class, params);
+                        new BookmarkablePageLink<CsldBasePage>("authorShortLink", UserDetailPage.class, params);
                 final Label moderatorNick = new Label("authorShortNick", actualUser.getPerson().getNickNameView());
                 final Label moderatorName = new Label("authorShortName", actualUser.getPerson().getName());
                 moderatorLinkContent.add(moderatorNick);

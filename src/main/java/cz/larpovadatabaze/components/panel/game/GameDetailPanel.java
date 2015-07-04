@@ -21,7 +21,7 @@ import cz.larpovadatabaze.components.common.social.SocialShareButtons;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.ListGamePage;
 import cz.larpovadatabaze.components.page.group.GroupDetail;
-import cz.larpovadatabaze.components.page.user.UserDetail;
+import cz.larpovadatabaze.components.page.user.UserDetailPage;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
@@ -89,7 +89,7 @@ public class GameDetailPanel extends AbstractCsldPanel<Game> {
                 PageParameters params = new PageParameters();
                 params.add("id", author.getId());
 
-                Link<CsldBasePage> authorDetailLink = new BookmarkablePageLink<CsldBasePage>("authorDetailLink", UserDetail.class, params);
+                Link<CsldBasePage> authorDetailLink = new BookmarkablePageLink<CsldBasePage>("authorDetailLink", UserDetailPage.class, params);
                 authorDetailLink.add(
                         new Label("authorName", author.getPerson().getNickNameView() + " " + author.getPerson().getName()));
                 item.add(authorDetailLink);

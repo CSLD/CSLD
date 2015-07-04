@@ -23,7 +23,7 @@ import cz.larpovadatabaze.behavior.dotdotdot.DotDotDotBehavior;
 import cz.larpovadatabaze.components.common.icons.UserIcon;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
-import cz.larpovadatabaze.components.page.user.UserDetail;
+import cz.larpovadatabaze.components.page.user.UserDetailPage;
 import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
@@ -94,7 +94,7 @@ public class LastCommentsPanel extends Panel {
             PageParameters userParams = new PageParameters();
             userParams.add("id", commenter.getId());
             final BookmarkablePageLink<CsldBasePage> commenterLink =
-                new BookmarkablePageLink<CsldBasePage>("commenterLink", UserDetail.class, userParams);
+                new BookmarkablePageLink<CsldBasePage>("commenterLink", UserDetailPage.class, userParams);
             Label commenterName = new Label("commenterName", Model.of(commenter.getPerson().getNickNameView()));
             commenterLink.add(commenterName);
             f.add(commenterLink);

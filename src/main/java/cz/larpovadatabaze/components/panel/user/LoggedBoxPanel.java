@@ -12,7 +12,7 @@ import cz.larpovadatabaze.components.common.icons.UserIcon;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.user.SignOutPage;
 import cz.larpovadatabaze.components.page.user.UpdateUserPage;
-import cz.larpovadatabaze.components.page.user.UserDetail;
+import cz.larpovadatabaze.components.page.user.UserDetailPage;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.CsldUserService;
@@ -61,7 +61,7 @@ public class LoggedBoxPanel extends AbstractCsldPanel<CsldUser> {
 
         PageParameters params = new PageParameters(); params.add("id", loggedUserId);
         final BookmarkablePageLink<CsldBasePage> loggedUserLink =
-            new BookmarkablePageLink<CsldBasePage>("loggedUserLink", UserDetail.class, params);
+            new BookmarkablePageLink<CsldBasePage>("loggedUserLink", UserDetailPage.class, params);
         add(loggedUserLink);
 
 

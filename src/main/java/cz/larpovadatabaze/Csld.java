@@ -53,13 +53,13 @@ import cz.larpovadatabaze.components.page.group.GroupDetail;
 import cz.larpovadatabaze.components.page.group.ListGroupPage;
 import cz.larpovadatabaze.components.page.group.ManageGroupPage;
 import cz.larpovadatabaze.components.page.search.SearchResultsPage;
-import cz.larpovadatabaze.components.page.user.CreateOrUpdateUserPage;
+import cz.larpovadatabaze.components.page.user.CreateUserPage;
 import cz.larpovadatabaze.components.page.user.CsldSignInPage;
 import cz.larpovadatabaze.components.page.user.ForgotPassword;
 import cz.larpovadatabaze.components.page.user.ResetPassword;
 import cz.larpovadatabaze.components.page.user.SignOutPage;
 import cz.larpovadatabaze.components.page.user.UpdateUserPage;
-import cz.larpovadatabaze.components.page.user.UserDetail;
+import cz.larpovadatabaze.components.page.user.UserDetailPage;
 import cz.larpovadatabaze.converters.CsldUserConverter;
 import cz.larpovadatabaze.converters.GameConverter;
 import cz.larpovadatabaze.converters.GroupConverter;
@@ -218,7 +218,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     private void mountPages() {
         mountPage("/sign-out", SignOutPage.class);
         mountPage("/sign-in", CsldSignInPage.class);
-        mountPage("/register", CreateOrUpdateUserPage.class);
+        mountPage("/register", CreateUserPage.class);
         mountPage("/edit-user", UpdateUserPage.class);
 
         mountPage("/add-group", CreateOrUpdateGroupPage.class);
@@ -231,8 +231,8 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
 
         mountPage("/detail-game", GameDetailOld.class);
         mount(new MountedMapperWithoutPageComponentInfo("/larp/${name}/${id}", GameDetail.class));
-        mountPage("/detail-author", UserDetail.class);
-        mountPage("/detail-user", UserDetail.class);
+        mountPage("/detail-author", UserDetailPage.class);
+        mountPage("/detail-user", UserDetailPage.class);
         mountPage("/detail-group", GroupDetail.class);
 
         mountPage("/last-comments", ListComments.class);

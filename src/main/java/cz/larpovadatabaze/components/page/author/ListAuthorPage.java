@@ -13,7 +13,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import java.text.DecimalFormat;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.user.UserDetail;
+import cz.larpovadatabaze.components.page.user.UserDetailPage;
 import cz.larpovadatabaze.components.panel.author.AuthorsPanel;
 import cz.larpovadatabaze.components.panel.game.GameNameAndLabelsPanel;
 import cz.larpovadatabaze.components.panel.game.GameRatingBoxPanel;
@@ -43,7 +43,7 @@ public class ListAuthorPage extends CsldBasePage {
                 params.add("id", actualAuthor.getId());
 
                 final BookmarkablePageLink<CsldUser> authorName =
-                        new BookmarkablePageLink<CsldUser>("authorName", UserDetail.class, params);
+                        new BookmarkablePageLink<CsldUser>("authorName", UserDetailPage.class, params);
                 final Label nicknameLabel = new Label("authorNicknameContent", actualAuthor.getPerson().getNickNameView());
                 final Label nameLabel = new Label("authorNameContent", actualAuthor.getPerson().getName());
                 authorName.add(nameLabel);

@@ -14,15 +14,16 @@
         </div>
     </div>
 
-    <!-- TODO - what this should do? -->
     <div class="profile_bar switcher">
         <div class="container">
-            <div class="small_bar">Profil
+            <a href="javascript:void(0)" class="small_bar">
+                <wicket:message key="user.profile" />
                 <div class="active glyphicon glyphicon-home"></div>
-            </div>
-            <div class="small_bar">Nastavení
+            </a>
+            <a class="small_bar" wicket:id="updateUserLink">
+                <wicket:message key="user.settings" />
                 <div class="glyphicon glyphicon-home"></div>
-            </div>
+            </a>
         </div>
     </div>
 

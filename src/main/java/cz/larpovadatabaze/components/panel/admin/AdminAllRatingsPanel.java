@@ -16,7 +16,7 @@ import java.util.List;
 
 import cz.larpovadatabaze.components.common.BookmarkableLinkWithLabel;
 import cz.larpovadatabaze.components.common.RatingDeleteButton;
-import cz.larpovadatabaze.components.page.user.UserDetail;
+import cz.larpovadatabaze.components.page.user.UserDetailPage;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
@@ -71,7 +71,7 @@ public class AdminAllRatingsPanel extends Panel {
 
                 PageParameters params = new PageParameters();
                 params.set("id", user.getId());
-                item.add(new BookmarkableLinkWithLabel("userDetail", UserDetail.class,
+                item.add(new BookmarkableLinkWithLabel("userDetail", UserDetailPage.class,
                         Model.of(user.getPerson().getName()), Model.of(params)));
 
                 item.add(new RatingDeleteButton("ratingHiddenButton", item.getModel(), gameModel));

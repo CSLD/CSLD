@@ -3,7 +3,7 @@ package cz.larpovadatabaze.components.panel.user;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
-import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
+import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.EmailTextField;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
@@ -24,14 +24,16 @@ import org.jsoup.safety.Whitelist;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
-import cz.larpovadatabaze.behavior.ErrorClassAppender;
+import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Image;
 import cz.larpovadatabaze.entities.Language;
 import cz.larpovadatabaze.lang.CodeLocaleProvider;
+import cz.larpovadatabaze.lang.LocaleProvider;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
@@ -71,45 +73,57 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
         createOrUpdateUser.setMultiPart(true);
         createOrUpdateUser.setOutputMarkupId(true);
 
-        TextField<String> name = new TextField<String>("person.name");
-        name.setRequired(true);
-        name.setLabel(Model.of("Jméno"));
-        createOrUpdateUser.add(addFeedbackPanel(name, createOrUpdateUser, "nameFeedback"));
-        createOrUpdateUser.add(addFeedbackPanel(new TextField<String>("person.nickname"), createOrUpdateUser, "nicknameFeedback"));
-
         EmailTextField email = new EmailTextField("person.email");
         email.setRequired(true);
         email.setLabel(Model.of("Email"));
         email.add(new UniqueUserValidator(isEdit, csldUserService));
-        createOrUpdateUser.add(addFeedbackPanel(email, createOrUpdateUser, "emailFeedback"));
-
-        DateTextField birthDate = new DateTextField("person.birthDate", "dd.mm.yyyy");
-        birthDate.setLabel(Model.of("Datum narození"));
-        createOrUpdateUser.add(addFeedbackPanel(birthDate, createOrUpdateUser, "birthDateFeedback"));
-
-        createOrUpdateUser.add(addFeedbackPanel(new TextField<String>("person.city"), createOrUpdateUser,"cityFeedback"));
-        TextArea description =new TextArea<String>("person.description");
-        description.add(new CSLDTinyMceBehavior());
-        createOrUpdateUser.add(addFeedbackPanel(description, createOrUpdateUser, "descriptionFeedback"));
-
-        fileUpload = new FileUploadField("image", new PropertyModel<List<FileUpload>>(this,"images"));
-        createOrUpdateUser.add(addFeedbackPanel(fileUpload, createOrUpdateUser,"imageFeedback"));
+        createOrUpdateUser.add(addFeedbackPanel(email, createOrUpdateUser, "emailFeedback", "form.loginMail"));
 
         PasswordTextField password = new PasswordTextField("password");
         password.setRequired(true);
-        createOrUpdateUser.add(addFeedbackPanel(password, createOrUpdateUser, "passwordFeedback"));
+        createOrUpdateUser.add(addFeedbackPanel(password, createOrUpdateUser, "passwordFeedback", "form.description.password"));
 
         PasswordTextField passwordAgain =
-                new PasswordTextField("passwordAgain", new PropertyModel<String>(this, "passwordAgain"));
+            new PasswordTextField("passwordAgain", new PropertyModel<String>(this, "passwordAgain"));
         passwordAgain.setRequired(true);
-       createOrUpdateUser.add(addFeedbackPanel(passwordAgain, createOrUpdateUser, "passwordAgainFeedback"));
+        createOrUpdateUser.add(addFeedbackPanel(passwordAgain, createOrUpdateUser, "passwordAgainFeedback", "form.description.passwordAgain"));
+
+        fileUpload = new FileUploadField("image", new PropertyModel<List<FileUpload>>(this,"images"));
+        createOrUpdateUser.add(addFeedbackPanel(fileUpload, createOrUpdateUser, "imageFeedback", "form.description.image"));
+
+
+        TextField<String> name = new TextField<String>("person.name");
+        name.setRequired(true);
+        createOrUpdateUser.add(addFeedbackPanel(name, createOrUpdateUser, "nameFeedback", "form.description.wholeName"));
+
+
+        createOrUpdateUser.add(addFeedbackPanel(new TextField<String>("person.nickname"), createOrUpdateUser, "nicknameFeedback", "form.description.nickname"));
+
+        createOrUpdateUser.add(addFeedbackPanel(new TextField<String>("person.city"), createOrUpdateUser, "cityFeedback", "form.description.city"));
+
+        DateTextField birthDate = new DateTextField("person.birthDate", "dd.mm.yyyy");
+        createOrUpdateUser.add(addFeedbackPanel(birthDate, createOrUpdateUser, "birthDateFeedback", "form.description.dateOfBirth"));
+
+        LocaleProvider locales = new CodeLocaleProvider();
+        List<String> availableLocales = new ArrayList<String>();
+        for(Locale locale: locales.availableLocale()){
+            availableLocales.add(locale.getLanguage());
+        }
+        DropDownChoice<String> defaultLanguage = new DropDownChoice<String>("defaultLang", availableLocales);
+        createOrUpdateUser.add(defaultLanguage);
+
         final ListMultipleChoice<Language> changeLocale =
                 new ListMultipleChoice<Language>("userHasLanguages",
                         new CodeLocaleProvider().availableLanguages());
-        createOrUpdateUser.add(addFeedbackPanel(changeLocale, createOrUpdateUser, "userHasLanguagesFeedback"));
+        createOrUpdateUser.add(addFeedbackPanel(changeLocale, createOrUpdateUser, "userHasLanguagesFeedback", "form.description.userHasLanguages"));
         
         ReCaptchaComponent reCaptcha = new ReCaptchaComponent("reCaptcha", new Model());
-        createOrUpdateUser.add(addFeedbackPanel(reCaptcha, createOrUpdateUser, "reCaptchaFeedback"));
+        createOrUpdateUser.add(addFeedbackPanel(reCaptcha, createOrUpdateUser, "reCaptchaFeedback", "form.description.reCaptcha"));
+
+        TextArea description =new TextArea<String>("person.description");
+        description.add(new CSLDTinyMceBehavior());
+        createOrUpdateUser.add(description);
+
 
         createOrUpdateUser.add(new AjaxButton("submit"){
             @Override
@@ -137,13 +151,8 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
         add(createOrUpdateUser);
     }
 
-    private FormComponent addFeedbackPanel(FormComponent addFeedbackTo, Form addingFeedbackTo, String nameOfFeedbackPanel){
-        ComponentFeedbackMessageFilter filter = new ComponentFeedbackMessageFilter(addFeedbackTo);
-//        final FeedbackPanel feedbackPanel = new FeedbackPanel(nameOfFeedbackPanel, filter);
-//        feedbackPanel.setOutputMarkupId(true);
-//        addingFeedbackTo.add(feedbackPanel);
-//        addFeedbackTo.add(new AjaxFeedbackUpdatingBehavior("blur", feedbackPanel));
-        addFeedbackTo.add(new ErrorClassAppender());
+    private FormComponent addFeedbackPanel(FormComponent addFeedbackTo, Form addingFeedbackTo, String feedbackId, String defaultKey){
+        addingFeedbackTo.add(new CsldFeedbackMessageLabel(feedbackId, addFeedbackTo, defaultKey));
         return addFeedbackTo;
     }
 

@@ -1,13 +1,6 @@
 package cz.larpovadatabaze.components.panel.user;
 
-import cz.larpovadatabaze.components.common.RoleBasedCheckbox;
-import cz.larpovadatabaze.components.page.user.UserDetail;
-import cz.larpovadatabaze.dto.SelectedUser;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.security.CsldRoles;
-import cz.larpovadatabaze.services.FilterService;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -19,6 +12,13 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import cz.larpovadatabaze.components.common.RoleBasedCheckbox;
+import cz.larpovadatabaze.components.page.user.UserDetailPage;
+import cz.larpovadatabaze.dto.SelectedUser;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.security.CsldRoles;
+import cz.larpovadatabaze.services.FilterService;
 
 /**
  * This Panel gets List of Users and simply creates list of them with links to their details.
@@ -71,7 +71,7 @@ public class CheckBoxSelectionUsers extends Panel {
                 params.add("id", user.getId());
 
                 final BookmarkablePageLink<CsldUser> authorName =
-                        new BookmarkablePageLink<CsldUser>("user", UserDetail.class, params);
+                        new BookmarkablePageLink<CsldUser>("user", UserDetailPage.class, params);
 
                 authorName.add(new Label("userName", user.getUserName()));
                 authorName.add(new Label("userNickname", user.getNickName()));

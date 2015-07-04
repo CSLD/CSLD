@@ -13,7 +13,7 @@ import java.util.List;
 import cz.larpovadatabaze.components.common.BookmarkableLinkWithLabel;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
-import cz.larpovadatabaze.components.page.user.UserDetail;
+import cz.larpovadatabaze.components.page.user.UserDetailPage;
 import cz.larpovadatabaze.dao.CsldUserDAO;
 import cz.larpovadatabaze.dto.UserRatesOwnGameDto;
 
@@ -36,7 +36,7 @@ public class ShowAuthorsWhoRatedTheirGamesPage extends CsldBasePage {
                 UserRatesOwnGameDto userRatesOwnGameDto = item.getModel().getObject();
 
                 item.add(new Label("email", userRatesOwnGameDto.getUserEmail()));
-                item.add(new BookmarkableLinkWithLabel("user", UserDetail.class, Model.of(userRatesOwnGameDto.getUserName()),
+                item.add(new BookmarkableLinkWithLabel("user", UserDetailPage.class, Model.of(userRatesOwnGameDto.getUserName()),
                         Model.of(new PageParameters().set("id", userRatesOwnGameDto.getUserId()))));
                 item.add(new BookmarkableLinkWithLabel("game", GameDetail.class, Model.of(userRatesOwnGameDto.getGameName()),
                         Model.of(new PageParameters().set("id", userRatesOwnGameDto.getGameId()))));

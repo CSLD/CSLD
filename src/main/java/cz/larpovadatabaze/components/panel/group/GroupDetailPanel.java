@@ -14,7 +14,7 @@ import java.util.List;
 
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.common.icons.GroupIcon;
-import cz.larpovadatabaze.components.page.user.UserDetail;
+import cz.larpovadatabaze.components.page.user.UserDetailPage;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.GroupHasMember;
@@ -44,7 +44,7 @@ public class GroupDetailPanel extends AbstractCsldPanel<CsldGroup> {
             params.add("id", author.getId());
 
             final BookmarkablePageLink<CsldUser> authorName =
-                new BookmarkablePageLink<CsldUser>("link", UserDetail.class, params);
+                new BookmarkablePageLink<CsldUser>("link", UserDetailPage.class, params);
 
             authorName.add(new Label("name", author.getPerson().getName()));
             authorName.add(new Label("nickname", author.getPerson().getNickNameView()));

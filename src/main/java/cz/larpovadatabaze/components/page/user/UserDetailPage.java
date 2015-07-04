@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.components.page.user;
 
 import org.apache.wicket.RestartResponseException;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
@@ -41,7 +42,9 @@ import cz.larpovadatabaze.utils.UserUtils;
  * Date: 29.4.13
  * Time: 17:30
  */
-public class UserDetail extends CsldBasePage {
+public class UserDetailPage extends CsldBasePage {
+    public static final String USER_ID_PARAMETER_NAME = "id";
+
     @SpringBean
     CsldUserService csldUserService;
     @SpringBean
@@ -100,15 +103,19 @@ public class UserDetail extends CsldBasePage {
 
         @Override
         protected CsldUser load() {
-            return csldUserService.getById(userId);
+            CsldUser res = csldUserService.getById(userId);
+            if (HbUtils.isProxy(res)) {
+                res = HbUtils.deproxy(res);
+            }
+            return res;
         }
     }
 
-    public UserDetail(PageParameters params){
-        if(params.get("id") == null || params.get("id").isEmpty()){
+    public UserDetailPage(PageParameters params){
+        if(params.get(USER_ID_PARAMETER_NAME) == null || params.get(USER_ID_PARAMETER_NAME).isEmpty()){
             throw new RestartResponseException(HomePage.class);
         }
-        setDefaultModel(new UserModel(params.get("id").to(Integer.class)));
+        setDefaultModel(new UserModel(params.get(USER_ID_PARAMETER_NAME).to(Integer.class)));
     }
 
     @Override
@@ -118,6 +125,9 @@ public class UserDetail extends CsldBasePage {
         CsldUser user = (CsldUser)getDefaultModelObject();
 
         add(new PersonDetailPanel("personDetail", (IModel<CsldUser>)getDefaultModel()));
+
+        add(new BookmarkablePageLink<UpdateUserPage>("updateUserLink", UpdateUserPage.class));
+
         add(new CommentsListPanel("comments", new UserCommentsModel(), true));
 
         SortableAnnotatedProvider provider = new SortableAnnotatedProvider(gameService);

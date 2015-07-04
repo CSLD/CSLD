@@ -12,33 +12,22 @@ import cz.larpovadatabaze.components.panel.user.CreateOrUpdateUserPanel;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.ImageService;
-import cz.larpovadatabaze.utils.HbUtils;
 
 /**
- * This page allows user to create new or update exiting user.
+ * This page allows user to create new exiting user.
  */
-public class CreateOrUpdateUserPage extends CsldBasePage {
+public class CreateUserPage extends CsldBasePage {
     @SpringBean
     CsldUserService csldUserService;
 
-    @SpringBean
-    ImageService imageService;
-
-    public CreateOrUpdateUserPage(PageParameters params){
-        CsldUser csldUser  = null;
-        if(!params.isEmpty()){
-            Integer id = params.get("id").to(Integer.class);
-            CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
-            if(logged.getId().intValue() == id){
-                csldUser = logged;
-            } else {
-                csldUser = csldUserService.getById(id);
-                if(HbUtils.isProxy(csldUser)){
-                    csldUser = HbUtils.deproxy(csldUser);
-                }
-            }
+    public CreateUserPage(PageParameters params){
+        if ((CsldAuthenticatedWebSession.get()).isSignedIn()) {
+            // Cannot create when logged in
+            throw new RestartResponseException(HomePage.class);
         }
+
+
+        CsldUser csldUser  = null;
         final boolean isNew = (csldUser == null);
 
         add(new CreateOrUpdateUserPanel("createOrUpdateUser", csldUser){
@@ -51,7 +40,7 @@ public class CreateOrUpdateUserPage extends CsldBasePage {
                     PageParameters params = new PageParameters();
                     params.add("id", user.getId());
 
-                    throw new RestartResponseException(UserDetail.class, params);
+                    throw new RestartResponseException(UserDetailPage.class, params);
                 } else {
                     throw new RestartResponseException(HomePage.class);
                 }

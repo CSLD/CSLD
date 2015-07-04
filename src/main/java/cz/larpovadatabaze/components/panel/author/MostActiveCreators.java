@@ -1,12 +1,5 @@
 package cz.larpovadatabaze.components.panel.author;
 
-import cz.larpovadatabaze.components.common.AbstractCsldPanel;
-import cz.larpovadatabaze.components.common.icons.UserIcon;
-import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.user.UserDetail;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -14,6 +7,14 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import cz.larpovadatabaze.components.common.AbstractCsldPanel;
+import cz.larpovadatabaze.components.common.icons.UserIcon;
+import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.page.user.UserDetailPage;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.ImageService;
 
 /**
  * It contains information about the author, who created most games.
@@ -54,17 +55,17 @@ public class MostActiveCreators extends AbstractCsldPanel<CsldUser> {
         PageParameters params = new PageParameters();
         params.add("id", author.getId());
         final BookmarkablePageLink<CsldBasePage> mostActiveCommenterHead =
-                new BookmarkablePageLink<CsldBasePage>("mostActiveCommenterHead", UserDetail.class, params);
+                new BookmarkablePageLink<CsldBasePage>("mostActiveCommenterHead", UserDetailPage.class, params);
         add(mostActiveCommenterHead);
 
         final BookmarkablePageLink<CsldBasePage> moderatorLink =
-                new BookmarkablePageLink<CsldBasePage>("mostActiveCommenter", UserDetail.class, params);
+                new BookmarkablePageLink<CsldBasePage>("mostActiveCommenter", UserDetailPage.class, params);
         final UserIcon moderatorImage = new UserIcon("mostActiveCommenterImage", getModel());
         moderatorLink.add(moderatorImage);
         add(moderatorLink);
 
         final BookmarkablePageLink<CsldBasePage> moderatorLinkContent =
-                new BookmarkablePageLink<CsldBasePage>("mostActiveCommenterContent", UserDetail.class, params);
+                new BookmarkablePageLink<CsldBasePage>("mostActiveCommenterContent", UserDetailPage.class, params);
         final Label moderatorNick = new Label("mostActiveCommenterNick", author.getPerson().getNickNameView());
         final Label moderatorName = new Label("mostActiveCommenterName", author.getPerson().getName());
         moderatorLinkContent.add(moderatorNick);
