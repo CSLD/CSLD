@@ -6,14 +6,9 @@
     -->
 
     <form class="sky-form gamepanel" novalidate="novalidate" wicket:id="addUser">
-        <header><wicket:message key="user.register">Registrace</wicket:message></header>
+        <header wicket:id="header"></header>
         <fieldset>
-    <section>
-        <wicket:message key="user.welcome">Vítejte na česko-slovenské larpové databázi. Po vyplnění krátkého
-            formuláře vlevo se stanete registrovaným uživatelem a můžete tak využít všech funkcí jako hodnocení a a
-            komentování jednotlivých larpů, stejně jako jejich zařazení do vaší larpotéky.
-        </wicket:message>
-    </section>
+            <section wicket:id="subheader"></section>
             <section>
                 <label class="input">
                     <i class="icon-append fa fa-envelope"></i>
@@ -83,19 +78,21 @@
                     <b class="tooltip tooltip-bottom-right" wicket:id="userHasLanguagesFeedback"></b>
                 </label>
             </section>
-            <section>
-                <label class="input">
-                    <div wicket:id="reCaptcha"></div>
-                    <b class="tooltip tooltip-bottom-right" wicket:id="reCaptchaFeedback"></b>
-                </label>
-            </section>
+            <wicket:enclosure child="reCaptcha">
+                <section>
+                    <label class="input">
+                        <div wicket:id="reCaptcha"></div>
+                        <b class="tooltip tooltip-bottom-right"><wicket:message key="form.description.reCaptcha" /></b>
+                    </label>
+                </section>
+            </wicket:enclosure>
             <section>
                 <label class="textarea">
                     <textarea class="textarea" wicket:id="person.description" wicket:message="placholder:form.description.about"></textarea>
                 </label>
             </section>
             <section>
-                <input class="btn-u" type="button" wicket:message="value:form.register" wicket:id="submit" />
+                <input class="btn-u" type="button" wicket:id="submit" />
             </section>
         </fieldset>
     </form>

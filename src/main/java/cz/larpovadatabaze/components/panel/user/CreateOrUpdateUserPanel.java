@@ -1,8 +1,11 @@
 package cz.larpovadatabaze.components.panel.user;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.EmailTextField;
 import org.apache.wicket.markup.html.form.Form;
@@ -14,10 +17,10 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -28,6 +31,7 @@ import java.util.Locale;
 
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
+import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Image;
@@ -44,7 +48,7 @@ import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 /**
  * Panel used for registering new user or adding new Author into the database.
  */
-public abstract class CreateOrUpdateUserPanel extends Panel {
+public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser> {
 
     @SpringBean
     CsldUserService csldUserService;
@@ -59,19 +63,38 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
     @SuppressWarnings("unused")
     private List<FileUpload> images = new ArrayList<FileUpload>();
 
+    private final String resourceBase;
+    private final boolean isEdit;
+    private final String oldPassword;
+
     public CreateOrUpdateUserPanel(String id, CsldUser user) {
         super(id);
 
-        boolean isEdit = true;
         if(user == null) {
-            isEdit = false;
             user = CsldUser.getEmptyUser();
+            this.resourceBase = "user.register";
+            isEdit = false;
         }
+        else {
+            this.resourceBase = "user.edit";
+            isEdit = true;
+        }
+        setDefaultModel(new CompoundPropertyModel<CsldUser>(user));
+        oldPassword = getModelObject().getPassword();
+    }
+
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
+
 
         final ValidatableForm<CsldUser> createOrUpdateUser =
-                new ValidatableForm<CsldUser>("addUser", new CompoundPropertyModel<CsldUser>(user));
+                new ValidatableForm<CsldUser>("addUser", getModel());
         createOrUpdateUser.setMultiPart(true);
         createOrUpdateUser.setOutputMarkupId(true);
+
+        createOrUpdateUser.add(new Label("header", new StringResourceModel(resourceBase+".header", null)));
+        createOrUpdateUser.add(new Label("subheader", new StringResourceModel(resourceBase+".subheader", null)));
 
         EmailTextField email = new EmailTextField("person.email");
         email.setRequired(true);
@@ -80,12 +103,12 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
         createOrUpdateUser.add(addFeedbackPanel(email, createOrUpdateUser, "emailFeedback", "form.loginMail"));
 
         PasswordTextField password = new PasswordTextField("password");
-        password.setRequired(true);
+        password.setRequired(!isEdit);
         createOrUpdateUser.add(addFeedbackPanel(password, createOrUpdateUser, "passwordFeedback", "form.description.password"));
 
         PasswordTextField passwordAgain =
             new PasswordTextField("passwordAgain", new PropertyModel<String>(this, "passwordAgain"));
-        passwordAgain.setRequired(true);
+        passwordAgain.setRequired(!isEdit);
         createOrUpdateUser.add(addFeedbackPanel(passwordAgain, createOrUpdateUser, "passwordAgainFeedback", "form.description.passwordAgain"));
 
         fileUpload = new FileUploadField("image", new PropertyModel<List<FileUpload>>(this,"images"));
@@ -101,7 +124,7 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
 
         createOrUpdateUser.add(addFeedbackPanel(new TextField<String>("person.city"), createOrUpdateUser, "cityFeedback", "form.description.city"));
 
-        DateTextField birthDate = new DateTextField("person.birthDate", "dd.mm.yyyy");
+        DateTextField birthDate = new DateTextField("person.birthDate", "dd.MM.yyyy");
         createOrUpdateUser.add(addFeedbackPanel(birthDate, createOrUpdateUser, "birthDateFeedback", "form.description.dateOfBirth"));
 
         LocaleProvider locales = new CodeLocaleProvider();
@@ -116,16 +139,25 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
                 new ListMultipleChoice<Language>("userHasLanguages",
                         new CodeLocaleProvider().availableLanguages());
         createOrUpdateUser.add(addFeedbackPanel(changeLocale, createOrUpdateUser, "userHasLanguagesFeedback", "form.description.userHasLanguages"));
-        
-        ReCaptchaComponent reCaptcha = new ReCaptchaComponent("reCaptcha", new Model());
-        createOrUpdateUser.add(addFeedbackPanel(reCaptcha, createOrUpdateUser, "reCaptchaFeedback", "form.description.reCaptcha"));
+
+        if (isEdit) {
+            // No captcha
+            WebMarkupContainer reCaptcha = new WebMarkupContainer("reCaptcha");
+            reCaptcha.setVisible(false);
+            createOrUpdateUser.add(reCaptcha);
+        }
+        else {
+            // Captcha
+            ReCaptchaComponent reCaptcha = new ReCaptchaComponent("reCaptcha", new Model());
+            createOrUpdateUser.add(reCaptcha);
+        }
 
         TextArea description =new TextArea<String>("person.description");
         description.add(new CSLDTinyMceBehavior());
         createOrUpdateUser.add(description);
 
 
-        createOrUpdateUser.add(new AjaxButton("submit"){
+        createOrUpdateUser.add(new AjaxButton("submit", new StringResourceModel(resourceBase+".submit", null)){
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 super.onSubmit(target, form);
@@ -197,7 +229,17 @@ public abstract class CreateOrUpdateUserPanel extends Panel {
 
     private boolean saveOrUpdateUser(CsldUser user){
         user.setIsAuthor(false);
-        user.setPassword(Pwd.generateStrongPasswordHash(user.getPassword(), user.getPerson().getEmail()));
+
+        // Process password
+        if (StringUtils.isEmpty(user.getPassword()) || StringUtils.isEmpty(passwordAgain)) {
+            // Keep password
+            user.setPassword(oldPassword);
+        }
+        else {
+            // Set new password
+            user.setPassword(Pwd.generateStrongPasswordHash(user.getPassword(), user.getPerson().getEmail()));
+        }
+
         if(csldUserService.saveOrUpdate(user)){
             return true;
         } else {
