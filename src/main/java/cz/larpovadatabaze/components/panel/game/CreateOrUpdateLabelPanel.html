@@ -4,24 +4,30 @@
     It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/game/CreateOrUpdateLabelPanel.html
     Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateLabelPanel.html
     -->
-    <form wicket:id="createOrUpdateLabel">
-        <div>
-            <label for="name"><wicket:message key="form.name">Jméno</wicket:message></label>
-            <input id="name" type="text" wicket:id="name"/>
-        </div>
+    <form class="sky-form" wicket:id="createOrUpdateLabel">
+        <fieldset>
+            <section>
+                <label class="input">
+                    <input type="text" wicket:id="name" wicket:message="placeholder:form.name"/>
+                    <b class="tooltip tooltip-bottom-right" wicket:id="nameFeedback"></b>
+                </label>
+            </section>
 
-        <div>
-            <label for="description"><wicket:message key="form.description">Popis</wicket:message></label>
-            <textarea id="description" type="text" wicket:id="description"></textarea>
-        </div>
+            <section>
+                <label class="textarea">
+                    <textarea class="textarea" wicket:id="description" wicket:message="placeholder:form.description"></textarea>
+                </label>
+            </section>
 
-        <div>
-            <label for="lang"><wicket:message key="game.lang">Jazyk</wicket:message></label>
-            <select wicket:id="lang" title="Jazyk" wicket:message="title:game.lang"/>
-        </div>
+            <section>
+                <label class="input">
+                    <select wicket:id="lang" wicket:message="title:game.lang"/>
+                </label>
+            </section>
 
-        <div>
-            <input type="button" wicket:message="value:form.save" wicket:id="submit"/>
-        </div>
+            <section>
+                <input type="button" wicket:message="value:form.save" wicket:id="submit"/>
+            </section>
+        </fieldset>
     </form>
 </wicket:panel>

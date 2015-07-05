@@ -110,7 +110,7 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
                             <i class="icon-append fa fa-user-plus" wicket:id="createAuthorBtn"></i>
 
 
-                            <input type="text" wicket:id="authors" placeholder="Author">
+                            <input type="text" wicket:id="authors" wicket:message="placeholder:form.game.authors">
                             <b class="tooltip tooltip-bottom-right" wicket:id="authorsFeedback"></b>
                         </label>
                     </section>
@@ -118,10 +118,7 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
                         <label class="input">
                             <i class="icon-append fa fa-users" wicket:id="createGroup" wicket:messsage="tooltip:form.newGroup"></i>
 
-                            <input type="text" name="groupAuthor" wicket:id="groupAuthor" placeholder="Author Group">
-                            <b class="tooltip tooltip-bottom-right">
-                                <wicket:message key="form.game.authorGroups">Autorské skupiny</wicket:message>
-                            </b>
+                            <input type="text" name="groupAuthor" wicket:id="groupAuthor" wicket:message="placeholder:form.game.authorGroups">
                         </label>
                     </section>
                 </div>

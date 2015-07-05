@@ -1,13 +1,5 @@
 package cz.larpovadatabaze.components.panel.game;
 
-import cz.larpovadatabaze.api.ValidatableForm;
-import cz.larpovadatabaze.entities.*;
-import cz.larpovadatabaze.lang.CodeLocaleProvider;
-import cz.larpovadatabaze.lang.LanguageSolver;
-import cz.larpovadatabaze.lang.LocaleProvider;
-import cz.larpovadatabaze.lang.SessionLanguageSolver;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.LabelService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -21,6 +13,19 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import cz.larpovadatabaze.api.ValidatableForm;
+import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Label;
+import cz.larpovadatabaze.entities.LabelHasLanguages;
+import cz.larpovadatabaze.entities.Language;
+import cz.larpovadatabaze.lang.CodeLocaleProvider;
+import cz.larpovadatabaze.lang.LanguageSolver;
+import cz.larpovadatabaze.lang.LocaleProvider;
+import cz.larpovadatabaze.lang.SessionLanguageSolver;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.services.LabelService;
 
 /**
  * It is used for creating and updating Labels for games.
@@ -44,7 +49,11 @@ public abstract class CreateOrUpdateLabelPanel extends Panel {
         final ValidatableForm<Label> createOrUpdateLabel =
                 new ValidatableForm<Label>("createOrUpdateLabel", new CompoundPropertyModel<Label>(label)){};
 
-        createOrUpdateLabel.add(new TextField<String>("name"));
+        TextField<String> name = new TextField<String>("name");
+        name.setRequired(true);
+        createOrUpdateLabel.add(name);
+        createOrUpdateLabel.add(new CsldFeedbackMessageLabel("nameFeedback", name, null));
+
         createOrUpdateLabel.add(new TextArea<String>("description"));
         List<String> availableLanguages = new ArrayList<String>();
         LocaleProvider provider = new CodeLocaleProvider();
@@ -68,6 +77,13 @@ public abstract class CreateOrUpdateLabelPanel extends Panel {
                         onCsldAction(target, form);
                     }
                 }
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                super.onError(target, form);
+
+                target.add(form);
             }
         });
 

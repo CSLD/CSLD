@@ -8,7 +8,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.user.UserDetailPage;
 import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.services.CsldUserService;
@@ -37,11 +36,7 @@ public class CreateOrUpdateAuthorPage extends CsldBasePage {
             protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
                 super.onCsldAction(target, form);
 
-                CsldUser author = (CsldUser) form.getModelObject();
-                PageParameters params = new PageParameters();
-                params.add("id", author.getId());
-
-                throw new RestartResponseException(UserDetailPage.class, params);
+                throw new RestartResponseException(ListAuthorPage.class);
             }
         });
     }

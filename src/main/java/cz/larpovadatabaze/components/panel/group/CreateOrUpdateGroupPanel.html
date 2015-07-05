@@ -5,30 +5,31 @@
     It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/group/CreateOrUpdateGroupPanel.html
     Code - cz.larpovadatabaze.components.panel.group.CreateOrUpdateGroupPanel.html
     -->
-    <div>
-        <form wicket:id="addGroup">
-            <h2><wicket:message key="group.create">Přidat skupinu</wicket:message></h2>
+    <form class="sky-form" wicket:id="addGroup">
+        <fieldset>
+            <section>
+                <label class="input">
+                    <input type="text" wicket:id="name" wicket:message="placeholder:form.name" />
+                    <b class="tooltip tooltip-bottom-right" wicket:id="nameFeedback"></b>
+                </label>
+            </section>
 
-            <div>
-                <label for="name"><wicket:message key="form.name">Jméno</wicket:message></label>
-                <input type="text" wicket:id="name"/>
-                <span wicket:id="nameFeedback"></span>
-            </div>
+            <section>
+                <label class="input">
+                    <input type="file" wicket:id="image"/>
+                    <b><wicket:message key="form.image" /></b>
+                </label>
+            </section>
 
-            <div>
-                <label for="image"><wicket:message key="form.image">Obrázek</wicket:message></label>
-                <input type="file" wicket:id="image"/>
-                <span wicket:id="imageFeedback"></span>
-            </div>
+            <section>
+                <label class="input">
+                    <select wicket:id="lang"></select>
+                </label>
+            </section>
 
-            <div>
-                <label for="language"><wicket:message key="game.lang"></wicket:message></label>
-                <select wicket:id="lang"></select>
-            </div>
-
-            <div>
-                <input type="button" value="Uložit" wicket:message="value:form.save" wicket:id="submit"/>
-            </div>
-        </form>
-    </div>
+            <section>
+                <input type="button" class="btn-u" wicket:message="value:form.save" wicket:id="submit"/>
+            </section>
+        </fieldset>
+    </form>
 </wicket:panel>

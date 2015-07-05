@@ -124,6 +124,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
                 //To change body of implemented methods use File | Settings | File Templates.
             }
         });
+        chooseLabels.setOutputMarkupId(true);
         chooseLabels.add(new AtLeastOneRequiredLabelValidator());
         createOrUpdateGame.add(chooseLabels);
         WebMarkupContainer labelsFeedbackWrapper = new WebMarkupContainer("labelsFeedbackWrapper");
@@ -326,6 +327,10 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
 
         createlabelModal.setTitle("Vytvořit štítek");
         createlabelModal.setCookieName("create-label");
+        createlabelModal.setAutoSize(true);
+        createlabelModal.setUseInitialHeight(false);
+        createlabelModal.setInitialHeight(0);
+        createlabelModal.setMinimalHeight(0);
 
         createOrUpdateGame.add(new AjaxButton("createLabel"){}.setOutputMarkupId(true).add(new AjaxEventBehavior("click") {
             @Override
@@ -430,7 +435,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
 
         authors.add(new NonEmptyAuthorsValidator());
 
-        authorsWrapper.add(new CsldFeedbackMessageLabel("authorsFeedback", authors, authorsWrapper, "form.game.authors"));
+        authorsWrapper.add(new CsldFeedbackMessageLabel("authorsFeedback", authors, authorsWrapper, null));
     }
 
     protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}

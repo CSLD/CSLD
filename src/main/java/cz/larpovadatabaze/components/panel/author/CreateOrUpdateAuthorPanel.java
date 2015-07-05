@@ -1,7 +1,7 @@
 package cz.larpovadatabaze.components.panel.author;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.markup.html.form.EmailTextField;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
@@ -16,7 +16,6 @@ import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.validator.UniqueUserValidator;
-import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 /**
  * Panel used for registering new author or adding new Author into the database.
@@ -35,7 +34,7 @@ public abstract class CreateOrUpdateAuthorPanel extends Panel {
         }
 
         final ValidatableForm<CsldUser> createOrUpdateUser = new ValidatableForm<CsldUser>("addUser", new CompoundPropertyModel<CsldUser>(author));
-        createOrUpdateUser.setMultiPart(true);
+        createOrUpdateUser.setMultiPart(false);
         createOrUpdateUser.setOutputMarkupId(true);
 
         EmailTextField email = new EmailTextField("person.email");
@@ -53,7 +52,7 @@ public abstract class CreateOrUpdateAuthorPanel extends Panel {
         TextArea<String> description = new TextArea<String>("person.description");
         createOrUpdateUser.add(description);
 
-        createOrUpdateUser.add(new AjaxButton("submit"){
+        createOrUpdateUser.add(new AjaxSubmitLink("submit"){
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 super.onSubmit(target, form);
@@ -64,13 +63,21 @@ public abstract class CreateOrUpdateAuthorPanel extends Panel {
                     }
                 }
             }
-        }.add(new TinyMceAjaxSubmitModifier()));
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                super.onError(target, form);
+
+                // Refresh form
+                target.add(form);
+            }
+        });
 
         add(createOrUpdateUser);
     }
 
     private FormComponent addFeedbackPanel(FormComponent addFeedbackTo, Form addingFeedbackTo, String feedbackId, String defaultKey){
-        addingFeedbackTo.add(new CsldFeedbackMessageLabel(feedbackId, addingFeedbackTo, defaultKey));
+        addingFeedbackTo.add(new CsldFeedbackMessageLabel(feedbackId, addFeedbackTo, defaultKey));
         return addFeedbackTo;
     }
 

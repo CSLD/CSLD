@@ -1,26 +1,12 @@
 package cz.larpovadatabaze.components.panel.group;
 
-import cz.larpovadatabaze.api.ValidatableForm;
-import cz.larpovadatabaze.behavior.AjaxFeedbackUpdatingBehavior;
-import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.entities.Image;
-import cz.larpovadatabaze.lang.CodeLocaleProvider;
-import cz.larpovadatabaze.lang.LocaleProvider;
-import cz.larpovadatabaze.services.FileService;
-import cz.larpovadatabaze.services.GroupService;
-import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
-import cz.larpovadatabaze.services.ImageService;
-import cz.larpovadatabaze.validator.UniqueGroupValidator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
-import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -30,11 +16,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import cz.larpovadatabaze.api.ValidatableForm;
+import cz.larpovadatabaze.components.common.AbstractCsldPanel;
+import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
+import cz.larpovadatabaze.entities.CsldGroup;
+import cz.larpovadatabaze.entities.Image;
+import cz.larpovadatabaze.lang.CodeLocaleProvider;
+import cz.larpovadatabaze.lang.LocaleProvider;
+import cz.larpovadatabaze.services.FileService;
+import cz.larpovadatabaze.services.GroupService;
+import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
+import cz.larpovadatabaze.services.ImageService;
+import cz.larpovadatabaze.validator.UniqueGroupValidator;
+
 /**
  * Encapsulation of form used for creating groups. It may be used on more than one place. It can also be used for
  * editing group if group is given as parameter. If it isn't it gets empty one as a model.
  */
-public abstract class CreateOrUpdateGroupPanel extends Panel {
+public abstract class CreateOrUpdateGroupPanel extends AbstractCsldPanel<CsldGroup> {
     private static final int GROUP_ICON_SIZE=120;
 
     @SpringBean
@@ -64,7 +63,15 @@ public abstract class CreateOrUpdateGroupPanel extends Panel {
         } else {
             uniqueGroupValidator.setUpdateExisting(true);
         }
-        final ValidatableForm<CsldGroup> createGroup = new ValidatableForm<CsldGroup>("addGroup", new CompoundPropertyModel<CsldGroup>(group)) {};
+
+        setDefaultModel(new CompoundPropertyModel<CsldGroup>(group));
+    }
+
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
+
+        final ValidatableForm<CsldGroup> createGroup = new ValidatableForm<CsldGroup>("addGroup", getModel());
         createGroup.setMultiPart(true);
         // Set maximum size to 1024K for demo purposes
         createGroup.setMaxSize(Bytes.kilobytes(1024));
@@ -72,22 +79,13 @@ public abstract class CreateOrUpdateGroupPanel extends Panel {
 
         TextField<String> name = new TextField<String>("name");
         name.setRequired(true);
-        ComponentFeedbackMessageFilter nameFilter = new ComponentFeedbackMessageFilter(name);
-        final FeedbackPanel nameFeedback = new FeedbackPanel("nameFeedback", nameFilter);
-        nameFeedback.setOutputMarkupId(true);
-        createGroup.add(nameFeedback);
-        name.add(new AjaxFeedbackUpdatingBehavior("blur", nameFeedback));
         name.add(uniqueGroupValidator);
         createGroup.add(name);
+        createGroup.add(new CsldFeedbackMessageLabel("nameFeedback", name, null));
 
         // Add one file input field
 
         fileUploadField = new FileUploadField("image", new PropertyModel<List<FileUpload>>(this, "images"));
-        ComponentFeedbackMessageFilter imageFilter = new ComponentFeedbackMessageFilter(fileUploadField);
-        final FeedbackPanel imageFeedback = new FeedbackPanel("imageFeedback", imageFilter);
-        imageFeedback.setOutputMarkupId(true);
-        createGroup.add(imageFeedback);
-        name.add(new AjaxFeedbackUpdatingBehavior("blur", imageFeedback));
         createGroup.add(fileUploadField);
 
         List<String> availableLanguages = new ArrayList<String>();
@@ -111,6 +109,13 @@ public abstract class CreateOrUpdateGroupPanel extends Panel {
                         onCsldAction(target, form);
                     }
                 }
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                super.onError(target, form);
+
+                target.add(form);
             }
         });
         add(createGroup);
