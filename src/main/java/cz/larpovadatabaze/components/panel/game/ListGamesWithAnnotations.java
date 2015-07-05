@@ -16,13 +16,18 @@ import cz.larpovadatabaze.entities.Game;
  */
 public class ListGamesWithAnnotations extends Panel {
 
+    private final SortableDataProvider<Game,String> dataProvider;
+
     public ListGamesWithAnnotations(String id,
                                     SortableDataProvider<Game,String> dataProvider) {
         super(id);
-        createListWithAnnotation(dataProvider);
+        this.dataProvider = dataProvider;
     }
 
-    private void createListWithAnnotation(SortableDataProvider<Game,String> dataProvider){
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
+
         RepeatingView rowRepeater = new RepeatingView("rows");
         add(rowRepeater);
 

@@ -5,14 +5,9 @@
     It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/group/AddAuthorsToGroupPanel.html
     Code - cz.larpovadatabaze.components.panel.group.AddAuthorsToGroupPanel.html
     -->
-    <table>
-        <tbody><tr>
-            <td>
-                <a wicket:id="addAuthorsIconLink"><img wicket:id="addAuthorsIcon" class="pridatIkona"></a>
-            </td>
-            <td class="pridatPopis">
-                <a wicket:id="addAuthorsLink"><wicket:message key="group.administer">Administrace členů skupiny</wicket:message></a>
-            </td>
-        </tr>
-        </tbody></table>
+    <div class="panel panel-default">
+        <div class="panel-heading" >
+            <a wicket:id="addAuthorsLink"><wicket:message key="group.administer">Administrace členů skupiny</wicket:message></a>
+        </div>
+    </div>
 </wicket:panel>

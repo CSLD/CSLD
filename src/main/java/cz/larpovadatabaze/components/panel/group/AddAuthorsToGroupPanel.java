@@ -1,6 +1,5 @@
 package cz.larpovadatabaze.components.panel.group;
 
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
@@ -10,7 +9,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.group.ManageGroupPage;
 import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.entities.PredefinedImage;
 import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.UserUtils;
 
@@ -31,14 +29,7 @@ public class AddAuthorsToGroupPanel extends Panel {
         super.onInitialize();
 
         PageParameters params = new PageParameters();
-        params.add("id",((CsldGroup)getDefaultModelObject()).getId());
-
-        Image createGameIcon = new Image("addAuthorsIcon",
-                imageService.getPredefinedImageResource(PredefinedImage.PLUS_ICON));
-        BookmarkablePageLink<CsldBasePage> createGameIconLink =
-                new BookmarkablePageLink<CsldBasePage>("addAuthorsIconLink", ManageGroupPage.class, params);
-        createGameIconLink.add(createGameIcon);
-        add(createGameIconLink);
+        params.add("id", ((CsldGroup) getDefaultModelObject()).getId());
 
         BookmarkablePageLink<CsldBasePage> createAuthorLink =
                 new BookmarkablePageLink<CsldBasePage>("addAuthorsLink", ManageGroupPage.class, params);

@@ -20,25 +20,18 @@
         </tr>
     </table>
 
-    <div class="obsah">
-        <h2><wicket:message key="group.authorsOf">Autoři ve skupině</wicket:message></h2>
-        <table wicket:id="groupAuthors">
-            <tr>
-                <td>
-                    <a wicket:id="link"><span wicket:id="nickname"></span> <span wicket:id="name"></span></a>
-                </td>
-            </tr>
-        </table>
+    <p>
+        <b><wicket:message key="group.authorsOf">Autoři ve skupině</wicket:message>:</b>
+        <wicket:container wicket:id="groupAuthors"><wicket:container wicket:id="separator" /><a wicket:id="link"><span wicket:id="nickname"></span> <span wicket:id="name"></span></a></wicket:container>
+    </p>
 
-        <wicket:enclosure child="groupAdministrators">
-            <h2><wicket:message key="group.administrators">Administrátoři skupiny</wicket:message></h2>
-            <table wicket:id="groupAdministrators">
-                <tr>
-                    <td>
-                        <a wicket:id="link"><span wicket:id="nickname"></span> <span wicket:id="name"></span></a>
-                    </td>
-                </tr>
-            </table>
-        </wicket:enclosure>
-    </div>
+
+    <wicket:enclosure child="groupAdministrators">
+        <p>
+        <b><wicket:message key="group.administrators">Administrátoři skupiny</wicket:message>:</b>
+        <wicket:container wicket:id="groupAdministrators">
+            <wicket:container wicket:id="separator" /><a wicket:id="link"><span wicket:id="nickname"></span> <span wicket:id="name"></span></a>
+        </wicket:container>
+        </p>
+    </wicket:enclosure>
 </wicket:panel>

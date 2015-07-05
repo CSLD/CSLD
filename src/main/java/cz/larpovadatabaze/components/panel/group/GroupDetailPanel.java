@@ -38,18 +38,20 @@ public class GroupDetailPanel extends AbstractCsldPanel<CsldGroup> {
 
         @Override
         protected void populateItem(ListItem<CsldUser> item) {
+            item.add(new Label("separator", (item.getIndex() == 0) ? "" : ", "));
+
             CsldUser author = item.getModelObject();
 
             PageParameters params = new PageParameters();
             params.add("id", author.getId());
 
-            final BookmarkablePageLink<CsldUser> authorName =
+            final BookmarkablePageLink<CsldUser> link =
                 new BookmarkablePageLink<CsldUser>("link", UserDetailPage.class, params);
 
-            authorName.add(new Label("name", author.getPerson().getName()));
-            authorName.add(new Label("nickname", author.getPerson().getNickNameView()));
+            link.add(new Label("name", author.getPerson().getName()));
+            link.add(new Label("nickname", author.getPerson().getNickNameView()));
 
-            item.add(authorName);
+            item.add(link);
         }
     }
 
