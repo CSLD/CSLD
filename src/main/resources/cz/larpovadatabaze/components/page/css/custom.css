@@ -1494,6 +1494,7 @@ text-align: center;
 .sky-form .icon-append,
 .sky-form .icon-prepend {
 	position: absolute;
+    z-index: 1;
 	top: 5px;
 	width: 29px;
 	height: 29px;

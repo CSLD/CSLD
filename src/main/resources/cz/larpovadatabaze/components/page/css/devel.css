@@ -216,3 +216,26 @@
     margin: 10px 0;
     color: red;
 }
+
+/**
+ * MagicSuggest integration
+ */
+.ms-ctn.form-control {
+    background: white;
+    border: 1px solid #999;
+    height: auto;
+}
+
+.ms-ctn.form-control input[type=text] {
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    margin: 0;
+}
+
+/**
+ * Dialog fix
+ */
+div.wicket-modal div.w_caption {
+    font-size: 24px;
+}
