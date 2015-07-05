@@ -35,7 +35,7 @@ public class GameListPanel extends Panel {
             @Override
             protected void populateItem(ListItem item) {
                 Game game = (Game) item.getModelObject();
-                String gameRatingColor = Rating.getColorOf(game.getTotalRating());
+                String gameRatingColor = Rating.getColorOf(game.getAverageRating());
                 Label gameRating = new Label("gameRating","");
                 gameRating.add(new AttributeAppender("class", Model.of(gameRatingColor), " "));
                 item.add(gameRating);

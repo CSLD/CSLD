@@ -1,5 +1,8 @@
 package cz.larpovadatabaze.components.page.game;
 
+import cz.larpovadatabaze.components.panel.game.*;
+import cz.larpovadatabaze.lang.LanguageSolver;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -87,6 +90,8 @@ public class GameDetail extends CsldBasePage {
 
     private IModel<String> previewImageUrlModel;
 
+    private String lang;
+
     /**
      * Model for selected tab number
      */
@@ -142,6 +147,9 @@ public class GameDetail extends CsldBasePage {
             if(HbUtils.isProxy(game)){
             }    game = HbUtils.deproxy(game);
 
+            if(lang != null) {
+                game.overrideLang = lang;
+            }
 
             return game;
         }
@@ -211,6 +219,11 @@ public class GameDetail extends CsldBasePage {
             // If the game is deleted and I don't have sufficient rights redirect me to game deleted page.
             if(gameService.getById(gameId) == null){
                 throw new RestartResponseException(GameWasDeleted.class);
+            }
+
+            if(!params.get("lang").isNull()){
+                lang = params.get("lang").toString();
+                CsldAuthenticatedWebSession.get().setLocale(Locale.forLanguageTag(lang));
             }
 
             setDefaultModel(new GameModel(gameId));

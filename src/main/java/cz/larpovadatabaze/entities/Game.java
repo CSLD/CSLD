@@ -43,6 +43,8 @@ import cz.larpovadatabaze.lang.TranslationEntity;
 @Entity
 @Table(schema = "public", name="csld_game")
 public class Game implements Serializable, Identifiable, IAutoCompletable, IEntityWithImage, TranslatableEntity {
+    public String overrideLang;
+
     public Game(){ }
 
     private Integer id;
@@ -72,6 +74,9 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
 
     @Transient
     public String getName() {
+        if(overrideLang != null) {
+            translateIntoCurrent(this, overrideLang);
+        }
         if(name == null) {
             new TranslatableEntityTranslator(new DbSessionLanguageSolver()).translate(this);
         }
@@ -89,10 +94,34 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
 
     @Transient
     public String getDescription() {
+        if(overrideLang != null) {
+            translateIntoCurrent(this, overrideLang);
+        }
         if(description == null) {
             new TranslatableEntityTranslator(new DbSessionLanguageSolver()).translate(this);
         }
         return description;
+    }
+
+    private LocaleProvider localeProvider = new CodeLocaleProvider();
+
+    private boolean translateIntoCurrent(TranslatableEntity toTranslate, String lang){
+        Language actualLanguage = new Language(lang);
+        List<TranslationEntity> translationsForGame = toTranslate.getLanguages();
+        for(TranslationEntity language: translationsForGame) {
+            if(language.getLanguage() != null &&
+                    language.getLanguage().equals(actualLanguage)) {
+                translateUsingEntity(toTranslate, language);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void translateUsingEntity(TranslatableEntity toTranslate, TranslationEntity translation) {
+        toTranslate.setDescription(translation.getDescription());
+        toTranslate.setName(translation.getName());
+        toTranslate.setLang(localeProvider.transformLocaleToName(translation.getLanguage().getLanguage()));
     }
 
     @Transient
@@ -105,6 +134,9 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
 
     @Transient
     public String getLang() {
+        if(overrideLang != null) {
+            return overrideLang;
+        }
         if(lang == null) {
             new TranslatableEntityTranslator(new DbSessionLanguageSolver()).translate(this);
         }
