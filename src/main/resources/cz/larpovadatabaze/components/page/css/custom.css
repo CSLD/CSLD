@@ -815,21 +815,23 @@ div.recent-game-players{
     padding-left: 5px;
 }
 
-#owl{
+.owl{
     position: relative;
     z-index: 1;
 }
-#owl .item{
+.owl .item{
     margin: 15px;
     border-bottom: 2px solid #2F2F2F;
+    overflow: hidden;
+    text-align: center;
 }
-#owl .item:hover{
+.owl .item:hover{
     border-bottom: 2px solid #6dc8b7;
 }
-#owl .item img{
+.owl .item img{
     display: block;
-    width: 100%;
-    height: auto;
+    height: 290px;
+    width: auto;
     border-radius: 4px;
 }
 .owl-pagination{
@@ -838,7 +840,7 @@ div.recent-game-players{
 .owl-wrapper-outer{
     margin-top: 10px;
 }
-#owl .larp-name{
+.owl .larp-name{
     text-align: center;
     margin: 0 auto;
     padding-top: 8px;
