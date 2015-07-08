@@ -239,3 +239,12 @@
 div.wicket-modal div.w_caption {
     font-size: 24px;
 }
+
+.sky-form .icon-link {
+    color: #80a0d0;
+    cursor: pointer;
+}
+
+.sky-form .icon-link:hover {
+    color: #4080ff;
+}
