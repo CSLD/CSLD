@@ -49,8 +49,6 @@ public class ListGroupPage extends CsldBasePage {
         profileBar.setOutputMarkupId(true);
         add(profileBar);
         profileBar.add(new SortAjaxLink("orderByName", "name"));
-        profileBar.add(new SortAjaxLink("orderByNumber", "gameCount"));
-        profileBar.add(new SortAjaxLink("orderByRating", "name"));
 
         main = new WebMarkupContainer("main");
         main.setOutputMarkupId(true);

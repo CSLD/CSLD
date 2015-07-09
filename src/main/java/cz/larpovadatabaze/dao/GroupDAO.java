@@ -45,24 +45,6 @@ public class GroupDAO extends GenericHibernateDAO<CsldGroup, Integer> {
         return criteria.list();
     }
 
-    public List<CsldGroup> orderedByGameCountDesc(Long first, Long amountPerPage, List<Locale> locales) {
-        Session session = sessionFactory.getCurrentSession();
-
-          Criteria criteria = getBuilder().build().getExecutableCriteria(session)
-            .createAlias("authorsOf", "authors")
-            .createCriteria("groupHasLanguages")
-            .add(Restrictions.in("language.language", locales))
-            .setFirstResult(first.intValue())
-            .setMaxResults(amountPerPage.intValue())
-            .setProjection(Projections.projectionList().add(Projections.count("authors.id"), "numGames").add(Projections.groupProperty("id")));
-
-        criteria.setResultTransformer(Transformers.aliasToBean(CsldGroup.class));
-
-        criteria.addOrder(Order.desc("numGames"));
-
-        return criteria.list();
-    }
-
     /**
      * Used when autoCompletable field is used.
      *

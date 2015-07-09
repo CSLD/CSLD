@@ -12,10 +12,7 @@ import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.services.GroupService;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Jakub Balhar
- * Date: 2.5.13
- * Time: 19:46
+ *
  */
 public class SortableGroupProvider extends SortableDataProvider<CsldGroup, String> {
     private GroupService groupService;
@@ -28,13 +25,7 @@ public class SortableGroupProvider extends SortableDataProvider<CsldGroup, Strin
     @Override
     public Iterator<? extends CsldGroup> iterator(long first, long amountPerPage) {
         SortParam<String> sortings = getSort();
-        String property = sortings.getProperty();
-        if ("gameCount".equals(property)) {
-            return groupService.orderedByGameCountDesc(first, amountPerPage).iterator();
-        }
-        else {
-            return groupService.orderedByName(first, amountPerPage).iterator();
-        }
+        return groupService.orderedByName(first, amountPerPage).iterator();
     }
 
     @Override

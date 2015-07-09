@@ -48,11 +48,6 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<CsldGroup> orderedByGameCountDesc(long first, long amountPerPage) {
-        return groupDAO.orderedByGameCountDesc(first, amountPerPage, languageSolver.getLanguagesForUser());
-    }
-
-    @Override
     public void remove(CsldGroup toRemove) {
         groupDAO.makeTransient(toRemove);
     }
