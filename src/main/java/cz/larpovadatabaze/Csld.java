@@ -1,5 +1,6 @@
 package cz.larpovadatabaze;
 
+import cz.larpovadatabaze.components.page.TestDatabase;
 import org.apache.log4j.Logger;
 import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
@@ -254,6 +255,8 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
 
         mountPage("/error404", Error404Page.class);
         mountPage("/error500", Error500Page.class);
+
+        mountPage("/testDatabase", TestDatabase.class);
     }
 
     private void mountResources() {
