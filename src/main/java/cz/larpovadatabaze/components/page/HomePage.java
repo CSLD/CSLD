@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.page;
 
+import cz.larpovadatabaze.components.panel.news.NewsListPanel;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.request.http.WebResponse;
@@ -39,6 +40,8 @@ public class HomePage extends CsldBasePage {
         add(new LarpCzCalendarPanel("calendar"));
 
         add(new LastCommentsPanel("lastComments"));
+
+        add(new NewsListPanel("news"));
 
         add(new RecentPhotosPanel("recentPhotos"));
     }
