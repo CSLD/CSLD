@@ -69,7 +69,7 @@ public class CreateOrUpdateGamePage extends CsldBasePage {
                 super.onCsldAction(target, form);
 
                 Game game = (Game) form.getModelObject();
-                CsldAuthenticatedWebSession session = (CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get();
+                CsldAuthenticatedWebSession session = CsldAuthenticatedWebSession.get();
                 session.requestClear();
                 throw new RestartResponseException(GameDetail.class, GameDetail.paramsForGame(game));
             }

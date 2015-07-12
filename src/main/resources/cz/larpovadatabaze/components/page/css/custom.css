@@ -876,6 +876,15 @@ div.recent-game-players{
 .add-game-btn:hover{
     background-color:  #BD2430;
 }
+.add-news-btn {
+    background-color:  #CC333F;
+    margin: 10px;
+    padding: 2px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #F0F0F0;
+}
 .view-more-btn{
     padding: 6px;
     border-radius: 4px;

@@ -1,8 +1,10 @@
 package cz.larpovadatabaze.services.impl;
 
+import cz.larpovadatabaze.dao.NewsDAO;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.News;
 import cz.larpovadatabaze.services.NewsService;
+import cz.larpovadatabaze.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,24 +20,22 @@ import java.util.List;
 @Service
 public class NewsServiceImpl implements NewsService {
     @Autowired
-    private CsldUserServiceImpl users;
+    private NewsDAO news;
 
     @Override
     public List<News> getLastNews(int showInPanel) {
-        CsldUser author = users.getAll().get(0);
+        return news.getLastNews(showInPanel);
+    }
 
-        News first = new News();
-        first.setText("First piece of news.");
-        first.setAuthor(author);
-        first.setAdded(Timestamp.from(Instant.now()));
+    @Override
+    public List<News> allForUser(Integer userId) {
+        return news.allForUser(userId);
+    }
 
-        News second = new News();
-        second.setText("Second piece of News");
-        second.setAuthor(author);
-        second.setAdded(Timestamp.from(Instant.now()));
-
-        List<News> news = new ArrayList<News>();
-        Collections.addAll(news, first, second);
-        return news;
+    @Override
+    public boolean saveOrUpdate(News pieceOfNews) {
+        pieceOfNews.setAuthor(UserUtils.getLoggedUser());
+        pieceOfNews.setAdded(Timestamp.from(Instant.now()));
+        return news.saveOrUpdate(pieceOfNews);
     }
 }

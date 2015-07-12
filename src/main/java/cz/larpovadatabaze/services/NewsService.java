@@ -10,4 +10,8 @@ import java.util.List;
 public interface NewsService {
 
     List<News> getLastNews(int showInPanel);
+
+    List<News> allForUser(Integer userId);
+
+    boolean saveOrUpdate(News pieceOfNews);
 }

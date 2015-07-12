@@ -1,16 +1,45 @@
 package cz.larpovadatabaze.entities;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Calendar;
 
 /**
- * Created by jbalhar on 7/9/2015.
+ * Entity for database representation of News.
  */
+@Entity
+@Table(schema = "public", name = "csld_news")
 public class News implements Serializable {
-    private CsldUser author;
+    @Column(
+            name = "id",
+            nullable = false,
+            insertable = true,
+            updatable = true
+    )
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_key_gen")
+    @SequenceGenerator(name = "id_key_gen", sequenceName = "csld_news_id_seq", allocationSize = 1)
+    private Integer id;
+    @Column(name = "text")
+    @Basic
     private String text;
+    @Column(name = "added")
     private Timestamp added;
+    @Column(name = "lang")
+    @Basic
+    private String lang;
+    @ManyToOne
+    @JoinColumn(name="author_id")
+    private CsldUser author;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public CsldUser getAuthor() {
         return author;
@@ -34,5 +63,13 @@ public class News implements Serializable {
 
     public void setAdded(Timestamp added) {
         this.added = added;
+    }
+
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
     }
 }

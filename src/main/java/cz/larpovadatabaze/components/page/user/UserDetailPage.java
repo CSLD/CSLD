@@ -1,6 +1,13 @@
 package cz.larpovadatabaze.components.page.user;
 
+import cz.larpovadatabaze.components.panel.news.CreateOrUpdateNewsPanel;
+import cz.larpovadatabaze.components.panel.news.NewsListPanel;
+import cz.larpovadatabaze.entities.*;
 import org.apache.wicket.RestartResponseException;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -22,12 +29,6 @@ import cz.larpovadatabaze.components.panel.game.GameListPanel;
 import cz.larpovadatabaze.components.panel.game.ListGamesWithAnnotations;
 import cz.larpovadatabaze.components.panel.user.PersonDetailPanel;
 import cz.larpovadatabaze.components.panel.user.RatingsListPanel;
-import cz.larpovadatabaze.entities.Comment;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.GameWithoutRating;
-import cz.larpovadatabaze.entities.IGameWithRating;
-import cz.larpovadatabaze.entities.UserPlayedGame;
 import cz.larpovadatabaze.providers.SortableAnnotatedProvider;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.CsldUserService;
@@ -51,6 +52,8 @@ public class UserDetailPage extends CsldBasePage {
     GameService gameService;
     @SpringBean
     RatingService ratingService;
+
+    private ModalWindow createNewsModal;
 
     private class UserCommentsModel extends LoadableDetachableModel<List<Comment>> {
 
@@ -126,7 +129,11 @@ public class UserDetailPage extends CsldBasePage {
 
         add(new PersonDetailPanel("personDetail", (IModel<CsldUser>)getDefaultModel()));
 
-        add(new BookmarkablePageLink<UpdateUserPage>("updateUserLink", UpdateUserPage.class));
+        BookmarkablePageLink updateUserLink = new BookmarkablePageLink<UpdateUserPage>("updateUserLink", UpdateUserPage.class);
+        updateUserLink.setVisibilityAllowed(CsldAuthenticatedWebSession.get().getLoggedUser() != null);
+        add(updateUserLink);
+
+        add(new NewsListPanel("news", user.getId()));
 
         add(new CommentsListPanel("comments", new UserCommentsModel(), true));
 
@@ -161,6 +168,29 @@ public class UserDetailPage extends CsldBasePage {
                     playedGames.add(new GameWithoutRating(played.getPlayedBy()));
                 }
             }
+        }
+
+        createNewsModal = new ModalWindow("createNews");
+        createNewsModal.setTitle("Novinky");
+        createNewsModal.setCookieName("create-news");
+        add(createNewsModal);
+
+        AjaxLink createLink = new AjaxLink("createNewsLink") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                createNewsModal.setContent(new CreateOrUpdateNewsPanel(createNewsModal.getContentId()){
+                    @Override
+                    protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
+                        super.onCsldAction(target, form);
+                        createNewsModal.close(target);
+                    }
+                });
+                createNewsModal.show(target);
+            }
+        };
+        add(createLink);
+        if(logged == null || !user.getId().equals(logged.getId())) {
+            createLink.setVisibilityAllowed(false);
         }
 
         // Add player games

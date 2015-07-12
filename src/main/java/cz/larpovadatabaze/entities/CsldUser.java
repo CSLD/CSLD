@@ -269,6 +269,17 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable, I
         this.commented = commented;
     }
 
+    private List<News> news;
+
+    @OneToMany(mappedBy = "author")
+    public List<News> getNews() {
+        return news;
+    }
+
+    public void setNews(List<News> news) {
+        this.news = news;
+    }
+
     private String defaultLang;
 
     public void setDefaultLang(String defaultLang) {

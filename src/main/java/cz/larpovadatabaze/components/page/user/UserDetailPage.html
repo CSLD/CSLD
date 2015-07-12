@@ -1,4 +1,6 @@
 <wicket:extend xmlns:wicket="http://wicket.apache.org">
+    <div wicket:id="createNews"></div>
+
     <div class="profile_bar">
         <div class="container">
             <div class="row">
@@ -64,6 +66,10 @@
                             -->
                         </div>
 
+                        <div wicket:id="news">
+
+                        </div>
+
                         <div wicket:id="comments">
                             <!--
                             This panel is found in package: cz.larpovadatabaze.components.panel.game.CommentsListPanel.html
@@ -78,6 +84,9 @@
 
 
             <div class="col-md-3 game-meta">
+                <div class="row add-news-btn">
+                    <a wicket:id="createNewsLink"><wicket:message key="news.add"></wicket:message></a>
+                </div>
 
                 <div class="row">
 
