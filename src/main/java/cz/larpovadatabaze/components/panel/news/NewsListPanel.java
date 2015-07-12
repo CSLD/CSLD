@@ -45,12 +45,15 @@ public class NewsListPanel extends Panel {
             News news = item.getModelObject();
             CsldUser author = news.getAuthor();
 
+            // Create fragment
             Fragment f = new Fragment("pieceOfNews", "newsFragment", NewsListPanel.this);
             item.add(f);
 
+            // News wrapper
             WebMarkupContainer newsWrapper = new WebMarkupContainer("newsWrapper");
             f.add(newsWrapper);
 
+            // Content
             Label newsContent = new Label("newsContent", Model.of(news.getText()));
             newsContent.setEscapeModelStrings(false);
             newsWrapper.add(newsContent);
@@ -66,12 +69,15 @@ public class NewsListPanel extends Panel {
 
             PageParameters userParams = new PageParameters();
             userParams.add("id", author.getId());
+
+            // Link and name
             final BookmarkablePageLink<CsldBasePage> newsCreatorLink =
                     new BookmarkablePageLink<CsldBasePage>("newsCreatorLink", UserDetailPage.class, userParams);
             Label commenterName = new Label("newsCreatorName", Model.of(author.getPerson().getNickNameView()));
             newsCreatorLink.add(commenterName);
             f.add(newsCreatorLink);
 
+            // News date
             SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy");
             Date dateOfPublish = new Date();
             dateOfPublish.setTime(news.getAdded().getTime());
