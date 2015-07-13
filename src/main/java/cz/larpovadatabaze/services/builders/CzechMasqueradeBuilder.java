@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.*;
 
 /**
@@ -48,9 +47,9 @@ public class CzechMasqueradeBuilder {
         List<CsldUser> authors = new ArrayList<CsldUser>();
         Collections.addAll(authors, editor, administrator);
         firstMasquerade = persistenceStore.game("Masquerade 1", "First try to bring Masquerade into the Czech " +
-                        "republic", "cs", user, authors, masqueradeGamesLabels, Timestamp.from(Instant.now()));
+                        "republic", "cs", user, authors, masqueradeGamesLabels, new Timestamp(new Date().getTime()));
         secondMasquerade = persistenceStore.game("Masquerade 2", "Second try to bring Masquerade into the Czech " +
-                "republic", "cs", editor, authors, masqueradeGamesLabels, Timestamp.from(Instant.now()));
+                "republic", "cs", editor, authors, masqueradeGamesLabels, new Timestamp(new Date().getTime()));
 
         persistenceStore.comment(administrator, firstMasquerade, "I liked it");
         persistenceStore.comment(editor, secondMasquerade, "There were some flwas but overally likeable game.");
