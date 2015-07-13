@@ -833,6 +833,7 @@ div.recent-game-players{
     height: 290px;
     width: auto;
     border-radius: 4px;
+    margin: 0 auto;
 }
 .owl-pagination{
     display: none;
