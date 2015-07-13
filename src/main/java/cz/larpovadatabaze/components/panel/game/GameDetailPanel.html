@@ -57,12 +57,17 @@
                 <div class="line"></div>
                 <wicket:container wicket:id="description" />
                 <div class="line"></div>
-                <p class="tags">
-                    <wicket:container wicket:id="socialShareButtons" />
+                <p class="tags row">
+                    <div class="col-md-8 col-sm-6 col-xs-12">
+                        <wicket:container wicket:id="labels">
+                            <a href="#" class="btn btn-default btn-xs" wicket:id="link"><wicket:container wicket:id="label" /></a>
+                        </wicket:container>
+                    </div>
 
-                    <wicket:container wicket:id="labels">
-                        <a href="#" class="btn btn-default btn-xs" wicket:id="link"><wicket:container wicket:id="label" /></a>
-                    </wicket:container>
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                        <wicket:container wicket:id="socialShareButtons" />
+                    </div>
+
                 </p>
             </div>
         </div>
