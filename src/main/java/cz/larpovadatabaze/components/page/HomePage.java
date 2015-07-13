@@ -1,9 +1,7 @@
 package cz.larpovadatabaze.components.page;
 
-import cz.larpovadatabaze.components.panel.news.NewsListPanel;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -12,6 +10,7 @@ import cz.larpovadatabaze.components.panel.home.LarpCzCalendarPanel;
 import cz.larpovadatabaze.components.panel.home.LastCommentsPanel;
 import cz.larpovadatabaze.components.panel.home.RecentGamesPanel;
 import cz.larpovadatabaze.components.panel.home.RecentPhotosPanel;
+import cz.larpovadatabaze.components.panel.news.NewsListPanel;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.lang.Translator;
 import cz.larpovadatabaze.services.PhotoService;
@@ -45,8 +44,6 @@ public class HomePage extends CsldBasePage {
         add(new NewsListPanel("news"));
 
         add(new RecentPhotosPanel("recentPhotos"));
-
-        add(new WebMarkupContainer("news").setVisible(false));
     }
 
     @Override
