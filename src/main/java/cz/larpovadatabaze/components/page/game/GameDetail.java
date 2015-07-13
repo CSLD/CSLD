@@ -1,8 +1,5 @@
 package cz.larpovadatabaze.components.page.game;
 
-import cz.larpovadatabaze.components.panel.game.*;
-import cz.larpovadatabaze.lang.LanguageSolver;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -56,6 +53,7 @@ import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Video;
 import cz.larpovadatabaze.lang.LanguageSolver;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.HbUtils;
@@ -254,7 +252,7 @@ public class GameDetail extends CsldBasePage {
             // Send main picture
             Fragment f = new Fragment(id, "mainPicture", this);
 
-            f.add(new NonCachingImage("mainPicture", imageService.getImageResource(game.getCoverImage(), null)));
+            f.add(new NonCachingImage("mainPicture", imageService.getImageResource(game.getCoverImage(), game.getDefaultImage())));
 
             return f;
         }

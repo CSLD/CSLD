@@ -349,4 +349,18 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
                 .createCriteria("language")
                 .add(Restrictions.in("language", languages));
     }
+
+    public List<Game> getGamesWithAdvertisements(List<Locale> locales) {
+        Session session = sessionFactory.getCurrentSession();
+
+        DetachedCriteria dc = new GameBuilder().build();
+
+        addLanguageRestriction(dc, locales);
+        dc.add(Restrictions.eq("showInAdvertisements", Boolean.TRUE));
+        dc.add(Restrictions.isNotNull("coverImage"));
+
+        Criteria criteria = dc.getExecutableCriteria(session);
+
+        return criteria.list();
+    }
 }

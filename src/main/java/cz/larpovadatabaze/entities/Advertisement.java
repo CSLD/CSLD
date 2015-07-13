@@ -1,5 +1,7 @@
 package cz.larpovadatabaze.entities;
 
+import org.apache.wicket.request.resource.IResource;
+
 import java.io.Serializable;
 
 /**
@@ -16,7 +18,12 @@ public class Advertisement implements Serializable {
     /**
      * Image of the advertisement
      */
-    private String image;
+    private IResource image;
+
+    public Advertisement(Integer gameId, IResource image) {
+        this.gameId = gameId;
+        this.image = image;
+    }
 
     public Integer getGameId() {
         return gameId;
@@ -26,11 +33,11 @@ public class Advertisement implements Serializable {
         this.gameId = gameId;
     }
 
-    public String getImage() {
+    public IResource getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(IResource image) {
         this.image = image;
     }
 }

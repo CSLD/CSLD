@@ -10,7 +10,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
 
 import java.util.ArrayList;
@@ -24,63 +24,26 @@ import cz.larpovadatabaze.components.page.OwlCarouselResourceReference;
 import cz.larpovadatabaze.components.page.game.CreateOrUpdateGamePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.entities.Advertisement;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.ImageService;
 
 /**
  * User: Michal Kara Date: 7.3.15 Time: 18:43
  */
 public class AdvertisementPanel extends AbstractCsldPanel<List<Advertisement>> {
 
-    /**
-     * Model to load advertisements
-     */
-    private static class AdvertisementModel extends LoadableDetachableModel<List<Advertisement>> {
-
-        @Override
-        protected List<Advertisement> load() {
-            /**
-             * TODO - load from somewhere - TODO
-             */
-            List<Advertisement> res = new ArrayList<Advertisement>();
-
-            Advertisement a1 = new Advertisement();
-            a1.setGameId(1);
-            a1.setImage("games/ld-header-01.jpg");
-            res.add(a1);
-
-            Advertisement a2 = new Advertisement();
-            a2.setGameId(2);
-            a2.setImage("games/ld-header-02.jpg");
-            res.add(a2);
-
-            Advertisement a3 = new Advertisement();
-            a3.setGameId(3);
-            a3.setImage("games/ld-header-03.jpg");
-            res.add(a3);
-
-            Advertisement a4 = new Advertisement();
-            a4.setGameId(4);
-            a4.setImage("games/ld-header-04.jpg");
-            res.add(a4);
-
-            Advertisement a5 = new Advertisement();
-            a5.setGameId(5);
-            a5.setImage("games/ld-header-05.jpg");
-            res.add(a5);
-
-            Advertisement a6 = new Advertisement();
-            a6.setGameId(6);
-            a6.setImage("games/ld-header-06.jpg");
-            res.add(a6);
-
-
-            return res;
-        }
-    }
-
     private WebMarkupContainer carousel;
 
+    @SpringBean
+    private GameService gameService;
+
+    @SpringBean
+    private ImageService imageService;
+
     public AdvertisementPanel(String id) {
-        super(id, new AdvertisementModel());
+        super(id);
+        setDefaultModel(new AdvertisementModel());
     }
 
     @Override
@@ -101,13 +64,20 @@ public class AdvertisementPanel extends AbstractCsldPanel<List<Advertisement>> {
                 BookmarkablePageLink<CsldBasePage> link = new BookmarkablePageLink<CsldBasePage>("link", GameDetail.class, pp);
                 item.add(link);
 
-                // Add image TODO - make reference some other way - TODO
-                link.add(new Image("image", new PackageResourceReference(getClass(), item.getModelObject().getImage())));
+                // Add image
+                link.add(new Image("image", item.getModelObject().getImage()));
             }
         });
 
         // Add add link
         add(new BookmarkablePageLink<CsldBasePage>("addGameLink", CreateOrUpdateGamePage.class));
+    }
+
+    @Override
+    protected void onConfigure() {
+        super.onConfigure();
+
+        setVisible(!getModelObject().isEmpty());
     }
 
     @Override
@@ -123,4 +93,22 @@ public class AdvertisementPanel extends AbstractCsldPanel<List<Advertisement>> {
         args.put("carouselId", carousel.getMarkupId());
         response.render(OnDomReadyHeaderItem.forScript(tt.asString(args)));
     }
+
+    /**
+     * Model to load advertisements
+     */
+    private class AdvertisementModel extends LoadableDetachableModel<List<Advertisement>> {
+
+        @Override
+        protected List<Advertisement> load() {
+
+            List<Advertisement> res = new ArrayList<Advertisement>();
+            for(Game g : gameService.getGamesWithAdvertisements()) {
+                res.add(new Advertisement(g.getId(), imageService.getImageResource(g.getCoverImage(), g.getDefaultImage())));
+            }
+
+            return res;
+        }
+    }
+
 }

@@ -739,6 +739,19 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     public void setFirst(int first) {
         this.first = first;
     }
+
+    private boolean showInAdvertisements;
+
+    @Column(name="show_in_advertisements")
+    @Basic
+    public boolean isShowInAdvertisements() {
+        return showInAdvertisements;
+    }
+
+    public void setShowInAdvertisements(boolean showInAdvertisements) {
+        this.showInAdvertisements = showInAdvertisements;
+    }
+
 }
 
 
