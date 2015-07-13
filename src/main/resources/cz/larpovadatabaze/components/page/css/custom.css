@@ -1623,6 +1623,7 @@ text-align: center;
 	position: absolute;
 }
 .sky-form .input input:focus + .tooltip,
+.sky-form .input input[type=file]:hover + .tooltip,
 .sky-form .textarea textarea:focus + .tooltip {
 	opacity: 1;	
 }
@@ -1712,8 +1713,8 @@ text-align: center;
 	border-left: 4px solid transparent;
 }
 .sky-form .input input:focus + .tooltip-bottom-right,
+.sky-form .input:hover input[type=file] + .tooltip-bottom-right,
 .sky-form .textarea textarea:focus + .tooltip-bottom-right {
-	right: 0;
 	left: auto;
 	margin-top: 5px;
 }
