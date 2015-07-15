@@ -97,7 +97,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         final ValidatableForm<Game> createOrUpdateGame = new ValidatableForm<Game>("addGame", new CompoundPropertyModel<>(getModel()));
         createOrUpdateGame.setOutputMarkupId(true);
         createOrUpdateGame.setMultiPart(true);
-        createOrUpdateGame.setMaxSize(Bytes.kilobytes(1024));
+        createOrUpdateGame.setMaxSize(Bytes.megabytes(5));
 
         // Messages
         ComponentFeedbackMessageFilter filter = new ComponentFeedbackMessageFilter(createOrUpdateGame);
