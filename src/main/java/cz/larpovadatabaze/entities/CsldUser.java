@@ -1,17 +1,34 @@
 package cz.larpovadatabaze.entities;
 
-import cz.larpovadatabaze.api.Identifiable;
-import cz.larpovadatabaze.security.CsldRoles;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import cz.larpovadatabaze.api.Identifiable;
+import cz.larpovadatabaze.security.CsldRoles;
 
 /**
  *
@@ -327,7 +344,7 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable, I
         if(getPerson().getEmail() == null) {
             return null;
         }
-        return String.format("%s %s, %s", person.getNickname(), person.getName(),  person.getEmail());
+        return String.format("%s %s", person.getNickname(), person.getName());
     }
 
     public static CsldUser getEmptyUser() {
