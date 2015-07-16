@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.components.page.user;
 
 import cz.larpovadatabaze.components.panel.news.CreateOrUpdateNewsPanel;
+import cz.larpovadatabaze.components.panel.news.NewsDetailsListPanel;
 import cz.larpovadatabaze.components.panel.news.NewsListPanel;
 import cz.larpovadatabaze.entities.*;
 import org.apache.wicket.RestartResponseException;
@@ -133,7 +134,7 @@ public class UserDetailPage extends CsldBasePage {
         updateUserLink.setVisibilityAllowed(CsldAuthenticatedWebSession.get().getLoggedUser() != null);
         add(updateUserLink);
 
-        add(new NewsListPanel("news", user.getId()));
+        add(new NewsDetailsListPanel("news", user.getId()));
 
         add(new CommentsListPanel("comments", new UserCommentsModel(), true));
 
