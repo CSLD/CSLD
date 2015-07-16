@@ -16,7 +16,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.dao.GameDAO;
 import cz.larpovadatabaze.dao.GameHasLanguageDao;
 import cz.larpovadatabaze.entities.CsldGroup;
@@ -33,7 +32,6 @@ import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.services.ImageService;
-import cz.larpovadatabaze.utils.Strings;
 
 /**
  *
@@ -253,15 +251,6 @@ public class GameServiceImpl implements GameService {
     public boolean isHidden(int gameId) {
         Game game = getById(gameId);
         return game != null && game.isDeleted();
-    }
-
-    @Override
-    public String getTextStateOfGame(int gameId) {
-        if(isHidden(gameId)) {
-            return Strings.getResourceString(CsldBasePage.class, "game.show");
-        } else {
-            return Strings.getResourceString(CsldBasePage.class, "game.delete");
-        }
     }
 
     @Override

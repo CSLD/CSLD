@@ -7,8 +7,7 @@ import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-
-import cz.larpovadatabaze.utils.Strings;
+import org.apache.wicket.model.StringResourceModel;
 
 /**
  * User: Michal Kara Date: 28.6.15 Time: 8:39
@@ -62,7 +61,7 @@ public class CsldFeedbackMessageLabel extends Label {
             }
             else {
                 setVisible(true);
-                ((IModel<String>)getDefaultModel()).setObject(StringEscapeUtils.escapeHtml(Strings.getResourceString(getPage().getClass(), defaultKey)));
+                ((IModel<String>)getDefaultModel()).setObject(StringEscapeUtils.escapeHtml(new StringResourceModel(defaultKey, this, null).getString()));
             }
         }
         else {

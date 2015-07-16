@@ -67,14 +67,6 @@ public interface GameService extends GenericService<Game>, IIconReferenceProvide
     boolean isHidden(int gameId);
 
     /**
-     * Returns text version of hide/show game based on the game state.
-     *
-     * @param gameId Id of the game
-     * @return String representing text to show/hide game
-     */
-    String getTextStateOfGame(int gameId);
-
-    /**
      * It changes state of the game from hidden to shown and back.
      *
      * @param gameId Id which state will be shown.

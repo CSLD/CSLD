@@ -111,7 +111,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <p>&copy; 2013&ndash;2015 Larpová databáze / <a href="#">Mapa webu</a> / <a href="#">Ochrana osobních údajů</a>
+                <p><wicket:message key="copyright" /> <!--/ <a href="#">Mapa webu</a> / <a href="#">Ochrana osobních údajů</a> -->
                 </p>
             </div>
 
@@ -125,10 +125,11 @@
             <div class="col-md-3">
                 <ul class="footer-socials list-inline">
                     <li>
-                        <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Facebook">
+                        <a href="https://www.facebook.com/groups/larpovadatabaze/" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Facebook">
                             <i class="fa fa-facebook"></i>
                         </a>
                     </li>
+                    <!--
                     <li>
                         <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Skype">
                             <i class="fa fa-skype"></i>
@@ -159,12 +160,13 @@
                             <i class="fa fa-dribbble"></i>
                         </a>
                     </li>
+                    -->
                 </ul>
             </div>
             <!-- End Social Links -->
 
         </div>
-        <p class="text-muted signature">Tým LD:&nbsp; Jakub Balhar &bull; Michal Havelka &bull; Petr Kuběnský &bull; Filip Appl &bull; Tomáš Felcman &bull; Michal Kára</p>
+        <p class="text-muted signature"><wicket:message key="ldTeam" />&nbsp; Jakub Balhar &bull; Michal Havelka &bull; Petr Kuběnský &bull; Filip Appl &bull; Tomáš Felcman &bull; Michal Kára</p>
     </div>
 </footer>
 
