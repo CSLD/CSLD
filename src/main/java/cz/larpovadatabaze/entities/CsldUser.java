@@ -344,7 +344,13 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable, I
         if(getPerson().getEmail() == null) {
             return null;
         }
-        return String.format("%s %s", person.getNickname(), person.getName());
+
+        if (person.getNickname() == null) {
+            return person.getName();
+        }
+        else {
+            return String.format("%s %s", person.getNickname(), person.getName());
+        }
     }
 
     public static CsldUser getEmptyUser() {
