@@ -1,7 +1,7 @@
 package cz.larpovadatabaze.lang;
 
 import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Language;
+import cz.larpovadatabaze.entities.UserHasLanguages;
 import cz.larpovadatabaze.utils.UserUtils;
 
 import java.util.List;
@@ -22,8 +22,8 @@ public class DbSessionLanguageSolver implements LanguageSolver {
         List<Locale> allLocales = solveLang.getLanguagesForUser();
         CsldUser loggedUser = UserUtils.getLoggedUser();
         if(loggedUser != null) {
-            for(Language lang: loggedUser.getUserHasLanguages()){
-                allLocales.add(lang.getLanguage());
+            for(UserHasLanguages lang: loggedUser.getUserHasLanguages()){
+                allLocales.add(Locale.forLanguageTag(lang.getLanguage()));
             }
         }
         return allLocales;
@@ -34,8 +34,8 @@ public class DbSessionLanguageSolver implements LanguageSolver {
         List<String> allLocales = solveLang.getTextLangForUser();
         CsldUser loggedUser = UserUtils.getLoggedUser();
         if(loggedUser != null) {
-            for(Language lang: loggedUser.getUserHasLanguages()){
-                allLocales.add(lang.getLanguage().getLanguage());
+            for(UserHasLanguages lang: loggedUser.getUserHasLanguages()){
+                allLocales.add(lang.getLanguage());
             }
         }
         return allLocales;

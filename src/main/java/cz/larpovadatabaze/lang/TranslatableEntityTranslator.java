@@ -1,8 +1,5 @@
 package cz.larpovadatabaze.lang;
 
-import cz.larpovadatabaze.entities.Language;
-import org.apache.wicket.Session;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
@@ -12,12 +9,10 @@ import java.util.Locale;
  */
 public class TranslatableEntityTranslator implements Translator<TranslatableEntity> {
     private LanguageSolver whatLanguagesToUse;
-    private LocaleProvider localeProvider;
     private LanguageSolver actualLanguageProvider = new SessionLanguageSolver();
 
     public TranslatableEntityTranslator(LanguageSolver whatLanguagesToUse) {
         this.whatLanguagesToUse = whatLanguagesToUse;
-        localeProvider = new CodeLocaleProvider();
     }
 
     public TranslatableEntityTranslator(LanguageSolver whatLanguagesToUse, LanguageSolver actualLanguageProvider) {
@@ -54,7 +49,7 @@ public class TranslatableEntityTranslator implements Translator<TranslatableEnti
     private void translateUsingEntity(TranslatableEntity toTranslate, TranslationEntity translation) {
         toTranslate.setDescription(translation.getDescription());
         toTranslate.setName(translation.getName());
-        toTranslate.setLang(localeProvider.transformLocaleToName(translation.getLanguage().getLanguage()));
+        toTranslate.setLang(translation.getLanguage());
     }
 
     private void translateIntoDefault(TranslatableEntity toTranslate) {
@@ -68,7 +63,7 @@ public class TranslatableEntityTranslator implements Translator<TranslatableEnti
 
         for(TranslationEntity language: translations) {
             for(Locale availableLocale: otherAvailableLocales) {
-                if(language.getLanguage().equals(new Language(availableLocale))) {
+                if(language.getLanguage().equals(availableLocale.getLanguage())) {
                     translateUsingEntity(toTranslate, language);
                     return true;
                 }
@@ -78,7 +73,7 @@ public class TranslatableEntityTranslator implements Translator<TranslatableEnti
     }
 
     private boolean translateIntoCurrent(TranslatableEntity toTranslate){
-        Language actualLanguage = new Language(actualLanguageProvider.getLanguagesForUser().get(0));
+        String actualLanguage = actualLanguageProvider.getLanguagesForUser().get(0).getLanguage();
         List<TranslationEntity> translationsForGame = toTranslate.getLanguages();
         for(TranslationEntity language: translationsForGame) {
             if(language.getLanguage() != null &&

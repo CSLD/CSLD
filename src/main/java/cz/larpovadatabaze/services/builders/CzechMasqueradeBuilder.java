@@ -29,8 +29,6 @@ public class CzechMasqueradeBuilder {
     public Label dramatic;
 
     public void build() {
-        persistenceStore.language(Locale.forLanguageTag("cs"));
-
         String mailTemplate = "%s@masquerade.test";
         administrator = persistenceStore.user(String.format(mailTemplate, "administrator"), "Administrator",
                 "Administrator", "Prague", "Administrator of Czech Masquerade group", CsldRoles.ADMIN.getRole(), "administrator");

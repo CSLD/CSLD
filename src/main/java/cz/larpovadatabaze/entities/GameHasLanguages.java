@@ -12,7 +12,7 @@ public class GameHasLanguages implements Serializable, TranslationEntity {
     private String name;
     private String description;
     private Game game;
-    private Language language;
+    private String language;
 
     @Column(
             name = "id",
@@ -51,6 +51,16 @@ public class GameHasLanguages implements Serializable, TranslationEntity {
         this.description = description;
     }
 
+    @Basic
+    @Column(name="language")
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String languageForGame) {
+        this.language = languageForGame;
+    }
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "id_game", referencedColumnName = "id", nullable = false)
     public Game getGame() {
@@ -59,15 +69,5 @@ public class GameHasLanguages implements Serializable, TranslationEntity {
 
     public void setGame(Game game) {
         this.game = game;
-    }
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "language", referencedColumnName = "language", nullable = false)
-    public Language getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(Language languageForGame) {
-        this.language = languageForGame;
     }
 }

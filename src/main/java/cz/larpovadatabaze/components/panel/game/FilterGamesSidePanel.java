@@ -17,11 +17,12 @@ import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.page.game.ListGamePage;
 import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.lang.CodeLocaleProvider;
 import cz.larpovadatabaze.lang.LocaleProvider;
 import cz.larpovadatabaze.models.FilterGame;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.LabelService;
+
+import static cz.larpovadatabaze.lang.AvailableLanguages.availableLocale;
 
 /**
  * It contains basic characteristics of the game and allows user to filter by them.
@@ -63,8 +64,7 @@ public class FilterGamesSidePanel extends AbstractCsldPanel<FilterGame> {
         filterGames.add(new FilterByLabelsPanel("otherLabels", labelService.getAuthorizedOptional(logged), false));
 
         // Languages
-        final LocaleProvider provider = new CodeLocaleProvider();
-        filterGames.add(new ListView<Locale>("languages", provider.availableLocale()) {
+        filterGames.add(new ListView<Locale>("languages", availableLocale()) {
             @Override
             protected void populateItem(ListItem<Locale> item) {
                 final Locale ourLocale = item.getModelObject();
@@ -101,7 +101,7 @@ public class FilterGamesSidePanel extends AbstractCsldPanel<FilterGame> {
                     }
                 });
 
-                item.add(new Label("label", provider.transformLocaleToName(item.getModelObject())));
+                item.add(new Label("label", item.getModelObject().getLanguage()));
             }
         });
 

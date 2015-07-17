@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.entities;
 
+import cz.larpovadatabaze.lang.*;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -25,12 +26,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import cz.larpovadatabaze.api.Identifiable;
-import cz.larpovadatabaze.lang.CodeLocaleProvider;
-import cz.larpovadatabaze.lang.DbSessionLanguageSolver;
-import cz.larpovadatabaze.lang.LocaleProvider;
-import cz.larpovadatabaze.lang.TranslatableEntity;
-import cz.larpovadatabaze.lang.TranslatableEntityTranslator;
-import cz.larpovadatabaze.lang.TranslationEntity;
 
 /**
  * Created by IntelliJ IDEA.
@@ -95,19 +90,17 @@ public class CsldGroup implements Serializable, Identifiable, IAutoCompletable, 
     public void setLang(String lang) {
         this.lang = lang;
         if(getGroupHasLanguages()  == null) {
-            setGroupHasLanguages(new ArrayList<GroupHasLanguage>());
+            setGroupHasLanguages(new ArrayList<>());
         }
-        LocaleProvider provider = new CodeLocaleProvider();
-        Locale actualLanguage = provider.transformToLocale(lang);
         for(GroupHasLanguage language: getGroupHasLanguages()) {
             // Ignore already added language.
-            if(language.getLanguage().getLanguage().equals(actualLanguage)){
+            if(language.getLanguage().equals(lang)){
                 return;
             }
         }
 
         defaultLanguage.setGroup(this);
-        defaultLanguage.setLanguage(new Language(lang));
+        defaultLanguage.setLanguage(lang);
         getGroupHasLanguages().add(defaultLanguage);
     }
 
@@ -219,7 +212,7 @@ public class CsldGroup implements Serializable, Identifiable, IAutoCompletable, 
         if(groupHasLanguages == null) {
             return null;
         }
-        return new ArrayList<TranslationEntity>(groupHasLanguages);
+        return new ArrayList<>(groupHasLanguages);
     }
 
     @Transient
@@ -240,13 +233,13 @@ public class CsldGroup implements Serializable, Identifiable, IAutoCompletable, 
      * It creates correctly initialized empty group
      * No surprises included.
      *
-     * @return
+     * @return Group with at least basic defaults.
      */
     public static CsldGroup getEmptyGroup() {
         CsldGroup emptyGroup = new CsldGroup();
-        emptyGroup.setAdministrators(new ArrayList<CsldUser>());
-        emptyGroup.setAuthorsOf(new ArrayList<Game>());
-        emptyGroup.setMembers(new ArrayList<GroupHasMember>());
+        emptyGroup.setAdministrators(new ArrayList<>());
+        emptyGroup.setAuthorsOf(new ArrayList<>());
+        emptyGroup.setMembers(new ArrayList<>());
         return emptyGroup;
     }
 }

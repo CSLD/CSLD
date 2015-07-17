@@ -1,19 +1,23 @@
 package cz.larpovadatabaze.components.panel.user;
 
+import cz.larpovadatabaze.api.ValidatableForm;
+import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
+import cz.larpovadatabaze.components.common.AbstractCsldPanel;
+import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Image;
+import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.FileService;
+import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
+import cz.larpovadatabaze.utils.Pwd;
+import cz.larpovadatabaze.validator.UniqueUserValidator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.EmailTextField;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.FormComponent;
-import org.apache.wicket.markup.html.form.ListMultipleChoice;
-import org.apache.wicket.markup.html.form.PasswordTextField;
-import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
@@ -24,26 +28,12 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-import cz.larpovadatabaze.api.ValidatableForm;
-import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
-import cz.larpovadatabaze.components.common.AbstractCsldPanel;
-import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Image;
-import cz.larpovadatabaze.entities.Language;
-import cz.larpovadatabaze.lang.CodeLocaleProvider;
-import cz.larpovadatabaze.lang.LocaleProvider;
-import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.FileService;
-import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
-import cz.larpovadatabaze.utils.Pwd;
-import cz.larpovadatabaze.validator.UniqueUserValidator;
-import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
+import static cz.larpovadatabaze.lang.AvailableLanguages.availableLocaleNames;
 
 /**
  * Panel used for registering new user or adding new Author into the database.
@@ -61,7 +51,7 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
     @SuppressWarnings("unused")
     private String passwordAgain;
     @SuppressWarnings("unused")
-    private List<FileUpload> images = new ArrayList<FileUpload>();
+    private List<FileUpload> images = new ArrayList<>();
 
     private final String resourceBase;
     private final boolean isEdit;
@@ -79,7 +69,7 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
             this.resourceBase = "user.edit";
             isEdit = true;
         }
-        setDefaultModel(new CompoundPropertyModel<CsldUser>(user));
+        setDefaultModel(new CompoundPropertyModel<>(user));
         oldPassword = getModelObject().getPassword();
     }
 
@@ -89,7 +79,7 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
 
 
         final ValidatableForm<CsldUser> createOrUpdateUser =
-                new ValidatableForm<CsldUser>("addUser", getModel());
+                new ValidatableForm<>("addUser", getModel());
         createOrUpdateUser.setMultiPart(true);
         createOrUpdateUser.setOutputMarkupId(true);
 
@@ -127,17 +117,13 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
         DateTextField birthDate = new DateTextField("person.birthDate", "dd.MM.yyyy");
         createOrUpdateUser.add(addFeedbackPanel(birthDate, createOrUpdateUser, "birthDateFeedback", "form.description.dateOfBirth"));
 
-        LocaleProvider locales = new CodeLocaleProvider();
-        List<String> availableLocales = new ArrayList<String>();
-        for(Locale locale: locales.availableLocale()){
-            availableLocales.add(locale.getLanguage());
-        }
+        List<String> availableLocales = new ArrayList<String>(availableLocaleNames());
         DropDownChoice<String> defaultLanguage = new DropDownChoice<String>("defaultLang", availableLocales);
         createOrUpdateUser.add(defaultLanguage);
 
-        final ListMultipleChoice<Language> changeLocale =
-                new ListMultipleChoice<Language>("userHasLanguages",
-                        new CodeLocaleProvider().availableLanguages());
+        final ListMultipleChoice<String> changeLocale =
+                new ListMultipleChoice<>("userHasLanguages",
+                        availableLocaleNames());
         createOrUpdateUser.add(addFeedbackPanel(changeLocale, createOrUpdateUser, "userHasLanguagesFeedback", "form.description.userHasLanguages"));
 
         if (isEdit) {

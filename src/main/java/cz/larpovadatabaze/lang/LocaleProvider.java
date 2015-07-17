@@ -1,7 +1,5 @@
 package cz.larpovadatabaze.lang;
 
-import cz.larpovadatabaze.entities.Language;
-
 import java.util.List;
 import java.util.Locale;
 
@@ -21,7 +19,7 @@ public interface LocaleProvider {
      *
      * @return List of available languages
      */
-    List<Language> availableLanguages();
+    List<String> availableLanguages();
 
     /**
      * Transforms locale to its string representation.

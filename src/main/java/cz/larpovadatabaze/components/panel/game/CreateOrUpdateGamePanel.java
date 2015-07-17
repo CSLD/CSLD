@@ -1,30 +1,5 @@
 package cz.larpovadatabaze.components.panel.game;
 
-import org.apache.wicket.ajax.AjaxEventBehavior;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
-import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.RequiredTextField;
-import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.lang.Bytes;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
-
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
@@ -35,16 +10,8 @@ import cz.larpovadatabaze.components.common.multiac.MultiAutoCompleteComponent;
 import cz.larpovadatabaze.components.panel.CoverImagePanel;
 import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
 import cz.larpovadatabaze.components.panel.group.CreateOrUpdateGroupPanel;
-import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.GameHasLanguages;
-import cz.larpovadatabaze.entities.Label;
-import cz.larpovadatabaze.entities.Language;
-import cz.larpovadatabaze.entities.Video;
-import cz.larpovadatabaze.lang.CodeLocaleProvider;
+import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.lang.LanguageSolver;
-import cz.larpovadatabaze.lang.LocaleProvider;
 import cz.larpovadatabaze.lang.SessionLanguageSolver;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.security.CsldRoles;
@@ -55,7 +22,27 @@ import cz.larpovadatabaze.services.VideoService;
 import cz.larpovadatabaze.utils.UserUtils;
 import cz.larpovadatabaze.validator.AtLeastOneRequiredLabelValidator;
 import cz.larpovadatabaze.validator.NonEmptyAuthorsValidator;
+import org.apache.wicket.ajax.AjaxEventBehavior;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.*;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.lang.Bytes;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static cz.larpovadatabaze.lang.AvailableLanguages.availableLocaleNames;
 
 /**
  * This panel is used when you want to create or update game in the database.
@@ -72,7 +59,6 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
     GroupService groupService;
     @SpringBean
     VideoService videoService;
-    LocaleProvider localeProvider = new CodeLocaleProvider();
     LanguageSolver sessionLanguageSolver = new SessionLanguageSolver();
 
     private ChooseLabelsPanel chooseLabels;
@@ -149,12 +135,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         createOrUpdateGame.add(new CsldFeedbackMessageLabel("yearFeedback", year, "form.game.yearHint"));
 
         // Language
-        List<String> availableLanguages = new ArrayList<String>();
-        LocaleProvider provider = new CodeLocaleProvider();
-        List<Locale> availableLocale = provider.availableLocale();
-        for(Locale available: availableLocale) {
-            availableLanguages.add(provider.transformLocaleToName(available));
-        }
+        List<String> availableLanguages = new ArrayList<String>(availableLocaleNames());
         final DropDownChoice<String> lang = new DropDownChoice<String>("lang", availableLanguages);
         createOrUpdateGame.add(lang);
         createOrUpdateGame.add(new CsldFeedbackMessageLabel("langFeedback", lang, null));
@@ -285,27 +266,26 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
                 }
 
                 //Process language
-                Locale toBeSaved;
+                String toBeSaved;
                 if(game.getLang() != null) {
-                    toBeSaved = localeProvider.transformToLocale(game.getLang());
+                    toBeSaved = game.getLang();
                 } else {
-                    game.setAvailableLanguages(new ArrayList<GameHasLanguages>());
-                    toBeSaved = sessionLanguageSolver.getLanguagesForUser().get(0);
+                    game.setAvailableLanguages(new ArrayList<>());
+                    toBeSaved = sessionLanguageSolver.getTextLangForUser().get(0);
                 }
 
                 if(game.getAvailableLanguages().isEmpty()) {
                     GameHasLanguages firstLanguage = new GameHasLanguages();
                     firstLanguage.setGame(game);
-                    firstLanguage.setLanguage(new Language(toBeSaved));
+                    firstLanguage.setLanguage(toBeSaved);
                     firstLanguage.setName(game.getName());
                     firstLanguage.setDescription(game.getDescription());
                     game.getAvailableLanguages().add(firstLanguage);
                 } else {
                     // Find existing locale
                     List<GameHasLanguages> actualLanguages = game.getAvailableLanguages();
-                    Language actualToSave = new Language(toBeSaved);
                     for(GameHasLanguages language: actualLanguages) {
-                        if(language.getLanguage().equals(actualToSave)){
+                        if(language.getLanguage().equals(toBeSaved)){
                             language.setName(game.getName());
                             language.setDescription(game.getDescription());
                         }
@@ -415,7 +395,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         IValidator<CsldGroup> groupIValidator = new GenericValidator<CsldGroup>(groupService);
         */
 
-        MultiAutoCompleteComponent<CsldGroup> groups = new MultiAutoCompleteComponent<CsldGroup>("groupAuthor", new PropertyModel<List<CsldGroup>>(getModelObject(), "groupAuthor"), new IMultiAutoCompleteSource<CsldGroup>() {
+        MultiAutoCompleteComponent<CsldGroup> groups = new MultiAutoCompleteComponent<>("groupAuthor", new PropertyModel<List<CsldGroup>>(getModelObject(), "groupAuthor"), new IMultiAutoCompleteSource<CsldGroup>() {
             @Override
             public Collection<CsldGroup> getChoices(String input) {
                 return groupService.getFirstChoices(input, AUTOCOMPLETE_CHOICES);

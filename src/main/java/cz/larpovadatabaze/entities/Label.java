@@ -1,17 +1,17 @@
 package cz.larpovadatabaze.entities;
 
 import cz.larpovadatabaze.api.Identifiable;
-import cz.larpovadatabaze.lang.*;
+import cz.larpovadatabaze.lang.DbSessionLanguageSolver;
+import cz.larpovadatabaze.lang.TranslatableEntity;
+import cz.larpovadatabaze.lang.TranslatableEntityTranslator;
+import cz.larpovadatabaze.lang.TranslationEntity;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  *
@@ -89,19 +89,17 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
     public void setLang(String lang) {
         this.lang = lang;
         if(getLabelHasLanguages()  == null) {
-            setLabelHasLanguages(new ArrayList<LabelHasLanguages>());
+            setLabelHasLanguages(new ArrayList<>());
         }
-        LocaleProvider provider = new CodeLocaleProvider();
-        Locale actualLanguage = provider.transformToLocale(lang);
         for(LabelHasLanguages language: getLabelHasLanguages()) {
             // Ignore already added language.
-            if(language.getLanguage().getLanguage().equals(actualLanguage)){
+            if(language.getLanguage().equals(lang)){
                 return;
             }
         }
 
         defaultLanguage.setLabel(this);
-        defaultLanguage.setLanguage(new Language(lang));
+        defaultLanguage.setLanguage(lang);
         getLabelHasLanguages().add(defaultLanguage);
     }
 
@@ -200,7 +198,7 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
         if(labelHasLanguages == null) {
             return null;
         }
-        return new ArrayList<TranslationEntity>(labelHasLanguages);
+        return new ArrayList<>(labelHasLanguages);
     }
 
     @Override

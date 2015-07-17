@@ -93,10 +93,10 @@ http://www.springframework.org/schema/jee http://www.springframework.org/schema/
                 <value>cz.larpovadatabaze.entities.Rating</value>
                 <value>cz.larpovadatabaze.entities.UserPlayedGame</value>
                 <value>cz.larpovadatabaze.entities.Video</value>
-                <value>cz.larpovadatabaze.entities.Language</value>
                 <value>cz.larpovadatabaze.entities.GameHasLanguages</value>
                 <value>cz.larpovadatabaze.entities.LabelHasLanguages</value>
                 <value>cz.larpovadatabaze.entities.GroupHasLanguage</value>
+                <value>cz.larpovadatabaze.entities.UserHasLanguages</value>
                 <value>cz.larpovadatabaze.entities.News</value>
 			</list>
 		</property>

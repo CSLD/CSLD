@@ -1,5 +1,14 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import cz.larpovadatabaze.api.ValidatableForm;
+import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Label;
+import cz.larpovadatabaze.entities.LabelHasLanguages;
+import cz.larpovadatabaze.lang.LanguageSolver;
+import cz.larpovadatabaze.lang.SessionLanguageSolver;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.services.LabelService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -12,20 +21,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-import cz.larpovadatabaze.api.ValidatableForm;
-import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Label;
-import cz.larpovadatabaze.entities.LabelHasLanguages;
-import cz.larpovadatabaze.entities.Language;
-import cz.larpovadatabaze.lang.CodeLocaleProvider;
-import cz.larpovadatabaze.lang.LanguageSolver;
-import cz.larpovadatabaze.lang.LocaleProvider;
-import cz.larpovadatabaze.lang.SessionLanguageSolver;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.LabelService;
+import static cz.larpovadatabaze.lang.AvailableLanguages.availableLocaleNames;
 
 /**
  * It is used for creating and updating Labels for games.
@@ -33,7 +30,6 @@ import cz.larpovadatabaze.services.LabelService;
 public abstract class CreateOrUpdateLabelPanel extends Panel {
     @SpringBean
     LabelService labelService;
-    LocaleProvider localeProvider = new CodeLocaleProvider();
     LanguageSolver sessionLanguageSolver = new SessionLanguageSolver();
 
     public CreateOrUpdateLabelPanel(String id){
@@ -47,22 +43,17 @@ public abstract class CreateOrUpdateLabelPanel extends Panel {
         }
 
         final ValidatableForm<Label> createOrUpdateLabel =
-                new ValidatableForm<Label>("createOrUpdateLabel", new CompoundPropertyModel<Label>(label)){};
+                new ValidatableForm<Label>("createOrUpdateLabel", new CompoundPropertyModel<>(label)){};
 
-        TextField<String> name = new TextField<String>("name");
+        TextField<String> name = new TextField<>("name");
         name.setRequired(true);
         createOrUpdateLabel.add(name);
         createOrUpdateLabel.add(new CsldFeedbackMessageLabel("nameFeedback", name, null));
 
         createOrUpdateLabel.add(new TextArea<String>("description"));
-        List<String> availableLanguages = new ArrayList<String>();
-        LocaleProvider provider = new CodeLocaleProvider();
-        List<Locale> availableLocale = provider.availableLocale();
-        for(Locale available: availableLocale) {
-            availableLanguages.add(provider.transformLocaleToName(available));
-        }
+        List<String> availableLanguages = new ArrayList<>(availableLocaleNames());
         final DropDownChoice<String> changeLocale =
-                new DropDownChoice<String>("lang", availableLanguages);
+                new DropDownChoice<>("lang", availableLanguages);
         createOrUpdateLabel.add(changeLocale);
 
         createOrUpdateLabel.add(new AjaxButton("submit"){
@@ -91,27 +82,26 @@ public abstract class CreateOrUpdateLabelPanel extends Panel {
     }
 
     private void processLanguage(Label label){
-        Locale toBeSaved;
-        if(label.getLang() != null) {
-            toBeSaved = localeProvider.transformToLocale(label.getLang());
+        String toBeSaved;
+        if(label.getLang() == null) {
+            label.setLabelHasLanguages(new ArrayList<>());
+            toBeSaved = sessionLanguageSolver.getTextLangForUser().get(0);
         } else {
-            label.setLabelHasLanguages(new ArrayList<LabelHasLanguages>());
-            toBeSaved = sessionLanguageSolver.getLanguagesForUser().get(0);
+            toBeSaved = label.getLang();
         }
 
         if(label.getLabelHasLanguages().isEmpty()) {
             LabelHasLanguages firstLanguage = new LabelHasLanguages();
             firstLanguage.setLabel(label);
-            firstLanguage.setLanguage(new Language(toBeSaved));
+            firstLanguage.setLanguage(toBeSaved);
             firstLanguage.setName(label.getName());
             firstLanguage.setDescription(label.getDescription());
             label.getLabelHasLanguages().add(firstLanguage);
         } else {
             // Find existing locale
             List<LabelHasLanguages> actualLanguages = label.getLabelHasLanguages();
-            Language actualToSave = new Language(toBeSaved);
             for(LabelHasLanguages language: actualLanguages) {
-                if(language.getLanguage().equals(actualToSave)){
+                if(language.getLanguage().equals(toBeSaved)){
                     language.setName(label.getName());
                     language.setDescription(label.getDescription());
                 }

@@ -27,11 +27,11 @@ import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.GameHasLanguages;
-import cz.larpovadatabaze.entities.Language;
-import cz.larpovadatabaze.lang.CodeLocaleProvider;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.utils.HbUtils;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
+
+import static cz.larpovadatabaze.lang.AvailableLanguages.availableLocaleNames;
 
 public class TranslateGame extends CsldBasePage {
     private static final String ID_PARAM = "id";
@@ -82,7 +82,7 @@ public class TranslateGame extends CsldBasePage {
             protected void populateItem(final ListItem<GameHasLanguages> item) {
                 GameHasLanguages language = item.getModelObject();
 
-                Form infoAboutLanguage = new Form<GameHasLanguages>("translation", new CompoundPropertyModel<GameHasLanguages>(language));
+                Form infoAboutLanguage = new Form<>("translation", new CompoundPropertyModel<>(language));
                 infoAboutLanguage.add(new TextField<String>("name"));
                 infoAboutLanguage.add(new TextArea<String>("description").add(new CSLDTinyMceBehavior()));
                 infoAboutLanguage.add(new Label("language"));
@@ -139,7 +139,7 @@ public class TranslateGame extends CsldBasePage {
         add(translationsShow);
 
         Form addLanguage = new Form("addLanguage");
-        final DropDownChoice<Language> actualLang = new DropDownChoice<Language>("language", Model.of(new Language()), new CodeLocaleProvider().availableLanguages());
+        final DropDownChoice<String> actualLang = new DropDownChoice<>("language", Model.of(""), availableLocaleNames());
         addLanguage.add(actualLang);
         addLanguage.add(new AjaxButton("addAnotherLanguage") {
             @Override

@@ -5,11 +5,8 @@ import cz.larpovadatabaze.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.dao.builder.IBuilder;
 import cz.larpovadatabaze.dto.UserRatesOwnGameDto;
 import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Language;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
@@ -19,8 +16,6 @@ import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,11 +23,9 @@ import java.util.List;
  */
 @Repository
 public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
-    @Autowired private LanguageDao languageDao;
-
     @Override
     public IBuilder getBuilder() {
-        return new GenericBuilder<CsldUser>(CsldUser.class);
+        return new GenericBuilder<>(CsldUser.class);
     }
 
     public int getAmountOfAuthors() {

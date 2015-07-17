@@ -29,8 +29,6 @@ import cz.larpovadatabaze.components.panel.search.SearchBoxPanel;
 import cz.larpovadatabaze.components.panel.user.AdminPanel;
 import cz.larpovadatabaze.components.panel.user.LoggedBoxPanel;
 import cz.larpovadatabaze.components.panel.user.LoginBoxPanel;
-import cz.larpovadatabaze.lang.CodeLocaleProvider;
-import cz.larpovadatabaze.lang.LocaleProvider;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import wicket.contrib.tinymce.settings.TinyMCESettings;
 
@@ -38,8 +36,6 @@ import wicket.contrib.tinymce.settings.TinyMCESettings;
  * Base page from which all other pages are derived.
  */
 public abstract class CsldBasePage extends WebPage {
-    private LocaleProvider locales = new CodeLocaleProvider();
-
     public CsldBasePage() {
     }
 

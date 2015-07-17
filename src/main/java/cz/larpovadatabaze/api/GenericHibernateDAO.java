@@ -1,7 +1,6 @@
 package cz.larpovadatabaze.api;
 
 import cz.larpovadatabaze.dao.builder.IBuilder;
-import cz.larpovadatabaze.entities.Language;
 import org.hibernate.*;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Example;
@@ -9,7 +8,6 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 public abstract class GenericHibernateDAO<T, ID extends Serializable>

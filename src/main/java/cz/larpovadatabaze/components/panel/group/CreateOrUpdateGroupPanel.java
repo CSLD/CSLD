@@ -1,5 +1,15 @@
 package cz.larpovadatabaze.components.panel.group;
 
+import cz.larpovadatabaze.api.ValidatableForm;
+import cz.larpovadatabaze.components.common.AbstractCsldPanel;
+import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
+import cz.larpovadatabaze.entities.CsldGroup;
+import cz.larpovadatabaze.entities.Image;
+import cz.larpovadatabaze.services.FileService;
+import cz.larpovadatabaze.services.GroupService;
+import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
+import cz.larpovadatabaze.services.ImageService;
+import cz.larpovadatabaze.validator.UniqueGroupValidator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -14,20 +24,8 @@ import org.apache.wicket.util.lang.Bytes;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-import cz.larpovadatabaze.api.ValidatableForm;
-import cz.larpovadatabaze.components.common.AbstractCsldPanel;
-import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
-import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.entities.Image;
-import cz.larpovadatabaze.lang.CodeLocaleProvider;
-import cz.larpovadatabaze.lang.LocaleProvider;
-import cz.larpovadatabaze.services.FileService;
-import cz.larpovadatabaze.services.GroupService;
-import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
-import cz.larpovadatabaze.services.ImageService;
-import cz.larpovadatabaze.validator.UniqueGroupValidator;
+import static cz.larpovadatabaze.lang.AvailableLanguages.availableLocaleNames;
 
 /**
  * Encapsulation of form used for creating groups. It may be used on more than one place. It can also be used for
@@ -49,7 +47,7 @@ public abstract class CreateOrUpdateGroupPanel extends AbstractCsldPanel<CsldGro
 
     private FileUploadField fileUploadField;
     @SuppressWarnings("unused")
-    private List<FileUpload> images = new ArrayList<FileUpload>();
+    private List<FileUpload> images = new ArrayList<>();
 
     public CreateOrUpdateGroupPanel(String id) {
         this(id, null);
@@ -64,20 +62,20 @@ public abstract class CreateOrUpdateGroupPanel extends AbstractCsldPanel<CsldGro
             uniqueGroupValidator.setUpdateExisting(true);
         }
 
-        setDefaultModel(new CompoundPropertyModel<CsldGroup>(group));
+        setDefaultModel(new CompoundPropertyModel<>(group));
     }
 
     @Override
     protected void onInitialize() {
         super.onInitialize();
 
-        final ValidatableForm<CsldGroup> createGroup = new ValidatableForm<CsldGroup>("addGroup", getModel());
+        final ValidatableForm<CsldGroup> createGroup = new ValidatableForm<>("addGroup", getModel());
         createGroup.setMultiPart(true);
         // Set maximum size to 1024K for demo purposes
         createGroup.setMaxSize(Bytes.kilobytes(1024));
         createGroup.setOutputMarkupId(true);
 
-        TextField<String> name = new TextField<String>("name");
+        TextField<String> name = new TextField<>("name");
         name.setRequired(true);
         name.add(uniqueGroupValidator);
         createGroup.add(name);
@@ -85,17 +83,12 @@ public abstract class CreateOrUpdateGroupPanel extends AbstractCsldPanel<CsldGro
 
         // Add one file input field
 
-        fileUploadField = new FileUploadField("image", new PropertyModel<List<FileUpload>>(this, "images"));
+        fileUploadField = new FileUploadField("image", new PropertyModel<>(this, "images"));
         createGroup.add(fileUploadField);
 
-        List<String> availableLanguages = new ArrayList<String>();
-        LocaleProvider provider = new CodeLocaleProvider();
-        List<Locale> availableLocale = provider.availableLocale();
-        for(Locale available: availableLocale) {
-            availableLanguages.add(provider.transformLocaleToName(available));
-        }
+        List<String> availableLanguages = new ArrayList<>(availableLocaleNames());
         final DropDownChoice<String> changeLocale =
-                new DropDownChoice<String>("lang", availableLanguages);
+                new DropDownChoice<>("lang", availableLanguages);
         createGroup.add(changeLocale);
 
         createGroup.add(new AjaxButton("submit"){

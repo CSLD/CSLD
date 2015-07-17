@@ -13,10 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import cz.larpovadatabaze.api.GenericHibernateDAO;
 import cz.larpovadatabaze.dao.builder.GameBuilder;
@@ -26,7 +24,6 @@ import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.GameHasLanguages;
 import cz.larpovadatabaze.entities.Label;
-import cz.larpovadatabaze.entities.Language;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.models.FilterGame;
 
@@ -333,7 +330,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
         }
     }
 
-    public void deleteTranslation(Game toModify, Language convertedInput) {
+    public void deleteTranslation(Game toModify, String convertedInput) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(GameHasLanguages.class);
         criteria.add(Restrictions.eq("game.id",toModify.getId()));
         criteria.add(Restrictions.eq("language", convertedInput));
@@ -346,8 +343,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     private void addLanguageRestriction(DetachedCriteria criteria, List<Locale> languages) {
         criteria
                 .createCriteria("availableLanguages")
-                .createCriteria("language")
-                .add(Restrictions.in("language", languages));
+                .add(Restrictions.in("language", languages.stream().map(Locale::getLanguage).collect(Collectors.toList())));
     }
 
     public List<Game> getGamesWithAdvertisements(List<Locale> locales) {

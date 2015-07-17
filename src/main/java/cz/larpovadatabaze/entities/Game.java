@@ -1,40 +1,21 @@
 package cz.larpovadatabaze.entities;
 
+import cz.larpovadatabaze.api.Identifiable;
+import cz.larpovadatabaze.lang.DbSessionLanguageSolver;
+import cz.larpovadatabaze.lang.TranslatableEntity;
+import cz.larpovadatabaze.lang.TranslatableEntityTranslator;
+import cz.larpovadatabaze.lang.TranslationEntity;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import cz.larpovadatabaze.api.Identifiable;
-import cz.larpovadatabaze.lang.CodeLocaleProvider;
-import cz.larpovadatabaze.lang.DbSessionLanguageSolver;
-import cz.larpovadatabaze.lang.LocaleProvider;
-import cz.larpovadatabaze.lang.TranslatableEntity;
-import cz.larpovadatabaze.lang.TranslatableEntityTranslator;
-import cz.larpovadatabaze.lang.TranslationEntity;
 
 
 /**
@@ -103,14 +84,11 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
         return description;
     }
 
-    private LocaleProvider localeProvider = new CodeLocaleProvider();
-
     private boolean translateIntoCurrent(TranslatableEntity toTranslate, String lang){
-        Language actualLanguage = new Language(lang);
         List<TranslationEntity> translationsForGame = toTranslate.getLanguages();
         for(TranslationEntity language: translationsForGame) {
             if(language.getLanguage() != null &&
-                    language.getLanguage().equals(actualLanguage)) {
+                    language.getLanguage().equals(lang)) {
                 translateUsingEntity(toTranslate, language);
                 return true;
             }
@@ -121,7 +99,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     private void translateUsingEntity(TranslatableEntity toTranslate, TranslationEntity translation) {
         toTranslate.setDescription(translation.getDescription());
         toTranslate.setName(translation.getName());
-        toTranslate.setLang(localeProvider.transformLocaleToName(translation.getLanguage().getLanguage()));
+        toTranslate.setLang(translation.getLanguage());
     }
 
     @Transient
@@ -147,19 +125,17 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     public void setLang(String lang) {
         this.lang = lang;
         if(availableLanguages  == null) {
-            availableLanguages = new ArrayList<GameHasLanguages>();
+            availableLanguages = new ArrayList<>();
         }
-        LocaleProvider provider = new CodeLocaleProvider();
-        Locale actualLanguage = provider.transformToLocale(lang);
         for(GameHasLanguages language: availableLanguages) {
             // Ignore already added language.
-            if(language.getLanguage().getLanguage().equals(actualLanguage)){
+            if(language.getLanguage().equals(lang)){
                 return;
             }
         }
 
         defaultLanguage.setGame(this);
-        defaultLanguage.setLanguage(new Language(lang));
+        defaultLanguage.setLanguage(lang);
         availableLanguages.add(defaultLanguage);
     }
 
@@ -705,7 +681,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
         if(availableLanguages == null) {
             return null;
         }
-        return new ArrayList<TranslationEntity>(availableLanguages);
+        return new ArrayList<>(availableLanguages);
     }
 
     @Override
@@ -716,14 +692,14 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
 
     public static Game getEmptyGame() {
         Game emptyGame = new Game();
-        emptyGame.setGroupAuthor(new ArrayList<CsldGroup>());
-        emptyGame.setAuthors(new ArrayList<CsldUser>());
-        emptyGame.setComments(new ArrayList<Comment>());
-        emptyGame.setLabels(new ArrayList<Label>());
+        emptyGame.setGroupAuthor(new ArrayList<>());
+        emptyGame.setAuthors(new ArrayList<>());
+        emptyGame.setComments(new ArrayList<>());
+        emptyGame.setLabels(new ArrayList<>());
         emptyGame.setCoverImage(null);
-        emptyGame.setPhotos(new ArrayList<Photo>());
-        emptyGame.setPlayed(new ArrayList<UserPlayedGame>());
-        emptyGame.setRatings(new ArrayList<Rating>());
+        emptyGame.setPhotos(new ArrayList<>());
+        emptyGame.setPlayed(new ArrayList<>());
+        emptyGame.setRatings(new ArrayList<>());
         return emptyGame;
     }
 

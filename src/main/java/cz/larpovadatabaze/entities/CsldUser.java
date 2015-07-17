@@ -1,39 +1,22 @@
 package cz.larpovadatabaze.entities;
 
+import cz.larpovadatabaze.api.Identifiable;
+import cz.larpovadatabaze.security.CsldRoles;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import cz.larpovadatabaze.api.Identifiable;
-import cz.larpovadatabaze.security.CsldRoles;
-
 /**
  *
  */
-@Table(name = "csld_csld_user", schema = "public", catalog = "")
+@Table(name = "csld_csld_user", schema = "public")
 @Entity
 public class CsldUser implements Serializable, Identifiable, IAutoCompletable, IEntityWithImage {
     private Integer id;
@@ -250,28 +233,14 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable, I
         this.playedGames = playedGames;
     }
 
-    private List<Language> userHasLanguages;
+    private List<UserHasLanguages> userHasLanguages;
 
-    @SuppressWarnings("JpaAttributeTypeInspection")
-    @ManyToMany(
-            fetch = FetchType.LAZY ,
-            cascade = javax.persistence.CascadeType.ALL
-    )
-    @Cascade(CascadeType.SAVE_UPDATE)
-    @JoinTable(
-            name="csld_user_has_languages", schema="public",
-            joinColumns = {
-                    @JoinColumn(name="id_user", nullable = false)
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(name="language", nullable = false)
-            }
-    )
-    public List<Language> getUserHasLanguages() {
+    @OneToMany(mappedBy = "user")
+    public List<UserHasLanguages> getUserHasLanguages() {
         return userHasLanguages;
     }
 
-    public void setUserHasLanguages(List<Language> userHasLanguages) {
+    public void setUserHasLanguages(List<UserHasLanguages> userHasLanguages) {
         this.userHasLanguages = userHasLanguages;
     }
 
@@ -361,7 +330,7 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable, I
         emptyUser.setPerson(Person.getEmptyPerson());
         emptyUser.setPlayedGames(new ArrayList<UserPlayedGame>());
         emptyUser.setRole(CsldRoles.USER.getRole());
-        emptyUser.setUserHasLanguages(new ArrayList<Language>());
+        emptyUser.setUserHasLanguages(new ArrayList<UserHasLanguages>());
         return emptyUser;
     }
 }

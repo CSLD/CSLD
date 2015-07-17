@@ -69,13 +69,13 @@ import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Label;
-import cz.larpovadatabaze.entities.Language;
-import cz.larpovadatabaze.lang.CodeLocaleProvider;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.GroupService;
 import cz.larpovadatabaze.services.LabelService;
+
+import static cz.larpovadatabaze.lang.AvailableLanguages.availableLocale;
 
 /**
  * Application object for your web application. If you want to run this application without deploying, run the Start class.
@@ -92,7 +92,6 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     private GroupService groupService;
     @Autowired
     private LabelService labelService;
-    private CodeLocaleProvider locales = new CodeLocaleProvider();
 
     private static final String DEFAULT_ENCODING = "UTF-8";
     private static ApplicationContext ctx;
@@ -210,7 +209,6 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         locator.set(Game.class, new GameConverter(gameService));
         locator.set(CsldGroup.class, new GroupConverter(groupService));
         locator.set(Label.class, new LabelConverter(labelService));
-        locator.set(Language.class, new CodeLocaleProvider());
 
         return locator;
 
@@ -279,8 +277,8 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     @Override
     public Session newSession(Request request, Response response) {
         Session session = super.newSession(request, response);
-        List<Locale> availableLocale = new CodeLocaleProvider().availableLocale();
-        if(!availableLocale.contains(session.getLocale())){
+        List<Locale> available = availableLocale();
+        if(!available.contains(session.getLocale())){
             session.setLocale(Locale.forLanguageTag("cs"));
         }
         return session;

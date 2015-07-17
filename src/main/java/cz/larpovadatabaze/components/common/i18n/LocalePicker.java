@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.common.i18n;
 
+import cz.larpovadatabaze.lang.AvailableLanguages;
 import cz.larpovadatabaze.lang.LocaleProvider;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import org.apache.wicket.RestartResponseException;
@@ -14,8 +15,6 @@ import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.Model;
 
 import java.util.Locale;
-
-import cz.larpovadatabaze.lang.CodeLocaleProvider;
 
 /**
  * Created by jbalhar on 11/30/2014.
@@ -37,12 +36,11 @@ public class LocalePicker extends Panel{
     @Override
     protected void onInitialize() {
         super.onInitialize();
-        LocaleProvider localeProvider = new CodeLocaleProvider();
         CsldAuthenticatedWebSession session = CsldAuthenticatedWebSession.get();
         if(session.isSignedIn()) {
             String userChosenLang = session.getLoggedUser().getDefaultLang();
             if (userChosenLang != null && session.isSetLanguage()) {
-                session.setLocale(localeProvider.transformToLocale(userChosenLang));
+                session.setLocale(Locale.forLanguageTag(userChosenLang));
                 session.setSetLanguage(false);
             }
         }
@@ -56,7 +54,7 @@ public class LocalePicker extends Panel{
         RepeatingView locales = new RepeatingView("locales");
 
         // Draw other locales
-        for(Locale locale : new CodeLocaleProvider().availableLocale()) {
+        for(Locale locale : AvailableLanguages.availableLocale()) {
             if (!locale.getLanguage().equals(currentLocale.getLanguage())) { // Do not add selected locale
                 Fragment localePanel = new Fragment(locales.newChildId(), "localeItemAvailable", this);
                 AjaxLink<Locale> link = new AjaxLink<Locale>("link", Model.of(locale)) {

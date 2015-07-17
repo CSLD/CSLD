@@ -1,14 +1,10 @@
 package cz.larpovadatabaze.components.panel.news;
 
 import cz.larpovadatabaze.api.ValidatableForm;
-import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
 import cz.larpovadatabaze.components.common.JSPingBehavior;
-import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.News;
-import cz.larpovadatabaze.lang.CodeLocaleProvider;
 import cz.larpovadatabaze.lang.LocaleProvider;
 import cz.larpovadatabaze.services.NewsService;
 import cz.larpovadatabaze.utils.UserUtils;
@@ -18,15 +14,15 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import static cz.larpovadatabaze.lang.AvailableLanguages.availableLocaleNames;
 
 /**
  * This panel can be used to produce new News. At the current stage it is just stored in the database and available
@@ -64,12 +60,7 @@ public class CreateOrUpdateNewsPanel extends AbstractCsldPanel<News> {
         descriptionWrapper.add(description);
         descriptionWrapper.add(new CsldFeedbackMessageLabel("newsFeedback", description, descriptionWrapper, "form.news.textHint"));
 
-        List<String> availableLanguages = new ArrayList<String>();
-        LocaleProvider provider = new CodeLocaleProvider();
-        List<Locale> availableLocale = provider.availableLocale();
-        for(Locale available: availableLocale) {
-            availableLanguages.add(provider.transformLocaleToName(available));
-        }
+        List<String> availableLanguages = new ArrayList<String>(availableLocaleNames());
         final DropDownChoice<String> lang = new DropDownChoice<String>("lang", availableLanguages);
         createOrUpdateNews.add(lang);
         createOrUpdateNews.add(new CsldFeedbackMessageLabel("langFeedback", lang, null));

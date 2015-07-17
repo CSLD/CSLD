@@ -23,15 +23,6 @@ public class EntityBuilder {
     @Autowired
     private SessionFactory persistenceStore;
 
-    public Language language(Locale lang) {
-        Language language = new Language();
-        language.setLanguage(lang);
-
-        save(language);
-        persistenceStore.getCurrentSession().flush();
-        return language;
-    }
-
     public CsldUser user(String email, String name, String nickName, String city, String description, Short role,
                          String password) {
         CsldUser user = new CsldUser();

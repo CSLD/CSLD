@@ -11,7 +11,7 @@ public class GroupHasLanguage implements Serializable, TranslationEntity {
     private Integer id;
     private String name;
     private CsldGroup group;
-    private Language language;
+    private String language;
 
     @Column(name = "id")
     @Id
@@ -48,13 +48,13 @@ public class GroupHasLanguage implements Serializable, TranslationEntity {
     }
 
     @Override
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "language", referencedColumnName = "language", nullable = false)
-    public Language getLanguage() {
+    @Basic
+    @Column(name = "language")
+    public String getLanguage() {
         return language;
     }
 
-    public void setLanguage(Language language) {
+    public void setLanguage(String language) {
         this.language = language;
     }
 

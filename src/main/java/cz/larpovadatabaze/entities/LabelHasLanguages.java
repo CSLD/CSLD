@@ -15,7 +15,7 @@ public class LabelHasLanguages implements Serializable, TranslationEntity {
     private String name;
     private String description;
     private Label label;
-    private Language language;
+    private String language;
 
     @Column(name = "id")
     @Id
@@ -43,6 +43,17 @@ public class LabelHasLanguages implements Serializable, TranslationEntity {
 
     @Override
     @Basic
+    @Column(name = "language")
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    @Override
+    @Basic
     @Column(name = "description")
     public String getDescription() {
         return description;
@@ -61,16 +72,5 @@ public class LabelHasLanguages implements Serializable, TranslationEntity {
 
     public void setLabel(Label label) {
         this.label = label;
-    }
-
-    @Override
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "language", referencedColumnName = "language", nullable = false)
-    public Language getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(Language language) {
-        this.language = language;
     }
 }

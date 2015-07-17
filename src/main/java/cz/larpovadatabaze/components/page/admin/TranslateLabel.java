@@ -3,21 +3,12 @@ package cz.larpovadatabaze.components.page.admin;
 import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.HomePage;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.GameHasLanguages;
 import cz.larpovadatabaze.entities.LabelHasLanguages;
-import cz.larpovadatabaze.entities.Language;
-import cz.larpovadatabaze.lang.CodeLocaleProvider;
-import cz.larpovadatabaze.lang.LanguageSolver;
-import cz.larpovadatabaze.lang.LocaleProvider;
-import cz.larpovadatabaze.lang.SessionLanguageSolver;
-import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.LabelService;
 import cz.larpovadatabaze.utils.HbUtils;
 import org.apache.log4j.Logger;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.markup.head.CssHeaderItem;
@@ -30,7 +21,6 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -39,7 +29,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 import java.util.List;
-import java.util.Locale;
+
+import static cz.larpovadatabaze.lang.AvailableLanguages.availableLocaleNames;
 
 public class TranslateLabel extends CsldBasePage {
     public static final String ID_PARAM = "id";
@@ -90,7 +81,7 @@ public class TranslateLabel extends CsldBasePage {
             protected void populateItem(final ListItem<LabelHasLanguages> item) {
                 LabelHasLanguages language = item.getModelObject();
 
-                Form infoAboutLanguage = new Form<LabelHasLanguages>("translation", new CompoundPropertyModel<LabelHasLanguages>(language));
+                Form infoAboutLanguage = new Form<>("translation", new CompoundPropertyModel<LabelHasLanguages>(language));
                 infoAboutLanguage.add(new TextField<String>("name"));
                 infoAboutLanguage.add(new TextArea<String>("description").add(new CSLDTinyMceBehavior()));
                 infoAboutLanguage.add(new Label("language"));
@@ -147,7 +138,7 @@ public class TranslateLabel extends CsldBasePage {
         add(translationsShow);
 
         Form addLanguage = new Form("addLanguage");
-        final DropDownChoice<Language> actualLang = new DropDownChoice<Language>("language", Model.of(new Language()), new CodeLocaleProvider().availableLanguages());
+            final DropDownChoice<String> actualLang = new DropDownChoice<>("language", Model.of(""), availableLocaleNames());
         addLanguage.add(actualLang);
         addLanguage.add(new AjaxButton("addAnotherLanguage") {
             @Override
