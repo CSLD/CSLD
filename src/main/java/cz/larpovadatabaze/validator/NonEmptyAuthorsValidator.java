@@ -14,7 +14,7 @@ public class NonEmptyAuthorsValidator implements INullAcceptingValidator<List<?>
     public void validate(IValidatable<List<?>> validatable) {
         if ((validatable.getValue() == null) || (validatable.getValue().isEmpty())) {
             ValidationError error = new ValidationError();
-            error.addKey("non-empty-authors");
+            error.addKey("not-empty-authors");
             validatable.error(error);
         }
     }

@@ -1624,7 +1624,8 @@ text-align: center;
 }
 .sky-form .input input:focus + .tooltip,
 .sky-form .input input[type=file]:hover + .tooltip,
-.sky-form .textarea textarea:focus + .tooltip {
+.sky-form .textarea textarea:focus + .tooltip,
+.sky-form .ms-ctn-focus + .tooltip {
 	opacity: 1;	
 }
 
@@ -1714,9 +1715,11 @@ text-align: center;
 }
 .sky-form .input input:focus + .tooltip-bottom-right,
 .sky-form .input:hover input[type=file] + .tooltip-bottom-right,
-.sky-form .textarea textarea:focus + .tooltip-bottom-right {
+.sky-form .textarea textarea:focus + .tooltip-bottom-right,
+.sky-form .ms-ctn-focus + .tooltip-bottom-right {
 	left: auto;
-	margin-top: 5px;
+    right: 0;
+    margin-top: 5px;
 }
 
 .sky-form .tooltip-bottom-left {

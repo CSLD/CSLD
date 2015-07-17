@@ -203,7 +203,7 @@
 
 /* Error reporting */
 
-.sky-form .input input.error, .sky-form .select select.error, .sky-form .textarea textarea.error, .sky-form .textarea.error iframe, .sky-form .input.error input {
+.sky-form .input input.error, .sky-form .select select.error, .sky-form .textarea textarea.error, .sky-form .textarea.error iframe, .sky-form .input.error input, .sky-form .input.error .ms-ctn {
     background: #fff0f0;
 }
 

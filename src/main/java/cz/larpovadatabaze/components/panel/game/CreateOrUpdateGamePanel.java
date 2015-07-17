@@ -1,5 +1,29 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import org.apache.wicket.ajax.AjaxEventBehavior;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.lang.Bytes;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
@@ -10,7 +34,12 @@ import cz.larpovadatabaze.components.common.multiac.MultiAutoCompleteComponent;
 import cz.larpovadatabaze.components.panel.CoverImagePanel;
 import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
 import cz.larpovadatabaze.components.panel.group.CreateOrUpdateGroupPanel;
-import cz.larpovadatabaze.entities.*;
+import cz.larpovadatabaze.entities.CsldGroup;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.GameHasLanguages;
+import cz.larpovadatabaze.entities.Label;
+import cz.larpovadatabaze.entities.Video;
 import cz.larpovadatabaze.lang.LanguageSolver;
 import cz.larpovadatabaze.lang.SessionLanguageSolver;
 import cz.larpovadatabaze.services.CsldUserService;
@@ -20,25 +49,7 @@ import cz.larpovadatabaze.services.VideoService;
 import cz.larpovadatabaze.utils.UserUtils;
 import cz.larpovadatabaze.validator.AtLeastOneRequiredLabelValidator;
 import cz.larpovadatabaze.validator.NonEmptyAuthorsValidator;
-import org.apache.wicket.ajax.AjaxEventBehavior;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
-import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.*;
-import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.lang.Bytes;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 import static cz.larpovadatabaze.lang.AvailableLanguages.availableLocaleNames;
 
@@ -378,7 +389,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         IValidator<CsldGroup> groupIValidator = new GenericValidator<CsldGroup>(groupService);
         */
 
-        MultiAutoCompleteComponent<CsldGroup> groups = new MultiAutoCompleteComponent<>("groupAuthor", new PropertyModel<List<CsldGroup>>(getModelObject(), "groupAuthor"), new IMultiAutoCompleteSource<CsldGroup>() {
+        MultiAutoCompleteComponent<CsldGroup> groups = new MultiAutoCompleteComponent<>("groupAuthor", new PropertyModel<>(getModelObject(), "groupAuthor"), new IMultiAutoCompleteSource<CsldGroup>() {
             @Override
             public Collection<CsldGroup> getChoices(String input) {
                 return groupService.getFirstChoices(input, AUTOCOMPLETE_CHOICES);
@@ -394,12 +405,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
     }
 
     private void addAuthorsInput(WebMarkupContainer authorsWrapper){
-        /*
-        IFactory<CsldUser> userIFactory = new GenericFactory<CsldUser>(CsldUser.class);
-        IValidator<CsldUser> userIValidator = new GenericValidator<CsldUser>(csldUserService);
-        */
-
-        MultiAutoCompleteComponent<CsldUser> authors = new MultiAutoCompleteComponent<CsldUser>("authors", new PropertyModel<List<CsldUser>>(getModelObject(), "authors"), new IMultiAutoCompleteSource<CsldUser>() {
+        MultiAutoCompleteComponent<CsldUser> authors = new MultiAutoCompleteComponent<CsldUser>("authors", new PropertyModel<>(getModelObject(), "authors"), new IMultiAutoCompleteSource<CsldUser>() {
             @Override
             public Collection<CsldUser> getChoices(String input) {
                 return csldUserService.getFirstChoices(input.toLowerCase(), AUTOCOMPLETE_CHOICES);
