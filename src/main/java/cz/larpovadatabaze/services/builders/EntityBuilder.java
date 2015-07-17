@@ -9,7 +9,6 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldGroup;
@@ -17,7 +16,6 @@ import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Image;
 import cz.larpovadatabaze.entities.Label;
-import cz.larpovadatabaze.entities.Language;
 import cz.larpovadatabaze.entities.News;
 import cz.larpovadatabaze.entities.Person;
 import cz.larpovadatabaze.entities.Rating;

@@ -4,34 +4,32 @@
     It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/group/GroupDetailPanel.html
     Code - cz.larpovadatabaze.components.panel.group.GroupDetailPanel.html
     -->
-    <table>
-        <tr>
-            <td>
-                <img wicket:id="groupImage" class="obrazekUzivatel">
-            </td>
-            <td class="bunkaUzivatel">
-                <div class="jmenoUzivatel">
-                    <span wicket:id="name"></span>
-                </div>
-                <div class="popisek">
-                    Tvůrci <span wicket:id="organized"></span> larpů
-                </div>
-            </td>
-        </tr>
-    </table>
+    <div class="col-md-8 col-sm-12 col-xs-12">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <h1 wicket:id="name"></h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <img wicket:id="groupImage" style="float: left;">
+                Tvůrci <span wicket:id="organized"></span> larpů
 
-    <p>
-        <b><wicket:message key="group.authorsOf">Autoři ve skupině</wicket:message>:</b>
-        <wicket:container wicket:id="groupAuthors"><wicket:container wicket:id="separator" /><a wicket:id="link"><span wicket:id="nickname"></span> <span wicket:id="name"></span></a></wicket:container>
-    </p>
+                <p>
+                    <b><wicket:message key="group.authorsOf" />:</b>
+                    <wicket:container wicket:id="groupAuthors"><wicket:container wicket:id="separator" /><a wicket:id="link"><span wicket:id="nickname"></span> <span wicket:id="name"></span></a></wicket:container>
+                </p>
 
+                <wicket:enclosure child="groupAdministrators">
+                    <p>
+                        <b><wicket:message key="group.administrators">Administrátoři skupiny</wicket:message>:</b>
+                        <wicket:container wicket:id="groupAdministrators">
+                            <wicket:container wicket:id="separator" /><a wicket:id="link"><span wicket:id="nickname"></span> <span wicket:id="name"></span></a>
+                        </wicket:container>
+                    </p>
+                </wicket:enclosure>
+            </div>
+        </div>
+    </div>
 
-    <wicket:enclosure child="groupAdministrators">
-        <p>
-        <b><wicket:message key="group.administrators">Administrátoři skupiny</wicket:message>:</b>
-        <wicket:container wicket:id="groupAdministrators">
-            <wicket:container wicket:id="separator" /><a wicket:id="link"><span wicket:id="nickname"></span> <span wicket:id="name"></span></a>
-        </wicket:container>
-        </p>
-    </wicket:enclosure>
 </wicket:panel>
