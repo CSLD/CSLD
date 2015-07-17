@@ -252,7 +252,7 @@ public class GameDetail extends CsldBasePage {
             // Send main picture
             Fragment f = new Fragment(id, "mainPicture", this);
 
-            f.add(new NonCachingImage("mainPicture", imageService.getImageResource(game.getCoverImage(), game.getDefaultImage())));
+            f.add(new NonCachingImage("mainPicture", imageService.getImageResource(game.getCoverImage(), null)));
 
             return f;
         }

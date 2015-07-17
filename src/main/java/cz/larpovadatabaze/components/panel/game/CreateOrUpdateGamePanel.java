@@ -13,8 +13,6 @@ import cz.larpovadatabaze.components.panel.group.CreateOrUpdateGroupPanel;
 import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.lang.LanguageSolver;
 import cz.larpovadatabaze.lang.SessionLanguageSolver;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.security.CsldRoles;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.GroupService;
@@ -215,21 +213,6 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
                 tag.put("value", "on"); // Force value to "on", otherwise multipart form won't work
             }
         });
-
-        if (CsldAuthenticatedWebSession.get().getLoggedUser().getRole() >= CsldRoles.EDITOR.getRole()) {
-            // "Show in advertisements" checkbox
-            createOrUpdateGame.add(new CheckBox("showInAdvertisements") {
-                @Override
-                protected void onComponentTag(ComponentTag tag) {
-                    super.onComponentTag(tag);
-                    tag.put("value", "on"); // Force value to "on", otherwise multipart form won't work
-                }
-            });
-        }
-        else {
-            // No "show in advertisements" checkbox
-            createOrUpdateGame.add(new WebMarkupContainer("showInAdvertisements").setVisible(false));
-        }
 
 
         WebMarkupContainer authorsWrapper = new WebMarkupContainer("authorsWrapper");

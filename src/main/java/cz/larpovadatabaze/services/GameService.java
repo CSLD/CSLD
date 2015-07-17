@@ -84,6 +84,4 @@ public interface GameService extends GenericService<Game>, IIconReferenceProvide
     List<Game> getMostPopularGames(int amountOfGames);
 
     void deleteTranslation(GameHasLanguages toRemove);
-
-    List<Game> getGamesWithAdvertisements();
 }

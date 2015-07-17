@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.entities;
 
-import org.apache.wicket.request.resource.IResource;
+import org.apache.wicket.markup.html.WebPage;
 
 import java.io.Serializable;
 
@@ -11,33 +11,28 @@ import java.io.Serializable;
  */
 public class Advertisement implements Serializable {
     /**
-     * ID of game to link
+     * Page to link to
      */
-    private Integer gameId;
+    private Class<? extends WebPage> pageClass;
 
     /**
      * Image of the advertisement
      */
-    private IResource image;
+    private String image;
 
-    public Advertisement(Integer gameId, IResource image) {
-        this.gameId = gameId;
-        this.image = image;
+    public Class<? extends WebPage> getPageClass() {
+        return pageClass;
     }
 
-    public Integer getGameId() {
-        return gameId;
+    public void setPageClass(Class<? extends WebPage> pageClass) {
+        this.pageClass = pageClass;
     }
 
-    public void setGameId(Integer gameId) {
-        this.gameId = gameId;
-    }
-
-    public IResource getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(IResource image) {
+    public void setImage(String image) {
         this.image = image;
     }
 }

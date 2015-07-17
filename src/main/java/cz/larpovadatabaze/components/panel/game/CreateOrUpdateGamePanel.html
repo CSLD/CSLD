@@ -227,13 +227,6 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
                         <br><span class="form-explain"><wicket:message key="form.game.commentsDisabledHint"/></span>
                     </label>
 
-                    <wicket:enclosure child="showInAdvertisements">
-                        <label class="checkbox"><input type="checkbox" wicket:id="showInAdvertisements"><i></i>
-                            <strong><wicket:message key="form.game.showInAdvertisements"/></strong>
-                            <br><span class="form-explain"><wicket:message key="form.game.showInAdvertisementsHint"/></span>
-                        </label>
-                    </wicket:enclosure>
-
                     <!-- this will force larp out of archive if it has at least one new comment during past year
                         requires change in model - we should add it later
                     <label class="checkbox"><input type="checkbox" name="stillRunning" id="stillRunning"><i></i>Still running

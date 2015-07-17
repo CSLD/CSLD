@@ -283,9 +283,4 @@ public class GameServiceImpl implements GameService {
 
         return iconResourceReference;
     }
-
-    @Override
-    public List<Game> getGamesWithAdvertisements() {
-        return gameDAO.getGamesWithAdvertisements(languageSolver.getLanguagesForUser());
-    }
 }
