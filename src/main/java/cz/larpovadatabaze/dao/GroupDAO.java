@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import cz.larpovadatabaze.api.GenericHibernateDAO;
 import cz.larpovadatabaze.dao.builder.GenericBuilder;
@@ -34,10 +35,11 @@ public class GroupDAO extends GenericHibernateDAO<CsldGroup, Integer> {
 
     @SuppressWarnings("unchecked")
     public List<CsldGroup> orderedByName(Long first, Long amountPerPage, List<Locale> locales) {
+        List<String> languages = locales.stream().map(Locale::getLanguage).collect(Collectors.toList());
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = getBuilder().build().getExecutableCriteria(session)
                 .createCriteria("groupHasLanguages")
-                .add(Restrictions.in("language.language", locales))
+                .add(Restrictions.in("language", languages))
                 .addOrder(Order.asc("name"))
                 .setFirstResult(first.intValue())
                 .setMaxResults(amountPerPage.intValue());
@@ -61,10 +63,11 @@ public class GroupDAO extends GenericHibernateDAO<CsldGroup, Integer> {
     }
 
     public int getAmountOfGroups(List<Locale> locales) {
+        List<String> relevantLocales = locales.stream().map(Locale::getLanguage).collect(Collectors.toList());
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = getBuilder().build().getExecutableCriteria(session)
                 .createCriteria("groupHasLanguages")
-                .add(Restrictions.in("language.language", locales))
+                .add(Restrictions.in("language", relevantLocales))
                 .setProjection(Projections.rowCount());
 
         return ((Long)criteria.uniqueResult()).intValue();

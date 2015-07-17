@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -70,7 +71,6 @@ public class LabelDAO extends GenericHibernateDAO<Label, Integer> {
     private void addFilterByLanguage(Criteria criteria, List<Locale> languages) {
         criteria
                 .createCriteria("labelHasLanguages")
-                .createCriteria("language")
-                .add(Restrictions.in("language", new HashSet(languages)));
+                .add(Restrictions.in("language", new HashSet(languages.stream().map(Locale::getLanguage).collect(Collectors.toList()))));
     }
 }

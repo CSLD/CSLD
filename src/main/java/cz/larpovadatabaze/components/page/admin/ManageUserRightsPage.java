@@ -18,6 +18,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -66,7 +67,7 @@ public class ManageUserRightsPage extends CsldBasePage {
         add(manageUsers);
     }
 
-    private class UserRole {
+    private class UserRole implements Serializable {
         String selected;
     }
 }
