@@ -55,23 +55,33 @@ public class NewsDetailsListPanel extends Panel {
         protected void populateItem(final ListItem<News> item) {
             final News pieceOfNews = item.getModelObject();
             CsldUser author = pieceOfNews.getAuthor();
-
-            // Create fragment
-            Fragment f = new Fragment("pieceOfNews", "newsFragment", NewsDetailsListPanel.this);
-            item.add(f);
-
-            // News wrapper
-            WebMarkupContainer newsWrapper = new WebMarkupContainer("newsWrapper");
-            f.add(newsWrapper);
+            SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy");
+            Date dateOfNews = pieceOfNews.getAdded();
 
             PageParameters userParams = new PageParameters();
             userParams.add("id", author.getId());
+            final BookmarkablePageLink<CsldBasePage> authorLink =
+                    new BookmarkablePageLink<CsldBasePage>("authorLink", UserDetailPage.class, userParams);
+            item.add(authorLink);
 
-            // Content
-            String newsToShow = Jsoup.parse(pieceOfNews.getText()).text();
-            Label newsContent = new Label("newsContent", Model.of(newsToShow));
+            final UserIcon authorsAvatar = new UserIcon("avatar", new AbstractReadOnlyModel<CsldUser>() {
+                @Override
+                public CsldUser getObject() {
+                    return item.getModelObject().getAuthor();
+                }
+            });
+            authorLink.add(authorsAvatar);
+
+            authorLink.add(new Label("nick", Model.of(author.getPerson().getNickNameView())));
+            authorLink.add(new Label("name", Model.of(author.getPerson().getName())));
+
+            Label newsDate = new Label("newsDate", Model.of(formatDate.format(dateOfNews)));
+            item.add(newsDate);
+
+            Label newsContent = new Label("newsContent", Model.of(pieceOfNews.getText()));
             newsContent.setEscapeModelStrings(false);
-            newsWrapper.add(newsContent);
+            item.add(newsContent);
+
 
             AjaxLink updateLink = new AjaxLink("updateNews") {
                 @Override
@@ -86,35 +96,11 @@ public class NewsDetailsListPanel extends Panel {
                     createGroupModal.show(target);
                 }
             };
-            f.add(updateLink);
+            item.add(updateLink);
             CsldUser logged = CsldAuthenticatedWebSession.get().getLoggedUser();
             if(userId == null || logged == null || !userId.equals(logged.getId())) {
                 updateLink.setVisibilityAllowed(false);
             }
-
-            // User icon
-            final UserIcon commenterIcon = new UserIcon("newsCreatorIcon", new AbstractReadOnlyModel<CsldUser>() {
-                @Override
-                public CsldUser getObject() {
-                    return item.getModelObject().getAuthor();
-                }
-            });
-            f.add(commenterIcon);
-
-            // Link and name
-            final BookmarkablePageLink<CsldBasePage> newsCreatorLink =
-                    new BookmarkablePageLink<CsldBasePage>("newsCreatorLink", UserDetailPage.class, userParams);
-            Label commenterName = new Label("newsCreatorName", Model.of(author.getPerson().getNickNameView()));
-            newsCreatorLink.add(commenterName);
-            f.add(newsCreatorLink);
-
-            // News date
-            SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy");
-            Date dateOfPublish = new Date();
-            dateOfPublish.setTime(pieceOfNews.getAdded().getTime());
-            Label commentDate = new Label("newsDate", Model.of(formatDate.format(dateOfPublish)));
-            f.add(commentDate);
-
         }
     }
 
@@ -122,17 +108,9 @@ public class NewsDetailsListPanel extends Panel {
     protected void onInitialize() {
         super.onInitialize();
 
-        Component header = new WebMarkupContainer("lastNews");
-        add(header);
-
-        List<News> toShow;
-        if(userId == null ) {
-            toShow = new ArrayList<News>(news.getLastNews(SHOW_IN_PANEL));
-        } else {
-            toShow = new ArrayList<News>(news.allForUser(userId));
-            header.setVisibilityAllowed(false);
-        }
-        add(new NewsView("visibleNews", toShow));
+        // Add list of News.
+        List<News> toShow = new ArrayList<>(news.allForUser(userId));
+        add(new NewsView("newsList", toShow));
 
         // Add modal window for updating or creating news.
         createGroupModal = new ModalWindow("updateNews");

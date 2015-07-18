@@ -1,42 +1,16 @@
 <wicket:panel xmlns:wicket="http://wicket.apache.org">
     <div wicket:id="updateNews"></div>
 
-    <div class="container main">
-        <div class="row">
-            <div class="col-md-12">
-
-                <div class="heading-testimonials" wicket:id="lastNews">
-                    <wicket:message key="news.recent">Poslední novinky</wicket:message>
-                </div>
-            </div>
-
-            <div class="row news">
-                <wicket:container wicket:id="visibleNews">
-                    <wicket:container wicket:id="pieceOfNews" />
-                </wicket:container>
-            </div>
-        </div>
+    <div wicket:id="newsList" class="list-group-item">
+        <h4 class="list-group-item-heading">
+            <a wicket:id="authorLink">
+                <span class="comment-user-picture"><img class="media-object" wicket:id="avatar" alt=""></span>
+                <span class="comment-user-nickname label label-info" wicket:id="nick">Imi</span><span
+                    class="comment-user-name" wicket:id="name">Stanislava Pajerová</span>
+            </a>
+            <span class="comment-date" wicket:id="newsDate">8. 4. 2014</span>
+            <a wicket:id="updateNews" class="fa fa-pencil-square-o"></a>
+        </h4>
+        <wicket:container wicket:id="newsContent" />
     </div>
-
-    <wicket:fragment wicket:id="newsFragment">
-        <div class="col-md-3" >
-            <div id="testimonials-2" class="testimonials testimonials-v1">
-                <div class="carousel-inner">
-                    <div class="item active">
-                        <p class="rounded" style="word-wrap: break-word;" wicket:id="newsWrapper">
-                            <span wicket:id="newsContent" />
-                        </p>
-                        <div class="testimonial-info">
-                            <img class="rounded-x" wicket:id="newsCreatorIcon" alt="" />
-                            <span class="testimonial-author">
-                                <a href="#" wicket:id="newsCreatorLink"><wicket:container wicket:id="newsCreatorName" /></a>
-                                <span class="comment-date" wicket:id="newsDate"></span>
-                                <a wicket:id="updateNews" class="fa fa-pencil-square-o"></a>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </wicket:fragment>
 </wicket:panel>
