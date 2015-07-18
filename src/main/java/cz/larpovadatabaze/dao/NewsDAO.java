@@ -5,6 +5,7 @@ import cz.larpovadatabaze.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.dao.builder.IBuilder;
 import cz.larpovadatabaze.entities.News;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -22,12 +23,14 @@ public class NewsDAO extends GenericHibernateDAO<News, Integer> {
 
     public List<News> getLastNews(int showInPanel) {
         Criteria crit = getBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession())
+                .addOrder(Order.desc("added"))
                 .setMaxResults(showInPanel);
         return crit.list();
     }
 
     public List<News> allForUser(Integer userId) {
         Criteria crit = getBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession())
+                .addOrder(Order.desc("added"))
                 .add(Restrictions.eq("author.id", userId));
 
         return crit.list();

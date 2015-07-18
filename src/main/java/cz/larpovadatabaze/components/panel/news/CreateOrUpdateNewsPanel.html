@@ -17,7 +17,8 @@
                 <b wicket:id="langFeedback"></b>
             </label>
 
-            <input type="button" class="btn-u" wicket:message="value:form.save" wicket:id="submit"/>
+            <input type="button" class="btn-u" wicket:message="value:form.save" wicket:id="submit"
+                    onclick="tinyMCE.triggerSave(true,true);"/>
         </fieldset>
     </form>
 </wicket:panel>

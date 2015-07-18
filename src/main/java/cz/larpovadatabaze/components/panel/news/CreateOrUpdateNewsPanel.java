@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.components.panel.news;
 
 import cz.larpovadatabaze.api.ValidatableForm;
+import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
 import cz.larpovadatabaze.components.common.JSPingBehavior;
@@ -17,12 +18,14 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import static cz.larpovadatabaze.lang.AvailableLanguages.availableLocaleNames;
+import static cz.larpovadatabaze.utils.UserUtils.isSignedIn;
 
 /**
  * This panel can be used to produce new News. At the current stage it is just stored in the database and available
@@ -57,6 +60,7 @@ public class CreateOrUpdateNewsPanel extends AbstractCsldPanel<News> {
         WebMarkupContainer descriptionWrapper = new WebMarkupContainer("newsWrapper");
         createOrUpdateNews.add(descriptionWrapper);
         TextArea description = (TextArea) new TextArea<String>("text").setRequired(true);
+        description.add(new CSLDTinyMceBehavior());
         descriptionWrapper.add(description);
         descriptionWrapper.add(new CsldFeedbackMessageLabel("newsFeedback", description, descriptionWrapper, "form.news.textHint"));
 
@@ -85,9 +89,9 @@ public class CreateOrUpdateNewsPanel extends AbstractCsldPanel<News> {
 
                 target.add(form);
             }
-        });
+        }).add(new TinyMceAjaxSubmitModifier());
 
-        if (UserUtils.isSignedIn()) {
+        if (isSignedIn()) {
             add(new JSPingBehavior());
         }
     }
