@@ -21,10 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  *
@@ -89,14 +86,14 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public LinkedHashSet<Game> getSimilar(Game game) {
-        return new LinkedHashSet<>(gameDAO.getSimilar(game));
+    public Collection<Game> getSimilar(Game game) {
+        return new TreeSet<>(gameDAO.getSimilar(game));
     }
 
     @Override
-    public LinkedHashSet<Game> gamesOfAuthors(Game game) {
+    public Collection<Game> gamesOfAuthors(Game game) {
         // TODO sort games by rating.
-        LinkedHashSet<Game> games = new LinkedHashSet<>();
+        TreeSet<Game> games = new TreeSet<>();
         for(CsldUser author: game.getAuthors()){
             games.addAll(author.getAuthorOf());
         }
@@ -104,8 +101,8 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public LinkedHashSet<Game> getByAutoCompletable(String gameName) throws WrongParameterException {
-        return new LinkedHashSet<>(gameDAO.getByAutoCompletable(gameName));
+    public Collection<Game> getByAutoCompletable(String gameName) throws WrongParameterException {
+        return new TreeSet<>(gameDAO.getByAutoCompletable(gameName));
     }
 
     @Override
@@ -114,13 +111,13 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public LinkedHashSet<Game> getLastGames(int amountOfGames) {
-        return new LinkedHashSet<>(gameDAO.getLastGames(amountOfGames, languageSolver.getLanguagesForUser()));
+    public Collection<Game> getLastGames(int amountOfGames) {
+        return new TreeSet<>(gameDAO.getLastGames(amountOfGames, languageSolver.getLanguagesForUser()));
     }
 
     @Override
-    public LinkedHashSet<Game> getMostPopularGames(int amountOfGames) {
-        return new LinkedHashSet<>(gameDAO.getMostPopularGames(amountOfGames, languageSolver.getLanguagesForUser()));
+    public Collection<Game> getMostPopularGames(int amountOfGames) {
+        return new TreeSet<>(gameDAO.getMostPopularGames(amountOfGames, languageSolver.getLanguagesForUser()));
     }
 
     @Override
@@ -129,8 +126,8 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public LinkedHashSet<Game> getFilteredGames(FilterGame filterGame, int offset, int limit) {
-        return new LinkedHashSet<>(gameDAO.getFilteredGames(filterGame, offset, limit));
+    public Collection<Game> getFilteredGames(FilterGame filterGame, int offset, int limit) {
+        return new TreeSet<>(gameDAO.getFilteredGames(filterGame, offset, limit));
     }
 
     @Override
@@ -140,7 +137,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Collection<Game> getGamesOfAuthor(CsldUser author, int first, int count) {
-        return new LinkedHashSet<>(gameDAO.getGamesOfAuthor(author, first, count));
+        return new TreeSet<>(gameDAO.getGamesOfAuthor(author, first, count));
     }
 
     @Override
@@ -235,7 +232,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Collection<Game> getGamesCommentedByUser(int userId) {
-        return new LinkedHashSet<>(gameDAO.getGamesCommentedByUser(userId));
+        return new TreeSet<>(gameDAO.getGamesCommentedByUser(userId));
     }
 
     @Override
@@ -256,7 +253,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Collection<Game> getGamesRatedByUser(int userId) {
-        return new LinkedHashSet<>(gameDAO.getGamesRatedByUser(userId));
+        return new TreeSet<>(gameDAO.getGamesRatedByUser(userId));
     }
 
     @Override
