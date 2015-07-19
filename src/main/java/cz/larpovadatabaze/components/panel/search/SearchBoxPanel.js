@@ -31,7 +31,9 @@
     // Handlers for input
     $('#${textInputId}').keyup(installTimer).blur(function() {
         clearTimer();
-        //$('#${resultWrapperId}').hide();
+        window.setTimeout(function() {
+            $('#${resultWrapperId}').hide();
+        }, 100) // Hide after some time so that click in the input is processed
     });
 
     // Stop timer when Wicket AJAX call is started
