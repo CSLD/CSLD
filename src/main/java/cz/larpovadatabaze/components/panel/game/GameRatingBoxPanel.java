@@ -28,6 +28,10 @@ public class GameRatingBoxPanel extends AbstractCsldPanel<Game> {
         super(id, model);
     }
 
+    protected Double getMainRating() {
+        return getModelObject().getAverageRating();
+    }
+
     @Override
     protected void onInitialize() {
         super.onInitialize();
@@ -50,7 +54,7 @@ public class GameRatingBoxPanel extends AbstractCsldPanel<Game> {
         }
         else {
             // Numeric rating
-            wrapper.add(new Label("rating", format.format(g.getAverageRating()/10d)));
+            wrapper.add(new Label("rating", format.format(getMainRating()/10d)));
         }
     }
 }

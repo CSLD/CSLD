@@ -16,6 +16,11 @@ public class GameRatingBoxWithAveragePanel extends GameRatingBoxPanel {
     }
 
     @Override
+    protected Double getMainRating() {
+        return getModelObject().getTotalRating();
+    }
+
+    @Override
     protected void onInitialize() {
         super.onInitialize();
 
