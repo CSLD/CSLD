@@ -195,26 +195,26 @@ footer a {
 .stars span:nth-of-type(10):hover,
 .stars span:nth-of-type(9):hover,
 .stars span:nth-of-type(8):hover,
-.stars span:nth-of-type(7):hover,
 .stars span:nth-of-type(10) .active:hover,
 .stars span:nth-of-type(9) .active:hover,
-.stars span:nth-of-type(8) .active:hover,
-.stars span:nth-of-type(7) .active:hover
+.stars span:nth-of-type(8) .active:hover
 {
     color: #CC333F;
 }
+.stars span:nth-of-type(7):hover,
 .stars span:nth-of-type(6):hover,
 .stars span:nth-of-type(5):hover,
-.stars span:nth-of-type(4):hover,
+.stars span:nth-of-type(7) .active:hover,
 .stars span:nth-of-type(6) .active:hover,
-.stars span:nth-of-type(5) .active:hover,
-.stars span:nth-of-type(4) .active:hover
+.stars span:nth-of-type(5) .active:hover
 {
     color: #6dc8b7;
 }
+.stars span:nth-of-type(4):hover,
 .stars span:nth-of-type(3):hover,
 .stars span:nth-of-type(2):hover,
 .stars span:nth-of-type(1):hover,
+.stars span:nth-of-type(4) .active:hover,
 .stars span:nth-of-type(3) .active:hover,
 .stars span:nth-of-type(2) .active:hover,
 .stars span:nth-of-type(1) .active:hover
