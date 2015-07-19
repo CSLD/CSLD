@@ -1,9 +1,5 @@
 package cz.larpovadatabaze.components.page.user;
 
-import cz.larpovadatabaze.components.panel.news.CreateOrUpdateNewsPanel;
-import cz.larpovadatabaze.components.panel.news.NewsDetailsListPanel;
-import cz.larpovadatabaze.components.panel.news.NewsListPanel;
-import cz.larpovadatabaze.entities.*;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -28,8 +24,16 @@ import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.components.panel.game.CommentsListPanel;
 import cz.larpovadatabaze.components.panel.game.GameListPanel;
 import cz.larpovadatabaze.components.panel.game.ListGamesWithAnnotations;
+import cz.larpovadatabaze.components.panel.news.CreateOrUpdateNewsPanel;
+import cz.larpovadatabaze.components.panel.news.NewsDetailsListPanel;
 import cz.larpovadatabaze.components.panel.user.PersonDetailPanel;
 import cz.larpovadatabaze.components.panel.user.RatingsListPanel;
+import cz.larpovadatabaze.entities.Comment;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.GameWithoutRating;
+import cz.larpovadatabaze.entities.IGameWithRating;
+import cz.larpovadatabaze.entities.UserPlayedGame;
 import cz.larpovadatabaze.providers.SortableAnnotatedProvider;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.CsldUserService;
@@ -116,10 +120,22 @@ public class UserDetailPage extends CsldBasePage {
     }
 
     public UserDetailPage(PageParameters params){
-        if(params.get(USER_ID_PARAMETER_NAME) == null || params.get(USER_ID_PARAMETER_NAME).isEmpty()){
-            throw new RestartResponseException(HomePage.class);
+        Integer userId;
+
+        if(params.get(USER_ID_PARAMETER_NAME) == null || params.get(USER_ID_PARAMETER_NAME).isEmpty()) {
+            if (CsldAuthenticatedWebSession.get().isSignedIn()) {
+                // Show current user
+                userId = CsldAuthenticatedWebSession.get().getLoggedUser().getId();
+            }
+            else {
+                // Go to HP
+                throw new RestartResponseException(HomePage.class);
+            }
         }
-        setDefaultModel(new UserModel(params.get(USER_ID_PARAMETER_NAME).to(Integer.class)));
+        else {
+            userId = params.get(USER_ID_PARAMETER_NAME).to(Integer.class);
+        }
+        setDefaultModel(new UserModel(userId));
     }
 
     @Override

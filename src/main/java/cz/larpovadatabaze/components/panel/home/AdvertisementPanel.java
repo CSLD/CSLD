@@ -24,7 +24,9 @@ import cz.larpovadatabaze.components.page.OwlCarouselResourceReference;
 import cz.larpovadatabaze.components.page.game.CreateOrUpdateGamePage;
 import cz.larpovadatabaze.components.page.game.ListGamePage;
 import cz.larpovadatabaze.components.page.user.CreateUserPage;
+import cz.larpovadatabaze.components.page.user.UserDetailPage;
 import cz.larpovadatabaze.entities.Advertisement;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 
 /**
  * User: Michal Kara Date: 7.3.15 Time: 18:43
@@ -37,11 +39,23 @@ public class AdvertisementPanel extends AbstractCsldPanel<List<Advertisement>> {
     private static class AdvertisementModel extends LoadableDetachableModel<List<Advertisement>> {
 
         /**
-         * Where the advertisements lead
+         * Where the advertisements lead for anonymous user
          */
-        private static final Class<? extends WebPage> AD_PAGE_CLASSES[] = new Class[] {
+        private static final Class<? extends WebPage> AD_PAGE_CLASSES_ANONYMOUS[] = new Class[] {
             CreateUserPage.class, // 01
             CreateUserPage.class, // 02
+            ListGamePage.class, // 03
+            ListGamePage.class, // 04
+            CreateOrUpdateGamePage.class, // 05
+            CreateOrUpdateGamePage.class // 06
+        };
+
+        /**
+         * Where the advertisements lead for logged user
+         */
+        private static final Class<? extends WebPage> AD_PAGE_CLASSES_LOGGED[] = new Class[] {
+            UserDetailPage.class, // 01
+            UserDetailPage.class, // 02
             ListGamePage.class, // 03
             ListGamePage.class, // 04
             CreateOrUpdateGamePage.class, // 05
@@ -53,7 +67,7 @@ public class AdvertisementPanel extends AbstractCsldPanel<List<Advertisement>> {
             List<Advertisement> res = new ArrayList<Advertisement>();
 
             int no = 1;
-            for(Class<? extends WebPage> pageClass : AD_PAGE_CLASSES) {
+            for(Class<? extends WebPage> pageClass : CsldAuthenticatedWebSession.get().isSignedIn()?AD_PAGE_CLASSES_LOGGED:AD_PAGE_CLASSES_ANONYMOUS) {
                 Advertisement a1 = new Advertisement();
                 a1.setPageClass(pageClass);
                 a1.setImage(String.format("games/ld-header-%02d.jpg", no++));
