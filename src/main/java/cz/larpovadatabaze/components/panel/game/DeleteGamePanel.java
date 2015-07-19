@@ -43,7 +43,7 @@ public class DeleteGamePanel extends Panel {
         deletedGameLabelModel = new LoadableDetachableModel<String>() {
             @Override
             protected String load() {
-                return new StringResourceModel(gameService.isHidden(gameId)?"game.show":"game.delete", DeleteGamePanel.this, null).toString();
+                return new StringResourceModel(gameService.isHidden(gameId)?"game.show":"game.delete", DeleteGamePanel.this, null).getString();
             }
         };
         Label deleteGameLabel = new Label("deleteGameLabel", deletedGameLabelModel);
