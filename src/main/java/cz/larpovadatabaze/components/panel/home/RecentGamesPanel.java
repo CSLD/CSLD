@@ -44,7 +44,7 @@ public class RecentGamesPanel extends Panel {
         // Add recent games
         Collection<Game> recentGames = gameService.getLastGames(AMOUNT_OF_GAMES);
         Iterator<Game> gameIterator = recentGames.iterator();
-        for(int i=0; i<6; i++) {
+        for(int i=0; i<recentGames.size(); i++) {
             String id = "recent" + (i + 1);
             if (gameIterator.hasNext()) {
                 carousel.add(createGameBox(id, gameIterator.next()));
@@ -56,7 +56,7 @@ public class RecentGamesPanel extends Panel {
 
         // Add most popular games
         List<Game> mostPopularGames = new ArrayList<>(gameService.getMostPopularGames(AMOUNT_OF_GAMES));
-        for(int i=0; i<6; i++) {
+        for(int i=0; i<mostPopularGames.size(); i++) {
             String id = "popular" + (i + 1);
             if (recentGames.size() > i) {
                 carousel.add(createGameBox(id, mostPopularGames.get(i)));
