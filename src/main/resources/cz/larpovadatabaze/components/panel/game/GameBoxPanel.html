@@ -2,34 +2,32 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
 <body>
 <wicket:panel>
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-        <div id="testimonials-2" class="testimonials testimonials-v1">
-            <div class="carousel-inner">
-                <a href="#" wicket:id="gameLink">
-                    <div class="item active">
-                        <div class="testimonial-info">
-                            <wicket:container wicket:id="gameRating" />
-                            <div class="recent-game" style="padding-left: 8px;">
-                                <wicket:container wicket:id="gameName"/>
-                            </div>
-                            <div class="row details">
-                                <div class="col-xs-7">
-                                    <div class="comment-date recent-game-players"><i class="fa fa-user"></i>
-                                        <wicket:container wicket:id="players"/>
-                                    </div>
-                                    <div class="comment-date recent-game-players"><i class="fa fa-comment"></i>
-                                        <wicket:container wicket:id="comments"/>
-                                    </div>
-                                    <div class="comment-date recent-game-players"><i class="fa fa-star"></i>
-                                        <wicket:container wicket:id="ratings"/>
-                                        x
-                                    </div>
+    <div id="testimonials-2" class="testimonials testimonials-v1">
+        <div class="carousel-inner">
+            <a href="#" wicket:id="gameLink">
+                <div class="item active">
+                    <div class="testimonial-info">
+                        <wicket:container wicket:id="gameRating" />
+                        <div class="recent-game" style="padding-left: 8px;">
+                            <wicket:container wicket:id="gameName"/>
+                        </div>
+                        <div class="row details">
+                            <div class="col-xs-7">
+                                <div class="comment-date recent-game-players"><i class="fa fa-user"></i>
+                                    <wicket:container wicket:id="players"/>
+                                </div>
+                                <div class="comment-date recent-game-players"><i class="fa fa-comment"></i>
+                                    <wicket:container wicket:id="comments"/>
+                                </div>
+                                <div class="comment-date recent-game-players"><i class="fa fa-star"></i>
+                                    <wicket:container wicket:id="ratings"/>
+                                    x
                                 </div>
                             </div>
                         </div>
                     </div>
-                </a>
-            </div>
+                </div>
+            </a>
         </div>
     </div>
 </wicket:panel>
