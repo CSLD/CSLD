@@ -6,7 +6,7 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.image.NonCachingImage;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -62,7 +62,7 @@ public class RecentPhotosPanel extends Panel {
                 item.add(link);
 
                 // Image
-                link.add(new Image("gameImage", imageService.getImageResource(photo)) {
+                link.add(new NonCachingImage("gameImage", imageService.getImageResource(photo)) {
                     @Override
                     protected void onComponentTag(ComponentTag tag) {
                         super.onComponentTag(tag);
