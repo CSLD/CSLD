@@ -62,7 +62,7 @@ public class ImageResizingStrategyFactoryServiceImpl implements ImageResizingStr
     @Override
     public IImageResizingStrategy getCoverImageStrategy() {
         return new IImageResizingStrategy() {
-            private static final double REQUIRED_RATIO = 6d;
+            private static final double REQUIRED_RATIO = 10d/3d;
 
             @Override
             public BufferedImage convertImage(BufferedImage sourceImage) {

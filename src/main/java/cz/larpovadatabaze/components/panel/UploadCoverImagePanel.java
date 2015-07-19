@@ -12,10 +12,10 @@ import cz.larpovadatabaze.entities.Image;
 /**
  *
  */
-public class CoverImagePanel extends FormComponentPanel<Image> {
+public class UploadCoverImagePanel extends FormComponentPanel<Image> {
     private Image baseImage;
 
-    public CoverImagePanel(String id) {
+    public UploadCoverImagePanel(String id) {
         super(id);
 
         IModel<List<FileUpload>> listIModel = new IModel<List<FileUpload>>(){

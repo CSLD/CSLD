@@ -31,7 +31,7 @@ import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
 import cz.larpovadatabaze.components.common.JSPingBehavior;
 import cz.larpovadatabaze.components.common.multiac.IMultiAutoCompleteSource;
 import cz.larpovadatabaze.components.common.multiac.MultiAutoCompleteComponent;
-import cz.larpovadatabaze.components.panel.CoverImagePanel;
+import cz.larpovadatabaze.components.panel.UploadCoverImagePanel;
 import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
 import cz.larpovadatabaze.components.panel.group.CreateOrUpdateGroupPanel;
 import cz.larpovadatabaze.entities.CsldGroup;
@@ -169,8 +169,6 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         createOrUpdateGame.add(bothRole);
         createOrUpdateGame.add(new CsldFeedbackMessageLabel("bothRoleFeedback", bothRole, "form.game.bothRoleHint"));
 
-        // TODO - image
-
         // Web
         TextField<String> web = new TextField<String>("web");
         createOrUpdateGame.add(web);
@@ -205,7 +203,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         createOrUpdateGame.add(new CsldFeedbackMessageLabel("videoFeedback", videoField, "form.game.videoHint"));
 
         // Cover photo
-        createOrUpdateGame.add(new CoverImagePanel("coverImage"));
+        createOrUpdateGame.add(new UploadCoverImagePanel("coverImage"));
 
         // Ratings disabled
         createOrUpdateGame.add(new CheckBox("ratingsDisabled") {
@@ -384,10 +382,6 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
     }
 
     private void addGroupsInput(Form<Game> createOrUpdateGame, Game game) {
-        /*
-        IFactory<CsldGroup> groupIFactory = new GenericFactory<CsldGroup>(CsldGroup.class);
-        IValidator<CsldGroup> groupIValidator = new GenericValidator<CsldGroup>(groupService);
-        */
 
         MultiAutoCompleteComponent<CsldGroup> groups = new MultiAutoCompleteComponent<>("groupAuthor", new PropertyModel<>(getModelObject(), "groupAuthor"), new IMultiAutoCompleteSource<CsldGroup>() {
             @Override
