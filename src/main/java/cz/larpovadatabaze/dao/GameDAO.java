@@ -226,22 +226,27 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
             addLanguageRestriction(criteria, filterGame.getLanguages());
         }
 
-        Integer yearLimit;
+        Integer yearLimit = null;
         if (filterGame.isShowArchived()) {
             yearLimit = null;
         }
         else {
             if (filterGame.isShowOnlyNew()) {
+                // Show only games, which last comment is younger than YEARS_NEW
                 yearLimit = YEARS_NEW;
             }
             else {
+                // Show only games, which last comment is older than.
                 yearLimit = YEARS_OLD;
             }
         }
 
         if (yearLimit != null) {
             // Show games from this & last year
-            criteria.add(Restrictions.gt("year", new GregorianCalendar().get(Calendar.YEAR)-2));
+            criteria.createCriteria("comments", "comment");
+            Calendar oldestRelevantComment = Calendar.getInstance();
+            oldestRelevantComment.add(Calendar.YEAR, -yearLimit);
+            criteria.add(Restrictions.gt("comment.added", oldestRelevantComment.getTime()));
         }
     }
 
