@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public class JSPingBehavior extends Behavior {
     /* Ping interval to keep session alive - 20 minutes */
-    private static final int DEFAULT_PING_INTERVAL = 20*60;
+    private static final int DEFAULT_PING_INTERVAL = 20;
 
 
     private final int interval;
@@ -47,7 +47,7 @@ public class JSPingBehavior extends Behavior {
     public void renderHead(Component component, IHeaderResponse response) {
         super.renderHead(component, response);
 
-        ResourceReference rr = new ResourceReference(getClass(), "pingPoint") {
+        ResourceReference rr = new ResourceReference(getClass(), "pingAnswer.txt") {
             @Override
             public IResource getResource() {
                 return resource;
