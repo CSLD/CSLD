@@ -8,10 +8,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.text.Collator;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.panel.game.AbstractListGamePanel;
@@ -67,7 +64,7 @@ public class SearchResultsPage extends CsldBasePage {
         private List<Game> getGameList() {
             if (filteredGames == null) {
                 // Load games
-                List<Game> allResults = gameService.getAll();
+                List<Game> allResults = new ArrayList<>(new LinkedHashSet<Game>(gameService.getAll()));
                 filteredGames = new ArrayList<Game>();
                 Collator collator = Collator.getInstance(new Locale("cs"));
                 collator.setStrength(Collator.PRIMARY);

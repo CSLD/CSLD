@@ -11,10 +11,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import cz.larpovadatabaze.components.page.OwlCarouselResourceReference;
 import cz.larpovadatabaze.components.panel.game.GameBoxPanel;
@@ -58,7 +55,7 @@ public class RecentGamesPanel extends Panel {
         }
 
         // Add most popular games
-        List<Game> mostPopularGames = gameService.getMostPopularGames(AMOUNT_OF_GAMES);
+        List<Game> mostPopularGames = new ArrayList<>(gameService.getMostPopularGames(AMOUNT_OF_GAMES));
         for(int i=0; i<6; i++) {
             String id = "popular" + (i + 1);
             if (recentGames.size() > i) {

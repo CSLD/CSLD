@@ -1,28 +1,8 @@
 package cz.larpovadatabaze.services.impl;
 
-import org.apache.wicket.markup.html.form.upload.FileUpload;
-import org.apache.wicket.request.resource.ResourceReference;
-import org.hibernate.SessionFactory;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
 import cz.larpovadatabaze.dao.GameDAO;
 import cz.larpovadatabaze.dao.GameHasLanguageDao;
-import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.GameHasLanguages;
-import cz.larpovadatabaze.entities.Image;
+import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.lang.LanguageSolver;
 import cz.larpovadatabaze.models.FilterGame;
@@ -32,6 +12,19 @@ import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.services.ImageService;
+import org.apache.wicket.markup.html.form.upload.FileUpload;
+import org.apache.wicket.request.resource.ResourceReference;
+import org.hibernate.SessionFactory;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.List;
 
 /**
  *
@@ -96,25 +89,23 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<Game> getSimilar(Game game) {
-        return gameDAO.getSimilar(game);
+    public LinkedHashSet<Game> getSimilar(Game game) {
+        return new LinkedHashSet<>(gameDAO.getSimilar(game));
     }
 
     @Override
-    public List<Game> gamesOfAuthors(Game game) {
+    public LinkedHashSet<Game> gamesOfAuthors(Game game) {
         // TODO sort games by rating.
-        Set<Game> games = new LinkedHashSet<Game>();
+        LinkedHashSet<Game> games = new LinkedHashSet<>();
         for(CsldUser author: game.getAuthors()){
             games.addAll(author.getAuthorOf());
         }
-        List<Game> gamesOfAuthors = new ArrayList<Game>();
-        gamesOfAuthors.addAll(games);
-        return gamesOfAuthors;
+        return games;
     }
 
     @Override
-    public List<Game> getByAutoCompletable(String gameName) throws WrongParameterException {
-        return gameDAO.getByAutoCompletable(gameName);
+    public LinkedHashSet<Game> getByAutoCompletable(String gameName) throws WrongParameterException {
+        return new LinkedHashSet<>(gameDAO.getByAutoCompletable(gameName));
     }
 
     @Override
@@ -123,13 +114,13 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<Game> getLastGames(int amountOfGames) {
-        return gameDAO.getLastGames(amountOfGames, languageSolver.getLanguagesForUser());
+    public LinkedHashSet<Game> getLastGames(int amountOfGames) {
+        return new LinkedHashSet<>(gameDAO.getLastGames(amountOfGames, languageSolver.getLanguagesForUser()));
     }
 
     @Override
-    public List<Game> getMostPopularGames(int amountOfGames) {
-        return gameDAO.getMostPopularGames(amountOfGames, languageSolver.getLanguagesForUser());
+    public LinkedHashSet<Game> getMostPopularGames(int amountOfGames) {
+        return new LinkedHashSet<>(gameDAO.getMostPopularGames(amountOfGames, languageSolver.getLanguagesForUser()));
     }
 
     @Override
@@ -138,8 +129,8 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<Game> getFilteredGames(FilterGame filterGame, int offset, int limit) {
-        return gameDAO.getFilteredGames(filterGame, offset, limit);
+    public LinkedHashSet<Game> getFilteredGames(FilterGame filterGame, int offset, int limit) {
+        return new LinkedHashSet<>(gameDAO.getFilteredGames(filterGame, offset, limit));
     }
 
     @Override
@@ -149,12 +140,12 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Collection<Game> getGamesOfAuthor(CsldUser author, int first, int count) {
-        return new LinkedHashSet<Game>(gameDAO.getGamesOfAuthor(author, first, count));
+        return new LinkedHashSet<>(gameDAO.getGamesOfAuthor(author, first, count));
     }
 
     @Override
     public Collection<Game> getGamesOfGroup(CsldGroup csldGroup, int first, int count) {
-        return new LinkedHashSet<Game>(gameDAO.getGamesOfGroup(csldGroup, first, count));
+        return new LinkedHashSet<>(gameDAO.getGamesOfGroup(csldGroup, first, count));
     }
 
     @Override
@@ -244,7 +235,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Collection<Game> getGamesCommentedByUser(int userId) {
-        return new LinkedHashSet<Game>(gameDAO.getGamesCommentedByUser(userId));
+        return new LinkedHashSet<>(gameDAO.getGamesCommentedByUser(userId));
     }
 
     @Override
@@ -265,7 +256,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Collection<Game> getGamesRatedByUser(int userId) {
-        return new LinkedHashSet<Game>(gameDAO.getGamesRatedByUser(userId));
+        return new LinkedHashSet<>(gameDAO.getGamesRatedByUser(userId));
     }
 
     @Override
