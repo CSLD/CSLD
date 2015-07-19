@@ -5,7 +5,6 @@ import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.services.GameService;
 import org.apache.wicket.util.convert.IConverter;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
@@ -22,10 +21,10 @@ public class GameConverter implements IConverter<Game> {
     @Override
     public Game convertToObject(String gameName, Locale locale) {
         try {
-            Collection<Game> foundGames = gameService.getByAutoCompletable(gameName);
+            List<Game> foundGames = gameService.getByAutoCompletable(gameName);
             int amountOfGames = foundGames.size();
             if(amountOfGames == 1) {
-                return foundGames.iterator().next();
+                return foundGames.get(0);
             } else {
                 return null;
             }

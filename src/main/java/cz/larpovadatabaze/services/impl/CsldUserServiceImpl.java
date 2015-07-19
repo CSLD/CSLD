@@ -52,7 +52,6 @@ public class CsldUserServiceImpl implements CsldUserService {
 
     @Override
     public boolean saveOrUpdate(CsldUser user) {
-        // There is an issue with languages. UserHasLanguage is table containin g
         return csldUserDao.saveOrUpdate(user);
     }
 

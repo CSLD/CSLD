@@ -1,9 +1,6 @@
 package cz.larpovadatabaze.lang;
 
-import cz.larpovadatabaze.entities.UserHasLanguages;
-
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Languages available to use with the larp database.
@@ -25,11 +22,5 @@ public enum AvailableLanguages {
         List<String> available = new ArrayList<>();
         Collections.addAll(available, cs.name(), en.name(), de.name(), it.name());
         return available;
-    }
-
-    public static List<UserHasLanguages> availableUserLanguages(){
-        List<String> available = availableLocaleNames();
-        return available.stream().map(UserHasLanguages::new).collect(Collectors
-                .toList());
     }
 }

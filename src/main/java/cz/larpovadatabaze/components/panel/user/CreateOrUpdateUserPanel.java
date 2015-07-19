@@ -6,7 +6,6 @@ import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Image;
-import cz.larpovadatabaze.entities.UserHasLanguages;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
@@ -35,7 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static cz.larpovadatabaze.lang.AvailableLanguages.availableLocaleNames;
-import static cz.larpovadatabaze.lang.AvailableLanguages.availableUserLanguages;
 
 /**
  * Panel used for registering new user or adding new Author into the database.
@@ -123,9 +121,9 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
         DropDownChoice<String> defaultLanguage = new DropDownChoice<String>("defaultLang", availableLocales);
         createOrUpdateUser.add(defaultLanguage);
 
-        final ListMultipleChoice<UserHasLanguages> changeLocale =
+        final ListMultipleChoice<String> changeLocale =
                 new ListMultipleChoice<>("userHasLanguages",
-                        availableUserLanguages());
+                        availableLocaleNames());
         createOrUpdateUser.add(addFeedbackPanel(changeLocale, createOrUpdateUser, "userHasLanguagesFeedback", "form.description.userHasLanguages"));
 
         if (isEdit) {
