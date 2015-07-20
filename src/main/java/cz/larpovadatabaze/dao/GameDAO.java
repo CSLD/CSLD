@@ -1,9 +1,6 @@
 package cz.larpovadatabaze.dao;
 
-import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -258,7 +255,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
 
         applyGameFilter(subQueryCriteria, filterGame);
 
-        subQueryCriteria.setProjection(Projections.id());
+        subQueryCriteria.setProjection(Projections.distinct(Projections.id()));
 
         Criteria criteria = new GameBuilder().build().getExecutableCriteria(session);
 
@@ -285,6 +282,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
                     .setMaxResults(count);
         }
 
+        criteria.setFetchMode("availableLanguages", FetchMode.SELECT);
         return criteria.list();
     }
 
@@ -348,6 +346,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     private void addLanguageRestriction(DetachedCriteria criteria, List<Locale> languages) {
         criteria
                 .createCriteria("availableLanguages")
-                .add(Restrictions.in("language", languages.stream().map(Locale::getLanguage).collect(Collectors.toList())));
+                .add(Restrictions.in("language", languages.stream().map(Locale::getLanguage).collect(Collectors
+                        .toList())));
     }
 }
