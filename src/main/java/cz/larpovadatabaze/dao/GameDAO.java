@@ -6,6 +6,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
+import org.hibernate.sql.JoinType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -240,10 +241,12 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
 
         if (yearLimit != null) {
             // Show games from this & last year
-            criteria.createCriteria("comments", "comment");
+            criteria.createCriteria("comments", "comment", JoinType.LEFT_OUTER_JOIN);
             Calendar oldestRelevantComment = Calendar.getInstance();
             oldestRelevantComment.add(Calendar.YEAR, -yearLimit);
-            criteria.add(Restrictions.gt("comment.added", oldestRelevantComment.getTime()));
+            criteria.add(Restrictions.or(
+                    Restrictions.gt("year", oldestRelevantComment.get(Calendar.YEAR)),
+                    Restrictions.gt("comment.added", oldestRelevantComment.getTime())));
         }
     }
 
