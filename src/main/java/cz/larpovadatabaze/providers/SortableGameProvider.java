@@ -6,7 +6,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -51,7 +50,7 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
         ).iterator();
     }
 
-    private Collection<Game> setStart(Collection<Game> games, int first){
+    private List<Game> setStart(List<Game> games, int first){
         for(Game game: games){
             game.setFirst(first);
         }

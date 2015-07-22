@@ -387,14 +387,14 @@ public class GameDetail extends CsldBasePage {
         add(new GameListPanel("similarGames", new LoadableDetachableModel<List<? extends Game>>() {
             @Override
             protected List<Game> load() {
-                return new ArrayList<Game>(gameService.getSimilar(getModel().getObject()));
+                return gameService.getSimilar(getModel().getObject());
             }
         }));
 
         add(new GameListPanel("gamesOfAuthors", new LoadableDetachableModel<List<? extends Game>>() {
             @Override
             protected List<Game> load() {
-                return new ArrayList<Game>(gameService.gamesOfAuthors(getModel().getObject()));
+                return gameService.gamesOfAuthors(getModel().getObject());
             }
         }));
 

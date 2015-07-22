@@ -14,37 +14,30 @@ import cz.larpovadatabaze.models.FilterGame;
  *
  */
 public interface GameService extends GenericService<Game>, IIconReferenceProvider<Game> {
-    Game getById(Integer id);
+    public Game getById(Integer id);
 
     /**
      * Flush game from Hibernate cache / session cache
      *
      * @param id Game id
      */
-    void evictGame(Integer id);
+    public void evictGame(Integer id);
 
-    boolean addGame(Game game);
+    public boolean addGame(Game game);
 
-    Collection<Game> getSimilar(Game game);
+    List<Game> getSimilar(Game game);
 
-    Collection<Game> gamesOfAuthors(Game game);
+    List<Game> gamesOfAuthors(Game game);
 
-    Collection<Game> getByAutoCompletable(String gameName) throws WrongParameterException;
+    List<Game> getByAutoCompletable(String gameName) throws WrongParameterException;
 
     Game getRandomGame();
 
-    /**
-     * It returns some amount of games sorted by added in descending order. This order is guaranteed regardless of chosen
-     * collection implementation.
-     *
-     * @param amountOfGames How many games should be retrieved.
-     * @return Ordered collection of games. In case there is no game to retrieve return empty collection.
-     */
-    Collection<Game> getLastGames(int amountOfGames);
+    List<Game> getLastGames(int amountOfGames);
 
     int getAmountOfGames();
 
-    Collection<Game> getFilteredGames(FilterGame filterGame, int offset, int limit);
+    List<Game> getFilteredGames(FilterGame filterGame, int offset, int limit);
 
     long getAmountOfFilteredGames(FilterGame filterGame);
 
@@ -88,7 +81,7 @@ public interface GameService extends GenericService<Game>, IIconReferenceProvide
      */
     Collection<Game> getGamesRatedByUser(int userId);
 
-    Collection<Game> getMostPopularGames(int amountOfGames);
+    List<Game> getMostPopularGames(int amountOfGames);
 
     void deleteTranslation(GameHasLanguages toRemove);
 }

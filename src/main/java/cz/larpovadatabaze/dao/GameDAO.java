@@ -1,14 +1,12 @@
 package cz.larpovadatabaze.dao;
 
-import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
+import org.hibernate.sql.JoinType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -243,10 +241,12 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
 
         if (yearLimit != null) {
             // Show games from this & last year
-            criteria.createCriteria("comments", "comment");
+            criteria.createCriteria("comments", "comment", JoinType.LEFT_OUTER_JOIN);
             Calendar oldestRelevantComment = Calendar.getInstance();
             oldestRelevantComment.add(Calendar.YEAR, -yearLimit);
-            criteria.add(Restrictions.gt("comment.added", oldestRelevantComment.getTime()));
+            criteria.add(Restrictions.or(
+                    Restrictions.gt("year", oldestRelevantComment.get(Calendar.YEAR)),
+                    Restrictions.gt("comment.added", oldestRelevantComment.getTime())));
         }
     }
 
@@ -258,7 +258,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
 
         applyGameFilter(subQueryCriteria, filterGame);
 
-        subQueryCriteria.setProjection(Projections.id());
+        subQueryCriteria.setProjection(Projections.distinct(Projections.id()));
 
         Criteria criteria = new GameBuilder().build().getExecutableCriteria(session);
 
@@ -285,6 +285,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
                     .setMaxResults(count);
         }
 
+        criteria.setFetchMode("availableLanguages", FetchMode.SELECT);
         return criteria.list();
     }
 
@@ -348,6 +349,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     private void addLanguageRestriction(DetachedCriteria criteria, List<Locale> languages) {
         criteria
                 .createCriteria("availableLanguages")
-                .add(Restrictions.in("language", languages.stream().map(Locale::getLanguage).collect(Collectors.toList())));
+                .add(Restrictions.in("language", languages.stream().map(Locale::getLanguage).collect(Collectors
+                        .toList())));
     }
 }
