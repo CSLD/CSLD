@@ -3,6 +3,8 @@ package cz.larpovadatabaze.lang;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.UserHasLanguages;
 import cz.larpovadatabaze.utils.UserUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Locale;
@@ -10,6 +12,7 @@ import java.util.Locale;
 /**
  * It gets languages from session as well as from information about logged user in the database.
  */
+@Service
 public class DbSessionLanguageSolver implements LanguageSolver {
     private LanguageSolver solveLang;
 

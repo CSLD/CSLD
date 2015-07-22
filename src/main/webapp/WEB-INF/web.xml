@@ -11,10 +11,17 @@
         <tracking-mode>COOKIE</tracking-mode>
     </session-config>
 
+    <context-param>
+        <param-name>contextClass</param-name>
+        <param-value>
+            org.springframework.web.context.support.AnnotationConfigWebApplicationContext
+        </param-value>
+    </context-param>
 	<context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:spring-web.xml</param-value>
+        <param-value>cz.larpovadatabaze.RootConfig</param-value>
     </context-param>
+
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
@@ -51,26 +58,6 @@
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>ERROR</dispatcher>
     </filter-mapping>
-
-    <resource-ref>
-        <description>Postgres datasource</description>
-        <res-ref-name>jdbc/csld</res-ref-name>
-        <res-type>javax.sql.DataSource</res-type>
-        <res-auth>Container</res-auth>
-    </resource-ref>
-
-  	<resource-ref>
-  	    <description>SMTP Server</description>
-  	    <res-ref-name>mail/Session</res-ref-name>
-  		  <res-type>javax.mail.Session</res-type>
-  		  <res-auth>Container</res-auth>
-	  </resource-ref>
-
-    <resource-env-ref>
-        <description>Where data files are stored</description>
-        <resource-env-ref-name>csld/dataDir</resource-env-ref-name>
-        <resource-env-ref-type>java.lang.String</resource-env-ref-type>
-    </resource-env-ref>
 
     <error-page>
         <error-code>404</error-code>

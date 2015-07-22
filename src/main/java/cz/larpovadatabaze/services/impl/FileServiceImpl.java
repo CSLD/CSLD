@@ -10,6 +10,7 @@ import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.util.file.Files;
 import org.apache.wicket.util.time.Time;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.jndi.JndiTemplate;
 import org.springframework.stereotype.Service;
@@ -23,16 +24,19 @@ import java.io.*;
  * Date: 25.12.13
  * Time: 20:44
  */
-@Service
-public class FileServiceImpl implements FileService, InitializingBean {
+public class FileServiceImpl implements FileService {
 
     private static final String PREVIEW_POSTFIX = "-p";
-    private static final String DATA_DIR_ENV_KEY = "java:comp/env/csld/dataDir";
 
     /**
      * Base data directory
      */
     private String dataDir;
+
+    @Autowired
+    public FileServiceImpl(String dataDir) {
+        this.dataDir = dataDir;
+    }
 
     /**
      * Callback to write a file
@@ -87,13 +91,6 @@ public class FileServiceImpl implements FileService, InitializingBean {
         protected ResourceResponse newResourceResponse(Attributes attributes) {
             return respondWithFileStatic(file, contentType);
         }
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        // Lookup data dir in environment
-        JndiTemplate jndi = new JndiTemplate();
-        dataDir = (String)jndi.lookup(DATA_DIR_ENV_KEY);
     }
 
     private String getFileType(String fileName){

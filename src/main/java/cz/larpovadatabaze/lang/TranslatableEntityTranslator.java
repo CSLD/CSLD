@@ -1,5 +1,8 @@
 package cz.larpovadatabaze.lang;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
@@ -7,10 +10,12 @@ import java.util.Locale;
 /**
  * Translator for all entities containing name and description.
  */
+@Service
 public class TranslatableEntityTranslator implements Translator<TranslatableEntity> {
     private LanguageSolver whatLanguagesToUse;
     private LanguageSolver actualLanguageProvider = new SessionLanguageSolver();
 
+    @Autowired
     public TranslatableEntityTranslator(LanguageSolver whatLanguagesToUse) {
         this.whatLanguagesToUse = whatLanguagesToUse;
     }
