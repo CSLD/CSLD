@@ -235,7 +235,7 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable, I
 
     private List<UserHasLanguages> userHasLanguages;
 
-    @OneToMany(mappedBy = "user",cascade = {javax.persistence.CascadeType.PERSIST, javax.persistence.CascadeType.MERGE})
+    @OneToMany(mappedBy = "user",cascade = {javax.persistence.CascadeType.ALL}, orphanRemoval = true)
     public List<UserHasLanguages> getUserHasLanguages() {
         return userHasLanguages;
     }
