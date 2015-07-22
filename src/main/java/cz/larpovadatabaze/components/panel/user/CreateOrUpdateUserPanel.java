@@ -4,13 +4,17 @@ import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
+import cz.larpovadatabaze.dao.UserHasLanguagesDao;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Image;
+import cz.larpovadatabaze.entities.UserHasLanguages;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.utils.Pwd;
+import cz.larpovadatabaze.utils.UserUtils;
 import cz.larpovadatabaze.validator.UniqueUserValidator;
+import org.apache.catalina.User;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -26,12 +30,14 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.hibernate.criterion.Restrictions;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static cz.larpovadatabaze.lang.AvailableLanguages.availableLocaleNames;
 
@@ -46,6 +52,8 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
     FileService fileService;
     @SpringBean
     ImageResizingStrategyFactoryService imageResizingStrategyFactoryService;
+    @SpringBean
+    UserHasLanguagesDao userHasLanguages;
 
     private FileUploadField fileUpload;
     @SuppressWarnings("unused")
@@ -121,9 +129,9 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
         DropDownChoice<String> defaultLanguage = new DropDownChoice<String>("defaultLang", availableLocales);
         createOrUpdateUser.add(defaultLanguage);
 
-        final ListMultipleChoice<String> changeLocale =
+        final ListMultipleChoice<UserHasLanguages> changeLocale =
                 new ListMultipleChoice<>("userHasLanguages",
-                        availableLocaleNames());
+                        availableUserLanguages());
         createOrUpdateUser.add(addFeedbackPanel(changeLocale, createOrUpdateUser, "userHasLanguagesFeedback", "form.description.userHasLanguages"));
 
         if (isEdit) {
@@ -167,6 +175,32 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
         createOrUpdateUser.add(new EqualPasswordInputValidator(password, passwordAgain));
 
         add(createOrUpdateUser);
+    }
+
+    private List<UserHasLanguages> availableUserLanguages() {
+        List<String> available = availableLocaleNames();
+        List<UserHasLanguages> availableLanguages = new ArrayList<>();
+        if(UserUtils.isSignedIn()) {
+            available.forEach(lang -> availableLanguages.add(retrieveExistingOrCreateNew(lang)));
+        }
+        return availableLanguages;
+    }
+
+    private UserHasLanguages retrieveExistingOrCreateNew(String language) {
+        List<UserHasLanguages> existingLanguages = userHasLanguages.findByCriteria(Restrictions.and(
+                Restrictions.eq("language", language),
+                Restrictions.eq("user", UserUtils.getLoggedUser())));
+        if(!existingLanguages.isEmpty()){
+            return existingLanguages.get(0);
+        }
+
+        return createNewLanguage(language);
+    }
+
+    private UserHasLanguages createNewLanguage(String language) {
+        UserHasLanguages newUserHasLanguage = new UserHasLanguages(language);
+        newUserHasLanguage.setUser(getModelObject());
+        return newUserHasLanguage;
     }
 
     private FormComponent addFeedbackPanel(FormComponent addFeedbackTo, Form addingFeedbackTo, String feedbackId, String defaultKey){

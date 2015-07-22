@@ -31,6 +31,13 @@ public class UserHasLanguages implements Serializable {
     @JoinColumn(name="id_user")
     CsldUser user;
 
+    public UserHasLanguages() {
+    }
+
+    public UserHasLanguages(String language) {
+        this.language = language;
+    }
+
     public Integer getId() {
         return id;
     }

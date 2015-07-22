@@ -1,6 +1,10 @@
 package cz.larpovadatabaze.lang;
 
+import cz.larpovadatabaze.entities.UserHasLanguages;
+import cz.larpovadatabaze.utils.UserUtils;
+
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Languages available to use with the larp database.

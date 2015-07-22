@@ -1,5 +1,7 @@
 package cz.larpovadatabaze.services.impl;
 
+import cz.larpovadatabaze.dao.UserHasLanguagesDao;
+import cz.larpovadatabaze.entities.UserHasLanguages;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -36,6 +38,9 @@ public class CsldUserServiceImpl implements CsldUserService {
     private static final String RE_CAPTCHA_VERIFY_URL="https://www.google.com/recaptcha/api/siteverify";
     private static final String RE_CAPTCHA_SITE_KEY ="6LeEiv8SAAAAABn8qvmZGkez0Lpp-Pbak_Jr6T1t";
     private static final String RE_CAPTCHA_SECRET_KEY ="6LeEiv8SAAAAAAE2ikmbiEJhv5XdVaI4_TiPPEt6";
+
+    @Autowired
+    private UserHasLanguagesDao languagesOfUser;
 
     @Autowired
     private CsldUserDAO csldUserDao;
