@@ -1,0 +1,1 @@
+alter table csld_group_has_languages drop CONSTRAINT csld_group_has_languages_language_fkey;
