@@ -18,13 +18,15 @@
         <wicket:container wicket:id="commentsContent"></wicket:container>
 
         <!-- Not in the template -->
-        <span wicket:id="showGame">
-            <wicket:message key="comment.aboutGame">o hře</wicket:message>
-            <div wicket:id="gameRating" class="ctverecek"></div>
-            <a wicket:id="gameDetail">
-                <span wicket:id="gameName"></span>
-            </a>
-        </span>
+        <div wicket:id="showGame" style="margin-top: 10px;">
+            <wicket:message key="comment.aboutGame">o hře</wicket:message>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style="position: relative;">
+                <div wicket:id="gameRating" class="game-square"></div>
+                <a wicket:id="gameDetail">
+                    <span wicket:id="gameName"></span>
+                </a>
+            </span>
+        </div>
     </div>
 
 
