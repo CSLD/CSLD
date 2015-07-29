@@ -34,6 +34,7 @@
         <fieldset>
             <section>
                 <label class="input">
+                    <b><wicket:message key="form.userImage" /></b>
                     <input type="file" wicket:id="image"/>
                     <b class="tooltip tooltip-bottom-right" wicket:id="imageFeedback"></b>
                 </label>
@@ -87,11 +88,13 @@
                     </label>
                 </section>
             </wicket:enclosure>
+            <!--
             <section>
                 <label class="textarea">
                     <textarea class="textarea" wicket:id="person.description" wicket:message="placholder:form.description.about"></textarea>
                 </label>
             </section>
+            -->
             <section>
                 <input class="btn-u" type="button" wicket:id="submit" />
             </section>

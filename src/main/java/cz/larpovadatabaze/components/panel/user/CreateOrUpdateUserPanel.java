@@ -1,7 +1,36 @@
 package cz.larpovadatabaze.components.panel.user;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.extensions.markup.html.form.DateTextField;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.EmailTextField;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.apache.wicket.markup.html.form.ListMultipleChoice;
+import org.apache.wicket.markup.html.form.PasswordTextField;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.upload.FileUpload;
+import org.apache.wicket.markup.html.form.upload.FileUploadField;
+import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.hibernate.criterion.Restrictions;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import cz.larpovadatabaze.api.ValidatableForm;
-import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
 import cz.larpovadatabaze.dao.UserHasLanguagesDao;
@@ -14,30 +43,7 @@ import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.utils.Pwd;
 import cz.larpovadatabaze.utils.UserUtils;
 import cz.larpovadatabaze.validator.UniqueUserValidator;
-import org.apache.catalina.User;
-import org.apache.commons.lang.StringUtils;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.extensions.markup.html.form.DateTextField;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.*;
-import org.apache.wicket.markup.html.form.upload.FileUpload;
-import org.apache.wicket.markup.html.form.upload.FileUploadField;
-import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.model.StringResourceModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.hibernate.criterion.Restrictions;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static cz.larpovadatabaze.lang.AvailableLanguages.availableLocaleNames;
 
@@ -125,13 +131,12 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
         DateTextField birthDate = new DateTextField("person.birthDate", "dd.MM.yyyy");
         createOrUpdateUser.add(addFeedbackPanel(birthDate, createOrUpdateUser, "birthDateFeedback", "form.description.dateOfBirth"));
 
-        List<String> availableLocales = new ArrayList<String>(availableLocaleNames());
-        DropDownChoice<String> defaultLanguage = new DropDownChoice<String>("defaultLang", availableLocales);
+        List<String> availableLocales = new ArrayList<>(availableLocaleNames());
+        DropDownChoice<String> defaultLanguage = new DropDownChoice<>("defaultLang", availableLocales, new LanguageChoiceRenderer());
         createOrUpdateUser.add(defaultLanguage);
 
         final ListMultipleChoice<UserHasLanguages> changeLocale =
-                new ListMultipleChoice<>("userHasLanguages",
-                        availableUserLanguages());
+                new ListMultipleChoice<>("userHasLanguages", availableUserLanguages(), new UserHasLanguageChoiceRenderer());
         createOrUpdateUser.add(addFeedbackPanel(changeLocale, createOrUpdateUser, "userHasLanguagesFeedback", "form.description.userHasLanguages"));
 
         if (isEdit) {
@@ -146,9 +151,11 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
             createOrUpdateUser.add(reCaptcha);
         }
 
+        /*
         TextArea description =new TextArea<String>("person.description");
         description.add(new CSLDTinyMceBehavior());
         createOrUpdateUser.add(description);
+         */
 
 
         createOrUpdateUser.add(new AjaxButton("submit", new StringResourceModel(resourceBase+".submit", null)){
@@ -269,4 +276,29 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
     }
 
     protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}
+
+    private static class LanguageChoiceRenderer implements IChoiceRenderer<String> {
+        @Override
+        public Object getDisplayValue(String object) {
+            return new ResourceModel("language."+object).getObject();
+        }
+
+        @Override
+        public String getIdValue(String object, int index) {
+            return object;
+        }
+    }
+
+    private static class UserHasLanguageChoiceRenderer implements IChoiceRenderer<UserHasLanguages> {
+
+        @Override
+        public Object getDisplayValue(UserHasLanguages object) {
+            return new ResourceModel("language."+object.getLanguage()).getObject();
+        }
+
+        @Override
+        public String getIdValue(UserHasLanguages object, int index) {
+            return object.getLanguage();
+        }
+    }
 }
