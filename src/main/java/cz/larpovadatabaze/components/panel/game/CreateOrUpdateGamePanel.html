@@ -169,7 +169,24 @@ Code - cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel.html
                         </label>
                     </section>
                 </div>
-                <wicket:message key="form.game.section.presentation"/>
+                <div class="row">
+                    <section class="col col-6">
+                        <label class="input">
+                            <i class="icon-append fa fa-history"></i>
+                            <input type="text" wicket:id="hours" wicket:message="placeholder:form.hours">
+                            <b class="tooltip tooltip-bottom-right" wicket:id="hoursFeedback"></b>
+                        </label>
+                    </section>
+                    <section class="col col-6">
+                        <label class="input">
+                            <i class="icon-append fa fa-calendar-o"></i>
+                            <input type="text" wicket:id="days" wicket:message="placeholder:form.days">
+                            <b class="tooltip tooltip-bottom-right" wicket:id="daysFeedback"></b>
+                        </label>
+                    </section>
+                </div>
+
+                    <wicket:message key="form.game.section.presentation"/>
             </fieldset>
 
             <fieldset>

@@ -1,6 +1,9 @@
 package cz.larpovadatabaze;
 
 import cz.larpovadatabaze.components.page.TestDatabase;
+import cz.larpovadatabaze.converters.*;
+import cz.larpovadatabaze.dao.UserHasLanguagesDao;
+import cz.larpovadatabaze.entities.*;
 import org.apache.log4j.Logger;
 import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
@@ -61,14 +64,6 @@ import cz.larpovadatabaze.components.page.user.ResetPassword;
 import cz.larpovadatabaze.components.page.user.SignOutPage;
 import cz.larpovadatabaze.components.page.user.UpdateUserPage;
 import cz.larpovadatabaze.components.page.user.UserDetailPage;
-import cz.larpovadatabaze.converters.CsldUserConverter;
-import cz.larpovadatabaze.converters.GameConverter;
-import cz.larpovadatabaze.converters.GroupConverter;
-import cz.larpovadatabaze.converters.LabelConverter;
-import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.GameService;
@@ -92,6 +87,8 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     private GroupService groupService;
     @Autowired
     private LabelService labelService;
+    @Autowired
+    private UserHasLanguagesDao userHasLanguages;
 
     private static final String DEFAULT_ENCODING = "UTF-8";
     private static ApplicationContext ctx;
@@ -209,6 +206,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         locator.set(Game.class, new GameConverter(gameService));
         locator.set(CsldGroup.class, new GroupConverter(groupService));
         locator.set(Label.class, new LabelConverter(labelService));
+        locator.set(UserHasLanguages.class, new UserHasLanguageConverter(userHasLanguages));
 
         return locator;
 
@@ -254,7 +252,9 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         mountPage("/error404", Error404Page.class);
         mountPage("/error500", Error500Page.class);
 
-        mountPage("/testDatabase", TestDatabase.class);
+        if(isDevelopmentMode()) {
+            mountPage("/testDatabase", TestDatabase.class);
+        }
     }
 
     private void mountResources() {

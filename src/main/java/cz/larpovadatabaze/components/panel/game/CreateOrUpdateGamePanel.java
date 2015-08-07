@@ -169,6 +169,16 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         createOrUpdateGame.add(bothRole);
         createOrUpdateGame.add(new CsldFeedbackMessageLabel("bothRoleFeedback", bothRole, "form.game.bothRoleHint"));
 
+        // Hours
+        TextField<Integer> hours = new TextField<Integer>("hours");
+        createOrUpdateGame.add(hours);
+        createOrUpdateGame.add(new CsldFeedbackMessageLabel("hoursFeedback", bothRole, "form.game.hoursHint"));
+
+        // Days
+        TextField<Integer> days = new TextField<Integer>("days");
+        createOrUpdateGame.add(days);
+        createOrUpdateGame.add(new CsldFeedbackMessageLabel("daysFeedback", bothRole, "form.game.daysHint"));
+
         // Web
         TextField<String> web = new TextField<String>("web");
         createOrUpdateGame.add(web);
@@ -285,6 +295,8 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
                 }
 
                 if(createOrUpdateGame.isValid()){
+                    // TODO: find why when editing form the converted input isn't propagated.
+                    game.setGroupAuthor((List<CsldGroup>) ((MultiAutoCompleteComponent)createOrUpdateGame.get("groupAuthor")).getConvertedInput());
                     if(gameService.saveOrUpdate(game)){
                         onCsldAction(target, form);
                     } else {
