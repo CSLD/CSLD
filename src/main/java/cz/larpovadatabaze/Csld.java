@@ -252,7 +252,9 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         mountPage("/error404", Error404Page.class);
         mountPage("/error500", Error500Page.class);
 
-        mountPage("/testDatabase", TestDatabase.class);
+        if(isDevelopmentMode()) {
+            mountPage("/testDatabase", TestDatabase.class);
+        }
     }
 
     private void mountResources() {

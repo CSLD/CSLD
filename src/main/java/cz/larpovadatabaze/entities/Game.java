@@ -643,7 +643,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
 
     private List<GameHasLanguages> availableLanguages;
 
-    @OneToMany(mappedBy = "game")
+    @OneToMany(mappedBy = "game", fetch = FetchType.EAGER)
     @Cascade(CascadeType.ALL)
     public List<GameHasLanguages> getAvailableLanguages() {
         return availableLanguages;
