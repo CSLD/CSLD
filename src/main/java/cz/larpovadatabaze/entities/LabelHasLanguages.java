@@ -65,7 +65,7 @@ public class LabelHasLanguages implements Serializable, TranslationEntity {
     }
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "id_label", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "id_label", referencedColumnName = "`id`", nullable = false)
     public Label getLabel() {
         return label;
     }

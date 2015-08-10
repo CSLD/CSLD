@@ -131,7 +131,7 @@ public class Photo implements Serializable, IEntityWithImage {
     @ManyToOne()
     @JoinColumn(
             name="game",
-            referencedColumnName = "id",
+            referencedColumnName = "`id`",
             nullable = false,
             insertable = true,
             updatable = true
@@ -149,7 +149,7 @@ public class Photo implements Serializable, IEntityWithImage {
     @ManyToOne
     @JoinColumn(
             name = "image",
-            referencedColumnName = "id",
+            referencedColumnName = "`id`",
             nullable = false,
             insertable = true,
             updatable = true

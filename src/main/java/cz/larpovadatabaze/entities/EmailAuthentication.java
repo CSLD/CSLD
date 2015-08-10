@@ -70,7 +70,7 @@ public class EmailAuthentication implements Serializable {
     @ManyToOne
     @javax.persistence.JoinColumn(
             name = "user_id",
-            referencedColumnName = "id",
+            referencedColumnName = "`id`",
             insertable = true
     )
     public CsldUser getUser() {

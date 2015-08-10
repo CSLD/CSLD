@@ -77,7 +77,7 @@ public class Rating implements IGameWithRating, Serializable {
     @ManyToOne
     @JoinColumn(
             name = "game_id",
-            referencedColumnName = "id",
+            referencedColumnName = "`id`",
             nullable = false,
             insertable = false,
             updatable = false
@@ -96,7 +96,7 @@ public class Rating implements IGameWithRating, Serializable {
     @ManyToOne
     @JoinColumn(
             name = "user_id",
-            referencedColumnName = "id",
+            referencedColumnName = "`id`",
             nullable = false,
             insertable = false,
             updatable = false

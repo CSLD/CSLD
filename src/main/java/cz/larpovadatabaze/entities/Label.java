@@ -169,7 +169,7 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
     @ManyToOne
     @JoinColumn(
             name = "added_by",
-            referencedColumnName = "id",
+            referencedColumnName = "`id`",
             nullable = false,
             insertable = true,
             updatable = true)

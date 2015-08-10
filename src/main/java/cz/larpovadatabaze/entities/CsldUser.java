@@ -198,7 +198,7 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable, I
     @ManyToOne
     @JoinColumn(
             name = "best_game_id",
-            referencedColumnName = "id",
+            referencedColumnName = "`id`",
             insertable = false,
             updatable = false
     )
@@ -285,7 +285,7 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable, I
     @ManyToOne(cascade= javax.persistence.CascadeType.ALL)
     @JoinColumn(
             name = "image",
-            referencedColumnName = "id",
+            referencedColumnName = "`id`",
             insertable = true,
             updatable = true
     )

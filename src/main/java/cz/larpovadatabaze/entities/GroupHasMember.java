@@ -94,7 +94,7 @@ public class GroupHasMember implements Serializable {
     @ManyToOne
     @javax.persistence.JoinColumn(
             name = "user_id",
-            referencedColumnName = "id",
+            referencedColumnName = "`id`",
             nullable = false,
             insertable = false,
             updatable = false
@@ -113,7 +113,7 @@ public class GroupHasMember implements Serializable {
     @ManyToOne
     @javax.persistence.JoinColumn(
             name = "group_id",
-            referencedColumnName = "id",
+            referencedColumnName = "`id`",
             nullable = false,
             insertable = false,
             updatable = false

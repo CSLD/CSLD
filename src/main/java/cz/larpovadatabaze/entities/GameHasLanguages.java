@@ -62,7 +62,7 @@ public class GameHasLanguages implements Serializable, TranslationEntity {
     }
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "id_game", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "id_game", referencedColumnName = "`id`", nullable = false)
     public Game getGame() {
         return game;
     }

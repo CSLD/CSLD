@@ -122,7 +122,7 @@ public class Comment implements Serializable {
     @ManyToOne
     @JoinColumn(
             name = "game_id",
-            referencedColumnName = "id",
+            referencedColumnName = "`id`",
             nullable = false,
             insertable = false,
             updatable = false
@@ -140,7 +140,7 @@ public class Comment implements Serializable {
     @ManyToOne
     @JoinColumn(
             name = "user_id",
-            referencedColumnName = "id",
+            referencedColumnName = "`id`",
             nullable = false,
             insertable = false,
             updatable = false

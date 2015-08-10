@@ -142,11 +142,11 @@ public class CsldGroup implements Serializable, Identifiable, IAutoCompletable, 
             schema = "public",
             joinColumns = @JoinColumn(
                     name = "id_group",
-                    referencedColumnName = "id",
+                    referencedColumnName = "`id`",
                     nullable = false),
             inverseJoinColumns = @JoinColumn(
                     name = "id_user",
-                    referencedColumnName = "id",
+                    referencedColumnName = "`id`",
                     nullable = false)
     )
     @ManyToMany
@@ -164,7 +164,7 @@ public class CsldGroup implements Serializable, Identifiable, IAutoCompletable, 
     @ManyToOne(cascade = javax.persistence.CascadeType.ALL)
     @JoinColumn(
             name = "image",
-            referencedColumnName = "id",
+            referencedColumnName = "`id`",
             nullable = true,
             insertable = true,
             updatable = true)

@@ -481,11 +481,11 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
             schema = "public",
             joinColumns = @JoinColumn(
                     name = "id_game",
-                    referencedColumnName = "id",
+                    referencedColumnName = "`id`",
                     nullable = false),
             inverseJoinColumns = @JoinColumn(
                     name = "id_user",
-                    referencedColumnName = "id",
+                    referencedColumnName = "`id`",
                     nullable = false)
     )
     @ManyToMany
@@ -504,11 +504,11 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
             schema = "public",
             joinColumns = @JoinColumn(
                     name = "id_game",
-                    referencedColumnName = "id",
+                    referencedColumnName = "`id`",
                     nullable = false),
             inverseJoinColumns = @JoinColumn(
                     name = "id_group",
-                    referencedColumnName = "id",
+                    referencedColumnName = "`id`",
                     nullable = false)
     )
     @ManyToMany
@@ -545,11 +545,11 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
             schema = "public",
             joinColumns = @JoinColumn(
                     name = "id_game",
-                    referencedColumnName = "id",
+                    referencedColumnName = "`id`",
                     nullable = false),
             inverseJoinColumns = @JoinColumn(
                     name = "id_label",
-                    referencedColumnName = "id",
+                    referencedColumnName = "`id`",
                     nullable = false)
     )
     @ManyToMany(cascade = {javax.persistence.CascadeType.PERSIST, javax.persistence.CascadeType.MERGE, javax.persistence.CascadeType.REMOVE })
@@ -567,7 +567,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     @ManyToOne(cascade = javax.persistence.CascadeType.ALL)
     @JoinColumn(
             name = "video",
-            referencedColumnName = "id",
+            referencedColumnName = "`id`",
             insertable = true,
             updatable = true
     )
@@ -586,7 +586,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     @ManyToOne
     @JoinColumn(
             name = "added_by",
-            referencedColumnName = "id",
+            referencedColumnName = "`id`",
             insertable = true,
             updatable = false
     )
@@ -656,7 +656,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     @ManyToOne(cascade = javax.persistence.CascadeType.ALL)
     @JoinColumn(
         name = "cover_image",
-        referencedColumnName = "id",
+        referencedColumnName = "`id`",
         insertable = true,
         updatable = true
     )

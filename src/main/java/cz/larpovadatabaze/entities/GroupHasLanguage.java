@@ -38,7 +38,7 @@ public class GroupHasLanguage implements Serializable, TranslationEntity {
     }
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "id_group", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "id_group", referencedColumnName = "`id`", nullable = false)
     public CsldGroup getGroup() {
         return group;
     }
