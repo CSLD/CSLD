@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name="csld_group_has_languages", schema = "public")
+@Table(name="csld_group_has_languages")
 public class GroupHasLanguage implements Serializable, TranslationEntity {
     private Integer id;
     private String name;

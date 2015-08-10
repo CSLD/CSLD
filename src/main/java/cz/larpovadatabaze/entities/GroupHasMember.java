@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
  *
  */
 @javax.persistence.IdClass(GroupHasMemberPK.class)
-@javax.persistence.Table(name = "csld_group_has_members", schema = "public", catalog = "")
+@javax.persistence.Table(name = "csld_group_has_members")
 @Entity
 public class GroupHasMember implements Serializable {
     private Integer groupId;

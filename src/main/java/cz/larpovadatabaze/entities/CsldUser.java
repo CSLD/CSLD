@@ -16,7 +16,7 @@ import java.util.List;
 /**
  *
  */
-@Table(name = "csld_csld_user", schema = "public")
+@Table(name = "csld_csld_user")
 @Entity
 public class CsldUser implements Serializable, Identifiable, IAutoCompletable, IEntityWithImage {
     private Integer id;

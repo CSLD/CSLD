@@ -34,7 +34,7 @@ import cz.larpovadatabaze.api.Identifiable;
  * Time: 14:01
  */
 @Entity
-@Table(schema = "public", name="csld_csld_group")
+@Table(name="csld_csld_group")
 public class CsldGroup implements Serializable, Identifiable, IAutoCompletable, IEntityWithImage, TranslatableEntity {
     private Integer id;
 

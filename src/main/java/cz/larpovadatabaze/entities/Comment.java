@@ -8,7 +8,7 @@ import java.sql.Timestamp;
  *
  */
 @IdClass(CommentPK.class)
-@Table(schema = "public", name="csld_comment")
+@Table(name="csld_comment")
 @Entity
 public class Comment implements Serializable {
     private Integer userId;

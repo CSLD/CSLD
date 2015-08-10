@@ -18,7 +18,7 @@ import javax.persistence.Table;
  * Time: 14:01
  */
 @IdClass(RatingPK.class)
-@Table(schema = "public", name="csld_rating")
+@Table(name="csld_rating")
 @Entity
 public class Rating implements IGameWithRating, Serializable {
     private Integer rating;

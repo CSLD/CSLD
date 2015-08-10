@@ -9,7 +9,7 @@ import java.io.Serializable;
  *
  */
 @Entity
-@Table(name="csld_label_has_languages", schema = "public")
+@Table(name="csld_label_has_languages")
 public class LabelHasLanguages implements Serializable, TranslationEntity {
     private Integer id;
     private String name;

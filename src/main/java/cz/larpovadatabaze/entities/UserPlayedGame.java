@@ -13,7 +13,7 @@ import java.io.Serializable;
  * Time: 14:01
  */
 @javax.persistence.IdClass(UserPlayedGamePK.class)
-@javax.persistence.Table(name = "csld_user_played_game", schema = "public", catalog = "")
+@javax.persistence.Table(name = "csld_user_played_game")
 @Entity
 public class UserPlayedGame implements Serializable {
     public static final int STATE_CODE_PLAYED = 2;

@@ -9,7 +9,7 @@ import java.io.Serializable;
  * Date: 27.3.13
  * Time: 14:01
  */
-@javax.persistence.Table(name = "csld_email_authentication", schema = "public", catalog = "")
+@javax.persistence.Table(name = "csld_email_authentication")
 @Entity
 public class EmailAuthentication implements Serializable {
     private Integer id;

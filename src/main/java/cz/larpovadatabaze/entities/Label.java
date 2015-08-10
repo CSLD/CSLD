@@ -17,7 +17,7 @@ import java.util.List;
  *
  */
 @Entity
-@Table(schema = "public", name="csld_label")
+@Table(name="csld_label")
 public class Label implements Serializable, IAutoCompletable, Identifiable<Integer>, TranslatableEntity {
     private Integer id;
 

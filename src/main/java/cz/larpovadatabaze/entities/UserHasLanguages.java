@@ -17,7 +17,7 @@ import javax.persistence.Table;
  * Join table among user and languages they are interested in.
  */
 @Entity
-@Table(name="csld_user_has_languages", schema = "public")
+@Table(name="csld_user_has_languages")
 public class UserHasLanguages implements Serializable {
     @Column(name = "id", nullable = false, insertable = true, updatable = true )
     @Id

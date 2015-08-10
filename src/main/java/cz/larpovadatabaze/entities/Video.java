@@ -11,7 +11,7 @@ import java.util.List;
  * Time: 14:01
  */
 @Entity
-@Table(schema = "public", name="csld_video")
+@Table(name="csld_video")
 public class Video implements Serializable {
     private Integer id;
 

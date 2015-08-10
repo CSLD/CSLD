@@ -22,7 +22,7 @@ import java.util.List;
  * Name of every game must be unique. Or at least I expect it to be.
  */
 @Entity
-@Table(schema = "public", name="csld_game")
+@Table(name="csld_game")
 public class Game implements Serializable, Identifiable, IAutoCompletable, IEntityWithImage, TranslatableEntity {
     public String overrideLang;
 

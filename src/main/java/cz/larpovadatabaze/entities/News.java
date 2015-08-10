@@ -9,7 +9,7 @@ import java.util.Calendar;
  * Entity for database representation of News.
  */
 @Entity
-@Table(schema = "public", name = "csld_news")
+@Table(name = "csld_news")
 public class News implements Serializable {
     @Column(
             name = "id",

@@ -12,7 +12,7 @@ import java.io.Serializable;
  * Time: 14:01
  */
 @Entity
-@Table(schema = "public", name="csld_photo")
+@Table(name="csld_photo")
 public class Photo implements Serializable, IEntityWithImage {
     private Integer id;
 

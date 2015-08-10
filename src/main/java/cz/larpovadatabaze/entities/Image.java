@@ -13,7 +13,7 @@ import java.util.List;
  * Time: 14:01
  */
 @Entity
-@Table(schema = "public", name="csld_image")
+@Table(name="csld_image")
 public class Image implements Serializable {
     private Integer id;
 
