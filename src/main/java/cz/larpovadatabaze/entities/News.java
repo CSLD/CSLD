@@ -18,8 +18,6 @@ public class News implements Serializable {
             updatable = true
     )
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_key_gen")
-    @SequenceGenerator(name = "id_key_gen", sequenceName = "csld_news_id_seq", allocationSize = 1)
     private Integer id;
     @Column(name = "text")
     @Basic

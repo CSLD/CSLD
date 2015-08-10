@@ -18,8 +18,6 @@ public class Photo implements Serializable, IEntityWithImage {
 
     @Column(name = "id", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_key_gen")
-    @SequenceGenerator(name = "id_key_gen", sequenceName = "csld_photo_id_seq", allocationSize = 1)
     public Integer getId() {
         return id;
     }
@@ -42,7 +40,7 @@ public class Photo implements Serializable, IEntityWithImage {
 
     private Integer orderSeq;
 
-    @Column(name = "orderSeq", nullable = true, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "orderseq", nullable = true, insertable = true, updatable = true, length = 10, precision = 0)
     @Basic
     public Integer getOrderSeq() {
         return orderSeq;
@@ -66,7 +64,7 @@ public class Photo implements Serializable, IEntityWithImage {
 
     private int fullWidth;
 
-    @Column(name="fullWidth")
+    @Column(name="fullwidth")
     @Basic
     public int getFullWidth() {
         return fullWidth;
@@ -78,7 +76,7 @@ public class Photo implements Serializable, IEntityWithImage {
 
     private int fullHeight;
 
-    @Column(name="fullHeight")
+    @Column(name="fullheight")
     @Basic
     public int getFullHeight() {
         return fullHeight;

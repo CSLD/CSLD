@@ -65,7 +65,6 @@ public class RootConfig {
         properties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
         properties.put("autocommit", "true");
         properties.put("hibernate.globally_quoted_identifiers", "true");
-        properties.put("hibernate.default_schema", env.getProperty("hibernate.default_schema"));
 
         return properties;
     }

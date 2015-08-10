@@ -411,7 +411,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
 
     private boolean ratingsDisabled;
 
-    @Column(name="ratingsDisabled")
+    @Column(name="ratingsdisabled")
     @Basic
     public boolean isRatingsDisabled() {
         return ratingsDisabled;
@@ -423,7 +423,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
 
     private boolean commentsDisabled;
 
-    @Column(name="commentsDisabled")
+    @Column(name="commentsdisabled")
     @Basic
     public boolean isCommentsDisabled() {
         return commentsDisabled;

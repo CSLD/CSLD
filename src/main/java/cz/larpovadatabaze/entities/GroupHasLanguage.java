@@ -15,8 +15,6 @@ public class GroupHasLanguage implements Serializable, TranslationEntity {
 
     @Column(name = "id")
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_key_gen")
-    @SequenceGenerator(name = "id_key_gen", sequenceName = "csld_group_has_languages_id_seq", allocationSize = 1)
     public Integer getId() {
         return id;
     }
