@@ -478,7 +478,6 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
 
     @JoinTable(
             name = "csld_game_has_author",
-            schema = "public",
             joinColumns = @JoinColumn(
                     name = "id_game",
                     referencedColumnName = "`id`",
@@ -501,7 +500,6 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
 
     @JoinTable(
             name = "csld_game_has_group",
-            schema = "public",
             joinColumns = @JoinColumn(
                     name = "id_game",
                     referencedColumnName = "`id`",
@@ -542,7 +540,6 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
 
     @JoinTable(
             name = "csld_game_has_label",
-            schema = "public",
             joinColumns = @JoinColumn(
                     name = "id_game",
                     referencedColumnName = "`id`",

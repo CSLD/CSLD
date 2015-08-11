@@ -137,7 +137,6 @@ public class CsldGroup implements Serializable, Identifiable, IAutoCompletable, 
 
     @JoinTable(
             name = "csld_group_has_administrator",
-            schema = "public",
             joinColumns = @JoinColumn(
                     name = "id_group",
                     referencedColumnName = "`id`",
