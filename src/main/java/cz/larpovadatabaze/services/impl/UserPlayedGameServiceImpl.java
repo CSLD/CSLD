@@ -54,7 +54,7 @@ public class UserPlayedGameServiceImpl implements UserPlayedGameService {
         if (stateOfGame.getStateEnum().equals(UserPlayedGame.UserPlayedGameState.NONE)) {
             // Remove rating
             try {
-                Rating rating = ratingService.getUserRatingOfGame(stateOfGame.getUserId(), stateOfGame.getGameId());
+                Rating rating = ratingService.getUserRatingOfGame(stateOfGame.getPlayerOfGame().getId(), stateOfGame.getGame().getId());
                 if(rating != null) {
                     ratingService.remove(rating);
                 }

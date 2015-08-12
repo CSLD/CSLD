@@ -626,7 +626,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
 
     private List<UserPlayedGame> played;
 
-    @OneToMany(mappedBy = "playedBy")
+    @OneToMany(mappedBy = "game")
     @Cascade({org.hibernate.annotations.CascadeType.DELETE})
     public List<UserPlayedGame> getPlayed() {
         return played;

@@ -4,7 +4,6 @@ import cz.larpovadatabaze.api.GenericHibernateDAO;
 import cz.larpovadatabaze.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.dao.builder.IBuilder;
 import cz.larpovadatabaze.entities.UserPlayedGame;
-import cz.larpovadatabaze.entities.UserPlayedGamePK;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Repository;
  *
  */
 @Repository
-public class UserPlayedGameDAO extends GenericHibernateDAO<UserPlayedGame, UserPlayedGamePK> {
+public class UserPlayedGameDAO extends GenericHibernateDAO<UserPlayedGame, Integer> {
     @Override
     public IBuilder getBuilder() {
         return new GenericBuilder<UserPlayedGame>(UserPlayedGame.class);

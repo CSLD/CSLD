@@ -49,8 +49,8 @@ public class PlayedPanel extends Panel {
             UserPlayedGame stateOfGame = userPlayedGameService.getUserPlayedGame(gameId, userId);
             if(stateOfGame == null) {
                 stateOfGame = new UserPlayedGame();
-                stateOfGame.setGameId(gameId);
-                stateOfGame.setUserId(userId);
+                stateOfGame.setGame(gameModel.getObject());
+                stateOfGame.setPlayerOfGame(getUser());
             }
 
             return stateOfGame;
@@ -83,8 +83,12 @@ public class PlayedPanel extends Panel {
     }
 
     protected int getUserId() {
-        CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
+        CsldUser logged = CsldAuthenticatedWebSession.get().getLoggedUser();
         return (logged != null) ? logged.getId() : -1;
+    }
+
+    protected CsldUser getUser(){
+        return CsldAuthenticatedWebSession.get().getLoggedUser();
     }
 
     @Override

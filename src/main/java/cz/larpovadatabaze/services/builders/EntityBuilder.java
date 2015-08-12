@@ -108,9 +108,7 @@ public class EntityBuilder {
         Rating rating = new Rating();
         rating.setAdded(Timestamp.from(Instant.now()));
         rating.setGame(game);
-        rating.setGameId(game.getId());
         rating.setUser(user);
-        rating.setUserId(user.getId());
         rating.setRating(ratingValue);
 
         save(rating);
@@ -120,9 +118,7 @@ public class EntityBuilder {
     public Comment comment(CsldUser user, Game game, String commentText) {
         Comment comment = new Comment();
         comment.setGame(game);
-        comment.setGameId(game.getId());
         comment.setUser(user);
-        comment.setUserId(user.getId());
         comment.setComment(commentText);
         comment.setAdded(Timestamp.from(Instant.now()));
         comment.setLang("cs");
@@ -133,9 +129,7 @@ public class EntityBuilder {
 
     public UserPlayedGame playerOfGame(CsldUser user, Game game) {
         UserPlayedGame playerOfGame = new UserPlayedGame();
-        playerOfGame.setPlayedBy(game);
-        playerOfGame.setUserId(user.getId());
-        playerOfGame.setGameId(game.getId());
+        playerOfGame.setGame(game);
         playerOfGame.setPlayerOfGame(user);
         playerOfGame.setStateEnum(UserPlayedGame.UserPlayedGameState.PLAYED);
 

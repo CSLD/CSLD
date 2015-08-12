@@ -28,7 +28,7 @@ import java.util.Properties;
 @Configuration
 @ComponentScan(basePackages = "cz.larpovadatabaze")
 @EnableTransactionManagement
-@PropertySource(value = {"classpath:general.properties","classpath:jdbc.properties","classpath:mail.properties"})
+@PropertySource(value = {"file:${props.path}/general.properties","file:${props.path}/jdbc.properties","file:${props.path}/mail.properties"})
 public class RootConfig {
     @Autowired
     private Environment env;

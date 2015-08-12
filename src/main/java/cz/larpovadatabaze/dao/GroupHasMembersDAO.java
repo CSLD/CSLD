@@ -5,7 +5,6 @@ import cz.larpovadatabaze.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.dao.builder.IBuilder;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.GroupHasMember;
-import cz.larpovadatabaze.entities.GroupHasMemberPK;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Repository;
  *
  */
 @Repository
-public class GroupHasMembersDAO extends GenericHibernateDAO<GroupHasMember, GroupHasMemberPK> {
+public class GroupHasMembersDAO extends GenericHibernateDAO<GroupHasMember, Integer> {
     @Override
     public IBuilder getBuilder() {
         return new GenericBuilder<GroupHasMember>(GroupHasMember.class);

@@ -85,8 +85,6 @@ public class CommentsPanel extends Panel {
                     actualComment = new Comment();
                     actualComment.setUser(user);
                     actualComment.setGame(gameModel.getObject());
-                    actualComment.setGameId(gameId);
-                    actualComment.setUserId(userId);
                     actualComment.setComment("");
                 }
             }

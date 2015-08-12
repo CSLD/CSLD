@@ -177,7 +177,7 @@ public class GameDetail extends CsldBasePage {
                 }
                 for(Comment c : getModel().getObject().getComments()) {
                     if (c.getHidden()) {
-                        if (!c.getUserId().equals(thisUserId)) continue; // Hidden comment and user is not creator - hide
+                        if (!c.getUser().getId().equals(thisUserId)) continue; // Hidden comment and user is not creator - hide
                     }
                     // If language doesn't equal the chosen one then ignore it.
                     res.add(c);

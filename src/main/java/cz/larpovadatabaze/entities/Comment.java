@@ -7,32 +7,19 @@ import java.sql.Timestamp;
 /**
  *
  */
-@IdClass(CommentPK.class)
 @Table(name="csld_comment")
 @Entity
 public class Comment implements Serializable {
-    private Integer userId;
+    private int id;
 
-    @Column(name = "user_id", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name="id")
     @Id
-    public Integer getUserId() {
-        return userId;
+    public int getId() {
+        return id;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    private Integer gameId;
-
-    @Column(name = "game_id", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
-    @Id
-    public Integer getGameId() {
-        return gameId;
-    }
-
-    public void setGameId(Integer gameId) {
-        this.gameId = gameId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     private String comment;
@@ -101,8 +88,6 @@ public class Comment implements Serializable {
         Comment comment1 = (Comment) o;
 
         if (comment != null ? !comment.equals(comment1.comment) : comment1.comment != null) return false;
-        if (gameId != null ? !gameId.equals(comment1.gameId) : comment1.gameId != null) return false;
-        if (userId != null ? !userId.equals(comment1.userId) : comment1.userId != null) return false;
         if (isHidden != null ? !isHidden.equals(comment1.isHidden) : comment1.isHidden != null) return false;
 
         return true;
@@ -110,9 +95,7 @@ public class Comment implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = userId != null ? userId.hashCode() : 0;
-        result = 31 * result + (gameId != null ? gameId.hashCode() : 0);
-        result = 31 * result + (comment != null ? comment.hashCode() : 0);
+        int result = comment != null ? comment.hashCode() : 0;
         result = 31 * result + (isHidden != null ? isHidden.hashCode() : 0);
         return result;
     }

@@ -57,7 +57,7 @@ public class CommentServiceImpl implements CommentService {
     public void saveOrUpdate(Comment actualComment) {
         commentDAO.saveOrUpdate(actualComment);
 
-        gameService.evictGame(actualComment.getGameId());
+        gameService.evictGame(actualComment.getGame().getId());
     }
 
     @Override
@@ -83,7 +83,7 @@ public class CommentServiceImpl implements CommentService {
         commentDAO.saveOrUpdate(comment);
 
         // Log
-        logger.info("Editor #"+ UserUtils.getLoggedUser().getId()+" hidden comment of user #"+comment.getUserId()+" for game #"+comment.getGameId());
+        logger.info("Editor #"+ UserUtils.getLoggedUser().getId()+" hidden comment of user #"+comment.getUser().getId()+" for game #"+comment.getGame().getId());
     }
 
     @Override
@@ -94,7 +94,7 @@ public class CommentServiceImpl implements CommentService {
         commentDAO.saveOrUpdate(comment);
 
         // Log
-        logger.info("Editor #"+ UserUtils.getLoggedUser().getId()+" unhidden comment of user #"+comment.getUserId()+" for game #"+comment.getGameId());
+        logger.info("Editor #"+ UserUtils.getLoggedUser().getId()+" unhidden comment of user #"+comment.getUser().getId()+" for game #"+comment.getGame().getId());
     }
 
     @Override

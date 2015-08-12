@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import cz.larpovadatabaze.services.GameService;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -52,13 +53,11 @@ public class RatingsPanel extends Panel {
             if(actualRating != null){
                 if(actualRating.getUser() == null){
                     actualRating.setUser(logged);
-                    actualRating.setUserId(loggedId);
                 }
             } else {
                 actualRating = new Rating();
-                actualRating.setGameId(gameId);
+                actualRating.setGame(gameModel.getObject());
                 actualRating.setUser(logged);
-                actualRating.setUserId(loggedId);
             }
 
             return actualRating;

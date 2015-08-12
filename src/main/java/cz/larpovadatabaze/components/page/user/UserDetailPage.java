@@ -178,11 +178,11 @@ public class UserDetailPage extends CsldBasePage {
         for(UserPlayedGame played : user.getPlayedGames()){
             if(played.getStateEnum().equals(UserPlayedGame.UserPlayedGameState.WANT_TO_PLAY)){
                 // Add to wanted games
-                wantedGames.add(played.getPlayedBy());
+                wantedGames.add(played.getGame());
             } else if(played.getStateEnum().equals(UserPlayedGame.UserPlayedGameState.PLAYED)) {
-                if (!ratedGamesIds.contains(played.getGameId())) {
+                if (!ratedGamesIds.contains(played.getGame().getId())) {
                     // Add to list of played games, without rating
-                    playedGames.add(new GameWithoutRating(played.getPlayedBy()));
+                    playedGames.add(new GameWithoutRating(played.getGame()));
                 }
             }
         }

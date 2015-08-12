@@ -56,7 +56,7 @@ public class RatingServiceImpl implements RatingService {
         ratingDAO.makeTransient(toRemove);
 
         // Some fields in the game object are computed by triggers - flush corresponding game from hibernate cache so it is reloaded
-        gameService.evictGame(toRemove.getGameId());
+        gameService.evictGame(toRemove.getGame().getId());
     }
 
     @Override
@@ -80,12 +80,12 @@ public class RatingServiceImpl implements RatingService {
         ratingDAO.saveOrUpdate(actualRating);
 
         // Mark that user played game
-        UserPlayedGame upg = userPlayedGameService.getUserPlayedGame(actualRating.getGameId(), actualRating.getUserId());
+        UserPlayedGame upg = userPlayedGameService.getUserPlayedGame(actualRating.getGame().getId(), actualRating.getUser().getId());
         if(upg == null){
             upg = new UserPlayedGame();
-            upg.setGameId(actualRating.getGameId());
+            upg.setGame(actualRating.getGame());
             upg.setStateEnum(UserPlayedGame.UserPlayedGameState.PLAYED);
-            upg.setUserId(actualRating.getUserId());
+            upg.setPlayerOfGame(actualRating.getUser());
         } else {
             if(upg.getStateEnum().equals(UserPlayedGame.UserPlayedGameState.NONE)){
                 upg.setStateEnum(UserPlayedGame.UserPlayedGameState.PLAYED);
@@ -94,7 +94,7 @@ public class RatingServiceImpl implements RatingService {
         userPlayedGameService.saveOrUpdate(upg);
 
         // Some fields in the game object are computed by triggers - flush corresponding game from hibernate cache so it is reloaded
-        gameService.evictGame(actualRating.getGameId());
+        gameService.evictGame(actualRating.getGame().getId());
     }
 
     @Override
@@ -115,6 +115,6 @@ public class RatingServiceImpl implements RatingService {
     public void delete(Rating rating) {
         ratingDAO.makeTransient(rating);
 
-        gameService.evictGame(rating.getGameId());
+        gameService.evictGame(rating.getGame().getId());
     }
 }

@@ -17,10 +17,21 @@ import javax.persistence.Table;
  * Date: 27.3.13
  * Time: 14:01
  */
-@IdClass(RatingPK.class)
 @Table(name="csld_rating")
 @Entity
 public class Rating implements IGameWithRating, Serializable {
+    private int id;
+
+    @Column(name="id")
+    @Id
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     private Integer rating;
 
     @Column(name = "rating", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
@@ -108,40 +119,6 @@ public class Rating implements IGameWithRating, Serializable {
 
     public void setUser(CsldUser user) {
         this.user = user;
-    }
-
-    private Integer userId;
-
-    @Column(
-            name = "user_id",
-            nullable = false,
-            insertable = true,
-            updatable = true
-    )
-    @Id
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    private Integer gameId;
-
-    @Column(
-            name = "game_id",
-            nullable = false,
-            insertable = true,
-            updatable = true
-    )
-    @Id
-    public Integer getGameId() {
-        return gameId;
-    }
-
-    public void setGameId(Integer gameId) {
-        this.gameId = gameId;
     }
 
     public static String getColorOf(Double gameAsAverageRating){

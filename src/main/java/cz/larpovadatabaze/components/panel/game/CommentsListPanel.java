@@ -83,7 +83,7 @@ public class CommentsListPanel extends Panel {
             protected IModel<Comment> getListItemModel(IModel<? extends List<Comment>> listViewModel, int index) {
                 // We want to always keep items pointing to the same comment
                 Comment c = listViewModel.getObject().get(index);
-                return new CommentModel(c.getGameId(), c.getUserId());
+                return new CommentModel(c.getGame().getId(), c.getUser().getId());
             }
 
             @Override
