@@ -21,13 +21,9 @@ import java.util.List;
 public class CsldUser implements Serializable, Identifiable, IAutoCompletable, IEntityWithImage {
     private Integer id;
 
-    @Column(
-            name = "id",
-            nullable = false,
-            insertable = true,
-            updatable = true
-    )
+    @Column(name = "id")
     @Id
+    @GeneratedValue
     public Integer getId() {
         return id;
     }
@@ -38,13 +34,7 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable, I
 
     private String password;
 
-    @Column(
-            name = "password",
-            nullable = false,
-            insertable = true,
-            updatable = true,
-            length = 2147483647
-    )
+    @Column(name = "password")
     @Basic
     public String getPassword() {
         return password;
@@ -56,14 +46,7 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable, I
 
     private Integer lastRating;
 
-    @Column(
-            name = "last_rating",
-            nullable = true,
-            insertable = true,
-            updatable = true,
-            length = 2147483647
-    )
-    @Basic
+    @Column(name = "last_rating")
     public Integer getLastRating() {
         return lastRating;
     }
@@ -74,12 +57,7 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable, I
 
     private Short role;
 
-    @Column(
-            name = "role",
-            nullable = false,
-            insertable = true,
-            updatable = true
-    )
+    @Column(name = "role")
     @Basic
     public Short getRole() {
         return role;
@@ -91,13 +69,7 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable, I
 
     private Boolean isAuthor;
 
-    @Column(
-            name = "is_author",
-            nullable = false,
-            insertable = true,
-            updatable = true
-    )
-    @Basic
+    @Column(name = "is_author")
     public Boolean getIsAuthor() {
         return isAuthor;
     }
@@ -119,12 +91,7 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable, I
 
     private Integer amountOfComments;
 
-    @Column(
-            name = "amount_of_comments",
-            nullable = false,
-            insertable = false,
-            updatable = false)
-    @Basic
+    @Column(name = "amount_of_comments")
     public Integer getAmountOfComments() {
         return amountOfComments;
     }
@@ -135,12 +102,7 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable, I
 
     private Integer amountOfPlayed;
 
-    @Column(
-            name = "amount_of_played",
-            nullable = false,
-            insertable = false,
-            updatable = false)
-    @Basic
+    @Column(name = "amount_of_played")
     public Integer getAmountOfPlayed() {
         return amountOfPlayed;
     }
@@ -151,12 +113,7 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable, I
 
     private Integer amountOfCreated;
 
-    @Column(
-            name = "amount_of_created",
-            nullable = false,
-            insertable = false,
-            updatable = false)
-    @Basic
+    @Column(name = "amount_of_created")
     public Integer getAmountOfCreated() {
         return amountOfCreated;
     }

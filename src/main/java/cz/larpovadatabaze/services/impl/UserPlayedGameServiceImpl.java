@@ -8,6 +8,7 @@ import cz.larpovadatabaze.services.RatingService;
 import cz.larpovadatabaze.services.UserPlayedGameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
  *
  */
 @Repository
+@Transactional
 public class UserPlayedGameServiceImpl implements UserPlayedGameService {
     @Autowired
     private UserPlayedGameDAO userPlayedGameDAO;

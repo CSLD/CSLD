@@ -43,9 +43,9 @@ public class EntityBuilder {
 
         user.setPerson(person);
         user.setPassword(Pwd.generateStrongPasswordHash(password, person.getEmail()));
-        user.setAmountOfComments(0);
-        user.setAmountOfCreated(0);
-        user.setAmountOfPlayed(0);
+        user.setAmountOfComments(1);
+        user.setAmountOfCreated(1);
+        user.setAmountOfPlayed(1);
         user.setDefaultLang("cs");
         user.setIsAuthor(false);
         user.setRole(role);

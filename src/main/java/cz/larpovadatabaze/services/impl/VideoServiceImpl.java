@@ -6,6 +6,7 @@ import cz.larpovadatabaze.services.VideoService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -15,6 +16,7 @@ import java.util.regex.Pattern;
  *
  */
 @Repository
+@Transactional
 public class VideoServiceImpl implements VideoService {
 
     public static class EmbededVideoURLTransform {

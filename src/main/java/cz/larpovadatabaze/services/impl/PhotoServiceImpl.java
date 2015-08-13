@@ -9,6 +9,7 @@ import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.util.upload.FileItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ import java.util.List;
  *
  */
 @Repository
+@Transactional
 public class PhotoServiceImpl implements PhotoService {
     private final int MAX_PHOTOS_PER_GAME = 10;
 

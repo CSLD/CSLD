@@ -12,11 +12,13 @@ import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.lang.LanguageSolver;
 import cz.larpovadatabaze.services.GroupService;
 import cz.larpovadatabaze.services.ImageService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  */
 @Repository
+@Transactional
 public class GroupServiceImpl implements GroupService {
     @Autowired
     private GroupDAO groupDAO;

@@ -26,11 +26,13 @@ import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.Pwd;
 import cz.larpovadatabaze.utils.RandomString;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  */
 @Repository(value = "csldUserService")
+@Transactional
 public class CsldUserServiceImpl implements CsldUserService {
     /**
      * Re-Captcha config - maybe move keys somewhere else?

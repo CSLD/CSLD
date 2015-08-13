@@ -28,6 +28,7 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
             updatable = true
     )
     @Id
+    @GeneratedValue
     public Integer getId() {
         return id;
     }

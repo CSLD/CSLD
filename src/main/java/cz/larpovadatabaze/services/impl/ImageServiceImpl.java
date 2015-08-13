@@ -15,6 +15,7 @@ import cz.larpovadatabaze.entities.IEntityWithImage;
 import cz.larpovadatabaze.entities.Image;
 import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.ImageService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *

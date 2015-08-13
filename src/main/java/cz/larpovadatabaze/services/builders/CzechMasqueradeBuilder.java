@@ -6,6 +6,7 @@ import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.security.CsldRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -14,6 +15,7 @@ import java.util.*;
  * Created by Balda on 10. 7. 2015.
  */
 @Service
+@Transactional
 public class CzechMasqueradeBuilder {
     @Autowired
     private EntityBuilder persistenceStore;

@@ -33,8 +33,8 @@ public class CommentDAO extends GenericHibernateDAO<Comment, Integer>{
      */
     public Comment getCommentOnGameFromUser(int userId, int gameId) {
         Criteria uniqueComment = getBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession())
-                .add(Restrictions.eq("userId", userId))
-                .add(Restrictions.eq("gameId", gameId));
+                .add(Restrictions.eq("user.id", userId))
+                .add(Restrictions.eq("game.id", gameId));
 
         return (Comment) uniqueComment.uniqueResult();
     }

@@ -32,11 +32,13 @@ import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.services.ImageService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  */
 @Repository
+@Transactional
 public class GameServiceImpl implements GameService {
     private static final int GAME_ICON_SIZE=120;
 

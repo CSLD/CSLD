@@ -21,6 +21,7 @@ public class GameHasLanguages implements Serializable, TranslationEntity {
             updatable = true
     )
     @Id
+    @GeneratedValue
     public Integer getId() {
         return id;
     }

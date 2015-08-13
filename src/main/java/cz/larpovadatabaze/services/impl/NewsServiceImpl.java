@@ -7,6 +7,7 @@ import cz.larpovadatabaze.services.NewsService;
 import cz.larpovadatabaze.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -18,6 +19,7 @@ import java.util.List;
  * Created by Balda on 10. 7. 2015.
  */
 @Service
+@Transactional
 public class NewsServiceImpl implements NewsService {
     @Autowired
     private NewsDAO news;

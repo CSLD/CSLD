@@ -19,6 +19,7 @@ public class LabelHasLanguages implements Serializable, TranslationEntity {
 
     @Column(name = "id")
     @Id
+    @GeneratedValue
     public Integer getId() {
         return id;
     }

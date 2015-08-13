@@ -30,13 +30,9 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
 
     private Integer id;
 
-    @Column(
-            name = "id",
-            nullable = false,
-            insertable = true,
-            updatable = true
-    )
+    @Column(name = "id")
     @Id
+    @GeneratedValue
     public Integer getId() {
         return id;
     }
