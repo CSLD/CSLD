@@ -3,6 +3,7 @@ package cz.larpovadatabaze.components.page.author;
 import cz.larpovadatabaze.AcceptanceTest;
 import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.RootConfig;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.tester.WicketTester;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

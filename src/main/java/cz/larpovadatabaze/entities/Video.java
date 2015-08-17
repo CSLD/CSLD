@@ -17,6 +17,8 @@ public class Video implements Serializable {
 
     @Column(name = "id", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
+    @SequenceGenerator(sequenceName = "csld_video_id_seq", name="id_gen")
     public Integer getId() {
         return id;
     }

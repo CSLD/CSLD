@@ -23,7 +23,8 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable, I
 
     @Column(name = "id")
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
+    @SequenceGenerator(sequenceName = "csld_person_id_seq", name="id_gen")
     public Integer getId() {
         return id;
     }

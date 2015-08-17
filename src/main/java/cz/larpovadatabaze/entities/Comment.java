@@ -14,6 +14,8 @@ public class Comment implements Serializable {
 
     @Column(name="id")
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
+    @SequenceGenerator(sequenceName = "csld_comment_id_seq", name="id_gen")
     public int getId() {
         return id;
     }
@@ -105,10 +107,7 @@ public class Comment implements Serializable {
     @ManyToOne
     @JoinColumn(
             name = "game_id",
-            referencedColumnName = "`id`",
-            nullable = false,
-            insertable = false,
-            updatable = false
+            referencedColumnName = "`id`"
     )
     public Game getGame() {
         return game;
@@ -123,10 +122,7 @@ public class Comment implements Serializable {
     @ManyToOne
     @JoinColumn(
             name = "user_id",
-            referencedColumnName = "`id`",
-            nullable = false,
-            insertable = false,
-            updatable = false
+            referencedColumnName = "`id`"
     )
     public CsldUser getUser() {
         return user;

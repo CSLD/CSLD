@@ -21,6 +21,8 @@ public class EmailAuthentication implements Serializable {
             updatable = true
     )
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
+    @SequenceGenerator(sequenceName = "csld_email_authentication_id_seq", name="id_gen")
     public Integer getId() {
         return id;
     }

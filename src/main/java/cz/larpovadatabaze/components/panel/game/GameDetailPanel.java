@@ -14,6 +14,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
@@ -100,6 +101,9 @@ public class GameDetailPanel extends AbstractCsldPanel<Game> {
 
         // Groups
         List<CsldGroup> groups = game.getGroupAuthor();
+        if(groups == null) {
+            groups = new ArrayList<>();
+        }
         ListView<CsldGroup> groupsList = new ListView<CsldGroup>("authorsGroups",groups) {
             @Override
             protected void populateItem(ListItem<CsldGroup> item) {

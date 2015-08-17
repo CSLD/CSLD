@@ -21,7 +21,8 @@ public class GameHasLanguages implements Serializable, TranslationEntity {
             updatable = true
     )
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
+    @SequenceGenerator(sequenceName = "csld_game_has_languages_id_seq", name="id_gen")
     public Integer getId() {
         return id;
     }

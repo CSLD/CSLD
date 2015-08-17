@@ -24,6 +24,8 @@ public class Image implements Serializable {
             updatable = true
     )
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
+    @SequenceGenerator(sequenceName = "csld_image_id_seq", name="id_gen")
     public Integer getId() {
         return id;
     }

@@ -21,6 +21,8 @@ import javax.persistence.Table;
 public class UserHasLanguages implements Serializable {
     @Column(name = "id", nullable = false, insertable = true, updatable = true )
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
+    @SequenceGenerator(sequenceName = "csld_user_has_languages_id_seq", name="id_gen")
     Integer id;
     @Basic
     @Column(name = "language")

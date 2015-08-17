@@ -16,7 +16,7 @@ public class GameDetailPageTest extends AcceptanceTest {
     public void run() {
         masqueradeBuilder.build();
 
-        tester.startPage(GameDetail.class, GameDetail.paramsForGame(masqueradeBuilder.firstMasquerade));
+        tester.startPage(GameDetail.class, GameDetail.paramsForGame(masqueradeBuilder.getFirstMasquerade()));
         tester.assertRenderedPage(GameDetail.class);
     }
 }

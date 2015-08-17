@@ -5,10 +5,7 @@ import org.hibernate.annotations.Type;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 /**
  *
@@ -20,6 +17,8 @@ public class GroupHasMember implements Serializable {
 
     @Column(name="id")
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
+    @SequenceGenerator(sequenceName = "csld_group_has_members_id_seq", name="id_gen")
     public int getId() {
         return id;
     }

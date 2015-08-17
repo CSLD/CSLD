@@ -70,4 +70,32 @@ public class CzechMasqueradeBuilder {
 
         persistenceStore.flush();
     }
+
+    public CsldUser getAdministrator() {
+        return administrator;
+    }
+
+    public CsldUser getEditor() {
+        return editor;
+    }
+
+    public CsldUser getUser() {
+        return user;
+    }
+
+    public Game getFirstMasquerade() {
+        return firstMasquerade;
+    }
+
+    public Game getSecondMasquerade() {
+        return secondMasquerade;
+    }
+
+    public Label getVampire() {
+        return vampire;
+    }
+
+    public Label getDramatic() {
+        return dramatic;
+    }
 }

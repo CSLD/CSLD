@@ -3,14 +3,7 @@ package cz.larpovadatabaze.entities;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * User: Jakub Balhar
@@ -24,6 +17,8 @@ public class Rating implements IGameWithRating, Serializable {
 
     @Column(name="id")
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
+    @SequenceGenerator(sequenceName = "csld_rating_id_seq", name="id_gen")
     public int getId() {
         return id;
     }

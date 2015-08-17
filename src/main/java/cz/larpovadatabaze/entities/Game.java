@@ -32,7 +32,8 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
 
     @Column(name = "id")
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
+    @SequenceGenerator(sequenceName = "csld_game_id_seq", name="id_gen")
     public Integer getId() {
         return id;
     }
@@ -597,7 +598,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     @OneToMany(
             mappedBy = "game"
     )
-    @Cascade({org.hibernate.annotations.CascadeType.DELETE})
+    @Cascade({CascadeType.DELETE})
     public List<Rating> getRatings() {
         return ratings;
     }
@@ -611,7 +612,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     @OneToMany(
             mappedBy = "game"
     )
-    @Cascade({org.hibernate.annotations.CascadeType.DELETE})
+    @Cascade({CascadeType.DELETE})
     public List<Comment> getComments() {
         return comments;
     }
@@ -623,7 +624,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     private List<UserPlayedGame> played;
 
     @OneToMany(mappedBy = "game")
-    @Cascade({org.hibernate.annotations.CascadeType.DELETE})
+    @Cascade({CascadeType.DELETE})
     public List<UserPlayedGame> getPlayed() {
         return played;
     }
