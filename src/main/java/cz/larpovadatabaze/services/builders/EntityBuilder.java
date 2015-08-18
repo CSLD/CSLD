@@ -101,6 +101,13 @@ public class EntityBuilder {
         game.setLabels(labels);
         game.setCoverImage(coverImage);
 
+        for(CsldUser author: authors) {
+            if(author.getAuthorOf() == null) {
+                author.setAuthorOf(new ArrayList<>());
+            }
+            author.getAuthorOf().add(game);
+        }
+
         save(game);
         return game;
     }

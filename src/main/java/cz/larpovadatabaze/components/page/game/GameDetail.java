@@ -175,7 +175,9 @@ public class GameDetail extends CsldBasePage {
                 if (user != null) {
                     thisUserId = user.getId();
                 }
-                for(Comment c : getModel().getObject().getComments()) {
+                List<Comment> comments = getModel().getObject().getComments() != null ? getModel().getObject().getComments():
+                        new ArrayList<>();
+                for(Comment c : comments) {
                     if (c.getHidden()) {
                         if (!c.getUser().getId().equals(thisUserId)) continue; // Hidden comment and user is not creator - hide
                     }

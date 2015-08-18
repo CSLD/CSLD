@@ -53,7 +53,7 @@ public class MostActiveCreators extends AbstractCsldPanel<CsldUser> {
         }
 
         PageParameters params = new PageParameters();
-        params.add("id", author.getId());
+        params.add("id", author.getId() != null ? author.getId(): "");
         final BookmarkablePageLink<CsldBasePage> mostActiveCommenterHead =
                 new BookmarkablePageLink<CsldBasePage>("mostActiveCommenterHead", UserDetailPage.class, params);
         add(mostActiveCommenterHead);

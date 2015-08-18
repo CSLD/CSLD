@@ -9,12 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import cz.larpovadatabaze.dao.GameDAO;
 import cz.larpovadatabaze.dao.GameHasLanguageDao;
@@ -111,6 +106,12 @@ public class GameServiceImpl implements GameService {
         }
         List<Game> gamesOfAuthors = new ArrayList<Game>();
         gamesOfAuthors.addAll(games);
+        Collections.sort(gamesOfAuthors, (o1, o2) -> {
+            if(o1.getTotalRating().equals(o2.getTotalRating())) {
+                return 0;
+            }
+            return o1.getTotalRating() < o2.getTotalRating()? -1: 1;
+        });
         return gamesOfAuthors;
     }
 

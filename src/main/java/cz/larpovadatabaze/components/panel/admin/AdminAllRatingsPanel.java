@@ -10,6 +10,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -48,6 +49,9 @@ public class AdminAllRatingsPanel extends Panel {
 
         public void recompute() {
             List<Rating> ratings = gameModel.getObject().getRatings();
+            if(ratings == null) {
+                ratings = new ArrayList<>();
+            }
             Collections.sort(ratings, new Comparator<Rating>() {
                 @Override
                 public int compare(Rating o1, Rating o2) {

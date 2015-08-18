@@ -144,6 +144,7 @@ public class Person implements Serializable, IAutoCompletable {
 
     public static Person getEmptyPerson() {
         Person emptyPerson = new Person();
+        emptyPerson.setName("");
         return emptyPerson;
     }
 }

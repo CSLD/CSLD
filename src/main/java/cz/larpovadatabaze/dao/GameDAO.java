@@ -165,14 +165,16 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     @SuppressWarnings("unchecked")
     public List<Game> getSimilar(Game game) {
         Session session = sessionFactory.getCurrentSession();
+
+        List<Integer> labeledGames = game.getLabels().stream().map(Label::getId).collect(Collectors.toList());
         Criteria criteria = new GameBuilder().build().getExecutableCriteria(session)
-                .add(Restrictions.sqlRestriction("csld_is_similar('" + game.getId() + "', this_.id)"))
+                .add(Restrictions.not(Restrictions.eq("id", game.getId())))
                 .addOrder(Order.desc("totalRating"))
+                .createCriteria("labels")
+                    .add(Restrictions.in("id", labeledGames))
                 .setMaxResults(5);
 
-        List<Game> similarGames  = criteria.list();
-        similarGames.remove(game);
-        return similarGames;
+        return criteria.list();
     }
 
     /**

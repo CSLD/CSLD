@@ -11,6 +11,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.panel.user.CheckBoxSelectionUsers;
@@ -24,7 +25,7 @@ import cz.larpovadatabaze.utils.MailClient;
 import cz.larpovadatabaze.utils.UserUtils;
 
 /**
- *  This one really should contain also the CheckboxSelection Users.
+ * This one really should contain also the CheckboxSelection Users.
  */
 public class SendInformation extends AbstractCsldPanel<Game> {
     @SpringBean
@@ -44,14 +45,14 @@ public class SendInformation extends AbstractCsldPanel<Game> {
 
         @Override
         public List<CsldUser> getObject() {
-            List<CsldUser> wantedBy = new ArrayList<CsldUser>();
-            for(UserPlayedGame played : getModelObject().getPlayed()){
-                if(played.getStateEnum().equals(UserPlayedGame.UserPlayedGameState.WANT_TO_PLAY)) {
-                    wantedBy.add(played.getPlayerOfGame());
-                }
+            if(getModelObject() == null || getModelObject().getPlayed() == null) {
+                return new ArrayList<>();
             }
 
-            return wantedBy;
+            return getModelObject().getPlayed().stream()
+                    .filter(played -> played.getStateEnum().equals(UserPlayedGame.UserPlayedGameState.WANT_TO_PLAY))
+                    .map(UserPlayedGame::getPlayerOfGame)
+                    .collect(Collectors.toList());
         }
     }
 
@@ -67,18 +68,18 @@ public class SendInformation extends AbstractCsldPanel<Game> {
     protected void onInitialize() {
         super.onInitialize();
 
-        wantedToPlay =  new CheckBoxSelectionUsers("wantsToPlay", new WantedByModel()){
+        wantedToPlay = new CheckBoxSelectionUsers("wantsToPlay", new WantedByModel()) {
             @Override
             public CsldRoles getRoleOfActualUser() {
-                if(UserUtils.isEditor()) {
+                if (UserUtils.isEditor()) {
                     return CsldRoles.EDITOR;
-                } else if(UserUtils.isAdmin()) {
+                } else if (UserUtils.isAdmin()) {
                     return CsldRoles.ADMIN;
-                } else if(gameService.canEditGame(getModelObject())) {
+                } else if (gameService.canEditGame(getModelObject())) {
                     return CsldRoles.AUTHOR;
-                } else if(UserUtils.isSignedIn()) {
+                } else if (UserUtils.isSignedIn()) {
                     return CsldRoles.USER;
-                } else{
+                } else {
                     return CsldRoles.ANONYMOUS;
                 }
             }
@@ -89,17 +90,17 @@ public class SendInformation extends AbstractCsldPanel<Game> {
         Form sendInfo = new Form("sendInfoForm") {
             @Override
             protected void onSubmit() {
-                if(gameService.canEditGame(SendInformation.this.getModelObject())){
+                if (gameService.canEditGame(SendInformation.this.getModelObject())) {
                     List<SelectedUser> recipients = getAllSelected();
-                    for(SelectedUser recipient: recipients){
+                    for (SelectedUser recipient : recipients) {
                         mailClient.sendMail(
-                                String.format(getString("mail.from.author"),SendInformation.this.getModelObject().getName(),mail),
+                                String.format(getString("mail.from.author"), SendInformation.this.getModelObject().getName(), mail),
                                 recipient.getEmail(),
                                 String.format(getString("mail.from.author.subject"), SendInformation.this.getModelObject().getName()));
                     }
                 } else {
                     CsldUser loggedUser = UserUtils.getLoggedUser();
-                    for(CsldUser author: SendInformation.this.getModelObject().getAuthors()){
+                    for (CsldUser author : SendInformation.this.getModelObject().getAuthors()) {
                         mailClient.sendMail(
                                 String.format(getString("mail.from.user"),
                                         loggedUser.getPerson().getEmail(), SendInformation.this.getModelObject().getName(), mail),
@@ -133,7 +134,7 @@ public class SendInformation extends AbstractCsldPanel<Game> {
      *
      * @return All people to whom the data should be send.
      */
-    public List<SelectedUser> getAllSelected(){
+    public List<SelectedUser> getAllSelected() {
         return wantedToPlay.getSelectedUsers();
     }
 }

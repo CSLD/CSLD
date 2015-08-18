@@ -8,6 +8,8 @@ import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import java.io.Serializable;
+
 /**
  * User icon, needs IMG tag,
  *
@@ -36,7 +38,9 @@ public abstract class AbstractCsldIcon<T extends IIconReferenceProvider<O>, O ex
         }
 
         PageParameters pp = new PageParameters();
-        pp.add(ImageService.RESOURCE_REFERENCE_ID_PARAM_NAME, ((Identifiable) getDefaultModelObject()).getId());
+        Serializable id = ((Identifiable) getDefaultModelObject()).getId();
+        pp.add(ImageService.RESOURCE_REFERENCE_ID_PARAM_NAME,
+                id != null ? id : "");
         tag.put("src", urlFor(getService().getIconReference(), pp));
     }
 }

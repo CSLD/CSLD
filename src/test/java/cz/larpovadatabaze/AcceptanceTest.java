@@ -21,12 +21,14 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 @ContextConfiguration(
         classes = RootConfig.class
 )
-public class AcceptanceTest {
+abstract public class AcceptanceTest {
     static {
         System.setProperty("props.path", "src/test/config");
     }
 
-    protected WicketTester tester;
+    protected static WicketTester tester;
+    protected static SessionHolder sessionHolder;
+
     protected Session session;
 
     @Autowired
@@ -38,15 +40,18 @@ public class AcceptanceTest {
 
     @Before
     public void setUp(){
-        tester = new WicketTester(csld);
+        if(tester == null) {
+            tester = new WicketTester(csld);
+        }
         session = sessionFactory.openSession();
         session.setFlushMode(FlushMode.MANUAL);
-        SessionHolder sessionHolder = new SessionHolder(session);
+        sessionHolder = new SessionHolder(session);
         TransactionSynchronizationManager.bindResource(sessionFactory, sessionHolder);
     }
 
     @After
     public void tearDown() {
         session.close();
+        TransactionSynchronizationManager.unbindResource(sessionFactory);
     }
 }
