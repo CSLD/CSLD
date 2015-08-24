@@ -172,6 +172,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
                 .addOrder(Order.desc("totalRating"))
                 .createCriteria("labels")
                     .add(Restrictions.in("id", labeledGames))
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
                 .setMaxResults(5);
 
         return criteria.list();

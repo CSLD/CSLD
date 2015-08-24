@@ -16,14 +16,14 @@ public class UserPlayedGame implements Serializable {
     public static final int STATE_CODE_WANT_TO_PLAY = 1;
     public static final int STATE_CODE_NONE = 0;
 
-    public static enum UserPlayedGameState {
+    public enum UserPlayedGameState {
         NONE(STATE_CODE_NONE),
         PLAYED(STATE_CODE_PLAYED),
         WANT_TO_PLAY(STATE_CODE_WANT_TO_PLAY);
 
         private final int dbCode;
 
-        private UserPlayedGameState(int dbCode) { this.dbCode = dbCode; }
+        UserPlayedGameState(int dbCode) { this.dbCode = dbCode; }
     }
 
     private int id;
@@ -99,10 +99,7 @@ public class UserPlayedGame implements Serializable {
     @ManyToOne
     @javax.persistence.JoinColumn(
             name = "user_id",
-            referencedColumnName = "`id`",
-            nullable = false,
-            insertable = false,
-            updatable = false
+            referencedColumnName = "`id`"
     )
     public CsldUser getPlayerOfGame() {
         return playerOfGame;
@@ -117,10 +114,7 @@ public class UserPlayedGame implements Serializable {
     @ManyToOne
     @javax.persistence.JoinColumn(
             name = "game_id",
-            referencedColumnName = "`id`",
-            nullable = false,
-            insertable = false,
-            updatable = false
+            referencedColumnName = "`id`"
     )
     public Game getGame() {
         return game;

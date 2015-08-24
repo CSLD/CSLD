@@ -21,7 +21,7 @@ public class UserPlayedGameDAO extends GenericHibernateDAO<UserPlayedGame, Integ
     public UserPlayedGame getUserPlayedGame(int gameId, int userId) {
         Criteria stateOfGame = getBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession())
                 .add(Restrictions.eq("game.id", gameId))
-                .add(Restrictions.eq("user.id", userId));
+                .add(Restrictions.eq("playerOfGame.id", userId));
         return (UserPlayedGame) stateOfGame.uniqueResult();
     }
 }

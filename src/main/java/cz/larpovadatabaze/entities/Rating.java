@@ -83,12 +83,8 @@ public class Rating implements IGameWithRating, Serializable {
     @ManyToOne
     @JoinColumn(
             name = "game_id",
-            referencedColumnName = "`id`",
-            nullable = false,
-            insertable = false,
-            updatable = false
+            referencedColumnName = "`id`"
     )
-    @Id
     public Game getGame() {
         return game;
     }
@@ -102,12 +98,8 @@ public class Rating implements IGameWithRating, Serializable {
     @ManyToOne
     @JoinColumn(
             name = "user_id",
-            referencedColumnName = "`id`",
-            nullable = false,
-            insertable = false,
-            updatable = false
+            referencedColumnName = "`id`"
     )
-    @Id
     public CsldUser getUser() {
         return user;
     }

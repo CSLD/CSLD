@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.components.page.game;
 
 import cz.larpovadatabaze.AcceptanceTest;
+import cz.larpovadatabaze.TestUtils;
 import cz.larpovadatabaze.services.builders.CzechMasqueradeBuilder;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * Tests associated with the GameDetailPage.
  */
-public class GameDetailPageTest extends AcceptanceTest {
+public class GameDetailPageGuestTest extends AcceptanceTest {
     @Autowired
     private CzechMasqueradeBuilder masqueradeBuilder;
 
