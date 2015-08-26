@@ -58,6 +58,11 @@ public class CzechMasqueradeBuilder {
         secondMasquerade = persistenceStore.game("Masquerade 2", "Second try to bring Masquerade into the Czech " +
                 "republic", "cs", editor, authors, masqueradeGamesLabels, new Timestamp(new Date().getTime()));
 
+        for(int i = 0; i < 40; i++) {
+            persistenceStore.game("Masquerades: " + i , "First try to bring Masquerade into the Czech " +
+                    "republic", "cs", user, authors, masqueradeGamesLabels, new Timestamp(new Date().getTime()));
+        }
+
         persistenceStore.comment(administrator, firstMasquerade, "I liked it");
         persistenceStore.comment(editor, secondMasquerade, "There were some flwas but overally likeable game.");
         persistenceStore.comment(user, secondMasquerade, "My first LARP and it was so freaking awesome.");

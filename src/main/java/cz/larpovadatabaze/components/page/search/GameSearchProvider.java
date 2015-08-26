@@ -1,8 +1,10 @@
 package cz.larpovadatabaze.components.page.search;
 
+import cz.larpovadatabaze.utils.HbUtils;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -37,6 +39,27 @@ public class GameSearchProvider extends SortableDataProvider<Game, String> {
     private int maxResults = DEFAULT_MAX_RESULTS;
 
     private boolean moreAvailable;
+
+    // TODO: Remove duplication.
+    private class GameModel extends LoadableDetachableModel<Game> {
+
+        // Game id. We could also store id as page property.
+        private int gameId;
+
+        private GameModel(int gameId) {
+            this.gameId = gameId;
+        }
+
+        @Override
+        protected Game load() {
+            Game game = gameService.getById(gameId);
+            if(HbUtils.isProxy(game)){
+            }    game = HbUtils.deproxy(game);
+
+            return game;
+        }
+    }
+
 
     public GameSearchProvider() {
         Injector.get().inject(this);
@@ -83,7 +106,7 @@ public class GameSearchProvider extends SortableDataProvider<Game, String> {
 
     @Override
     public IModel<Game> model(Game object) {
-        return new Model<Game>(object);
+        return new GameModel(object.getId());
     }
 
     /**
