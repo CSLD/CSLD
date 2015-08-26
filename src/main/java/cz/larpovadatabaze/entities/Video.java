@@ -29,7 +29,7 @@ public class Video implements Serializable {
 
     private String path;
 
-    @Column(name = "path", nullable = false, insertable = true, updatable = true, length = 2147483647, precision = 0)
+    @Column(name = "path", insertable = true, updatable = true, length = 2147483647, precision = 0)
     @Basic
     public String getPath() {
         return path;
@@ -41,7 +41,7 @@ public class Video implements Serializable {
 
     private Integer type;
 
-    @Column(name = "type", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "type", insertable = true, updatable = true, length = 10, precision = 0)
     @Basic
     public Integer getType() {
         return type;

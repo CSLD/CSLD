@@ -14,7 +14,6 @@ import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.user.UserDetailPage;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.ImageService;
 
 /**
  * It contains information about the author, who created most games.
@@ -22,9 +21,6 @@ import cz.larpovadatabaze.services.ImageService;
 public class MostActiveCreators extends AbstractCsldPanel<CsldUser> {
     @SpringBean
     CsldUserService csldUserService;
-
-    @SpringBean
-    ImageService imageService;
 
     private class UserModel extends LoadableDetachableModel<CsldUser> {
 

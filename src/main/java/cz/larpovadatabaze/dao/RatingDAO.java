@@ -35,7 +35,7 @@ public class RatingDAO extends GenericHibernateDAO<Rating, Integer> {
     public List<Rating> getRatingsOfUser(Integer id) {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = getBuilder().build().getExecutableCriteria(session)
-                .add(Restrictions.eq("userId", id));
+                .add(Restrictions.eq("user.id", id));
 
         return criteria.list();
     }

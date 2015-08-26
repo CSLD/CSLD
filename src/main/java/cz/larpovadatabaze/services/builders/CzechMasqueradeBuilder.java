@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.services.builders;
 
+import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Label;
@@ -24,6 +25,9 @@ public class CzechMasqueradeBuilder {
     public CsldUser editor;
     public CsldUser user;
 
+    public CsldGroup nosferatu;
+    public CsldGroup toreador;
+
     public Game firstMasquerade;
     public Game secondMasquerade;
 
@@ -43,6 +47,9 @@ public class CzechMasqueradeBuilder {
         vampire = persistenceStore.label(editor, "Vampire", "cs", "Vampire larp contains vampire in any shape.", true);
         List<Label> masqueradeGamesLabels = new ArrayList<Label>();
         Collections.addAll(masqueradeGamesLabels, dramatic, vampire);
+
+        nosferatu = persistenceStore.group("Clan of ugly vampires", "cs", "Nosferatu");
+        toreador = persistenceStore.group("Clan of beautiful vampires", "cs", "Toreador");
 
         List<CsldUser> authors = new ArrayList<CsldUser>();
         Collections.addAll(authors, editor, administrator);
@@ -97,5 +104,13 @@ public class CzechMasqueradeBuilder {
 
     public Label getDramatic() {
         return dramatic;
+    }
+
+    public CsldGroup getNosferatu() {
+        return nosferatu;
+    }
+
+    public CsldGroup getToreador() {
+        return toreador;
     }
 }

@@ -1,5 +1,11 @@
 package cz.larpovadatabaze.components.panel.search;
 
+import cz.larpovadatabaze.components.common.icons.UserIcon;
+import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.page.user.UserDetailPage;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.utils.Strings;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -13,23 +19,12 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import java.util.ArrayList;
 import java.util.List;
 
-import cz.larpovadatabaze.components.common.icons.UserIcon;
-import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.user.UserDetailPage;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.ImageService;
-import cz.larpovadatabaze.utils.Strings;
-
 /**
  * It shows user results of search.
  */
 public class UserResultsPanel extends Panel {
     @SpringBean
     CsldUserService csldUserService;
-
-    @SpringBean
-    ImageService imageService;
 
     public UserResultsPanel(String id, String query) {
         super(id);
@@ -50,11 +45,11 @@ public class UserResultsPanel extends Panel {
         List<CsldUser> shortResults;
 
         if(searchResults.size() > 2){
-            fullResults = new ArrayList<CsldUser>(searchResults.subList(0,3));
-            shortResults = new ArrayList<CsldUser>(searchResults.subList(3, searchResults.size()));
+            fullResults = new ArrayList<>(searchResults.subList(0,3));
+            shortResults = new ArrayList<>(searchResults.subList(3, searchResults.size()));
         } else {
-            fullResults = new ArrayList<CsldUser>(searchResults.subList(0,searchResults.size()));
-            shortResults = new ArrayList<CsldUser>();
+            fullResults = new ArrayList<>(searchResults.subList(0,searchResults.size()));
+            shortResults = new ArrayList<>();
         }
         ListView<CsldUser> fullList = new ListView<CsldUser>("fullResults", fullResults) {
             @Override

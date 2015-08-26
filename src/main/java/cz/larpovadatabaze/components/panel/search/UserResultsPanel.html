@@ -4,42 +4,22 @@
     It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/search/UserResultsPanel.html
     Code - cz.larpovadatabaze.components.panel.search.UserResultsPanel.html
     -->
-    <div class="pravaCastVyhledavani">
-        <table class="prvniTabulka" wicket:id="fullResults">
-            <!-- Beginning of repetitive content for first three authors -->
-            <tr>
-                <td>
-                    <a wicket:id="authorLink">
-                        <img wicket:id="authorLinkImage" class="obrazekVyhledavani">
-                    </a>
-                </td>
-                <td class="obsah">
-                    <a wicket:id="authorLinkContent">
-                        <span class="nick" wicket:id="authorNick"></span>
-                        <span class="jmeno" wicket:id="authorName"></span>
-                    </a>
-                    <div class="popisek">
-                        <wicket:enclosure child="year"><span wicket:id="year"></span> let</wicket:enclosure>
-                        <span wicket:id="city"></span>
-                    </div>
-                </td>
-            </tr>
-            <!-- End of repetitive content for first three authors -->
-        </table>
-
-        <div class="dalsiVysledky" wicket:id="moreResults"><wicket:message key="search.moreResults">Další výsledky:</wicket:message></div>
-
-        <table class="druhaTabulka" wicket:id="shortResults">
-            <!-- Beginning of repetitive content for other authors -->
-            <tr>
-                <td>
-                    <a wicket:id="authorShortLink">
-                        <span class="nick" wicket:id="authorShortNick">Vanda</span>
-                        <span class="jmeno" wicket:id="authorShortName">Šárka Boudníková</span>
-                    </a>
-                </td>
-            </tr>
-            <!-- End of repetitive content for other authors -->
-        </table>
+    <div class="row listGames" wicket:id="fullResults">
+        <div class="col-md-3 col-sm-2 col-xs-10">
+            <div class="t-data info recent-games">
+                <a class="larpOdkaz" wicket:id="authorLinkContent">
+                    <span class="nick" wicket:id="authorNick"></span>
+                    <span class="jmeno autorJmeno" wicket:id="authorName"></span>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-1 col-sm-1 col-xs-2">
+            <div class="t-data info detail recent-games">
+                <span>
+                    <span wicket:id="amountOfRecentGames"></span>
+                    <i class="fa fa-pencil-square"></i>
+                </span>
+            </div>
+        </div>
     </div>
 </wicket:panel>

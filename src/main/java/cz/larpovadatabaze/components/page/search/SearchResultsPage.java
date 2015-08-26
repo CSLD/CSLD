@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.page.search;
 
+import cz.larpovadatabaze.components.panel.search.UserResultsPanel;
 import org.apache.wicket.Component;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.Model;
@@ -29,11 +30,9 @@ public class SearchResultsPage extends CsldBasePage {
         gamesResultsPanel.setOutputMarkupId(true);
         add(gamesResultsPanel);
 
-/*
-        final UserResultsPanel userResultsPanel = new UserResultsPanel("users", query);
+        /*final UserResultsPanel userResultsPanel = new UserResultsPanel("users", query);
         userResultsPanel.setOutputMarkupId(true);
-        add(userResultsPanel);
-        */
+        add(userResultsPanel);*/
     }
 
 }

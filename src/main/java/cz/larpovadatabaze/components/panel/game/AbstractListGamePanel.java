@@ -1,5 +1,11 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import cz.larpovadatabaze.components.common.AbstractCsldPanel;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.services.CommentService;
+import cz.larpovadatabaze.services.GameService;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.markup.html.basic.Label;
@@ -14,16 +20,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import java.util.ArrayList;
 import java.util.List;
 
-import cz.larpovadatabaze.components.common.AbstractCsldPanel;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.CommentService;
-import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.GameService;
-import cz.larpovadatabaze.services.LabelService;
-import cz.larpovadatabaze.services.RatingService;
-
 /**
  * It contains all games in a pageable list, there are four possible ways to order
  * the list. Order alphabetically, Order by rating or order by amount of ratings, or
@@ -32,12 +28,6 @@ import cz.larpovadatabaze.services.RatingService;
 public abstract class AbstractListGamePanel<T> extends AbstractCsldPanel<T> {
     @SpringBean
     GameService gameService;
-    @SpringBean
-    LabelService labelService;
-    @SpringBean
-    CsldUserService csldUserService;
-    @SpringBean
-    RatingService ratingService;
     @SpringBean
     CommentService commentService;
 
@@ -113,9 +103,9 @@ public abstract class AbstractListGamePanel<T> extends AbstractCsldPanel<T> {
         @Override
         protected List<Game> load() {
             if(userId == 0) {
-                return new ArrayList<Game>();
+                return new ArrayList<>();
             } else {
-                return new ArrayList<Game>(commentService.getGamesCommentedByUser(userId));
+                return new ArrayList<>(commentService.getGamesCommentedByUser(userId));
             }
         }
     }
@@ -130,9 +120,9 @@ public abstract class AbstractListGamePanel<T> extends AbstractCsldPanel<T> {
         @Override
         protected List<Game> load() {
             if(userId == 0) {
-                return new ArrayList<Game>();
+                return new ArrayList<>();
             } else {
-                return new ArrayList<Game>(gameService.getGamesRatedByUser(userId));
+                return new ArrayList<>(gameService.getGamesRatedByUser(userId));
             }
         }
     }

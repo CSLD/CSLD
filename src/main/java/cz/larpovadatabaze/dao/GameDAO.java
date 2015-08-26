@@ -189,7 +189,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = getBuilder().build().getExecutableCriteria(session)
                 .createAlias("game.comments", "comments")
-                .add(Restrictions.eq("comments.userId", userId));
+                .add(Restrictions.eq("comments.user.id", userId));
 
         return criteria.list();
     }
@@ -311,7 +311,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = getBuilder().build().getExecutableCriteria(session)
                 .createAlias("game.ratings", "ratings")
-                .add(Restrictions.eq("ratings.userId", userId));
+                .add(Restrictions.eq("ratings.user.id", userId));
 
         return criteria.list();
     }

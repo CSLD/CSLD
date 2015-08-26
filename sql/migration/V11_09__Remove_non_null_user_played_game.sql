@@ -5,3 +5,5 @@ alter table csld_user_played_game alter column game_id drop not null;
 alter table csld_rating drop constraint csld_rating_pkey;
 alter table csld_rating alter COLUMN user_id drop not null;
 alter table csld_rating alter COLUMN game_id drop not null;
+
+alter table csld_video alter column path drop not NULL;
