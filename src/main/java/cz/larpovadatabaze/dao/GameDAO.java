@@ -26,14 +26,10 @@ import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.models.FilterGame;
 
 /**
- *
+ * The DAO should already return entity, which is translated to current state. How do I do that?
  */
 @Repository
 public class GameDAO extends GenericHibernateDAO<Game, Integer> {
-    @Qualifier("sessionFactory")
-    @Autowired
-    private SessionFactory sessionFactory;
-
     /**
      * How old game is considered new
      */
@@ -195,11 +191,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     }
 
     private Integer[] getLabelIds(List<Label> labels) {
-        Integer[] labelIds = new Integer[labels.size()];
-        for(int i = 0; i < labels.size(); i++) {
-            labelIds[i] = labels.get(i).getId();
-        }
-        return labelIds;
+        return labels.stream().map(Label::getId).toArray(Integer[]::new);
     }
 
     private void addLabelCriteria(DetachedCriteria criteria, List<Label> labels) {
@@ -337,16 +329,6 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
             ex.printStackTrace();
             return false;
         }
-    }
-
-    public void deleteTranslation(Game toModify, String convertedInput) {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(GameHasLanguages.class);
-        criteria.add(Restrictions.eq("game.id",toModify.getId()));
-        criteria.add(Restrictions.eq("language", convertedInput));
-        GameHasLanguages lang = (GameHasLanguages) criteria.uniqueResult();
-
-        sessionFactory.getCurrentSession().delete(lang);
-        sessionFactory.getCurrentSession().flush();
     }
 
     private void addLanguageRestriction(DetachedCriteria criteria, List<Locale> languages) {

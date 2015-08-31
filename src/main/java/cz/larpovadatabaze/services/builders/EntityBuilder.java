@@ -84,6 +84,11 @@ public class EntityBuilder {
 
     public Game game(String name, String description, String lang, CsldUser addedBy, List<CsldUser> authors,
                      List<Label> labels, Timestamp added, Image coverImage) {
+        return game(name, description, lang, addedBy, authors, labels, added, coverImage, 0);
+    }
+
+    public Game game(String name, String description, String lang, CsldUser addedBy, List<CsldUser> authors,
+                     List<Label> labels, Timestamp added, Image coverImage, Integer year) {
         Game game = new Game();
         game.setTotalRating(0d);
         game.setName(name);
@@ -100,6 +105,7 @@ public class EntityBuilder {
         game.setWomenRole(5);
         game.setLabels(labels);
         game.setCoverImage(coverImage);
+        game.setYear(year);
 
         for(CsldUser author: authors) {
             if(author.getAuthorOf() == null) {

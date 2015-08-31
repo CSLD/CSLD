@@ -297,6 +297,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
                 if(createOrUpdateGame.isValid()){
                     // TODO: find why when editing form the converted input isn't propagated.
                     game.setGroupAuthor((List<CsldGroup>) ((MultiAutoCompleteComponent)createOrUpdateGame.get("groupAuthor")).getConvertedInput());
+                    game.setAuthors((List<CsldUser>) ((MultiAutoCompleteComponent)createOrUpdateGame.get("authorsWrapper:authors")).getConvertedInput());
                     if(gameService.saveOrUpdate(game)){
                         onCsldAction(target, form);
                     } else {

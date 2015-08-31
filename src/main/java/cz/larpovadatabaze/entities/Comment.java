@@ -7,15 +7,15 @@ import java.sql.Timestamp;
 /**
  *
  */
-@Table(name="csld_comment")
+@Table(name = "csld_comment")
 @Entity
 public class Comment implements Serializable {
     private int id;
 
-    @Column(name="id")
+    @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
-    @SequenceGenerator(sequenceName = "csld_comment_id_seq", name="id_gen")
+    @SequenceGenerator(sequenceName = "csld_comment_id_seq", name = "id_gen")
     public int getId() {
         return id;
     }
@@ -26,12 +26,7 @@ public class Comment implements Serializable {
 
     private String comment;
 
-    @Column(
-            name = "comment",
-            nullable = false,
-            insertable = true,
-            updatable = true
-    )
+    @Column(name = "comment", nullable = false)
     @Basic
     public String getComment() {
         return comment;
@@ -43,12 +38,7 @@ public class Comment implements Serializable {
 
     private Timestamp added;
 
-    @Column(
-            name = "added",
-            nullable = false,
-            insertable = true,
-            updatable = true
-    )
+    @Column(name = "added", nullable = false)
     @Basic
     public Timestamp getAdded() {
         return added;
@@ -60,7 +50,7 @@ public class Comment implements Serializable {
 
     private Boolean isHidden = Boolean.FALSE;
 
-    @Column(name="is_hidden")
+    @Column(name = "is_hidden")
     @Basic
     public Boolean getHidden() {
         return isHidden;

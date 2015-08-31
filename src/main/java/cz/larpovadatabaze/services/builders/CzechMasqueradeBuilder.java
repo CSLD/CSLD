@@ -60,7 +60,7 @@ public class CzechMasqueradeBuilder {
 
         for(int i = 0; i < 40; i++) {
             persistenceStore.game("Masquerades: " + i , "First try to bring Masquerade into the Czech " +
-                    "republic", "cs", user, authors, masqueradeGamesLabels, new Timestamp(new Date().getTime()));
+                    "republic", "cs", user, authors, masqueradeGamesLabels, new Timestamp(new Date().getTime()), null, 2010 + (i % 5));
         }
 
         persistenceStore.comment(administrator, firstMasquerade, "I liked it");
