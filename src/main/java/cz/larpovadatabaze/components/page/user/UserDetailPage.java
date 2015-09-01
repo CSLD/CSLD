@@ -146,8 +146,9 @@ public class UserDetailPage extends CsldBasePage {
 
         add(new PersonDetailPanel("personDetail", (IModel<CsldUser>)getDefaultModel()));
 
+        CsldUser logged = CsldAuthenticatedWebSession.get().getLoggedUser();
         BookmarkablePageLink updateUserLink = new BookmarkablePageLink<UpdateUserPage>("updateUserLink", UpdateUserPage.class);
-        updateUserLink.setVisibilityAllowed(CsldAuthenticatedWebSession.get().getLoggedUser() != null);
+        updateUserLink.setVisibilityAllowed(logged != null && logged.getId().equals(user.getId()));
         add(updateUserLink);
 
         add(new NewsDetailsListPanel("news", user.getId()));
@@ -158,7 +159,6 @@ public class UserDetailPage extends CsldBasePage {
         provider.setAuthor(user);
         add(new ListGamesWithAnnotations("annotatedGamesOfAuthor", provider));
 
-        CsldUser logged = CsldAuthenticatedWebSession.get().getLoggedUser();
         if(HbUtils.isProxy(user)){
             user = HbUtils.deproxy(user);
         }
