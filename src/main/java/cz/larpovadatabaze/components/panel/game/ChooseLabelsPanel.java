@@ -1,7 +1,10 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.FormComponentPanel;
@@ -67,7 +70,15 @@ public class ChooseLabelsPanel extends FormComponentPanel<List<cz.larpovadatabaz
         @Override
         protected void populateItem(ListItem<cz.larpovadatabaze.entities.Label> item) {
             final cz.larpovadatabaze.entities.Label ourLabel = item.getModelObject();
-            item.add(new CheckBox("checkbox", new Model<Boolean>(ChooseLabelsPanel.this.getModelObject().contains(ourLabel)))
+
+            WebMarkupContainer wrapper = new WebMarkupContainer("label");
+            item.add(wrapper);
+
+            if (StringUtils.isNotEmpty(ourLabel.getDescription())) {
+                item.add(new AttributeAppender("title", ourLabel.getDescription()));
+            }
+
+            wrapper.add(new CheckBox("checkbox", new Model<Boolean>(ChooseLabelsPanel.this.getModelObject().contains(ourLabel)))
             {
                 @Override
                 protected void convertInput() {
@@ -87,7 +98,7 @@ public class ChooseLabelsPanel extends FormComponentPanel<List<cz.larpovadatabaz
                 }
             });
 
-            item.add(new Label("name", ourLabel.getName()));
+            wrapper.add(new Label("name", ourLabel.getName()));
 
             /*
             Label tooltip = new Label("tooltip", actualLabel.getDescription());

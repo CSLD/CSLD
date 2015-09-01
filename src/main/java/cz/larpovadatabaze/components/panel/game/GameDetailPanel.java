@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.components.panel.game;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -140,6 +141,9 @@ public class GameDetailPanel extends AbstractCsldPanel<Game> {
 
                 BookmarkablePageLink link = new BookmarkablePageLink<CsldBasePage>("link", ListGamePage.class, ListGamePage.getParametersForLabel(label.getId()));
                 item.add(link);
+                if (StringUtils.isNotEmpty(label.getDescription())) {
+                    link.add(new AttributeAppender("title", label.getDescription()));
+                }
 
                 Label labelC = new Label("label", label.getName());
                 link.add(labelC);
