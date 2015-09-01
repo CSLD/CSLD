@@ -7,7 +7,7 @@
     -->
     <wicket:message key="label.required"></wicket:message>
     <div wicket:id="requiredLabels">  <!-- This contains list of Labels. -->
-        <label class="checkbox">
+        <label class="checkbox" wicket:id="label">
             <input type="checkbox" wicket:id="checkbox" /><i></i>
             <wicket:container wicket:id="name" />
         </label>
@@ -17,7 +17,7 @@
 
     <wicket:message key="label.optional"></wicket:message>
     <div wicket:id="otherLabels">  <!-- This contains list of Labels. -->
-        <label class="checkbox">
+        <label class="checkbox" wicket:id="label">
             <input type="checkbox" wicket:id="checkbox" /><i></i>
             <wicket:container wicket:id="name" />
         </label>
