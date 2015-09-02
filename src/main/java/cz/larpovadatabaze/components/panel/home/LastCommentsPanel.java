@@ -1,6 +1,8 @@
 package cz.larpovadatabaze.components.panel.home;
 
 import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -12,6 +14,7 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.template.PackageTextTemplate;
 import org.jsoup.Jsoup;
 
 import java.text.SimpleDateFormat;
@@ -35,6 +38,9 @@ import cz.larpovadatabaze.services.ImageService;
  * This panel shows shortened info about last comments.
  */
 public class LastCommentsPanel extends Panel {
+    /** Number of columns */
+    private static final int N_COLUMNS = 3;
+
     @SpringBean
     CommentService commentService;
 
@@ -42,8 +48,8 @@ public class LastCommentsPanel extends Panel {
     ImageService imageService;
 
     private static final int MAX_CHARS_IN_COMMENT = 300;
-    private static int INITIAL_LAST_COMMENTS = 6;
-    private static int EXPANDED_LAST_COMMENTS = 15;
+    private static int INITIAL_LAST_COMMENTS = N_COLUMNS*2;
+    private static int EXPANDED_LAST_COMMENTS = N_COLUMNS*5;
 
     private class CommentsView extends ListView<Comment> {
         public CommentsView(String id, List<? extends Comment> list) {
@@ -126,6 +132,28 @@ public class LastCommentsPanel extends Panel {
         super(id);
     }
 
+    /**
+     * Shuffle list to columns
+     *
+     * @param list Original list
+     *
+     * @return Shuffled list
+     */
+    private List<Comment> toColumns(List<Comment> list) {
+        List<Comment> res = new ArrayList<>();
+        int colLen = (list.size()+ N_COLUMNS -1)/3;
+        for(int i=0; i<colLen; i++) {
+            for(int n=0; n< N_COLUMNS; n++) {
+                int idx = n*colLen + i;
+                if (idx < list.size()) {
+                    res.add(list.get(idx));
+                }
+            }
+        }
+
+        return res;
+    }
+
     @Override
     protected void onInitialize() {
         super.onInitialize();
@@ -133,11 +161,18 @@ public class LastCommentsPanel extends Panel {
         List<Comment> toShow = new ArrayList<Comment>(commentService.getLastComments(EXPANDED_LAST_COMMENTS));
 
         if(toShow.size() >= INITIAL_LAST_COMMENTS) {
-            add(new CommentsView("visibleComments", toShow.subList(0, INITIAL_LAST_COMMENTS)));
-            add(new CommentsView("hiddenComments", toShow.subList(INITIAL_LAST_COMMENTS, toShow.size())));
+            add(new CommentsView("visibleComments", toColumns(toShow.subList(0, INITIAL_LAST_COMMENTS))));
+            add(new CommentsView("hiddenComments", toColumns(toShow.subList(0, toShow.size()))));
         } else {
-            add(new CommentsView("visibleComments", toShow));
-            add(new CommentsView("hiddenComments", new ArrayList<Comment>()));
+            add(new CommentsView("visibleComments", toColumns(toShow)));
+            add(new CommentsView("hiddenComments", toColumns(toShow)));
         }
+    }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+
+        response.render(OnDomReadyHeaderItem.forScript(new PackageTextTemplate(getClass(), "LastCommentsPanel.js").getString()));
     }
 }

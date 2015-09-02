@@ -15,9 +15,11 @@
 
                 <div class="row comments">
 
-                    <wicket:container wicket:id="visibleComments">
-                        <wicket:container wicket:id="comment" />
-                    </wicket:container>
+                    <div class="jsVisibleComments">
+                        <wicket:container wicket:id="visibleComments">
+                            <wicket:container wicket:id="comment" />
+                        </wicket:container>
+                    </div>
 
                     <div class="jsHiddenComments" style="display: none">
                         <wicket:container wicket:id="hiddenComments">
@@ -30,8 +32,8 @@
                 </div>
                 <div class="col-md-4">
                     <div class="row">
-                    <a href="#" class="jsMoreComments" onclick="$('.jsMoreComments').hide(); $('.jsLessComments').show(); $('.jsHiddenComments').slideDown(); $('.jsComment').trigger('update.dot'); return false;"><div class="view-more-btn">+ <wicket:message key="comments.more">Více...</wicket:message></div></a>
-                    <a href="#" class="jsLessComments" style="display: none;" onclick="$('.jsLessComments').hide(); $('.jsMoreComments').show(); $('.jsHiddenComments').slideUp(); return false;"><div class="view-more-btn">+ <wicket:message key="comments.less">Méně...</wicket:message></div></a>
+                    <a href="#" class="jsMoreComments"><div class="view-more-btn">+ <wicket:message key="comments.more">Více...</wicket:message></div></a>
+                    <a href="#" class="jsLessComments" style="display: none;"><div class="view-more-btn">+ <wicket:message key="comments.less">Méně...</wicket:message></div></a>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -45,7 +47,7 @@
             <div id="testimonials-2" class="testimonials testimonials-v1">
                 <div class="carousel-inner">
                     <div class="item active">
-                        <p class="rounded jsComment" style="height: 100px;" wicket:id="commentWrapper">
+                        <p class="rounded jsComment hp-comment" wicket:id="commentWrapper">
                             <wicket:container wicket:id="commentsContent" />
                             <a wicket:id="moreLink"><wicket:message key="comment.more" /></a>
                         </p>

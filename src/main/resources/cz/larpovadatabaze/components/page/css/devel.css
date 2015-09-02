@@ -248,3 +248,8 @@ div.wicket-modal div.w_caption {
 .sky-form .icon-link:hover {
     color: #4080ff;
 }
+
+.hp-comment {
+    height: 100px;
+    overflow: hidden;
+}
