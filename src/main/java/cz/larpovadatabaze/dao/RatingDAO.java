@@ -7,6 +7,7 @@ import cz.larpovadatabaze.entities.Rating;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -35,7 +36,8 @@ public class RatingDAO extends GenericHibernateDAO<Rating, Integer> {
     public List<Rating> getRatingsOfUser(Integer id) {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = getBuilder().build().getExecutableCriteria(session)
-                .add(Restrictions.eq("user.id", id));
+                .add(Restrictions.eq("user.id", id))
+                .addOrder(Order.desc("rating"));
 
         return criteria.list();
     }
