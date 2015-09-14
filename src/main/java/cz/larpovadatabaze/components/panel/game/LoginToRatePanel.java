@@ -1,8 +1,7 @@
 package cz.larpovadatabaze.components.panel.game;
 
-import org.apache.wicket.markup.html.panel.Panel;
-
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import org.apache.wicket.markup.html.panel.Panel;
 
 /**
  * This panel is shown when user does not have right to rate the game.

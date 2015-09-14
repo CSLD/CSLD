@@ -1,5 +1,10 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.security.CsldRoles;
+import cz.larpovadatabaze.services.GameService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
@@ -9,12 +14,6 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.security.CsldRoles;
-import cz.larpovadatabaze.services.GameService;
 
 /**
  * This panel contains link for deleting the game.

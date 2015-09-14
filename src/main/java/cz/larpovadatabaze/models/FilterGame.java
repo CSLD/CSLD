@@ -1,11 +1,11 @@
 package cz.larpovadatabaze.models;
 
+import cz.larpovadatabaze.entities.Label;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
-import cz.larpovadatabaze.entities.Label;
 
 /**
  *

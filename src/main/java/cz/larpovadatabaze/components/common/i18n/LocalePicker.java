@@ -1,7 +1,6 @@
 package cz.larpovadatabaze.components.common.i18n;
 
 import cz.larpovadatabaze.lang.AvailableLanguages;
-import cz.larpovadatabaze.lang.LocaleProvider;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;

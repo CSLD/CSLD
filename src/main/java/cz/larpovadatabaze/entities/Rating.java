@@ -1,9 +1,8 @@
 package cz.larpovadatabaze.entities;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
-
-import javax.persistence.*;
 
 /**
  * User: Jakub Balhar

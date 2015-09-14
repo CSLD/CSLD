@@ -6,7 +6,6 @@ import org.apache.wicket.util.string.Strings;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  *

@@ -1,7 +1,15 @@
 package cz.larpovadatabaze.services.impl;
 
+import cz.larpovadatabaze.dao.CsldUserDAO;
 import cz.larpovadatabaze.dao.UserHasLanguagesDao;
-import cz.larpovadatabaze.entities.UserHasLanguages;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.exceptions.WrongParameterException;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.security.CsldRoles;
+import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.ImageService;
+import cz.larpovadatabaze.utils.Pwd;
+import cz.larpovadatabaze.utils.RandomString;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -13,20 +21,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
-
-import cz.larpovadatabaze.dao.CsldUserDAO;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.exceptions.WrongParameterException;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.security.CsldRoles;
-import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.ImageService;
-import cz.larpovadatabaze.utils.Pwd;
-import cz.larpovadatabaze.utils.RandomString;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *

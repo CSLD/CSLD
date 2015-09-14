@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import cz.larpovadatabaze.entities.Game;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -8,8 +9,6 @@ import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.Model;
 
 import java.util.Iterator;
-
-import cz.larpovadatabaze.entities.Game;
 
 /**
  * List of games

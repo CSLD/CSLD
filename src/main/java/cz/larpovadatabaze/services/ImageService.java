@@ -1,11 +1,10 @@
 package cz.larpovadatabaze.services;
 
-import org.apache.wicket.request.resource.IResource;
-import org.apache.wicket.request.resource.ResourceReference;
-
 import cz.larpovadatabaze.api.GenericHibernateDAO;
 import cz.larpovadatabaze.entities.IEntityWithImage;
 import cz.larpovadatabaze.entities.Image;
+import org.apache.wicket.request.resource.IResource;
+import org.apache.wicket.request.resource.ResourceReference;
 
 /**
  *

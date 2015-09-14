@@ -1,5 +1,16 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import cz.larpovadatabaze.components.common.CommentHiddenButton;
+import cz.larpovadatabaze.components.common.icons.UserIcon;
+import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.page.game.GameDetail;
+import cz.larpovadatabaze.components.page.user.UserDetailPage;
+import cz.larpovadatabaze.entities.Comment;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.Rating;
+import cz.larpovadatabaze.services.CommentService;
+import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -17,18 +28,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
-import cz.larpovadatabaze.components.common.CommentHiddenButton;
-import cz.larpovadatabaze.components.common.icons.UserIcon;
-import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.game.GameDetail;
-import cz.larpovadatabaze.components.page.user.UserDetailPage;
-import cz.larpovadatabaze.entities.Comment;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Rating;
-import cz.larpovadatabaze.services.CommentService;
-import cz.larpovadatabaze.services.ImageService;
 
 /**
  * This Panel shows List of comments. Everything about comment is shown and the

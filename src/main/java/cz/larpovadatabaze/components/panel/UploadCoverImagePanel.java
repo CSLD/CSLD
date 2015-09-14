@@ -1,13 +1,12 @@
 package cz.larpovadatabaze.components.panel;
 
+import cz.larpovadatabaze.entities.Image;
 import org.apache.wicket.markup.html.form.FormComponentPanel;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.model.IModel;
 
 import java.util.List;
-
-import cz.larpovadatabaze.entities.Image;
 
 /**
  *

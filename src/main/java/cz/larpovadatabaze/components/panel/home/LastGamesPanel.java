@@ -1,5 +1,13 @@
 package cz.larpovadatabaze.components.panel.home;
 
+import cz.larpovadatabaze.components.common.icons.GameIcon;
+import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.page.game.GameDetail;
+import cz.larpovadatabaze.components.page.game.ListLastGames;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.Rating;
+import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -14,15 +22,6 @@ import org.jsoup.Jsoup;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import cz.larpovadatabaze.components.common.icons.GameIcon;
-import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.game.GameDetail;
-import cz.larpovadatabaze.components.page.game.ListLastGames;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Rating;
-import cz.larpovadatabaze.services.GameService;
-import cz.larpovadatabaze.services.ImageService;
 
 /**
  * This panel shows information about last added games

@@ -1,9 +1,9 @@
 package cz.larpovadatabaze.services;
 
-import java.util.List;
-
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
+
+import java.util.List;
 
 /**
  *

@@ -1,5 +1,11 @@
 package cz.larpovadatabaze.components.page.game;
 
+import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
+import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.GameHasLanguages;
+import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.utils.HbUtils;
 import org.apache.log4j.Logger;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -20,16 +26,9 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 import java.util.List;
-
-import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
-import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.GameHasLanguages;
-import cz.larpovadatabaze.services.GameService;
-import cz.larpovadatabaze.utils.HbUtils;
-import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 import static cz.larpovadatabaze.lang.AvailableLanguages.availableLocaleNames;
 

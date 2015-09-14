@@ -1,8 +1,6 @@
 package cz.larpovadatabaze.validator;
 
 import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Person;
 import cz.larpovadatabaze.services.GroupService;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;

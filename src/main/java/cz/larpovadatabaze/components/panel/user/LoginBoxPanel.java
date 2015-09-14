@@ -1,12 +1,11 @@
 package cz.larpovadatabaze.components.panel.user;
 
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.user.CreateUserPage;
 import cz.larpovadatabaze.components.page.user.CsldSignInPage;
 import cz.larpovadatabaze.entities.CsldUser;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 
 /**
  * It links for login/registration or user info

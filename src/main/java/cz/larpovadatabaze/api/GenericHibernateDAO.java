@@ -1,7 +1,9 @@
 package cz.larpovadatabaze.api;
 
 import cz.larpovadatabaze.dao.builder.IBuilder;
-import org.hibernate.*;
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Restrictions;

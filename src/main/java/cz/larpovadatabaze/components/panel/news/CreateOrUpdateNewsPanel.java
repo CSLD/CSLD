@@ -6,9 +6,7 @@ import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
 import cz.larpovadatabaze.components.common.JSPingBehavior;
 import cz.larpovadatabaze.entities.News;
-import cz.larpovadatabaze.lang.LocaleProvider;
 import cz.larpovadatabaze.services.NewsService;
-import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -22,7 +20,6 @@ import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import static cz.larpovadatabaze.lang.AvailableLanguages.availableLocaleNames;
 import static cz.larpovadatabaze.utils.UserUtils.isSignedIn;

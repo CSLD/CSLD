@@ -1,5 +1,8 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import cz.larpovadatabaze.components.common.AbstractCsldPanel;
+import cz.larpovadatabaze.components.page.game.ListGamePage;
+import cz.larpovadatabaze.models.FilterGame;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.AttributeAppender;
@@ -11,10 +14,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 
 import java.util.Arrays;
-
-import cz.larpovadatabaze.components.common.AbstractCsldPanel;
-import cz.larpovadatabaze.components.page.game.ListGamePage;
-import cz.larpovadatabaze.models.FilterGame;
 
 /**
  * Panel for tabs in

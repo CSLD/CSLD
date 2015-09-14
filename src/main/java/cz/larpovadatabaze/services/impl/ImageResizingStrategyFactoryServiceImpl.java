@@ -2,12 +2,10 @@ package cz.larpovadatabaze.services.impl;
 
 import com.mortennobel.imagescaling.DimensionConstrain;
 import com.mortennobel.imagescaling.ResampleOp;
-
+import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
 import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
-
-import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
 
 /**
  * User: Michal Kara

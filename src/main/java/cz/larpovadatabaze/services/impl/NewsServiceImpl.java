@@ -1,7 +1,6 @@
 package cz.larpovadatabaze.services.impl;
 
 import cz.larpovadatabaze.dao.NewsDAO;
-import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.News;
 import cz.larpovadatabaze.services.NewsService;
 import cz.larpovadatabaze.utils.UserUtils;
@@ -11,8 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**

@@ -6,7 +6,6 @@ import cz.larpovadatabaze.dao.builder.IBuilder;
 import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import org.hibernate.Criteria;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 

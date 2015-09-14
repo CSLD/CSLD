@@ -1,5 +1,10 @@
 package cz.larpovadatabaze.components.page.group;
 
+import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.entities.CsldGroup;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.providers.SortableGroupProvider;
+import cz.larpovadatabaze.services.GroupService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.AttributeAppender;
@@ -13,12 +18,6 @@ import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.providers.SortableGroupProvider;
-import cz.larpovadatabaze.services.GroupService;
 
 /**
  * Created by IntelliJ IDEA.

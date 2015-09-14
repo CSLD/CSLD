@@ -4,7 +4,6 @@ import cz.larpovadatabaze.security.CsldRoles;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.model.IModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

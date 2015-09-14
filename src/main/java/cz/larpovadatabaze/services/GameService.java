@@ -1,14 +1,14 @@
 package cz.larpovadatabaze.services;
 
-import java.util.Collection;
-import java.util.List;
-
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.GameHasLanguages;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.models.FilterGame;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  *

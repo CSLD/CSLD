@@ -3,7 +3,6 @@ package cz.larpovadatabaze.lang;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.UserHasLanguages;
 import cz.larpovadatabaze.utils.UserUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
