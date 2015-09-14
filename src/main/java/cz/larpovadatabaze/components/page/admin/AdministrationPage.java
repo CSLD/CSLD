@@ -1,11 +1,10 @@
 package cz.larpovadatabaze.components.page.admin;
 
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.security.CsldRoles;
 import cz.larpovadatabaze.utils.UserUtils;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 
 /**
  *  This page shall contain links to most of the tasks that editors takes care of.

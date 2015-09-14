@@ -1,5 +1,14 @@
 package cz.larpovadatabaze.components.page.author;
 
+import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.page.user.UserDetailPage;
+import cz.larpovadatabaze.components.panel.author.AuthorsPanel;
+import cz.larpovadatabaze.components.panel.game.GameNameAndLabelsPanel;
+import cz.larpovadatabaze.components.panel.game.GameRatingBoxPanel;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.providers.SortableAuthorProvider;
+import cz.larpovadatabaze.services.CsldUserService;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -11,16 +20,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.text.DecimalFormat;
-
-import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.user.UserDetailPage;
-import cz.larpovadatabaze.components.panel.author.AuthorsPanel;
-import cz.larpovadatabaze.components.panel.game.GameNameAndLabelsPanel;
-import cz.larpovadatabaze.components.panel.game.GameRatingBoxPanel;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.providers.SortableAuthorProvider;
-import cz.larpovadatabaze.services.CsldUserService;
 
 /**
  *

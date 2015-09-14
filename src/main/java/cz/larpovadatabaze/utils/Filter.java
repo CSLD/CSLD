@@ -1,11 +1,11 @@
 package cz.larpovadatabaze.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.models.FilterGame;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *

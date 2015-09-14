@@ -1,5 +1,15 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import cz.larpovadatabaze.components.common.AbstractCsldPanel;
+import cz.larpovadatabaze.components.panel.user.CheckBoxSelectionUsers;
+import cz.larpovadatabaze.dto.SelectedUser;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.UserPlayedGame;
+import cz.larpovadatabaze.security.CsldRoles;
+import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.utils.MailClient;
+import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -12,17 +22,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import cz.larpovadatabaze.components.common.AbstractCsldPanel;
-import cz.larpovadatabaze.components.panel.user.CheckBoxSelectionUsers;
-import cz.larpovadatabaze.dto.SelectedUser;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.UserPlayedGame;
-import cz.larpovadatabaze.security.CsldRoles;
-import cz.larpovadatabaze.services.GameService;
-import cz.larpovadatabaze.utils.MailClient;
-import cz.larpovadatabaze.utils.UserUtils;
 
 /**
  * This one really should contain also the CheckboxSelection Users.

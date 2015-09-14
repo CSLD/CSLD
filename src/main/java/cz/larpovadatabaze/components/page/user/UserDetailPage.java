@@ -1,5 +1,22 @@
 package cz.larpovadatabaze.components.page.user;
 
+import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.page.HomePage;
+import cz.larpovadatabaze.components.panel.game.CommentsListPanel;
+import cz.larpovadatabaze.components.panel.game.GameListPanel;
+import cz.larpovadatabaze.components.panel.game.ListGamesWithAnnotations;
+import cz.larpovadatabaze.components.panel.news.CreateOrUpdateNewsPanel;
+import cz.larpovadatabaze.components.panel.news.NewsDetailsListPanel;
+import cz.larpovadatabaze.components.panel.user.PersonDetailPanel;
+import cz.larpovadatabaze.components.panel.user.RatingsListPanel;
+import cz.larpovadatabaze.entities.*;
+import cz.larpovadatabaze.providers.SortableAnnotatedProvider;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.RatingService;
+import cz.larpovadatabaze.utils.HbUtils;
+import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -12,35 +29,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.HomePage;
-import cz.larpovadatabaze.components.panel.game.CommentsListPanel;
-import cz.larpovadatabaze.components.panel.game.GameListPanel;
-import cz.larpovadatabaze.components.panel.game.ListGamesWithAnnotations;
-import cz.larpovadatabaze.components.panel.news.CreateOrUpdateNewsPanel;
-import cz.larpovadatabaze.components.panel.news.NewsDetailsListPanel;
-import cz.larpovadatabaze.components.panel.user.PersonDetailPanel;
-import cz.larpovadatabaze.components.panel.user.RatingsListPanel;
-import cz.larpovadatabaze.entities.Comment;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.GameWithoutRating;
-import cz.larpovadatabaze.entities.IGameWithRating;
-import cz.larpovadatabaze.entities.UserPlayedGame;
-import cz.larpovadatabaze.providers.SortableAnnotatedProvider;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.GameService;
-import cz.larpovadatabaze.services.RatingService;
-import cz.larpovadatabaze.utils.HbUtils;
-import cz.larpovadatabaze.utils.UserUtils;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.

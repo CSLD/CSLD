@@ -1,7 +1,6 @@
 package cz.larpovadatabaze;
 
 import com.mchange.v2.c3p0.DriverManagerDataSource;
-import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.impl.FileServiceImpl;
 import cz.larpovadatabaze.utils.MailClient;

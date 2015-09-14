@@ -1,5 +1,8 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.services.LabelService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AttributeAppender;
@@ -18,10 +21,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.LabelService;
 
 /**
  * It shows all Labels and allows any amount of them to be chosen.

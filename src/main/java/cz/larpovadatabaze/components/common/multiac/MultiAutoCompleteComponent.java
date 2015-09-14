@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.common.multiac;
 
+import cz.larpovadatabaze.api.Identifiable;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.Application;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
@@ -27,8 +28,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import cz.larpovadatabaze.api.Identifiable;
 
 /**
  * User: Michal Kara Date: 27.6.15 Time: 14:58

@@ -1,5 +1,9 @@
 package cz.larpovadatabaze.components.panel.search;
 
+import cz.larpovadatabaze.components.page.search.GameSearchProvider;
+import cz.larpovadatabaze.components.page.search.SearchResultsPage;
+import cz.larpovadatabaze.components.panel.game.GameBoxPanel;
+import cz.larpovadatabaze.entities.Game;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
@@ -20,11 +24,6 @@ import org.apache.wicket.util.template.PackageTextTemplate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import cz.larpovadatabaze.components.page.search.GameSearchProvider;
-import cz.larpovadatabaze.components.page.search.SearchResultsPage;
-import cz.larpovadatabaze.components.panel.game.GameBoxPanel;
-import cz.larpovadatabaze.entities.Game;
 
 /**
  * Box containing field for queryString and submitting button.

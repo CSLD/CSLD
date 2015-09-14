@@ -1,7 +1,5 @@
 package cz.larpovadatabaze.services;
 
-import cz.larpovadatabaze.entities.CsldUser;
-
 import java.util.List;
 
 /**

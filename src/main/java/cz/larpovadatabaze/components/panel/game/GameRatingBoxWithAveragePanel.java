@@ -1,9 +1,8 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import cz.larpovadatabaze.entities.Game;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
-
-import cz.larpovadatabaze.entities.Game;
 
 /**
  * Game rating box which also includes average rating

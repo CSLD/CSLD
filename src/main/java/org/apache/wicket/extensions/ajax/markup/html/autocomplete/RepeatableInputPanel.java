@@ -3,7 +3,6 @@ package org.apache.wicket.extensions.ajax.markup.html.autocomplete;
 import cz.larpovadatabaze.api.Identifiable;
 import cz.larpovadatabaze.services.GenericService;
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
@@ -12,7 +11,6 @@ import org.apache.wicket.markup.html.form.FormComponentPanel;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.validation.IValidator;
 
 import java.util.ArrayList;

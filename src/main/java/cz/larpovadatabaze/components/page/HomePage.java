@@ -1,11 +1,5 @@
 package cz.larpovadatabaze.components.page;
 
-import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
-import org.apache.wicket.request.http.WebResponse;
-import org.apache.wicket.request.resource.PackageResourceReference;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import cz.larpovadatabaze.components.panel.home.LarpCzCalendarPanel;
 import cz.larpovadatabaze.components.panel.home.LastCommentsPanel;
 import cz.larpovadatabaze.components.panel.home.RecentGamesPanel;
@@ -15,6 +9,11 @@ import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.lang.Translator;
 import cz.larpovadatabaze.services.PhotoService;
 import cz.larpovadatabaze.services.impl.ImageServiceImpl;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.request.http.WebResponse;
+import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  *

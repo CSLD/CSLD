@@ -1,5 +1,12 @@
 package cz.larpovadatabaze.components.panel.admin;
 
+import cz.larpovadatabaze.components.common.BookmarkableLinkWithLabel;
+import cz.larpovadatabaze.components.common.RatingDeleteButton;
+import cz.larpovadatabaze.components.page.user.UserDetailPage;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.Rating;
+import cz.larpovadatabaze.services.CsldUserService;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -14,14 +21,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import cz.larpovadatabaze.components.common.BookmarkableLinkWithLabel;
-import cz.larpovadatabaze.components.common.RatingDeleteButton;
-import cz.larpovadatabaze.components.page.user.UserDetailPage;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Rating;
-import cz.larpovadatabaze.services.CsldUserService;
 
 /**
  *

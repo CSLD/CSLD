@@ -1,5 +1,9 @@
 package cz.larpovadatabaze.components.panel.home;
 
+import cz.larpovadatabaze.components.page.OwlCarouselResourceReference;
+import cz.larpovadatabaze.components.panel.game.GameBoxPanel;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.services.GameService;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
@@ -15,11 +19,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
-import cz.larpovadatabaze.components.page.OwlCarouselResourceReference;
-import cz.larpovadatabaze.components.panel.game.GameBoxPanel;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.services.GameService;
 
 /**
  * This panel shows information about last added games

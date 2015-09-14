@@ -4,17 +4,18 @@ import cz.larpovadatabaze.dao.CommentDAO;
 import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.lang.LanguageSolver;
-import cz.larpovadatabaze.lang.LocaleProvider;
 import cz.larpovadatabaze.services.CommentService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.log4j.Logger;
-import org.apache.wicket.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Locale;
 
 /**
  *

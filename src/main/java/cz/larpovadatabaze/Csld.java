@@ -1,9 +1,29 @@
 package cz.larpovadatabaze;
 
+import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.components.page.TestDatabase;
+import cz.larpovadatabaze.components.page.about.AboutDatabasePage;
+import cz.larpovadatabaze.components.page.admin.AdministrationPage;
+import cz.larpovadatabaze.components.page.admin.ManageLabelsPage;
+import cz.larpovadatabaze.components.page.admin.ManageUserRightsPage;
+import cz.larpovadatabaze.components.page.author.CreateOrUpdateAuthorPage;
+import cz.larpovadatabaze.components.page.author.ListAuthorPage;
+import cz.larpovadatabaze.components.page.error.Error404Page;
+import cz.larpovadatabaze.components.page.error.Error500Page;
+import cz.larpovadatabaze.components.page.game.*;
+import cz.larpovadatabaze.components.page.group.CreateOrUpdateGroupPage;
+import cz.larpovadatabaze.components.page.group.GroupDetail;
+import cz.larpovadatabaze.components.page.group.ListGroupPage;
+import cz.larpovadatabaze.components.page.search.SearchResultsPage;
+import cz.larpovadatabaze.components.page.user.*;
 import cz.larpovadatabaze.converters.*;
 import cz.larpovadatabaze.dao.UserHasLanguagesDao;
 import cz.larpovadatabaze.entities.*;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.GroupService;
+import cz.larpovadatabaze.services.LabelService;
 import org.apache.log4j.Logger;
 import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
@@ -35,40 +55,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Locale;
-
-import cz.larpovadatabaze.components.page.HomePage;
-import cz.larpovadatabaze.components.page.about.AboutDatabasePage;
-import cz.larpovadatabaze.components.page.admin.AdministrationPage;
-import cz.larpovadatabaze.components.page.admin.ManageLabelsPage;
-import cz.larpovadatabaze.components.page.admin.ManageUserRightsPage;
-import cz.larpovadatabaze.components.page.author.CreateOrUpdateAuthorPage;
-import cz.larpovadatabaze.components.page.author.ListAuthorPage;
-import cz.larpovadatabaze.components.page.error.Error404Page;
-import cz.larpovadatabaze.components.page.error.Error500Page;
-import cz.larpovadatabaze.components.page.game.CreateOrUpdateGamePage;
-import cz.larpovadatabaze.components.page.game.GameDetail;
-import cz.larpovadatabaze.components.page.game.GameDetailOld;
-import cz.larpovadatabaze.components.page.game.GameWasDeleted;
-import cz.larpovadatabaze.components.page.game.ListComments;
-import cz.larpovadatabaze.components.page.game.ListGamePage;
-import cz.larpovadatabaze.components.page.game.ListLastGames;
-import cz.larpovadatabaze.components.page.group.CreateOrUpdateGroupPage;
-import cz.larpovadatabaze.components.page.group.GroupDetail;
-import cz.larpovadatabaze.components.page.group.ListGroupPage;
-import cz.larpovadatabaze.components.page.group.ManageGroupPage;
-import cz.larpovadatabaze.components.page.search.SearchResultsPage;
-import cz.larpovadatabaze.components.page.user.CreateUserPage;
-import cz.larpovadatabaze.components.page.user.CsldSignInPage;
-import cz.larpovadatabaze.components.page.user.ForgotPassword;
-import cz.larpovadatabaze.components.page.user.ResetPassword;
-import cz.larpovadatabaze.components.page.user.SignOutPage;
-import cz.larpovadatabaze.components.page.user.UpdateUserPage;
-import cz.larpovadatabaze.components.page.user.UserDetailPage;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.GameService;
-import cz.larpovadatabaze.services.GroupService;
-import cz.larpovadatabaze.services.LabelService;
 
 import static cz.larpovadatabaze.lang.AvailableLanguages.availableLocale;
 
@@ -235,7 +221,6 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
 
         mountPage("/last-comments", ListComments.class);
         mountPage("/last-games", ListLastGames.class);
-        mountPage("/manage-group", ManageGroupPage.class);
         mountPage("/search", SearchResultsPage.class);
 
         mountPage("/oDatabazi", AboutDatabasePage.class);

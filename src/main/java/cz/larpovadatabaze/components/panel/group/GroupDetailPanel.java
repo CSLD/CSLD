@@ -1,32 +1,24 @@
 package cz.larpovadatabaze.components.panel.group;
 
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.common.icons.GroupIcon;
 import cz.larpovadatabaze.components.page.user.UserDetailPage;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.GroupHasMember;
 import cz.larpovadatabaze.utils.UserUtils;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+
+import java.util.List;
 
 /**
  * It shows basic information about Group.
  */
 public class GroupDetailPanel extends AbstractCsldPanel<CsldGroup> {
-
-    private UserList administrators;
-
     public GroupDetailPanel(String id, IModel<CsldGroup> model) {
         super(id, model);
     }
@@ -66,40 +58,10 @@ public class GroupDetailPanel extends AbstractCsldPanel<CsldGroup> {
         add(new Label("name", group.getName()));
         int authoredLarps = group.getAuthorsOf().size();
         add(new Label("organized", authoredLarps));
-
-        addListOfAuthors();
-
-        // Add administrators
-        administrators = new UserList("groupAdministrators", new AbstractReadOnlyModel<List<? extends CsldUser>>() {
-            @Override
-            public List<? extends CsldUser> getObject() {
-                return getModelObject().getAdministrators();
-            }
-        });
-        add(administrators);
     }
 
     @Override
     protected void onConfigure() {
         super.onConfigure();
-
-        administrators.setVisible(UserUtils.isAdminOfGroup(((CsldGroup) getDefaultModelObject())));
-    }
-
-    private void addListOfAuthors(){
-        ListView<CsldUser> authorsOfGroup  = new UserList("groupAuthors", new LoadableDetachableModel<List<? extends CsldUser>>() {
-            @Override
-            protected List<? extends CsldUser> load() {
-                List<GroupHasMember> groupMembers = getModelObject().getMembers();
-                List<CsldUser> members = new ArrayList<CsldUser>();
-                for(GroupHasMember groupMember: groupMembers) {
-                    members.add(groupMember.getUser());
-                }
-
-                return members;
-            }
-        });
-
-        add(authorsOfGroup);
     }
 }

@@ -17,17 +17,7 @@
 
                 <p>
                     <b><wicket:message key="group.authorsOf" />:</b>
-                    <wicket:container wicket:id="groupAuthors"><wicket:container wicket:id="separator" /><a wicket:id="link"><span wicket:id="nickname"></span> <span wicket:id="name"></span></a></wicket:container>
                 </p>
-
-                <wicket:enclosure child="groupAdministrators">
-                    <p>
-                        <b><wicket:message key="group.administrators">Administrátoři skupiny</wicket:message>:</b>
-                        <wicket:container wicket:id="groupAdministrators">
-                            <wicket:container wicket:id="separator" /><a wicket:id="link"><span wicket:id="nickname"></span> <span wicket:id="name"></span></a>
-                        </wicket:container>
-                    </p>
-                </wicket:enclosure>
             </div>
         </div>
     </div>

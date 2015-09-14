@@ -1,7 +1,14 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import cz.larpovadatabaze.api.ValidatableForm;
+import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
+import cz.larpovadatabaze.entities.Comment;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.lang.LanguageSolver;
 import cz.larpovadatabaze.lang.SessionLanguageSolver;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.services.CommentService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -13,17 +20,9 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 import java.sql.Timestamp;
-
-import cz.larpovadatabaze.api.ValidatableForm;
-import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
-import cz.larpovadatabaze.entities.Comment;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.CommentService;
-import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 /**
  * This panel allows user to Comment given game

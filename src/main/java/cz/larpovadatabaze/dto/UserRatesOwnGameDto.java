@@ -1,8 +1,5 @@
 package cz.larpovadatabaze.dto;
 
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-
 /**
  * Created by jbalhar on 12/13/2014.
  */

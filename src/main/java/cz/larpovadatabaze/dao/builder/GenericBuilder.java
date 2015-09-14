@@ -2,9 +2,6 @@ package cz.larpovadatabaze.dao.builder;
 
 import org.hibernate.criterion.DetachedCriteria;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-
 /**
  *
  */

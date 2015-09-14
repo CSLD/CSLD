@@ -1,5 +1,17 @@
 package cz.larpovadatabaze.components.page.game;
 
+import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.panel.game.AbstractListGamePanel;
+import cz.larpovadatabaze.components.panel.game.FilterGameTabsPanel;
+import cz.larpovadatabaze.components.panel.game.FilterGamesSidePanel;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.Label;
+import cz.larpovadatabaze.models.FilterGame;
+import cz.larpovadatabaze.providers.SortableGameProvider;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.LabelService;
 import org.apache.commons.lang.WordUtils;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -14,19 +26,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.List;
-
-import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.panel.game.AbstractListGamePanel;
-import cz.larpovadatabaze.components.panel.game.FilterGameTabsPanel;
-import cz.larpovadatabaze.components.panel.game.FilterGamesSidePanel;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Label;
-import cz.larpovadatabaze.models.FilterGame;
-import cz.larpovadatabaze.providers.SortableGameProvider;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.LabelService;
 
 /**
  *

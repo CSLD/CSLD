@@ -1,23 +1,17 @@
 package cz.larpovadatabaze.components.page.search;
 
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.utils.HbUtils;
+import cz.larpovadatabaze.utils.Strings;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.text.Collator;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Locale;
-
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.services.GameService;
-import cz.larpovadatabaze.utils.Strings;
+import java.util.*;
 
 /**
  * Provides games matching the query.

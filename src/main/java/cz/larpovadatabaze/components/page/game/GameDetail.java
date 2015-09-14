@@ -1,52 +1,11 @@
 package cz.larpovadatabaze.components.page.game;
 
-import org.apache.log4j.Logger;
-import org.apache.wicket.Component;
-import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.RestartResponseException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.EnclosureContainer;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.image.NonCachingImage;
-import org.apache.wicket.markup.html.panel.Fragment;
-import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.model.StringResourceModel;
-import org.apache.wicket.request.cycle.RequestCycle;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-import java.util.Vector;
-
 import cz.larpovadatabaze.components.common.JSPingBehavior;
 import cz.larpovadatabaze.components.common.tabs.TabsComponentPanel;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.panel.YouTubePanel;
 import cz.larpovadatabaze.components.panel.admin.AdminAllRatingsPanel;
-import cz.larpovadatabaze.components.panel.game.CommentsListPanel;
-import cz.larpovadatabaze.components.panel.game.CommentsPanel;
-import cz.larpovadatabaze.components.panel.game.DeleteGamePanel;
-import cz.larpovadatabaze.components.panel.game.EditGamePanel;
-import cz.larpovadatabaze.components.panel.game.GameDetailPanel;
-import cz.larpovadatabaze.components.panel.game.GameListPanel;
-import cz.larpovadatabaze.components.panel.game.LoginToRatePanel;
-import cz.larpovadatabaze.components.panel.game.RatingsDisabledPanel;
-import cz.larpovadatabaze.components.panel.game.RatingsPanel;
-import cz.larpovadatabaze.components.panel.game.RatingsResultPanel;
-import cz.larpovadatabaze.components.panel.game.SendInformation;
-import cz.larpovadatabaze.components.panel.game.TranslateGamePanel;
+import cz.larpovadatabaze.components.panel.game.*;
 import cz.larpovadatabaze.components.panel.photo.PhotoPanel;
 import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldUser;
@@ -59,6 +18,23 @@ import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.HbUtils;
 import cz.larpovadatabaze.utils.Strings;
 import cz.larpovadatabaze.utils.UserUtils;
+import org.apache.log4j.Logger;
+import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.RestartResponseException;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.EnclosureContainer;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.image.NonCachingImage;
+import org.apache.wicket.markup.html.panel.Fragment;
+import org.apache.wicket.model.*;
+import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.*;
 
 /**
  * TODO: Pokud je hra smazana a dostane se sem nekdo, je potreba zobrazit misto chyby informaci o tom, ze je hra smazana.

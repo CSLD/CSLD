@@ -1,5 +1,10 @@
 package cz.larpovadatabaze.components.panel.user;
 
+import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.page.game.GameDetail;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.IGameWithRating;
+import cz.larpovadatabaze.entities.Rating;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -11,12 +16,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 import java.util.List;
-
-import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.game.GameDetail;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.IGameWithRating;
-import cz.larpovadatabaze.entities.Rating;
 
 /**
  * It lists ratings given in as parameter in similar way to games. You get Game info and then your rating of game.

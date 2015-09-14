@@ -1,13 +1,12 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import cz.larpovadatabaze.entities.Label;
+import cz.larpovadatabaze.models.ClassContentModel;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.model.IModel;
-
-import cz.larpovadatabaze.entities.Label;
-import cz.larpovadatabaze.models.ClassContentModel;
 
 /**
  *  Simple button which remember its state and can return therefore whether Label it is backed by was selected.

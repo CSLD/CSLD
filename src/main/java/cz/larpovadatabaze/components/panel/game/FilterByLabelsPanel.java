@@ -1,5 +1,8 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import cz.larpovadatabaze.components.page.game.ListGamePage;
+import cz.larpovadatabaze.entities.Label;
+import cz.larpovadatabaze.services.LabelService;
 import org.apache.commons.lang.WordUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -12,10 +15,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.List;
-
-import cz.larpovadatabaze.components.page.game.ListGamePage;
-import cz.larpovadatabaze.entities.Label;
-import cz.larpovadatabaze.services.LabelService;
 
 /**
  * User: Michal Kara Date: 29.3.15 Time: 17:46

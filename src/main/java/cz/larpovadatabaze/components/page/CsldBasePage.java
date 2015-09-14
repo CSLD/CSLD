@@ -1,7 +1,17 @@
 package cz.larpovadatabaze.components.page;
 
 import com.googlecode.wicket.jquery.core.resource.JQueryUIResourceReference;
-
+import cz.larpovadatabaze.components.common.i18n.LocalePicker;
+import cz.larpovadatabaze.components.page.about.AboutDatabasePage;
+import cz.larpovadatabaze.components.page.author.ListAuthorPage;
+import cz.larpovadatabaze.components.page.game.ListGamePage;
+import cz.larpovadatabaze.components.page.group.ListGroupPage;
+import cz.larpovadatabaze.components.panel.home.AdvertisementPanel;
+import cz.larpovadatabaze.components.panel.search.SearchBoxPanel;
+import cz.larpovadatabaze.components.panel.user.AdminPanel;
+import cz.larpovadatabaze.components.panel.user.LoggedBoxPanel;
+import cz.larpovadatabaze.components.panel.user.LoginBoxPanel;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.authentication.IAuthenticationStrategy;
@@ -18,18 +28,6 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.request.resource.PackageResourceReference;
-
-import cz.larpovadatabaze.components.common.i18n.LocalePicker;
-import cz.larpovadatabaze.components.page.about.AboutDatabasePage;
-import cz.larpovadatabaze.components.page.author.ListAuthorPage;
-import cz.larpovadatabaze.components.page.game.ListGamePage;
-import cz.larpovadatabaze.components.page.group.ListGroupPage;
-import cz.larpovadatabaze.components.panel.home.AdvertisementPanel;
-import cz.larpovadatabaze.components.panel.search.SearchBoxPanel;
-import cz.larpovadatabaze.components.panel.user.AdminPanel;
-import cz.larpovadatabaze.components.panel.user.LoggedBoxPanel;
-import cz.larpovadatabaze.components.panel.user.LoginBoxPanel;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import wicket.contrib.tinymce.settings.TinyMCESettings;
 
 /**

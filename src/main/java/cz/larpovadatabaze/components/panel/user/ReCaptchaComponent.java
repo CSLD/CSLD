@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.panel.user;
 
+import cz.larpovadatabaze.services.CsldUserService;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
@@ -11,12 +12,9 @@ import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import cz.larpovadatabaze.services.CsldUserService;
 
 /**
  * User: Michal Kara Date: 21.12.14 Time: 7:03

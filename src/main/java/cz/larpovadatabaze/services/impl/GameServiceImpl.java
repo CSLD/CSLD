@@ -1,23 +1,8 @@
 package cz.larpovadatabaze.services.impl;
 
-import org.apache.wicket.markup.html.form.upload.FileUpload;
-import org.apache.wicket.request.resource.ResourceReference;
-import org.hibernate.SessionFactory;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-
-import java.sql.Timestamp;
-import java.util.*;
-
 import cz.larpovadatabaze.dao.GameDAO;
 import cz.larpovadatabaze.dao.GameHasLanguageDao;
-import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.GameHasLanguages;
-import cz.larpovadatabaze.entities.Image;
+import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.lang.LanguageSolver;
 import cz.larpovadatabaze.models.FilterGame;
@@ -27,7 +12,17 @@ import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.services.ImageService;
+import org.apache.wicket.markup.html.form.upload.FileUpload;
+import org.apache.wicket.request.resource.ResourceReference;
+import org.hibernate.SessionFactory;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.Timestamp;
+import java.util.*;
 
 /**
  *

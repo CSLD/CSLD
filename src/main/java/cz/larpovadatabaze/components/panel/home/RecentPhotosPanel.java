@@ -1,5 +1,11 @@
 package cz.larpovadatabaze.components.panel.home;
 
+import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.page.OwlCarouselResourceReference;
+import cz.larpovadatabaze.components.page.game.GameDetail;
+import cz.larpovadatabaze.entities.Photo;
+import cz.larpovadatabaze.services.ImageService;
+import cz.larpovadatabaze.services.PhotoService;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
@@ -15,13 +21,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
 
 import java.util.HashMap;
-
-import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.OwlCarouselResourceReference;
-import cz.larpovadatabaze.components.page.game.GameDetail;
-import cz.larpovadatabaze.entities.Photo;
-import cz.larpovadatabaze.services.ImageService;
-import cz.larpovadatabaze.services.PhotoService;
 
 /**
  * Panel with recent photos

@@ -1,31 +1,18 @@
 package cz.larpovadatabaze.entities;
 
-import cz.larpovadatabaze.lang.*;
+import cz.larpovadatabaze.api.Identifiable;
+import cz.larpovadatabaze.lang.DbSessionLanguageSolver;
+import cz.larpovadatabaze.lang.TranslatableEntity;
+import cz.larpovadatabaze.lang.TranslatableEntityTranslator;
+import cz.larpovadatabaze.lang.TranslationEntity;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import cz.larpovadatabaze.api.Identifiable;
 
 /**
  * Created by IntelliJ IDEA.
@@ -130,27 +117,20 @@ public class CsldGroup implements Serializable, Identifiable, IAutoCompletable, 
         this.authorsOf = authorsOf;
     }
 
-    private List<CsldUser> administrators;
+    private CsldUser administrator;
 
-    @JoinTable(
-            name = "csld_group_has_administrator",
-            joinColumns = @JoinColumn(
-                    name = "id_group",
-                    referencedColumnName = "`id`",
-                    nullable = false),
-            inverseJoinColumns = @JoinColumn(
-                    name = "id_user",
-                    referencedColumnName = "`id`",
-                    nullable = false)
+    @ManyToOne(cascade = javax.persistence.CascadeType.ALL)
+    @JoinColumn(
+            name="administrator_id",
+            referencedColumnName = "`id`"
     )
-    @ManyToMany
     @Cascade(CascadeType.SAVE_UPDATE)
-    public List<CsldUser> getAdministrators() {
-        return administrators;
+    public CsldUser getAdministrator() {
+        return administrator;
     }
 
-    public void setAdministrators(List<CsldUser> administrators) {
-        this.administrators = administrators;
+    public void setAdministrator(CsldUser administrator) {
+        this.administrator = administrator;
     }
 
     private Image image;
@@ -175,18 +155,6 @@ public class CsldGroup implements Serializable, Identifiable, IAutoCompletable, 
 
     public void setImage(Image image) {
         this.image = image;
-    }
-
-    private List<GroupHasMember> members;
-
-    @OneToMany(mappedBy = "group")
-    @Cascade(CascadeType.SAVE_UPDATE)
-    public List<GroupHasMember> getMembers() {
-        return members;
-    }
-
-    public void setMembers(List<GroupHasMember> members) {
-        this.members = members;
     }
 
     private List<GroupHasLanguage> groupHasLanguages;
@@ -232,9 +200,7 @@ public class CsldGroup implements Serializable, Identifiable, IAutoCompletable, 
      */
     public static CsldGroup getEmptyGroup() {
         CsldGroup emptyGroup = new CsldGroup();
-        emptyGroup.setAdministrators(new ArrayList<>());
         emptyGroup.setAuthorsOf(new ArrayList<>());
-        emptyGroup.setMembers(new ArrayList<>());
         return emptyGroup;
     }
 }

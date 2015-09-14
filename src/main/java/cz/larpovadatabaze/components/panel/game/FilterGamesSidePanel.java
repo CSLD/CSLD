@@ -1,5 +1,12 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import cz.larpovadatabaze.api.ValidatableForm;
+import cz.larpovadatabaze.components.common.AbstractCsldPanel;
+import cz.larpovadatabaze.components.page.game.ListGamePage;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.models.FilterGame;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.services.LabelService;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -12,15 +19,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.Locale;
-
-import cz.larpovadatabaze.api.ValidatableForm;
-import cz.larpovadatabaze.components.common.AbstractCsldPanel;
-import cz.larpovadatabaze.components.page.game.ListGamePage;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.lang.LocaleProvider;
-import cz.larpovadatabaze.models.FilterGame;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.LabelService;
 
 import static cz.larpovadatabaze.lang.AvailableLanguages.availableLocale;
 

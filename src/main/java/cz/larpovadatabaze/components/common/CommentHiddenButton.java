@@ -1,5 +1,8 @@
 package cz.larpovadatabaze.components.common;
 
+import cz.larpovadatabaze.entities.Comment;
+import cz.larpovadatabaze.services.CommentService;
+import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.AttributeAppender;
@@ -7,10 +10,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import cz.larpovadatabaze.entities.Comment;
-import cz.larpovadatabaze.services.CommentService;
-import cz.larpovadatabaze.utils.UserUtils;
 
 /**
  * User: Michal Kara

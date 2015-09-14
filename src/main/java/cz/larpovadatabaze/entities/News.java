@@ -3,7 +3,6 @@ package cz.larpovadatabaze.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Calendar;
 
 /**
  * Entity for database representation of News.

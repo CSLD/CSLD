@@ -1,5 +1,14 @@
 package cz.larpovadatabaze.components.panel.home;
 
+import cz.larpovadatabaze.components.common.AbstractCsldPanel;
+import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.page.OwlCarouselResourceReference;
+import cz.larpovadatabaze.components.page.game.CreateOrUpdateGamePage;
+import cz.larpovadatabaze.components.page.game.ListGamePage;
+import cz.larpovadatabaze.components.page.user.CreateUserPage;
+import cz.larpovadatabaze.components.page.user.UserDetailPage;
+import cz.larpovadatabaze.entities.Advertisement;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
@@ -17,16 +26,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import cz.larpovadatabaze.components.common.AbstractCsldPanel;
-import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.OwlCarouselResourceReference;
-import cz.larpovadatabaze.components.page.game.CreateOrUpdateGamePage;
-import cz.larpovadatabaze.components.page.game.ListGamePage;
-import cz.larpovadatabaze.components.page.user.CreateUserPage;
-import cz.larpovadatabaze.components.page.user.UserDetailPage;
-import cz.larpovadatabaze.entities.Advertisement;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 
 /**
  * User: Michal Kara Date: 7.3.15 Time: 18:43
