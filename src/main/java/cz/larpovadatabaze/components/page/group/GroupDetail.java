@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.components.page.group;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.components.panel.game.ListGamesWithAnnotations;
 import cz.larpovadatabaze.components.panel.group.AddGroupPanel;
 import cz.larpovadatabaze.components.panel.group.EditGroupPanel;
@@ -41,7 +42,7 @@ public class GroupDetail extends CsldBasePage {
         try {
             setDefaultModel(new GroupModel(params.get("id").to(Integer.class)));
         } catch (NumberFormatException ex) {
-            throw new RestartResponseException(ListGroupPage.class);
+            throw new RestartResponseException(HomePage.class);
         }
     }
 

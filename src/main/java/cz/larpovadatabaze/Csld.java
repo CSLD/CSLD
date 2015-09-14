@@ -13,7 +13,6 @@ import cz.larpovadatabaze.components.page.error.Error500Page;
 import cz.larpovadatabaze.components.page.game.*;
 import cz.larpovadatabaze.components.page.group.CreateOrUpdateGroupPage;
 import cz.larpovadatabaze.components.page.group.GroupDetail;
-import cz.larpovadatabaze.components.page.group.ListGroupPage;
 import cz.larpovadatabaze.components.page.search.SearchResultsPage;
 import cz.larpovadatabaze.components.page.user.*;
 import cz.larpovadatabaze.converters.*;
@@ -210,7 +209,6 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
 
         mountPage("/zebricky", ListGamePage.class);
         mountPage("/autori", ListAuthorPage.class);
-        mountPage("/skupiny", ListGroupPage.class);
 
         mountPage("/detail-game", GameDetailOld.class);
         mount(new MountedMapperWithoutPageComponentInfo("/larp/${name}/${id}", GameDetail.class));

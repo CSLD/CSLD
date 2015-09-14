@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.components.page.group;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.components.panel.group.CreateOrUpdateGroupPanel;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.services.GroupService;
@@ -35,7 +36,7 @@ public class CreateOrUpdateGroupPage extends CsldBasePage {
             protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
                 super.onCsldAction(target, form);
 
-                throw new RestartResponseException(ListGroupPage.class);
+                throw new RestartResponseException(HomePage.class);
             }
         });
     }
