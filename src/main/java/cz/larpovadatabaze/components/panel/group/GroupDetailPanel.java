@@ -66,17 +66,6 @@ public class GroupDetailPanel extends AbstractCsldPanel<CsldGroup> {
         add(new Label("name", group.getName()));
         int authoredLarps = group.getAuthorsOf().size();
         add(new Label("organized", authoredLarps));
-
-        addListOfAuthors();
-
-        // Add administrators
-        administrators = new UserList("groupAdministrators", new AbstractReadOnlyModel<List<? extends CsldUser>>() {
-            @Override
-            public List<? extends CsldUser> getObject() {
-                return getModelObject().getAdministrators();
-            }
-        });
-        add(administrators);
     }
 
     @Override
@@ -84,22 +73,5 @@ public class GroupDetailPanel extends AbstractCsldPanel<CsldGroup> {
         super.onConfigure();
 
         administrators.setVisible(UserUtils.isAdminOfGroup(((CsldGroup) getDefaultModelObject())));
-    }
-
-    private void addListOfAuthors(){
-        ListView<CsldUser> authorsOfGroup  = new UserList("groupAuthors", new LoadableDetachableModel<List<? extends CsldUser>>() {
-            @Override
-            protected List<? extends CsldUser> load() {
-                List<GroupHasMember> groupMembers = getModelObject().getMembers();
-                List<CsldUser> members = new ArrayList<CsldUser>();
-                for(GroupHasMember groupMember: groupMembers) {
-                    members.add(groupMember.getUser());
-                }
-
-                return members;
-            }
-        });
-
-        add(authorsOfGroup);
     }
 }

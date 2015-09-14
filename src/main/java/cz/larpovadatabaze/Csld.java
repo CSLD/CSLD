@@ -235,7 +235,6 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
 
         mountPage("/last-comments", ListComments.class);
         mountPage("/last-games", ListLastGames.class);
-        mountPage("/manage-group", ManageGroupPage.class);
         mountPage("/search", SearchResultsPage.class);
 
         mountPage("/oDatabazi", AboutDatabasePage.class);

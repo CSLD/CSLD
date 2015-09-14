@@ -130,27 +130,20 @@ public class CsldGroup implements Serializable, Identifiable, IAutoCompletable, 
         this.authorsOf = authorsOf;
     }
 
-    private List<CsldUser> administrators;
+    private CsldUser administrator;
 
-    @JoinTable(
-            name = "csld_group_has_administrator",
-            joinColumns = @JoinColumn(
-                    name = "id_group",
-                    referencedColumnName = "`id`",
-                    nullable = false),
-            inverseJoinColumns = @JoinColumn(
-                    name = "id_user",
-                    referencedColumnName = "`id`",
-                    nullable = false)
+    @ManyToOne(cascade = javax.persistence.CascadeType.ALL)
+    @JoinColumn(
+            name="administrator_id",
+            referencedColumnName = "`id`"
     )
-    @ManyToMany
     @Cascade(CascadeType.SAVE_UPDATE)
-    public List<CsldUser> getAdministrators() {
-        return administrators;
+    public CsldUser getAdministrator() {
+        return administrator;
     }
 
-    public void setAdministrators(List<CsldUser> administrators) {
-        this.administrators = administrators;
+    public void setAdministrator(CsldUser administrator) {
+        this.administrator = administrator;
     }
 
     private Image image;
@@ -175,18 +168,6 @@ public class CsldGroup implements Serializable, Identifiable, IAutoCompletable, 
 
     public void setImage(Image image) {
         this.image = image;
-    }
-
-    private List<GroupHasMember> members;
-
-    @OneToMany(mappedBy = "group")
-    @Cascade(CascadeType.SAVE_UPDATE)
-    public List<GroupHasMember> getMembers() {
-        return members;
-    }
-
-    public void setMembers(List<GroupHasMember> members) {
-        this.members = members;
     }
 
     private List<GroupHasLanguage> groupHasLanguages;
@@ -232,9 +213,7 @@ public class CsldGroup implements Serializable, Identifiable, IAutoCompletable, 
      */
     public static CsldGroup getEmptyGroup() {
         CsldGroup emptyGroup = new CsldGroup();
-        emptyGroup.setAdministrators(new ArrayList<>());
         emptyGroup.setAuthorsOf(new ArrayList<>());
-        emptyGroup.setMembers(new ArrayList<>());
         return emptyGroup;
     }
 }
