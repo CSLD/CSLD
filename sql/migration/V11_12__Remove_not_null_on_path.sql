@@ -1,0 +1,1 @@
+alter table csld_image alter column path drop not NULL;
