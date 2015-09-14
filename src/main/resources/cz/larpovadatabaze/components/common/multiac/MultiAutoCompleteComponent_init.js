@@ -5,5 +5,6 @@ $('#${componentId}').magicSuggest({
     allowFreeEntries: false,
     hideTrigger: true,
     data: '${dataUrl}',
-    value: ${value}
+    value: ${value},
+    maxSelection: 25
 });
