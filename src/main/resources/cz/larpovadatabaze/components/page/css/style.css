@@ -285,3 +285,10 @@ ul.rating li{
 .delete{
     display: none;
 }
+
+.owl-carousel .fa-chevron-circle-right,
+.owl-carousel .fa-chevron-circle-left
+{
+    cursor: pointer;
+}
+

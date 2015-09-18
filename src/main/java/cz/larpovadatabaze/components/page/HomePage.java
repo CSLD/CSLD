@@ -19,13 +19,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  *
  */
 public class HomePage extends CsldBasePage {
-    @SpringBean
-    private PhotoService photoService;
-    @SpringBean
-    private ImageServiceImpl imageService;
-    @SpringBean
-    private Translator<Game> gameTranslator;
-
     public HomePage(){
         setVersioned(false);
     }
