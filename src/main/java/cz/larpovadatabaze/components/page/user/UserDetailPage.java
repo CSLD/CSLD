@@ -140,8 +140,6 @@ public class UserDetailPage extends CsldBasePage {
         updateUserLink.setVisibilityAllowed(logged != null && logged.getId().equals(user.getId()));
         add(updateUserLink);
 
-        add(new NewsDetailsListPanel("news", user.getId()));
-
         add(new CommentsListPanel("comments", new UserCommentsModel(), true));
 
         SortableAnnotatedProvider provider = new SortableAnnotatedProvider(gameService);
@@ -174,29 +172,6 @@ public class UserDetailPage extends CsldBasePage {
                     playedGames.add(new GameWithoutRating(played.getGame()));
                 }
             }
-        }
-
-        createNewsModal = new ModalWindow("createNews");
-        createNewsModal.setTitle("Novinky");
-        createNewsModal.setCookieName("create-news");
-        add(createNewsModal);
-
-        AjaxLink createLink = new AjaxLink("createNewsLink") {
-            @Override
-            public void onClick(AjaxRequestTarget target) {
-                createNewsModal.setContent(new CreateOrUpdateNewsPanel(createNewsModal.getContentId()){
-                    @Override
-                    protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
-                        super.onCsldAction(target, form);
-                        createNewsModal.close(target);
-                    }
-                });
-                createNewsModal.show(target);
-            }
-        };
-        add(createLink);
-        if(logged == null || !user.getId().equals(logged.getId())) {
-            createLink.setVisibilityAllowed(false);
         }
 
         // Add player games
