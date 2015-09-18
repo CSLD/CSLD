@@ -40,8 +40,6 @@ public class HomePage extends CsldBasePage {
 
         add(new LastCommentsPanel("lastComments"));
 
-        add(new NewsListPanel("news"));
-
         add(new RecentPhotosPanel("recentPhotos"));
     }
 
