@@ -18,6 +18,7 @@ import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.HbUtils;
 import cz.larpovadatabaze.utils.Strings;
 import cz.larpovadatabaze.utils.UserUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -42,7 +43,7 @@ import java.util.*;
 public class GameDetail extends CsldBasePage {
     private static final String ID_PARAM = "id";
 
-    private static enum TabContentType { COMMENTS, PHOTOS, VIDEO };
+    private enum TabContentType { COMMENTS, PHOTOS, VIDEO };
 
     @SpringBean
     GameService gameService;
@@ -189,7 +190,7 @@ public class GameDetail extends CsldBasePage {
     public GameDetail(PageParameters params){
         setVersioned(false);
         try {
-            if(params.isEmpty()) {
+            if(params.isEmpty() || StringUtils.isEmpty(params.get(ID_PARAM).toString())) {
                 throw new RestartResponseException(ListGamePage.class);
             }
             int gameId = params.get(ID_PARAM).to(Integer.class);
