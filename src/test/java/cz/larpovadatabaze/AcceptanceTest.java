@@ -1,6 +1,8 @@
 package cz.larpovadatabaze;
 
+import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.services.builders.EntityBuilder;
+import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.tester.WicketTester;
 import org.hibernate.FlushMode;
 import org.hibernate.Session;
@@ -46,12 +48,20 @@ abstract public class AcceptanceTest {
         session = sessionFactory.openSession();
         session.setFlushMode(FlushMode.MANUAL);
         sessionHolder = new SessionHolder(session);
+        if(getLoggedUser() != null) {
+            TestUtils.logUser(getLoggedUser()); // This way it is at the level of user per class. Probably makes sense.
+        }
         TransactionSynchronizationManager.bindResource(sessionFactory, sessionHolder);
+    }
+
+    protected CsldUser getLoggedUser() {
+        return null;
     }
 
     @After
     public void tearDown() {
         session.close();
         TransactionSynchronizationManager.unbindResource(sessionFactory);
+        TestUtils.logoutUser();
     }
 }
