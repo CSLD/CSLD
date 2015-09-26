@@ -40,7 +40,7 @@ public class EditGamePanel extends Panel {
 
         boolean isVisible = CsldAuthenticatedWebSession.get().isSignedIn();
         if(isVisible){
-            CsldUser logged = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
+            CsldUser logged = (CsldAuthenticatedWebSession.get()).getLoggedUser();
             if(logged == null) {
                 isVisible = false;
             }

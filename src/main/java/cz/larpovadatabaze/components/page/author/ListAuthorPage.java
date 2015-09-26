@@ -28,8 +28,6 @@ public class ListAuthorPage extends CsldBasePage {
     @SpringBean
     CsldUserService csldUserService;
 
-    private final static DecimalFormat ratingFormat = new DecimalFormat("0.0");
-
     @SuppressWarnings("unchecked")
     public ListAuthorPage(){
         SortableAuthorProvider sap = new SortableAuthorProvider(csldUserService);
@@ -82,30 +80,6 @@ public class ListAuthorPage extends CsldBasePage {
 
         add(propertyList);
         add(new PagingNavigator("navigator", propertyList));
-
-        /*
-        add(new OrderByBorder("orderByName", "form.wholeName", sap)
-        {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            protected void onSortChanged()
-            {
-                propertyList.setCurrentPage(0);
-            }
-        });
-
-        add(new OrderByBorder("orderByBestGame", "bestGame.name", sap)
-        {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            protected void onSortChanged()
-            {
-                propertyList.setCurrentPage(0);
-            }
-        });
-        */
 
         add(new AuthorsPanel("addAuthorPanel"));
     }

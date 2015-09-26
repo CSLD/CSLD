@@ -65,13 +65,6 @@ public class DeleteGamePanel extends Panel {
 
     @Override
     protected void onConfigure() {
-        CsldUser logged = CsldAuthenticatedWebSession.get().getLoggedUser();
-        boolean visible = false;
-        if(logged != null){
-            if(logged.getRole() > CsldRoles.USER.getRole()) {
-                visible = true;
-            }
-        }
-        setVisibilityAllowed(visible);
+        setVisibilityAllowed(CsldAuthenticatedWebSession.get().isAtLeastEditor());
     }
 }

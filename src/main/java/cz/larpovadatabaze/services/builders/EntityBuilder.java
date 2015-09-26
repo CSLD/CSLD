@@ -40,6 +40,7 @@ public class EntityBuilder {
         user.setDefaultLang("cs");
         user.setIsAuthor(false);
         user.setRole(role);
+        user.setUserHasLanguages(new ArrayList<>());
 
         save(user);
         return user;

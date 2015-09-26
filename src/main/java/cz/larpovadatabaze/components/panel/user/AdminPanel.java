@@ -22,7 +22,7 @@ public class AdminPanel extends Panel {
 
     @Override
     protected void onConfigure() {
-        CsldUser loggedUser = ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
+        CsldUser loggedUser = CsldAuthenticatedWebSession.get().getLoggedUser();
         boolean visible = false;
         if(loggedUser != null && loggedUser.getRole() > CsldRoles.USER.getRole()) {
             visible = true;

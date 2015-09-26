@@ -136,4 +136,15 @@ public class CsldAuthenticatedWebSession extends AuthenticatedWebSession {
     public static CsldAuthenticatedWebSession get(){
         return (CsldAuthenticatedWebSession) Session.get();
     }
+
+    public boolean isAtLeastEditor() {
+        CsldUser logged = CsldAuthenticatedWebSession.get().getLoggedUser();
+        if(logged != null){
+            if(logged.getRole() > CsldRoles.USER.getRole()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

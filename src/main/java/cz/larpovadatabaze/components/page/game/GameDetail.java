@@ -143,7 +143,9 @@ public class GameDetail extends CsldBasePage {
             // Fill in array
             if (UserUtils.isEditor()) {
                 // Editors see everything
-                res.addAll(getModel().getObject().getComments());
+                List<Comment> comments = getModel().getObject().getComments() != null ? getModel().getObject().getComments():
+                        new ArrayList<>();
+                res.addAll(comments);
             }
             else {
                 // Filter
