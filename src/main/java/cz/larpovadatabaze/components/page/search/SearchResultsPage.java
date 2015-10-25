@@ -33,4 +33,12 @@ public class SearchResultsPage extends CsldBasePage {
         add(userResultsPanel);*/
     }
 
+    public static PageParameters paramsForSearchResults(String query) {
+        PageParameters params = new PageParameters();
+
+        params.add(SearchBoxPanel.QUERY_PARAMETER_NAME, query);
+
+        return params;
+    }
+
 }

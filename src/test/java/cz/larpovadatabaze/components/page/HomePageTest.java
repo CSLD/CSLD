@@ -14,16 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Test rendering of the HomePage. Validate all panels specific to HomePage are shown.
  */
 public class HomePageTest extends AcceptanceTest{
-    @Autowired
-    private CzechMasqueradeBuilder masqueradeBuilder;
-
-    @Override
-    public void setUp() {
-        super.setUp();
-
-        masqueradeBuilder.build();
-    }
-
     @Test
     public void homePageIsRendered() {
         tester.startPage(HomePage.class);

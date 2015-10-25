@@ -869,10 +869,17 @@ div.recent-game-players{
     top: 7px;
     right: 7px;
 }
+.add-new-button {
+    right: 97px;
+}
 @media (min-width: 400px) {
     .add-game-btn {
         top: 15px;
         right: 15px;
+    }
+
+    .add-new-button {
+        right: 102px;
     }
 }
 .add-game-btn:hover{

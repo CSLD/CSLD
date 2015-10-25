@@ -24,6 +24,7 @@ public class GroupDetail extends CsldBasePage {
     GroupService groupService;
     @SpringBean
     GameService gameService;
+    private final static String GROUP_ID_PARAMETER_NAME = "id";
 
     private class GroupModel extends LoadableDetachableModel<CsldGroup> {
         private final int groupId;
@@ -40,7 +41,7 @@ public class GroupDetail extends CsldBasePage {
 
     public GroupDetail(PageParameters params){
         try {
-            setDefaultModel(new GroupModel(params.get("id").to(Integer.class)));
+            setDefaultModel(new GroupModel(params.get(GROUP_ID_PARAMETER_NAME).to(Integer.class)));
         } catch (NumberFormatException ex) {
             throw new RestartResponseException(HomePage.class);
         }
@@ -61,5 +62,15 @@ public class GroupDetail extends CsldBasePage {
 
         add(new AddGroupPanel("addGroup"));
         add(new EditGroupPanel("editGroup", (IModel<CsldGroup>)getDefaultModel()));
+    }
+
+    public static PageParameters paramsForGroup(CsldGroup group) {
+        PageParameters pp = new PageParameters();
+
+        if (group != null) {
+            pp.add(GROUP_ID_PARAMETER_NAME, group.getId());
+        }
+
+        return pp;
     }
 }

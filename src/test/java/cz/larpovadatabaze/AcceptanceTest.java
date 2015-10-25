@@ -1,6 +1,7 @@
 package cz.larpovadatabaze;
 
 import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.services.builders.CzechMasqueradeBuilder;
 import cz.larpovadatabaze.services.builders.EntityBuilder;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.tester.WicketTester;
@@ -39,6 +40,9 @@ abstract public class AcceptanceTest {
     private SessionFactory sessionFactory;
     @Autowired
     protected EntityBuilder persistenceStore;
+    @Autowired
+    protected CzechMasqueradeBuilder masqueradeBuilder;
+
 
     @Before
     public void setUp(){
@@ -48,6 +52,7 @@ abstract public class AcceptanceTest {
         session = sessionFactory.openSession();
         session.setFlushMode(FlushMode.MANUAL);
         sessionHolder = new SessionHolder(session);
+        masqueradeBuilder.build();
         if(getLoggedUser() != null) {
             TestUtils.logUser(getLoggedUser()); // This way it is at the level of user per class. Probably makes sense.
         }

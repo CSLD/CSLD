@@ -13,6 +13,7 @@ public class TestUtils {
         ReflectionTestUtils.setField(CsldAuthenticatedWebSession.get(), "csldUser", toLog);
         if(toLog != null) {
             ReflectionTestUtils.setField(CsldAuthenticatedWebSession.get(), "signedIn", true);
+            CsldAuthenticatedWebSession.get().transformToRoles(toLog.getRole());
         }
     }
 

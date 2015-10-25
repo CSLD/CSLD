@@ -54,6 +54,7 @@ public class CreateOrUpdateGamePage extends CsldBasePage {
             }
         }
     }
+
     public CreateOrUpdateGamePage(PageParameters params){
         if(!params.isEmpty()) setDefaultModel(new GameModel(params.get("id").to(Integer.class)));
         else setDefaultModel(new GameModel(null));

@@ -25,17 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  * The functionality is tested using HomePage as an example.
  */
 public class CsldBasePageTest extends AcceptanceTest {
-    @Autowired
-    private CzechMasqueradeBuilder masqueradeBuilder;
-
-    @Override
-    @Before
-    public void setUp() {
-        super.setUp();
-
-        masqueradeBuilder.build();
-    }
-
     @Test
     public void homePageIsRenderedForGuest() {
         tester.startPage(HomePage.class);

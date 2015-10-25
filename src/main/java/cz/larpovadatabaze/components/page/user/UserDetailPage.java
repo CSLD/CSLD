@@ -16,6 +16,7 @@ import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.RatingService;
 import cz.larpovadatabaze.utils.HbUtils;
+import cz.larpovadatabaze.utils.Strings;
 import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -47,8 +48,6 @@ public class UserDetailPage extends CsldBasePage {
     @SpringBean
     RatingService ratingService;
 
-    private ModalWindow createNewsModal;
-
     private class UserCommentsModel extends LoadableDetachableModel<List<Comment>> {
 
         @Override
@@ -71,20 +70,7 @@ public class UserDetailPage extends CsldBasePage {
             }
 
             // Sort
-            Collections.sort(userComments, new Comparator<Comment>() {
-                @Override
-                public int compare(Comment o1, Comment o2) {
-                    int compared = o1.getAdded().compareTo(o2.getAdded());
-                    if(compared == 0) {
-                        return 0;
-                    }
-                    else if(compared == -1) {
-                        return 1;
-                    } else {
-                        return -1;
-                    }
-                }
-            });
+            Collections.sort(userComments, (o1, o2) -> -1 * o1.getAdded().compareTo(o2.getAdded()));
 
             return userComments;
         }
@@ -135,6 +121,7 @@ public class UserDetailPage extends CsldBasePage {
 
         add(new PersonDetailPanel("personDetail", (IModel<CsldUser>)getDefaultModel()));
 
+        // TODO: Refactor move visibility into the class.
         CsldUser logged = CsldAuthenticatedWebSession.get().getLoggedUser();
         BookmarkablePageLink updateUserLink = new BookmarkablePageLink<UpdateUserPage>("updateUserLink", UpdateUserPage.class);
         updateUserLink.setVisibilityAllowed(logged != null && logged.getId().equals(user.getId()));
@@ -179,5 +166,15 @@ public class UserDetailPage extends CsldBasePage {
 
         // Add wanted games
         add(new GameListPanel("wantedGamesPanel",Model.ofList(wantedGames)));
+    }
+
+    public static PageParameters paramsForUser(CsldUser user) {
+        PageParameters pp = new PageParameters();
+
+        if (user != null) {
+            pp.add(USER_ID_PARAMETER_NAME, user.getId());
+        }
+
+        return pp;
     }
 }

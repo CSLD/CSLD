@@ -16,16 +16,6 @@ import static cz.larpovadatabaze.TestUtils.logUser;
  * Tests associated with the GameDetailPage.
  */
 public class GameDetailPageTest extends AcceptanceTest {
-    @Autowired
-    private CzechMasqueradeBuilder masqueradeBuilder;
-
-    @Before
-    public void setUp() {
-        super.setUp();
-
-        masqueradeBuilder.build();
-    }
-
     @Test
     public void runAsGuest() {
         tester.startPage(GameDetail.class, GameDetail.paramsForGame(masqueradeBuilder.getFirstMasquerade()));

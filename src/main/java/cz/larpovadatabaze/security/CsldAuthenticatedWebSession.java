@@ -71,22 +71,7 @@ public class CsldAuthenticatedWebSession extends AuthenticatedWebSession {
         }
 
         if(authenticated != null){
-            if(authenticated.getRole() == 1) {
-                actualRoles = new Roles(new String[]{
-                        CsldRoles.USER.getRoleName()
-                });
-            } else if(authenticated.getRole() == 2) {
-                actualRoles = new Roles(new String[]{
-                        CsldRoles.USER.getRoleName(),
-                        CsldRoles.EDITOR.getRoleName()
-                });
-            } else {
-                actualRoles = new Roles(new String[]{
-                        CsldRoles.USER.getRoleName(),
-                        CsldRoles.ADMIN.getRoleName(),
-                        CsldRoles.EDITOR.getRoleName()
-                });
-            }
+            transformToRoles(authenticated.getRole());
 
             loggedUserId = authenticated.getId();
             csldUser = authenticated;
@@ -96,7 +81,24 @@ public class CsldAuthenticatedWebSession extends AuthenticatedWebSession {
         }
     }
 
-
+    public void transformToRoles(int role) {
+        if(role == 1) {
+            actualRoles = new Roles(new String[]{
+                    CsldRoles.USER.getRoleName()
+            });
+        } else if(role == 2) {
+            actualRoles = new Roles(new String[]{
+                    CsldRoles.USER.getRoleName(),
+                    CsldRoles.EDITOR.getRoleName()
+            });
+        } else {
+            actualRoles = new Roles(new String[]{
+                    CsldRoles.USER.getRoleName(),
+                    CsldRoles.ADMIN.getRoleName(),
+                    CsldRoles.EDITOR.getRoleName()
+            });
+        }
+    }
 
     public CsldUser getLoggedUser() {
         if(!isSignedIn()){
