@@ -138,7 +138,7 @@ public class UserDetailPage extends CsldBasePage {
         }
 
         // Fill played games from rated games
-        List<IGameWithRating> playedGames = new ArrayList<IGameWithRating>();
+        List<IGameWithRating> playedGames = new ArrayList<>();
         playedGames.addAll(ratingService.getRatingsOfUser(logged, user));
 
         // Build set of rated games IDs

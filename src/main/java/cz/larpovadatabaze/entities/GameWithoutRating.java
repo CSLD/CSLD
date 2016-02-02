@@ -23,4 +23,20 @@ public class GameWithoutRating implements IGameWithRating {
         // No rating
         return null;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        GameWithoutRating that = (GameWithoutRating) o;
+
+        return !(game != null ? !game.equals(that.game) : that.game != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return game != null ? game.hashCode() : 0;
+    }
 }

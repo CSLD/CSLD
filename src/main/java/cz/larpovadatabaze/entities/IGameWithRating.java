@@ -11,10 +11,10 @@ public interface IGameWithRating extends Serializable {
     /**
      * @return Game in question
      */
-    public Game getGame();
+    Game getGame();
 
     /**
      * @return Rating, NULL when not rated
      */
-    public Integer getRating();
+    Integer getRating();
 }
