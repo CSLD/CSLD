@@ -12,10 +12,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  *
@@ -42,8 +39,8 @@ public class RatingDAO extends GenericHibernateDAO<Rating, Integer> {
                 .add(Restrictions.eq("user.id", id))
                 .addOrder(Order.desc("rating"));
 
-        Set<Rating> allRatings = new HashSet<>(criteria.list());
-        return new ArrayList<>(allRatings);
+        Set<Rating> unsorted = new LinkedHashSet<>(criteria.list());
+        return new ArrayList<>(unsorted);
     }
 
     public double getAverageRating() {
