@@ -41,6 +41,6 @@ public class SortableAuthorProvider extends SortableDataProvider<CsldUser, Strin
 
     @Override
     public IModel<CsldUser> model(CsldUser csldUser) {
-        return new Model<CsldUser>(csldUser);
+        return new Model<>(csldUser);
     }
 }

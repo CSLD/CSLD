@@ -172,7 +172,7 @@ public class GameDetail extends CsldBasePage {
                     unique.add(comment);
                 }
             }
-            res = new ArrayList<Comment>(unique);
+            res = new ArrayList<>(unique);
 
             // Sort
             Collections.sort(res, new Comparator<Comment>() {

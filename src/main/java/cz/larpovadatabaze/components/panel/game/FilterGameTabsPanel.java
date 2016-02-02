@@ -35,7 +35,7 @@ public class FilterGameTabsPanel extends AbstractCsldPanel<FilterGame> {
         private final FilterGame.OrderBy orderBy;
         private final boolean showOnlyNew;
         private final  String resourceKey;
-        private FilterTab(FilterGame.OrderBy orderBy, boolean showOnlyNew, String resourceKey) {
+        FilterTab(FilterGame.OrderBy orderBy, boolean showOnlyNew, String resourceKey) {
             this.orderBy = orderBy;
             this.showOnlyNew = showOnlyNew;
             this.resourceKey = resourceKey;
