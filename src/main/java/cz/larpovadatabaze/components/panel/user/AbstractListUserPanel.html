@@ -1,0 +1,24 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+    <!-- Beginning of repetitive content for every Game -->
+    <div class="listOfUsers" style="margin-top: 45px;">
+        <div class="row listGames" wicket:id="listUsers">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-xs-4">
+                    <a wicket:id="userLink"><span wicket:id="userName"></span></a>
+                </div>
+                <div class="col-xs-4">
+                    <span wicket:id="userNickname"></span>
+                </div>
+                <div class="col-xs-4">
+                    <span wicket:id="userAge"></span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- End of repetitive content for every Game -->
+
+    <div class="navigator">
+        <span wicket:id="navigator">[dataview navigator]</span>
+    </div>
+</wicket:panel>

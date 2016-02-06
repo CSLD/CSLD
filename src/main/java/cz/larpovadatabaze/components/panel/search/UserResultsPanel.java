@@ -59,12 +59,6 @@ public class UserResultsPanel extends Panel {
                 PageParameters params = new PageParameters();
                 params.add("id", actualUser.getId());
 
-                final BookmarkablePageLink<CsldBasePage> moderatorLink =
-                        new BookmarkablePageLink<CsldBasePage>("authorLink", UserDetailPage.class, params);
-                final UserIcon moderatorImage = new UserIcon("authorLinkImage", item.getModel());
-                moderatorLink.add(moderatorImage);
-                item.add(moderatorLink);
-
                 final BookmarkablePageLink<CsldBasePage> moderatorLinkContent =
                         new BookmarkablePageLink<CsldBasePage>("authorLinkContent", UserDetailPage.class, params);
                 final Label moderatorNick = new Label("authorNick", actualUser.getPerson().getNickNameView());
@@ -72,14 +66,6 @@ public class UserResultsPanel extends Panel {
                 moderatorLinkContent.add(moderatorNick);
                 moderatorLinkContent.add(moderatorName);
                 item.add(moderatorLinkContent);
-
-                Integer age = actualUser.getPerson().getAge();
-                Label year = new Label("year", age);
-                year.setVisible(age != null);
-                item.add(year);
-
-                Label city = new Label("city", Model.of(actualUser.getPerson().getCity()));
-                item.add(city);
             }
         };
         add(fullList);
