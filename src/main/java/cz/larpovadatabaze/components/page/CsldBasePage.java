@@ -3,7 +3,6 @@ package cz.larpovadatabaze.components.page;
 import com.googlecode.wicket.jquery.core.resource.JQueryUIResourceReference;
 import cz.larpovadatabaze.components.common.i18n.LocalePicker;
 import cz.larpovadatabaze.components.page.about.AboutDatabasePage;
-import cz.larpovadatabaze.components.page.author.ListAuthorPage;
 import cz.larpovadatabaze.components.page.game.ListGamePage;
 import cz.larpovadatabaze.components.panel.home.AdvertisementPanel;
 import cz.larpovadatabaze.components.panel.search.SearchBoxPanel;
@@ -73,7 +72,6 @@ public abstract class CsldBasePage extends WebPage {
         add(previewImageTag2);
 
         add(new BookmarkablePageLink<CsldBasePage>("list-game", ListGamePage.class));
-        add(new BookmarkablePageLink<CsldBasePage>("list-authors", ListAuthorPage.class));
         add(new BookmarkablePageLink<CsldBasePage>("about", AboutDatabasePage.class));
         add(new AdminPanel("adminPanel"));
 

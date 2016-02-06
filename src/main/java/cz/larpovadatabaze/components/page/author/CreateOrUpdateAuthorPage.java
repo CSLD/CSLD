@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.components.page.author;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.services.CsldUserService;
@@ -35,7 +36,7 @@ public class CreateOrUpdateAuthorPage extends CsldBasePage {
             protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
                 super.onCsldAction(target, form);
 
-                throw new RestartResponseException(ListAuthorPage.class);
+                throw new RestartResponseException(HomePage.class);
             }
         });
     }

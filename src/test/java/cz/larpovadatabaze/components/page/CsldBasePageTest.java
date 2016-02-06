@@ -5,7 +5,6 @@ import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.TestUtils;
 import cz.larpovadatabaze.components.common.i18n.LocalePicker;
 import cz.larpovadatabaze.components.page.about.AboutDatabasePage;
-import cz.larpovadatabaze.components.page.author.ListAuthorPage;
 import cz.larpovadatabaze.components.page.game.ListGamePage;
 import cz.larpovadatabaze.components.panel.about.AdministratorPanel;
 import cz.larpovadatabaze.components.panel.home.*;
@@ -56,14 +55,6 @@ public class CsldBasePageTest extends AcceptanceTest {
 
         tester.clickLink("list-game");
         tester.assertRenderedPage(ListGamePage.class);
-    }
-
-    @Test
-    public void listAuthorsLeadsToListOfAuthors() {
-        tester.startPage(HomePage.class);
-
-        tester.clickLink("list-authors");
-        tester.assertRenderedPage(ListAuthorPage.class);
     }
 
     @Test

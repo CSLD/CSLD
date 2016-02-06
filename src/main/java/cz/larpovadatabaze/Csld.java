@@ -7,7 +7,6 @@ import cz.larpovadatabaze.components.page.admin.AdministrationPage;
 import cz.larpovadatabaze.components.page.admin.ManageLabelsPage;
 import cz.larpovadatabaze.components.page.admin.ManageUserRightsPage;
 import cz.larpovadatabaze.components.page.author.CreateOrUpdateAuthorPage;
-import cz.larpovadatabaze.components.page.author.ListAuthorPage;
 import cz.larpovadatabaze.components.page.error.Error404Page;
 import cz.larpovadatabaze.components.page.error.Error500Page;
 import cz.larpovadatabaze.components.page.game.*;
@@ -208,7 +207,6 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         mountPage("/add-author", CreateOrUpdateAuthorPage.class);
 
         mountPage("/zebricky", ListGamePage.class);
-        mountPage("/autori", ListAuthorPage.class);
 
         mountPage("/detail-game", GameDetailOld.class);
         mount(new MountedMapperWithoutPageComponentInfo("/larp/${name}/${id}", GameDetail.class));

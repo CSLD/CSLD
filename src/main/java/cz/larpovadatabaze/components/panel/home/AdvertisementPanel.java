@@ -107,7 +107,7 @@ public class AdvertisementPanel extends AbstractCsldPanel<List<Advertisement>> {
 
         // Add add link
         add(new BookmarkablePageLink<CsldBasePage>("addGameLink", CreateOrUpdateGamePage.class));
-        add(new BookmarkablePageLink<CsldBasePage>("addNewsLink", CreateOrUpdateNewsPage.class));
+        //add(new BookmarkablePageLink<CsldBasePage>("addNewsLink", CreateOrUpdateNewsPage.class));
     }
 
     @Override

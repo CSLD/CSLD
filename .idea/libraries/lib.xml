@@ -5,30 +5,8 @@
       <root url="jar://$PROJECT_DIR$/out/artifacts/Projekty_war_exploded/WEB-INF/lib/postgresql-9.1-901.jdbc3.jar!/" />
       <root url="jar://$PROJECT_DIR$/out/artifacts/Projekty_war_exploded/WEB-INF/lib/junit-4.8.2.jar!/" />
       <root url="jar://$PROJECT_DIR$/out/artifacts/Projekty_war_exploded/WEB-INF/lib/mail.jar!/" />
-      <root url="file://$APPLICATION_HOME_DIR$/apache-tomcat-7.0.34" />
-      <root url="jar://$APPLICATION_HOME_DIR$/apache-tomcat-7.0.34/lib/annotations-api.jar!/" />
-      <root url="jar://$APPLICATION_HOME_DIR$/apache-tomcat-7.0.34/lib/catalina-ant.jar!/" />
-      <root url="jar://$APPLICATION_HOME_DIR$/apache-tomcat-7.0.34/lib/catalina-ha.jar!/" />
-      <root url="jar://$APPLICATION_HOME_DIR$/apache-tomcat-7.0.34/lib/catalina-tribes.jar!/" />
-      <root url="jar://$APPLICATION_HOME_DIR$/apache-tomcat-7.0.34/lib/catalina.jar!/" />
-      <root url="jar://$APPLICATION_HOME_DIR$/apache-tomcat-7.0.34/lib/ecj-4.2.1.jar!/" />
-      <root url="jar://$APPLICATION_HOME_DIR$/apache-tomcat-7.0.34/lib/el-api.jar!/" />
-      <root url="jar://$APPLICATION_HOME_DIR$/apache-tomcat-7.0.34/lib/jasper-el.jar!/" />
-      <root url="jar://$APPLICATION_HOME_DIR$/apache-tomcat-7.0.34/lib/jasper.jar!/" />
-      <root url="jar://$APPLICATION_HOME_DIR$/apache-tomcat-7.0.34/lib/jsp-api.jar!/" />
-      <root url="jar://$APPLICATION_HOME_DIR$/apache-tomcat-7.0.34/lib/servlet-api.jar!/" />
-      <root url="jar://$APPLICATION_HOME_DIR$/apache-tomcat-7.0.34/lib/tomcat-api.jar!/" />
-      <root url="jar://$APPLICATION_HOME_DIR$/apache-tomcat-7.0.34/lib/tomcat-coyote.jar!/" />
-      <root url="jar://$APPLICATION_HOME_DIR$/apache-tomcat-7.0.34/lib/tomcat-dbcp.jar!/" />
-      <root url="jar://$APPLICATION_HOME_DIR$/apache-tomcat-7.0.34/lib/tomcat-jdbc.jar!/" />
-      <root url="jar://$APPLICATION_HOME_DIR$/apache-tomcat-7.0.34/lib/tomcat-util.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES>
-      <root url="file://$APPLICATION_HOME_DIR$/apache-tomcat-7.0.34/webapps/docs/appdev/sample/src" />
-      <root url="file://$APPLICATION_HOME_DIR$/apache-tomcat-7.0.34/webapps/examples/jsp/plugin/applet" />
-      <root url="file://$APPLICATION_HOME_DIR$/apache-tomcat-7.0.34/webapps/examples/WEB-INF/classes" />
-      <root url="file://$APPLICATION_HOME_DIR$/apache-tomcat-7.0.34/webapps/examples/WEB-INF/jsp/applet" />
-    </SOURCES>
+    <SOURCES />
   </library>
 </component>
