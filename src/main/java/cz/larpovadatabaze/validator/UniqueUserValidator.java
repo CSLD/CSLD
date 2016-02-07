@@ -5,6 +5,7 @@ import cz.larpovadatabaze.services.CsldUserService;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
+import org.hibernate.NonUniqueResultException;
 
 /**
  *
@@ -21,13 +22,19 @@ public class UniqueUserValidator implements IValidator<String> {
 
     @Override
     public void validate(IValidatable<String> validatable) {
-        CsldUser existing = personService.getByEmail(validatable.getValue());
+        // TODO - I am not sure, if this is the right place.
+        try {
+            CsldUser existing = personService.getByEmail(validatable.getValue());
 
-        if(!updateExisting && (existing != null)) {
+            if(!updateExisting && (existing != null)) {
+                error(validatable, "person-exists");
+            }
+            if(updateExisting && (existing == null)) {
+                error(validatable, "update-nonexistent");
+            }
+        } catch (NonUniqueResultException ex) {
+            // If there are already two existing such persons.
             error(validatable, "person-exists");
-        }
-        if(updateExisting && (existing == null)) {
-            error(validatable, "update-nonexistent");
         }
     }
 
