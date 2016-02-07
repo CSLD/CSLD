@@ -5,24 +5,34 @@ import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.lang.LanguageChoiceRenderer;
 import cz.larpovadatabaze.lang.LanguageSolver;
+import cz.larpovadatabaze.lang.LanguagesModel;
 import cz.larpovadatabaze.lang.SessionLanguageSolver;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.CommentService;
+import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
+import static cz.larpovadatabaze.lang.AvailableLanguages.availableLocaleNames;
 
 /**
  * This panel allows user to Comment given game
@@ -31,10 +41,11 @@ public class CommentsPanel extends Panel {
     private final String VARIATION_DISABLED = "disabled";
     private final String VARIATION_EDIT = "edit";
 
-        @SpringBean
+    @SpringBean
     CommentService commentService;
 
     private TextArea<String> commentContent;
+    private DropDownChoice<String> language;
 
     private final IModel<Game> gameModel;
 
@@ -43,6 +54,7 @@ public class CommentsPanel extends Panel {
     private final Component[] refreshOnChange;
 
     private LanguageSolver sessionLanguageSolver = new SessionLanguageSolver();
+
 
     /**
      * Model for comment text. Works with the complete comment, which it caches
@@ -65,11 +77,11 @@ public class CommentsPanel extends Panel {
         }
 
         private CsldUser getUser() {
-            return ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
+            return UserUtils.getLoggedUser();
         }
 
         private int getUserId(CsldUser user) {
-            return (user == null)?-1:user.getId();
+            return (user == null) ? -1 : user.getId();
         }
 
         private void loadIfNecessary() {
@@ -79,7 +91,7 @@ public class CommentsPanel extends Panel {
                 int userId = getUserId(user);
 
                 actualComment = commentService.getCommentOnGameFromUser(userId, gameId);
-                if(actualComment == null) {
+                if (actualComment == null) {
                     // Init comment
                     actualComment = new Comment();
                     actualComment.setUser(user);
@@ -101,21 +113,22 @@ public class CommentsPanel extends Panel {
 
             if (!actualComment.getComment().equals(newComment)) {
                 // Comment changed - save
-                if(newComment == null || newComment.equals("")){
-                    try{
+                if (newComment == null || newComment.equals("")) {
+                    try {
                         commentService.remove(actualComment);
-                    } catch(Exception ex){
+                    } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 } else {
-                    actualComment.setLang(sessionLanguageSolver.getTextLangForUser().get(0));
+                    if (actualComment.getLang() == null) {
+                        actualComment.setLang(sessionLanguageSolver.getTextLangForUser().get(0));
+                    }
                     actualComment.setComment(Jsoup.clean(newComment, Whitelist.basic()));
                     if (actualComment.getAdded() == null) {
                         actualComment.setAdded(new Timestamp(System.currentTimeMillis()));
                     }
 
                     commentService.saveOrUpdate(actualComment);
-
                 }
             }
         }
@@ -129,8 +142,8 @@ public class CommentsPanel extends Panel {
     /**
      * Constructor
      *
-     * @param id Panel id
-     * @param gameModel Model of the game comments are for
+     * @param id              Panel id
+     * @param gameModel       Model of the game comments are for
      * @param refreshOnChange Components to refresh on change
      */
     public CommentsPanel(String id, IModel<Game> gameModel, Component[] refreshOnChange) {
@@ -145,13 +158,14 @@ public class CommentsPanel extends Panel {
         super.onInitialize();
 
         if (VARIATION_EDIT.equals(getVariation())) {
-            ValidatableForm<Comment> commentForm = new ValidatableForm<Comment>("comment"){};
+            ValidatableForm<Comment> commentForm = new ValidatableForm<Comment>("comment") {
+            };
             commentForm.setOutputMarkupId(true);
 
-            commentContent = new TextArea<String>("textOfComment", model);
+            commentContent = new TextArea<>("textOfComment", model);
             commentContent.add(new CSLDTinyMceBehavior());
             commentContent.setOutputMarkupId(true);
-            AjaxButton addComment = new AjaxButton("addComment"){
+            AjaxButton addComment = new AjaxButton("addComment") {
                 @Override
                 protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                     // Reload game
@@ -168,6 +182,12 @@ public class CommentsPanel extends Panel {
             commentForm.add(commentContent);
             commentForm.add(addComment);
 
+            ArrayList<String> availableLanguages = new ArrayList<>(availableLocaleNames());
+
+            // TODO: Let user see the language of the comment.
+            language = new DropDownChoice<>("lang", Model.of(""), availableLanguages, new LanguageChoiceRenderer());
+            commentForm.add(language);
+
             add(commentForm);
         }
     }
@@ -178,8 +198,9 @@ public class CommentsPanel extends Panel {
 
     @Override
     public String getVariation() {
-        return (gameModel.getObject().isCommentsDisabled() && StringUtils.isEmpty(model.getObject()))? VARIATION_DISABLED : VARIATION_EDIT;
+        return (gameModel.getObject().isCommentsDisabled() && StringUtils.isEmpty(model.getObject())) ? VARIATION_DISABLED : VARIATION_EDIT;
     }
 
-    protected void onCsldAction(AjaxRequestTarget target){}
+    protected void onCsldAction(AjaxRequestTarget target) {
+    }
 }
