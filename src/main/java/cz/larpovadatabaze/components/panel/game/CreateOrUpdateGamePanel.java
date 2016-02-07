@@ -32,6 +32,7 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Bytes;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
@@ -134,7 +135,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
 
         // Language
         List<String> availableLanguages = new ArrayList<String>(availableLocaleNames());
-        final DropDownChoice<String> lang = new DropDownChoice<String>("lang", availableLanguages);
+        final DropDownChoice<String> lang = new DropDownChoice<String>("lang", availableLanguages, new LanguageChoiceRenderer());
         createOrUpdateGame.add(lang);
         createOrUpdateGame.add(new CsldFeedbackMessageLabel("langFeedback", lang, null));
 
@@ -421,4 +422,17 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
     }
 
     protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}
+
+    // TODO: Remove duplication.
+    private static class LanguageChoiceRenderer implements IChoiceRenderer<String> {
+        @Override
+        public Object getDisplayValue(String object) {
+            return new ResourceModel("language."+object).getObject();
+        }
+
+        @Override
+        public String getIdValue(String object, int index) {
+            return object;
+        }
+    }
 }
