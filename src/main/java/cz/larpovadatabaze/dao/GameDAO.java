@@ -59,14 +59,21 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     @SuppressWarnings("unchecked")
     public List<Game> getLastGames(int amountOfGames, List<Locale> locales) {
         Session session = sessionFactory.getCurrentSession();
-        DetachedCriteria dc = new GameBuilder().build();
 
-        addLanguageRestriction(dc, locales);
+        DetachedCriteria subQueryCriteria = new GameBuilder().build();
 
-        Criteria criteria = dc.getExecutableCriteria(session)
-                .setMaxResults(amountOfGames)
+        addLanguageRestriction(subQueryCriteria, locales);
+
+        subQueryCriteria.setProjection(Projections.distinct(Projections.id()));
+
+        Criteria criteria = new GameBuilder().build().getExecutableCriteria(session);
+
+        criteria.add(Subqueries.propertyIn("id", subQueryCriteria));
+
+        criteria.setMaxResults(amountOfGames)
                 .addOrder(Order.desc("added"));
 
+        criteria.setFetchMode("availableLanguages", FetchMode.SELECT);
         return criteria.list();
     }
 
@@ -79,8 +86,8 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
         addLanguageRestriction(dc, locales);
 
         Criteria criteria = dc.getExecutableCriteria(session)
-            .setMaxResults(amountOfGames)
-            .addOrder(Order.desc("totalRating"));
+                .setMaxResults(amountOfGames)
+                .addOrder(Order.desc("totalRating"));
 
         return criteria.list();
     }
@@ -90,7 +97,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
         Criteria criteria = new GameBuilder().build().getExecutableCriteria(session)
                 .setProjection(Projections.rowCount());
 
-        return ((Long)criteria.uniqueResult()).intValue();
+        return ((Long) criteria.uniqueResult()).intValue();
     }
 
     public Game getRandomGame() {
@@ -100,7 +107,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
                 .setMaxResults(1);
 
         Game result = (Game) criteria.uniqueResult();
-        if(result == null && getAmountOfGames() > 0) {
+        if (result == null && getAmountOfGames() > 0) {
             return getRandomGame();
         } else {
             return result;
@@ -141,7 +148,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
                 .add(Restrictions.eq("author.id", author.getId()))
                 .setProjection(Projections.countDistinct("game.id"));
 
-        return (Long)criteria.uniqueResult();
+        return (Long) criteria.uniqueResult();
     }
 
     public long getAmountOfGamesOfGroup(CsldGroup csldGroup) {
@@ -152,7 +159,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
                 .add(Restrictions.eq("group.id", csldGroup.getId()))
                 .setProjection(Projections.countDistinct("game.id"));
 
-        return (Long)criteria.uniqueResult();
+        return (Long) criteria.uniqueResult();
     }
 
     @SuppressWarnings("unchecked")
@@ -164,7 +171,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
                 .add(Restrictions.not(Restrictions.eq("id", game.getId())))
                 .addOrder(Order.desc("totalRating"))
                 .createCriteria("labels")
-                    .add(Restrictions.in("id", labeledGames))
+                .add(Restrictions.in("id", labeledGames))
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
                 .setMaxResults(5);
 
@@ -194,7 +201,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     private void addLabelCriteria(DetachedCriteria criteria, List<Label> labels) {
         if (!labels.isEmpty()) {
             DetachedCriteria dc = DetachedCriteria.forClass(Game.class, "game2");
-            dc.createAlias("game2.labels","labels");
+            dc.createAlias("game2.labels", "labels");
             dc.add(Restrictions.in("labels.id", getLabelIds(labels)));
             dc.add(Restrictions.eqProperty("game2.labels", "game.id"));
             dc.setProjection(Projections.id());
@@ -205,7 +212,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     /**
      * Applies filter in FilterGame object to the criteria. Order is not affected.
      *
-     * @param criteria Criteria to affect
+     * @param criteria   Criteria to affect
      * @param filterGame Filter to use
      */
     private void applyGameFilter(DetachedCriteria criteria, FilterGame filterGame) {
@@ -219,13 +226,11 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
         Integer yearLimit = null;
         if (filterGame.isShowArchived()) {
             yearLimit = null;
-        }
-        else {
+        } else {
             if (filterGame.isShowOnlyNew()) {
                 // Show only games, which last comment is younger than YEARS_NEW
                 yearLimit = YEARS_NEW;
-            }
-            else {
+            } else {
                 // Show only games, which last comment is older than.
                 yearLimit = YEARS_OLD;
             }
@@ -243,7 +248,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Game> getFilteredGames(FilterGame filterGame, int first, int count){
+    public List<Game> getFilteredGames(FilterGame filterGame, int first, int count) {
         Session session = sessionFactory.getCurrentSession();
 
         DetachedCriteria subQueryCriteria = new GameBuilder().build();
@@ -256,7 +261,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
 
         criteria.add(Subqueries.propertyIn("id", subQueryCriteria));
 
-        switch(filterGame.getOrderBy()) {
+        switch (filterGame.getOrderBy()) {
             case ADDED_DESC:
                 criteria.addOrder(Order.desc("added"));
                 break;
@@ -307,22 +312,22 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
 
     @Override
     public boolean saveOrUpdate(Game entity) {
-        try{
+        try {
             Session session = sessionFactory.getCurrentSession();
             session.saveOrUpdate(entity);
             flush();
             return true;
-        } catch (HibernateException ex){
+        } catch (HibernateException ex) {
             ex.printStackTrace();
         }
 
-        try{
+        try {
             Session session = sessionFactory.getCurrentSession();
             session.get(Game.class, entity.getId());
             session.merge(entity);
             flush();
             return true;
-        } catch (HibernateException ex){
+        } catch (HibernateException ex) {
             ex.printStackTrace();
             return false;
         }

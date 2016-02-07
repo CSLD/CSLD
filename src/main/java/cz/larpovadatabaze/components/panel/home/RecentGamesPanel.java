@@ -35,6 +35,8 @@ public class RecentGamesPanel extends Panel {
         super(id);
     }
 
+    // TODO: User must see every game just once.
+
     @Override
     public void onInitialize() {
         super.onInitialize();

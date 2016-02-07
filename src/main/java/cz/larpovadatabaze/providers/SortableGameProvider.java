@@ -23,14 +23,6 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
 
     private IModel<FilterGame> filterModel;
 
-    public SortableGameProvider(FilterGame.OrderBy defaultSort, Locale locale) {
-        Injector.get().inject(this);
-        this.filterModel = new Model(new FilterGame());
-
-        filterModel.getObject().setOrderBy(defaultSort);
-        filterModel.getObject().getLanguages().add(locale);
-    }
-
     public SortableGameProvider(IModel<FilterGame> filterModel) {
         Injector.get().inject(this);
         this.filterModel = filterModel;
