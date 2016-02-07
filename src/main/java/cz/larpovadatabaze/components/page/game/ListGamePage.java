@@ -78,6 +78,10 @@ public class ListGamePage extends CsldBasePage {
                     labelId = ALL;
                 }
             }
+
+            // By default show all games.
+            filterModel.getObject().setShowOnlyNew(false);
+            filterModel.getObject().setShowArchived(true);
         }
 
         List<Label> requiredLabels = labelService.getRequired();

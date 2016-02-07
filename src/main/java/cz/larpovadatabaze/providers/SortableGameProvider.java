@@ -63,6 +63,6 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
 
     @Override
     public IModel<Game> model(Game game) {
-        return new Model<Game>(game);
+        return new Model<>(game);
     }
 }
