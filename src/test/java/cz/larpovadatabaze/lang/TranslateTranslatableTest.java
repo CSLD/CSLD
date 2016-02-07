@@ -22,16 +22,6 @@ public class TranslateTranslatableTest {
     }
 
     @Test
-    public void translateWithoutLanguageDoesntDoAnything() {
-        String gameName = "TestName";
-        Translator<TranslatableEntity> translator = new TranslatableEntityTranslator(solver, sessionSolver);
-        TranslatableEntity game = new Game();
-        game.setName(gameName);
-        translator.translate(game);
-        assertThat(gameName, is(game.getName()));
-    }
-
-    @Test
     public void translateIntoCurrentLanguageUsesSessionIfSessionLanguageAvailableInTranslations(){
 
     }

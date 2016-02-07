@@ -13,16 +13,10 @@ import java.util.Locale;
 @Service
 public class TranslatableEntityTranslator implements Translator<TranslatableEntity> {
     private LanguageSolver whatLanguagesToUse;
-    private LanguageSolver actualLanguageProvider = new SessionLanguageSolver();
 
     @Autowired
     public TranslatableEntityTranslator(LanguageSolver whatLanguagesToUse) {
         this.whatLanguagesToUse = whatLanguagesToUse;
-    }
-
-    public TranslatableEntityTranslator(LanguageSolver whatLanguagesToUse, LanguageSolver actualLanguageProvider) {
-        this(whatLanguagesToUse);
-        this.actualLanguageProvider = actualLanguageProvider;
     }
 
     @Override
@@ -36,10 +30,6 @@ public class TranslatableEntityTranslator implements Translator<TranslatableEnti
     @Override
     public TranslatableEntity translate(TranslatableEntity toTranslate) {
         if(toTranslate.getLanguages() == null || toTranslate.getLanguages().isEmpty()) {
-            return toTranslate;
-        }
-
-        if(translateIntoCurrent(toTranslate)){
             return toTranslate;
         }
 
@@ -72,19 +62,6 @@ public class TranslatableEntityTranslator implements Translator<TranslatableEnti
                     translateUsingEntity(toTranslate, language);
                     return true;
                 }
-            }
-        }
-        return false;
-    }
-
-    private boolean translateIntoCurrent(TranslatableEntity toTranslate){
-        String actualLanguage = actualLanguageProvider.getLanguagesForUser().get(0).getLanguage();
-        List<TranslationEntity> translationsForGame = toTranslate.getLanguages();
-        for(TranslationEntity language: translationsForGame) {
-            if(language.getLanguage() != null &&
-                    language.getLanguage().equals(actualLanguage)) {
-                translateUsingEntity(toTranslate, language);
-                return true;
             }
         }
         return false;

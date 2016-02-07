@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
  */
 @Service
 public class DbSessionLanguageSolver implements LanguageSolver {
+    private LanguageSolver languageOfTheInterface = new SessionLanguageSolver();
+
     public DbSessionLanguageSolver(){}
 
     @Override
@@ -26,6 +28,11 @@ public class DbSessionLanguageSolver implements LanguageSolver {
                     .map(lang -> Locale.forLanguageTag(lang.getLanguage()))
                     .collect(Collectors.toList()));
         }
+
+        if(allLocales.isEmpty()) {
+            allLocales.addAll(languageOfTheInterface.getLanguagesForUser());
+        }
+
         return allLocales;
     }
 
@@ -38,6 +45,10 @@ public class DbSessionLanguageSolver implements LanguageSolver {
                     .stream()
                     .map(UserHasLanguages::getLanguage)
                     .collect(Collectors.toList()));
+        }
+
+        if(allLocales.isEmpty()) {
+            allLocales.addAll(languageOfTheInterface.getTextLangForUser());
         }
         return allLocales;
     }
