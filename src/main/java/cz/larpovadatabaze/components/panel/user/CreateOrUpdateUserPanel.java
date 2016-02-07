@@ -8,6 +8,7 @@ import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Image;
 import cz.larpovadatabaze.entities.UserHasLanguages;
 import cz.larpovadatabaze.lang.LanguageChoiceRenderer;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
@@ -157,6 +158,9 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
                 if(createOrUpdateUser.isValid()){
                     CsldUser user = createOrUpdateUser.getModelObject();
                     if(saveOrUpdateUserAndImage(user)){
+                        if(!UserUtils.isSignedIn()){
+                            CsldAuthenticatedWebSession.get().signIn(user.getPerson().getEmail(), password.getConvertedInput());
+                        }
                         onCsldAction(target, form);
                     }
                 }
