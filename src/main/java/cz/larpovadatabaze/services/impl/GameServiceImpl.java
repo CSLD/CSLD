@@ -147,12 +147,12 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Collection<Game> getGamesOfAuthor(CsldUser author, int first, int count) {
-        return new LinkedHashSet<Game>(gameDAO.getGamesOfAuthor(author, first, count));
+        return new LinkedHashSet<>(gameDAO.getGamesOfAuthor(author, first, count));
     }
 
     @Override
     public Collection<Game> getGamesOfGroup(CsldGroup csldGroup, int first, int count) {
-        return new LinkedHashSet<Game>(gameDAO.getGamesOfGroup(csldGroup, first, count));
+        return new LinkedHashSet<>(gameDAO.getGamesOfGroup(csldGroup, first, count));
     }
 
     @Override
