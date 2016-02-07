@@ -9,7 +9,9 @@ import cz.larpovadatabaze.components.panel.search.SearchBoxPanel;
 import cz.larpovadatabaze.components.panel.user.AdminPanel;
 import cz.larpovadatabaze.components.panel.user.LoggedBoxPanel;
 import cz.larpovadatabaze.components.panel.user.LoginBoxPanel;
+import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.authentication.IAuthenticationStrategy;
@@ -27,6 +29,8 @@ import org.apache.wicket.request.Url;
 import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import wicket.contrib.tinymce.settings.TinyMCESettings;
+
+import java.util.Locale;
 
 /**
  * Base page from which all other pages are derived.
@@ -57,6 +61,11 @@ public abstract class CsldBasePage extends WebPage {
             if(data != null && data.length > 1){
                 CsldAuthenticatedWebSession.get().signIn(data[0], data[1]);
             }
+        }
+
+        if(UserUtils.isSignedIn()) {
+            CsldUser user = UserUtils.getLoggedUser();
+            CsldAuthenticatedWebSession.get().setLocale(Locale.forLanguageTag(user.getDefaultLang()));
         }
 
         add(new Label("pageTitle", getPageTitleModel()));

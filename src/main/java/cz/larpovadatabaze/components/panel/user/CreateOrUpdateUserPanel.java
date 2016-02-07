@@ -15,6 +15,7 @@ import cz.larpovadatabaze.utils.Pwd;
 import cz.larpovadatabaze.utils.UserUtils;
 import cz.larpovadatabaze.validator.UniqueUserValidator;
 import org.apache.commons.lang.StringUtils;
+import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
@@ -216,6 +217,10 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
         }
         if(user.getPerson().getDescription() != null) {
             user.getPerson().setDescription(Jsoup.clean(user.getPerson().getDescription(), Whitelist.basic()));
+        }
+        if(user.getDefaultLang() == null) {
+            // TODO: Update DB so that everyone has default language.
+            user.setDefaultLang(Session.get().getLocale().getLanguage());
         }
         if (uploads != null) {
             for (FileUpload upload : uploads) {
