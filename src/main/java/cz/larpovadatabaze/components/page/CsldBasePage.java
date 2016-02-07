@@ -59,15 +59,12 @@ public abstract class CsldBasePage extends WebPage {
                     .getAuthenticationStrategy();
             String[] data = strategy.load();
             if(data != null && data.length > 1){
+                // TODO: Verify setting language on login.
                 CsldAuthenticatedWebSession.get().signIn(data[0], data[1]);
-            }
-        }
-
-        // TODO: Store in cookies last chosen language.
-        if(UserUtils.isSignedIn()) {
-            CsldUser user = UserUtils.getLoggedUser();
-            if(user.getDefaultLang() != null) {
-                CsldAuthenticatedWebSession.get().setLocale(Locale.forLanguageTag(user.getDefaultLang()));
+                CsldUser user = UserUtils.getLoggedUser();
+                if(user.getDefaultLang() != null) {
+                    CsldAuthenticatedWebSession.get().setLocale(Locale.forLanguageTag(user.getDefaultLang()));
+                }
             }
         }
 
