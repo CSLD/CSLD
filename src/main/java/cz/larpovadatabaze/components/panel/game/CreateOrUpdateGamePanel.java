@@ -11,6 +11,7 @@ import cz.larpovadatabaze.components.panel.UploadCoverImagePanel;
 import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
 import cz.larpovadatabaze.components.panel.group.CreateOrUpdateGroupPanel;
 import cz.larpovadatabaze.entities.*;
+import cz.larpovadatabaze.lang.LanguageChoiceRenderer;
 import cz.larpovadatabaze.lang.LanguageSolver;
 import cz.larpovadatabaze.lang.SessionLanguageSolver;
 import cz.larpovadatabaze.services.CsldUserService;
@@ -422,17 +423,4 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
     }
 
     protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}
-
-    // TODO: Remove duplication.
-    private static class LanguageChoiceRenderer implements IChoiceRenderer<String> {
-        @Override
-        public Object getDisplayValue(String object) {
-            return new ResourceModel("language."+object).getObject();
-        }
-
-        @Override
-        public String getIdValue(String object, int index) {
-            return object;
-        }
-    }
 }

@@ -7,6 +7,7 @@ import cz.larpovadatabaze.dao.UserHasLanguagesDao;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Image;
 import cz.larpovadatabaze.entities.UserHasLanguages;
+import cz.larpovadatabaze.lang.LanguageChoiceRenderer;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
@@ -263,18 +264,6 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
     }
 
     protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}
-
-    private static class LanguageChoiceRenderer implements IChoiceRenderer<String> {
-        @Override
-        public Object getDisplayValue(String object) {
-            return new ResourceModel("language."+object).getObject();
-        }
-
-        @Override
-        public String getIdValue(String object, int index) {
-            return object;
-        }
-    }
 
     private static class UserHasLanguageChoiceRenderer implements IChoiceRenderer<UserHasLanguages> {
 

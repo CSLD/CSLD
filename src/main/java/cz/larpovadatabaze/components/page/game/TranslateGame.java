@@ -4,6 +4,7 @@ import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.GameHasLanguages;
+import cz.larpovadatabaze.lang.LanguageChoiceRenderer;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.utils.HbUtils;
 import org.apache.log4j.Logger;
@@ -138,7 +139,7 @@ public class TranslateGame extends CsldBasePage {
         add(translationsShow);
 
         Form addLanguage = new Form("addLanguage");
-        final DropDownChoice<String> actualLang = new DropDownChoice<>("language", Model.of(""), availableLocaleNames());
+        final DropDownChoice<String> actualLang = new DropDownChoice<>("language", Model.of(""), availableLocaleNames(), new LanguageChoiceRenderer());
         addLanguage.add(actualLang);
         addLanguage.add(new AjaxButton("addAnotherLanguage") {
             @Override
