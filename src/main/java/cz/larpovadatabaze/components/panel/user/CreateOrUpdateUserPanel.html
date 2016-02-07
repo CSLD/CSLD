@@ -73,6 +73,13 @@
                     <select wicket:id="defaultLang"></select>
                 </label>
             </section>
+            <section>
+                <label class="input">
+                    <b><wicket:message key="form.description.userHasLanguages" />:</b><br />
+                    <select wicket:id="userHasLanguages"></select>
+                    <b class="tooltip tooltip-bottom-right" wicket:id="userHasLanguagesFeedback"></b>
+                </label>
+            </section>
             <wicket:enclosure child="reCaptcha">
                 <section>
                     <label class="input">

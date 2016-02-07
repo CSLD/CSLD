@@ -123,6 +123,11 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
         DropDownChoice<String> defaultLanguage = new DropDownChoice<>("defaultLang", availableLocales, new LanguageChoiceRenderer());
         createOrUpdateUser.add(defaultLanguage);
 
+        final ListMultipleChoice<UserHasLanguages> changeLocale =
+                new ListMultipleChoice<>("userHasLanguages", availableUserLanguages(), new UserHasLanguageChoiceRenderer());
+        createOrUpdateUser.add(addFeedbackPanel(changeLocale, createOrUpdateUser, "userHasLanguagesFeedback", "form.description.userHasLanguages"));
+
+
         if (isEdit) {
             // No captcha
             WebMarkupContainer reCaptcha = new WebMarkupContainer("reCaptcha");
@@ -171,9 +176,7 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
     private List<UserHasLanguages> availableUserLanguages() {
         List<String> available = availableLocaleNames();
         List<UserHasLanguages> availableLanguages = new ArrayList<>();
-        if(UserUtils.isSignedIn()) {
-            available.forEach(lang -> availableLanguages.add(retrieveExistingOrCreateNew(lang)));
-        }
+        available.forEach(lang -> availableLanguages.add(retrieveExistingOrCreateNew(lang)));
         return availableLanguages;
     }
 
