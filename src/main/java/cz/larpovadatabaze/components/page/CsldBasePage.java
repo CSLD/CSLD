@@ -63,9 +63,12 @@ public abstract class CsldBasePage extends WebPage {
             }
         }
 
+        // TODO: Store in cookies last chosen language.
         if(UserUtils.isSignedIn()) {
             CsldUser user = UserUtils.getLoggedUser();
-            CsldAuthenticatedWebSession.get().setLocale(Locale.forLanguageTag(user.getDefaultLang()));
+            if(user.getDefaultLang() != null) {
+                CsldAuthenticatedWebSession.get().setLocale(Locale.forLanguageTag(user.getDefaultLang()));
+            }
         }
 
         add(new Label("pageTitle", getPageTitleModel()));

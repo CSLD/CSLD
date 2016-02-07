@@ -219,7 +219,6 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
             user.getPerson().setDescription(Jsoup.clean(user.getPerson().getDescription(), Whitelist.basic()));
         }
         if(user.getDefaultLang() == null) {
-            // TODO: Update DB so that everyone has default language.
             user.setDefaultLang(Session.get().getLocale().getLanguage());
         }
         if (uploads != null) {
