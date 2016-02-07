@@ -62,7 +62,7 @@ public abstract class CsldBasePage extends WebPage {
                 // TODO: Verify setting language on login.
                 CsldAuthenticatedWebSession.get().signIn(data[0], data[1]);
                 CsldUser user = UserUtils.getLoggedUser();
-                if(user.getDefaultLang() != null) {
+                if(user != null && user.getDefaultLang() != null) {
                     CsldAuthenticatedWebSession.get().setLocale(Locale.forLanguageTag(user.getDefaultLang()));
                 }
             }
