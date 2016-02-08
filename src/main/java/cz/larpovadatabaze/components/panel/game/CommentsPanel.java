@@ -111,7 +111,7 @@ public class CommentsPanel extends Panel {
         public void setObject(String newComment) {
             loadIfNecessary();
 
-            if (!actualComment.getComment().equals(newComment)) {
+            if (!actualComment.getComment().equals(newComment) || !actualComment.getLang().equals(language.getConvertedInput())) {
                 // Comment changed - save
                 if (newComment == null || newComment.equals("")) {
                     try {
