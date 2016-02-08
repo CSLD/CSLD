@@ -120,8 +120,10 @@ public class CommentsPanel extends Panel {
                         ex.printStackTrace();
                     }
                 } else {
-                    if (actualComment.getLang() == null) {
+                    if (language.getConvertedInput() == null || language.getConvertedInput().isEmpty()) {
                         actualComment.setLang(sessionLanguageSolver.getTextLangForUser().get(0));
+                    } else {
+                        actualComment.setLang(language.getConvertedInput());
                     }
                     actualComment.setComment(Jsoup.clean(newComment, Whitelist.basic()));
                     if (actualComment.getAdded() == null) {
