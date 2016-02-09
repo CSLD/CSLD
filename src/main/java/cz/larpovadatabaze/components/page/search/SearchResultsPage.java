@@ -29,6 +29,7 @@ public class SearchResultsPage extends CsldBasePage {
         gamesResultsPanel.setOutputMarkupId(true);
         add(gamesResultsPanel);
 
+        /*
         final Component usersResultsPanel = new AbstractListUserPanel<String>("users", Model.of(query)) {
             @Override
             protected SortableDataProvider<CsldUser, String> getDataProvider() {
@@ -38,6 +39,7 @@ public class SearchResultsPage extends CsldBasePage {
             }
         };
         add(usersResultsPanel);
+        */
     }
 
     public static PageParameters paramsForSearchResults(String query) {
