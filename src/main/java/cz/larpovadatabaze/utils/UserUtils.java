@@ -28,6 +28,7 @@ public class UserUtils {
             return null;
         }
 
+        System.out.println("Loading information about user.");
         int actualUserId = CsldAuthenticatedWebSession.get().getLoggedUser().getId();
         CsldUserService userService = (CsldUserService) Csld.getApplicationContext().getBean("csldUserService");
         return userService.getById(actualUserId);

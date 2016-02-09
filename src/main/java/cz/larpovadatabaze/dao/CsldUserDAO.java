@@ -72,6 +72,8 @@ public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
                 .add(Restrictions.eq("person.email",username))
                 .add(Restrictions.eq("password",password));
 
+        criteria.setFetchMode("userHasLanguages", FetchMode.JOIN);
+
         return (CsldUser) criteria.uniqueResult();
     }
 
@@ -132,7 +134,7 @@ public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
         Criteria criteria = getBuilder().build().getExecutableCriteria(session)
                 .add(Restrictions.eq("person.email",mail).ignoreCase());
 
-        criteria.setFetchMode("userHasLanguages", FetchMode.SELECT);
+        criteria.setFetchMode("userHasLanguages", FetchMode.JOIN);
         return (CsldUser) criteria.uniqueResult();
     }
 

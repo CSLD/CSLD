@@ -60,7 +60,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     public List<Game> findAll() {
         Criteria crit = new GameBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession());
 
-        crit.setFetchMode("availableLanguages", FetchMode.SELECT);
+        crit.setFetchMode("availableLanguages", FetchMode.JOIN);
 
         return crit.list();
     }
