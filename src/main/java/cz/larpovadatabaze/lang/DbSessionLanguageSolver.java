@@ -2,6 +2,7 @@ package cz.larpovadatabaze.lang;
 
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.UserHasLanguages;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.utils.UserUtils;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ public class DbSessionLanguageSolver implements LanguageSolver {
     @Override
     public List<Locale> getLanguagesForUser() {
         List<Locale> allLocales = new ArrayList<>();
-        CsldUser loggedUser = UserUtils.getLoggedUser();
+        CsldUser loggedUser = CsldAuthenticatedWebSession.get().getLoggedUser();
         if(loggedUser != null) {
             allLocales.addAll(loggedUser.getUserHasLanguages().stream()
                     .map(lang -> Locale.forLanguageTag(lang.getLanguage()))
@@ -39,7 +40,7 @@ public class DbSessionLanguageSolver implements LanguageSolver {
     @Override
     public List<String> getTextLangForUser() {
         List<String> allLocales = new ArrayList<>();
-        CsldUser loggedUser = UserUtils.getLoggedUser();
+        CsldUser loggedUser = CsldAuthenticatedWebSession.get().getLoggedUser();
         if(loggedUser != null) {
             allLocales.addAll(loggedUser.getUserHasLanguages()
                     .stream()

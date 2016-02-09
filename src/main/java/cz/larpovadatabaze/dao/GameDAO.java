@@ -56,6 +56,15 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
         return uniqueGame.list();
     }
 
+    @Override
+    public List<Game> findAll() {
+        Criteria crit = new GameBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession());
+
+        crit.setFetchMode("availableLanguages", FetchMode.SELECT);
+
+        return crit.list();
+    }
+
     @SuppressWarnings("unchecked")
     public List<Game> getLastGames(int amountOfGames, List<Locale> locales) {
         Session session = sessionFactory.getCurrentSession();

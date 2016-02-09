@@ -7,6 +7,7 @@ import cz.larpovadatabaze.dto.UserRatesOwnGameDto;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
@@ -131,6 +132,7 @@ public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
         Criteria criteria = getBuilder().build().getExecutableCriteria(session)
                 .add(Restrictions.eq("person.email",mail).ignoreCase());
 
+        criteria.setFetchMode("userHasLanguages", FetchMode.SELECT);
         return (CsldUser) criteria.uniqueResult();
     }
 
