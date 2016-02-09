@@ -15,4 +15,9 @@ public class GameHasLanguageDao extends GenericHibernateDAO<GameHasLanguages, In
     public IBuilder getBuilder() {
         return new GenericBuilder<GameHasLanguages>(GameHasLanguages.class);
     }
+
+    public boolean saveOrUpdate(GameHasLanguages entity) {
+        System.out.println("Try saving or updating Game Has Language.");
+        return super.saveOrUpdate(entity);
+    }
 }
