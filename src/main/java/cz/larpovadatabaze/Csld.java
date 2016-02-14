@@ -35,6 +35,8 @@ import org.apache.wicket.core.request.mapper.MountedMapper;
 import org.apache.wicket.markup.html.IPackageResourceGuard;
 import org.apache.wicket.markup.html.SecurePackageResourceGuard;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.protocol.http.IRequestLogger;
+import org.apache.wicket.protocol.http.RequestLogger;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
@@ -44,6 +46,8 @@ import org.apache.wicket.request.cycle.AbstractRequestCycleListener;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.info.PageComponentInfo;
 import org.apache.wicket.request.mapper.parameter.PageParametersEncoder;
+import org.apache.wicket.settings.IRequestLoggerSettings;
+import org.apache.wicket.settings.def.RequestLoggerSettings;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,7 +118,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
 		return HomePage.class;
 	}
 
-	@Override
+    @Override
 	protected void init() {
 		super.init();
 
@@ -130,13 +134,17 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
             }
         });
 
+        IRequestLoggerSettings enableRequestLogger = new RequestLoggerSettings();
+        enableRequestLogger.setRequestLoggerEnabled(true);
+        setRequestLoggerSettings(enableRequestLogger);
+
         getApplicationSettings().setInternalErrorPage(Error500Page.class);
 
         getComponentInstantiationListeners().add(new SpringComponentInjector(this, ctx, true));
         getMarkupSettings().setDefaultMarkupEncoding(DEFAULT_ENCODING);
         getMarkupSettings().setStripWicketTags(true);
         if (!isDevelopmentMode()) {
-            // Strip comments in development mode
+            // Strip comments in deployment mode
             getMarkupSettings().setStripComments(true);
         }
         getRequestCycleSettings().setResponseRequestEncoding(DEFAULT_ENCODING);

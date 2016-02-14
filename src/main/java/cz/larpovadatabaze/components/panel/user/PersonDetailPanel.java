@@ -5,19 +5,14 @@ import cz.larpovadatabaze.components.common.icons.UserIcon;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Person;
 import cz.larpovadatabaze.entities.UserPlayedGame;
-import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * It shows detail of user.
  */
 public class PersonDetailPanel extends AbstractCsldPanel<CsldUser> {
-
-    @SpringBean
-    private ImageService imageService;
 
     public PersonDetailPanel(String id, IModel<CsldUser> model) {
         super(id, model);
