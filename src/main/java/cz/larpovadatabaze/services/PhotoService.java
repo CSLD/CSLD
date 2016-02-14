@@ -10,9 +10,9 @@ import java.util.List;
  *
  */
 public interface PhotoService extends GenericService<Photo> {
-    public static final int MAX_PHOTO_WIDTH = 1600;
-    public static final int MAX_PHOTO_HEIGHT = 1600;
-    public static final int PREVIEW_SIZE = 190;
+    int MAX_PHOTO_WIDTH = 1600;
+    int MAX_PHOTO_HEIGHT = 1600;
+    int PREVIEW_SIZE = 190;
 
     boolean saveOrUpdate(Photo actualPhoto);
 

@@ -100,11 +100,6 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public int getAmountOfRatings() {
-        return ratingDAO.getAmountOfRatings();
-    }
-
-    @Override
     public List<Rating> getRatingsOfUser(CsldUser logged, CsldUser actual) {
         if(logged == null || (!logged.getId().equals(actual.getId()) && !csldUserService.isLoggedAtLeastEditor())) {
             return new ArrayList<>();

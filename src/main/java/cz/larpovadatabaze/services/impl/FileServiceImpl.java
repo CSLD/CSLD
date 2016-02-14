@@ -225,11 +225,6 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public AbstractResource.ResourceResponse respondWithFile(String relativeName, String contentType) {
-        return respondWithFile(getPathInDataDir(relativeName), contentType);
-    }
-
-    @Override
     public void removeFiles(String relativePath) {
         if (relativePath != null) {
             File f = getPathInDataDir(relativePath);

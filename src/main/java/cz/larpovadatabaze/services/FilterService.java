@@ -15,5 +15,5 @@ public interface FilterService {
      * @param propertyValue Value of the property, which should be inserted to the resulting collection.
      * @return New collection containing only values relevant to the filter.
      */
-    public Collection filterByPropertyName(Collection toFilter, String propertyName, Object propertyValue);
+    Collection filterByPropertyName(Collection toFilter, String propertyName, Object propertyValue);
 }

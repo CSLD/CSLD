@@ -10,13 +10,11 @@ import java.util.List;
  *
  */
 public interface RatingService extends GenericService<Rating> {
-    public Rating getUserRatingOfGame(Integer userId, Integer gameId) throws WrongParameterException;
+    Rating getUserRatingOfGame(Integer userId, Integer gameId) throws WrongParameterException;
 
     double getAverageRating();
 
     void saveOrUpdate(Rating actualRating);
-
-    int getAmountOfRatings();
 
     List<Rating> getRatingsOfUser(CsldUser logged, CsldUser actual);
 

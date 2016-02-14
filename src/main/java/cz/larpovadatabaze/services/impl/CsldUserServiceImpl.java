@@ -40,9 +40,6 @@ public class CsldUserServiceImpl implements CsldUserService {
     private static final String RE_CAPTCHA_SECRET_KEY ="6LeEiv8SAAAAAAE2ikmbiEJhv5XdVaI4_TiPPEt6";
 
     @Autowired
-    private UserHasLanguagesDao languagesOfUser;
-
-    @Autowired
     private CsldUserDAO csldUserDao;
 
     @Autowired
@@ -58,11 +55,6 @@ public class CsldUserServiceImpl implements CsldUserService {
     @Override
     public boolean saveOrUpdate(CsldUser user) {
         return csldUserDao.saveOrUpdate(user);
-    }
-
-    @Override
-    public void flush() {
-        csldUserDao.flush();
     }
 
     @Override
@@ -93,23 +85,8 @@ public class CsldUserServiceImpl implements CsldUserService {
     }
 
     @Override
-    public CsldUser getWithMostComments() {
-        return csldUserDao.getWithMostComments();
-    }
-
-    @Override
-    public CsldUser getWithMostAuthored() {
-        return csldUserDao.getWithMostAuthored();
-    }
-
-    @Override
     public CsldUser authenticate(String username, String password) {
         return csldUserDao.authenticate(username, password);
-    }
-
-    @Override
-    public List<CsldUser> getAuthorsByBestGame(long first, long amountPerPage) {
-        return csldUserDao.getAuthorsByBestGame(first, amountPerPage);
     }
 
     @Override
@@ -118,43 +95,13 @@ public class CsldUserServiceImpl implements CsldUserService {
     }
 
     @Override
-    public List<CsldUser> getOrderedUsersByName(long first, long amountPerPage) {
-        return csldUserDao.getOrderedUsersByName(first, amountPerPage);
-    }
-
-    @Override
-    public List<CsldUser> getOrderedUsersByComments(long first, long amountPerPage) {
-        return csldUserDao.gerOrderedUsersByComments(first, amountPerPage);
-    }
-
-    @Override
-    public List<CsldUser> getOrderedUsersByPlayed(long first, long amountPerPage) {
-        return csldUserDao.getOrderedUsersByPlayed(first, amountPerPage);
-    }
-
-    @Override
     public CsldUser getByEmail(String mail) {
         return csldUserDao.getByEmail(mail);
     }
 
     @Override
-    public int getAmountOfAuthors() {
-        return csldUserDao.getAmountOfAuthors();
-    }
-
-    @Override
-    public int getAmountOfOnlyAuthors() {
-        return csldUserDao.getAmountOfOnlyAuthors();
-    }
-
-    @Override
     public List<CsldUser> getFirstChoices(String startsWith, int maxChoices) {
         return csldUserDao.getFirstChoices(startsWith, maxChoices);
-    }
-
-    @Override
-    public List<CsldUser> getAuthorsByName(long first, long amountPerPage) {
-        return csldUserDao.getAuthorsByName(first, amountPerPage);
     }
 
     @Override

@@ -52,11 +52,6 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment getCommentOnGameFromUser(int userId, int gameId) {
-        return commentDAO.getCommentOnGameFromUser(userId, gameId);
-    }
-
-    @Override
     public void saveOrUpdate(Comment actualComment) {
         commentDAO.saveOrUpdate(actualComment);
 
@@ -71,11 +66,6 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Collection<Comment> getLastComments(long first, long count, Locale locale) {
         return new LinkedHashSet<>(commentDAO.getLastComments(((Long)first).intValue(), ((Long)count).intValue(), languageSolver.getLanguagesForUser()));
-    }
-
-    @Override
-    public int getAmountOfComments() {
-        return commentDAO.getAmountOfComments();
     }
 
     @Override
@@ -104,10 +94,4 @@ public class CommentServiceImpl implements CommentService {
     public Collection<Game> getGamesCommentedByUser(int userId) {
         return gameService.getGamesCommentedByUser(userId);
     }
-
-    @Override
-    public long getAmountOfComments(Locale locale) {
-        return commentDAO.getAmountOfComments(locale);
-    }
-
 }

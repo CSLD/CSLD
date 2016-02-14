@@ -5,6 +5,8 @@ import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.ReflectionUtils;
 
+import java.util.Locale;
+
 /**
  * Simple Utility methods useful for testing.
  */
@@ -14,6 +16,7 @@ public class TestUtils {
         if(toLog != null) {
             ReflectionTestUtils.setField(CsldAuthenticatedWebSession.get(), "signedIn", true);
             CsldAuthenticatedWebSession.get().transformToRoles(toLog.getRole());
+            CsldAuthenticatedWebSession.get().setLocale(Locale.ENGLISH);
         }
     }
 

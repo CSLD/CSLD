@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
  * Time: 13:18
  */
 public interface ImageResizingStrategyFactoryService {
-    public static interface IImageResizingStrategy {
+    interface IImageResizingStrategy {
         /**
          * Convert image using the strategy
          *
@@ -18,7 +18,7 @@ public interface ImageResizingStrategyFactoryService {
          *
          * @return Output image
          */
-        public BufferedImage convertImage(BufferedImage sourceImage);
+        BufferedImage convertImage(BufferedImage sourceImage);
     }
 
     /**
@@ -29,7 +29,7 @@ public interface ImageResizingStrategyFactoryService {
      *
      * @return Strategy that will convert image using specified parameters
      */
-    public IImageResizingStrategy getMaxWidthHeightStrategy(int maxWidth, int maxHeight);
+    IImageResizingStrategy getMaxWidthHeightStrategy(int maxWidth, int maxHeight);
 
     /**
      * Get strategy which cuts square from the image, as big as possible and then resize the square to
@@ -42,10 +42,10 @@ public interface ImageResizingStrategyFactoryService {
      *
      * @return Strategy that will convert image using specified parameters
      */
-    public IImageResizingStrategy getCuttingSquareStrategy(int sideSize, float leftTopPercent);
+    IImageResizingStrategy getCuttingSquareStrategy(int sideSize, float leftTopPercent);
 
     /**
      * @return Strategy for cutting cover image
      */
-    public IImageResizingStrategy getCoverImageStrategy();
+    IImageResizingStrategy getCoverImageStrategy();
 }

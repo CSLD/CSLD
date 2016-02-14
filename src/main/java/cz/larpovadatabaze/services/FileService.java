@@ -18,7 +18,7 @@ public interface FileService {
     /**
      * Return class from saveImageFileAndReturnPath
      */
-    public static class ResizeAndSaveReturn {
+    class ResizeAndSaveReturn {
         public final String path;
         public final int savedWidth;
         public final int savedHeight;
@@ -30,21 +30,19 @@ public interface FileService {
         }
     }
 
-
-
     /**
      * @param relativeName Relative name
      *
      * @return File object for the specified name in CSLD's data directory
      */
-    public File getPathInDataDir(String relativeName);
+    File getPathInDataDir(String relativeName);
 
     /**
      * @param relativeName Relative name
      *
      * @return File object for preview for the specified name in CSLD's data directory
      */
-    public File getFilePreviewInDataDir(String relativeName);
+    File getFilePreviewInDataDir(String relativeName);
 
     /**
      * @param relativeName Relative file name
@@ -52,17 +50,7 @@ public interface FileService {
      *
      * @return Resource reference for the file
      */
-    public AbstractResource getFileResource(String relativeName, String contentType) throws FileNotFoundException;
-
-    /**
-     * Respond to resource request with the given file
-     *
-     * @param relativeName Name of file to output
-     * @param contentType Content type (if known)
-     *
-     * @return Resonse that will produce file data
-     */
-    public AbstractResource.ResourceResponse respondWithFile(String relativeName, String contentType);
+    AbstractResource getFileResource(String relativeName, String contentType) throws FileNotFoundException;
 
     /**
      * Respond to resource request with the given file
@@ -72,7 +60,7 @@ public interface FileService {
      *
      * @return Resonse that will produce file data
      */
-    public AbstractResource.ResourceResponse respondWithFile(File file, String contentType);
+    AbstractResource.ResourceResponse respondWithFile(File file, String contentType);
 
     /**
      * Resize and save uploaded image
@@ -82,7 +70,7 @@ public interface FileService {
      *
      * @return Result class
      */
-    public ResizeAndSaveReturn saveImageFileAndReturnPath(FileUpload upload, IImageResizingStrategy resizingStrategy);
+    ResizeAndSaveReturn saveImageFileAndReturnPath(FileUpload upload, IImageResizingStrategy resizingStrategy);
 
     /**
      * Resize and save uploaded image plus save image preview
@@ -93,12 +81,12 @@ public interface FileService {
      *
      * @return Result class
      */
-    public ResizeAndSaveReturn saveImageFileAndPreviewAndReturnPath(FileUpload upload, IImageResizingStrategy fullImageResizingStrategy, IImageResizingStrategy previewResizingStrategy);
+    ResizeAndSaveReturn saveImageFileAndPreviewAndReturnPath(FileUpload upload, IImageResizingStrategy fullImageResizingStrategy, IImageResizingStrategy previewResizingStrategy);
 
     /**
      * Delete file(s) belonging to this relative path (used when file is about to be deleted)
      *
      * @param relativePath Path to be deleted
      */
-    public void removeFiles(String relativePath);
+    void removeFiles(String relativePath);
  }

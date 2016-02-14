@@ -88,11 +88,6 @@ public class LabelServiceImpl implements LabelService {
     }
 
     @Override
-    public Label getByName(String name) {
-        return labelDAO.getByName(name);
-    }
-
-    @Override
     public boolean saveOrUpdate(Label label) {
         return labelDAO.saveOrUpdate(label);
     }

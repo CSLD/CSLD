@@ -31,7 +31,6 @@ public class CsldBasePageTest extends AcceptanceTest {
 
         tester.assertLabel("pageTitle", "Česko-slovenská larpová databáze");
         tester.assertComponent("list-game", BookmarkablePageLink.class);
-        tester.assertComponent("list-authors", BookmarkablePageLink.class);
         tester.assertComponent("about", BookmarkablePageLink.class);
 
         tester.assertComponent("user", LoginBoxPanel.class);

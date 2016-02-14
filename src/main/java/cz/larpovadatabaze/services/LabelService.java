@@ -11,19 +11,17 @@ import java.util.List;
  *
  */
 public interface LabelService extends GenericService<Label>{
-    public List<Label> getRequired();
+    List<Label> getRequired();
 
-    public List<Label> getOptional();
+    List<Label> getOptional();
 
     void update(Label label);
 
-    public List<Label> getAuthorizedOptional(CsldUser authorizedTo);
+    List<Label> getAuthorizedOptional(CsldUser authorizedTo);
 
-    public List<Label> getAuthorizedRequired(CsldUser authorizedTo);
+    List<Label> getAuthorizedRequired(CsldUser authorizedTo);
 
     List<Label> getByAutoCompletable(String labelName) throws WrongParameterException;
-
-    Label getByName(String name);
 
     boolean saveOrUpdate(Label label);
 

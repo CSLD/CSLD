@@ -6,7 +6,7 @@ import cz.larpovadatabaze.entities.Video;
  *
  */
 public interface VideoService extends GenericService<Video> {
-    public boolean saveOrUpdate(Video video);
+    boolean saveOrUpdate(Video video);
 
     /**
      * Process URL and try to get URL for video embeding
@@ -15,5 +15,5 @@ public interface VideoService extends GenericService<Video> {
      *
      * @return URL for video embeding. NULL when URL has bad format. Empty string when input was empty.
      */
-    public String getEmbedingURL(String url);
+    String getEmbedingURL(String url);
 }

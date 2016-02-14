@@ -30,8 +30,6 @@ import java.util.*;
 @Repository
 @Transactional
 public class GameServiceImpl implements GameService {
-    private static final int GAME_ICON_SIZE=120;
-
     @Autowired private GameDAO gameDAO;
     @Autowired private SessionFactory sessionFactory;
     @Autowired private FileService fileService;
@@ -95,11 +93,11 @@ public class GameServiceImpl implements GameService {
     @Override
     public List<Game> gamesOfAuthors(Game game) {
         // TODO sort games by rating.
-        Set<Game> games = new LinkedHashSet<Game>();
+        Set<Game> games = new LinkedHashSet<>();
         for(CsldUser author: game.getAuthors()){
             games.addAll(author.getAuthorOf());
         }
-        List<Game> gamesOfAuthors = new ArrayList<Game>();
+        List<Game> gamesOfAuthors = new ArrayList<>();
         gamesOfAuthors.addAll(games);
         Collections.sort(gamesOfAuthors, (o1, o2) -> {
             if(o1.getTotalRating().equals(o2.getTotalRating())) {
@@ -116,11 +114,6 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Game getRandomGame() {
-        return gameDAO.getRandomGame();
-    }
-
-    @Override
     public List<Game> getLastGames(int amountOfGames) {
         return gameDAO.getLastGames(amountOfGames, languageSolver.getLanguagesForUser());
     }
@@ -128,11 +121,6 @@ public class GameServiceImpl implements GameService {
     @Override
     public List<Game> getMostPopularGames(int amountOfGames) {
         return gameDAO.getMostPopularGames(amountOfGames, languageSolver.getLanguagesForUser());
-    }
-
-    @Override
-    public int getAmountOfGames() {
-        return gameDAO.getAmountOfGames();
     }
 
     @Override
@@ -242,7 +230,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Collection<Game> getGamesCommentedByUser(int userId) {
-        return new LinkedHashSet<Game>(gameDAO.getGamesCommentedByUser(userId));
+        return new LinkedHashSet<>(gameDAO.getGamesCommentedByUser(userId));
     }
 
     @Override
@@ -263,7 +251,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Collection<Game> getGamesRatedByUser(int userId) {
-        return new LinkedHashSet<Game>(gameDAO.getGamesRatedByUser(userId));
+        return new LinkedHashSet<>(gameDAO.getGamesRatedByUser(userId));
     }
 
     @Override

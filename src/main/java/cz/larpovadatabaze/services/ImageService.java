@@ -11,11 +11,11 @@ import org.apache.wicket.request.resource.ResourceReference;
  */
 public interface ImageService extends GenericService<Image> {
     // @see getImageResourceReference()
-    public static final String RESOURCE_REFERENCE_ID_PARAM_NAME="id";
+    String RESOURCE_REFERENCE_ID_PARAM_NAME="id";
 
-    public boolean insert(Image image);
+    boolean insert(Image image);
 
-    public IResource getPredefinedImageResource(IEntityWithImage.IPredefinedImage image);
+    IResource getPredefinedImageResource(IEntityWithImage.IPredefinedImage image);
 
 
     /**
@@ -26,7 +26,7 @@ public interface ImageService extends GenericService<Image> {
      * @return Resource reference for image associated with this type entity. Resource expects entity ID in the parameter
      * named with string in constant RESOURCE_REFERENCE_ID_PARAM_NAME (see above)
      */
-    public ResourceReference createImageTypeResourceReference(GenericHibernateDAO<? extends IEntityWithImage, Integer> dao);
+    ResourceReference createImageTypeResourceReference(GenericHibernateDAO<? extends IEntityWithImage, Integer> dao);
 
     IResource getImageResource(Image image, IEntityWithImage.IPredefinedImage defaultImage);
 

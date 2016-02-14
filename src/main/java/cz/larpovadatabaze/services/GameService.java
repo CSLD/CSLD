@@ -14,16 +14,16 @@ import java.util.List;
  *
  */
 public interface GameService extends GenericService<Game>, IIconReferenceProvider<Game> {
-    public Game getById(Integer id);
+    Game getById(Integer id);
 
     /**
      * Flush game from Hibernate cache / session cache
      *
      * @param id Game id
      */
-    public void evictGame(Integer id);
+    void evictGame(Integer id);
 
-    public boolean addGame(Game game);
+    boolean addGame(Game game);
 
     List<Game> getSimilar(Game game);
 
@@ -31,11 +31,7 @@ public interface GameService extends GenericService<Game>, IIconReferenceProvide
 
     List<Game> getByAutoCompletable(String gameName) throws WrongParameterException;
 
-    Game getRandomGame();
-
     List<Game> getLastGames(int amountOfGames);
-
-    int getAmountOfGames();
 
     List<Game> getFilteredGames(FilterGame filterGame, int offset, int limit);
 

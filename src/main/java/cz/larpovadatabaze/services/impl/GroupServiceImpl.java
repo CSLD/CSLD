@@ -21,10 +21,8 @@ import java.util.List;
 public class GroupServiceImpl implements GroupService {
     @Autowired
     private GroupDAO groupDAO;
-
     @Autowired
     private ImageService imageService;
-    @Autowired private LanguageSolver languageSolver;
 
     private ResourceReference iconResourceReference;
 
@@ -41,11 +39,6 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public List<CsldGroup> getUnique(CsldGroup example) {
         return groupDAO.findByName(example.getName());
-    }
-
-    @Override
-    public List<CsldGroup> orderedByName(long first, long amountPerPage) {
-        return groupDAO.orderedByName(first, amountPerPage, languageSolver.getLanguagesForUser());
     }
 
     @Override
@@ -71,16 +64,6 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public void saveOrUpdate(CsldGroup group) {
         groupDAO.saveOrUpdate(group);
-    }
-
-    @Override
-    public int getAmountOfGroups() {
-        return groupDAO.getAmountOfGroups(languageSolver.getLanguagesForUser());
-    }
-
-    @Override
-    public int getAverageOfGroup(CsldGroup group) {
-        return groupDAO.getAverageOfGroup(group);
     }
 
     @Override
