@@ -38,6 +38,12 @@ public class Event implements cz.larpovadatabaze.api.Entity {
         this.location = location;
     }
 
+    public Event(int id, Calendar from, Calendar to) {
+        this.id = id;
+        this.from = from;
+        this.to = to;
+    }
+
     public Event(Integer id, String name, Calendar from, Calendar to, Location location, String language) {
         this.id = id;
         this.name = name;
