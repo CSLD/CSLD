@@ -35,6 +35,22 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public Comment getCommentOnGameFromUser(int userId, int gameId) {
+        return commentDAO.getCommentOnGameFromUser(userId, gameId);
+    }
+
+    @Override
+    public int getAmountOfComments() {
+        return commentDAO.getAmountOfComments();
+    }
+
+
+    @Override
+    public long getAmountOfComments(Locale locale) {
+        return commentDAO.getAmountOfComments(locale);
+    }
+
+    @Override
     public List<Comment> getUnique(Comment example) {
         List<Comment> uniqueResult = commentDAO.findByExample(example, new String[]{});
         commentDAO.flush();
