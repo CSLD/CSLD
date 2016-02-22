@@ -1,9 +1,11 @@
 package cz.larpovadatabaze.calendar.model;
 
 import cz.larpovadatabaze.calendar.Location;
+import cz.larpovadatabaze.entities.Label;
 
 import javax.persistence.*;
 import java.util.Calendar;
+import java.util.Collection;
 
 /**
  * Event for the database.
@@ -21,16 +23,26 @@ public class Event implements cz.larpovadatabaze.api.Entity {
     @Embedded
     private Location location;
     private String language;
+    @ManyToMany
+    @JoinTable(name = "event_has_labels")
+    private Collection<Label> labels;
 
     // Constructor without parameters must be there for ORM usage.
-    protected Event(){}
+    protected Event() {
+    }
 
     /**
      * Prepare instance of Event with id and some defaults for others. Use only in tests.
+     *
      * @param id Id to be provided
      */
     public Event(Integer id) {
         this.id = id;
+    }
+
+    public Event(Integer id, Collection<Label> labels) {
+        this.id = id;
+        this.labels = labels;
     }
 
     public Event(Integer id, Location location) {
@@ -44,13 +56,14 @@ public class Event implements cz.larpovadatabaze.api.Entity {
         this.to = to;
     }
 
-    public Event(Integer id, String name, Calendar from, Calendar to, Location location, String language) {
+    public Event(Integer id, String name, Calendar from, Calendar to, Location location, String language, Collection<Label> labels) {
         this.id = id;
         this.name = name;
         this.from = from;
         this.to = to;
         this.location = location;
         this.language = language;
+        this.labels = labels;
     }
 
     public String getName() {
@@ -75,6 +88,10 @@ public class Event implements cz.larpovadatabaze.api.Entity {
 
     public String getLanguage() {
         return language;
+    }
+
+    public Collection<Label> getLabels() {
+        return labels;
     }
 
     @Override

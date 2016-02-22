@@ -2,6 +2,7 @@ package cz.larpovadatabaze;
 
 import cz.larpovadatabaze.api.Entity;
 import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.services.builders.CzechMasqueradeBuilder;
 import cz.larpovadatabaze.services.builders.EntityBuilder;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;

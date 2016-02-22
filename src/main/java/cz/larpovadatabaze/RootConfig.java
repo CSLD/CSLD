@@ -64,6 +64,9 @@ public class RootConfig {
         properties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
         properties.put("autocommit", "true");
         properties.put("hibernate.globally_quoted_identifiers", "true");
+        properties.put("hibernate.cache.provider_class", env.getProperty("hibernate.cache.provider_class"));
+        properties.put("javax.persistence.sharedCache.mode", env.getProperty("javax.persistence.sharedCache.mode"));
+        properties.put("hibernate.cache.default_cache_concurrency_strategy", env.getProperty("hibernate.cache.default_cache_concurrency_strategy"));
 
         return properties;
     }

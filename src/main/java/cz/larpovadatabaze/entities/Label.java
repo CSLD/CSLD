@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.entities;
 
-import cz.larpovadatabaze.api.Identifiable;
+import cz.larpovadatabaze.api.*;
 import cz.larpovadatabaze.lang.DbSessionLanguageSolver;
 import cz.larpovadatabaze.lang.TranslatableEntity;
 import cz.larpovadatabaze.lang.TranslatableEntityTranslator;
@@ -9,6 +9,7 @@ import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletab
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +19,18 @@ import java.util.List;
  */
 @Entity
 @Table(name="csld_label")
-public class Label implements Serializable, IAutoCompletable, Identifiable<Integer>, TranslatableEntity {
+public class Label implements Serializable, IAutoCompletable, Identifiable<Integer>, TranslatableEntity, cz.larpovadatabaze.api.Entity {
     private Integer id;
+    private Boolean isAuthorized;
+    private Boolean isRequired;
+    private CsldUser addedBy;
+    private List<LabelHasLanguages> labelHasLanguages;
+
+    public Label() {}
+
+    public Label(int id) {
+        this.id = id;
+    }
 
     @Column(
             name = "id",
@@ -103,8 +114,6 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
         getLabelHasLanguages().add(defaultLanguage);
     }
 
-    private Boolean isRequired;
-
     @Column(
             name = "is_required",
             nullable = true,
@@ -120,7 +129,6 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
         isRequired = required;
     }
 
-    private Boolean isAuthorized;
 
     @Column(
             name = "is_authorized",
@@ -164,7 +172,6 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
         return result;
     }
 
-    private CsldUser addedBy;
 
     @ManyToOne
     @JoinColumn(
@@ -181,7 +188,6 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
         this.addedBy = addedBy;
     }
 
-    private List<LabelHasLanguages> labelHasLanguages;
 
     @OneToMany(mappedBy = "label")
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
