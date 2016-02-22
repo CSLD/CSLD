@@ -19,8 +19,12 @@ import java.util.Iterator;
  */
 @Component
 public class SortableCommentProvider extends SortableDataProvider<Comment, String> {
-    @Autowired
     private CommentService commentService;
+
+    @Autowired
+    public SortableCommentProvider(CommentService commentService){
+        this.commentService = commentService;
+    }
 
     @Override
     public Iterator<? extends Comment> iterator(long first, long count) {

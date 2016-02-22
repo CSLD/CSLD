@@ -7,6 +7,7 @@ import cz.larpovadatabaze.components.page.admin.AdministrationPage;
 import cz.larpovadatabaze.components.page.admin.ManageLabelsPage;
 import cz.larpovadatabaze.components.page.admin.ManageUserRightsPage;
 import cz.larpovadatabaze.components.page.author.CreateOrUpdateAuthorPage;
+import cz.larpovadatabaze.components.page.calendar.CalendarWithMapPage;
 import cz.larpovadatabaze.components.page.error.Error404Page;
 import cz.larpovadatabaze.components.page.error.Error500Page;
 import cz.larpovadatabaze.components.page.game.*;
@@ -222,6 +223,8 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         mountPage("/detail-author", UserDetailPage.class);
         mountPage("/detail-user", UserDetailPage.class);
         mountPage("/detail-group", GroupDetail.class);
+
+        mountPage("/kalendar", CalendarWithMapPage.class);
 
         mountPage("/search", SearchResultsPage.class);
 
