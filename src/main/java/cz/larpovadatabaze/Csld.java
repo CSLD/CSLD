@@ -266,7 +266,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         Session session = super.newSession(request, response);
         List<Locale> available = availableLocale();
         if(!available.contains(session.getLocale())){
-            session.setLocale(Locale.forLanguageTag("cs"));
+            session.setLocale(Locale.ENGLISH);
         }
         return session;
     }
