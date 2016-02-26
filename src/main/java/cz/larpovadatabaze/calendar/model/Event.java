@@ -8,9 +8,11 @@ import java.util.Calendar;
 /**
  * Event for the database.
  */
-@Entity
+@Entity(name = "csld_event")
 public class Event implements cz.larpovadatabaze.api.Entity {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
+    @SequenceGenerator(sequenceName = "csld_event_id_seq", name="id_gen")
     private Integer id;
     private String name;
     @Temporal(value = TemporalType.DATE)
@@ -22,30 +24,22 @@ public class Event implements cz.larpovadatabaze.api.Entity {
     private Location location;
     private String language;
 
-    // Constructor without parameters must be there for ORM usage.
-    protected Event(){}
-
     /**
-     * Prepare instance of Event with id and some defaults for others. Use only in tests.
-     * @param id Id to be provided
+     * Prepare instance of Event with id and some defaults for others. For use in tests.
      */
-    public Event(Integer id) {
-        this.id = id;
+    public Event() {
     }
 
-    public Event(Integer id, Location location) {
-        this.id = id;
+    public Event(Location location) {
         this.location = location;
     }
 
-    public Event(int id, Calendar from, Calendar to) {
-        this.id = id;
+    public Event(Calendar from, Calendar to) {
         this.from = from;
         this.to = to;
     }
 
-    public Event(Integer id, String name, Calendar from, Calendar to, Location location, String language) {
-        this.id = id;
+    public Event(String name, Calendar from, Calendar to, Location location, String language) {
         this.name = name;
         this.from = from;
         this.to = to;

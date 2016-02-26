@@ -6,9 +6,17 @@ import cz.larpovadatabaze.services.builders.CzechMasqueradeBuilder;
 import cz.larpovadatabaze.services.builders.EntityBuilder;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.tester.WicketTester;
+import org.dbunit.DataSourceDatabaseTester;
+import org.dbunit.database.DatabaseConfig;
+import org.dbunit.database.DatabaseConnection;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.operation.DatabaseOperation;
 import org.hibernate.FlushMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl;
+import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.metadata.ClassMetadata;
 import org.junit.After;
 import org.junit.Before;
@@ -19,6 +27,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Map;
 
@@ -73,22 +82,26 @@ abstract public class AcceptanceTest {
     }
 
     @After
-    public void tearDown() {
-        cleanDatabase();
+    public void tearDown() throws Exception {
+        //cleanDatabase();
+
         session.close();
         TransactionSynchronizationManager.unbindResource(sessionFactory);
+
         TestUtils.logoutUser();
     }
 
-    private void cleanDatabase(){
-        session.getTransaction().begin();
+    private void cleanDatabase() throws Exception {
+        SessionFactoryImpl hibernateSessions = (SessionFactoryImpl) sessionFactory;
+        IDatabaseConnection connection = new DatabaseConnection(hibernateSessions.getConnectionProvider().getConnection());
+        DatabaseConfig config = connection.getConfig();
+        config.setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, true);
 
-        Collection<Entity> events = session.createQuery("from Event").list();
-        for(Entity event: events) {
-            session.delete(event);
+        IDataSet databaseDataSet = connection.createDataSet();
+        try {
+            DatabaseOperation.DELETE_ALL.execute(connection, databaseDataSet);
+        } finally {
+            connection.close();
         }
-
-        session.flush();
-        session.getTransaction().commit();
     }
 }

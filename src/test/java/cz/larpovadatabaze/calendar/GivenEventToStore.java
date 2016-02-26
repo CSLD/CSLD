@@ -21,7 +21,7 @@ public class GivenEventToStore extends AcceptanceTest {
     @Before
     public void WhenEventIsStored(){
         DatabaseEvents events = new DatabaseEvents(session);
-        event = new Event(1);
+        event = new Event();
 
         events.store(event);
     }
