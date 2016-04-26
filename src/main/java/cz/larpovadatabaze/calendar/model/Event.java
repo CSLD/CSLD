@@ -12,7 +12,7 @@ import java.util.UUID;
 /**
  * Event for the database.
  */
-@Entity
+@Entity(name = "event")
 public class Event implements cz.larpovadatabaze.api.Entity {
     @Id
     private String id;
@@ -97,6 +97,18 @@ public class Event implements cz.larpovadatabaze.api.Entity {
 
     public Collection<Label> getLabels() {
         return labels;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getLoc() {
+        return loc;
     }
 
     @Override
