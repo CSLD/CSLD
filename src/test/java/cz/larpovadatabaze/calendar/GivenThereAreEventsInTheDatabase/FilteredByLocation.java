@@ -28,9 +28,9 @@ public class FilteredByLocation extends AcceptanceTest{
         );
 
         new InTransaction(session,
-                new Event(1, new Location(51d, 14d)),
-                new Event(2, new Location(52d, 20d)),
-                new Event(3, new Location(13d, 4d))
+                new Event("1", new Location(51d, 14d)),
+                new Event("2", new Location(52d, 20d)),
+                new Event("3", new Location(13d, 4d))
             ).store();
 
         loaded = events.all();

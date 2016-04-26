@@ -21,7 +21,7 @@ public class All extends AcceptanceTest {
     public void WhenAllEventsAreRequested(){
         Events events = new DatabaseEvents(session);
 
-        new InTransaction(session, new Event(1), new Event(2), new Event(3)).store();
+        new InTransaction(session, new Event("1"), new Event("2"), new Event("3")).store();
 
         loaded = events.all();
     }

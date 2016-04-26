@@ -21,9 +21,9 @@ public class FilteredByTime extends AcceptanceTest {
     @Before
     public void WhenUserRequestsEventsInGivenTimeFrame() {
 
-        Event beforeTimeFrame = new Event(1, calendarForDate(2014, Calendar.OCTOBER, 12), calendarForDate(2014, Calendar.OCTOBER, 14));
-        Event afterTimeFrame = new Event(2, calendarForDate(2016, Calendar.OCTOBER, 1), calendarForDate(2016, Calendar.OCTOBER, 3));
-        Event fullyInTimeFrame = new Event(3, calendarForDate(2015, Calendar.NOVEMBER, 5), calendarForDate(2015, Calendar.NOVEMBER, 7));
+        Event beforeTimeFrame = new Event("1", calendarForDate(2014, Calendar.OCTOBER, 12), calendarForDate(2014, Calendar.OCTOBER, 14));
+        Event afterTimeFrame = new Event("2", calendarForDate(2016, Calendar.OCTOBER, 1), calendarForDate(2016, Calendar.OCTOBER, 3));
+        Event fullyInTimeFrame = new Event("3", calendarForDate(2015, Calendar.NOVEMBER, 5), calendarForDate(2015, Calendar.NOVEMBER, 7));
 
 
         new InTransaction(session, beforeTimeFrame, afterTimeFrame, fullyInTimeFrame).store();

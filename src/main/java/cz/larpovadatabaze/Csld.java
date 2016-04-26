@@ -1,5 +1,7 @@
 package cz.larpovadatabaze;
 
+import cz.larpovadatabaze.calendar.component.page.CreateNewEventPage;
+import cz.larpovadatabaze.calendar.component.page.ListEventsPage;
 import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.components.page.TestDatabase;
 import cz.larpovadatabaze.components.page.about.AboutDatabasePage;
@@ -225,6 +227,9 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         mountPage("/detail-group", GroupDetail.class);
 
         mountPage("/kalendar", CalendarWithMapPage.class);
+
+        mountPage("/calendar", ListEventsPage.class);
+        mountPage("/add-event", CreateNewEventPage.class);
 
         mountPage("/search", SearchResultsPage.class);
 

@@ -1,11 +1,13 @@
 package cz.larpovadatabaze.calendar.model;
 
 import cz.larpovadatabaze.calendar.Location;
+import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Label;
 
 import javax.persistence.*;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.UUID;
 
 /**
  * Event for the database.
@@ -13,8 +15,11 @@ import java.util.Collection;
 @Entity
 public class Event implements cz.larpovadatabaze.api.Entity {
     @Id
-    private Integer id;
+    private String id;
     private String name;
+    private String date;
+    private String description;
+    private String loc;
     @Temporal(value = TemporalType.DATE)
     private Calendar from;
     @Temporal(value = TemporalType.DATE)
@@ -36,27 +41,27 @@ public class Event implements cz.larpovadatabaze.api.Entity {
      *
      * @param id Id to be provided
      */
-    public Event(Integer id) {
+    public Event(String id) {
         this.id = id;
     }
 
-    public Event(Integer id, Collection<Label> labels) {
+    public Event(String id, Collection<Label> labels) {
         this.id = id;
         this.labels = labels;
     }
 
-    public Event(Integer id, Location location) {
+    public Event(String id, Location location) {
         this.id = id;
         this.location = location;
     }
 
-    public Event(int id, Calendar from, Calendar to) {
+    public Event(String id, Calendar from, Calendar to) {
         this.id = id;
         this.from = from;
         this.to = to;
     }
 
-    public Event(Integer id, String name, Calendar from, Calendar to, Location location, String language, Collection<Label> labels) {
+    public Event(String id, String name, Calendar from, Calendar to, Location location, String language, Collection<Label> labels) {
         this.id = id;
         this.name = name;
         this.from = from;
@@ -82,7 +87,7 @@ public class Event implements cz.larpovadatabaze.api.Entity {
         return location;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
@@ -111,11 +116,15 @@ public class Event implements cz.larpovadatabaze.api.Entity {
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
+        int result = (id != null ? id.hashCode(): 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (from != null ? from.hashCode() : 0);
         result = 31 * result + (to != null ? to.hashCode() : 0);
         result = 31 * result + (location != null ? location.hashCode() : 0);
         return result;
+    }
+
+    public static Event getEmptyEvent() {
+        return new Event(UUID.randomUUID().toString());
     }
 }
