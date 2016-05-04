@@ -10,6 +10,15 @@ import java.sql.Timestamp;
 @Table(name = "csld_comment")
 @Entity
 public class Comment implements Serializable {
+    public Comment() {}
+
+    public Comment(int id, String comment, Timestamp added, String lang) {
+        this.id = id;
+        this.comment = comment;
+        this.added = added;
+        this.lang = lang;
+    }
+
     private int id;
 
     @Column(name = "id")

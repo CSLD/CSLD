@@ -18,7 +18,7 @@ public class GivenEventToDelete extends AcceptanceTest{
     public void WhenEventIsDeleted(){
         DatabaseEvents events = new DatabaseEvents(session);
 
-        Event toDelete = new Event();
+        Event toDelete = new Event("1");
         session.persist(toDelete);
 
         events.delete(toDelete);

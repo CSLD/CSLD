@@ -15,12 +15,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Balda on 10. 7. 2015.
- */
 @Service
 @Transactional
-public class CzechMasqueradeBuilder {
+public class CzechMasqueradeBuilder{
     @Autowired
     private EntityBuilder persistenceStore;
 

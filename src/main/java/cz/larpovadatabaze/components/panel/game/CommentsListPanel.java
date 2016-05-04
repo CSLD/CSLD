@@ -35,9 +35,6 @@ import java.util.List;
  */
 public class CommentsListPanel extends Panel {
     @SpringBean
-    ImageService imageService;
-
-    @SpringBean
     CommentService commentService;
 
     private final IModel<List<Comment>> comments;
@@ -131,6 +128,8 @@ public class CommentsListPanel extends Panel {
             }
         };
         add(commentList);
+
+
     }
 
     private WebMarkupContainer createGameDetailLink(Game game) {

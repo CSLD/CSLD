@@ -59,7 +59,7 @@ DECLARE
   ratingsRow RECORD;
   result integer;
 BEGIN
-  select into ratingsRow count(*) as ratingCount from csld_rating where game_id = gameId;
+  select into ratingsRow count(*) as ratingCount from csld_rating where game_id = eventId;
   return ratingsRow.ratingCount;
 END
 $$;
@@ -134,7 +134,7 @@ DECLARE
   result double precision;
   average RECORD;
 BEGIN
-  select into ratingsRow sum(rating) as ratingCount, count(*) as ratingAmount from csld_rating where game_id = gameId;
+  select into ratingsRow sum(rating) as ratingCount, count(*) as ratingAmount from csld_rating where game_id = eventId;
   if ratingsRow.ratingAmount < 5 THEN
         return 0;
   END IF;
@@ -182,7 +182,7 @@ CREATE FUNCTION csld_countcomments(gameid integer) RETURNS integer
 DECLARE
   commentsRow RECORD;
 BEGIN
-  select into commentsRow count(*) as commentCount from comment where game_id = gameId;
+  select into commentsRow count(*) as commentCount from comment where game_id = eventId;
   return commentsRow.commentCount;
 END;
 $$;
@@ -201,7 +201,7 @@ CREATE FUNCTION csld_countrating(gameid integer) RETURNS double precision
   result double precision;
   average RECORD;
 BEGIN
-  select into ratingsRow sum(rating) as ratingCount, count(*) as ratingAmount from rating where game_id = gameId;
+  select into ratingsRow sum(rating) as ratingCount, count(*) as ratingAmount from rating where game_id = eventId;
   if ratingsRow.ratingAmount < 5 THEN
         return 0;
   END IF;
@@ -285,20 +285,20 @@ CREATE FUNCTION csld_update_amount_of_comments() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 DECLARE
-  gameId int;
+  eventId int;
   userId int;
 BEGIN
   IF (TG_OP = 'DELETE') THEN
-      gameId := OLD.game_id;
+      eventId := OLD.game_id;
       userId := OLD.user_id;
 
-      update csld_game set amount_of_comments = amount_of_comments - 1 where id = gameId;
+      update csld_game set amount_of_comments = amount_of_comments - 1 where id = eventId;
       update csld_csld_user set amount_of_comments = amount_of_comments - 1 where id = userId;
   ELSIF (TG_OP = 'INSERT') THEN
-      gameId := NEW.game_id;
+      eventId := NEW.game_id;
       userId := NEW.user_id;
 
-      update csld_game set amount_of_comments = amount_of_comments + 1 where id = gameId;
+      update csld_game set amount_of_comments = amount_of_comments + 1 where id = eventId;
       update csld_csld_user set amount_of_comments = amount_of_comments + 1 where id = userId;
   END IF;
   return null;
@@ -342,26 +342,26 @@ CREATE FUNCTION csld_update_amount_of_played() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 DECLARE
-  gameId int;
+  eventId int;
   userId int;
 BEGIN
   IF (TG_OP = 'DELETE') THEN
-      gameId := OLD.game_id;
+      eventId := OLD.game_id;
       userId := OLD.user_id;
       if (OLD.state <> 2) THEN
         return null;
       END IF;
 
-      update csld_game set amount_of_played = amount_of_played - 1 where id = gameId;
+      update csld_game set amount_of_played = amount_of_played - 1 where id = eventId;
       update csld_csld_user set amount_of_played = amount_of_played - 1 where id = userId;
   ELSIF (TG_OP = 'INSERT') THEN
-      gameId := NEW.game_id;
+      eventId := NEW.game_id;
       userId := NEW.user_id;
       if (NEW.state <> 2) THEN
         return null;
       END IF;
 
-      update csld_game set amount_of_played = amount_of_played + 1 where id = gameId;
+      update csld_game set amount_of_played = amount_of_played + 1 where id = eventId;
       update csld_csld_user set amount_of_played = amount_of_played + 1 where id = userId;
   END IF;
   return null;
@@ -379,16 +379,16 @@ CREATE FUNCTION csld_update_amount_of_ratings() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 DECLARE
-  gameId int;
+  eventId int;
 BEGIN
   IF (TG_OP = 'DELETE') THEN
-      gameId := OLD.game_id;
+      eventId := OLD.game_id;
 
-      update csld_game set amount_of_ratings = amount_of_ratings - 1 where id = gameId;
+      update csld_game set amount_of_ratings = amount_of_ratings - 1 where id = eventId;
   ELSIF (TG_OP = 'INSERT') THEN
-      gameId := NEW.game_id;
+      eventId := NEW.game_id;
 
-      update csld_game set amount_of_ratings = amount_of_ratings + 1 where id = gameId;
+      update csld_game set amount_of_ratings = amount_of_ratings + 1 where id = eventId;
   END IF;
   return null;
 END
@@ -428,15 +428,15 @@ CREATE FUNCTION csld_update_rating() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 DECLARE
-  gameId int;
+  eventId int;
 BEGIN
   IF (TG_OP = 'DELETE') THEN
-    gameId := OLD.game_id;
+    eventId := OLD.game_id;
   ELSE
-    gameId := NEW.game_id;
+    eventId := NEW.game_id;
   END IF;
-  update csld_game set total_rating = csld_count_rating(gameId) where id = gameId;
-  update csld_game set average_rating = (select avg(rating) from csld_rating where csld_rating.game_id=gameId)*10 where id = gameId;
+  update csld_game set total_rating = csld_count_rating(eventId) where id = eventId;
+  update csld_game set average_rating = (select avg(rating) from csld_rating where csld_rating.game_id=eventId)*10 where id = eventId;
   RETURN NEW;
 END
 $$;

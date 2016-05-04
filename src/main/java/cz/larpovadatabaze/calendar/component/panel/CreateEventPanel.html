@@ -1,0 +1,56 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+	<form action="" id="sky-form4" class="sky-form gamepanel" novalidate="novalidate" wicket:id="addEvent">
+		<div class="row">
+
+			<div class="col-md-9">
+				<header><i class="fa fa-plus"></i>
+					<wicket:message key="game.add">Přidat hru</wicket:message>
+				</header>
+
+				<fieldset>
+					<wicket:message key="form.game.section.required"/>
+				</fieldset>
+
+				<fieldset>
+					<label class="input">
+						<i class="icon-append fa fa-folder-open"></i>
+						<input type="text" name="name" wicket:id="name" wicket:message="placeholder:form.name">
+						<b class="tooltip tooltip-bottom-right" wicket:id="nameFeedback"></b>
+					</label>
+
+					<label class="input">
+						<i class="icon-append fa fa-calendar"></i>
+						<input type="text" name="date" wicket:id="date" wicket:message="placeholder:form.date">
+						<b class="tooltip tooltip-bottom-right" wicket:id="dateFeedback"></b>
+					</label>
+
+					<label class="input">
+						<i class="icon-append fa fa-location-arrow"></i>
+						<input type="text" name="location" wicket:id="loc" wicket:message="placeholder:form.location">
+						<b class="tooltip tooltip-bottom-right" wicket:id="locFeedback"></b>
+					</label>
+
+					<label class="textarea" wicket:id="descriptionWrapper">
+                    <textarea class="textarea"
+							  wicket:id="description"
+							  style="width:100%;"
+							  rows=8
+					></textarea>
+						<b wicket:id="descriptionFeedback"></b>
+					</label>
+				</fieldset>
+
+				<fieldset>
+					<section>
+						<br>
+						<input type="button" wicket:id="submit" class="btn-u" wicket:message="value:form.save"
+							   id="submitButton"/>
+					</section>
+				</fieldset>
+
+			</div>
+
+
+		</div>
+	</form>
+</wicket:panel>
