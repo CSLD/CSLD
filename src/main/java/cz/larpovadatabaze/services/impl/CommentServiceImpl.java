@@ -68,11 +68,6 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment getCommentOnGameFromUser(int userId, int gameId) {
-        return commentDAO.getCommentOnGameFromUser(userId, gameId);
-    }
-
-    @Override
     public void saveOrUpdate(Comment actualComment) {
         commentDAO.saveOrUpdate(actualComment);
 
@@ -116,9 +111,5 @@ public class CommentServiceImpl implements CommentService {
         return gameService.getGamesCommentedByUser(userId);
     }
 
-    @Override
-    public long getAmountOfComments(Locale locale) {
-        return commentDAO.getAmountOfComments(locale);
-    }
 
 }
