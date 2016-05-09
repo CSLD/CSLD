@@ -3,6 +3,8 @@ package cz.larpovadatabaze.calendar.model;
 import cz.larpovadatabaze.calendar.Location;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Label;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 import javax.persistence.*;
 import java.util.Calendar;
@@ -109,6 +111,10 @@ public class Event implements cz.larpovadatabaze.api.Entity {
 
     public String getLoc() {
         return loc;
+    }
+
+    public void sanitize() {
+        this.description = Jsoup.clean(getDescription(), Whitelist.basic());
     }
 
     @Override

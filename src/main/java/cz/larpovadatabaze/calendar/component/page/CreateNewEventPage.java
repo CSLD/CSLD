@@ -1,10 +1,12 @@
 package cz.larpovadatabaze.calendar.component.page;
 
+import cz.larpovadatabaze.api.Toggles;
 import cz.larpovadatabaze.calendar.component.panel.CreateEventPanel;
 import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.calendar.service.DatabaseEvents;
 import cz.larpovadatabaze.calendar.service.Events;
 import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -13,6 +15,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.hibernate.SessionFactory;
+import org.springframework.core.env.Environment;
 
 import java.util.List;
 import java.util.Objects;
@@ -21,6 +24,8 @@ import java.util.stream.Collectors;
 public class CreateNewEventPage extends CsldBasePage {
     @SpringBean
     private SessionFactory sessionFactory;
+    @SpringBean
+    private Environment env;
 
     /**
      * Model for event specified by event id
@@ -57,6 +62,11 @@ public class CreateNewEventPage extends CsldBasePage {
     }
 
     public CreateNewEventPage(PageParameters params) {
+        if(!Boolean.parseBoolean(env.getProperty(Toggles.CALENDAR)) &&
+                !CsldAuthenticatedWebSession.get().isAtLeastEditor()) {
+            throw new RestartResponseException(HomePage.class);
+        }
+
         if(!params.isEmpty()) {
             setDefaultModel(new EventModel(params.get("id").to(Integer.class)));
         } else {

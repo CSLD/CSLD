@@ -29,7 +29,7 @@ abstract public class AbstractListEventPanel<T> extends AbstractCsldPanel<T> {
                 Event event = item.getModelObject();
 
                 item.add(new Label("name", Model.of(event.getName())));
-                item.add(new Label("description", Model.of(event.getDescription())));
+                item.add(new Label("description", Model.of(event.getDescription())).setEscapeModelStrings(false));
                 item.add(new Label("loc", Model.of(event.getLoc())));
                 item.add(new Label("date", Model.of(event.getDate())));
             }

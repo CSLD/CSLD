@@ -1,5 +1,7 @@
 package cz.larpovadatabaze.components.panel.home;
 
+import cz.larpovadatabaze.api.Toggles;
+import cz.larpovadatabaze.calendar.component.page.CreateNewEventPage;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.OwlCarouselResourceReference;
@@ -21,7 +23,9 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
+import org.springframework.core.env.Environment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +36,8 @@ import java.util.Map;
  * User: Michal Kara Date: 7.3.15 Time: 18:43
  */
 public class AdvertisementPanel extends AbstractCsldPanel<List<Advertisement>> {
+    @SpringBean
+    private Environment environment;
 
     /**
      * Model to load advertisements
@@ -107,7 +113,14 @@ public class AdvertisementPanel extends AbstractCsldPanel<List<Advertisement>> {
 
         // Add add link
         add(new BookmarkablePageLink<CsldBasePage>("addGameLink", CreateOrUpdateGamePage.class));
-        //add(new BookmarkablePageLink<CsldBasePage>("addNewsLink", CreateOrUpdateNewsPage.class));
+        add(new BookmarkablePageLink<CsldBasePage>("addEventLink", CreateNewEventPage.class){
+            @Override
+            protected void onConfigure() {
+                super.onConfigure();
+                setVisibilityAllowed(Boolean.parseBoolean(environment.getProperty(Toggles.CALENDAR)) ||
+                        CsldAuthenticatedWebSession.get().isAtLeastEditor());
+            }
+        });
     }
 
     @Override

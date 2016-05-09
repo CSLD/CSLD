@@ -17,7 +17,10 @@ public class DatabaseEvents implements Events {
 
     @Override
     public void store(Event event) {
+        // Prepares the event to the state, which is safe for the application.
+        event.sanitize();
         session.persist(event);
+        session.flush();  // TODO: Understand why the persist doesn't work. Probably unfinished transaction.
     }
 
     @Override

@@ -1,6 +1,8 @@
 package cz.larpovadatabaze.components.page;
 
 import com.googlecode.wicket.jquery.core.resource.JQueryUIResourceReference;
+import cz.larpovadatabaze.api.Toggles;
+import cz.larpovadatabaze.calendar.component.page.ListEventsPage;
 import cz.larpovadatabaze.components.common.i18n.LocalePicker;
 import cz.larpovadatabaze.components.page.about.AboutDatabasePage;
 import cz.larpovadatabaze.components.page.game.ListGamePage;
@@ -28,6 +30,8 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.springframework.core.env.Environment;
 import wicket.contrib.tinymce.settings.TinyMCESettings;
 
 import java.util.Locale;
@@ -36,6 +40,9 @@ import java.util.Locale;
  * Base page from which all other pages are derived.
  */
 public abstract class CsldBasePage extends WebPage {
+    @SpringBean
+    private Environment env;
+
     public CsldBasePage() {
     }
 
@@ -81,6 +88,15 @@ public abstract class CsldBasePage extends WebPage {
         add(previewImageTag2);
 
         add(new BookmarkablePageLink<CsldBasePage>("list-game", ListGamePage.class));
+        // Hide when calendar isn't allowed.
+        add(new BookmarkablePageLink<CsldBasePage>("list-events", ListEventsPage.class){
+            @Override
+            protected void onConfigure() {
+                super.onConfigure();
+                setVisibilityAllowed(Boolean.parseBoolean(env.getProperty(Toggles.CALENDAR)) ||
+                        CsldAuthenticatedWebSession.get().isAtLeastEditor());
+            }
+        });
         add(new BookmarkablePageLink<CsldBasePage>("about", AboutDatabasePage.class));
         add(new AdminPanel("adminPanel"));
 
