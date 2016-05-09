@@ -9,6 +9,7 @@ import org.jsoup.safety.Whitelist;
 import javax.persistence.*;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -25,9 +26,9 @@ public class Event implements cz.larpovadatabaze.api.Entity {
     private String source;
     private String amountOfPlayers;
     @Temporal(value = TemporalType.DATE)
-    private Calendar from;
+    private Date from;
     @Temporal(value = TemporalType.DATE)
-    private Calendar to;
+    private Date to;
     // Specify the mapping for the Location.
     @Embedded
     private Location location;
@@ -61,15 +62,16 @@ public class Event implements cz.larpovadatabaze.api.Entity {
 
     public Event(String id, Calendar from, Calendar to) {
         this.id = id;
-        this.from = from;
-        this.to = to;
+
+        this.from = from.getTime();
+        this.to = to.getTime();
     }
 
     public Event(String id, String name, Calendar from, Calendar to, Location location, String language, Collection<Label> labels) {
         this.id = id;
         this.name = name;
-        this.from = from;
-        this.to = to;
+        this.from = from.getTime();
+        this.to = to.getTime();
         this.location = location;
         this.language = language;
         this.labels = labels;
@@ -88,11 +90,24 @@ public class Event implements cz.larpovadatabaze.api.Entity {
     }
 
     public Calendar getFrom() {
-        return from;
+        if(from != null) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(from);
+            return cal;
+        } else {
+            return null;
+        }
     }
 
     public Calendar getTo() {
-        return to;
+        if(to != null) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(to);
+
+            return cal;
+        } else {
+            return null;
+        }
     }
 
     public Location getLocation() {
@@ -174,7 +189,6 @@ public class Event implements cz.larpovadatabaze.api.Entity {
                 ", to=" + to +
                 ", location=" + location +
                 ", language='" + language + '\'' +
-                ", labels=" + labels +
                 '}';
     }
 

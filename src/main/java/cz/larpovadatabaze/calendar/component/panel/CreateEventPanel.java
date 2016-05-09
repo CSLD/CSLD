@@ -1,5 +1,7 @@
 package cz.larpovadatabaze.calendar.component.panel;
 
+import com.googlecode.wicket.jquery.core.Options;
+import com.googlecode.wicket.jquery.ui.form.datepicker.DatePicker;
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.calendar.model.Event;
@@ -10,13 +12,17 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.convert.converter.CalendarConverter;
 import org.hibernate.SessionFactory;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
+
+import java.util.Date;
 
 abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
     @SpringBean
@@ -37,9 +43,13 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
         createEvent.add(name);
         createEvent.add(new CsldFeedbackMessageLabel("nameFeedback", name, "form.game.nameHint"));
 
-        RequiredTextField date = new RequiredTextField<String>("date");
-        createEvent.add(date);
-        createEvent.add(new CsldFeedbackMessageLabel("dateFeedback", date, "form.event.dateHint"));
+        FormComponent<Date> from = new DatePicker("from", "MM/dd/yyyy", new Options()).setRequired(true);
+        createEvent.add(from);
+        createEvent.add(new CsldFeedbackMessageLabel("fromFeedback", from, "form.event.fromHint"));
+
+        FormComponent<Date> to = new DatePicker("to", "MM/dd/yyyy", new Options()).setRequired(true);
+        createEvent.add(to);
+        createEvent.add(new CsldFeedbackMessageLabel("toFeedback", to, "form.event.toHint"));
 
         RequiredTextField location = new RequiredTextField<String>("loc");
         createEvent.add(location);
