@@ -16,6 +16,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
@@ -27,6 +28,7 @@ import java.util.Properties;
 @Configuration
 @ComponentScan(basePackages = "cz.larpovadatabaze")
 @EnableTransactionManagement
+@EnableScheduling
 @PropertySource(value = {"file:${props.path}/general.properties","file:${props.path}/jdbc.properties","file:${props.path}/mail.properties"})
 public class RootConfig {
     @Autowired

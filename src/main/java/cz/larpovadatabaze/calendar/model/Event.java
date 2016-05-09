@@ -22,6 +22,8 @@ public class Event implements cz.larpovadatabaze.api.Entity {
     private String date;
     private String description;
     private String loc;
+    private String source;
+    private String amountOfPlayers;
     @Temporal(value = TemporalType.DATE)
     private Calendar from;
     @Temporal(value = TemporalType.DATE)
@@ -73,6 +75,13 @@ public class Event implements cz.larpovadatabaze.api.Entity {
         this.labels = labels;
     }
 
+    public Event(String name, String date, String amountOfPlayers, String loc) {
+        this.name = name;
+        this.date = date;
+        this.amountOfPlayers = amountOfPlayers;
+        this.loc = loc;
+    }
+
     public String getName() {
         return name;
     }
@@ -113,6 +122,14 @@ public class Event implements cz.larpovadatabaze.api.Entity {
         return loc;
     }
 
+    public String getSource() {
+        return source;
+    }
+
+    public String getAmountOfPlayers() {
+        return amountOfPlayers;
+    }
+
     public void sanitize() {
         this.description = Jsoup.clean(getDescription(), Whitelist.basic());
     }
@@ -140,6 +157,24 @@ public class Event implements cz.larpovadatabaze.api.Entity {
         result = 31 * result + (to != null ? to.hashCode() : 0);
         result = 31 * result + (location != null ? location.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", date='" + date + '\'' +
+                ", description='" + description + '\'' +
+                ", loc='" + loc + '\'' +
+                ", source='" + source + '\'' +
+                ", amountOfPlayers=" + amountOfPlayers +
+                ", from=" + from +
+                ", to=" + to +
+                ", location=" + location +
+                ", language='" + language + '\'' +
+                ", labels=" + labels +
+                '}';
     }
 
     public static Event getEmptyEvent() {

@@ -102,9 +102,9 @@
             <version>${wicket.version}</version>
         </dependency>
         <dependency>
-            <groupId>commons-httpclient</groupId>
-            <artifactId>commons-httpclient</artifactId>
-            <version>${http.client.version}</version>
+            <groupId>org.wicketstuff</groupId>
+            <artifactId>wicketstuff-gmap3</artifactId>
+            <version>6.0-SNAPSHOT</version>
         </dependency>
 
         <!-- SPRING DEPENDENCIES -->
@@ -224,6 +224,19 @@
             <version>5.4.0</version>
         </dependency>
 
+        <!-- JSOUP Parser -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.7.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>${http.client.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -248,11 +261,6 @@
             <artifactId>mockito-all</artifactId>
             <version>1.10.8</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.wicketstuff</groupId>
-            <artifactId>wicketstuff-gmap3</artifactId>
-            <version>6.0-SNAPSHOT</version>
         </dependency>
 
 

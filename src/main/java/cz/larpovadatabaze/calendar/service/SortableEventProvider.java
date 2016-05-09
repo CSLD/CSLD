@@ -6,6 +6,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.hibernate.SessionFactory;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class SortableEventProvider extends SortableDataProvider<Event, String> {
 
     @Override
     public Iterator<? extends Event> iterator(long first, long count) {
-        List<Event> eventsFromTheDatabase = (List<Event>) new DatabaseEvents(sessionFactory.getCurrentSession()).all();
+        List<Event> eventsFromTheDatabase = (List<Event>) getEvents();
         int last = (int) count;
         if(first + count > eventsFromTheDatabase.size()) {
             last = eventsFromTheDatabase.size() - 1;
@@ -28,11 +29,18 @@ public class SortableEventProvider extends SortableDataProvider<Event, String> {
 
     @Override
     public long size() {
-        return new DatabaseEvents(sessionFactory.getCurrentSession()).all().size();
+        return getEvents().size();
     }
 
     @Override
     public IModel<Event> model(Event object) {
         return new Model(object); // TODO: Take a look, whether it doesn't create memory leak.
+    }
+
+    private Collection<Event> getEvents() {
+        return new ReadOnlyEvents(
+                new DatabaseEvents(sessionFactory.getCurrentSession()),
+                new LarpCzEvents()
+        ).all();
     }
 }
