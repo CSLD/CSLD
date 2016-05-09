@@ -28,7 +28,6 @@ import java.util.Properties;
 @Configuration
 @ComponentScan(basePackages = "cz.larpovadatabaze")
 @EnableTransactionManagement
-@EnableScheduling
 @PropertySource(value = {"file:${props.path}/general.properties","file:${props.path}/jdbc.properties","file:${props.path}/mail.properties"})
 public class RootConfig {
     @Autowired
