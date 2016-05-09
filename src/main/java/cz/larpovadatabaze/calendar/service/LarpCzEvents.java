@@ -1,11 +1,13 @@
 package cz.larpovadatabaze.calendar.service;
 
 import cz.larpovadatabaze.calendar.model.Event;
+import cz.larpovadatabaze.utils.Pwd;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import sun.security.provider.MD5;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,7 +56,7 @@ public class LarpCzEvents implements Events {
             String amountOfPlayers = event.select("td.views-field-field-count-value").get(0).text();
             String loc = event.select("td.views-field-field-region-value").get(0).text() + ", " +
                     event.select("td.views-field-field-city-value").get(0).text();
-            Event toAdd = new Event(name, date, amountOfPlayers, loc);
+            Event toAdd = new Event(Pwd.getMD5(name), name, date, amountOfPlayers, loc);
             result.add(toAdd);
             logger.debug("Loaded event: " + toAdd);
         }

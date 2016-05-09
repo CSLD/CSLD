@@ -75,7 +75,8 @@ public class Event implements cz.larpovadatabaze.api.Entity {
         this.labels = labels;
     }
 
-    public Event(String name, String date, String amountOfPlayers, String loc) {
+    public Event(String id, String name, String date, String amountOfPlayers, String loc) {
+        this.id = id;
         this.name = name;
         this.date = date;
         this.amountOfPlayers = amountOfPlayers;
