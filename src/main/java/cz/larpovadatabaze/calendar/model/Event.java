@@ -3,14 +3,13 @@ package cz.larpovadatabaze.calendar.model;
 import cz.larpovadatabaze.calendar.Location;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Label;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 import javax.persistence.*;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Event for the database.
@@ -20,7 +19,6 @@ public class Event implements cz.larpovadatabaze.api.Entity {
     @Id
     private String id;
     private String name;
-    private String date;
     private String description;
     private String loc;
     private String source;
@@ -35,7 +33,7 @@ public class Event implements cz.larpovadatabaze.api.Entity {
     private String language;
     @ManyToMany
     @JoinTable(name = "event_has_labels")
-    private Collection<Label> labels;
+    private List<Label> labels;
 
     // Constructor without parameters must be there for ORM usage.
     protected Event() {
@@ -50,7 +48,7 @@ public class Event implements cz.larpovadatabaze.api.Entity {
         this.id = id;
     }
 
-    public Event(String id, Collection<Label> labels) {
+    public Event(String id, List<Label> labels) {
         this.id = id;
         this.labels = labels;
     }
@@ -67,7 +65,7 @@ public class Event implements cz.larpovadatabaze.api.Entity {
         this.to = to.getTime();
     }
 
-    public Event(String id, String name, Calendar from, Calendar to, Location location, String language, Collection<Label> labels) {
+    public Event(String id, String name, Calendar from, Calendar to, Location location, String language, List<Label> labels) {
         this.id = id;
         this.name = name;
         this.from = from.getTime();
@@ -77,10 +75,11 @@ public class Event implements cz.larpovadatabaze.api.Entity {
         this.labels = labels;
     }
 
-    public Event(String id, String name, String date, String amountOfPlayers, String loc) {
+    public Event(String id, String name, Calendar from, Calendar to,  String amountOfPlayers, String loc) {
         this.id = id;
         this.name = name;
-        this.date = date;
+        this.from = from.getTime();
+        this.to = to.getTime();
         this.amountOfPlayers = amountOfPlayers;
         this.loc = loc;
     }
@@ -122,12 +121,8 @@ public class Event implements cz.larpovadatabaze.api.Entity {
         return language;
     }
 
-    public Collection<Label> getLabels() {
+    public List<Label> getLabels() {
         return labels;
-    }
-
-    public String getDate() {
-        return date;
     }
 
     public String getDescription() {
@@ -180,7 +175,6 @@ public class Event implements cz.larpovadatabaze.api.Entity {
         return "Event{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", date='" + date + '\'' +
                 ", description='" + description + '\'' +
                 ", loc='" + loc + '\'' +
                 ", source='" + source + '\'' +
@@ -193,6 +187,15 @@ public class Event implements cz.larpovadatabaze.api.Entity {
     }
 
     public static Event getEmptyEvent() {
-        return new Event(UUID.randomUUID().toString());
+        return new Event(UUID.randomUUID().toString(), new ArrayList<>());
+    }
+
+    public void setLabels(List<Label> labels) {
+        this.labels = labels;
+    }
+
+    @Transient
+    public IModel<?> getDate() {
+        return Model.of(getFrom() + " - " + getTo());
     }
 }

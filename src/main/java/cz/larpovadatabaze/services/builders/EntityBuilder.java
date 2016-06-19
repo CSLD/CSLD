@@ -57,13 +57,14 @@ public class EntityBuilder {
         return group;
     }
 
-    public Label label(CsldUser owner, String name, String lang, String description, boolean authorized) {
+    public Label label(CsldUser owner, String name, String lang, String description, boolean authorized, boolean required) {
         Label label = new Label();
         label.setAuthorized(authorized);
         label.setDescription(description);
         label.setName(name);
         label.setLang(lang);
         label.setAddedBy(owner);
+        label.setRequired(required);
 
         save(label);
         return label;

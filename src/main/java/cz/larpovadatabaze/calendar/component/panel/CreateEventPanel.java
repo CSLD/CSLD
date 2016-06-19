@@ -8,6 +8,9 @@ import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.calendar.service.DatabaseEvents;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
+import cz.larpovadatabaze.components.panel.game.ChooseLabelsPanel;
+import cz.larpovadatabaze.entities.Label;
+import cz.larpovadatabaze.validator.AtLeastOneRequiredLabelValidator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -18,11 +21,11 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.convert.converter.CalendarConverter;
 import org.hibernate.SessionFactory;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 import java.util.Date;
+import java.util.List;
 
 abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
     @SpringBean
@@ -61,6 +64,29 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
         description.add(new CSLDTinyMceBehavior());
         descriptionWrapper.add(description);
         descriptionWrapper.add(new CsldFeedbackMessageLabel("descriptionFeedback", description, descriptionWrapper, "form.game.descriptionHint"));
+
+        ChooseLabelsPanel chooseLabels = new ChooseLabelsPanel("labels", new IModel<List<Label>>() {
+            @Override
+            public List<Label> getObject() {
+                return createEvent.getModelObject().getLabels();
+            }
+
+            @Override
+            public void setObject(List<Label> object) {
+                createEvent.getModelObject().setLabels(object);
+            }
+
+            @Override
+            public void detach() {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+        });
+        chooseLabels.setOutputMarkupId(true);
+        chooseLabels.add(new AtLeastOneRequiredLabelValidator());
+        createEvent.add(chooseLabels);
+        WebMarkupContainer labelsFeedbackWrapper = new WebMarkupContainer("labelsFeedbackWrapper");
+        createEvent.add(labelsFeedbackWrapper);
+        labelsFeedbackWrapper.add(new CsldFeedbackMessageLabel("labelsFeedback", chooseLabels, labelsFeedbackWrapper, null));
 
         add(createEvent);
 

@@ -7,6 +7,7 @@ import cz.larpovadatabaze.calendar.service.DatabaseEvents;
 import cz.larpovadatabaze.calendar.service.Events;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.HomePage;
+import cz.larpovadatabaze.components.panel.game.ChooseLabelsPanel;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;

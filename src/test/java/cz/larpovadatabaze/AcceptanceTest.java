@@ -3,6 +3,7 @@ package cz.larpovadatabaze;
 import cz.larpovadatabaze.api.Entity;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Label;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.builders.CzechMasqueradeBuilder;
 import cz.larpovadatabaze.services.builders.EntityBuilder;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
@@ -30,6 +31,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -72,6 +74,7 @@ abstract public class AcceptanceTest {
             TestUtils.logUser(getLoggedUser()); // This way it is at the level of user per class. Probably makes sense.
         }
         TransactionSynchronizationManager.bindResource(sessionFactory, sessionHolder);
+        CsldAuthenticatedWebSession.get().setLocale(Locale.forLanguageTag("cs"));
     }
 
     /**

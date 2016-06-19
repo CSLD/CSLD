@@ -12,6 +12,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -28,7 +29,7 @@ public class GivenEventToStore extends AcceptanceTest {
 
         new InTransaction(session, new Label(111), new Label(112)).store();
 
-        Collection<Label> labelsToUse = new ArrayList<>();
+        List<Label> labelsToUse = new ArrayList<>();
         labelsToUse.add((Label) session.get(Label.class, 11));
         labelsToUse.add((Label) session.get(Label.class, 12));
 

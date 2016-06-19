@@ -43,8 +43,8 @@ public class CzechMasqueradeBuilder{
         user = persistenceStore.user(String.format(mailTemplate, "user"), "User",
                 "User", "Prague", "User of Czech Masquerade group", CsldRoles.USER.getRole(), "user");
 
-        dramatic = persistenceStore.label(editor, "Dramatic", "cs", "Dramatic larp is about drama", true);
-        vampire = persistenceStore.label(editor, "Vampire", "cs", "Vampire larp contains vampire in any shape.", true);
+        dramatic = persistenceStore.label(editor, "Dramatic", "cs", "Dramatic larp is about drama", true, true);
+        vampire = persistenceStore.label(editor, "Vampire", "cs", "Vampire larp contains vampire in any shape.", true, false);
         List<Label> masqueradeGamesLabels = new ArrayList<Label>();
         Collections.addAll(masqueradeGamesLabels, dramatic, vampire);
 
