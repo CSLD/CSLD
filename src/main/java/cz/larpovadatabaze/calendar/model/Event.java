@@ -9,6 +9,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -16,12 +17,18 @@ import java.util.*;
  */
 @Entity(name = "event")
 public class Event implements cz.larpovadatabaze.api.Entity {
+    @Transient
+    private SimpleDateFormat czechDate = new SimpleDateFormat("dd.MM.YYYY");
+
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
+    @SequenceGenerator(sequenceName = "event_id_seq", name = "id_gen")
+    private Integer id;
     private String name;
     private String description;
     private String loc;
     private String source;
+    @Column(name="amountofplayers")
     private String amountOfPlayers;
     @Temporal(value = TemporalType.DATE)
     private Date from;
@@ -32,7 +39,11 @@ public class Event implements cz.larpovadatabaze.api.Entity {
     private Location location;
     private String language;
     @ManyToMany
-    @JoinTable(name = "event_has_labels")
+    @JoinTable(name = "event_has_labels", joinColumns = {
+        @JoinColumn(name="event_id")
+    }, inverseJoinColumns = {
+        @JoinColumn(name="label_id")
+    })
     private List<Label> labels;
 
     // Constructor without parameters must be there for ORM usage.
@@ -44,28 +55,32 @@ public class Event implements cz.larpovadatabaze.api.Entity {
      *
      * @param id Id to be provided
      */
-    public Event(String id) {
+    public Event(int id) {
         this.id = id;
     }
 
-    public Event(String id, List<Label> labels) {
+    public Event(List<Label> labels) {
+        this.labels = labels;
+    }
+
+    public Event(int id, List<Label> labels) {
         this.id = id;
         this.labels = labels;
     }
 
-    public Event(String id, Location location) {
+    public Event(int id, Location location) {
         this.id = id;
         this.location = location;
     }
 
-    public Event(String id, Calendar from, Calendar to) {
+    public Event(int id, Calendar from, Calendar to) {
         this.id = id;
 
         this.from = from.getTime();
         this.to = to.getTime();
     }
 
-    public Event(String id, String name, Calendar from, Calendar to, Location location, String language, List<Label> labels) {
+    public Event(int id, String name, Calendar from, Calendar to, Location location, String language, List<Label> labels) {
         this.id = id;
         this.name = name;
         this.from = from.getTime();
@@ -75,7 +90,7 @@ public class Event implements cz.larpovadatabaze.api.Entity {
         this.labels = labels;
     }
 
-    public Event(String id, String name, Calendar from, Calendar to,  String amountOfPlayers, String loc) {
+    public Event(int id, String name, Calendar from, Calendar to,  String amountOfPlayers, String loc) {
         this.id = id;
         this.name = name;
         this.from = from.getTime();
@@ -98,6 +113,11 @@ public class Event implements cz.larpovadatabaze.api.Entity {
         }
     }
 
+    @Transient
+    public String getFromCzech() {
+        return czechDate.format(from);
+    }
+
     public Calendar getTo() {
         if(to != null) {
             Calendar cal = Calendar.getInstance();
@@ -109,11 +129,16 @@ public class Event implements cz.larpovadatabaze.api.Entity {
         }
     }
 
+    @Transient
+    public String getToCzech() {
+        return czechDate.format(to);
+    }
+
     public Location getLocation() {
         return location;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -152,7 +177,7 @@ public class Event implements cz.larpovadatabaze.api.Entity {
 
         Event event = (Event) o;
 
-        if (!id.equals(event.id)) return false;
+        if (id != event.getId()) return false;
         if (name != null ? !name.equals(event.name) : event.name != null) return false;
         if (from != null ? !from.equals(event.from) : event.from != null) return false;
         if (to != null ? !to.equals(event.to) : event.to != null) return false;
@@ -162,7 +187,7 @@ public class Event implements cz.larpovadatabaze.api.Entity {
 
     @Override
     public int hashCode() {
-        int result = (id != null ? id.hashCode(): 0);
+        int result = 31 * id;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (from != null ? from.hashCode() : 0);
         result = 31 * result + (to != null ? to.hashCode() : 0);
@@ -187,7 +212,7 @@ public class Event implements cz.larpovadatabaze.api.Entity {
     }
 
     public static Event getEmptyEvent() {
-        return new Event(UUID.randomUUID().toString(), new ArrayList<>());
+        return new Event(new ArrayList<>());
     }
 
     public void setLabels(List<Label> labels) {
@@ -196,6 +221,7 @@ public class Event implements cz.larpovadatabaze.api.Entity {
 
     @Transient
     public IModel<?> getDate() {
-        return Model.of(getFrom() + " - " + getTo());
+
+        return Model.of(czechDate.format(getFrom().getTime()) + " - " + czechDate.format(getTo().getTime()));
     }
 }

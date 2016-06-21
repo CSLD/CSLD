@@ -20,7 +20,7 @@ public class SortableEventProvider extends SortableDataProvider<Event, String> {
     @Override
     public Iterator<? extends Event> iterator(long first, long count) {
         List<Event> eventsFromTheDatabase = (List<Event>) getEvents();
-        int last = (int) count;
+        int last = (int) count + (int) first;
         if(first + count > eventsFromTheDatabase.size()) {
             last = eventsFromTheDatabase.size() - 1;
         }
@@ -39,8 +39,7 @@ public class SortableEventProvider extends SortableDataProvider<Event, String> {
 
     private Collection<Event> getEvents() {
         return new ReadOnlyEvents(
-                new DatabaseEvents(sessionFactory.getCurrentSession()),
-                new LarpCzEvents()
+                new DatabaseEvents(sessionFactory.getCurrentSession())
         ).all();
     }
 }

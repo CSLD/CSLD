@@ -33,7 +33,7 @@ public class GivenEventToStore extends AcceptanceTest {
         labelsToUse.add((Label) session.get(Label.class, 11));
         labelsToUse.add((Label) session.get(Label.class, 12));
 
-        event = new Event("1", labelsToUse);
+        event = new Event(1, labelsToUse);
 
         events.store(event);
     }

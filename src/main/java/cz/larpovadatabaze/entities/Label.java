@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.entities;
 
 import cz.larpovadatabaze.api.*;
+import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.lang.DbSessionLanguageSolver;
 import cz.larpovadatabaze.lang.TranslatableEntity;
 import cz.larpovadatabaze.lang.TranslatableEntityTranslator;

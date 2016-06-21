@@ -54,6 +54,7 @@ public class LarpCzEvents implements Events {
     }
 
     private Collection<Event> parseEvents(Collection<Event> result, Elements events) {
+        int id = 10000;
         for(Element event: events) {
             LarpCzDate date = new LarpCzDate(event.select("td.views-field-phpcode").get(0).text());
             // Retrieve from and to based on these information.
@@ -61,9 +62,10 @@ public class LarpCzEvents implements Events {
             String amountOfPlayers = event.select("td.views-field-field-count-value").get(0).text();
             String loc = event.select("td.views-field-field-region-value").get(0).text() + ", " +
                     event.select("td.views-field-field-city-value").get(0).text();
-            Event toAdd = new Event(Pwd.getMD5(name), name, date.getFrom(), date.getTo(), amountOfPlayers, loc);
+            Event toAdd = new Event(id, name, date.getFrom(), date.getTo(), amountOfPlayers, loc);
             result.add(toAdd);
             logger.debug("Loaded event: " + toAdd);
+            id++;
         }
         return result;
     }
@@ -72,12 +74,19 @@ public class LarpCzEvents implements Events {
         Date from;
         Date to;
 
+        // TODO: Fix the issue with dates in the LarpCzEvents.
         LarpCzDate(String date) {
-            String[] parts = date.split("\\. - ");
-            SimpleDateFormat larpCzFormat = new SimpleDateFormat("dd. MM. yyyy");
+            String[] parts = date.split("-");
+            if(parts.length < 2) {
+                from = new Date();
+                to = new Date();
+                return;
+            }
+            SimpleDateFormat larpCzFormatFrom = new SimpleDateFormat("dd.");
+            SimpleDateFormat larpCzFormatTo = new SimpleDateFormat(" dd. MM. yyyy");
             try {
-                from = larpCzFormat.parse(parts[1]);
-                to = null;
+                from = larpCzFormatFrom.parse(parts[0]);
+                to = larpCzFormatTo.parse(parts[1]);
             } catch (ParseException e) {
                 // Ignore. Sometime the value will be wrong.
                 e.printStackTrace();

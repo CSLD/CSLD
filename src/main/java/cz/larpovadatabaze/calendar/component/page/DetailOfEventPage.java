@@ -43,9 +43,9 @@ public class DetailOfEventPage extends CsldBasePage {
     private class EventModel extends LoadableDetachableModel<Event> {
 
         // Game id. We could also store id as page property.
-        private String eventId;
+        private Integer eventId;
 
-        private EventModel(String eventId) {
+        private EventModel(Integer eventId) {
             this.eventId = eventId;
         }
 
@@ -84,7 +84,7 @@ public class DetailOfEventPage extends CsldBasePage {
             throw new RestartResponseException(ListEventsPage.class);
         }
 
-        setDefaultModel(new EventModel(params.get("id").toString()));
+        setDefaultModel(new EventModel(params.get("id").toInt()));
     }
 
     @Override

@@ -22,8 +22,8 @@ public class DetailedEventPanel extends Panel {
         add(new Label("name"));
         add(new Label("description").setEscapeModelStrings(false));
         add(new Label("loc"));
-        add(new Label("from"));
-        add(new Label("to"));
+        add(new Label("fromCzech"));
+        add(new Label("toCzech"));
         add(new Label("amountOfPlayers"));
     }
 }
