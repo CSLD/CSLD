@@ -6,12 +6,11 @@ import cz.larpovadatabaze.lang.TranslatableEntity;
 import cz.larpovadatabaze.lang.TranslatableEntityTranslator;
 import cz.larpovadatabaze.lang.TranslationEntity;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -518,7 +517,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     private List<Photo> photos;
 
     @OneToMany(mappedBy = "game")
-    @Cascade(CascadeType.ALL)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     public List<Photo> getPhotos() {
         return photos;
     }
@@ -547,7 +546,9 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
                     nullable = false)
     )
     @ManyToMany(cascade = {javax.persistence.CascadeType.PERSIST, javax.persistence.CascadeType.MERGE, javax.persistence.CascadeType.REMOVE })
-    @Cascade(value = { CascadeType.SAVE_UPDATE, CascadeType.DELETE})
+    @Cascade(value = { org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @Fetch(FetchMode.SELECT)
     public List<Label> getLabels() {
         return labels;
     }
@@ -565,7 +566,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
             insertable = true,
             updatable = true
     )
-    @Cascade(CascadeType.SAVE_UPDATE)
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     @Fetch(FetchMode.SELECT)
     public Video getVideo() {
         return video;
@@ -598,7 +599,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     @OneToMany(
             mappedBy = "game"
     )
-    @Cascade({CascadeType.DELETE})
+    @Cascade({org.hibernate.annotations.CascadeType.DELETE})
     public List<Rating> getRatings() {
         return ratings;
     }
@@ -612,7 +613,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     @OneToMany(
             mappedBy = "game"
     )
-    @Cascade({CascadeType.DELETE})
+    @Cascade({org.hibernate.annotations.CascadeType.DELETE})
     public List<Comment> getComments() {
         return comments;
     }
@@ -624,7 +625,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     private List<UserPlayedGame> played;
 
     @OneToMany(mappedBy = "game")
-    @Cascade({CascadeType.DELETE})
+    @Cascade({org.hibernate.annotations.CascadeType.DELETE})
     public List<UserPlayedGame> getPlayed() {
         return played;
     }
@@ -636,7 +637,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     private List<GameHasLanguages> availableLanguages;
 
     @OneToMany(mappedBy = "game", fetch = FetchType.EAGER)
-    @Cascade(CascadeType.ALL)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     public List<GameHasLanguages> getAvailableLanguages() {
         return availableLanguages;
     }
@@ -706,6 +707,29 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     @Transient
     public void setFirst(int first) {
         this.first = first;
+    }
+
+    public Float getSimilarity(Game game) {
+        List<Label> potentiallySimilar = game.getLabels();
+        List<Label> currentLabels = this.getLabels();
+
+        Float result = 0f;
+        Float required = 0f;
+        for(Label label: currentLabels) {
+            for(Label similar: potentiallySimilar) {
+                if(similar.equals(label)) {
+                    if(similar.getRequired()) {
+                        required = 1f;
+                    }
+
+                    result += 1f;
+                }
+            }
+        }
+
+        // Ascending order means that more to 0 means more similar game.
+        // +1 means that if the required labels are shared, it brings better information
+        return 1 - ((result + required) / currentLabels.size() + 1);
     }
 }
 

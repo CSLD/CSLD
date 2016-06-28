@@ -17,9 +17,7 @@ import org.hibernate.criterion.*;
 import org.hibernate.sql.JoinType;
 import org.springframework.stereotype.Repository;
 
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -181,10 +179,26 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
                 .addOrder(Order.desc("totalRating"))
                 .createCriteria("labels")
                 .add(Restrictions.in("id", labeledGames))
-                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
-                .setMaxResults(5);
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 
-        return criteria.list();
+        List<Game> potentiallySimilarGames = criteria.list();
+
+        SortedMap<Float, Game> orderedSimilar = new TreeMap<>();
+        for(Game similarGames: potentiallySimilarGames) {
+            orderedSimilar.put(similarGames.getSimilarity(game), similarGames);
+        }
+
+        List<Game> results = new ArrayList<>();
+        int i = 0;
+        for(Game similar: orderedSimilar.values()){
+            if(i >= 5) {
+                break;
+            }
+            i++;
+            results.add(similar);
+        }
+
+        return results;
     }
 
     /**
