@@ -31,20 +31,6 @@ public class GroupDAO extends GenericHibernateDAO<CsldGroup, Integer> {
         return new GenericBuilder<CsldGroup>(CsldGroup.class);
     }
 
-    @SuppressWarnings("unchecked")
-    public List<CsldGroup> orderedByName(Long first, Long amountPerPage, List<Locale> locales) {
-        List<String> languages = locales.stream().map(Locale::getLanguage).collect(Collectors.toList());
-        Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = getBuilder().build().getExecutableCriteria(session)
-                .createCriteria("groupHasLanguages")
-                .add(Restrictions.in("language", languages))
-                .addOrder(Order.asc("name"))
-                .setFirstResult(first.intValue())
-                .setMaxResults(amountPerPage.intValue());
-
-        return criteria.list();
-    }
-
     /**
      * Used when autoCompletable field is used.
      *
@@ -58,32 +44,6 @@ public class GroupDAO extends GenericHibernateDAO<CsldGroup, Integer> {
                 .add(Restrictions.eq("name", groupName));
 
         return uniqueGroup.list();
-    }
-
-    public int getAmountOfGroups(List<Locale> locales) {
-        List<String> relevantLocales = locales.stream().map(Locale::getLanguage).collect(Collectors.toList());
-        Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = getBuilder().build().getExecutableCriteria(session)
-                .createCriteria("groupHasLanguages")
-                .add(Restrictions.in("language", relevantLocales))
-                .setProjection(Projections.rowCount());
-
-        return ((Long)criteria.uniqueResult()).intValue();
-    }
-
-    public int getAverageOfGroup(CsldGroup group) {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = getBuilder().build().getExecutableCriteria(session)
-                .add(Restrictions.eq("id", group.getId()))
-                .createAlias("authorsOf", "game").
-                setProjection(Projections.avg("game.totalRating"));
-
-        Object object = criteria.uniqueResult();
-        if(object == null) {
-            return 0;
-        } else {
-            return ((Double)object).intValue();
-        }
     }
 
     @SuppressWarnings("unchecked")

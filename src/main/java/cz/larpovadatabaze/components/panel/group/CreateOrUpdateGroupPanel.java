@@ -12,7 +12,6 @@ import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.validator.UniqueGroupValidator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
@@ -25,7 +24,6 @@ import org.apache.wicket.util.lang.Bytes;
 import java.util.ArrayList;
 import java.util.List;
 
-import static cz.larpovadatabaze.lang.AvailableLanguages.availableLocaleNames;
 
 /**
  * Encapsulation of form used for creating groups. It may be used on more than one place. It can also be used for
@@ -85,11 +83,6 @@ public abstract class CreateOrUpdateGroupPanel extends AbstractCsldPanel<CsldGro
 
         fileUploadField = new FileUploadField("image", new PropertyModel<>(this, "images"));
         createGroup.add(fileUploadField);
-
-        List<String> availableLanguages = new ArrayList<>(availableLocaleNames());
-        final DropDownChoice<String> changeLocale =
-                new DropDownChoice<>("lang", availableLanguages);
-        createGroup.add(changeLocale);
 
         createGroup.add(new AjaxButton("submit"){
             @Override

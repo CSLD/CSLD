@@ -47,43 +47,17 @@ public class CommentDAO extends GenericHibernateDAO<Comment, Integer>{
     }
 
     @SuppressWarnings("unchecked")
-    public List<Comment> getLastComments(int maxComments, List<Locale> locale) {
-        return getLastComments(0, maxComments, locale);
+    public List<Comment> getLastComments(int maxComments) {
+        return getLastComments(0, maxComments);
     }
 
-    public List<Comment> getLastComments(int first, int count, List<Locale> locales){
+    public List<Comment> getLastComments(int first, int count){
         Criteria criteria = getBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession())
                 .add(Restrictions.eq("hidden", false))
                 .addOrder(Order.desc("added"))
                 .setMaxResults(count)
                 .setFirstResult(first);
 
-        if(locales != null) {
-            List<String> allNeededLanguages = new ArrayList<String>();
-            for(Locale locale: locales) {
-                allNeededLanguages.add(locale.getLanguage());
-            }
-            criteria.add(Restrictions.in("lang", allNeededLanguages));
-        }
-
         return criteria.list();
-    }
-
-    public long getAmountOfComments(Locale locale) {
-        Criteria criteria = getBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession())
-                .setProjection(Projections.rowCount());
-        List<Locale> locales = new ArrayList<Locale>();
-        locales.add(locale);
-        addLocaleLimitation(criteria, locales);
-
-        return ((Long)criteria.uniqueResult()).intValue();
-    }
-
-    private void addLocaleLimitation(Criteria criteria, List<Locale> locales) {
-        List<String> allNeededLanguages = new ArrayList<String>();
-        for(Locale locale: locales) {
-            allNeededLanguages.add(locale.getLanguage());
-        }
-        criteria.add(Restrictions.in("lang", allNeededLanguages));
     }
 }

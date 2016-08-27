@@ -11,9 +11,6 @@ import cz.larpovadatabaze.components.panel.UploadCoverImagePanel;
 import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
 import cz.larpovadatabaze.components.panel.group.CreateOrUpdateGroupPanel;
 import cz.larpovadatabaze.entities.*;
-import cz.larpovadatabaze.lang.LanguageChoiceRenderer;
-import cz.larpovadatabaze.lang.LanguageSolver;
-import cz.larpovadatabaze.lang.SessionLanguageSolver;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.GroupService;
@@ -33,16 +30,12 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Bytes;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import static cz.larpovadatabaze.lang.AvailableLanguages.availableLocaleNames;
 
 /**
  * This panel is used when you want to create or update game in the database.
@@ -59,7 +52,6 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
     GroupService groupService;
     @SpringBean
     VideoService videoService;
-    LanguageSolver sessionLanguageSolver = new SessionLanguageSolver();
 
     private ChooseLabelsPanel chooseLabels;
     private TextField<String> videoField;
@@ -133,12 +125,6 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         TextField<Integer> year = new TextField<Integer>("year");
         createOrUpdateGame.add(year);
         createOrUpdateGame.add(new CsldFeedbackMessageLabel("yearFeedback", year, "form.game.yearHint"));
-
-        // Language
-        List<String> availableLanguages = new ArrayList<String>(availableLocaleNames());
-        final DropDownChoice<String> lang = new DropDownChoice<String>("lang", availableLanguages, new LanguageChoiceRenderer());
-        createOrUpdateGame.add(lang);
-        createOrUpdateGame.add(new CsldFeedbackMessageLabel("langFeedback", lang, null));
 
         // Players
         TextField<Integer> players = new TextField<Integer>("players");
@@ -256,33 +242,6 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
                         game.setVideo(v);
                     }
                     game.getVideo().setPath(videoURL);
-                }
-
-                //Process language
-                String toBeSaved;
-                if(game.getLang() != null) {
-                    toBeSaved = game.getLang();
-                } else {
-                    game.setAvailableLanguages(new ArrayList<>());
-                    toBeSaved = sessionLanguageSolver.getTextLangForUser().get(0);
-                }
-
-                if(game.getAvailableLanguages().isEmpty()) {
-                    GameHasLanguages firstLanguage = new GameHasLanguages();
-                    firstLanguage.setGame(game);
-                    firstLanguage.setLanguage(toBeSaved);
-                    firstLanguage.setName(game.getName());
-                    firstLanguage.setDescription(game.getDescription());
-                    game.getAvailableLanguages().add(firstLanguage);
-                } else {
-                    // Find existing locale
-                    List<GameHasLanguages> actualLanguages = game.getAvailableLanguages();
-                    for(GameHasLanguages language: actualLanguages) {
-                        if(language.getLanguage().equals(toBeSaved)){
-                            language.setName(game.getName());
-                            language.setDescription(game.getDescription());
-                        }
-                    }
                 }
 
                 if(createOrUpdateGame.isValid()){

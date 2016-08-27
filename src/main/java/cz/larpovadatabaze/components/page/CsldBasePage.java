@@ -3,7 +3,6 @@ package cz.larpovadatabaze.components.page;
 import com.googlecode.wicket.jquery.core.resource.JQueryUIResourceReference;
 import cz.larpovadatabaze.api.Toggles;
 import cz.larpovadatabaze.calendar.component.page.ListEventsPage;
-import cz.larpovadatabaze.components.common.i18n.LocalePicker;
 import cz.larpovadatabaze.components.page.about.AboutDatabasePage;
 import cz.larpovadatabaze.components.page.game.ListGamePage;
 import cz.larpovadatabaze.components.panel.home.AdvertisementPanel;
@@ -107,8 +106,6 @@ public abstract class CsldBasePage extends WebPage {
         else {
             add(new LoginBoxPanel("user"));
         }
-
-        add(new LocalePicker("localePicker"));
 
         add(new SearchBoxPanel("searchBox"));
 

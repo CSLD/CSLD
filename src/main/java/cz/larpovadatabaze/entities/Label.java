@@ -1,31 +1,22 @@
 package cz.larpovadatabaze.entities;
 
 import cz.larpovadatabaze.api.*;
-import cz.larpovadatabaze.calendar.model.Event;
-import cz.larpovadatabaze.lang.DbSessionLanguageSolver;
-import cz.larpovadatabaze.lang.TranslatableEntity;
-import cz.larpovadatabaze.lang.TranslatableEntityTranslator;
-import cz.larpovadatabaze.lang.TranslationEntity;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
  */
 @Entity
 @Table(name="csld_label")
-public class Label implements Serializable, IAutoCompletable, Identifiable<Integer>, TranslatableEntity, cz.larpovadatabaze.api.Entity {
+public class Label implements Serializable, IAutoCompletable, Identifiable<Integer>, cz.larpovadatabaze.api.Entity {
     private Integer id;
     private Boolean isAuthorized;
     private Boolean isRequired;
     private CsldUser addedBy;
-    private List<LabelHasLanguages> labelHasLanguages;
 
     public Label() {}
 
@@ -50,69 +41,26 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
         this.id = id;
     }
 
-    @Transient
-    private LabelHasLanguages defaultLanguage = new LabelHasLanguages();
-
-    @Transient
     private String name;
 
-    @Transient
+    @Column(name="name")
     public String getName() {
-        if(name == null) {
-            new TranslatableEntityTranslator(new DbSessionLanguageSolver()).translate(this);
-        }
         return name;
     }
 
-    @Transient
     public void setName(String name) {
         this.name = name;
-        defaultLanguage.setName(name);
     }
 
-    @Transient
     private String description;
 
-    @Transient
+    @Column(name="description")
     public String getDescription() {
-        if(description == null) {
-            new TranslatableEntityTranslator(new DbSessionLanguageSolver()).translate(this);
-        }
         return description;
     }
 
-    @Transient
     public void setDescription(String description) {
         this.description = description;
-        defaultLanguage.setDescription(description);
-    }
-    @Transient
-    private String lang;
-
-    @Transient
-    public String getLang() {
-        if(lang == null) {
-            new TranslatableEntityTranslator(new DbSessionLanguageSolver()).translate(this);
-        }
-        return lang;
-    }
-
-    @Transient
-    public void setLang(String lang) {
-        this.lang = lang;
-        if(getLabelHasLanguages()  == null) {
-            setLabelHasLanguages(new ArrayList<>());
-        }
-        for(LabelHasLanguages language: getLabelHasLanguages()) {
-            // Ignore already added language.
-            if(language.getLanguage().equals(lang)){
-                return;
-            }
-        }
-
-        defaultLanguage.setLabel(this);
-        defaultLanguage.setLanguage(lang);
-        getLabelHasLanguages().add(defaultLanguage);
     }
 
     @Column(
@@ -187,25 +135,6 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
 
     public void setAddedBy(CsldUser addedBy) {
         this.addedBy = addedBy;
-    }
-
-
-    @OneToMany(mappedBy = "label")
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    public List<LabelHasLanguages> getLabelHasLanguages() {
-        return labelHasLanguages;
-    }
-
-    public void setLabelHasLanguages(List<LabelHasLanguages> labelHasLanguages) {
-        this.labelHasLanguages = labelHasLanguages;
-    }
-
-    @Transient
-    public List<TranslationEntity> getLanguages() {
-        if(labelHasLanguages == null) {
-            return null;
-        }
-        return new ArrayList<>(labelHasLanguages);
     }
 
     @Override

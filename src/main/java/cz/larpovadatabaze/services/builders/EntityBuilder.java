@@ -40,29 +40,25 @@ public class EntityBuilder {
         user.setDefaultLang("cs");
         user.setIsAuthor(false);
         user.setRole(role);
-        user.setUserHasLanguages(new ArrayList<>());
         user.setDefaultLang("cs");
 
         save(user);
         return user;
     }
 
-    public CsldGroup group(String description, String lang, String name) {
+    public CsldGroup group(String name) {
         CsldGroup group = new CsldGroup();
-        group.setDescription(description);
-        group.setLang(lang);
         group.setName(name);
 
         save(group);
         return group;
     }
 
-    public Label label(CsldUser owner, String name, String lang, String description, boolean authorized, boolean required) {
+    public Label label(CsldUser owner, String name, String description, boolean authorized, boolean required) {
         Label label = new Label();
         label.setAuthorized(authorized);
         label.setDescription(description);
         label.setName(name);
-        label.setLang(lang);
         label.setAddedBy(owner);
         label.setRequired(required);
 
@@ -70,23 +66,22 @@ public class EntityBuilder {
         return label;
     }
 
-    public Game game(String name, String description, String lang, CsldUser addedBy, List<CsldUser> authors,
+    public Game game(String name, String description, CsldUser addedBy, List<CsldUser> authors,
                      List<Label> labels, Timestamp added) {
-        return game(name, description, lang, addedBy, authors, labels, added, null);
+        return game(name, description, addedBy, authors, labels, added, null);
     }
 
-    public Game game(String name, String description, String lang, CsldUser addedBy, List<CsldUser> authors,
+    public Game game(String name, String description, CsldUser addedBy, List<CsldUser> authors,
                      List<Label> labels, Timestamp added, Image coverImage) {
-        return game(name, description, lang, addedBy, authors, labels, added, coverImage, 0);
+        return game(name, description, addedBy, authors, labels, added, coverImage, 0);
     }
 
-    public Game game(String name, String description, String lang, CsldUser addedBy, List<CsldUser> authors,
+    public Game game(String name, String description, CsldUser addedBy, List<CsldUser> authors,
                      List<Label> labels, Timestamp added, Image coverImage, Integer year) {
         Game game = new Game();
         game.setTotalRating(0d);
         game.setName(name);
         game.setDescription(description);
-        game.setLang(lang);
         game.setAddedBy(addedBy);
         game.setAdded(added);
         game.setAmountOfComments(0);
@@ -128,7 +123,6 @@ public class EntityBuilder {
         comment.setUser(user);
         comment.setComment(commentText);
         comment.setAdded(Timestamp.from(Instant.now()));
-        comment.setLang("cs");
 
         save(comment);
         return comment;

@@ -1,12 +1,10 @@
 package cz.larpovadatabaze.components.panel.admin;
 
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
-import cz.larpovadatabaze.components.page.admin.TranslateLabel;
 import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.services.LabelService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.behavior.AttributeAppender;
@@ -21,7 +19,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
 
@@ -137,16 +134,6 @@ public class ManageLabelsPanel extends AbstractCsldPanel<List<Label>> {
                     }
                 };
                 item.add(remove);
-
-                AjaxButton translate = new AjaxButton("translate") {
-                    @Override
-                    protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                        PageParameters params = new PageParameters();
-                        params.set(TranslateLabel.ID_PARAM, label.getId());
-                        throw new RestartResponseException(TranslateLabel.class, params);
-                    }
-                };
-                item.add(translate);
             }
         };
         manageLabels.add(labelsView);

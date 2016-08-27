@@ -10,17 +10,10 @@ import cz.larpovadatabaze.services.LabelService;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import java.util.Locale;
-
-import static cz.larpovadatabaze.lang.AvailableLanguages.availableLocale;
 
 /**
  * It contains basic characteristics of the game and allows user to filter by them.
@@ -60,48 +53,6 @@ public class FilterGamesSidePanel extends AbstractCsldPanel<FilterGame> {
         filterGames.add(requiredLabels);
 
         filterGames.add(new FilterByLabelsPanel("otherLabels", labelService.getAuthorizedOptional(logged), false));
-
-        // Languages
-        filterGames.add(new ListView<Locale>("languages", availableLocale()) {
-            @Override
-            protected void populateItem(ListItem<Locale> item) {
-                final Locale ourLocale = item.getModelObject();
-
-                // Add checkbox
-                CheckBox cb = new CheckBox("checkbox", new IModel<Boolean>() {
-                    @Override
-                    public Boolean getObject() {
-                        return filterGames.getModelObject().getLanguages().contains(ourLocale);
-                    }
-
-                    @Override
-                    public void setObject(Boolean object) {
-                        if (Boolean.TRUE.equals(object)) {
-                            if (!filterGames.getModelObject().getLanguages().contains(ourLocale)) {
-                                filterGames.getModelObject().getLanguages().add(ourLocale);
-                            }
-                        }
-                        else {
-                            filterGames.getModelObject().getLanguages().remove(ourLocale);
-                        }
-                    }
-
-                    @Override
-                    public void detach() {
-                        // Nothing to do
-                    }
-                });
-                item.add(cb);
-                cb.add(new AjaxFormComponentUpdatingBehavior("change") {
-                    @Override
-                    protected void onUpdate(AjaxRequestTarget target) {
-                        ((ListGamePage)(getPage())).filterChanged(false, false, false);
-                    }
-                });
-
-                item.add(new Label("label", item.getModelObject().getLanguage()));
-            }
-        });
 
         add(filterGames);
     }

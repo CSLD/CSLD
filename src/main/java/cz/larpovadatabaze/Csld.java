@@ -3,7 +3,6 @@ package cz.larpovadatabaze;
 import cz.larpovadatabaze.calendar.component.page.CreateNewEventPage;
 import cz.larpovadatabaze.calendar.component.page.DetailOfEventPage;
 import cz.larpovadatabaze.calendar.component.page.ListEventsPage;
-import cz.larpovadatabaze.calendar.component.panel.DetailedEventPanel;
 import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.components.page.TestDatabase;
 import cz.larpovadatabaze.components.page.about.AboutDatabasePage;
@@ -20,7 +19,6 @@ import cz.larpovadatabaze.components.page.group.GroupDetail;
 import cz.larpovadatabaze.components.page.search.SearchResultsPage;
 import cz.larpovadatabaze.components.page.user.*;
 import cz.larpovadatabaze.converters.*;
-import cz.larpovadatabaze.dao.UserHasLanguagesDao;
 import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.CsldUserService;
@@ -31,7 +29,6 @@ import org.apache.log4j.Logger;
 import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.RuntimeConfigurationType;
-import org.apache.wicket.Session;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.core.request.handler.BookmarkableListenerInterfaceRequestHandler;
@@ -40,11 +37,7 @@ import org.apache.wicket.core.request.mapper.MountedMapper;
 import org.apache.wicket.markup.html.IPackageResourceGuard;
 import org.apache.wicket.markup.html.SecurePackageResourceGuard;
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.protocol.http.IRequestLogger;
-import org.apache.wicket.protocol.http.RequestLogger;
 import org.apache.wicket.request.IRequestHandler;
-import org.apache.wicket.request.Request;
-import org.apache.wicket.request.Response;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.component.IRequestablePage;
 import org.apache.wicket.request.cycle.AbstractRequestCycleListener;
@@ -54,18 +47,11 @@ import org.apache.wicket.request.mapper.parameter.PageParametersEncoder;
 import org.apache.wicket.settings.IRequestLoggerSettings;
 import org.apache.wicket.settings.def.RequestLoggerSettings;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
-import org.apache.wicket.util.convert.converter.CalendarConverter;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
-
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
-
-import static cz.larpovadatabaze.lang.AvailableLanguages.availableLocale;
 
 /**
  * Application object for your web application. If you want to run this application without deploying, run the Start class.
@@ -82,8 +68,6 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     private GroupService groupService;
     @Autowired
     private LabelService labelService;
-    @Autowired
-    private UserHasLanguagesDao userHasLanguages;
 
     private static final String DEFAULT_ENCODING = "UTF-8";
     private static ApplicationContext ctx;
@@ -205,7 +189,6 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         locator.set(Game.class, new GameConverter(gameService));
         locator.set(CsldGroup.class, new GroupConverter(groupService));
         locator.set(Label.class, new LabelConverter(labelService));
-        locator.set(UserHasLanguages.class, new UserHasLanguageConverter(userHasLanguages));
 
         return locator;
 
@@ -272,15 +255,5 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
 
     protected boolean isDevelopmentMode() {
         return RuntimeConfigurationType.DEVELOPMENT.equals(this.getConfigurationType());
-    }
-
-    @Override
-    public Session newSession(Request request, Response response) {
-        Session session = super.newSession(request, response);
-        List<Locale> available = availableLocale();
-        if(!available.contains(session.getLocale())){
-            session.setLocale(Locale.ENGLISH);
-        }
-        return session;
     }
 }

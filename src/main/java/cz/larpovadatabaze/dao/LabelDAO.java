@@ -38,38 +38,20 @@ public class LabelDAO extends GenericHibernateDAO<Label, Integer> {
         return uniqueLabel.list();
     }
 
-    public List<Label> findAll(List<Locale> languages) {
+    public List<Label> findAll() {
         Criteria allLabels = getBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession());
-        addFilterByLanguage(allLabels, languages);
         return allLabels.list();
     }
 
-    public List<Label> getRequired(List<Locale> languagesForUser) {
+    public List<Label> getRequired() {
         Criteria requiredLabels = getBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession());
             requiredLabels.add(Restrictions.eq("required", true));
-        addFilterByLanguage(requiredLabels, languagesForUser);
         return requiredLabels.list();
     }
 
-    public List<Label> getOptional(List<Locale> languagesForUser) {
+    public List<Label> getOptional() {
         Criteria requiredLabels = getBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession());
         requiredLabels.add(Restrictions.eq("required", false));
-        addFilterByLanguage(requiredLabels, languagesForUser);
         return requiredLabels.list();
-    }
-
-    public Label getByName(String name) {
-        Criteria label = getBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession());
-        label
-                .createCriteria("labelHasLanguages")
-                .add(Restrictions.eq("name", name));
-
-        return (Label) label.uniqueResult();
-    }
-
-    private void addFilterByLanguage(Criteria criteria, List<Locale> languages) {
-        criteria
-                .createCriteria("labelHasLanguages")
-                .add(Restrictions.in("language", new HashSet(languages.stream().map(Locale::getLanguage).collect(Collectors.toList()))));
     }
 }

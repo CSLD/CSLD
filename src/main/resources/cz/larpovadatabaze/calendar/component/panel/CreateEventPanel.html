@@ -1,4 +1,6 @@
 <wicket:panel xmlns:wicket="http://wicket.apache.org">
+	<div wicket:id="createGame"></div>
+
 	<form action="" id="sky-form4" class="sky-form gamepanel" novalidate="novalidate" wicket:id="addEvent">
 		<div class="row">
 
@@ -43,12 +45,22 @@
 					</label>
 
 					<label class="textarea" wicket:id="descriptionWrapper">
-                    <textarea class="textarea"
-							  wicket:id="description"
-							  style="width:100%;"
-							  rows=8
-					></textarea>
-						<b wicket:id="descriptionFeedback"></b>
+						<textarea class="textarea"
+								  wicket:id="description"
+								  style="width:100%;"
+								  rows=8
+						></textarea>
+							<b wicket:id="descriptionFeedback"></b>
+					</label>
+				</fieldset>
+
+				<fieldset>
+					<label class="input" wicket:id="gamesWrapper">
+						<i class="icon-append fa fa-circle-plus icon-link" wicket:id="createGameBtn"></i>
+
+
+						<input type="text" wicket:id="games" wicket:message="placeholder:form.event.games">
+						<b class="tooltip tooltip-bottom-right" wicket:id="gamesFeedback"></b>
 					</label>
 				</fieldset>
 

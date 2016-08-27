@@ -3,7 +3,6 @@ package cz.larpovadatabaze.services;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.GameHasLanguages;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.models.FilterGame;
 
@@ -78,6 +77,4 @@ public interface GameService extends GenericService<Game>, IIconReferenceProvide
     Collection<Game> getGamesRatedByUser(int userId);
 
     List<Game> getMostPopularGames(int amountOfGames);
-
-    void deleteTranslation(GameHasLanguages toRemove);
 }

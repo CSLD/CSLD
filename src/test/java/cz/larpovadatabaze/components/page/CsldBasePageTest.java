@@ -1,23 +1,16 @@
 package cz.larpovadatabaze.components.page;
 
 import cz.larpovadatabaze.AcceptanceTest;
-import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.TestUtils;
-import cz.larpovadatabaze.components.common.i18n.LocalePicker;
 import cz.larpovadatabaze.components.page.about.AboutDatabasePage;
 import cz.larpovadatabaze.components.page.game.ListGamePage;
-import cz.larpovadatabaze.components.panel.about.AdministratorPanel;
-import cz.larpovadatabaze.components.panel.home.*;
+import cz.larpovadatabaze.components.panel.home.AdvertisementPanel;
 import cz.larpovadatabaze.components.panel.search.SearchBoxPanel;
 import cz.larpovadatabaze.components.panel.user.AdminPanel;
 import cz.larpovadatabaze.components.panel.user.LoggedBoxPanel;
 import cz.larpovadatabaze.components.panel.user.LoginBoxPanel;
-import cz.larpovadatabaze.services.builders.CzechMasqueradeBuilder;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Test functionality specific to the BasePage and therefore to all pages.
@@ -34,7 +27,6 @@ public class CsldBasePageTest extends AcceptanceTest {
         tester.assertComponent("about", BookmarkablePageLink.class);
 
         tester.assertComponent("user", LoginBoxPanel.class);
-        tester.assertComponent("localePicker", LocalePicker.class);
 
         tester.assertComponent("searchBox", SearchBoxPanel.class);
         tester.assertComponent("advertisements", AdvertisementPanel.class);

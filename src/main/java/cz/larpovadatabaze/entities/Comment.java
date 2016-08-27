@@ -12,11 +12,10 @@ import java.sql.Timestamp;
 public class Comment implements Serializable {
     public Comment() {}
 
-    public Comment(int id, String comment, Timestamp added, String lang) {
+    public Comment(int id, String comment, Timestamp added) {
         this.id = id;
         this.comment = comment;
         this.added = added;
-        this.lang = lang;
     }
 
     private int id;
@@ -67,18 +66,6 @@ public class Comment implements Serializable {
 
     public void setHidden(Boolean hidden) {
         isHidden = hidden;
-    }
-
-    private String lang;
-
-    @Column(name = "lang")
-    @Basic
-    public String getLang() {
-        return lang;
-    }
-
-    public void setLang(String lang) {
-        this.lang = lang;
     }
 
     @Override

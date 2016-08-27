@@ -21,13 +21,11 @@ public interface CommentService extends GenericService<Comment> {
 
     Collection<Comment> getLastComments(int amount);
 
-    Collection<Comment> getLastComments(long first, long count, Locale locale);
+    Collection<Comment> getLastComments(long first, long count);
 
     void hideComment(Comment comment);
 
     void unHideComment(Comment comment);
 
     Collection<Game> getGamesCommentedByUser(int userId);
-
-    long getAmountOfComments(Locale locale);
 }

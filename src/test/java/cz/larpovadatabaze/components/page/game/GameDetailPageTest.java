@@ -56,9 +56,6 @@ public class GameDetailPageTest extends AcceptanceTest {
         tester.assertComponent("editGamePanel", EditGamePanel.class);
         tester.assertVisible("editGamePanel");
 
-        tester.assertComponent("translateGamePanel", TranslateGamePanel.class);
-        tester.assertVisible("translateGamePanel");
-
         tester.assertComponent("deleteGamePanel", DeleteGamePanel.class);
         tester.assertVisible("deleteGamePanel");
     }

@@ -1,10 +1,8 @@
 package cz.larpovadatabaze.services.impl;
 
 import cz.larpovadatabaze.dao.GameDAO;
-import cz.larpovadatabaze.dao.GameHasLanguageDao;
 import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
-import cz.larpovadatabaze.lang.LanguageSolver;
 import cz.larpovadatabaze.models.FilterGame;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.security.CsldRoles;
@@ -35,8 +33,6 @@ public class GameServiceImpl implements GameService {
     @Autowired private FileService fileService;
     @Autowired private ImageResizingStrategyFactoryService imageResizingStrategyFactoryService;
     @Autowired private ImageService imageService;
-    @Autowired private LanguageSolver languageSolver;
-    @Autowired private GameHasLanguageDao gameHasLanguageDao;
 
     private ResourceReference iconResourceReference;
 
@@ -58,7 +54,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public List<Game> getFirstChoices(String startsWith, int maxChoices) {
-        throw new UnsupportedOperationException("This does not support autocompletion");
+        return gameDAO.getFirstChoices(startsWith, maxChoices);
     }
 
     @Override
@@ -115,12 +111,12 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public List<Game> getLastGames(int amountOfGames) {
-        return gameDAO.getLastGames(amountOfGames, languageSolver.getLanguagesForUser());
+        return gameDAO.getLastGames(amountOfGames);
     }
 
     @Override
     public List<Game> getMostPopularGames(int amountOfGames) {
-        return gameDAO.getMostPopularGames(amountOfGames, languageSolver.getLanguagesForUser());
+        return gameDAO.getMostPopularGames(amountOfGames);
     }
 
     @Override
@@ -252,11 +248,6 @@ public class GameServiceImpl implements GameService {
     @Override
     public Collection<Game> getGamesRatedByUser(int userId) {
         return new LinkedHashSet<>(gameDAO.getGamesRatedByUser(userId));
-    }
-
-    @Override
-    public void deleteTranslation(GameHasLanguages toRemove) {
-        gameHasLanguageDao.makeTransient(toRemove);
     }
 
     @Override

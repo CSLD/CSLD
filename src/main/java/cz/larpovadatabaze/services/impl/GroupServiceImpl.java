@@ -3,7 +3,6 @@ package cz.larpovadatabaze.services.impl;
 import cz.larpovadatabaze.dao.GroupDAO;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
-import cz.larpovadatabaze.lang.LanguageSolver;
 import cz.larpovadatabaze.services.GroupService;
 import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.request.resource.ResourceReference;

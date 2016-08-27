@@ -1,7 +1,6 @@
 package cz.larpovadatabaze.services.impl;
 
 import cz.larpovadatabaze.dao.CsldUserDAO;
-import cz.larpovadatabaze.dao.UserHasLanguagesDao;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;

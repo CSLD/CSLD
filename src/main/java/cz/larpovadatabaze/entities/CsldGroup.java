@@ -1,10 +1,6 @@
 package cz.larpovadatabaze.entities;
 
 import cz.larpovadatabaze.api.Identifiable;
-import cz.larpovadatabaze.lang.DbSessionLanguageSolver;
-import cz.larpovadatabaze.lang.TranslatableEntity;
-import cz.larpovadatabaze.lang.TranslatableEntityTranslator;
-import cz.larpovadatabaze.lang.TranslationEntity;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -22,7 +18,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "csld_csld_group")
-public class CsldGroup implements Serializable, Identifiable, IAutoCompletable, IEntityWithImage, TranslatableEntity {
+public class CsldGroup implements Serializable, Identifiable, IAutoCompletable, IEntityWithImage {
     private Integer id;
 
     @Column(name = "id", nullable = false, updatable = false)
@@ -37,53 +33,15 @@ public class CsldGroup implements Serializable, Identifiable, IAutoCompletable, 
         this.id = id;
     }
 
-    @Transient
-    private GroupHasLanguage defaultLanguage = new GroupHasLanguage();
-
-    @Transient
     private String name;
 
-    @Transient
+    @Column(name="name")
     public String getName() {
-        if (name == null) {
-            new TranslatableEntityTranslator(new DbSessionLanguageSolver()).translate(this);
-        }
         return name;
     }
 
-    @Transient
     public void setName(String name) {
         this.name = name;
-        defaultLanguage.setName(name);
-    }
-
-    @Transient
-    private String lang;
-
-    @Transient
-    public String getLang() {
-        if (lang == null) {
-            new TranslatableEntityTranslator(new DbSessionLanguageSolver()).translate(this);
-        }
-        return lang;
-    }
-
-    @Transient
-    public void setLang(String lang) {
-        this.lang = lang;
-        if (getGroupHasLanguages() == null) {
-            setGroupHasLanguages(new ArrayList<>());
-        }
-        for (GroupHasLanguage language : getGroupHasLanguages()) {
-            // Ignore already added language.
-            if (language.getLanguage().equals(lang)) {
-                return;
-            }
-        }
-
-        defaultLanguage.setGroup(this);
-        defaultLanguage.setLanguage(lang);
-        getGroupHasLanguages().add(defaultLanguage);
     }
 
     @Override
@@ -155,35 +113,6 @@ public class CsldGroup implements Serializable, Identifiable, IAutoCompletable, 
 
     public void setImage(Image image) {
         this.image = image;
-    }
-
-    private List<GroupHasLanguage> groupHasLanguages;
-
-    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    public List<GroupHasLanguage> getGroupHasLanguages() {
-        return groupHasLanguages;
-    }
-
-    public void setGroupHasLanguages(List<GroupHasLanguage> labelHasLanguages) {
-        this.groupHasLanguages = labelHasLanguages;
-    }
-
-    @Transient
-    public List<TranslationEntity> getLanguages() {
-        if (groupHasLanguages == null) {
-            return null;
-        }
-        return new ArrayList<>(groupHasLanguages);
-    }
-
-    @Transient
-    public String getDescription() {
-        return "";
-    }
-
-    @Transient
-    public void setDescription(String description) {
     }
 
     @Override

@@ -10,7 +10,6 @@ import cz.larpovadatabaze.services.NewsService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -18,10 +17,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static cz.larpovadatabaze.lang.AvailableLanguages.availableLocaleNames;
 import static cz.larpovadatabaze.utils.UserUtils.isSignedIn;
 
 /**
@@ -60,11 +55,6 @@ public class CreateOrUpdateNewsPanel extends AbstractCsldPanel<News> {
         description.add(new CSLDTinyMceBehavior());
         descriptionWrapper.add(description);
         descriptionWrapper.add(new CsldFeedbackMessageLabel("newsFeedback", description, descriptionWrapper, "form.news.textHint"));
-
-        List<String> availableLanguages = new ArrayList<String>(availableLocaleNames());
-        final DropDownChoice<String> lang = new DropDownChoice<String>("lang", availableLanguages);
-        createOrUpdateNews.add(lang);
-        createOrUpdateNews.add(new CsldFeedbackMessageLabel("langFeedback", lang, null));
 
         /* Add button to create news piece. */
         createOrUpdateNews.add(new AjaxButton("submit") {

@@ -189,17 +189,6 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable, I
         this.playedGames = playedGames;
     }
 
-    private List<UserHasLanguages> userHasLanguages;
-
-    @OneToMany(mappedBy = "user",cascade = {javax.persistence.CascadeType.ALL}, orphanRemoval = true)
-    public List<UserHasLanguages> getUserHasLanguages() {
-        return userHasLanguages;
-    }
-
-    public void setUserHasLanguages(List<UserHasLanguages> userHasLanguages) {
-        this.userHasLanguages = userHasLanguages;
-    }
-
     private List<Comment> commented;
 
     @OneToMany(mappedBy = "user")
@@ -286,7 +275,6 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable, I
         emptyUser.setPerson(Person.getEmptyPerson());
         emptyUser.setPlayedGames(new ArrayList<UserPlayedGame>());
         emptyUser.setRole(CsldRoles.USER.getRole());
-        emptyUser.setUserHasLanguages(new ArrayList<UserHasLanguages>());
         return emptyUser;
     }
 }

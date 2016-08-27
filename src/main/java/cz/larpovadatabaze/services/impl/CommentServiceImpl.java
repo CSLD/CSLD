@@ -3,7 +3,6 @@ package cz.larpovadatabaze.services.impl;
 import cz.larpovadatabaze.dao.CommentDAO;
 import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.lang.LanguageSolver;
 import cz.larpovadatabaze.services.CommentService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.utils.UserUtils;
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Locale;
 
 /**
  *
@@ -27,7 +25,6 @@ public class CommentServiceImpl implements CommentService {
 
     @Autowired private CommentDAO commentDAO;
     @Autowired private GameService gameService;
-    @Autowired private LanguageSolver languageSolver;
 
     @Override
     public List<Comment> getAll() {
@@ -42,12 +39,6 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public int getAmountOfComments() {
         return commentDAO.getAmountOfComments();
-    }
-
-
-    @Override
-    public long getAmountOfComments(Locale locale) {
-        return commentDAO.getAmountOfComments(locale);
     }
 
     @Override
@@ -76,12 +67,12 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Collection<Comment> getLastComments(int amount) {
-        return new LinkedHashSet<>(commentDAO.getLastComments(amount, languageSolver.getLanguagesForUser()));
+        return new LinkedHashSet<>(commentDAO.getLastComments(amount));
     }
 
     @Override
-    public Collection<Comment> getLastComments(long first, long count, Locale locale) {
-        return new LinkedHashSet<>(commentDAO.getLastComments(((Long)first).intValue(), ((Long)count).intValue(), languageSolver.getLanguagesForUser()));
+    public Collection<Comment> getLastComments(long first, long count) {
+        return new LinkedHashSet<>(commentDAO.getLastComments(((Long)first).intValue(), ((Long)count).intValue()));
     }
 
     @Override

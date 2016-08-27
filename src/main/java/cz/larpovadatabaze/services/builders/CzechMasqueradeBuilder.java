@@ -43,24 +43,24 @@ public class CzechMasqueradeBuilder{
         user = persistenceStore.user(String.format(mailTemplate, "user"), "User",
                 "User", "Prague", "User of Czech Masquerade group", CsldRoles.USER.getRole(), "user");
 
-        dramatic = persistenceStore.label(editor, "Dramatic", "cs", "Dramatic larp is about drama", true, true);
-        vampire = persistenceStore.label(editor, "Vampire", "cs", "Vampire larp contains vampire in any shape.", true, false);
+        dramatic = persistenceStore.label(editor, "Dramatic", "Dramatic larp is about drama", true, true);
+        vampire = persistenceStore.label(editor, "Vampire", "Vampire larp contains vampire in any shape.", true, false);
         List<Label> masqueradeGamesLabels = new ArrayList<Label>();
         Collections.addAll(masqueradeGamesLabels, dramatic, vampire);
 
-        nosferatu = persistenceStore.group("Clan of ugly vampires", "cs", "Nosferatu");
-        toreador = persistenceStore.group("Clan of beautiful vampires", "cs", "Toreador");
+        nosferatu = persistenceStore.group("Nosferatu");
+        toreador = persistenceStore.group("Toreador");
 
         List<CsldUser> authors = new ArrayList<CsldUser>();
         Collections.addAll(authors, editor, administrator);
         firstMasquerade = persistenceStore.game("Masquerade 1", "First try to bring Masquerade into the Czech " +
-                        "republic", "cs", user, authors, masqueradeGamesLabels, new Timestamp(new Date().getTime()));
+                        "republic", user, authors, masqueradeGamesLabels, new Timestamp(new Date().getTime()));
         secondMasquerade = persistenceStore.game("Masquerade 2", "Second try to bring Masquerade into the Czech " +
-                "republic", "cs", editor, authors, masqueradeGamesLabels, new Timestamp(new Date().getTime()));
+                "republic", editor, authors, masqueradeGamesLabels, new Timestamp(new Date().getTime()));
 
         for(int i = 0; i < 40; i++) {
             persistenceStore.game("Masquerades: " + i , "First try to bring Masquerade into the Czech " +
-                    "republic", "cs", user, authors, masqueradeGamesLabels, new Timestamp(new Date().getTime()), null, 2010 + (i % 5));
+                    "republic", user, authors, masqueradeGamesLabels, new Timestamp(new Date().getTime()), null, 2010 + (i % 5));
         }
 
         persistenceStore.comment(administrator, firstMasquerade, "I liked it");

@@ -64,12 +64,10 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Game> getLastGames(int amountOfGames, List<Locale> locales) {
+    public List<Game> getLastGames(int amountOfGames) {
         Session session = sessionFactory.getCurrentSession();
 
         DetachedCriteria subQueryCriteria = new GameBuilder().build();
-
-        addLanguageRestriction(subQueryCriteria, locales);
 
         subQueryCriteria.setProjection(Projections.distinct(Projections.id()));
 
@@ -85,12 +83,10 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Game> getMostPopularGames(int amountOfGames, List<Locale> locales) {
+    public List<Game> getMostPopularGames(int amountOfGames) {
         Session session = sessionFactory.getCurrentSession();
 
         DetachedCriteria dc = new GameBuilder().build();
-
-        addLanguageRestriction(dc, locales);
 
         Criteria criteria = dc.getExecutableCriteria(session)
                 .setMaxResults(amountOfGames)
@@ -105,20 +101,6 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
                 .setProjection(Projections.rowCount());
 
         return ((Long) criteria.uniqueResult()).intValue();
-    }
-
-    public Game getRandomGame() {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = new GameBuilder().build().getExecutableCriteria(session)
-                .add(Restrictions.sqlRestriction("random() < 0.01"))
-                .setMaxResults(1);
-
-        Game result = (Game) criteria.uniqueResult();
-        if (result == null && getAmountOfGames() > 0) {
-            return getRandomGame();
-        } else {
-            return result;
-        }
     }
 
     @SuppressWarnings("unchecked")
@@ -242,10 +224,6 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
         addLabelCriteria(criteria, filterGame.getRequiredLabels());
         addLabelCriteria(criteria, filterGame.getOtherLabels());
 
-        if (!filterGame.getLanguages().isEmpty()) {
-            addLanguageRestriction(criteria, filterGame.getLanguages());
-        }
-
         Integer yearLimit = null;
         if (filterGame.isShowArchived()) {
             yearLimit = null;
@@ -356,10 +334,12 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
         }
     }
 
-    private void addLanguageRestriction(DetachedCriteria criteria, List<Locale> languages) {
-        criteria
-                .createCriteria("availableLanguages")
-                .add(Restrictions.in("language", languages.stream().map(Locale::getLanguage).collect(Collectors
-                        .toList())));
+    public List<Game> getFirstChoices(String startsWith, int maxChoices) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = getBuilder().build().getExecutableCriteria(session)
+                .setMaxResults(maxChoices)
+                .add(Restrictions.ilike("name", "%" + startsWith + "%"));
+
+        return criteria.list();
     }
 }

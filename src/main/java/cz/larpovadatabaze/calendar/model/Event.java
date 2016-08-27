@@ -27,7 +27,6 @@ public class Event implements cz.larpovadatabaze.api.Entity {
     private String name;
     private String description;
     private String loc;
-    private String source;
     @Column(name="amountofplayers")
     private String amountOfPlayers;
     @Temporal(value = TemporalType.DATE)
@@ -37,7 +36,6 @@ public class Event implements cz.larpovadatabaze.api.Entity {
     // Specify the mapping for the Location.
     @Embedded
     private Location location;
-    private String language;
     @ManyToMany
     @JoinTable(name = "event_has_labels", joinColumns = {
         @JoinColumn(name="event_id")
@@ -45,6 +43,14 @@ public class Event implements cz.larpovadatabaze.api.Entity {
         @JoinColumn(name="label_id")
     })
     private List<Label> labels;
+
+    @ManyToMany
+    @JoinTable(name="csld_game_has_event", joinColumns = {
+        @JoinColumn(name="event_id")
+    }, inverseJoinColumns = {
+        @JoinColumn(name="game_id")
+    })
+    private List<Game> games; // It is possible to be associated with multiple games for the festivals for example. Mainly to show the festival at the game page.
 
     // Constructor without parameters must be there for ORM usage.
     protected Event() {
@@ -80,13 +86,12 @@ public class Event implements cz.larpovadatabaze.api.Entity {
         this.to = to.getTime();
     }
 
-    public Event(int id, String name, Calendar from, Calendar to, Location location, String language, List<Label> labels) {
+    public Event(int id, String name, Calendar from, Calendar to, Location location, List<Label> labels) {
         this.id = id;
         this.name = name;
         this.from = from.getTime();
         this.to = to.getTime();
         this.location = location;
-        this.language = language;
         this.labels = labels;
     }
 
@@ -142,10 +147,6 @@ public class Event implements cz.larpovadatabaze.api.Entity {
         return id;
     }
 
-    public String getLanguage() {
-        return language;
-    }
-
     public List<Label> getLabels() {
         return labels;
     }
@@ -156,10 +157,6 @@ public class Event implements cz.larpovadatabaze.api.Entity {
 
     public String getLoc() {
         return loc;
-    }
-
-    public String getSource() {
-        return source;
     }
 
     public String getAmountOfPlayers() {
@@ -202,12 +199,10 @@ public class Event implements cz.larpovadatabaze.api.Entity {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", loc='" + loc + '\'' +
-                ", source='" + source + '\'' +
                 ", amountOfPlayers=" + amountOfPlayers +
                 ", from=" + from +
                 ", to=" + to +
                 ", location=" + location +
-                ", language='" + language + '\'' +
                 '}';
     }
 
@@ -223,5 +218,13 @@ public class Event implements cz.larpovadatabaze.api.Entity {
     public IModel<?> getDate() {
 
         return Model.of(czechDate.format(getFrom().getTime()) + " - " + czechDate.format(getTo().getTime()));
+    }
+
+    public List<Game> getGames() {
+        return games;
+    }
+
+    public void setGames(List<Game> games) {
+        this.games = games;
     }
 }

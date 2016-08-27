@@ -11,8 +11,6 @@ import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Video;
-import cz.larpovadatabaze.lang.LanguageSolver;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.HbUtils;
@@ -47,8 +45,6 @@ public class GameDetail extends CsldBasePage {
 
     @SpringBean
     GameService gameService;
-    @SpringBean
-    LanguageSolver localeProvider;
 
     @SpringBean
     ImageService imageService;
@@ -66,8 +62,6 @@ public class GameDetail extends CsldBasePage {
 
     private IModel<String> previewImageUrlModel;
 
-    private String lang;
-
     /**
      * Model for selected tab number
      */
@@ -80,7 +74,7 @@ public class GameDetail extends CsldBasePage {
 
         @Override
         public Integer getObject() {
-            return value;
+                  return value;
         }
 
         @Override
@@ -121,10 +115,7 @@ public class GameDetail extends CsldBasePage {
 
             Game game = gameService.getById(gameId);
             if(HbUtils.isProxy(game)){
-            }    game = HbUtils.deproxy(game);
-
-            if(lang != null) {
-                game.overrideLang = lang;
+                game = HbUtils.deproxy(game);
             }
 
             return game;
@@ -160,18 +151,11 @@ public class GameDetail extends CsldBasePage {
                     if (c.getHidden()) {
                         if (!c.getUser().getId().equals(thisUserId)) continue; // Hidden comment and user is not creator - hide
                     }
-                    // If language doesn't equal the chosen one then ignore it.
                     res.add(c);
                 }
             }
 
-            Set<Comment> unique = new HashSet<Comment>();
-            List<String> actualLanguages = localeProvider.getTextLangForUser();
-            for(Comment comment: res){
-                if(actualLanguages.contains(comment.getLang())) {
-                    unique.add(comment);
-                }
-            }
+            Set<Comment> unique = new HashSet<>(res);
             res = new ArrayList<>(unique);
 
             // Sort
@@ -199,11 +183,6 @@ public class GameDetail extends CsldBasePage {
             // If the game is deleted and I don't have sufficient rights redirect me to game deleted page.
             if(gameService.getById(gameId) == null){
                 throw new RestartResponseException(GameWasDeleted.class);
-            }
-
-            if(!params.get("lang").isNull()){
-                lang = params.get("lang").toString();
-                CsldAuthenticatedWebSession.get().setLocale(Locale.forLanguageTag(lang));
             }
 
             setDefaultModel(new GameModel(gameId));
@@ -362,8 +341,6 @@ public class GameDetail extends CsldBasePage {
 
         DeleteGamePanel deleteGamePanel = new DeleteGamePanel("deleteGamePanel", getModel().getObject().getId());
         add(deleteGamePanel);
-
-        add(new TranslateGamePanel("translateGamePanel", getModel()));
 
         add(new GameListPanel("similarGames", new LoadableDetachableModel<List<? extends Game>>() {
             @Override

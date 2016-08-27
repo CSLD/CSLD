@@ -3,11 +3,8 @@ package cz.larpovadatabaze.components.panel.user;
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
-import cz.larpovadatabaze.dao.UserHasLanguagesDao;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Image;
-import cz.larpovadatabaze.entities.UserHasLanguages;
-import cz.larpovadatabaze.lang.LanguageChoiceRenderer;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.FileService;
@@ -28,15 +25,12 @@ import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
 import org.apache.wicket.model.*;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.hibernate.criterion.Restrictions;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static cz.larpovadatabaze.lang.AvailableLanguages.availableLocaleNames;
 
 /**
  * Panel used for registering new user or adding new Author into the database.
@@ -49,8 +43,6 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
     FileService fileService;
     @SpringBean
     ImageResizingStrategyFactoryService imageResizingStrategyFactoryService;
-    @SpringBean
-    UserHasLanguagesDao userHasLanguages;
 
     private FileUploadField fileUpload;
     @SuppressWarnings("unused")
@@ -122,15 +114,6 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
         DateTextField birthDate = new DateTextField("person.birthDate", "dd.MM.yyyy");
         createOrUpdateUser.add(addFeedbackPanel(birthDate, createOrUpdateUser, "birthDateFeedback", "form.description.dateOfBirth"));
 
-        List<String> availableLocales = new ArrayList<>(availableLocaleNames());
-        DropDownChoice<String> defaultLanguage = new DropDownChoice<>("defaultLang", availableLocales, new LanguageChoiceRenderer());
-        createOrUpdateUser.add(defaultLanguage);
-
-        final ListMultipleChoice<UserHasLanguages> changeLocale =
-                new ListMultipleChoice<>("userHasLanguages", availableUserLanguages(), new UserHasLanguageChoiceRenderer());
-        createOrUpdateUser.add(addFeedbackPanel(changeLocale, createOrUpdateUser, "userHasLanguagesFeedback", "form.description.userHasLanguages"));
-
-
         if (isEdit) {
             // No captcha
             WebMarkupContainer reCaptcha = new WebMarkupContainer("reCaptcha");
@@ -177,30 +160,6 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
         createOrUpdateUser.add(new EqualPasswordInputValidator(password, passwordAgain));
 
         add(createOrUpdateUser);
-    }
-
-    private List<UserHasLanguages> availableUserLanguages() {
-        List<String> available = availableLocaleNames();
-        List<UserHasLanguages> availableLanguages = new ArrayList<>();
-        available.forEach(lang -> availableLanguages.add(retrieveExistingOrCreateNew(lang)));
-        return availableLanguages;
-    }
-
-    private UserHasLanguages retrieveExistingOrCreateNew(String language) {
-        List<UserHasLanguages> existingLanguages = userHasLanguages.findByCriteria(Restrictions.and(
-                Restrictions.eq("language", language),
-                Restrictions.eq("user", UserUtils.getLoggedUser())));
-        if(!existingLanguages.isEmpty()){
-            return existingLanguages.get(0);
-        }
-
-        return createNewLanguage(language);
-    }
-
-    private UserHasLanguages createNewLanguage(String language) {
-        UserHasLanguages newUserHasLanguage = new UserHasLanguages(language);
-        newUserHasLanguage.setUser(getModelObject());
-        return newUserHasLanguage;
     }
 
     private FormComponent addFeedbackPanel(FormComponent addFeedbackTo, Form addingFeedbackTo, String feedbackId, String defaultKey){
@@ -272,17 +231,4 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
     }
 
     protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}
-
-    private static class UserHasLanguageChoiceRenderer implements IChoiceRenderer<UserHasLanguages> {
-
-        @Override
-        public Object getDisplayValue(UserHasLanguages object) {
-            return new ResourceModel("language."+object.getLanguage()).getObject();
-        }
-
-        @Override
-        public String getIdValue(UserHasLanguages object, int index) {
-            return object.getLanguage();
-        }
-    }
 }

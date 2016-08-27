@@ -28,12 +28,12 @@ public class SortableCommentProvider extends SortableDataProvider<Comment, Strin
 
     @Override
     public Iterator<? extends Comment> iterator(long first, long count) {
-        return commentService.getLastComments(first, count, Session.get().getLocale()).iterator();
+        return commentService.getLastComments(first, count).iterator();
     }
 
     @Override
     public long size() {
-        return commentService.getAmountOfComments(Session.get().getLocale());
+        return commentService.getAmountOfComments();
     }
 
     @Override
