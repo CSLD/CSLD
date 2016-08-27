@@ -54,6 +54,10 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
         createEvent.add(to);
         createEvent.add(new CsldFeedbackMessageLabel("toFeedback", to, "form.event.toHint"));
 
+        RequiredTextField amountOfPlayers = new RequiredTextField<Integer>("amountOfPlayers");
+        createEvent.add(amountOfPlayers);
+        createEvent.add(new CsldFeedbackMessageLabel("amountOfPlayersFeedback", amountOfPlayers, "form.event.amountOfPlayersHint"));
+
         RequiredTextField location = new RequiredTextField<String>("loc");
         createEvent.add(location);
         createEvent.add(new CsldFeedbackMessageLabel("locFeedback", location, "form.event.locationHint"));
