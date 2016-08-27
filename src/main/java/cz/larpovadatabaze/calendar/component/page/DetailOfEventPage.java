@@ -53,8 +53,7 @@ public class DetailOfEventPage extends CsldBasePage {
         protected Event load() {
             if (eventId == null) return Event.getEmptyEvent(); // Empty event
             ReadOnlyEvents allEvents = new ReadOnlyEvents(
-                    new DatabaseEvents(sessionFactory.getCurrentSession()),
-                    new LarpCzEvents()
+                    new DatabaseEvents(sessionFactory.getCurrentSession())
             );
 
             List<Event> event = allEvents.all()
