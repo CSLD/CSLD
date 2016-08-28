@@ -270,4 +270,8 @@ public class Event implements cz.larpovadatabaze.api.Entity {
     public void setAddedBy(CsldUser addedBy) {
         this.addedBy = addedBy;
     }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }

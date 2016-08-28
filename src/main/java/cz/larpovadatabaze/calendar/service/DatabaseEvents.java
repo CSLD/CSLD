@@ -21,14 +21,17 @@ public class DatabaseEvents implements Events {
         // Prepares the event to the state, which is safe for the application.
         event.sanitize();
 
-        if(!session.contains(event)) {
-            event = (Event) session.merge(event);
+        Event toSave = event;
+        if(!session.contains(toSave)) {
+            toSave = (Event) session.merge(toSave);
         }
-        if(event.getAddedBy() != null && !session.contains(event.getAddedBy())) {
-            event.setAddedBy((CsldUser) session.merge(event.getAddedBy()));
+        if(toSave.getAddedBy() != null && !session.contains(toSave.getAddedBy())) {
+            toSave.setAddedBy((CsldUser) session.merge(toSave.getAddedBy()));
         }
-        session.persist(event);
+        session.persist(toSave);
         session.flush();  // TODO: Understand why the persist doesn't work. Probably unfinished transaction.
+
+        event.setId(toSave.getId());
     }
 
     @Override

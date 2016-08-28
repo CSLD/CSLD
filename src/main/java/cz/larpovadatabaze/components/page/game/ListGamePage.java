@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.page.game;
 
+import cz.larpovadatabaze.components.common.FilterablePage;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.panel.game.AbstractListGamePanel;
 import cz.larpovadatabaze.components.panel.game.FilterGameTabsPanel;
@@ -30,7 +31,7 @@ import java.util.List;
 /**
  *
  */
-public class ListGamePage extends CsldBasePage {
+public class ListGamePage extends CsldBasePage implements FilterablePage {
     @SpringBean
     LabelService labelService;
     @SpringBean

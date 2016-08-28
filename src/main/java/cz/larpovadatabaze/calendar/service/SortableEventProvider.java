@@ -1,6 +1,8 @@
 package cz.larpovadatabaze.calendar.service;
 
 import cz.larpovadatabaze.calendar.model.Event;
+import cz.larpovadatabaze.models.FilterEvent;
+import cz.larpovadatabaze.models.FilterGame;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -13,8 +15,11 @@ import java.util.List;
 public class SortableEventProvider extends SortableDataProvider<Event, String> {
     private SessionFactory sessionFactory;
 
-    public SortableEventProvider(SessionFactory sessionFactory) {
+    private IModel<FilterEvent> filterModel;
+
+    public SortableEventProvider(SessionFactory sessionFactory, IModel<FilterEvent> filterModel) {
         this.sessionFactory = sessionFactory;
+        this.filterModel = filterModel;
     }
 
     @Override
@@ -38,7 +43,8 @@ public class SortableEventProvider extends SortableDataProvider<Event, String> {
     }
 
     private Collection<Event> getEvents() {
-        return new ReadOnlyEvents(
+        return new FilteredReadOnlyEvents(
+                filterModel,
                 new DatabaseEvents(sessionFactory.getCurrentSession())
         ).all();
     }

@@ -1,0 +1,40 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+	<!--
+	It contains basic characteristics of the game and allows user to filter by them.
+	It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/game/FilterGamesSidePanel.htmlhtml
+	Code - cz.larpovadatabaze.components.panel.game.FilterGamesSidePanelanel.html
+	-->
+	<form class="sky-form sky-labels" wicket:id="filterForm">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h2 class="panel-title">
+					<label class="checkbox"><input type="checkbox" wicket:id="showOnlyFuture"><i></i><wicket:message key="game.filter.includeHistorical" /></label>
+				</h2>
+			</div>
+		</div>
+
+		<!-- Required labels -->
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h2 class="panel-title">
+					<wicket:message key="label.required">Popular tags</wicket:message>
+				</h2>
+			</div>
+
+			<div class="panel-body" wicket:id="requiredLabels">
+			</div>
+		</div>
+
+		<!-- Other labels -->
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h2 class="panel-title">
+					<wicket:message key="label.optional">Popular tags</wicket:message>
+				</h2>
+			</div>
+
+			<div class="panel-body" wicket:id="otherLabels">
+			</div>
+		</div>
+	</form>
+</wicket:panel>

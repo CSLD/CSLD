@@ -2,25 +2,104 @@ package cz.larpovadatabaze.calendar.component.page;
 
 import cz.larpovadatabaze.api.Toggles;
 import cz.larpovadatabaze.calendar.component.panel.AbstractListEventPanel;
+import cz.larpovadatabaze.calendar.component.panel.FilterEventsSidePanel;
 import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.calendar.service.SortableEventProvider;
+import cz.larpovadatabaze.components.common.FilterablePage;
+import cz.larpovadatabaze.components.common.tabs.TabsComponentPanel;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.HomePage;
+import cz.larpovadatabaze.components.page.game.GameDetail;
+import cz.larpovadatabaze.components.panel.YouTubePanel;
+import cz.larpovadatabaze.components.panel.game.CommentsListPanel;
+import cz.larpovadatabaze.components.panel.game.CommentsPanel;
+import cz.larpovadatabaze.components.panel.game.FilterGameTabsPanel;
+import cz.larpovadatabaze.components.panel.game.FilterGamesSidePanel;
+import cz.larpovadatabaze.components.panel.photo.PhotoPanel;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.Label;
+import cz.larpovadatabaze.entities.Video;
+import cz.larpovadatabaze.models.FilterEvent;
+import cz.larpovadatabaze.models.FilterGame;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import org.apache.commons.lang.WordUtils;
+import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
+import org.apache.wicket.ajax.AjaxEventBehavior;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Fragment;
+import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.hibernate.SessionFactory;
 import org.springframework.core.env.Environment;
 
-public class ListEventsPage extends CsldBasePage {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
+
+public class ListEventsPage extends CsldBasePage implements FilterablePage {
     @SpringBean
     private SessionFactory sessionFactory;
     @SpringBean
     private Environment environment;
 
-    public ListEventsPage(){
-        if(!Boolean.parseBoolean(environment.getProperty(Toggles.CALENDAR)) &&
+    private enum TabContentType {LIST, MAP, CALENDAR}
+    private ListEventsPage.TabNumberModel tabNumberModel;
+    private WebMarkupContainer tabContent;
+    private Vector<ListEventsPage.TabContentType> tabContentType;
+
+    private WebMarkupContainer requiredLabelsWrapper;
+    private FilterEventsSidePanel sidePanel;
+    private final IModel<FilterEvent> filterModel = new Model(new FilterEvent());
+
+    private AbstractListEventPanel eventsList;
+
+    /**
+     * Model for selected tab number
+     */
+    private class TabNumberModel implements IModel<Integer> {
+        private Integer value;
+
+        private TabNumberModel(int initialValue) {
+            this.value = initialValue;
+        }
+
+        @Override
+        public Integer getObject() {
+            return value;
+        }
+
+        @Override
+        public void setObject(Integer newValue) {
+            if (!value.equals(newValue)) {
+                // Value changed
+                this.value = newValue;
+
+                // Replace tab panel
+                addOrReplaceTabContentPanel();
+
+                // Redraw
+                RequestCycle.get().find(AjaxRequestTarget.class).add(tabContent);
+            }
+        }
+
+        @Override
+        public void detach() {
+            // Nothing to do
+        }
+    }
+
+
+    public ListEventsPage() {
+        if (!Boolean.parseBoolean(environment.getProperty(Toggles.CALENDAR)) &&
                 !CsldAuthenticatedWebSession.get().isAtLeastEditor()) {
             throw new RestartResponseException(HomePage.class);
         }
@@ -30,11 +109,109 @@ public class ListEventsPage extends CsldBasePage {
     protected void onInitialize() {
         super.onInitialize();
 
-        add(new AbstractListEventPanel<Event>("events") {
+        addTabComponent();
+
+        // Tab content
+        tabContent = new WebMarkupContainer("tabContent");
+        tabContent.setOutputMarkupId(true);
+        add(tabContent);
+        addOrReplaceTabContentPanel();
+
+        // Required labels
+        requiredLabelsWrapper = new WebMarkupContainer("requiredLabelsWrapper");
+        requiredLabelsWrapper.setOutputMarkupId(true);
+        add(requiredLabelsWrapper);
+        requiredLabelsWrapper.add(new ListView<Label>("requiredLabels", filterModel.getObject().getRequiredLabels()) {
             @Override
-            protected SortableDataProvider<Event, String> getDataProvider() {
-                return new SortableEventProvider(sessionFactory);
+            protected void populateItem(ListItem<Label> item) {
+                final Label labelObj = item.getModelObject();
+
+                // Add wrapping link
+                AjaxLink link = new AjaxLink<Label>("requiredOne", item.getModel()) {
+                    @Override
+                    public void onClick(AjaxRequestTarget target) {
+                        // Set just this link to model
+                        FilterEvent filter = filterModel.getObject();
+                        filter.getRequiredLabels().clear();
+                        filter.getRequiredLabels().add(labelObj);
+
+                        // Refresh
+                        filterChanged(false, true, false);
+                    }
+                };
+                link.add(new org.apache.wicket.markup.html.basic.Label("text", WordUtils.capitalize(labelObj.getName())));
+                item.add(link);
+
+                // Add remove link (we must do it by behavior because it is link within link)
+                WebMarkupContainer removeLink = new WebMarkupContainer("removeLink");
+                link.add(removeLink);
+                removeLink.add(new AjaxEventBehavior("click") {
+                    @Override
+                    protected void onEvent(AjaxRequestTarget target) {
+                        FilterEvent filter = filterModel.getObject();
+                        filter.getRequiredLabels().remove(labelObj);
+
+                        filterChanged(false, true, false);
+                    }
+                });
             }
         });
+
+        sidePanel = new FilterEventsSidePanel("filterEvents", filterModel);
+        sidePanel.setOutputMarkupId(true);
+        add(sidePanel);
+    }
+
+    public void filterChanged(boolean sort, boolean requiredLabelsChanged, boolean otherLabelsChanged) {
+        // Re-render what is needed
+        AjaxRequestTarget art = getRequestCycle().find(AjaxRequestTarget.class);
+
+        art.add(eventsList);
+
+        if (requiredLabelsChanged) {
+            art.add(requiredLabelsWrapper);
+            art.add(sidePanel.getRequiredLabelsWrapper());
+        }
+
+        if (otherLabelsChanged) {
+            art.add(sidePanel);
+        }
+    }
+
+    private void addOrReplaceTabContentPanel() {
+        Fragment fragment;
+
+        switch (tabContentType.get(tabNumberModel.getObject())) {
+            case LIST:
+                // Create list representing the
+                fragment = new Fragment("tabContentPanel", "events", this);
+
+                eventsList = new AbstractListEventPanel<Event>("eventsPanel") {
+                    @Override
+                    protected SortableDataProvider<Event, String> getDataProvider() {
+                        return new SortableEventProvider(sessionFactory, filterModel);
+                    }
+                };
+                eventsList.setOutputMarkupId(true);
+
+                fragment.add(eventsList);
+                break;
+            default:
+                throw new IllegalStateException("Invalid tab content type");
+        }
+
+        tabContent.addOrReplace(fragment);
+    }
+
+    protected void addTabComponent() {
+        tabNumberModel = new ListEventsPage.TabNumberModel(0);
+        List<IModel> models = new ArrayList<IModel>();
+        tabContentType = new Vector<>();
+
+        // List
+        models.add(Model.of(getString("events")));
+        tabContentType.add(ListEventsPage.TabContentType.LIST);
+
+        add(new TabsComponentPanel("tabs", tabNumberModel, models.toArray(new IModel[models.size()])));
     }
 }
