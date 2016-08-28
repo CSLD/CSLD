@@ -168,7 +168,8 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
         map.setStreetViewControlEnabled(false);
         map.setScaleControlEnabled(true);
         map.setScrollWheelZoomEnabled(true);
-        map.setCenter(new GLatLng(52.47649, 13.228573));
+        map.setCenter(new GLatLng(49.9076134, 14.8630565)); // TODO: Move to the configuration.
+        map.setZoom(7);
 
         map.add(new ClickListener()
         {
@@ -186,6 +187,7 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
         if(location != null) {
             lastSelectedLocation = new GLatLng(location.getLatitude(), location.getLongitude());
             map.addOverlay(new GMarker(new GMarkerOptions(map, lastSelectedLocation)));
+            map.setCenter(lastSelectedLocation);
         }
 
         container.add(map);
