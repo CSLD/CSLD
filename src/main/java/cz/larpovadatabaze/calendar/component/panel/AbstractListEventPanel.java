@@ -4,8 +4,10 @@ import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.calendar.service.DatabaseEvents;
 import cz.larpovadatabaze.calendar.service.ReadOnlyEvents;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
@@ -78,7 +80,7 @@ abstract public class AbstractListEventPanel<T> extends AbstractCsldPanel<T> {
                 item.add(new EventNameAndLabelsPanel("nameAndLabels", new EventModel(event.getId())));
                 item.add(new Label("loc", Model.of(event.getLoc())));
                 item.add(new Label("date", Model.of(event.getDate())));
-                item.add(new Label("web", Model.of(event.getWeb())));
+                item.add(new ExternalLink("web", Model.of(event.getWeb()), Model.of(event.getWeb())).setVisible(StringUtils.isNotBlank(event.getWeb())));
             }
         };
         propertyList.setOutputMarkupId(true);

@@ -14,6 +14,10 @@ update csld_label set description = csld_label_has_languages.description FROM cs
 
 update csld_csld_group set name = csld_group_has_languages.name FROM csld_group_has_languages WHERE language = 'cs' and csld_csld_group.id = csld_group_has_languages.id_group;
 
+drop table csld_game_has_languages;
+drop table csld_label_has_languages;
+drop table csld_group_has_languages;
+
 delete from csld_photo where game in (select id from csld_game where name is NULL);
 delete from csld_game_has_author where id_game in (select id from csld_game where name is NULL);
 delete from csld_game_has_group where id_game in (select id from csld_game where name is NULL);
@@ -27,7 +31,3 @@ delete from csld_label where name is NULL;
 delete from csld_csld_group where name is NULL;
 
 alter table csld_comment drop column lang;
-
-drop table csld_game_has_languages;
-drop table csld_label_has_languages;
-drop table csld_group_has_languages;
