@@ -40,6 +40,10 @@ public class FilteredReadOnlyEvents implements Events {
 
         FilterEvent filterEvent = filterCriteria.getObject();
         for(Event event: events) {
+            if(event.isDeleted()) {
+                continue;
+            }
+
             List<Label> labels = event.getLabels();
             if(labels.containsAll(filterEvent.getRequiredLabels()) && labels.containsAll(filterEvent.getOtherLabels())) {
                 if(filterEvent.isShowOnlyFuture()) {
