@@ -91,7 +91,12 @@ public class DetailOfEventPage extends CsldBasePage {
             throw new RestartResponseException(ListEventsPage.class);
         }
 
-        setDefaultModel(new EventModel(params.get("id").toInt()));
+        EventModel model = new EventModel(params.get("id").toInt());
+        setDefaultModel(model);
+
+        if(model.getObject().isDeleted()) {
+            throw new RestartResponseException(ListEventsPage.class);
+        }
     }
 
     @Override
