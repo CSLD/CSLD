@@ -227,4 +227,8 @@ public class Event implements cz.larpovadatabaze.api.Entity {
     public void setGames(List<Game> games) {
         this.games = games;
     }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 }

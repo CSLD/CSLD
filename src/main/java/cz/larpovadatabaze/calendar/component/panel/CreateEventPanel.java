@@ -4,6 +4,7 @@ import com.googlecode.wicket.jquery.core.Options;
 import com.googlecode.wicket.jquery.ui.form.datepicker.DatePicker;
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
+import cz.larpovadatabaze.calendar.Location;
 import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.calendar.service.DatabaseEvents;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
@@ -18,6 +19,7 @@ import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.validator.AtLeastOneRequiredLabelValidator;
 import cz.larpovadatabaze.validator.NonEmptyAuthorsValidator;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -33,6 +35,12 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.hibernate.SessionFactory;
+import org.wicketstuff.gmap.GMap;
+import org.wicketstuff.gmap.GMapHeaderContributor;
+import org.wicketstuff.gmap.api.GLatLng;
+import org.wicketstuff.gmap.api.GMarker;
+import org.wicketstuff.gmap.api.GMarkerOptions;
+import org.wicketstuff.gmap.event.ClickListener;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 import java.util.Collection;
@@ -46,6 +54,8 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
     private SessionFactory sessionFactory;
     @SpringBean
     private GameService gameService;
+
+    private GLatLng lastSelectedLocation;
 
     public CreateEventPanel(String id, IModel<Event> model) {
         super(id, model);
@@ -117,6 +127,8 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
         createEvent.add(labelsFeedbackWrapper);
         labelsFeedbackWrapper.add(new CsldFeedbackMessageLabel("labelsFeedback", chooseLabels, labelsFeedbackWrapper, null));
 
+        addMap(createEvent);
+
         add(createEvent);
 
         createEvent.add(new AjaxButton("submit") {
@@ -125,6 +137,7 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
                 super.onSubmit(target, form);
 
                 Event event = (Event) form.getModelObject();
+                event.setLocation(new Location(lastSelectedLocation.getLat(), lastSelectedLocation.getLng()));
                 new DatabaseEvents(sessionFactory.getCurrentSession()).store(event);
 
                 onCsldAction(target, form);
@@ -138,6 +151,29 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
                 }
             }
         }.add(new TinyMceAjaxSubmitModifier()));
+    }
+
+    private void addMap(Form container){
+        GMap map = new GMap("map", new GMapHeaderContributor("http", "AIzaSyC8K3jrJMl52-Mswi2BsS5UVKDZIT4GWh8")); // TODO: Restrict usage of the key.
+        map.setStreetViewControlEnabled(false);
+        map.setScaleControlEnabled(true);
+        map.setScrollWheelZoomEnabled(true);
+        map.setCenter(new GLatLng(52.47649, 13.228573));
+
+        map.add(new ClickListener()
+        {
+            @Override
+            protected void onClick(AjaxRequestTarget target, GLatLng latLng) {
+                if (latLng != null) {
+                    lastSelectedLocation = latLng;
+
+                    map.removeAllOverlays();
+                    map.addOverlay(new GMarker(new GMarkerOptions(map, latLng)));
+                }
+            }
+        });
+
+        container.add(map);
     }
 
     private void addGamesInput(WebMarkupContainer gamesWrapper) {

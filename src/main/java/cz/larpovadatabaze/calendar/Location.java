@@ -4,12 +4,13 @@ import org.apache.wicket.util.lang.Args;
 
 import javax.persistence.Basic;
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 
 /**
  * Boxing for Location.
  */
 @Embeddable
-public class Location {
+public class Location implements Serializable {
     @Basic // TODO: See whether there is another way to specify access through properties
     private Double latitude;
     private Double longitude;
