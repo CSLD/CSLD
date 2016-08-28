@@ -1,13 +1,12 @@
 package cz.larpovadatabaze.components.panel.home;
 
 import cz.larpovadatabaze.api.Toggles;
-import cz.larpovadatabaze.calendar.component.page.CreateNewEventPage;
+import cz.larpovadatabaze.calendar.component.page.CreateOrUpdateEventPage;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.OwlCarouselResourceReference;
 import cz.larpovadatabaze.components.page.game.CreateOrUpdateGamePage;
 import cz.larpovadatabaze.components.page.game.ListGamePage;
-import cz.larpovadatabaze.components.page.news.CreateOrUpdateNewsPage;
 import cz.larpovadatabaze.components.page.user.CreateUserPage;
 import cz.larpovadatabaze.components.page.user.UserDetailPage;
 import cz.larpovadatabaze.entities.Advertisement;
@@ -113,7 +112,7 @@ public class AdvertisementPanel extends AbstractCsldPanel<List<Advertisement>> {
 
         // Add add link
         add(new BookmarkablePageLink<CsldBasePage>("addGameLink", CreateOrUpdateGamePage.class));
-        add(new BookmarkablePageLink<CsldBasePage>("addEventLink", CreateNewEventPage.class){
+        add(new BookmarkablePageLink<CsldBasePage>("addEventLink", CreateOrUpdateEventPage.class){
             @Override
             protected void onConfigure() {
                 super.onConfigure();

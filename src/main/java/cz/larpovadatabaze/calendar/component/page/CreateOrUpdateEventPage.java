@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class CreateNewEventPage extends CsldBasePage {
+public class CreateOrUpdateEventPage extends CsldBasePage {
     @SpringBean
     private SessionFactory sessionFactory;
     @SpringBean
@@ -62,7 +62,7 @@ public class CreateNewEventPage extends CsldBasePage {
         }
     }
 
-    public CreateNewEventPage(PageParameters params) {
+    public CreateOrUpdateEventPage(PageParameters params) {
         if(!Boolean.parseBoolean(env.getProperty(Toggles.CALENDAR)) &&
                 !CsldAuthenticatedWebSession.get().isAtLeastEditor()) {
             throw new RestartResponseException(HomePage.class);
@@ -87,7 +87,7 @@ public class CreateNewEventPage extends CsldBasePage {
                 CsldAuthenticatedWebSession session = CsldAuthenticatedWebSession.get();
                 session.requestClear();
 
-                throw new RestartResponseException(ListEventsPage.class);
+                throw new RestartResponseException(DetailOfEventPage.class, DetailOfEventPage.pageParameters((Event) form.getModelObject()));
             }
         });
     }

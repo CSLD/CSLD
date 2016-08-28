@@ -1,10 +1,15 @@
 package cz.larpovadatabaze.calendar.model;
 
 import cz.larpovadatabaze.calendar.Location;
+import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Label;
+import org.apache.commons.lang3.AnnotationUtils;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
@@ -27,6 +32,8 @@ public class Event implements cz.larpovadatabaze.api.Entity {
     private String name;
     private String description;
     private String loc;
+    private String web;
+    private boolean deleted;
     @Column(name="amountofplayers")
     private String amountOfPlayers;
     @Temporal(value = TemporalType.DATE)
@@ -51,6 +58,18 @@ public class Event implements cz.larpovadatabaze.api.Entity {
         @JoinColumn(name="game_id")
     })
     private List<Game> games; // It is possible to be associated with multiple games for the festivals for example. Mainly to show the festival at the game page.
+
+    // TODO: Take a look whether all these properties make sense.
+    @ManyToOne(cascade = javax.persistence.CascadeType.ALL)
+    @JoinColumn(
+            name = "added_by",
+            referencedColumnName = "`id`",
+            insertable = true,
+            updatable = true
+    )
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @Fetch(FetchMode.SELECT)
+    private CsldUser addedBy;
 
     // Constructor without parameters must be there for ORM usage.
     protected Event() {
@@ -230,5 +249,25 @@ public class Event implements cz.larpovadatabaze.api.Entity {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public String getWeb() {
+        return web;
+    }
+
+    public CsldUser getAddedBy() {
+        return addedBy;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public void setAddedBy(CsldUser addedBy) {
+        this.addedBy = addedBy;
     }
 }

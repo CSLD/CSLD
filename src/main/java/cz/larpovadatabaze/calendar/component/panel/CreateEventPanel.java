@@ -16,6 +16,7 @@ import cz.larpovadatabaze.components.panel.game.ChooseLabelsPanel;
 import cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Label;
+import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.validator.AtLeastOneRequiredLabelValidator;
 import cz.larpovadatabaze.validator.NonEmptyAuthorsValidator;
@@ -25,10 +26,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.FormComponent;
-import org.apache.wicket.markup.html.form.RequiredTextField;
-import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -43,9 +41,11 @@ import org.wicketstuff.gmap.api.GMarkerOptions;
 import org.wicketstuff.gmap.event.ClickListener;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
+import java.text.DateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
     private static final int AUTOCOMPLETE_CHOICES = 10;
@@ -127,7 +127,12 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
         createEvent.add(labelsFeedbackWrapper);
         labelsFeedbackWrapper.add(new CsldFeedbackMessageLabel("labelsFeedback", chooseLabels, labelsFeedbackWrapper, null));
 
-        addMap(createEvent);
+        // Web
+        TextField<String> web = new TextField<String>("web");
+        createEvent.add(web);
+        createEvent.add(new CsldFeedbackMessageLabel("webFeedback", web, "form.game.webHint"));
+
+        addMap(createEvent, ((Event) getDefaultModelObject()).getLocation());
 
         add(createEvent);
 
@@ -137,7 +142,12 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
                 super.onSubmit(target, form);
 
                 Event event = (Event) form.getModelObject();
-                event.setLocation(new Location(lastSelectedLocation.getLat(), lastSelectedLocation.getLng()));
+                if(lastSelectedLocation != null) {
+                    event.setLocation(new Location(lastSelectedLocation.getLat(), lastSelectedLocation.getLng()));
+                }
+                if(event.getAddedBy() == null) {
+                    event.setAddedBy(CsldAuthenticatedWebSession.get().getLoggedUser());
+                }
                 new DatabaseEvents(sessionFactory.getCurrentSession()).store(event);
 
                 onCsldAction(target, form);
@@ -153,7 +163,7 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
         }.add(new TinyMceAjaxSubmitModifier()));
     }
 
-    private void addMap(Form container){
+    private void addMap(Form container, Location location){
         GMap map = new GMap("map", new GMapHeaderContributor("http", "AIzaSyC8K3jrJMl52-Mswi2BsS5UVKDZIT4GWh8")); // TODO: Restrict usage of the key.
         map.setStreetViewControlEnabled(false);
         map.setScaleControlEnabled(true);
@@ -172,6 +182,11 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
                 }
             }
         });
+
+        if(location != null) {
+            lastSelectedLocation = new GLatLng(location.getLatitude(), location.getLongitude());
+            map.addOverlay(new GMarker(new GMarkerOptions(map, lastSelectedLocation)));
+        }
 
         container.add(map);
     }

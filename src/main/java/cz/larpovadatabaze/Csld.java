@@ -1,6 +1,6 @@
 package cz.larpovadatabaze;
 
-import cz.larpovadatabaze.calendar.component.page.CreateNewEventPage;
+import cz.larpovadatabaze.calendar.component.page.CreateOrUpdateEventPage;
 import cz.larpovadatabaze.calendar.component.page.DetailOfEventPage;
 import cz.larpovadatabaze.calendar.component.page.ListEventsPage;
 import cz.larpovadatabaze.components.page.HomePage;
@@ -46,11 +46,16 @@ import org.apache.wicket.request.mapper.parameter.PageParametersEncoder;
 import org.apache.wicket.settings.IRequestLoggerSettings;
 import org.apache.wicket.settings.def.RequestLoggerSettings;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
+import org.apache.wicket.util.convert.converter.CalendarConverter;
+import org.apache.wicket.util.convert.converter.DateConverter;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
  * Application object for your web application. If you want to run this application without deploying, run the Start class.
@@ -188,6 +193,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         locator.set(Game.class, new GameConverter(gameService));
         locator.set(CsldGroup.class, new GroupConverter(groupService));
         locator.set(Label.class, new LabelConverter(labelService));
+        locator.set(GregorianCalendar.class, new CalendarConverter(new EnglishDateConverter()));
 
         return locator;
 
@@ -213,7 +219,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         mountPage("/detail-group", GroupDetail.class);
 
         mountPage("/calendar", ListEventsPage.class);
-        mountPage("/add-event", CreateNewEventPage.class);
+        mountPage("/add-event", CreateOrUpdateEventPage.class);
         mount(new MountedMapperWithoutPageComponentInfo("/event/${name}/${id}", DetailOfEventPage.class));
 
         mountPage("/search", SearchResultsPage.class);
