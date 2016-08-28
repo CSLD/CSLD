@@ -1,5 +1,7 @@
 package cz.larpovadatabaze.components.page.game;
 
+import cz.larpovadatabaze.calendar.component.panel.EventsListLinksOnly;
+import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.components.common.JSPingBehavior;
 import cz.larpovadatabaze.components.common.tabs.TabsComponentPanel;
 import cz.larpovadatabaze.components.page.CsldBasePage;
@@ -119,6 +121,22 @@ public class GameDetail extends CsldBasePage {
             }
 
             return game;
+        }
+    }
+
+    /**
+     * Model for all events associated with given game.
+     */
+    private class EventsModel extends LoadableDetachableModel<List<Event>> {
+        private GameModel model;
+
+        private EventsModel(int gameId) {
+            model = new GameModel(gameId);
+        }
+
+        @Override
+        protected List<Event> load() {
+            return model.load().getEvents();
         }
     }
 
@@ -355,6 +373,8 @@ public class GameDetail extends CsldBasePage {
                 return gameService.gamesOfAuthors(getModel().getObject());
             }
         }));
+
+        add(new EventsListLinksOnly("associatedEvents", new EventsModel(getModel().getObject().getId())));
 
         // Contact
         EnclosureContainer contactEnclosure = new EnclosureContainer("contactEnclosure", contact);

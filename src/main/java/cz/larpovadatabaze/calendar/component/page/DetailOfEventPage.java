@@ -9,6 +9,7 @@ import cz.larpovadatabaze.calendar.service.ReadOnlyEvents;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.utils.Strings;
 import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -25,17 +26,12 @@ import java.util.stream.Collectors;
  * It shows detailed information about one event.
  */
 public class DetailOfEventPage extends CsldBasePage {
+    private static final String ID_PARAM = "id";
+
     @SpringBean
     private Environment environment;
     @SpringBean
     private SessionFactory sessionFactory;
-
-    public static PageParameters pageParameters(Event event) {
-        PageParameters result = new PageParameters();
-        result.add("name", event.getName());
-        result.add("id", event.getId());
-        return result;
-    }
 
     /**
      * Model for event specified by event id
@@ -91,5 +87,16 @@ public class DetailOfEventPage extends CsldBasePage {
         super.onInitialize();
 
         add(new DetailedEventPanel("eventDetail", getDefaultModel()));
+    }
+
+    public static PageParameters pageParameters(Event event) {
+        PageParameters pp = new PageParameters();
+
+        if (event != null) {
+            pp.add(ID_PARAM, event.getId());
+            pp.add("name", Strings.removeAccents(event.getName()).toLowerCase().replaceAll("[^a-z0-9\\.]", "-").replaceAll("-+", "-").replaceAll("-$", ""));
+        }
+
+        return pp;
     }
 }
