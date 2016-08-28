@@ -148,6 +148,10 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
                 if(event.getAddedBy() == null) {
                     event.setAddedBy(CsldAuthenticatedWebSession.get().getLoggedUser());
                 }
+
+                if(createEvent.isValid()) {
+                    event.setGames((List<Game>) ((MultiAutoCompleteComponent)createEvent.get("gamesWrapper:games")).getConvertedInput());
+                }
                 new DatabaseEvents(sessionFactory.getCurrentSession()).store(event);
 
                 onCsldAction(target, form);
