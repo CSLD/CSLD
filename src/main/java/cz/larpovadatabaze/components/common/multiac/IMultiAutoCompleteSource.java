@@ -1,7 +1,6 @@
 package cz.larpovadatabaze.components.common.multiac;
 
 import cz.larpovadatabaze.api.Identifiable;
-import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
 
 import java.io.Serializable;
 import java.util.Collection;

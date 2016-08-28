@@ -2,7 +2,7 @@ package cz.larpovadatabaze.entities;
 
 import cz.larpovadatabaze.api.Identifiable;
 import cz.larpovadatabaze.security.CsldRoles;
-import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
+import cz.larpovadatabaze.components.common.multiac.IAutoCompletable;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;

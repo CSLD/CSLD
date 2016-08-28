@@ -1,0 +1,19 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+    <!--
+    It lists rating of users for given game.
+
+    It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/admin/AdminAllRatingsPanel.html
+    Code - cz.larpovadatabaze.components.panel.admin.AdminAllRatingsPanel.html
+    -->
+    <div class="col-md-12 col-sm-6 col-xs-12">
+        <ul>
+            <li wicket:id="listUsers">
+                <span wicket:id="rating" class="delete-rating-num"></span>
+
+                <wicket:container wicket:id="ratingHiddenButton" />
+
+                <wicket:container wicket:id="userDetail" />
+            </li>
+        </ul>
+    </div>
+</wicket:panel>

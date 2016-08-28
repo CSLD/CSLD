@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.entities;
 
-import org.apache.wicket.extensions.ajax.markup.html.autocomplete.IAutoCompletable;
+import cz.larpovadatabaze.components.common.multiac.IAutoCompletable;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 

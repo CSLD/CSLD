@@ -1,0 +1,67 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+    <!--
+    This panel shows all labels and allows to change their status.
+    Label can be required or optional.
+    To be used by everyone, it needs to be approved.
+    It is also possible to delete Label.
+    It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/admin/ManageLabelsPanel.html
+    Code - cz.larpovadatabaze.components.panel.admin.ManageLabelsPanel.html
+    -->
+    <form wicket:id="manageLabels" id="manageLabels">
+        <table>
+            <thead>
+            <tr>
+                <th>
+                    <wicket:message key="form.name">Jméno</wicket:message>
+                </th>
+                <th>
+                    <wicket:message key="form.description">Popis</wicket:message>
+                </th>
+                <th>
+                    <wicket:message key="label.require">Požadovat</wicket:message>
+                </th>
+                <th>
+                    <wicket:message key="label.accept">Schválit</wicket:message>
+                </th>
+                <th>
+                    <wicket:message key="label.remove">Smazat</wicket:message>
+                </th>
+                <th>
+
+                </th>
+            </tr>
+            </thead>
+
+            <tbody wicket:id="labels">
+            <!-- Beginning of repetitive part for every Label -->
+            <tr>
+                <td>
+                    <span wicket:id="name"></span>
+                </td>
+                <td>
+                    <input type="button" class="startEdit" wicket:id="editBtn" data-id="10" value="E" />
+                    <span wicket:id="description"></span>
+                </td>
+                <td>
+                    <input type="button" wicket:id="require" wicket:message="value:label.require" class=""/>
+                </td>
+                <td>
+                    <input type="button" wicket:id="accept" wicket:message="value:label.accept" class=""/>
+                </td>
+                <td>
+                    <input type="button" wicket:id="remove" wicket:message="value:label.remove" class=""/>
+                </td>
+            </tr>
+            <!-- End of repetitive part for every Label -->
+            </tbody>
+        </table>
+
+        <div id="editDialog" class="cmpEditDialog" style="display:none">
+            <div>
+                <input type="hidden" wicket:id="editedLabelId" />
+                <textarea wicket:id="newLabelDescription" />
+                <input type="submit" value="Změnit" /> <input type="button" value="Storno" />
+            </div>
+        </div>
+    </form>
+</wicket:panel>

@@ -1,0 +1,37 @@
+<wicket:extend xmlns:wicket="http://wicket.apache.org">
+    <div class="profile_bar">
+        <div class="container">
+            <div class="row" wicket:id="groupDetail">
+                <!--
+                This panel is found in package: cz.larpovadatabaze.components.panel.group.GroupDetailPanel.html
+                https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/group/GroupDetailPanel.html
+                -->
+            </div>
+        </div>
+    </div>
+
+    <div class="profile_bar switcher">
+        <div class="container">
+            <!-- Nothing for now -->
+        </div>
+    </div>
+
+    <div class="container main">
+        <div class="row">
+            <div wicket:id="annotatedGamesOfAuthor" class="col-md-10 col-sm-10 col-xs-12">
+                <!--
+                This panel is found in package: cz.larpovadatabaze.components.panel.game.ListGamesWithAnnotations.html
+                https://github.com/CSLD/CSLD/blob/master/src/main/java/cz/larpovadatabaze/components/panel/game/ListGamesWithAnnotations.html
+                -->
+            </div>
+
+
+            <div class="col-md-2 col-sm-2 col-xs-12">
+                <wicket:container wicket:id="addGroup" />
+
+                <wicket:container wicket:id="editGroup" />
+            </div>
+        </div>
+    </div>
+
+</wicket:extend>
