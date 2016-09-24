@@ -70,13 +70,15 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
 
         RequiredTextField name = new RequiredTextField<String>("name");
         createEvent.add(name);
-        createEvent.add(new CsldFeedbackMessageLabel("nameFeedback", name, "form.game.nameHint"));
+        createEvent.add(new CsldFeedbackMessageLabel("nameFeedback", name, "form.event.nameHint"));
 
-        FormComponent<Date> from = new DatePicker("from", "MM/dd/yyyy", new Options()).setRequired(true);
+        Options czechCalendar = new Options();
+        czechCalendar.set("start_weekday", 0);
+        FormComponent<Date> from = new DatePicker("from", "MM/dd/yyyy", czechCalendar).setRequired(true);
         createEvent.add(from);
         createEvent.add(new CsldFeedbackMessageLabel("fromFeedback", from, "form.event.fromHint"));
 
-        FormComponent<Date> to = new DatePicker("to", "MM/dd/yyyy", new Options()).setRequired(true);
+        FormComponent<Date> to = new DatePicker("to", "MM/dd/yyyy", czechCalendar).setRequired(true);
         createEvent.add(to);
         createEvent.add(new CsldFeedbackMessageLabel("toFeedback", to, "form.event.toHint"));
 
@@ -102,7 +104,7 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
         TextArea description = (TextArea) new TextArea<String>("description").setRequired(true);
         description.add(new CSLDTinyMceBehavior());
         descriptionWrapper.add(description);
-        descriptionWrapper.add(new CsldFeedbackMessageLabel("descriptionFeedback", description, descriptionWrapper, "form.game.descriptionHint"));
+        descriptionWrapper.add(new CsldFeedbackMessageLabel("descriptionFeedback", description, descriptionWrapper, "form.event.descriptionHint"));
 
         ChooseLabelsPanel chooseLabels = new ChooseLabelsPanel("labels", new IModel<List<Label>>() {
             @Override
