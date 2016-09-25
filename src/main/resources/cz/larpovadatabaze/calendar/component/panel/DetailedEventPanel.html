@@ -7,18 +7,16 @@
 						<h1 wicket:id="name"></h1>
 					</div>
 				</div>
-				<div class="row">
-					<p>
-						<wicket:container wicket:id="amountOfPlayers"/>
-						<wicket:message key="game.detail.players">hráčů</wicket:message>
-					</p>
-					<wicket:enclosure child="webGameLink">
-						<p>Web: <a wicket:id="webGameLink"></a></p>
-					</wicket:enclosure>
-				</div>
 			</div>
 
 			<div class="col-md-7 col-sm-7 col-xs-12">
+				<p>
+					<wicket:container wicket:id="amountOfPlayers"/>
+					<wicket:message key="game.detail.players">hráčů</wicket:message>
+				</p>
+				<wicket:enclosure child="webGameLink">
+					<p>Web: <a wicket:id="webGameLink"></a></p>
+				</wicket:enclosure>
 				<p>
 					<strong>
 						<wicket:message key="event.location">Lokace:</wicket:message>
@@ -29,13 +27,11 @@
 					<wicket:message key="event.date"></wicket:message>
 					<span wicket:id="fromCzech"></span> - <span wicket:id="toCzech"></span>
 				</p>
+				<wicket:container wicket:id="description"/>
 			</div>
 		</div>
 		<div class="row description">
 			<div class="col-md-11 col-sm-11 col-xs-12">
-				<div class="line"></div>
-				<wicket:container wicket:id="description"/>
-				<div class="line"></div>
 				<p class="tags row">
 				<div class="col-md-8 col-sm-6 col-xs-12">
 					<wicket:container wicket:id="labels">

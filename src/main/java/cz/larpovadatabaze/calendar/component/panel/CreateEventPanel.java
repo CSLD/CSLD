@@ -74,11 +74,11 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
 
         Options czechCalendar = new Options();
         czechCalendar.set("start_weekday", 0);
-        FormComponent<Date> from = new DatePicker("from", "MM/dd/yyyy", czechCalendar).setRequired(true);
+        FormComponent<Date> from = new DatePicker("from", "dd.MM.yyyy", czechCalendar).setRequired(true);
         createEvent.add(from);
         createEvent.add(new CsldFeedbackMessageLabel("fromFeedback", from, "form.event.fromHint"));
 
-        FormComponent<Date> to = new DatePicker("to", "MM/dd/yyyy", czechCalendar).setRequired(true);
+        FormComponent<Date> to = new DatePicker("to", "dd.MM.yyyy", czechCalendar).setRequired(true);
         createEvent.add(to);
         createEvent.add(new CsldFeedbackMessageLabel("toFeedback", to, "form.event.toHint"));
 
@@ -96,7 +96,7 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
         // Choose from games to associate event with.
         addGamesInput(gamesWrapper);
         // Create new game to associate with this event.
-        addCreateGameButton(gamesWrapper);
+        addCreateGameButton(gamesWrapper, createEvent);
 
 
         WebMarkupContainer descriptionWrapper = new WebMarkupContainer("descriptionWrapper");
@@ -217,14 +217,33 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
         gamesWrapper.add(new CsldFeedbackMessageLabel("gamesFeedback", associatedGames, gamesWrapper, null));
     }
 
-    private void addCreateGameButton(WebMarkupContainer gamesWrapper) {
-        final ModalWindow createGameModal;
-        add(createGameModal = new ModalWindow("createGame"));
+    private void addCreateGameButton(WebMarkupContainer gamesWrapper, Form createEvent) {
+        final ModalWindow createGameModal = new ModalWindow("createGame");
+        createGameModal.setResizable(false);
+        createGameModal.setInitialHeight(100);
+        createGameModal.setInitialWidth(100);
+        createGameModal.setWidthUnit("%");
+        createGameModal.setHeightUnit("%");
 
         createGameModal.setTitle("Vytvořit hru");
         createGameModal.setCookieName("create-game");
 
+        add(createGameModal);
+
         gamesWrapper.add(new AjaxButton("createGameBtn"){}.setOutputMarkupId(true).add(new AjaxEventBehavior("click") {
+            @Override
+            protected void onEvent(AjaxRequestTarget target) {
+                createGameModal.setContent(new CreateOrUpdateGamePanel(createGameModal.getContentId(), Model.of(Game.getEmptyGame())){
+                    @Override
+                    protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
+                        super.onCsldAction(target, form);
+                        createGameModal.close(target);
+                    }
+                });
+                createGameModal.show(target);
+            }
+        }));
+        createEvent.add(new AjaxButton("createGameSpecButton"){}.setOutputMarkupId(true).add(new AjaxEventBehavior("click") {
             @Override
             protected void onEvent(AjaxRequestTarget target) {
                 createGameModal.setContent(new CreateOrUpdateGamePanel(createGameModal.getContentId(), Model.of(Game.getEmptyGame())){

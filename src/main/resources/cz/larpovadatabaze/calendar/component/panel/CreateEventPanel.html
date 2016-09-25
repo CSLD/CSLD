@@ -1,6 +1,8 @@
 <wicket:head xmlns:wicket="http://wicket.apache.org">
 	<wicket:link>
 		<link rel="stylesheet" type="text/css" href="CreateEventPanel.css"/>
+		<script type="application/javascript" src="datepicker-cs.js"></script>
+		<script type="application/javascript" src="modalWindow.js"></script>
 	</wicket:link>
 </wicket:head>
 
@@ -74,6 +76,8 @@
 						<input type="text" wicket:id="games" wicket:message="placeholder:form.event.games">
 						<b class="tooltip tooltip-bottom-right" wicket:id="gamesFeedback"></b>
 					</label>
+
+					<input type="button" wicket:id="createGameSpecButton" wicket:message="value:game.add"/>
 				</fieldset>
 
 				<div class="map" wicket:id="map">Map</div>
