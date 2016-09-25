@@ -23,6 +23,7 @@ import cz.larpovadatabaze.validator.NonEmptyAuthorsValidator;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -56,6 +57,13 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
     private GameService gameService;
 
     private GLatLng lastSelectedLocation;
+    private TextField<String> name;
+    private TextField<Integer> amountOfPlayers;
+    private TextField<String> web;
+    private TextArea description;
+    private ChooseLabelsPanel chooseLabels;
+
+    private List<Label> labelsToTransfer;
 
     public CreateEventPanel(String id, IModel<Event> model) {
         super(id, model);
@@ -68,7 +76,14 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
         final ValidatableForm<Event> createEvent = new ValidatableForm<>("addEvent", new CompoundPropertyModel<>(getModel()));
         createEvent.setOutputMarkupId(true);
 
-        RequiredTextField name = new RequiredTextField<String>("name");
+        name = new RequiredTextField<>("name");
+        name.setOutputMarkupId(true);
+        name.add(new AjaxFormComponentUpdatingBehavior("change") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                target.add(name);
+            }
+        });
         createEvent.add(name);
         createEvent.add(new CsldFeedbackMessageLabel("nameFeedback", name, "form.event.nameHint"));
 
@@ -82,9 +97,28 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
         createEvent.add(to);
         createEvent.add(new CsldFeedbackMessageLabel("toFeedback", to, "form.event.toHint"));
 
-        RequiredTextField amountOfPlayers = new RequiredTextField<Integer>("amountOfPlayers");
+        amountOfPlayers = new RequiredTextField<>("amountOfPlayers");
+        amountOfPlayers.setOutputMarkupId(true);
+        amountOfPlayers.add(new AjaxFormComponentUpdatingBehavior("change") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                target.add(amountOfPlayers);
+            }
+        });
         createEvent.add(amountOfPlayers);
         createEvent.add(new CsldFeedbackMessageLabel("amountOfPlayersFeedback", amountOfPlayers, "form.event.amountOfPlayersHint"));
+
+        // Web
+        web = new TextField<>("web");
+        web.setOutputMarkupId(true);
+        web.add(new AjaxFormComponentUpdatingBehavior("change") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                target.add(web);
+            }
+        });
+        createEvent.add(web);
+        createEvent.add(new CsldFeedbackMessageLabel("webFeedback", web, "form.game.webHint"));
 
         RequiredTextField location = new RequiredTextField<String>("loc");
         createEvent.add(location);
@@ -101,12 +135,13 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
 
         WebMarkupContainer descriptionWrapper = new WebMarkupContainer("descriptionWrapper");
         createEvent.add(descriptionWrapper);
-        TextArea description = (TextArea) new TextArea<String>("description").setRequired(true);
+        description = (TextArea) new TextArea<String>("description").setRequired(true);
+        description.setOutputMarkupId(true);
         description.add(new CSLDTinyMceBehavior());
         descriptionWrapper.add(description);
         descriptionWrapper.add(new CsldFeedbackMessageLabel("descriptionFeedback", description, descriptionWrapper, "form.event.descriptionHint"));
 
-        ChooseLabelsPanel chooseLabels = new ChooseLabelsPanel("labels", new IModel<List<Label>>() {
+        chooseLabels = new ChooseLabelsPanel("labels", new IModel<List<Label>>() {
             @Override
             public List<Label> getObject() {
                 return createEvent.getModelObject().getLabels();
@@ -124,15 +159,17 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
         });
         chooseLabels.setOutputMarkupId(true);
         chooseLabels.add(new AtLeastOneRequiredLabelValidator());
+        chooseLabels.add(new AjaxFormComponentUpdatingBehavior("change") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                labelsToTransfer = chooseLabels.getConvertedInput();
+                target.add(chooseLabels);
+            }
+        });
         createEvent.add(chooseLabels);
         WebMarkupContainer labelsFeedbackWrapper = new WebMarkupContainer("labelsFeedbackWrapper");
         createEvent.add(labelsFeedbackWrapper);
         labelsFeedbackWrapper.add(new CsldFeedbackMessageLabel("labelsFeedback", chooseLabels, labelsFeedbackWrapper, null));
-
-        // Web
-        TextField<String> web = new TextField<String>("web");
-        createEvent.add(web);
-        createEvent.add(new CsldFeedbackMessageLabel("webFeedback", web, "form.game.webHint"));
 
         addMap(createEvent, ((Event) getDefaultModelObject()).getLocation());
 
@@ -233,29 +270,37 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
         gamesWrapper.add(new AjaxButton("createGameBtn"){}.setOutputMarkupId(true).add(new AjaxEventBehavior("click") {
             @Override
             protected void onEvent(AjaxRequestTarget target) {
-                createGameModal.setContent(new CreateOrUpdateGamePanel(createGameModal.getContentId(), Model.of(Game.getEmptyGame())){
-                    @Override
-                    protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
-                        super.onCsldAction(target, form);
-                        createGameModal.close(target);
-                    }
-                });
-                createGameModal.show(target);
+                handleModalOpen(createGameModal, target);
             }
-        }));
+        }).add(new TinyMceAjaxSubmitModifier()));
         createEvent.add(new AjaxButton("createGameSpecButton"){}.setOutputMarkupId(true).add(new AjaxEventBehavior("click") {
             @Override
             protected void onEvent(AjaxRequestTarget target) {
-                createGameModal.setContent(new CreateOrUpdateGamePanel(createGameModal.getContentId(), Model.of(Game.getEmptyGame())){
-                    @Override
-                    protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
-                        super.onCsldAction(target, form);
-                        createGameModal.close(target);
-                    }
-                });
-                createGameModal.show(target);
+                handleModalOpen(createGameModal, target);
             }
-        }));
+        }).add(new TinyMceAjaxSubmitModifier()));
+    }
+
+    private void handleModalOpen(ModalWindow createGameModal, AjaxRequestTarget target) {
+        Game game = Game.getEmptyGame();
+        Event toUse = getModelObject();
+
+        if(labelsToTransfer != null) {
+            game.setLabels(labelsToTransfer);
+        }
+        game.setName(toUse.getName());
+        game.setWeb(toUse.getWeb());
+        game.setPlayers(Integer.parseInt(toUse.getAmountOfPlayers()));
+        game.setDescription(toUse.getDescription());
+
+        createGameModal.setContent(new CreateOrUpdateGamePanel(createGameModal.getContentId(), Model.of(game)){
+            @Override
+            protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
+                super.onCsldAction(target, form);
+                createGameModal.close(target);
+            }
+        });
+        createGameModal.show(target);
     }
 
     protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}
