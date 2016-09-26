@@ -92,6 +92,8 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
         try {
             sessionFactory.getCurrentSession().merge(entity);
             flush();
+            sessionFactory.getCurrentSession().evict(entity);
+            sessionFactory.getCache().evictEntityRegion(getBuilder().getClassSpecific());
             return true;
         } catch (HibernateException ex){
             ex.printStackTrace();

@@ -27,4 +27,9 @@ public class GameBuilder implements IBuilder {
     public DetachedCriteria build(){
         return baseCriteria;
     }
+
+    @Override
+    public Class getClassSpecific() {
+        return Game.class;
+    }
 }

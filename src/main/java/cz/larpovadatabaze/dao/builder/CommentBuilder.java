@@ -31,4 +31,9 @@ public class CommentBuilder implements IBuilder {
     public DetachedCriteria build(){
         return baseCriteria;
     }
+
+    @Override
+    public Class getClassSpecific() {
+        return Comment.class;
+    }
 }

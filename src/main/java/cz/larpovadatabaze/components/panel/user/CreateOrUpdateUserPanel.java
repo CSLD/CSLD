@@ -9,6 +9,7 @@ import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
+import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.Pwd;
 import cz.larpovadatabaze.utils.UserUtils;
 import cz.larpovadatabaze.validator.UniqueUserValidator;
@@ -43,6 +44,8 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
     FileService fileService;
     @SpringBean
     ImageResizingStrategyFactoryService imageResizingStrategyFactoryService;
+    @SpringBean
+    ImageService imageService;
 
     private FileUploadField fileUpload;
     @SuppressWarnings("unused")

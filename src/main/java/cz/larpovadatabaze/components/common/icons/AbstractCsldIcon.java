@@ -9,6 +9,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * User icon, needs IMG tag,
@@ -41,6 +42,6 @@ public abstract class AbstractCsldIcon<T extends IIconReferenceProvider<O>, O ex
         Serializable id = ((Identifiable) getDefaultModelObject()).getId();
         pp.add(ImageService.RESOURCE_REFERENCE_ID_PARAM_NAME,
                 id != null ? id : "");
-        tag.put("src", urlFor(getService().getIconReference(), pp));
+        tag.put("src", urlFor(getService().getIconReference(), pp) + "&imageId=" + new Date().getTime());
     }
 }

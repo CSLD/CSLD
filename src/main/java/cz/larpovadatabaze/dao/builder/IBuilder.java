@@ -16,5 +16,7 @@ public interface IBuilder {
      *
      * @return Criteria to be used in all queries.
      */
-    public DetachedCriteria build();
+    DetachedCriteria build();
+
+    Class getClassSpecific();
 }
