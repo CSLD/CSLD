@@ -86,7 +86,7 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
         EmailTextField email = new EmailTextField("person.email");
         email.setRequired(true);
         email.setLabel(Model.of("Email"));
-        email.add(new UniqueUserValidator(false, csldUserService));
+        email.add(new UniqueUserValidator(true, csldUserService));
         createOrUpdateUser.add(addFeedbackPanel(email, createOrUpdateUser, "emailFeedback", "form.loginMail"));
 
         PasswordTextField password = new PasswordTextField("password");
