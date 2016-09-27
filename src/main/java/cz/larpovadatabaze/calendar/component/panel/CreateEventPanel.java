@@ -11,7 +11,6 @@ import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
 import cz.larpovadatabaze.components.common.multiac.IMultiAutoCompleteSource;
 import cz.larpovadatabaze.components.common.multiac.MultiAutoCompleteComponent;
-import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
 import cz.larpovadatabaze.components.panel.game.ChooseLabelsPanel;
 import cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel;
 import cz.larpovadatabaze.entities.Game;
@@ -19,8 +18,6 @@ import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.validator.AtLeastOneRequiredLabelValidator;
-import cz.larpovadatabaze.validator.NonEmptyAuthorsValidator;
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -42,11 +39,9 @@ import org.wicketstuff.gmap.api.GMarkerOptions;
 import org.wicketstuff.gmap.event.ClickListener;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
-import java.text.DateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
     private static final int AUTOCOMPLETE_CHOICES = 10;
@@ -207,7 +202,7 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
     }
 
     private void addMap(Form container, Location location){
-        GMap map = new GMap("map", new GMapHeaderContributor("http", false)); // TODO: Restrict usage of the key.
+        GMap map = new GMap("map", new GMapHeaderContributor("http", "AIzaSyC8K3jrJMl52-Mswi2BsS5UVKDZIT4GWh8")); // TODO: Restrict usage of the key.
         map.setStreetViewControlEnabled(false);
         map.setScaleControlEnabled(true);
         map.setScrollWheelZoomEnabled(true);
