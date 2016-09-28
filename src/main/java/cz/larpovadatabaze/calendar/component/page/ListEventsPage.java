@@ -4,6 +4,8 @@ import cz.larpovadatabaze.api.Toggles;
 import cz.larpovadatabaze.calendar.component.panel.AbstractListEventPanel;
 import cz.larpovadatabaze.calendar.component.panel.FilterEventsSidePanel;
 import cz.larpovadatabaze.calendar.model.Event;
+import cz.larpovadatabaze.calendar.service.Area;
+import cz.larpovadatabaze.calendar.service.GeographicalFilter;
 import cz.larpovadatabaze.calendar.service.SortableEventProvider;
 import cz.larpovadatabaze.components.common.FilterablePage;
 import cz.larpovadatabaze.components.common.tabs.TabsComponentPanel;
@@ -41,6 +43,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.hibernate.SessionFactory;
 import org.springframework.core.env.Environment;
 
+import java.net.URL;
 import java.util.*;
 
 public class ListEventsPage extends CsldBasePage implements FilterablePage {
@@ -102,7 +105,9 @@ public class ListEventsPage extends CsldBasePage implements FilterablePage {
             throw new RestartResponseException(HomePage.class);
         }
 
-        FilterEvent defaultFilter = new FilterEvent();
+        URL pathToShape = GeographicalFilter.class.getResource("CZE_adm1.shp");
+
+        FilterEvent defaultFilter = new FilterEvent(new GeographicalFilter(pathToShape));
         defaultFilter.setFrom(Calendar.getInstance().getTime());
         filterModel = new Model(defaultFilter);
     }

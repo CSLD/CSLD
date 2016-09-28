@@ -51,6 +51,7 @@ public class FilteredReadOnlyEvents implements Events {
             boolean endsBeforeLimit = true;
             boolean startsBeforeLimit = true;
             boolean startsAfterLimit = true;
+            boolean isInRegion = true;
 
             // There is some time based filter specified.
             if((filterEvent.getFrom() != null) || (filterEvent.getTo() != null)) {
@@ -65,7 +66,13 @@ public class FilteredReadOnlyEvents implements Events {
                 isInGivenTimeFrame = endsBeforeLimit && startsAfterLimit && startsBeforeLimit;
             }
 
-            if(containsAllLabels && isInGivenTimeFrame) {
+            if(filterEvent.getRegion() != null && filterEvent.getFilter() != null && event.getLocation() != null) {
+                if(!filterEvent.getFilter().isGeometryInArea(filterEvent.getRegion(), event.getLocation())) {
+                    isInRegion = false;
+                }
+            }
+
+            if(containsAllLabels && isInGivenTimeFrame && isInRegion) {
                 filtered.add(event);
             }
         }

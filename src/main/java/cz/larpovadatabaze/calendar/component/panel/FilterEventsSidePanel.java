@@ -4,6 +4,8 @@ import com.googlecode.wicket.jquery.core.Options;
 import com.googlecode.wicket.jquery.ui.form.datepicker.AjaxDatePicker;
 import com.googlecode.wicket.jquery.ui.form.datepicker.DatePicker;
 import cz.larpovadatabaze.api.ValidatableForm;
+import cz.larpovadatabaze.calendar.service.Area;
+import cz.larpovadatabaze.calendar.service.GeographicalFilter;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.common.FilterablePage;
 import cz.larpovadatabaze.components.page.game.ListGamePage;
@@ -17,9 +19,15 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
+import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
 
 
 /**
@@ -58,6 +66,15 @@ public class FilterEventsSidePanel extends AbstractCsldPanel<FilterEvent> {
                 ((FilterablePage)getPage()).filterChanged(false, false, false);
             }
         });
+
+        Collection<Area> areas = getModelObject().getFilter().areas();
+        ChoiceRenderer<Area> choiceRenderer = new ChoiceRenderer<>("area", "area");
+        filterGames.add(new DropDownChoice<>("region", new ArrayList<>(areas), choiceRenderer).setOutputMarkupId(true).add(new AjaxFormComponentUpdatingBehavior("onchange") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                ((FilterablePage)getPage()).filterChanged(false, false, false);
+            }
+        }));
 
         requiredLabels = new FilterByLabelsPanel("requiredLabels", labelService.getAuthorizedRequired(logged), true);
         requiredLabels.setOutputMarkupId(true);
