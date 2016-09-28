@@ -1,5 +1,8 @@
 package cz.larpovadatabaze.calendar.component.panel;
 
+import com.googlecode.wicket.jquery.core.Options;
+import com.googlecode.wicket.jquery.ui.form.datepicker.AjaxDatePicker;
+import com.googlecode.wicket.jquery.ui.form.datepicker.DatePicker;
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.common.FilterablePage;
@@ -38,10 +41,23 @@ public class FilterEventsSidePanel extends AbstractCsldPanel<FilterEvent> {
         super.onInitialize();
 
         final ValidatableForm<FilterEvent> filterGames =
-                new ValidatableForm<FilterEvent>("filterForm", new CompoundPropertyModel<FilterEvent>(getModel())){};
+                new ValidatableForm<FilterEvent>("filterForm", new CompoundPropertyModel<>(getModel())){};
 
 
         CsldUser logged = CsldAuthenticatedWebSession.get().getLoggedUser();
+
+        filterGames.add(new AjaxDatePicker("from", "dd.MM.yyyy", new Options()){
+            @Override
+            public void onValueChanged(AjaxRequestTarget target) {
+                ((FilterablePage)getPage()).filterChanged(false, false, false);
+            }
+        });
+        filterGames.add(new AjaxDatePicker("to", "dd.MM.yyyy", new Options()){
+            @Override
+            public void onValueChanged(AjaxRequestTarget target) {
+                ((FilterablePage)getPage()).filterChanged(false, false, false);
+            }
+        });
 
         requiredLabels = new FilterByLabelsPanel("requiredLabels", labelService.getAuthorizedRequired(logged), true);
         requiredLabels.setOutputMarkupId(true);

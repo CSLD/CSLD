@@ -55,11 +55,11 @@ public class FilteredReadOnlyEvents implements Events {
             // There is some time based filter specified.
             if((filterEvent.getFrom() != null) || (filterEvent.getTo() != null)) {
                 if(filterEvent.getTo() != null) {
-                    endsBeforeLimit = event.getTo().before(filterEvent.getTo());
-                    startsBeforeLimit = event.getFrom().before(filterEvent.getTo());
+                    endsBeforeLimit = event.getTo().getTime().before(filterEvent.getTo());
+                    startsBeforeLimit = event.getFrom().getTime().before(filterEvent.getTo());
                 }
                 if(filterEvent.getFrom() != null) {
-                    startsAfterLimit = event.getFrom().after(Calendar.getInstance());
+                    startsAfterLimit = event.getFrom().getTime().after(filterEvent.getFrom());
                 }
 
                 isInGivenTimeFrame = endsBeforeLimit && startsAfterLimit && startsBeforeLimit;

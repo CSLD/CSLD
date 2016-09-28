@@ -41,9 +41,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.hibernate.SessionFactory;
 import org.springframework.core.env.Environment;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 
 public class ListEventsPage extends CsldBasePage implements FilterablePage {
     @SpringBean
@@ -58,7 +56,7 @@ public class ListEventsPage extends CsldBasePage implements FilterablePage {
 
     private WebMarkupContainer requiredLabelsWrapper;
     private FilterEventsSidePanel sidePanel;
-    private final IModel<FilterEvent> filterModel = new Model(new FilterEvent());
+    private final IModel<FilterEvent> filterModel;
 
     private AbstractListEventPanel eventsList;
 
@@ -103,6 +101,10 @@ public class ListEventsPage extends CsldBasePage implements FilterablePage {
                 !CsldAuthenticatedWebSession.get().isAtLeastEditor()) {
             throw new RestartResponseException(HomePage.class);
         }
+
+        FilterEvent defaultFilter = new FilterEvent();
+        defaultFilter.setFrom(Calendar.getInstance().getTime());
+        filterModel = new Model(defaultFilter);
     }
 
     @Override

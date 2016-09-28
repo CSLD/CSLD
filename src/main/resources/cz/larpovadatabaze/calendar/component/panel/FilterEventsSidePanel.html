@@ -1,3 +1,11 @@
+<wicket:head xmlns:wicket="http://wicket.apache.org">
+	<wicket:link>
+		<link rel="stylesheet" type="text/css" href="CreateEventPanel.css"/>
+		<script type="application/javascript" src="datepicker-cs.js"></script>
+	</wicket:link>
+</wicket:head>
+
+
 <wicket:panel xmlns:wicket="http://wicket.apache.org">
 	<!--
 	It contains basic characteristics of the game and allows user to filter by them.
@@ -8,7 +16,24 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h2 class="panel-title">
+					<wicket:message key="event.dateFrom">From</wicket:message>
 				</h2>
+			</div>
+
+			<div class="panel-body">
+				<input wicket:id="from">
+			</div>
+		</div>
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h2 class="panel-title">
+					<wicket:message key="event.dateTo">To</wicket:message>
+				</h2>
+			</div>
+
+			<div class="panel-body">
+				<input wicket:id="to">
 			</div>
 		</div>
 
