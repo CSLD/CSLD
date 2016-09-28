@@ -43,15 +43,6 @@ public class FilterEventsSidePanel extends AbstractCsldPanel<FilterEvent> {
 
         CsldUser logged = CsldAuthenticatedWebSession.get().getLoggedUser();
 
-        CheckBox showArchived = new CheckBox("showOnlyFuture");
-        filterGames.add(showArchived);
-        showArchived.add(new AjaxFormComponentUpdatingBehavior("change") {
-            @Override
-            protected void onUpdate(AjaxRequestTarget target) {
-                ((FilterablePage) getPage()).filterChanged(false, false, false);
-            }
-        });
-
         requiredLabels = new FilterByLabelsPanel("requiredLabels", labelService.getAuthorizedRequired(logged), true);
         requiredLabels.setOutputMarkupId(true);
         filterGames.add(requiredLabels);

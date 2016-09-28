@@ -45,15 +45,33 @@ public class FilteredReadOnlyEvents implements Events {
             }
 
             List<Label> labels = event.getLabels();
-            if(labels.containsAll(filterEvent.getRequiredLabels()) && labels.containsAll(filterEvent.getOtherLabels())) {
-                if(filterEvent.isShowOnlyFuture()) {
-                    if(event.getFrom().after(Calendar.getInstance())) {
-                        filtered.add(event);
-                    }
-                } else {
-                    filtered.add(event);
+
+            boolean containsAllLabels = labels.containsAll(filterEvent.getRequiredLabels()) && labels.containsAll(filterEvent.getOtherLabels());
+            boolean isInGivenTimeFrame = true;
+            boolean endsBeforeLimit = true;
+            boolean startsBeforeLimit = true;
+            boolean startsAfterLimit = true;
+
+            // There is some time based filter specified.
+            if((filterEvent.getFrom() != null) || (filterEvent.getTo() != null)) {
+                if(filterEvent.getTo() != null) {
+                    endsBeforeLimit = event.getTo().before(filterEvent.getTo());
+                    startsBeforeLimit = event.getFrom().before(filterEvent.getTo());
                 }
+                if(filterEvent.getFrom() != null) {
+                    startsAfterLimit = event.getFrom().after(Calendar.getInstance());
+                }
+
+                isInGivenTimeFrame = endsBeforeLimit && startsAfterLimit && startsBeforeLimit;
             }
+
+            if(containsAllLabels && isInGivenTimeFrame) {
+                filtered.add(event);
+            }
+        }
+
+        if(filterEvent.getLimit() != null && filtered.size() > filterEvent.getLimit()) {
+            filtered = new ArrayList<>(filtered).subList(0, filterEvent.getLimit());
         }
 
         return filtered;

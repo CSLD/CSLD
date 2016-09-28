@@ -4,6 +4,7 @@ import cz.larpovadatabaze.entities.Label;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,7 +13,34 @@ import java.util.List;
 public class FilterEvent implements Serializable {
     private List<Label> requiredLabels = new ArrayList<Label>();
     private List<Label> otherLabels = new ArrayList<Label>();
-    private boolean showOnlyFuture = true;
+    private Date from;
+    private Date to;
+
+    public Integer getLimit() {
+        return limit;
+    }
+
+    public void setLimit(Integer limit) {
+        this.limit = limit;
+    }
+
+    private Integer limit;
+
+    public Date getFrom() {
+        return from;
+    }
+
+    public void setFrom(Date from) {
+        this.from = from;
+    }
+
+    public Date getTo() {
+        return to;
+    }
+
+    public void setTo(Date to) {
+        this.to = to;
+    }
 
     public List<Label> getRequiredLabels() {
         return requiredLabels;
@@ -28,13 +56,5 @@ public class FilterEvent implements Serializable {
 
     public void setOtherLabels(List<Label> otherLabels) {
         this.otherLabels = otherLabels;
-    }
-
-    public boolean isShowOnlyFuture() {
-        return showOnlyFuture;
-    }
-
-    public void setShowOnlyFuture(boolean showOnlyFuture) {
-        this.showOnlyFuture = showOnlyFuture;
     }
 }
