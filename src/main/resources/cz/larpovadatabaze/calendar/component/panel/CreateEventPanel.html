@@ -42,7 +42,8 @@
 
 					<label class="input">
 						<i class="icon-append fa fa-users"></i>
-						<input type="text" name="amountOfPlayers" wicket:id="amountOfPlayers" wicket:message="placeholder:form.event.amountOfPlayers">
+						<input type="text" name="amountOfPlayers" wicket:id="amountOfPlayers"
+							   wicket:message="placeholder:form.event.amountOfPlayers">
 						<b class="tooltip tooltip-bottom-right" wicket:id="amountOfPlayersFeedback"></b>
 					</label>
 
@@ -54,7 +55,8 @@
 
 					<label class="input">
 						<i class="icon-append fa fa-location-arrow"></i>
-						<input type="text" name="location" wicket:id="loc" wicket:message="placeholder:form.event.location">
+						<input type="text" name="location" wicket:id="loc"
+							   wicket:message="placeholder:form.event.location">
 						<b class="tooltip tooltip-bottom-right" wicket:id="locFeedback"></b>
 					</label>
 
@@ -64,7 +66,7 @@
 								  style="width:100%;"
 								  rows=8
 						></textarea>
-							<b wicket:id="descriptionFeedback"></b>
+						<b wicket:id="descriptionFeedback"></b>
 					</label>
 				</fieldset>
 
@@ -80,7 +82,12 @@
 					<input type="button" wicket:id="createGameSpecButton" wicket:message="value:game.add"/>
 				</fieldset>
 
-				<div class="map" wicket:id="map">Map</div>
+				<fieldset>
+					<div>
+						<b><wicket:message key="event.map">Klikněte na místo konání na mapě</wicket:message></b>
+					</div>
+					<div class="map" wicket:id="map">Map</div>
+				</fieldset>
 
 				<fieldset>
 					<section>
@@ -95,7 +102,7 @@
 			<div class="col-md-3">
 				<wicket:message key="form.game.labels"></wicket:message>
 				<div wicket:id="labelsFeedbackWrapper" class="errorWrapper">
-					<wicket:container wicket:id="labelsFeedback" />
+					<wicket:container wicket:id="labelsFeedback"/>
 				</div>
 
 				<div wicket:id="labels"></div>

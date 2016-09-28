@@ -1,0 +1,9 @@
+.nadpisMenu {
+	font-weight: bold;
+	font-size: 24px;
+	color: #6F6F6F;
+}
+
+#ui-datepicker-div {
+	width: 250px;
+}
