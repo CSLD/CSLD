@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
 import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.RuntimeConfigurationType;
+import org.apache.wicket.Session;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.core.request.handler.BookmarkableListenerInterfaceRequestHandler;
@@ -37,6 +38,8 @@ import org.apache.wicket.markup.html.IPackageResourceGuard;
 import org.apache.wicket.markup.html.SecurePackageResourceGuard;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.IRequestHandler;
+import org.apache.wicket.request.Request;
+import org.apache.wicket.request.Response;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.component.IRequestablePage;
 import org.apache.wicket.request.cycle.AbstractRequestCycleListener;
@@ -56,6 +59,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Application object for your web application. If you want to run this application without deploying, run the Start class.
@@ -258,5 +263,12 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
 
     protected boolean isDevelopmentMode() {
         return RuntimeConfigurationType.DEVELOPMENT.equals(this.getConfigurationType());
+    }
+
+    @Override
+    public Session newSession(Request request, Response response) {
+        Session session = super.newSession(request, response);
+        session.setLocale(Locale.forLanguageTag("cs"));
+        return session;
     }
 }
