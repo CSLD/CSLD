@@ -59,6 +59,9 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
     private ChooseLabelsPanel chooseLabels;
 
     private List<Label> labelsToTransfer;
+    private GMap map;
+
+    private String customLocation;
 
     public CreateEventPanel(String id, IModel<Event> model) {
         super(id, model);
@@ -166,6 +169,19 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
         createEvent.add(labelsFeedbackWrapper);
         labelsFeedbackWrapper.add(new CsldFeedbackMessageLabel("labelsFeedback", chooseLabels, labelsFeedbackWrapper, null));
 
+        createEvent.add(new TextField<>("customLocation", new PropertyModel<String>(this, "customLocation")).add(new AjaxFormComponentUpdatingBehavior("change") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {}
+        }));
+        createEvent.add(new Button("goToLocation").add(new AjaxFormComponentUpdatingBehavior("click") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                double latitude = Double.parseDouble(customLocation.split(",")[0]);
+                double longitude = Double.parseDouble(customLocation.split(",")[1]);
+                map.setCenter(new GLatLng(latitude, longitude));
+            }
+        }));
+
         addMap(createEvent, ((Event) getDefaultModelObject()).getLocation());
 
         add(createEvent);
@@ -202,7 +218,7 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
     }
 
     private void addMap(Form container, Location location){
-        GMap map = new GMap("map", new GMapHeaderContributor("http", "AIzaSyC8K3jrJMl52-Mswi2BsS5UVKDZIT4GWh8")); // TODO: Restrict usage of the key.
+        map = new GMap("map", new GMapHeaderContributor("http", "AIzaSyC8K3jrJMl52-Mswi2BsS5UVKDZIT4GWh8")); // TODO: Restrict usage of the key.
         map.setStreetViewControlEnabled(false);
         map.setScaleControlEnabled(true);
         map.setScrollWheelZoomEnabled(true);

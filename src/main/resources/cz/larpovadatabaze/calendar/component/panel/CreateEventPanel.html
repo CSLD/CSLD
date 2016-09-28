@@ -83,8 +83,17 @@
 				</fieldset>
 
 				<fieldset>
-					<div>
+					<div class="mapRow">
 						<b><wicket:message key="event.map">Klikněte na místo konání na mapě</wicket:message></b>
+					</div>
+
+					<div class="mapRow">
+						<wicket:message key="location.coordinates"></wicket:message>
+					</div>
+
+					<div class="mapRow">
+						<input type="text" wicket:id="customLocation">
+						<input type="button" wicket:id="goToLocation" wicket:message="value:gotolocation">
 					</div>
 					<div class="map" wicket:id="map">Map</div>
 				</fieldset>
