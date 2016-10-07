@@ -18,6 +18,7 @@ import cz.larpovadatabaze.services.VideoService;
 import cz.larpovadatabaze.utils.UserUtils;
 import cz.larpovadatabaze.validator.AtLeastOneRequiredLabelValidator;
 import cz.larpovadatabaze.validator.NonEmptyAuthorsValidator;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -229,7 +230,10 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
                 // Process video
                 Game game = (Game) form.getModelObject();
                 System.out.println("Before retrieving.");
-                String videoURL = videoService.getEmbedingURL(videoField.getConvertedInput());
+                String videoURL = "";
+                if(!StringUtils.isBlank(videoField.getConvertedInput())) {
+                    videoURL = videoService.getEmbedingURL(videoField.getConvertedInput());
+                }
                 System.out.println("Retrieved url");
                 if (videoURL == null) {
                     // Bad URL - TODO - does not work - TODO

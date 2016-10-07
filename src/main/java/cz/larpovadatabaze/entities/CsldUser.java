@@ -149,24 +149,6 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable, I
         return result;
     }
 
-    private Game bestGame;
-
-    @ManyToOne
-    @JoinColumn(
-            name = "best_game_id",
-            referencedColumnName = "`id`",
-            insertable = false,
-            updatable = false
-    )
-    @Fetch(FetchMode.SELECT)
-    public Game getBestGame(){
-        return bestGame;
-    }
-
-    public void setBestGame(Game bestGame){
-        this.bestGame = bestGame;
-    }
-
     private List<Game> authorOf;
 
     @ManyToMany(mappedBy = "authors")

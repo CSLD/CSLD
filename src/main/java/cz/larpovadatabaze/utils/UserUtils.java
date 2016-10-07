@@ -38,7 +38,7 @@ public class UserUtils {
      * @return Whether logged in user is editor
      */
     public static boolean isEditor() {
-        CsldUser user = getLoggedUser();
+        CsldUser user = CsldAuthenticatedWebSession.get().getLoggedUser();
         if (user == null) return false;
 
         return user.getRole().shortValue() >= CsldRoles.EDITOR.getRole().shortValue();
@@ -48,7 +48,7 @@ public class UserUtils {
      * @return Whether logged in user is global admin
      */
     public static boolean isAdmin() {
-        CsldUser user = getLoggedUser();
+        CsldUser user = CsldAuthenticatedWebSession.get().getLoggedUser();
         if (user == null) return false;
 
         return user.getRole().equals(CsldRoles.EDITOR.getRole());

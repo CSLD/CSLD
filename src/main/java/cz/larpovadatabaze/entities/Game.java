@@ -474,8 +474,6 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     )
     @ManyToMany(cascade = {javax.persistence.CascadeType.PERSIST, javax.persistence.CascadeType.MERGE, javax.persistence.CascadeType.REMOVE })
     @Cascade(value = { org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @Fetch(FetchMode.SELECT)
     public List<Label> getLabels() {
         return labels;
     }
