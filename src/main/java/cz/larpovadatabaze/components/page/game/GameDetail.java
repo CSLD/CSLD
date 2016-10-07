@@ -222,7 +222,7 @@ public class GameDetail extends CsldBasePage {
     @Override
     protected Component provideAdvertisementsPanel(String id) {
         Game game = getModel().getObject();
-        if (game.getCoverImage() == null) {
+        if (game.getCoverImage() == null || game.getCoverImage().getPath() == null) {
             // Nothing visible
             return new WebMarkupContainer(id).setVisible(false);
         }

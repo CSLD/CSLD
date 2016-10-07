@@ -228,7 +228,9 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
 
                 // Process video
                 Game game = (Game) form.getModelObject();
+                System.out.println("Before retrieving.");
                 String videoURL = videoService.getEmbedingURL(videoField.getConvertedInput());
+                System.out.println("Retrieved url");
                 if (videoURL == null) {
                     // Bad URL - TODO - does not work - TODO
                     videoField.error("Nerozpoznané URL videa");

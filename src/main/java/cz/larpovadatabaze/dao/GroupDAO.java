@@ -51,7 +51,6 @@ public class GroupDAO extends GenericHibernateDAO<CsldGroup, Integer> {
         Session session = sessionFactory.getCurrentSession();
         Criteria query = getBuilder().build().getExecutableCriteria(session)
                 .setMaxResults(maxChoices)
-                .createCriteria("groupHasLanguages")
                 .add(Restrictions.ilike("name","%"+startsWith+"%"));
 
         return query.list();
@@ -60,7 +59,6 @@ public class GroupDAO extends GenericHibernateDAO<CsldGroup, Integer> {
     public List<CsldGroup> findByName(String name) {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = getBuilder().build().getExecutableCriteria(session)
-                .createCriteria("groupHasLanguages")
                 .add(Restrictions.eq("name", name));
 
         return criteria.list();
