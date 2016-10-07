@@ -32,7 +32,7 @@ public class UniqueUserValidator implements IValidator<String> {
                 error(validatable, "person-exists");
             }
 
-            if(updateExisting && !existing.getId().equals(loggedIn.getId())) {
+            if(updateExisting && existing != null && loggedIn != null && !existing.getId().equals(loggedIn.getId())) {
                 error(validatable, "update-nonexistent");
             }
         } catch (NonUniqueResultException ex) {
