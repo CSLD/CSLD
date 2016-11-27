@@ -53,7 +53,7 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
 
     private GLatLng lastSelectedLocation;
     private TextField<String> name;
-    private TextField<Integer> amountOfPlayers;
+    private NumberTextField amountOfPlayers;
     private TextField<String> web;
     private TextArea description;
     private ChooseLabelsPanel chooseLabels;
@@ -95,7 +95,7 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
         createEvent.add(to);
         createEvent.add(new CsldFeedbackMessageLabel("toFeedback", to, "form.event.toHint"));
 
-        amountOfPlayers = new RequiredTextField<>("amountOfPlayers");
+        amountOfPlayers = new NumberTextField<>("amountOfPlayers");
         amountOfPlayers.setOutputMarkupId(true);
         amountOfPlayers.add(new AjaxFormComponentUpdatingBehavior("change") {
             @Override
@@ -103,6 +103,7 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
                 target.add(amountOfPlayers);
             }
         });
+        amountOfPlayers.setRequired(true);
         createEvent.add(amountOfPlayers);
         createEvent.add(new CsldFeedbackMessageLabel("amountOfPlayersFeedback", amountOfPlayers, "form.event.amountOfPlayersHint"));
 
@@ -301,7 +302,7 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
         }
         game.setName(toUse.getName());
         game.setWeb(toUse.getWeb());
-        game.setPlayers(Integer.parseInt(toUse.getAmountOfPlayers()));
+        game.setPlayers(toUse.getAmountOfPlayers());
         game.setDescription(toUse.getDescription());
 
         createGameModal.setContent(new CreateOrUpdateGamePanel(createGameModal.getContentId(), Model.of(game)){

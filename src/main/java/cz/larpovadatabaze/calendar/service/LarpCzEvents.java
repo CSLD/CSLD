@@ -59,7 +59,7 @@ public class LarpCzEvents implements Events {
             LarpCzDate date = new LarpCzDate(event.select("td.views-field-phpcode").get(0).text());
             // Retrieve from and to based on these information.
             String name = event.select("td.views-field-title").get(0).text();
-            String amountOfPlayers = event.select("td.views-field-field-count-value").get(0).text();
+            Integer amountOfPlayers = Integer.parseInt(event.select("td.views-field-field-count-value").get(0).text());
             String loc = event.select("td.views-field-field-region-value").get(0).text() + ", " +
                     event.select("td.views-field-field-city-value").get(0).text();
             Event toAdd = new Event(id, name, date.getFrom(), date.getTo(), amountOfPlayers, loc);

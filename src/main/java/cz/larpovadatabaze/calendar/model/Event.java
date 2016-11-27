@@ -35,7 +35,7 @@ public class Event implements cz.larpovadatabaze.api.Entity {
     private String web;
     private boolean deleted;
     @Column(name="amountofplayers")
-    private String amountOfPlayers;
+    private Integer amountOfPlayers;
     @Temporal(value = TemporalType.DATE)
     private Date from;
     @Temporal(value = TemporalType.DATE)
@@ -114,7 +114,7 @@ public class Event implements cz.larpovadatabaze.api.Entity {
         this.labels = labels;
     }
 
-    public Event(int id, String name, Calendar from, Calendar to,  String amountOfPlayers, String loc) {
+    public Event(int id, String name, Calendar from, Calendar to,  Integer amountOfPlayers, String loc) {
         this.id = id;
         this.name = name;
         this.from = from.getTime();
@@ -178,7 +178,7 @@ public class Event implements cz.larpovadatabaze.api.Entity {
         return loc;
     }
 
-    public String getAmountOfPlayers() {
+    public Integer getAmountOfPlayers() {
         return amountOfPlayers;
     }
 
