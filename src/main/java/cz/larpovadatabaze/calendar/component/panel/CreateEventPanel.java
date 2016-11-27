@@ -5,6 +5,7 @@ import com.googlecode.wicket.jquery.ui.form.datepicker.DatePicker;
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.calendar.Location;
+import cz.larpovadatabaze.calendar.component.validator.StartDateIsBeforeAfter;
 import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.calendar.service.DatabaseEvents;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
@@ -94,6 +95,8 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
         FormComponent<Date> to = new DatePicker("to", "dd.MM.yyyy", czechCalendar).setRequired(true);
         createEvent.add(to);
         createEvent.add(new CsldFeedbackMessageLabel("toFeedback", to, "form.event.toHint"));
+
+        createEvent.add(new StartDateIsBeforeAfter(from, to));
 
         amountOfPlayers = new NumberTextField<>("amountOfPlayers");
         amountOfPlayers.setOutputMarkupId(true);
