@@ -17,6 +17,6 @@ public class EnglishDateConverter extends DateConverter {
      */
     public DateFormat getDateFormat(Locale locale)
     {
-        return new SimpleDateFormat("MM/dd/yyyy");
+        return new SimpleDateFormat("dd.MM.yyyy");
     }
 }
