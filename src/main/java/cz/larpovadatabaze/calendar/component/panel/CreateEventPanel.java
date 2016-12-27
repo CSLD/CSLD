@@ -180,9 +180,21 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
         createEvent.add(new Button("goToLocation").add(new AjaxFormComponentUpdatingBehavior("click") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                double latitude = Double.parseDouble(customLocation.split(",")[0]);
-                double longitude = Double.parseDouble(customLocation.split(",")[1]);
-                map.setCenter(new GLatLng(latitude, longitude));
+                Double latitude = null, longitude = null;
+                if(customLocation.matches("^[0-9]+(.[0-9]+)?N, [0-9]+(.[0-9]+)?E$")) {
+                    // Mapy.cz format
+                    String location = customLocation.replace("N", "").replace("E", "");
+                    latitude = Double.parseDouble(location.split(",")[0]);
+                    longitude = Double.parseDouble(location.split(",")[1]);
+                } else if(customLocation.matches("^^[0-9]+(.[0-9]+)?, [0-9]+(.[0-9]+)?$")) {
+                    // Google maps format
+                    latitude = Double.parseDouble(customLocation.split(",")[0]);
+                    longitude = Double.parseDouble(customLocation.split(",")[1]);
+                }
+
+                if(latitude != null && longitude != null) {
+                    map.setCenter(new GLatLng(latitude, longitude));
+                }
             }
         }));
 
