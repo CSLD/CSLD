@@ -18,6 +18,9 @@ import cz.larpovadatabaze.components.page.group.GroupDetail;
 import cz.larpovadatabaze.components.page.search.SearchResultsPage;
 import cz.larpovadatabaze.components.page.user.*;
 import cz.larpovadatabaze.converters.*;
+import cz.larpovadatabaze.donations.components.DonationPage;
+import cz.larpovadatabaze.donations.service.BankAccount;
+import cz.larpovadatabaze.donations.service.DatabaseDonations;
 import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.CsldUserService;
@@ -51,6 +54,7 @@ import org.apache.wicket.settings.def.RequestLoggerSettings;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.convert.converter.CalendarConverter;
 import org.apache.wicket.util.convert.converter.DateConverter;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -77,6 +81,8 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     private GroupService groupService;
     @Autowired
     private LabelService labelService;
+    @Autowired
+    private SessionFactory sessionFactory;
 
     private static final String DEFAULT_ENCODING = "UTF-8";
     private static ApplicationContext ctx;
@@ -179,6 +185,9 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
             // Turn on containers names when debugging
             getDebugSettings().setOutputMarkupContainerClassName(true);
         }
+
+        // Load information about donations and setup timer.
+        new BankAccount(sessionFactory).start();
 	}
 
     @Override
@@ -228,6 +237,8 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         mount(new MountedMapperWithoutPageComponentInfo("/event/${name}/${id}", DetailOfEventPage.class));
 
         mountPage("/search", SearchResultsPage.class);
+
+        mountPage("/donations", DonationPage.class);
 
         mountPage("/oDatabazi", AboutDatabasePage.class);
         mountPage("/reset", ResetPassword.class);
