@@ -41,14 +41,14 @@ public class Donors extends Panel {
                 Label amount = new Label("amount", Model.of(donation.getAmount()));
 
                 if(donation.getAmount() >= 3000) {
-                    name.add(new AttributeAppender("class", "gold"));
-                    amount.add(new AttributeAppender("class", "gold"));
+                    name.add(new AttributeAppender("class", " gold"));
+                    amount.add(new AttributeAppender("class", " gold"));
                 } else if (donation.getAmount() >= 1000) {
-                    name.add(new AttributeAppender("class", "silver"));
-                    amount.add(new AttributeAppender("class", "silver"));
+                    name.add(new AttributeAppender("class", " silver"));
+                    amount.add(new AttributeAppender("class", " silver"));
                 } else {
-                    name.add(new AttributeAppender("class", "bronze"));
-                    amount.add(new AttributeAppender("class", "bronze"));
+                    name.add(new AttributeAppender("class", " bronze"));
+                    amount.add(new AttributeAppender("class", " bronze"));
                 }
 
                 item.add(name);
