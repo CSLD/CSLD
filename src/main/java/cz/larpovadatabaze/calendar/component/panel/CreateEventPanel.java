@@ -25,6 +25,8 @@ import cz.larpovadatabaze.utils.MailClient;
 import cz.larpovadatabaze.validator.AtLeastOneRequiredLabelValidator;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.attributes.AjaxCallListener;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -209,7 +211,7 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
 
         add(createEvent);
 
-        createEvent.add(new AjaxButton("submit") {
+        final AjaxButton submit = new AjaxButton("submit") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 super.onSubmit(target, form);
@@ -242,13 +244,23 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
             }
 
             @Override
+            protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+                super.updateAjaxAttributes(attributes);
+                attributes.getAjaxCallListeners().add(new AjaxCallListener()
+                        .onBefore("$('#" + getMarkupId() + "').prop('disabled',true);")
+                        .onComplete("$('#" + getMarkupId() + "').prop('disabled',false);"));
+            }
+
+            @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
                 super.onError(target, form);
                 if(!createEvent.isValid()){
                     target.add(getParent());
                 }
             }
-        }.add(new TinyMceAjaxSubmitModifier()));
+        };
+
+        createEvent.add(submit.add(new TinyMceAjaxSubmitModifier()));
     }
 
     private void addMap(Form container, Location location){
