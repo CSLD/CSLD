@@ -1,12 +1,14 @@
 package cz.larpovadatabaze.calendar.service;
 
 import cz.larpovadatabaze.calendar.model.Event;
+import cz.larpovadatabaze.services.CsldUserService;
 import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.property.CalScale;
 import net.fortuna.ical4j.model.property.ProdId;
 import net.fortuna.ical4j.model.property.Version;
 import org.apache.wicket.request.resource.AbstractResource;
+import org.apache.wicket.util.string.StringValue;
 import org.hibernate.SessionFactory;
 
 import java.io.IOException;
@@ -17,13 +19,17 @@ import java.util.Collection;
  */
 public class ICalProducerResource extends AbstractResource {
     private SessionFactory sessionFactory;
+    private CsldUserService userService;
 
-    public ICalProducerResource(SessionFactory sessionFactory) {
+    public ICalProducerResource(SessionFactory sessionFactory, CsldUserService userService) {
         this.sessionFactory = sessionFactory;
+        this.userService = userService;
     }
 
     @Override
     protected ResourceResponse newResourceResponse(Attributes attributes) {
+        StringValue id = attributes.getParameters().get("id");
+
         ResourceResponse resourceResponse = new ResourceResponse();
         resourceResponse.setContentType("text/calendar");
         resourceResponse.setTextEncoding("utf-8");
@@ -36,9 +42,10 @@ public class ICalProducerResource extends AbstractResource {
         java.util.Calendar to = java.util.Calendar.getInstance();
         to.add(java.util.Calendar.YEAR, 2);
 
-        Collection<Event> eventsToExport = new EventsInTimeFrame(new DatabaseEvents(sessionFactory.getCurrentSession()), java.util.Calendar.getInstance(), to).all();
-        for(Event toExport: eventsToExport) {
-            ical.getComponents().add(toExport.asIcalEvent());
+        if(id.isEmpty() || id.toString().startsWith("all")) {
+            addAllEvents(ical, to);
+        } else {
+            addEventsForUser(id, ical, to);
         }
 
         resourceResponse.setWriteCallback(new WriteCallback()
@@ -52,5 +59,21 @@ public class ICalProducerResource extends AbstractResource {
         });
 
         return resourceResponse;
+    }
+
+    private void addAllEvents(Calendar ical, java.util.Calendar to) {
+        Collection<Event> eventsToExport = new EventsInTimeFrame(new DatabaseEvents(sessionFactory.getCurrentSession()), java.util.Calendar.getInstance(), to).all();
+        for (Event toExport : eventsToExport) {
+            ical.getComponents().add(toExport.asIcalEvent());
+        }
+    }
+
+    private void addEventsForUser(StringValue id, Calendar ical, java.util.Calendar to) {
+// TODO: Sanitize for incorrect usage.
+        int userId = id.toInt();
+        Collection<Event> eventsToExport = new EventsForWantedGames(userService.getById(userId), new EventsInTimeFrame(new DatabaseEvents(sessionFactory.getCurrentSession()), java.util.Calendar.getInstance(), to)).all();
+        for (Event toExport : eventsToExport) {
+            ical.getComponents().add(toExport.asIcalEvent());
+        }
     }
 }

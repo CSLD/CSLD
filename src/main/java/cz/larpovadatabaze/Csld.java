@@ -262,7 +262,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         }
 
         ResourceReference icalReference = new ResourceReference("icalReference") {
-            ICalProducerResource resource = new ICalProducerResource(sessionFactory);
+            ICalProducerResource resource = new ICalProducerResource(sessionFactory, csldUserService);
             @Override
             public IResource getResource() {
                 return resource;

@@ -166,6 +166,8 @@ public class UserDetailPage extends CsldBasePage {
 
         // Add wanted games
         add(new GameListPanel("wantedGamesPanel",Model.ofList(wantedGames)));
+
+        add(new org.apache.wicket.markup.html.basic.Label("ical", Model.of("http://larpovadatabaze.cz/ical?id=" + user.getId())));
     }
 
     public static PageParameters paramsForUser(CsldUser user) {
