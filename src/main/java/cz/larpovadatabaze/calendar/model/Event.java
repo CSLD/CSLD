@@ -285,7 +285,7 @@ public class Event implements cz.larpovadatabaze.api.Entity {
         Calendar dateFrom = getFrom();
         dateFrom.add(Calendar.DATE, 1);
         Calendar dateTo = getTo();
-        dateTo.add(Calendar.DATE, 1);
+        dateTo.add(Calendar.DATE, 2);
         VEvent result;
 
         result = new VEvent(new net.fortuna.ical4j.model.Date(dateFrom), new net.fortuna.ical4j.model.Date(dateTo), getName());
