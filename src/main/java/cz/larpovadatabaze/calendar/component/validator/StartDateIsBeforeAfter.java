@@ -30,7 +30,7 @@ public class StartDateIsBeforeAfter extends AbstractFormValidator {
     public void validate(Form<?> form) {
         Date start = ((Date) startDate.getConvertedInput());
         Date end = ((Date) endDate.getConvertedInput());
-        if(!end.after(start)) {
+        if(end.before(start)) {
             endDate.error(new StringResourceModel("event.endIsBeforeStart", startDate, null).getString());
         }
     }
