@@ -71,6 +71,12 @@
           <element id="library" level="project" name="Maven: net.sf.dozer:dozer:5.4.0" />
           <element id="library" level="project" name="Maven: commons-beanutils:commons-beanutils:1.8.3" />
           <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.1" />
+          <element id="library" level="project" name="Maven: org.mnode.ical4j:ical4j:2.0.0" />
+          <element id="library" level="project" name="Maven: org.apache.commons:commons-collections4:4.0" />
+          <element id="library" level="project" name="Maven: org.codehaus.groovy:groovy-all:2.3.2" />
+          <element id="library" level="project" name="Maven: biz.aQute.bnd:bndlib:2.3.0" />
+          <element id="library" level="project" name="Maven: org.osgi:org.osgi.core:4.3.1" />
+          <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.9" />
           <element id="library" level="project" name="Maven: org.geotools:gt-main:14.3" />
           <element id="library" level="project" name="Maven: org.geotools:gt-api:14.3" />
           <element id="library" level="project" name="Maven: org.geotools:gt-referencing:14.3" />
@@ -88,7 +94,6 @@
           <element id="library" level="project" name="Maven: org.geotools:gt-data:14.3" />
           <element id="library" level="project" name="Maven: org.geotools:gt-jts-wrapper:14.3" />
           <element id="library" level="project" name="Maven: commons-httpclient:commons-httpclient:3.1" />
-          <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.2" />
           <element id="library" level="project" name="Maven: org.hamcrest:hamcrest-all:1.3" />
           <element id="library" level="project" name="Maven: c3p0:c3p0:0.9.1.2" />
           <element id="library" level="project" name="Maven: com.h2database:h2:1.4.187" />
