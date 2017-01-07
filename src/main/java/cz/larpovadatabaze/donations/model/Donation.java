@@ -16,11 +16,13 @@ public class Donation implements cz.larpovadatabaze.api.Entity {
     @Temporal(value = TemporalType.DATE)
     private Date date;
     private String donor;
+    private String description;
 
-    public Donation(Date date, Double price, String donor) {
+    public Donation(Date date, Double price, String donor, String description) {
         this.donor = donor;
         this.amount = price;
         this.date = date;
+        this.description = description;
     }
 
     public Donation() {
@@ -56,6 +58,14 @@ public class Donation implements cz.larpovadatabaze.api.Entity {
 
     public void setDonor(String donor) {
         this.donor = donor;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

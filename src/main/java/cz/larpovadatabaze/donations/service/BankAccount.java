@@ -71,7 +71,7 @@ public class BankAccount {
                 String donor = cells.get(8).text();
                 // Verify whether this transaction is already in the database. If no create donation and insert into database.
                 if(new FilteredDonations(current, donor, date, price).all().size() == 0) {
-                    donations.store(new Donation(date, price, donor));
+                    donations.store(new Donation(date, price, donor, donor));
                 }
             }
         } catch (IOException e) {

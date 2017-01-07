@@ -20,6 +20,7 @@ public class Donor {
         Donation donation = new Donation();
         donation.setAmount(amount);
         donation.setDonor(donor);
+        donation.setDescription(donor);
         return donation;
     }
 

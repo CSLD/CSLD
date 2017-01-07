@@ -44,7 +44,7 @@ public class AggregatedDatabaseDonations implements Donations {
     private Collection<Donor> aggregate(Collection<Donation> all) {
         Collection<Donor> aggregated = new ArrayList<>();
         for(Donation donation: all) {
-            Donor associatedDonor = new Donor(donation.getDonor());
+            Donor associatedDonor = new Donor(donation.getDescription());
             if(!aggregated.contains(associatedDonor)){
                 associatedDonor.add(donation.getAmount());
                 aggregated.add(associatedDonor);

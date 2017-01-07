@@ -3,6 +3,7 @@ package cz.larpovadatabaze.donations.components;
 import cz.larpovadatabaze.donations.model.Donation;
 import cz.larpovadatabaze.donations.service.AggregatedDatabaseDonations;
 import cz.larpovadatabaze.donations.service.DatabaseDonations;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -36,8 +37,22 @@ public class Donors extends Panel {
             protected void populateItem(ListItem<Donation> item) {
                 Donation donation = item.getModelObject();
 
-                item.add(new Label("name", Model.of(donation.getDonor())));
-                item.add(new Label("amount", Model.of(donation.getAmount())));
+                Label name = new Label("name", Model.of(donation.getDescription()));
+                Label amount = new Label("amount", Model.of(donation.getAmount()));
+
+                if(donation.getAmount() >= 3000) {
+                    name.add(new AttributeAppender("class", "gold"));
+                    amount.add(new AttributeAppender("class", "gold"));
+                } else if (donation.getAmount() >= 1000) {
+                    name.add(new AttributeAppender("class", "silver"));
+                    amount.add(new AttributeAppender("class", "silver"));
+                } else {
+                    name.add(new AttributeAppender("class", "bronze"));
+                    amount.add(new AttributeAppender("class", "bronze"));
+                }
+
+                item.add(name);
+                item.add(amount);
             }
         });
     }
