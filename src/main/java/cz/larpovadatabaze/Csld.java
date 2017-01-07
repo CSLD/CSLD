@@ -3,6 +3,7 @@ package cz.larpovadatabaze;
 import cz.larpovadatabaze.calendar.component.page.CreateOrUpdateEventPage;
 import cz.larpovadatabaze.calendar.component.page.DetailOfEventPage;
 import cz.larpovadatabaze.calendar.component.page.ListEventsPage;
+import cz.larpovadatabaze.calendar.service.ICalProducerResource;
 import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.components.page.TestDatabase;
 import cz.larpovadatabaze.components.page.about.AboutDatabasePage;
@@ -49,6 +50,8 @@ import org.apache.wicket.request.cycle.AbstractRequestCycleListener;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.info.PageComponentInfo;
 import org.apache.wicket.request.mapper.parameter.PageParametersEncoder;
+import org.apache.wicket.request.resource.IResource;
+import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.settings.IRequestLoggerSettings;
 import org.apache.wicket.settings.def.RequestLoggerSettings;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
@@ -257,6 +260,15 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         if(isDevelopmentMode()) {
             mountPage("/testDatabase", TestDatabase.class);
         }
+
+        ResourceReference icalReference = new ResourceReference("icalReference") {
+            ICalProducerResource resource = new ICalProducerResource(sessionFactory);
+            @Override
+            public IResource getResource() {
+                return resource;
+            }
+        };
+        mountResource("/ical", icalReference);
     }
 
     private void mountResources() {

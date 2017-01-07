@@ -4,6 +4,10 @@ import cz.larpovadatabaze.calendar.Location;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Label;
+import net.fortuna.ical4j.model.*;
+import net.fortuna.ical4j.model.component.VEvent;
+import net.fortuna.ical4j.model.property.Uid;
+import net.fortuna.ical4j.util.UidGenerator;
 import org.apache.commons.lang3.AnnotationUtils;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -14,8 +18,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 import javax.persistence.*;
+import java.net.SocketException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Event for the database.
@@ -273,5 +280,13 @@ public class Event implements cz.larpovadatabaze.api.Entity {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    @Transient
+    public VEvent asIcalEvent() {
+        VEvent result = new VEvent(new net.fortuna.ical4j.model.Date(getFrom()), new net.fortuna.ical4j.model.Date(getTo()), getName());
+        result.getProperties().add(new Uid(String.valueOf(getId())));
+
+        return result;
     }
 }
