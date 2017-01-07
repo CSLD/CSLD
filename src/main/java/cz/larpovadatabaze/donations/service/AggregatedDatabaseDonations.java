@@ -3,11 +3,12 @@ package cz.larpovadatabaze.donations.service;
 import cz.larpovadatabaze.donations.model.Donation;
 import cz.larpovadatabaze.donations.model.Donor;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 
 /**
  * When retrieving Donation it aggregates these donations based on the person who donated.
+ * TODO: Tridit podle vyse
+ *
  */
 public class AggregatedDatabaseDonations implements Donations {
     private Donations donations;
@@ -32,10 +33,11 @@ public class AggregatedDatabaseDonations implements Donations {
         Collection<Donation> all = donations.all();
         Collection<Donor> aggregated = aggregate(all);
 
-        Collection<Donation> result = new ArrayList<>();
+        List<Donation> result = new ArrayList<>();
         for(Donor donor: aggregated) {
             result.add(donor.toDonation());
         }
+        result.sort((o1, o2) -> o1.getAmount() > o2.getAmount() ? -1 : 1);
         return result;
     }
 
