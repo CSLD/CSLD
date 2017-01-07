@@ -4,11 +4,8 @@ import cz.larpovadatabaze.calendar.Location;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Label;
-import net.fortuna.ical4j.model.*;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.property.Uid;
-import net.fortuna.ical4j.util.UidGenerator;
-import org.apache.commons.lang3.AnnotationUtils;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.hibernate.annotations.Cascade;
@@ -18,11 +15,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 import javax.persistence.*;
-import java.net.SocketException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Event for the database.
@@ -284,11 +281,11 @@ public class Event implements cz.larpovadatabaze.api.Entity {
 
     @Transient
     public VEvent asIcalEvent() {
-        getFrom().add(Calendar.DATE, 1);
-        getTo().add(Calendar.DATE, 1);
-        getTo().set(Calendar.HOUR_OF_DAY, 23);
-        getTo().set(Calendar.MINUTE, 59);
-        VEvent result = new VEvent(new net.fortuna.ical4j.model.Date(getFrom()), new net.fortuna.ical4j.model.Date(getTo()), getName());
+        Calendar dateFrom = getFrom();
+        dateFrom.add(Calendar.DATE, 1);
+        Calendar dateTo = getTo();
+        dateTo.add(Calendar.DATE, 1);
+        VEvent result = new VEvent(new net.fortuna.ical4j.model.Date(dateFrom.getTime()), new net.fortuna.ical4j.model.Date(dateTo.getTime()), getName());
         result.getProperties().add(new Uid(String.valueOf(getId())));
 
         return result;
