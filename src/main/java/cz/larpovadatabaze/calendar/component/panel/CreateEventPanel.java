@@ -5,6 +5,7 @@ import com.googlecode.wicket.jquery.ui.form.datepicker.DatePicker;
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.calendar.Location;
+import cz.larpovadatabaze.calendar.component.page.DetailOfEventPage;
 import cz.larpovadatabaze.calendar.component.validator.StartDateIsBeforeAfter;
 import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.calendar.service.DatabaseEvents;
@@ -12,12 +13,15 @@ import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
 import cz.larpovadatabaze.components.common.multiac.IMultiAutoCompleteSource;
 import cz.larpovadatabaze.components.common.multiac.MultiAutoCompleteComponent;
+import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.panel.game.ChooseLabelsPanel;
 import cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Label;
+import cz.larpovadatabaze.entities.UserPlayedGame;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.utils.MailClient;
 import cz.larpovadatabaze.validator.AtLeastOneRequiredLabelValidator;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -26,6 +30,7 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.*;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -51,6 +56,8 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
     private SessionFactory sessionFactory;
     @SpringBean
     private GameService gameService;
+    @SpringBean
+    private MailClient mailClient;
 
     private GLatLng lastSelectedLocation;
     private TextField<String> name;
@@ -219,6 +226,17 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
                     event.setGames((List<Game>) ((MultiAutoCompleteComponent)createEvent.get("gamesWrapper:games")).getConvertedInput());
                 }
                 new DatabaseEvents(sessionFactory.getCurrentSession()).store(event);
+                if(event.getGames().size() > 0) {
+                    for(Game game: event.getGames()) {
+                        for(UserPlayedGame interested: game.getPlayed()) {
+                            if(interested.getStateEnum() == UserPlayedGame.UserPlayedGameState.WANT_TO_PLAY) {
+                                String url = CreateEventPanel.this.urlFor(DetailOfEventPage.class, DetailOfEventPage.pageParameters(event)).toString();
+                                String content = "Byla přidána událost, která se váže ke hře, kterou máte nastavenou jako chci hrát. Odkaz: http://larpovadatabaze.cz/" + url;
+                                mailClient.sendMail(content, interested.getPlayerOfGame().getPerson().getEmail(), "Do kalendáře byla přidána událost ke hře, která vás zajímá.");
+                            }
+                        }
+                    }
+                }
 
                 onCsldAction(target, form);
             }
