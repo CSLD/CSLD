@@ -15,6 +15,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 import javax.persistence.*;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -38,7 +39,7 @@ public class Event implements cz.larpovadatabaze.api.Entity {
     private String loc;
     private String web;
     private boolean deleted;
-    @Column(name="amountofplayers")
+    @Column(name = "amountofplayers")
     private Integer amountOfPlayers;
     @Temporal(value = TemporalType.DATE)
     private Date from;
@@ -49,17 +50,17 @@ public class Event implements cz.larpovadatabaze.api.Entity {
     private Location location;
     @ManyToMany
     @JoinTable(name = "event_has_labels", joinColumns = {
-        @JoinColumn(name="event_id")
+            @JoinColumn(name = "event_id")
     }, inverseJoinColumns = {
-        @JoinColumn(name="label_id")
+            @JoinColumn(name = "label_id")
     })
     private List<Label> labels;
 
     @ManyToMany
-    @JoinTable(name="csld_game_has_event", joinColumns = {
-        @JoinColumn(name="event_id")
+    @JoinTable(name = "csld_game_has_event", joinColumns = {
+            @JoinColumn(name = "event_id")
     }, inverseJoinColumns = {
-        @JoinColumn(name="game_id")
+            @JoinColumn(name = "game_id")
     })
     private List<Game> games; // It is possible to be associated with multiple games for the festivals for example. Mainly to show the festival at the game page.
 
@@ -118,7 +119,7 @@ public class Event implements cz.larpovadatabaze.api.Entity {
         this.labels = labels;
     }
 
-    public Event(int id, String name, Calendar from, Calendar to,  Integer amountOfPlayers, String loc) {
+    public Event(int id, String name, Calendar from, Calendar to, Integer amountOfPlayers, String loc) {
         this.id = id;
         this.name = name;
         this.from = from.getTime();
@@ -132,7 +133,7 @@ public class Event implements cz.larpovadatabaze.api.Entity {
     }
 
     public Calendar getFrom() {
-        if(from != null) {
+        if (from != null) {
             Calendar cal = Calendar.getInstance();
             cal.setTime(from);
             return cal;
@@ -147,7 +148,7 @@ public class Event implements cz.larpovadatabaze.api.Entity {
     }
 
     public Calendar getTo() {
-        if(to != null) {
+        if (to != null) {
             Calendar cal = Calendar.getInstance();
             cal.setTime(to);
 
@@ -281,11 +282,9 @@ public class Event implements cz.larpovadatabaze.api.Entity {
 
     @Transient
     public VEvent asIcalEvent() {
-        Calendar dateFrom = getFrom();
-        dateFrom.add(Calendar.DATE, 1);
-        Calendar dateTo = getTo();
-        dateTo.add(Calendar.DATE, 1);
-        VEvent result = new VEvent(new net.fortuna.ical4j.model.Date(dateFrom.getTime()), new net.fortuna.ical4j.model.Date(dateTo.getTime()), getName());
+        VEvent result;
+
+        result = new VEvent(new net.fortuna.ical4j.model.Date(from), new net.fortuna.ical4j.model.Date(to), getName());
         result.getProperties().add(new Uid(String.valueOf(getId())));
 
         return result;
