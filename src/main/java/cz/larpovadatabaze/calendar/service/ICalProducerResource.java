@@ -28,6 +28,8 @@ public class ICalProducerResource extends AbstractResource {
         resourceResponse.setContentType("text/calendar");
         resourceResponse.setTextEncoding("utf-8");
 
+        System.setProperty("net.fortuna.ical4j.timezone.date.floating", "true");
+
         Calendar ical = new Calendar();
         ical.getProperties().add(new ProdId("-//CSLD//iCal4j 1.0//EN"));
         ical.getProperties().add(Version.VERSION_2_0);
