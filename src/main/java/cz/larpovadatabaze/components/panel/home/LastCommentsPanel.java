@@ -115,7 +115,11 @@ public class LastCommentsPanel extends Panel {
             gameLink.add(gameRating);
 
             // Game name
-            final Label gameName = new Label("gameName", game.getName());
+            String name = game.getName();
+            if(name.length() > 20) {
+                name = name.substring(0, 17) + "...";
+            }
+            final Label gameName = new Label("gameName", name);
             gameLink.add(gameName);
 
             // Game date
