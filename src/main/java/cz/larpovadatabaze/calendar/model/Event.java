@@ -284,6 +284,8 @@ public class Event implements cz.larpovadatabaze.api.Entity {
 
     @Transient
     public VEvent asIcalEvent() {
+        getFrom().add(Calendar.DATE, 1);
+        getTo().add(Calendar.DATE, 1);
         VEvent result = new VEvent(new net.fortuna.ical4j.model.Date(getFrom()), new net.fortuna.ical4j.model.Date(getTo()), getName());
         result.getProperties().add(new Uid(String.valueOf(getId())));
 

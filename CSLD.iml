@@ -117,6 +117,12 @@
     <orderEntry type="library" name="Maven: net.sf.dozer:dozer:5.4.0" level="project" />
     <orderEntry type="library" name="Maven: commons-beanutils:commons-beanutils:1.8.3" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.1" level="project" />
+    <orderEntry type="library" name="Maven: org.mnode.ical4j:ical4j:2.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-collections4:4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:2.3.2" level="project" />
+    <orderEntry type="library" name="Maven: biz.aQute.bnd:bndlib:2.3.0" level="project" />
+    <orderEntry type="library" name="Maven: org.osgi:org.osgi.core:4.3.1" level="project" />
+    <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.9" level="project" />
     <orderEntry type="library" name="Maven: org.geotools:gt-main:14.3" level="project" />
     <orderEntry type="library" name="Maven: org.geotools:gt-api:14.3" level="project" />
     <orderEntry type="library" name="Maven: org.geotools:gt-referencing:14.3" level="project" />
@@ -134,7 +140,6 @@
     <orderEntry type="library" name="Maven: org.geotools:gt-data:14.3" level="project" />
     <orderEntry type="library" name="Maven: org.geotools:gt-jts-wrapper:14.3" level="project" />
     <orderEntry type="library" name="Maven: commons-httpclient:commons-httpclient:3.1" level="project" />
-    <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet:javax.servlet-api:3.0.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.12" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
