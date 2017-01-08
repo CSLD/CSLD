@@ -119,13 +119,15 @@ public class Event implements cz.larpovadatabaze.api.Entity {
         this.labels = labels;
     }
 
-    public Event(int id, String name, Calendar from, Calendar to, Integer amountOfPlayers, String loc) {
+    public Event(int id, String name, Calendar from, Calendar to, Integer amountOfPlayers, String loc, String description, String web) {
         this.id = id;
         this.name = name;
         this.from = from.getTime();
         this.to = to.getTime();
         this.amountOfPlayers = amountOfPlayers;
         this.loc = loc;
+        this.description = description;
+        this.web = web;
     }
 
     public String getName() {

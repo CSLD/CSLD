@@ -4,6 +4,7 @@ import cz.larpovadatabaze.calendar.component.page.CreateOrUpdateEventPage;
 import cz.larpovadatabaze.calendar.component.page.DetailOfEventPage;
 import cz.larpovadatabaze.calendar.component.page.ListEventsPage;
 import cz.larpovadatabaze.calendar.service.ICalProducerResource;
+import cz.larpovadatabaze.calendar.service.LarpCzImport;
 import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.components.page.TestDatabase;
 import cz.larpovadatabaze.components.page.about.AboutDatabasePage;
@@ -191,6 +192,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
 
         // Load information about donations and setup timer.
         new BankAccount(sessionFactory).start();
+        new Thread(() -> new LarpCzImport(sessionFactory).importEvents()).start();
 	}
 
     @Override

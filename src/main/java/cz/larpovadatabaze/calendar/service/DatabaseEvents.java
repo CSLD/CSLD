@@ -3,6 +3,7 @@ package cz.larpovadatabaze.calendar.service;
 import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.entities.CsldUser;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 import java.util.Collection;
 
@@ -42,5 +43,9 @@ public class DatabaseEvents implements Events {
     @Override
     public Collection<Event> all() {
         return session.createCriteria(Event.class).list();
+    }
+
+    boolean isPersisted(String name) {
+        return session.createCriteria(Event.class).add(Restrictions.eq("name", name)).list().size() > 0;
     }
 }
