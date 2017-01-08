@@ -64,7 +64,7 @@ public class LarpCzEvents implements Events {
             String detailUrl = event.select("td.views-field-title a").get(0).attr("href");
 
             Document detailPage = Jsoup.connect("http://www.larp.cz" + detailUrl).get();
-            String web = detailPage.select("td.event-meta-value").get(0).text();
+            String web = detailPage.select("td.event-meta-value.eweb").get(0).text();
             String description = detailPage.select("div.event-content fieldset").get(0).text();
 
             Matcher matcher = Pattern.compile("\\d+").matcher(event.select("td.views-field-field-count-value").get(0).text());
