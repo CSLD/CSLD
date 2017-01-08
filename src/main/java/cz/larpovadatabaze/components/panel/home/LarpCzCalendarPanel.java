@@ -39,6 +39,8 @@ public class LarpCzCalendarPanel extends Panel {
             FilterEvent filter = new FilterEvent();
             filter.setFrom(Calendar.getInstance().getTime());
             filter.setLimit(6);
+            filter.setSorted(FilterEvent.Sort.TIME_MOST_RECENT);
+
             return new ArrayList<>(
                     new FilteredReadOnlyEvents(
                             new Model(filter),

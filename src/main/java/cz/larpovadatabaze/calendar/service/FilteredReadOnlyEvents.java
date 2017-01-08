@@ -74,10 +74,6 @@ public class FilteredReadOnlyEvents implements Events {
             }
         }
 
-        if(filterEvent.getLimit() != null && filtered.size() > filterEvent.getLimit()) {
-            filtered = new ArrayList<>(filtered).subList(0, filterEvent.getLimit());
-        }
-
         filtered.sort((o1, o2) -> {
             if(o1.getFrom() == null || o2.getFrom().before(o1.getFrom())) {
                 return 1;
@@ -87,6 +83,10 @@ public class FilteredReadOnlyEvents implements Events {
                 return 0;
             }
         });
+
+        if(filterEvent.getLimit() != null && filtered.size() > filterEvent.getLimit()) {
+            filtered = new ArrayList<>(filtered).subList(0, filterEvent.getLimit());
+        }
 
         return filtered;
     }

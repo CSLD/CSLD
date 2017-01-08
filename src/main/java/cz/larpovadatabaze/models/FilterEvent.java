@@ -19,6 +19,7 @@ public class FilterEvent implements Serializable {
     private Date to;
     private Area region;
     private GeographicalFilter filter;
+    private Sort sorted;
 
     public GeographicalFilter getFilter() {
         return filter;
@@ -81,5 +82,17 @@ public class FilterEvent implements Serializable {
 
     public void setOtherLabels(List<Label> otherLabels) {
         this.otherLabels = otherLabels;
+    }
+
+    public Sort getSorted() {
+        return sorted;
+    }
+
+    public void setSorted(Sort sorted) {
+        this.sorted = sorted;
+    }
+
+    public enum Sort {
+        TIME_MOST_RECENT
     }
 }
