@@ -102,6 +102,9 @@ public class LarpCzEvents implements Events {
 
             from = parse(formatsFrom,parts[0].replace("\u00A0"," "));
             to = parse(formatsTo, parts[1].replace("\u00A0"," "));
+
+            from.setYear(to.getYear());
+            from.setMonth(to.getMonth());
         }
 
         private Date parse(Collection<SimpleDateFormat> formats, String text) {
