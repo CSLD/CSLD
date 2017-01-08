@@ -47,6 +47,7 @@ import org.wicketstuff.gmap.api.GMarkerOptions;
 import org.wicketstuff.gmap.event.ClickListener;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -224,12 +225,17 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
                     event.setAddedBy(CsldAuthenticatedWebSession.get().getLoggedUser());
                 }
 
+                List<Game> previous = new ArrayList<>(event.getGames());
                 if(createEvent.isValid()) {
                     event.setGames((List<Game>) ((MultiAutoCompleteComponent)createEvent.get("gamesWrapper:games")).getConvertedInput());
                 }
+
                 new DatabaseEvents(sessionFactory.getCurrentSession()).store(event);
                 if(event.getGames().size() > 0) {
                     for(Game game: event.getGames()) {
+                        if(previous.contains(game)) {
+                            continue;
+                        }
                         for(UserPlayedGame interested: game.getPlayed()) {
                             if(interested.getStateEnum() == UserPlayedGame.UserPlayedGameState.WANT_TO_PLAY) {
                                 String url = CreateEventPanel.this.urlFor(DetailOfEventPage.class, DetailOfEventPage.pageParameters(event)).toString();
