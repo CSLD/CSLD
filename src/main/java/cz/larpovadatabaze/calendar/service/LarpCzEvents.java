@@ -74,7 +74,7 @@ public class LarpCzEvents implements Events {
             }
             String loc = event.select("td.views-field-field-region-value").get(0).text() + ", " +
                     event.select("td.views-field-field-city-value").get(0).text();
-            Event toAdd = new Event(id, name, date.getFrom(), date.getTo(), amountOfPlayers, loc, description, web);
+            Event toAdd = new Event(id, name, date.getFrom(), date.getTo(), amountOfPlayers, loc, description, web, "larpcz");
             result.add(toAdd);
             logger.debug("Loaded event: " + toAdd);
             id++;

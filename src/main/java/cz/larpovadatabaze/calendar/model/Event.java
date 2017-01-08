@@ -38,6 +38,7 @@ public class Event implements cz.larpovadatabaze.api.Entity {
     private String description;
     private String loc;
     private String web;
+    private String source;
     private boolean deleted;
     @Column(name = "amountofplayers")
     private Integer amountOfPlayers;
@@ -119,7 +120,7 @@ public class Event implements cz.larpovadatabaze.api.Entity {
         this.labels = labels;
     }
 
-    public Event(int id, String name, Calendar from, Calendar to, Integer amountOfPlayers, String loc, String description, String web) {
+    public Event(int id, String name, Calendar from, Calendar to, Integer amountOfPlayers, String loc, String description, String web, String source) {
         this.id = id;
         this.name = name;
         this.from = from.getTime();
@@ -128,6 +129,7 @@ public class Event implements cz.larpovadatabaze.api.Entity {
         this.loc = loc;
         this.description = description;
         this.web = web;
+        this.source = source;
     }
 
     public String getName() {
@@ -187,6 +189,10 @@ public class Event implements cz.larpovadatabaze.api.Entity {
 
     public Integer getAmountOfPlayers() {
         return amountOfPlayers;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 
     public void sanitize() {
