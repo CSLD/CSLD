@@ -4,6 +4,7 @@ import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.services.CsldUserService;
 import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.model.Calendar;
+import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.property.CalScale;
 import net.fortuna.ical4j.model.property.ProdId;
 import net.fortuna.ical4j.model.property.Version;
@@ -46,6 +47,12 @@ public class ICalProducerResource extends AbstractResource {
             addAllEvents(ical, to);
         } else {
             addEventsForUser(id, ical, to);
+        }
+
+        if(ical.getComponents().size() == 0) {
+            java.util.Calendar inPast = java.util.Calendar.getInstance();
+            inPast.set(java.util.Calendar.YEAR, 2010);
+            ical.getComponents().add(new VEvent(new net.fortuna.ical4j.model.Date(inPast), "Irelevant"));
         }
 
         resourceResponse.setWriteCallback(new WriteCallback()
