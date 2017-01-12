@@ -231,7 +231,7 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
                 }
 
                 new DatabaseEvents(sessionFactory.getCurrentSession()).store(event);
-                if(event.getGames().size() > 0) {
+                if(event != null && event.getGames() != null && event.getGames().size() > 0) {
                     for(Game game: event.getGames()) {
                         if(previous.contains(game)) {
                             continue;
