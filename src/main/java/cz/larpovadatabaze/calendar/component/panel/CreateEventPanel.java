@@ -225,7 +225,12 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
                     event.setAddedBy(CsldAuthenticatedWebSession.get().getLoggedUser());
                 }
 
-                List<Game> previous = new ArrayList<>(event.getGames());
+                List<Game> previous;
+                if(event.getGames() != null) {
+                    previous = new ArrayList<>(event.getGames());
+                } else {
+                    previous = new ArrayList<>();
+                }
                 if(createEvent.isValid()) {
                     event.setGames((List<Game>) ((MultiAutoCompleteComponent)createEvent.get("gamesWrapper:games")).getConvertedInput());
                 }
