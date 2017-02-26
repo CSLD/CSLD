@@ -28,7 +28,9 @@ import java.util.List;
 @Entity(name = "event")
 public class Event implements cz.larpovadatabaze.api.Entity {
     @Transient
-    private SimpleDateFormat czechDate = new SimpleDateFormat("dd.MM.YYYY");
+    private SimpleDateFormat czechDate = new SimpleDateFormat("dd.MM.YYYY HH:mm");
+    @Transient
+    private SimpleDateFormat czechDateWithoutTime = new SimpleDateFormat("dd.MM.YYYY");
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
@@ -42,9 +44,9 @@ public class Event implements cz.larpovadatabaze.api.Entity {
     private boolean deleted;
     @Column(name = "amountofplayers")
     private Integer amountOfPlayers;
-    @Temporal(value = TemporalType.DATE)
+    @Temporal(value = TemporalType.TIMESTAMP)
     private Date from;
-    @Temporal(value = TemporalType.DATE)
+    @Temporal(value = TemporalType.TIMESTAMP)
     private Date to;
     // Specify the mapping for the Location.
     @Embedded
@@ -148,6 +150,9 @@ public class Event implements cz.larpovadatabaze.api.Entity {
 
     @Transient
     public String getFromCzech() {
+        if(getFrom().get(Calendar.HOUR_OF_DAY) == 0) {
+            return czechDateWithoutTime.format(from);
+        }
         return czechDate.format(from);
     }
 
@@ -164,6 +169,9 @@ public class Event implements cz.larpovadatabaze.api.Entity {
 
     @Transient
     public String getToCzech() {
+        if(getTo().get(Calendar.HOUR_OF_DAY) == 0) {
+            return czechDateWithoutTime.format(to);
+        }
         return czechDate.format(to);
     }
 
@@ -300,5 +308,13 @@ public class Event implements cz.larpovadatabaze.api.Entity {
         result.getProperties().add(new Uid(String.valueOf(getId())));
 
         return result;
+    }
+
+    public void setFrom(Date from) {
+        this.from = from;
+    }
+
+    public void setTo(Date to) {
+        this.to = to;
     }
 }

@@ -24,21 +24,47 @@
 				<fieldset>
 					<label class="input">
 						<i class="icon-append fa fa-folder-open"></i>
-						<input type="text" name="name" wicket:id="name" wicket:message="placeholder:form.event.name">
+						<input type="text" name="name" wicket:id="name"
+							   wicket:message="placeholder:form.event.name">
 						<b class="tooltip tooltip-bottom-right" wicket:id="nameFeedback"></b>
 					</label>
 
-					<label class="input">
-						<i class="icon-append fa fa-calendar"></i>
-						<input type="text" name="from" wicket:id="from" wicket:message="placeholder:form.dateFrom">
-						<b class="tooltip tooltip-bottom-right" wicket:id="fromFeedback"></b>
-					</label>
+					<div class="row">
+						<span class="col col-6">
+							<label class="input">
+								<i class="icon-append fa fa-calendar"></i>
+								<input type="text" name="from" wicket:id="from"
+									   wicket:message="placeholder:form.dateFrom">
+								<b class="tooltip tooltip-bottom-right" wicket:id="fromFeedback"></b>
+							</label>
+						</span>
+						<span class="col col-6">
+							<label class="input">
+								<i class="icon-append fa fa-clock-o"></i>
+								<input type="time" name="from" wicket:id="fromTime"
+									   wicket:message="placeholder:form.dateFrom">
+								<b class="tooltip tooltip-bottom-right" wicket:id="fromTimeFeedback"></b>
+							</label>
+						</span>
+					</div>
 
-					<label class="input">
-						<i class="icon-append fa fa-calendar"></i>
-						<input type="text" name="to" wicket:id="to" wicket:message="placeholder:form.dateTo">
-						<b class="tooltip tooltip-bottom-right" wicket:id="toFeedback"></b>
-					</label>
+					<div class="row">
+						<span class="col col-6">
+							<label class="input">
+								<i class="icon-append fa fa-calendar"></i>
+								<input type="text" name="to" wicket:id="to" wicket:message="placeholder:form.dateTo">
+								<b class="tooltip tooltip-bottom-right" wicket:id="toFeedback"></b>
+							</label>
+						</span>
+						<span class="col col-6">
+							<label class="input">
+								<i class="icon-append fa fa-clock-o"></i>
+								<input type="time" name="from" wicket:id="toTime"
+									   wicket:message="placeholder:form.dateFrom">
+								<b class="tooltip tooltip-bottom-right" wicket:id="toTimeFeedback"></b>
+							</label>
+						</span>
+					</div>
 
 					<label class="input">
 						<i class="icon-append fa fa-users"></i>
@@ -84,7 +110,9 @@
 
 				<fieldset>
 					<div class="mapRow">
-						<b><wicket:message key="event.map">Klikněte na místo konání na mapě</wicket:message></b>
+						<b>
+							<wicket:message key="event.map">Klikněte na místo konání na mapě</wicket:message>
+						</b>
 					</div>
 
 					<div class="mapRow">

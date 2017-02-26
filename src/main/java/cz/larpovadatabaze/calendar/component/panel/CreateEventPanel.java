@@ -5,6 +5,7 @@ import com.googlecode.wicket.jquery.ui.form.datepicker.DatePicker;
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.calendar.Location;
+import cz.larpovadatabaze.calendar.component.common.TimeTextField;
 import cz.larpovadatabaze.calendar.component.page.DetailOfEventPage;
 import cz.larpovadatabaze.calendar.component.validator.StartDateIsBeforeAfter;
 import cz.larpovadatabaze.calendar.model.Event;
@@ -13,7 +14,6 @@ import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
 import cz.larpovadatabaze.components.common.multiac.IMultiAutoCompleteSource;
 import cz.larpovadatabaze.components.common.multiac.MultiAutoCompleteComponent;
-import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.panel.game.ChooseLabelsPanel;
 import cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel;
 import cz.larpovadatabaze.entities.Game;
@@ -23,6 +23,7 @@ import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.utils.MailClient;
 import cz.larpovadatabaze.validator.AtLeastOneRequiredLabelValidator;
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxCallListener;
@@ -32,7 +33,6 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.*;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -47,10 +47,7 @@ import org.wicketstuff.gmap.api.GMarkerOptions;
 import org.wicketstuff.gmap.event.ClickListener;
 import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
     private static final int AUTOCOMPLETE_CHOICES = 10;
@@ -72,10 +69,24 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
     private List<Label> labelsToTransfer;
     private GMap map;
 
+    // Used for holding specific information from non model fields.
     private String customLocation;
+    private String fromTime;
+    private String toTime;
 
     public CreateEventPanel(String id, IModel<Event> model) {
         super(id, model);
+
+        Event event = model.getObject();
+        if(event != null) {
+            if(event.getFrom() != null) {
+                fromTime = String.valueOf(event.getFrom().get(Calendar.HOUR_OF_DAY)) + ":" + String.valueOf(event.getFrom().get(Calendar.MINUTE));
+            }
+
+            if(event.getTo() != null) {
+                toTime = String.valueOf(event.getTo().get(Calendar.HOUR_OF_DAY)) + ":" + String.valueOf(event.getTo().get(Calendar.MINUTE));
+            }
+        }
     }
 
     @Override
@@ -96,15 +107,32 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
         createEvent.add(name);
         createEvent.add(new CsldFeedbackMessageLabel("nameFeedback", name, "form.event.nameHint"));
 
+        // OnUpdate set to to the same date.
         Options czechCalendar = new Options();
         czechCalendar.set("start_weekday", 0);
         FormComponent<Date> from = new DatePicker("from", "dd.MM.yyyy", czechCalendar).setRequired(true);
         createEvent.add(from);
         createEvent.add(new CsldFeedbackMessageLabel("fromFeedback", from, "form.event.fromHint"));
 
+        final FormComponent<String> fromTimeField = new TimeTextField("fromTime", new PropertyModel(this, "fromTime"));
+        fromTimeField.add(new AjaxFormComponentUpdatingBehavior("change") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {}
+        });
+        createEvent.add(fromTimeField);
+        createEvent.add(new CsldFeedbackMessageLabel("fromTimeFeedback", fromTimeField, "form.event.fromTimeHint"));
+
         FormComponent<Date> to = new DatePicker("to", "dd.MM.yyyy", czechCalendar).setRequired(true);
         createEvent.add(to);
         createEvent.add(new CsldFeedbackMessageLabel("toFeedback", to, "form.event.toHint"));
+
+        FormComponent<String> toTimeField = new TimeTextField("toTime", new PropertyModel(this, "toTime"));
+        toTimeField.add(new AjaxFormComponentUpdatingBehavior("change") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {}
+        });
+        createEvent.add(toTimeField);
+        createEvent.add(new CsldFeedbackMessageLabel("toTimeFeedback", toTimeField, "form.event.toTimeHint"));
 
         createEvent.add(new StartDateIsBeforeAfter(from, to));
 
@@ -233,6 +261,24 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
                 }
                 if(createEvent.isValid()) {
                     event.setGames((List<Game>) ((MultiAutoCompleteComponent)createEvent.get("gamesWrapper:games")).getConvertedInput());
+                }
+
+                if(StringUtils.isNotBlank(fromTime)){
+                    if(fromTime.split(":").length == 2) {
+                        Calendar from = event.getFrom();
+                        from.set(Calendar.HOUR_OF_DAY, Integer.parseInt(fromTime.split(":")[0]));
+                        from.set(Calendar.MINUTE, Integer.parseInt(fromTime.split(":")[1]));
+                        event.setFrom(from.getTime());
+                    }
+                }
+
+                if(StringUtils.isNotBlank(toTime)){
+                    if(toTime.split(":").length == 2) {
+                        Calendar to = event.getTo();
+                        to.set(Calendar.HOUR_OF_DAY, Integer.parseInt(toTime.split(":")[0]));
+                        to.set(Calendar.MINUTE, Integer.parseInt(toTime.split(":")[1]));
+                        event.setTo(to.getTime());
+                    }
                 }
 
                 new DatabaseEvents(sessionFactory.getCurrentSession()).store(event);
