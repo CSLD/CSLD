@@ -38,6 +38,7 @@ public class Donors extends Panel {
                 Donation donation = item.getModelObject();
 
                 Label name = new Label("name", Model.of(donation.getDescription()));
+                name.setEscapeModelStrings(false);
                 Label amount = new Label("amount", Model.of(donation.getAmount()));
 
                 if(donation.getAmount() >= 3000) {
