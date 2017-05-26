@@ -321,7 +321,7 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
     }
 
     private void addMap(Form container, Location location){
-        map = new GMap("map", new GMapHeaderContributor("http", "AIzaSyC8K3jrJMl52-Mswi2BsS5UVKDZIT4GWh8")); // TODO: Restrict usage of the key.
+        map = new GMap("map", new GMapHeaderContributor("https", "AIzaSyC8K3jrJMl52-Mswi2BsS5UVKDZIT4GWh8")); // TODO: Restrict usage of the key.
         map.setStreetViewControlEnabled(false);
         map.setScaleControlEnabled(true);
         map.setScrollWheelZoomEnabled(true);
