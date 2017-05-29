@@ -108,7 +108,7 @@ public class DetailOfEventPage extends CsldBasePage {
         add(new EditEventPanel("editEvent", (IModel<Event>) getDefaultModel()));
         add(new DeleteEventPanel("deleteEvent", (IModel<Event>) getDefaultModel()));
 
-        GMap map = new GMap("map", new GMapHeaderContributor("http","AIzaSyC8K3jrJMl52-Mswi2BsS5UVKDZIT4GWh8")); // TODO: Restrict usage of the key and move to config.
+        GMap map = new GMap("map", new GMapHeaderContributor("https","AIzaSyC8K3jrJMl52-Mswi2BsS5UVKDZIT4GWh8")); // TODO: Restrict usage of the key and move to config.
         map.setStreetViewControlEnabled(false);
         map.setScaleControlEnabled(true);
         map.setScrollWheelZoomEnabled(true);
