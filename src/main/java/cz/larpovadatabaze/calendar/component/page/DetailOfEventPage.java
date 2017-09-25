@@ -112,6 +112,7 @@ public class DetailOfEventPage extends CsldBasePage {
         map.setStreetViewControlEnabled(false);
         map.setScaleControlEnabled(true);
         map.setScrollWheelZoomEnabled(true);
+        map.setOptions({draggableCursor:'pointer'});
 
         Event event = (Event)getDefaultModelObject();
         if(event.getLocation() != null) {
