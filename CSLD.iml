@@ -35,6 +35,20 @@
         </fileset>
       </configuration>
     </facet>
+    <facet type="web" name="Web2">
+      <configuration>
+        <descriptors>
+          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/src/test/webapp/WEB-INF/web.xml" />
+        </descriptors>
+        <webroots>
+          <root url="file://$MODULE_DIR$/src/test/webapp" relative="/" />
+        </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/src/main/java" />
+          <root url="file://$MODULE_DIR$/src/main/resources" />
+        </sourceRoots>
+      </configuration>
+    </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <output url="file://$MODULE_DIR$/target/classes" />
@@ -47,6 +61,12 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: org.mnode.ical4j:ical4j:2.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-collections4:4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:2.3.2" level="project" />
+    <orderEntry type="library" name="Maven: biz.aQute.bnd:bndlib:2.3.0" level="project" />
+    <orderEntry type="library" name="Maven: org.osgi:org.osgi.core:4.3.1" level="project" />
+    <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.9" level="project" />
     <orderEntry type="library" name="Maven: org.apache.wicket:wicket-extensions:6.15.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.wicket:wicket-core:6.15.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.wicket:wicket-util:6.15.0" level="project" />
