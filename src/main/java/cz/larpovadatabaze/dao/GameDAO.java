@@ -152,7 +152,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     public List<Game> getSimilar(Game game) {
         Session session = sessionFactory.getCurrentSession();
 
-        List<Integer> similarGames = session.createQuery("select similarGame.idGame2 from SimilarGame similarGame where similarGame.idGame1 = :id")
+        List<Integer> similarGames = session.createQuery("select similarGame.idGame2 from SimilarGame similarGame where similarGame.idGame1 = :id order by similarGame.similarity")
                 .setInteger("id", game.getId()).list();
 
         List<Game> results = new ArrayList<>();
