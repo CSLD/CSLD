@@ -31,7 +31,7 @@ public class SimilarGame {
         this.similarity = similarity;
     }
 
-    @Column(name="id_game_1")
+    @Column(name="id_game1")
     public Integer getIdGame1() {
         return idGame1;
     }
@@ -40,7 +40,7 @@ public class SimilarGame {
         this.idGame1 = idGame1;
     }
 
-    @Column(name="id_game_2")
+    @Column(name="id_game2")
     public Integer getIdGame2() {
         return idGame2;
     }
