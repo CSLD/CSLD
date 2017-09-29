@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="similar_game")
+@Table(name="similar_games")
 public class SimilarGame {
     private Integer id;
     private Double similarity;
