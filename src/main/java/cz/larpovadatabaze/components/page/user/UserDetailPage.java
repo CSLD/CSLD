@@ -52,20 +52,21 @@ public class UserDetailPage extends CsldBasePage {
 
         @Override
         protected List<Comment> load() {
-            List<Comment> userComments = new ArrayList<Comment>();
+            List<Comment> userComments = new ArrayList<>();
 
             CsldUser thisUser = (CsldUser)getDefaultModelObject();
             List<Comment> allUserComments = thisUser.getCommented();
 
             // Add comments
-            if (UserUtils.isEditor() || (thisUser.equals(UserUtils.getLoggedUser()))) {
+            if (UserUtils.isEditor()) {
                 // Editors see all, users also see all their comments
                 userComments.addAll(allUserComments);
-            }
-            else {
+            } else {
                 // Filter not-hidden comments
                 for(Comment c : allUserComments) {
-                    if (!Boolean.TRUE.equals(c.getHidden())) userComments.add(c);
+                    if (!Boolean.TRUE.equals(c.getHidden())) {
+                        userComments.add(c);
+                    }
                 }
             }
 

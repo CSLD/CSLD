@@ -67,6 +67,12 @@
     <orderEntry type="library" name="Maven: biz.aQute.bnd:bndlib:2.3.0" level="project" />
     <orderEntry type="library" name="Maven: org.osgi:org.osgi.core:4.3.1" level="project" />
     <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.9" level="project" />
+    <orderEntry type="library" name="Maven: org.mnode.ical4j:ical4j:2.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-collections4:4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:2.3.2" level="project" />
+    <orderEntry type="library" name="Maven: biz.aQute.bnd:bndlib:2.3.0" level="project" />
+    <orderEntry type="library" name="Maven: org.osgi:org.osgi.core:4.3.1" level="project" />
+    <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.9" level="project" />
     <orderEntry type="library" name="Maven: org.apache.wicket:wicket-extensions:6.15.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.wicket:wicket-core:6.15.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.wicket:wicket-util:6.15.0" level="project" />
