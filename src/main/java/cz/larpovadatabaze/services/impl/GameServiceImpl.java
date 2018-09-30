@@ -242,6 +242,16 @@ public class GameServiceImpl implements GameService {
             return;
         }
         game.setDeleted(!game.isDeleted());
+        if(game.isDeleted()) {
+            for(Comment comment: game.getComments()){
+                comment.setHidden(true);
+            }
+        } else {
+            for(Comment comment: game.getComments()){
+                comment.setHidden(false);
+            }
+        }
+
         gameDAO.saveOrUpdate(game);
     }
 
