@@ -1,0 +1,11 @@
+--- pg_hba.conf	2016-07-28 07:55:44.000000000 +0000
++++ pg_hba.new	2016-07-28 09:12:07.038792301 +0000
+@@ -87,7 +87,7 @@
+ # TYPE  DATABASE        USER            ADDRESS                 METHOD
+ 
+ # "local" is for Unix domain socket connections only
+-local   all             all                                     peer
++local   all             all                                     trust
+ # IPv4 local connections:
+ host    all             all             127.0.0.1/32            md5
+ # IPv6 local connections:
