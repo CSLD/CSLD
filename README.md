@@ -7,8 +7,11 @@
 
 ### Rozběhnutí dockeru
 1. Nainstalujte si docker z docker.com.
-_Co je docker a proč ho používat: https://www.zdrojak.cz/clanky/proc-pouzivat-docker/_
-_Dokumentace dockeru: https://docs.docker.com/engine/reference/commandline/docker/_
+_Pokud máte docker pro Windows, musíte udělat:_
+1.1. Open Hyper-V Manager (Windows search : “Hyper-V …”)
+1.2. Go to Virtual Switch Manager on the right side.
+1.3. Go to DockerNAT then choose Connection type -> to External network -> #which interface you deside.
+1.4. Hope that help you, too.
 1. Spusťe docker
 1. Pullněte si nejnovější obraz z veřejně přístupného docker hubu:
 `docker pull jbalhar/csld:latest`
@@ -26,6 +29,10 @@ _Vysvětlení jednotlivých parametrů:
 1. Spusťe skript pro inicializaci serveru:
 `_csld init`
 _Co přesně skript dělá se můžete podívat na https://github.com/CSLD/CSLD/blob/master/docker/_csld_
+
+#### Poznámky
+_Co je docker a proč ho používat: https://www.zdrojak.cz/clanky/proc-pouzivat-docker/_
+_Dokumentace dockeru: https://docs.docker.com/engine/reference/commandline/docker/_
 
 ## Running the development environemnt without docker (obsolete)
 
