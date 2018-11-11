@@ -48,7 +48,7 @@
         <tomcatContextFile>${basedir}/src/test/config/tomcat.xml</tomcatContextFile>
         <jettyContextFile>${basedir}/src/test/config/jetty.xml</jettyContextFile>
         <javax.mail.version>1.4.7</javax.mail.version>
-        <postgresql.version>9.4-1211-jdbc41</postgresql.version>
+        <postgresql.version>9.4.1211</postgresql.version>
         <http.client.version>3.1</http.client.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <geotools.version>14.3</geotools.version>
