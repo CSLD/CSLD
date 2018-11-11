@@ -18,11 +18,11 @@ if [ "${1}" == "restart" ] ; then
 fi
 if [ "${1}" == "init" ] ; then
     service postgresql start
-    sudo -u postgres psql -c 'CREATE USER csld WITH PASSWORD \'csld\''
+    sudo -u postgres psql -c "CREATE USER csld WITH PASSWORD 'csld'"
     sudo -u postgres psql -c 'CREATE DATABASE csld WITH OWNER csld'
     rm -rf /opt/csld
-    mkdir /opt/csld/files
     mkdir /opt/csld
+    mkdir /opt/csld/files
     mkdir /opt/csld/www
     mkdir /opt/csld/www/ROOT
     cd /opt/csld
@@ -34,6 +34,7 @@ if [ "${1}" == "init" ] ; then
     mvn package -DskipTests
     mvn -Dflyway.locations=filesystem:sql/migration -Dflyway.url=jdbc:postgresql://localhost:5432/csld -Dflyway.user=csld -Dflyway.password=csld flyway:migrate
     cp -R target/CSLD-1.0/* ../www/ROOT
+    service postgresql stop
     _csld start
 fi
 if [ "${1}" == "update" ] ; then

@@ -3,7 +3,7 @@ FROM phusion/baseimage
 MAINTAINER Jakub Balhar
 
 ENV GIT_USER="${GIT_USER:-360acc8bab3c872b517216a51c1e34cdb40731ce}"
-ENV JAVA_OPTS="${JAVA_OPTS:--server -Dfile.encoding=UTF-8 -Xms1024m -Xmx4096m -XX:PermSize=128m -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:NewSize=1G -XX:+UseParNewGC}"
+ENV JAVA_OPTS="${JAVA_OPTS:--server -Dfile.encoding=UTF-8 -Dprops.path=/opt/csld/www/ROOT/WEB-INF/classes/ -Xms1024m -Xmx4096m -XX:PermSize=128m -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:NewSize=1G -XX:+UseParNewGC}"
 ENV NVM_DIR=/usr/local/nvm
 ENV NODE_VERSION=8.10.0
 ENV NODE_PATH=$NVM_DIR/versions/node/v$NODE_VERSION/lib/node_modules
@@ -56,9 +56,10 @@ RUN wget --quiet --output-document=- https://raw.githubusercontent.com/creationi
 RUN npm install --unsafe-perm -g forever
 
 # Tomcat
-RUN install_clean openjdk-8-jdk tomcat8
+RUN install_clean openjdk-8-jdk tomcat8 maven
 
 COPY ./server.xml /var/lib/tomcat8/conf/server.xml
+COPY ./setenv.sh /usr/share/tomcat8/bin/setenv.sh
 
 # Adminstrators add-ons.
 COPY ./_* /usr/local/bin/
