@@ -1,15 +1,15 @@
 #!/bin/bash
 if [ "${1}" == "start" ] ; then
-    service tomcat8 start
+    service tomcat7 start
     service postgresql start
-    cd /opt/www-node
+    cd /opt/csld/www-node
     forever start index.js
 fi
 if [ "${1}" == "stop" ] ; then
-    service tomcat8 stop
+    service tomcat7 stop
+    kill $(ps aux | grep '[t]omcat7' | awk '{print $2}')
     service postgresql stop
-    cd /opt/www-node
-    forever stop index.js
+    forever stopall
 fi
 if [ "${1}" == "restart" ] ; then
     _csld stop
@@ -35,6 +35,8 @@ if [ "${1}" == "init" ] ; then
     mvn -Dflyway.locations=filesystem:sql/migration -Dflyway.url=jdbc:postgresql://localhost:5432/csld -Dflyway.user=csld -Dflyway.password=csld flyway:migrate
     cp -R target/CSLD-1.0/* ../www/ROOT
     service postgresql stop
+    cd /opt/csld/www-node
+    npm install
     _csld start
 fi
 if [ "${1}" == "update" ] ; then
@@ -55,5 +57,7 @@ if [ "${1}" == "update" ] ; then
     mvn package -DskipTests
     mvn -Dflyway.locations=filesystem:sql/migration -Dflyway.url=jdbc:postgresql://localhost:5432/csld -Dflyway.user=csld -Dflyway.password=csld flyway:migrate
     cp -R target/CSLD-1.0/* ../www/ROOT
+    cd /opt/csld/www-node
+    npm install
     _csld start
 fi

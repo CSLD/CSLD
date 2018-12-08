@@ -16,14 +16,13 @@ Nastartovani kontejneru s pantherem
 
 Jako prvni doporucuji nastarovat pouze kontejner, tak aby zustal bezici na pozadi:
    
-    docker run -it --name csld -p 80:80 jbalhar/csld:latest
+```
+docker run -it --name csld -p 80:80 jbalhar/csld:latest bash
+```   
     
 Parametr "--net host" a "-p 80:80" urcuje jake porty budou do kontejneru otevrene. Pro vyvoj je idealni pouzivat "--net host" protoze otevre vsechny porty ktere jsou v kontejneru dostupne.
 Pro produkci je dobre otevrit pouze nezbytne nutne porty, takze napriklad "-p 80:80" pro otevreni portu 80. Parametr -p je mozne pouzit opakovane.
                     
-Nasledne se pripojime do beziciho kontejneru:
-    
-    docker exec -it csld bash
         
 Spusteni aplikaci
 -----------------

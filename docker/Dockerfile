@@ -9,8 +9,8 @@ ENV NODE_VERSION=8.10.0
 ENV NODE_PATH=$NVM_DIR/versions/node/v$NODE_VERSION/lib/node_modules
 ENV PATH=$PATH:$NVM_DIR/versions/node/v$NODE_VERSION/bin
 ENV GEOSERVER_DATA_DIR=/mnt/volume-panther/geoserver-data
-ENV CATALINA_BASE=/var/lib/tomcat8
-ENV CATALINA_HOME=/usr/share/tomcat8
+ENV CATALINA_BASE=/var/lib/tomcat7
+ENV CATALINA_HOME=/usr/share/tomcat7
 
 # Add repositories.
 RUN install_clean wget software-properties-common
@@ -56,10 +56,10 @@ RUN wget --quiet --output-document=- https://raw.githubusercontent.com/creationi
 RUN npm install --unsafe-perm -g forever
 
 # Tomcat
-RUN install_clean openjdk-8-jdk tomcat8 maven
+RUN install_clean openjdk-8-jdk tomcat7 maven
 
-COPY ./server.xml /var/lib/tomcat8/conf/server.xml
-COPY ./setenv.sh /usr/share/tomcat8/bin/setenv.sh
+COPY ./server.xml /var/lib/tomcat7/conf/server.xml
+COPY ./setenv.sh /usr/share/tomcat7/bin/setenv.sh
 
 # Adminstrators add-ons.
 COPY ./_* /usr/local/bin/
