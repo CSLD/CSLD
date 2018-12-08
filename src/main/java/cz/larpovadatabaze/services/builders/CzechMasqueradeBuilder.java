@@ -77,9 +77,6 @@ public class CzechMasqueradeBuilder{
         persistenceStore.playerOfGame(editor, secondMasquerade);
         persistenceStore.playerOfGame(administrator, secondMasquerade);
 
-        persistenceStore.news(editor, "There is going to be third run of the Masquerade.");
-        persistenceStore.news(administrator, "Hey guys It was nice running the game, but I am done now. Passing this to editor.");
-
         persistenceStore.flush();
     }
 
