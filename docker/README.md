@@ -42,3 +42,12 @@ Pro zastaveni vsech komponent:
 Pro update aplikace na nove verze z repozitaru je pak potreba pustit
 
     _csld update
+    
+Vytvoření nové verze kontejneru
+-------------------------------
+
+```
+docker build -t jbalhar/csld .
+docker login
+docker push jbalhar/csld
+```
