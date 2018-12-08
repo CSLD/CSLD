@@ -42,6 +42,7 @@ fi
 if [ "${1}" == "update" ] ; then
     _csld stop
     sleep 10
+    service postgresql start
     cd /opt/csld/CSLD
     git pull origin master
     cd /opt/csld/fb-larp-events
