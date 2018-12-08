@@ -59,7 +59,7 @@
           <element id="library" level="project" name="Maven: antlr:antlr:2.7.7" />
           <element id="library" level="project" name="Maven: org.jboss:jandex:1.1.0.Final" />
           <element id="library" level="project" name="Maven: hsqldb:hsqldb:1.8.0.7" />
-          <element id="library" level="project" name="Maven: org.postgresql:postgresql:9.4-1211-jdbc41" />
+          <element id="library" level="project" name="Maven: org.postgresql:postgresql:9.4.1211" />
           <element id="library" level="project" name="Maven: com.mortennobel:java-image-scaling:0.8.4" />
           <element id="library" level="project" name="Maven: com.jhlabs:filters:2.0.235" />
           <element id="library" level="project" name="Maven: org.jsoup:jsoup:1.7.2" />
