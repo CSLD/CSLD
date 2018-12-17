@@ -63,6 +63,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
@@ -87,6 +88,9 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     private LabelService labelService;
     @Autowired
     private SessionFactory sessionFactory;
+    @Autowired
+    private Environment env;
+
 
     private static final String DEFAULT_ENCODING = "UTF-8";
     private static ApplicationContext ctx;
@@ -181,9 +185,10 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
             }
         });
 
-        mountPages();
+        String context = env.getProperty("csld.root_path");
+        mountPages(context);
 
-        mountResources();
+        mountResources(context);
 
         if (isDevelopmentMode()) {
             // Turn on containers names when debugging
@@ -218,49 +223,49 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
 
     }
 
-    private void mountPages() {
-        mountPage("/sign-out", SignOutPage.class);
-        mountPage("/sign-in", CsldSignInPage.class);
-        mountPage("/register", CreateUserPage.class);
-        mountPage("/edit-user", UpdateUserPage.class);
+    private void mountPages(String context) {
+	    mountPage(context + "/sign-out", SignOutPage.class);
+        mountPage(context + "/sign-in", CsldSignInPage.class);
+        mountPage(context + "/register", CreateUserPage.class);
+        mountPage(context + "/edit-user", UpdateUserPage.class);
 
-        mountPage("/add-group", CreateOrUpdateGroupPage.class);
-        mountPage("/add-game", CreateOrUpdateGamePage.class);
-        mountPage("/add-author", CreateOrUpdateAuthorPage.class);
+        mountPage(context + "/add-group", CreateOrUpdateGroupPage.class);
+        mountPage(context + "/add-game", CreateOrUpdateGamePage.class);
+        mountPage(context + "/add-author", CreateOrUpdateAuthorPage.class);
 
-        mountPage("/zebricky", ListGamePage.class);
+        mountPage(context + "/zebricky", ListGamePage.class);
 
-        mountPage("/detail-game", GameDetailOld.class);
-        mount(new MountedMapperWithoutPageComponentInfo("/larp/${name}/${id}", GameDetail.class));
-        mount(new MountedMapperWithoutPageComponentInfo("/larp/${name}/${lang}/${id}", GameDetail.class));
-        mountPage("/detail-author", UserDetailPage.class);
-        mountPage("/detail-user", UserDetailPage.class);
-        mountPage("/detail-group", GroupDetail.class);
+        mountPage(context + "/detail-game", GameDetailOld.class);
+        mount(new MountedMapperWithoutPageComponentInfo(context + "/larp/${name}/${id}", GameDetail.class));
+        mount(new MountedMapperWithoutPageComponentInfo(context + "/larp/${name}/${lang}/${id}", GameDetail.class));
+        mountPage(context + "/detail-author", UserDetailPage.class);
+        mountPage(context + "/detail-user", UserDetailPage.class);
+        mountPage(context + "/detail-group", GroupDetail.class);
 
-        mountPage("/calendar", ListEventsPage.class);
-        mountPage("/add-event", CreateOrUpdateEventPage.class);
-        mount(new MountedMapperWithoutPageComponentInfo("/event/${name}/${id}", DetailOfEventPage.class));
+        mountPage(context + "/calendar", ListEventsPage.class);
+        mountPage(context + "/add-event", CreateOrUpdateEventPage.class);
+        mount(new MountedMapperWithoutPageComponentInfo(context + "/event/${name}/${id}", DetailOfEventPage.class));
 
-        mountPage("/search", SearchResultsPage.class);
+        mountPage(context + "/search", SearchResultsPage.class);
 
-        mountPage("/donations", DonationPage.class);
+        mountPage(context + "/donations", DonationPage.class);
 
-        mountPage("/oDatabazi", AboutDatabasePage.class);
-        mountPage("/reset", ResetPassword.class);
-        mountPage("/forgot-password", ForgotPassword.class);
+        mountPage(context + "/oDatabazi", AboutDatabasePage.class);
+        mountPage(context + "/reset", ResetPassword.class);
+        mountPage(context + "/forgot-password", ForgotPassword.class);
 
-        mountPage("/admin", AdministrationPage.class);
-        mountPage("/admin/manage-labels", ManageLabelsPage.class);
-        mountPage("/admin/manage-users", ManageUserRightsPage.class);
+        mountPage(context + "/admin", AdministrationPage.class);
+        mountPage(context + "/admin/manage-labels", ManageLabelsPage.class);
+        mountPage(context + "/admin/manage-users", ManageUserRightsPage.class);
 
-        mountPage("/home", HomePage.class);
-        mountPage("/game-was-deleted", GameWasDeleted.class);
+        mountPage(context + "/home", HomePage.class);
+        mountPage(context + "/game-was-deleted", GameWasDeleted.class);
 
-        mountPage("/error404", Error404Page.class);
-        mountPage("/error500", Error500Page.class);
+        mountPage(context + "/error404", Error404Page.class);
+        mountPage(context + "/error500", Error500Page.class);
 
         if(isDevelopmentMode()) {
-            mountPage("/testDatabase", TestDatabase.class);
+            mountPage(context + "/testDatabase", TestDatabase.class);
         }
 
         ResourceReference icalReference = new ResourceReference("icalReference") {
@@ -270,11 +275,11 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
                 return resource;
             }
         };
-        mountResource("/ical", icalReference);
+        mountResource(context + "/ical", icalReference);
     }
 
-    private void mountResources() {
-        mountResource("/user-icon", csldUserService.getIconReference());
+    private void mountResources(String context) {
+        mountResource(context + "/user-icon", csldUserService.getIconReference());
     }
 
     @Override

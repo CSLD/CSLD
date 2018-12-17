@@ -1,1 +1,0 @@
-insert into csld_label values(12,'fantasy','Štítek fantasy patří k larpům, které se odehrávají ve fikčním světě nebo světě, který je nějakým způsobem spojený s tím reálným.  Typické je pro fantasy využití magie, nadpřirozených bytostí, událostí, technologií, ras a jiných v reálném světě neexistujících jevů.',false, true,1);

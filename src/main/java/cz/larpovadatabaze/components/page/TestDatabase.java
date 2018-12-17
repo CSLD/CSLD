@@ -6,7 +6,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 /**
  * Simple class for creation of test database with necessary data. This data can be also used in tests.
  */
-public class TestDatabase extends CsldBasePage {
+public class TestDatabase extends HomePage {
     @SpringBean
     private CzechMasqueradeBuilder masqueradeBuilder;
 

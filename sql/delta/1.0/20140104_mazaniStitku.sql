@@ -1,5 +1,0 @@
-ALTER TABLE ONLY csld_game_has_label
-DROP CONSTRAINT label_fk;
-
-ALTER TABLE ONLY csld_game_has_label
-ADD CONSTRAINT label_fk FOREIGN KEY (id_label) REFERENCES csld_label(id) MATCH FULL ON UPDATE CASCADE ON DELETE CASCADE;
