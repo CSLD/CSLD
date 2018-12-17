@@ -1,9 +1,6 @@
 package cz.larpovadatabaze.services.builders;
 
-import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Label;
+import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.security.CsldRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,8 +61,13 @@ public class CzechMasqueradeBuilder{
         }
 
         persistenceStore.comment(administrator, firstMasquerade, "I liked it");
-        persistenceStore.comment(editor, secondMasquerade, "There were some flwas but overally likeable game.");
-        persistenceStore.comment(user, secondMasquerade, "My first LARP and it was so freaking awesome.");
+        Comment editorComment = persistenceStore.comment(editor, secondMasquerade, "There were some flwas but overally likeable game.");
+        Comment userComment = persistenceStore.comment(user, secondMasquerade, "My first LARP and it was so freaking awesome.");
+
+        persistenceStore.plusOne(editor, userComment);
+        persistenceStore.plusOne(administrator, userComment);
+
+        persistenceStore.plusOne(editor, editorComment);
 
         persistenceStore.rating(user, secondMasquerade, 9);
         persistenceStore.rating(editor, firstMasquerade, 6);

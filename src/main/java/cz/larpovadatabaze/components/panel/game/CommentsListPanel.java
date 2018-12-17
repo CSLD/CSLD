@@ -5,10 +5,7 @@ import cz.larpovadatabaze.components.common.icons.UserIcon;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.components.page.user.UserDetailPage;
-import cz.larpovadatabaze.entities.Comment;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Rating;
+import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.services.CommentService;
 import cz.larpovadatabaze.services.ImageService;
 import org.apache.wicket.behavior.AttributeAppender;
@@ -88,6 +85,8 @@ public class CommentsListPanel extends Panel {
                 SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy");
                 Date dateOfComment = new Date();
                 dateOfComment.setTime(actualComment.getAdded().getTime());
+                List<PlusOne> pluses = actualComment.getPluses();
+                item.add(new Label("pluses", Model.of(pluses.size())));
 
                 // Hide comment button
                 item.add(new CommentHiddenButton("commentHiddenButton", item.getModel()));

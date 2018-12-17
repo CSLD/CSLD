@@ -3,6 +3,7 @@ package cz.larpovadatabaze.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  *
@@ -116,5 +117,16 @@ public class Comment implements Serializable {
 
     public void setUser(CsldUser user) {
         this.user = user;
+    }
+
+    private List<PlusOne> pluses;
+
+    @OneToMany(mappedBy = "comment")
+    public List<PlusOne> getPluses() {
+        return pluses;
+    }
+
+    public void setPluses(List<PlusOne> pluses) {
+        this.pluses = pluses;
     }
 }
