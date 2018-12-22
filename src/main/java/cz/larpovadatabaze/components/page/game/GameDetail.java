@@ -143,6 +143,7 @@ public class GameDetail extends CsldBasePage {
     /**
      * Model for comments of actual game. (Might get GameModel as constructor parameter to be extra clean, but we use the one stored in the page.)
      * The downside is it does not cache results so getObject() may be costly.
+     * The results are ordered by the Amount of upvotes. In case of draw it is ordered by the most recent ones.
      */
     private class CommentsModel extends LoadableDetachableModel<List<Comment>> {
         @Override
@@ -155,8 +156,7 @@ public class GameDetail extends CsldBasePage {
                 List<Comment> comments = getModel().getObject().getComments() != null ? getModel().getObject().getComments():
                         new ArrayList<>();
                 res.addAll(comments);
-            }
-            else {
+            } else {
                 // Filter
                 Integer thisUserId = null;
                 CsldUser user = UserUtils.getLoggedUser();
@@ -176,10 +176,11 @@ public class GameDetail extends CsldBasePage {
             Set<Comment> unique = new HashSet<>(res);
             res = new ArrayList<>(unique);
 
-            // Sort
-            Collections.sort(res, new Comparator<Comment>() {
-                @Override
-                public int compare(Comment o1, Comment o2) {
+            // Sort primarily by the amount of upvotes. Secondarily by the most recent.
+            res.sort((o1, o2) -> {
+                if (o1.getPluses().size() != o2.getPluses().size()) {
+                    return o2.getPluses().size() - o1.getPluses().size();
+                } else {
                     return -o1.getAdded().compareTo(o2.getAdded());
                 }
             });

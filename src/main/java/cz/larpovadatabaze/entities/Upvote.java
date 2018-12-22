@@ -2,11 +2,12 @@ package cz.larpovadatabaze.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
 
-@Table(name = "csld_plus_one")
+@Table(name = "csld_comment_upvote")
 @Entity
-public class PlusOne implements Serializable {
-    public PlusOne() {}
+public class Upvote implements Serializable {
+    public Upvote() {}
 
     private int id;
 
@@ -20,6 +21,18 @@ public class PlusOne implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    private Timestamp added;
+
+    @Column(name = "added", nullable = false)
+    @Basic
+    public Timestamp getAdded() {
+        return added;
+    }
+
+    public void setAdded(Timestamp added) {
+        this.added = added;
     }
 
     private Comment comment;

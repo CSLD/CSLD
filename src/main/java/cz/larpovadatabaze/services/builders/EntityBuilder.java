@@ -128,13 +128,13 @@ public class EntityBuilder {
         return comment;
     }
 
-    public PlusOne plusOne(CsldUser user, Comment comment) {
-        PlusOne plusOne = new PlusOne();
-        plusOne.setComment(comment);
-        plusOne.setUser(user);
+    public Upvote plusOne(CsldUser user, Comment comment) {
+        Upvote upvote = new Upvote();
+        upvote.setComment(comment);
+        upvote.setUser(user);
 
-        save(plusOne);
-        return plusOne;
+        save(upvote);
+        return upvote;
     }
 
     public UserPlayedGame playerOfGame(CsldUser user, Game game) {

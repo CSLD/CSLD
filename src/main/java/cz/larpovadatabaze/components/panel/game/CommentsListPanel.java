@@ -1,13 +1,16 @@
 package cz.larpovadatabaze.components.panel.game;
 
 import cz.larpovadatabaze.components.common.CommentHiddenButton;
+import cz.larpovadatabaze.components.common.UpvoteButton;
 import cz.larpovadatabaze.components.common.icons.UserIcon;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.components.page.user.UserDetailPage;
 import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.services.CommentService;
-import cz.larpovadatabaze.services.ImageService;
+import cz.larpovadatabaze.services.UpvoteService;
+import cz.larpovadatabaze.services.impl.SqlUpvoteService;
+import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -32,11 +35,53 @@ import java.util.List;
  */
 public class CommentsListPanel extends Panel {
     @SpringBean
-    CommentService commentService;
+    private CommentService commentService;
+
+    @SpringBean
+    private UpvoteService upvotes;
 
     private final IModel<List<Comment>> comments;
 
     private final boolean showGame;
+
+    /**
+     * Model to be used for handling the Upvotes.
+     */
+    private final class UpvoteModel implements IModel<Integer> {
+        /**
+         * Cached comment
+         */
+        private Comment actualComment;
+
+        private UpvoteModel(Comment comment) {
+            actualComment = comment;
+        }
+
+        private CsldUser getUser() {
+            return UserUtils.getLoggedUser();
+        }
+
+        @Override
+        public Integer getObject() {
+            return upvotes.forUserAndComment(getUser(), actualComment).size();
+        }
+
+        @Override
+        public void setObject(Integer amountOfVotes) {
+            if(amountOfVotes == null) {
+                upvotes.downvote(getUser(), actualComment);
+            } else {
+                for (int i = 0; i < amountOfVotes; i++) {
+                    upvotes.upvote(getUser(), actualComment);
+                }
+            }
+        }
+
+        @Override
+        public void detach() {
+            actualComment = null;
+        }
+    }
 
     /**
      * User in the list view, always gets comment from DB
@@ -85,8 +130,9 @@ public class CommentsListPanel extends Panel {
                 SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy");
                 Date dateOfComment = new Date();
                 dateOfComment.setTime(actualComment.getAdded().getTime());
-                List<PlusOne> pluses = actualComment.getPluses();
+                List<Upvote> pluses = actualComment.getPluses();
                 item.add(new Label("pluses", Model.of(pluses.size())));
+                item.add(new UpvoteButton("upvote", new UpvoteModel(actualComment)));
 
                 // Hide comment button
                 item.add(new CommentHiddenButton("commentHiddenButton", item.getModel()));

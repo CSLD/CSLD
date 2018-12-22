@@ -119,14 +119,14 @@ public class Comment implements Serializable {
         this.user = user;
     }
 
-    private List<PlusOne> pluses;
+    private List<Upvote> pluses;
 
     @OneToMany(mappedBy = "comment")
-    public List<PlusOne> getPluses() {
+    public List<Upvote> getPluses() {
         return pluses;
     }
 
-    public void setPluses(List<PlusOne> pluses) {
+    public void setPluses(List<Upvote> pluses) {
         this.pluses = pluses;
     }
 }
