@@ -74,9 +74,6 @@ public class GameDetailPanel extends AbstractCsldPanel<Game> {
         photoAuthor.setVisible(StringUtils.isNotBlank(game.getPhotoAuthor()));
         add(photoAuthor);
 
-        // Language
-        add(new Label("lang"));
-
         // Authors
         List<CsldUser> authors = game.getAuthors();
         ListView<CsldUser> authorsList = new ListView<CsldUser>("authors",authors) {
