@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.components.common;
 
+import org.apache.wicket.markup.html.basic.Label;
 import cz.larpovadatabaze.entities.Upvote;
 import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -15,8 +16,10 @@ import org.apache.wicket.model.IModel;
  * The non highlighted form means that the current user has the possibility to add +1 to specific item.
  */
 public class UpvoteButton extends AbstractCsldPanel<Integer> {
-    public UpvoteButton(String id, IModel<Integer> model) {
+    public UpvoteButton(String id, IModel<Integer> model, Label pluses) {
         super(id, model);
+
+        this.pluses = pluses;
     }
 
     // There is the linkage to the state. There is something wrong.
@@ -41,6 +44,7 @@ public class UpvoteButton extends AbstractCsldPanel<Integer> {
                 }
 
                 target.add(this);
+                target.add(this.pluses);
             }
         };
         button.setOutputMarkupId(true);

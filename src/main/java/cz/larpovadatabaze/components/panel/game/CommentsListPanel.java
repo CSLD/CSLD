@@ -131,8 +131,10 @@ public class CommentsListPanel extends Panel {
                 Date dateOfComment = new Date();
                 dateOfComment.setTime(actualComment.getAdded().getTime());
                 List<Upvote> pluses = actualComment.getPluses();
-                item.add(new Label("pluses", Model.of(pluses.size())));
-                item.add(new UpvoteButton("upvote", new UpvoteModel(actualComment)));
+
+                Label pluses = new Label("pluses", Model.of(pluses.size()));
+                item.add(pluses);
+                item.add(new UpvoteButton("upvote", new UpvoteModel(actualComment), pluses));
 
                 // Hide comment button
                 item.add(new CommentHiddenButton("commentHiddenButton", item.getModel()));
