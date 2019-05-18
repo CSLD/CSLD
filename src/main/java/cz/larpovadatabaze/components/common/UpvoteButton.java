@@ -18,8 +18,6 @@ import org.apache.wicket.model.IModel;
 public class UpvoteButton extends AbstractCsldPanel<Integer> {
     public UpvoteButton(String id, IModel<Integer> model) {
         super(id, model);
-
-        this.pluses = pluses;
     }
 
     // There is the linkage to the state. There is something wrong.
