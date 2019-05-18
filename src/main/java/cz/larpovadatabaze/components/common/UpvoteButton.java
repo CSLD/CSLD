@@ -16,7 +16,7 @@ import org.apache.wicket.model.IModel;
  * The non highlighted form means that the current user has the possibility to add +1 to specific item.
  */
 public class UpvoteButton extends AbstractCsldPanel<Integer> {
-    public UpvoteButton(String id, IModel<Integer> model, Label pluses) {
+    public UpvoteButton(String id, IModel<Integer> model) {
         super(id, model);
 
         this.pluses = pluses;
@@ -44,7 +44,6 @@ public class UpvoteButton extends AbstractCsldPanel<Integer> {
                 }
 
                 target.add(this);
-                target.add(this.pluses);
             }
         };
         button.setOutputMarkupId(true);

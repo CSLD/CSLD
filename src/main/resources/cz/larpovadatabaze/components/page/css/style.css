@@ -150,6 +150,7 @@ img.user-picture {
 }
 
 .comment-plus-one {
+    display: none;
 }
 
 .game-meta ul {
