@@ -237,7 +237,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
 
         mountPage(context + "/detail-game", GameDetailOld.class);
         mount(new MountedMapperWithoutPageComponentInfo(context + "/larp/${name}/${id}", GameDetail.class));
-        mount(new MountedMapperWithoutPageComponentInfo(context + "/larp/${name}/${lang}/${id}", GameDetail.class));
+        mount(new MountedMapperWithoutPageComponentInfo(context + "/larp/${name}/cs/${id}", GameDetail.class));
         mountPage(context + "/detail-author", UserDetailPage.class);
         mountPage(context + "/detail-user", UserDetailPage.class);
         mountPage(context + "/detail-group", GroupDetail.class);
