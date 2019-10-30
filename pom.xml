@@ -43,7 +43,7 @@
         <tomcat.version>7</tomcat.version>
         <hibernate.version>4.3.5.Final</hibernate.version>
         <hibernate.search.version>4.5.1.Final</hibernate.search.version>
-        <spring.version>4.2.0.RELEASE</spring.version>
+        <spring.version>5.2.0.RELEASE</spring.version>
         <hsqldb.version>1.8.0.7</hsqldb.version>
         <tomcatContextFile>${basedir}/src/test/config/tomcat.xml</tomcatContextFile>
         <jettyContextFile>${basedir}/src/test/config/jetty.xml</jettyContextFile>
