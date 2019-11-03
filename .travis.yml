@@ -1,2 +1,5 @@
 language: java
 jdk: oraclejdk12
+
+script:
+  - mvn clean install -B
