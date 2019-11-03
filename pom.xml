@@ -5,8 +5,9 @@
     <groupId>cz.larpovadatabaze</groupId>
     <artifactId>CSLD</artifactId>
     <packaging>war</packaging>
-    <version>1.0</version>
+    <version>1.0.0</version>
     <name>ČSLD</name>
+
     <repositories>
         <repository>
             <id>jboss-repo</id>
@@ -429,14 +430,6 @@
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>4.0</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.1.0</version>
-                <configuration>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
             </plugin>
         </plugins>
     </build>
