@@ -132,6 +132,7 @@ public class EntityBuilder {
         Upvote upvote = new Upvote();
         upvote.setComment(comment);
         upvote.setUser(user);
+        upvote.setAdded(new Timestamp(new java.util.Date().getTime()));
 
         save(upvote);
         return upvote;

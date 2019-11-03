@@ -80,7 +80,7 @@ public class Event implements cz.larpovadatabaze.api.Entity {
     private CsldUser addedBy;
 
     // Constructor without parameters must be there for ORM usage.
-    protected Event() {
+    public Event() {
     }
 
     /**
@@ -94,6 +94,10 @@ public class Event implements cz.larpovadatabaze.api.Entity {
 
     public Event(List<Label> labels) {
         this.labels = labels;
+    }
+
+    public Event(Location location) {
+        this.location = location;
     }
 
     public Event(int id, List<Label> labels) {
