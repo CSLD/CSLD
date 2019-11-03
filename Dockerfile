@@ -27,17 +27,17 @@ RUN apt-get update --yes \
 # Postgresql with PostGIS.
 RUN install_clean postgresql-10-postgis-2.4 postgresql-10-postgis-2.4-scripts
 
-COPY ./pg_hba.patch /etc/postgresql/10/main/
+COPY docker/pg_hba.patch /etc/postgresql/10/main/
 RUN cd /etc/postgresql/10/main/ \
     && patch pg_hba.conf pg_hba.patch
 
 # Apache.
 RUN install_clean apache2 libapache2-mod-jk
 
-COPY ./jk.conf /etc/apache2/mods-available/jk.conf
+COPY docker/jk.conf /etc/apache2/mods-available/jk.conf
 RUN a2enmod jk
-COPY ./000-default.conf /etc/apache2/sites-available/000-default.conf
-COPY ./workers.properties /etc/apache2/workers.properties
+COPY docker/000-default.conf /etc/apache2/sites-available/000-default.conf
+COPY docker/workers.properties /etc/apache2/workers.properties
 RUN a2enmod proxy_http \
     && a2enmod ssl \
     && a2enmod deflate \
@@ -58,8 +58,8 @@ RUN npm install --unsafe-perm -g forever
 # Tomcat
 RUN install_clean openjdk-8-jdk tomcat7 maven
 
-COPY ./server.xml /var/lib/tomcat7/conf/server.xml
-COPY ./setenv.sh /usr/share/tomcat7/bin/setenv.sh
+COPY docker/server.xml /var/lib/tomcat7/conf/server.xml
+COPY docker/setenv.sh /usr/share/tomcat7/bin/setenv.sh
 
 # Adminstrators add-ons.
 COPY ./_* /usr/local/bin/

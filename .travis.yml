@@ -1,5 +1,19 @@
 language: java
 jdk: oraclejdk12
 
+sudo: required
+
+services:
+  - docker
+
 script:
   - mvn clean install -B
+
+before_install:
+  - docker build -t jbalhar/csld .
+
+deploy:
+  provider: script
+  script: bash docker_push
+  on:
+    branch: master
