@@ -44,7 +44,7 @@ public class Person implements Serializable, IAutoCompletable {
 
     private String email;
 
-    @Column(name = "email", nullable = false, insertable = true, updatable = true, length = 2147483647, precision = 0)
+    @Column(name = "email", nullable = false, insertable = true, updatable = true, unique = true, length = 2147483647, precision = 0)
     @Basic
     public String getEmail() {
         return email;

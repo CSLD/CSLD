@@ -36,7 +36,7 @@ public class SearchBoxPanel extends Panel {
     /**
      * After how many seconds after keyup search-on-type starts
      */
-    private static final long TIMEOUT_MS = 100;
+    private static final long TIMEOUT_MS = 300;
 
     /**
      * Minimum length of query for search-on-type
