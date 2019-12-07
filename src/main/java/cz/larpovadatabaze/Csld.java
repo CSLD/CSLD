@@ -195,9 +195,15 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
             getDebugSettings().setOutputMarkupContainerClassName(true);
         }
 
-        // Load information about donations and setup timer.
-        new BankAccount(sessionFactory).start();
-        new Thread(() -> new LarpCzImport(sessionFactory).importEvents()).start();
+        // Load information about donations and setup timer. Respect the configuration to ignore this in the context
+        // of the testing.
+        if(env.getProperty("csld.integrate_bank", Boolean.class)) {
+            new BankAccount(sessionFactory).start();
+        }
+
+        if(env.getProperty("csld.integrate_calendar", Boolean.class)) {
+            new Thread(() -> new LarpCzImport(sessionFactory).importEvents()).start();
+        }
 	}
 
     @Override
