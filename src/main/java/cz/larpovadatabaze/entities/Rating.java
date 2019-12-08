@@ -17,7 +17,7 @@ public class Rating implements IGameWithRating, Serializable {
     @Column(name="id")
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
-    @SequenceGenerator(sequenceName = "csld_rating_id_seq", name="id_gen")
+    @SequenceGenerator(sequenceName = "csld_rating_id_seq", name="id_gen", allocationSize = 1)
     public int getId() {
         return id;
     }

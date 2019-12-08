@@ -22,7 +22,7 @@ public class EmailAuthentication implements Serializable {
     )
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
-    @SequenceGenerator(sequenceName = "csld_email_authentication_id_seq", name="id_gen")
+    @SequenceGenerator(sequenceName = "csld_email_authentication_id_seq", name="id_gen", allocationSize = 1)
     public Integer getId() {
         return id;
     }

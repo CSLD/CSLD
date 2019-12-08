@@ -19,7 +19,7 @@ public class Photo implements Serializable, IEntityWithImage {
     @Column(name = "id", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
-    @SequenceGenerator(sequenceName = "csld_photo_id_seq", name="id_gen")
+    @SequenceGenerator(sequenceName = "csld_photo_id_seq", name="id_gen", allocationSize = 1)
     public Integer getId() {
         return id;
     }

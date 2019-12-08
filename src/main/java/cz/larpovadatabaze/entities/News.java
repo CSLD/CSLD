@@ -18,7 +18,7 @@ public class News implements Serializable {
     )
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
-    @SequenceGenerator(sequenceName = "csld_news_id_seq", name="id_gen")
+    @SequenceGenerator(sequenceName = "csld_news_id_seq", name="id_gen", allocationSize = 1)
     private Integer id;
     @Column(name = "text")
     @Basic
