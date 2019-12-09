@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.components.page;
 
-import com.googlecode.wicket.jquery.core.resource.JQueryUIResourceReference;
+import com.googlecode.wicket.jquery.ui.resource.JQueryUIResourceReference;
 import cz.larpovadatabaze.api.Toggles;
 import cz.larpovadatabaze.calendar.component.page.ListEventsPage;
 import cz.larpovadatabaze.components.page.about.AboutDatabasePage;
@@ -10,6 +10,7 @@ import cz.larpovadatabaze.components.panel.search.SearchBoxPanel;
 import cz.larpovadatabaze.components.panel.user.AdminPanel;
 import cz.larpovadatabaze.components.panel.user.LoggedBoxPanel;
 import cz.larpovadatabaze.components.panel.user.LoginBoxPanel;
+import cz.larpovadatabaze.donations.components.DonationPage;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.utils.UserUtils;
@@ -31,7 +32,6 @@ import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.core.env.Environment;
-import wicket.contrib.tinymce.settings.TinyMCESettings;
 
 import java.util.Locale;
 
@@ -49,7 +49,7 @@ public abstract class CsldBasePage extends WebPage {
      * @return Model for HTML page title
      */
     protected IModel<String> getPageTitleModel() {
-        return new StringResourceModel("larpDatabaseTitle", null);
+        return new StringResourceModel("larpDatabaseTitle");
     }
 
     protected IModel<String> getPreviewImageUrlModel() {
@@ -96,6 +96,7 @@ public abstract class CsldBasePage extends WebPage {
                         CsldAuthenticatedWebSession.get().isAtLeastEditor());
             }
         });
+        add(new BookmarkablePageLink<CsldBasePage>("donations", DonationPage.class));
         add(new BookmarkablePageLink<CsldBasePage>("about", AboutDatabasePage.class));
         add(new AdminPanel("adminPanel"));
 
@@ -132,7 +133,6 @@ public abstract class CsldBasePage extends WebPage {
     public void renderHead(IHeaderResponse response) {
         response.render(JavaScriptHeaderItem.forReference(getApplication().getJavaScriptLibrarySettings()
                 .getJQueryReference()));
-        response.render(JavaScriptHeaderItem.forReference(TinyMCESettings.javaScriptReference()));
 
         response.render(JavaScriptHeaderItem.forReference(JQueryUIResourceReference.get()));
 //        response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class,"js/jquery.slides.min.js"))); // XXX - is this still needed?

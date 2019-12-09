@@ -361,14 +361,14 @@ public class GameDetail extends CsldBasePage {
         DeleteGamePanel deleteGamePanel = new DeleteGamePanel("deleteGamePanel", getModel().getObject().getId());
         add(deleteGamePanel);
 
-        add(new GameListPanel("similarGames", new LoadableDetachableModel<List<? extends Game>>() {
+        add(new GameListPanel("similarGames", new LoadableDetachableModel<List<Game>>() {
             @Override
             protected List<Game> load() {
                 return gameService.getSimilar(getModel().getObject());
             }
         }));
 
-        add(new GameListPanel("gamesOfAuthors", new LoadableDetachableModel<List<? extends Game>>() {
+        add(new GameListPanel("gamesOfAuthors", new LoadableDetachableModel<List<Game>>() {
             @Override
             protected List<Game> load() {
                 return gameService.gamesOfAuthors(getModel().getObject());

@@ -92,9 +92,9 @@ public class SearchBoxPanel extends Panel {
         gameSearchProvider = new GameSearchProvider();
         gameSearchProvider.setMaxResults(MAX_RESULTS_IN_DROPDOWN);
 
-        searchResultWrapper.add(new ListView<Game>("games", new AbstractReadOnlyModel<List<? extends Game>>() {
+        searchResultWrapper.add(new ListView<Game>("games", new AbstractReadOnlyModel<List<Game>>() {
             @Override
-            public List<? extends Game> getObject() {
+            public List<Game> getObject() {
                 return gameSearchProvider.getGameList();
             }
         }) {

@@ -3,7 +3,7 @@ package cz.larpovadatabaze.calendar.component.panel;
 import com.googlecode.wicket.jquery.core.Options;
 import com.googlecode.wicket.jquery.ui.form.datepicker.DatePicker;
 import cz.larpovadatabaze.api.ValidatableForm;
-import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
+
 import cz.larpovadatabaze.calendar.Location;
 import cz.larpovadatabaze.calendar.component.common.TimeTextField;
 import cz.larpovadatabaze.calendar.component.page.DetailOfEventPage;
@@ -45,7 +45,6 @@ import org.wicketstuff.gmap.api.GLatLng;
 import org.wicketstuff.gmap.api.GMarker;
 import org.wicketstuff.gmap.api.GMarkerOptions;
 import org.wicketstuff.gmap.event.ClickListener;
-import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 import java.util.*;
 
@@ -177,7 +176,6 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
         createEvent.add(descriptionWrapper);
         description = (TextArea) new TextArea<String>("description").setRequired(true);
         description.setOutputMarkupId(true);
-        description.add(new CSLDTinyMceBehavior());
         descriptionWrapper.add(description);
         descriptionWrapper.add(new CsldFeedbackMessageLabel("descriptionFeedback", description, descriptionWrapper, "form.event.descriptionHint"));
 
@@ -316,8 +314,6 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
                 }
             }
         };
-
-        createEvent.add(submit.add(new TinyMceAjaxSubmitModifier()));
     }
 
     private void addMap(Form container, Location location){
@@ -386,13 +382,13 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
             protected void onEvent(AjaxRequestTarget target) {
                 handleModalOpen(createGameModal, target);
             }
-        }).add(new TinyMceAjaxSubmitModifier()));
+        }));
         createEvent.add(new AjaxButton("createGameSpecButton"){}.setOutputMarkupId(true).add(new AjaxEventBehavior("click") {
             @Override
             protected void onEvent(AjaxRequestTarget target) {
                 handleModalOpen(createGameModal, target);
             }
-        }).add(new TinyMceAjaxSubmitModifier()));
+        }));
     }
 
     private void handleModalOpen(ModalWindow createGameModal, AjaxRequestTarget target) {

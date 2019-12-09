@@ -63,7 +63,7 @@ public class ChooseLabelsPanel extends FormComponentPanel<List<cz.larpovadatabaz
 
     private class SimpleListViewer extends ListView<cz.larpovadatabaze.entities.Label> {
         public SimpleListViewer(String id, List<? extends cz.larpovadatabaze.entities.Label> list) {
-            super(id, list);
+            super(id, (List<cz.larpovadatabaze.entities.Label>) list);
         }
 
         @Override
@@ -80,7 +80,7 @@ public class ChooseLabelsPanel extends FormComponentPanel<List<cz.larpovadatabaz
             wrapper.add(new CheckBox("checkbox", new Model<Boolean>(ChooseLabelsPanel.this.getModelObject().contains(ourLabel)))
             {
                 @Override
-                protected void convertInput() {
+                public void convertInput() {
                     super.convertInput();
 
                     if (Boolean.TRUE.equals(getConvertedInput())) {
@@ -116,7 +116,7 @@ public class ChooseLabelsPanel extends FormComponentPanel<List<cz.larpovadatabaz
     }
 
     @Override
-    protected void convertInput() {
+    public void convertInput() {
         // Set newly collected label list
         List<cz.larpovadatabaze.entities.Label> newLabelList = new ArrayList<cz.larpovadatabaze.entities.Label>(newLabelSet);
         setConvertedInput(newLabelList);

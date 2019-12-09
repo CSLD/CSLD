@@ -22,9 +22,9 @@ import java.util.List;
  */
 public class RatingsListPanel extends Panel {
 
-    private final IModel<List<? extends IGameWithRating>> model;
+    private final IModel<List<IGameWithRating>> model;
 
-    public RatingsListPanel(String id, IModel<List<? extends IGameWithRating>> model) {
+    public RatingsListPanel(String id, IModel<List<IGameWithRating>> model) {
         super(id);
         this.model = model;
     }

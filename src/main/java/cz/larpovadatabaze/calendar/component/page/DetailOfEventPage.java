@@ -124,7 +124,7 @@ public class DetailOfEventPage extends CsldBasePage {
 
         add(map);
 
-        add(new GameListPanel("associatedGames", new LoadableDetachableModel<List<? extends Game>>() {
+        add(new GameListPanel("associatedGames", new LoadableDetachableModel<List<Game>>() {
             @Override
             protected List<Game> load() {
                 return ((Event) getDefaultModel().getObject()).getGames();

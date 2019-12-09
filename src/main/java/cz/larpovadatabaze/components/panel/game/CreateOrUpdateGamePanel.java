@@ -1,7 +1,6 @@
 package cz.larpovadatabaze.components.panel.game;
 
 import cz.larpovadatabaze.api.ValidatableForm;
-import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
 import cz.larpovadatabaze.components.common.JSPingBehavior;
@@ -33,7 +32,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Bytes;
-import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 import java.util.Collection;
 import java.util.List;
@@ -118,7 +116,6 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         WebMarkupContainer descriptionWrapper = new WebMarkupContainer("descriptionWrapper");
         createOrUpdateGame.add(descriptionWrapper);
         TextArea description = (TextArea) new TextArea<String>("description").setRequired(true);
-        description.add(new CSLDTinyMceBehavior());
         descriptionWrapper.add(description);
         descriptionWrapper.add(new CsldFeedbackMessageLabel("descriptionFeedback", description, descriptionWrapper, "form.game.descriptionHint"));
 
@@ -270,7 +267,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
                     target.add(getParent());
                 }
             }
-        }.add(new TinyMceAjaxSubmitModifier()));
+        });
 
         add(createOrUpdateGame);
 

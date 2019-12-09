@@ -51,7 +51,7 @@ public class LastCommentsPanel extends Panel {
     private static int EXPANDED_LAST_COMMENTS = N_COLUMNS*5;
 
     private class CommentsView extends ListView<Comment> {
-        public CommentsView(String id, List<? extends Comment> list) {
+        public CommentsView(String id, List<Comment> list) {
             super(id, list);
         }
 

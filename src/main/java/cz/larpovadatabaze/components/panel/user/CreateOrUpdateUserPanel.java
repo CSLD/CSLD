@@ -28,7 +28,6 @@ import org.apache.wicket.model.*;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
-import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,8 +82,8 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
         createOrUpdateUser.setMultiPart(true);
         createOrUpdateUser.setOutputMarkupId(true);
 
-        createOrUpdateUser.add(new Label("header", new StringResourceModel(resourceBase+".header", null)));
-        createOrUpdateUser.add(new Label("subheader", new StringResourceModel(resourceBase+".subheader", null)));
+        createOrUpdateUser.add(new Label("header", new StringResourceModel(resourceBase+".header")));
+        createOrUpdateUser.add(new Label("subheader", new StringResourceModel(resourceBase+".subheader")));
 
         EmailTextField email = new EmailTextField("person.email");
         email.setRequired(true);
@@ -136,7 +135,7 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
          */
 
 
-        createOrUpdateUser.add(new AjaxButton("submit", new StringResourceModel(resourceBase+".submit", null)){
+        createOrUpdateUser.add(new AjaxButton("submit", new StringResourceModel(resourceBase+".submit")){
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 super.onSubmit(target, form);
@@ -159,7 +158,7 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
                     target.add(getParent());
                 }
             }
-        }.add(new TinyMceAjaxSubmitModifier()));
+        });
         createOrUpdateUser.add(new EqualPasswordInputValidator(password, passwordAgain));
 
         add(createOrUpdateUser);

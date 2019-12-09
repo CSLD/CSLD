@@ -39,7 +39,7 @@ public class UploadCoverImagePanel extends FormComponentPanel<Image> {
     }
 
     @Override
-    protected void convertInput() {
+    public void convertInput() {
         super.convertInput();
         if(baseImage == null) {
             this.baseImage = getModel().getObject();

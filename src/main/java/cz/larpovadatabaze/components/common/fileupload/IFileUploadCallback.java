@@ -1,7 +1,7 @@
 package cz.larpovadatabaze.components.common.fileupload;
 
+import org.apache.commons.fileupload.FileItem;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.util.upload.FileItem;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -22,7 +22,7 @@ public interface IFileUploadCallback extends Serializable {
      *
      * @param fileItems Uploaded files
      */
-    public void filesUploaded(List<FileItem> fileItems) throws IOException;
+    void filesUploaded(List<FileItem> fileItems) throws IOException;
 
     /**
      * Called when file upload is done and action should be taken to
@@ -30,5 +30,5 @@ public interface IFileUploadCallback extends Serializable {
      *
      * @param target Ajax request target
      */
-    public void fileUploadDone(AjaxRequestTarget target);
+    void fileUploadDone(AjaxRequestTarget target);
 }

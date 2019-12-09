@@ -5,6 +5,7 @@ import org.apache.wicket.markup.head.JavaScriptReferenceHeaderItem;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Reference to file upload UI javascript
@@ -24,7 +25,7 @@ public class FileUploadUIJavaScriptReference extends JavaScriptResourceReference
     }
 
     @Override
-    public Iterable<? extends HeaderItem> getDependencies() {
+    public List<HeaderItem> getDependencies() {
         return Arrays.asList(JavaScriptReferenceHeaderItem.forReference(JQueryFileUploadJavaScriptReference.get()));
     }
 }
