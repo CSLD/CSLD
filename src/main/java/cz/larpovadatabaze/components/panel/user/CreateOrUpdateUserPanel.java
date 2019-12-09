@@ -137,8 +137,8 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
 
         createOrUpdateUser.add(new AjaxButton("submit", new StringResourceModel(resourceBase+".submit")){
             @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                super.onSubmit(target, form);
+            protected void onSubmit(AjaxRequestTarget target) {
+                super.onSubmit(target);
 
                 if(createOrUpdateUser.isValid()){
                     CsldUser user = createOrUpdateUser.getModelObject();
@@ -146,14 +146,14 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
                         if(!UserUtils.isSignedIn()){
                             CsldAuthenticatedWebSession.get().signIn(user.getPerson().getEmail(), password.getConvertedInput());
                         }
-                        onCsldAction(target, form);
+                        onCsldAction(target, user);
                     }
                 }
             }
 
             @Override
-            protected void onError(AjaxRequestTarget target, Form<?> form) {
-                super.onError(target, form);
+            protected void onError(AjaxRequestTarget target) {
+                super.onError(target);
                 if(!createOrUpdateUser.isValid()){
                     target.add(getParent());
                 }
@@ -186,7 +186,7 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
         if(user.getDefaultLang() == null) {
             user.setDefaultLang(Session.get().getLocale().getLanguage());
         }
-        if (uploads != null) {
+        if (uploads != null && uploads.size() > 0) {
             for (FileUpload upload : uploads) {
                 String filePath = fileService.saveImageFileAndReturnPath(upload, imageResizingStrategyFactoryService.getCuttingSquareStrategy(CsldUserService.USER_IMAGE_SIZE, CsldUserService.USER_IMAGE_LEFTTOP_PERCENT)).path;
                 try
@@ -232,5 +232,5 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
         }
     }
 
-    protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}
+    protected void onCsldAction(AjaxRequestTarget target, Object object){}
 }

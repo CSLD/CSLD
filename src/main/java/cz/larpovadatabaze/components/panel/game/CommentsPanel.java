@@ -23,6 +23,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 /**
  * This panel allows user to Comment given game
@@ -111,6 +112,10 @@ public class CommentsPanel extends Panel {
                         actualComment.setAdded(new Timestamp(System.currentTimeMillis()));
                     }
 
+                    if(actualComment.getPluses() == null) {
+                        actualComment.setPluses(new ArrayList<>());
+                    }
+
                     commentService.saveOrUpdate(actualComment);
                 }
             }
@@ -147,7 +152,7 @@ public class CommentsPanel extends Panel {
 
             // Wysiwyg // Replacement for TinyMCE
             DefaultWysiwygToolbar toolbar = new DefaultWysiwygToolbar("toolbar");
-            final WysiwygEditor editor = new WysiwygEditor("wysiwyg", model, toolbar);
+            final WysiwygEditor editor = new WysiwygEditor("textOfComment", model, toolbar);
 
             final FeedbackPanel feedback = new JQueryFeedbackPanel("feedback");
             commentForm.add(feedback);
@@ -155,7 +160,7 @@ public class CommentsPanel extends Panel {
 
             AjaxButton addComment = new AjaxButton("addComment") {
                 @Override
-                protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                protected void onSubmit(AjaxRequestTarget target) {
                     // Reload game
                     gameModel.detach();
 
@@ -173,6 +178,8 @@ public class CommentsPanel extends Panel {
     }
 
     protected void onConfigure() {
+        super.onConfigure();
+
         setVisibilityAllowed(CsldAuthenticatedWebSession.get().isSignedIn());
     }
 

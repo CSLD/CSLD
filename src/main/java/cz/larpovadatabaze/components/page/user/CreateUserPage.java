@@ -31,11 +31,11 @@ public class CreateUserPage extends CsldBasePage {
 
         add(new CreateOrUpdateUserPanel("createOrUpdateUser", csldUser){
             @Override
-            protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
-                super.onCsldAction(target, form);
+            protected void onCsldAction(AjaxRequestTarget target, Object object) {
+                super.onCsldAction(target, object);
 
                 if(!isNew) {
-                    CsldUser user = (CsldUser) form.getModelObject();
+                    CsldUser user = (CsldUser) object;
                     PageParameters params = new PageParameters();
                     params.add("id", user.getId());
 

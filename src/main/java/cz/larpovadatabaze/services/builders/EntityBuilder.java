@@ -147,16 +147,6 @@ public class EntityBuilder {
         return playerOfGame;
     }
 
-    public News news(CsldUser editor, String text) {
-        News news = new News();
-        news.setAuthor(editor);
-        news.setText(text);
-        news.setLang("cs");
-        news.setAdded(Timestamp.from(Instant.now()));
-
-        return null;
-    }
-
     public void flush() {
         persistenceStore.getCurrentSession().flush();
     }

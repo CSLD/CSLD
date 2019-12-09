@@ -89,7 +89,8 @@ public class GameDetail extends CsldBasePage {
                 addOrReplaceTabContentPanel();
 
                 // Redraw
-                RequestCycle.get().find(AjaxRequestTarget.class).add(tabContent);
+                Optional<AjaxRequestTarget> optionalArt = RequestCycle.get().find(AjaxRequestTarget.class);
+                optionalArt.ifPresent(ajaxRequestTarget -> ajaxRequestTarget.add(tabContent));
             }
         }
 
@@ -426,7 +427,7 @@ public class GameDetail extends CsldBasePage {
         // Add button
         authorRatePanel.add(new AjaxButton("authorRate", new ResourceModel("Rating.author.button"), authorRatePanel) {
             @Override
-            protected void onSubmit(AjaxRequestTarget art, Form<?> form) {
+            protected void onSubmit(AjaxRequestTarget art) {
                 // Show ratings panel and hide this panel
                 ratingsPanel.setVisible(true);
                 authorRatePanel.setVisible(false);

@@ -30,6 +30,7 @@ public class DatabaseEvents implements Events {
             toSave.setAddedBy((CsldUser) session.merge(toSave.getAddedBy()));
         }
         session.persist(toSave);
+        session.flush();
 
         event.setId(toSave.getId());
     }

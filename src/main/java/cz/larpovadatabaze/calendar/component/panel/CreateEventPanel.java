@@ -2,6 +2,9 @@ package cz.larpovadatabaze.calendar.component.panel;
 
 import com.googlecode.wicket.jquery.core.Options;
 import com.googlecode.wicket.jquery.ui.form.datepicker.DatePicker;
+import com.googlecode.wicket.jquery.ui.panel.JQueryFeedbackPanel;
+import com.googlecode.wicket.jquery.ui.plugins.wysiwyg.WysiwygEditor;
+import com.googlecode.wicket.jquery.ui.plugins.wysiwyg.toolbar.DefaultWysiwygToolbar;
 import cz.larpovadatabaze.api.ValidatableForm;
 
 import cz.larpovadatabaze.calendar.Location;
@@ -33,12 +36,14 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.*;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.wicketstuff.gmap.GMap;
 import org.wicketstuff.gmap.GMapHeaderContributor;
 import org.wicketstuff.gmap.api.GLatLng;
@@ -62,7 +67,6 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
     private TextField<String> name;
     private NumberTextField amountOfPlayers;
     private TextField<String> web;
-    private TextArea description;
     private ChooseLabelsPanel chooseLabels;
 
     private List<Label> labelsToTransfer;
@@ -174,10 +178,13 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
 
         WebMarkupContainer descriptionWrapper = new WebMarkupContainer("descriptionWrapper");
         createEvent.add(descriptionWrapper);
-        description = (TextArea) new TextArea<String>("description").setRequired(true);
-        description.setOutputMarkupId(true);
-        descriptionWrapper.add(description);
-        descriptionWrapper.add(new CsldFeedbackMessageLabel("descriptionFeedback", description, descriptionWrapper, "form.event.descriptionHint"));
+        DefaultWysiwygToolbar toolbar = new DefaultWysiwygToolbar("toolbar");
+        final WysiwygEditor editor = new WysiwygEditor("description", toolbar);
+
+        final FeedbackPanel feedback = new JQueryFeedbackPanel("feedback");
+        descriptionWrapper.add(feedback);
+        descriptionWrapper.add(toolbar, editor);
+        descriptionWrapper.add(new CsldFeedbackMessageLabel("descriptionFeedback", editor, descriptionWrapper, "form.event.descriptionHint"));
 
         chooseLabels = new ChooseLabelsPanel("labels", new IModel<List<Label>>() {
             @Override
@@ -236,14 +243,13 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
 
         addMap(createEvent, ((Event) getDefaultModelObject()).getLocation());
 
-        add(createEvent);
-
         final AjaxButton submit = new AjaxButton("submit") {
             @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                super.onSubmit(target, form);
+            protected void onSubmit(AjaxRequestTarget target) {
+                super.onSubmit(target);
+                Transaction storeEventInTransaction = sessionFactory.getCurrentSession().beginTransaction();
 
-                Event event = (Event) form.getModelObject();
+                Event event = CreateEventPanel.this.getModel().getObject();
                 if(lastSelectedLocation != null) {
                     event.setLocation(new Location(lastSelectedLocation.getLat(), lastSelectedLocation.getLng()));
                 }
@@ -295,7 +301,8 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
                     }
                 }
 
-                onCsldAction(target, form);
+                storeEventInTransaction.commit();
+                onCsldAction(target, event);
             }
 
             @Override
@@ -307,13 +314,15 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
             }
 
             @Override
-            protected void onError(AjaxRequestTarget target, Form<?> form) {
-                super.onError(target, form);
+            protected void onError(AjaxRequestTarget target) {
+                super.onError(target);
                 if(!createEvent.isValid()){
                     target.add(getParent());
                 }
             }
         };
+        createEvent.add(submit);
+        add(createEvent);
     }
 
     private void addMap(Form container, Location location){
@@ -405,13 +414,13 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
 
         createGameModal.setContent(new CreateOrUpdateGamePanel(createGameModal.getContentId(), Model.of(game)){
             @Override
-            protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
-                super.onCsldAction(target, form);
+            protected void onCsldAction(AjaxRequestTarget target, Object object) {
+                super.onCsldAction(target, object);
                 createGameModal.close(target);
             }
         });
         createGameModal.show(target);
     }
 
-    protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}
+    protected void onCsldAction(AjaxRequestTarget target, Object object){}
 }

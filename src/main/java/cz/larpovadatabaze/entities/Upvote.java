@@ -13,8 +13,8 @@ public class Upvote implements Serializable {
 
     @Column(name = "id")
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
-    @SequenceGenerator(sequenceName = "csld_plus_one_id_seq", name = "id_gen", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_upvote")
+    @SequenceGenerator(sequenceName = "csld_plus_one_id_seq", name = "id_gen_upvote", allocationSize = 1)
     public int getId() {
         return id;
     }

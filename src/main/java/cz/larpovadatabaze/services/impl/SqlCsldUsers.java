@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.services.impl;
 
+import com.github.openjson.JSONObject;
 import cz.larpovadatabaze.dao.CsldUserDAO;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
@@ -12,7 +13,6 @@ import cz.larpovadatabaze.utils.RandomString;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.wicket.ajax.json.JSONObject;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;

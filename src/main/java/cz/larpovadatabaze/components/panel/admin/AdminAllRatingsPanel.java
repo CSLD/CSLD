@@ -87,6 +87,7 @@ public class AdminAllRatingsPanel extends Panel {
 
     @Override
     protected void onConfigure() {
+        super.onConfigure();
         orderedDetachableRatingModel.recompute();
 
         setVisible(csldUserService.isLoggedAtLeastEditor());

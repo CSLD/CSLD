@@ -9,8 +9,8 @@ import java.util.Date;
 @Entity(name="donation")
 public class Donation implements cz.larpovadatabaze.api.Entity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
-    @SequenceGenerator(sequenceName = "donation_id_seq", name = "id_gen", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_donation")
+    @SequenceGenerator(sequenceName = "donation_id_seq", name = "id_gen_donation", allocationSize = 1)
     private Integer id;
     private double amount;
     @Temporal(value = TemporalType.DATE)
