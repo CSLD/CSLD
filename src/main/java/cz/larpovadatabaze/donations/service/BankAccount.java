@@ -3,6 +3,7 @@ package cz.larpovadatabaze.donations.service;
 import cz.larpovadatabaze.donations.model.Donation;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -37,7 +38,9 @@ public class BankAccount {
             @Override
             public void run() {
                 Session current = sessionFactory.openSession();
+                Transaction storeDonations = current.beginTransaction();
                 importData(new DatabaseDonations(current), current);
+                storeDonations.commit();
                 current.close();
             }
         }, 0, 60 * 60 * 60 * 1000);

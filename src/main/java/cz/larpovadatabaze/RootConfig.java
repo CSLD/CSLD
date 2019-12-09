@@ -2,7 +2,7 @@ package cz.larpovadatabaze;
 
 import com.mchange.v2.c3p0.DriverManagerDataSource;
 import cz.larpovadatabaze.services.FileService;
-import cz.larpovadatabaze.services.impl.FileServiceImpl;
+import cz.larpovadatabaze.services.impl.LocalFiles;
 import cz.larpovadatabaze.utils.MailClient;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,6 +126,6 @@ public class RootConfig {
 
     @Bean
     public FileService fileService() {
-        return new FileServiceImpl(env.getProperty("csld.data_dir"));
+        return new LocalFiles(env.getProperty("csld.data_dir"));
     }
 }
