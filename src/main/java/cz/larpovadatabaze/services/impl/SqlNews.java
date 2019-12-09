@@ -13,13 +13,17 @@ import java.time.Instant;
 import java.util.List;
 
 /**
- * Created by Balda on 10. 7. 2015.
+ * SQL Implementation of the relevant pieces of news.
  */
 @Service
 @Transactional
-public class NewsServiceImpl implements NewsService {
-    @Autowired
+public class SqlNews implements NewsService {
     private NewsDAO news;
+
+    @Autowired
+    public SqlNews(NewsDAO news) {
+        this.news = news;
+    }
 
     @Override
     public List<News> getLastNews(int showInPanel) {

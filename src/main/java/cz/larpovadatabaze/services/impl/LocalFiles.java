@@ -21,7 +21,7 @@ import java.io.*;
  * Date: 25.12.13
  * Time: 20:44
  */
-public class FileServiceImpl implements FileService {
+public class LocalFiles implements FileService {
 
     private static final String PREVIEW_POSTFIX = "-p";
 
@@ -31,7 +31,7 @@ public class FileServiceImpl implements FileService {
     private String dataDir;
 
     @Autowired
-    public FileServiceImpl(String dataDir) {
+    public LocalFiles(String dataDir) {
         this.dataDir = dataDir;
     }
 

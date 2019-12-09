@@ -21,20 +21,21 @@ import java.util.List;
  */
 @Repository
 @Transactional
-public class PhotoServiceImpl implements PhotoService {
+public class LocalSqlPhotos implements PhotoService {
     private final int MAX_PHOTOS_PER_GAME = 10;
 
-    @Autowired
     private PhotoDAO photoDao;
-
-    @Autowired
     private FileService fileService;
-
-    @Autowired
     private GameService gameService;
+    private ImageResizingStrategyFactoryService imageResizingStrategyFactoryService;
 
     @Autowired
-    private ImageResizingStrategyFactoryService imageResizingStrategyFactoryService;
+    public LocalSqlPhotos(PhotoDAO photoDao, FileService fileService, GameService gameService, ImageResizingStrategyFactoryService imageResizingStrategyFactoryService) {
+        this.photoDao = photoDao;
+        this.fileService = fileService;
+        this.gameService = gameService;
+        this.imageResizingStrategyFactoryService = imageResizingStrategyFactoryService;
+    }
 
     @Override
     public boolean saveOrUpdate(Photo actualPhoto) {

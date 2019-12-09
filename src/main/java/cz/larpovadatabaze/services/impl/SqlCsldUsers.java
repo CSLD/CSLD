@@ -26,11 +26,11 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- *
+ * CsldUsers stored in the SQL Data Store.
  */
 @Repository(value = "csldUserService")
 @Transactional
-public class CsldUserServiceImpl implements CsldUserService {
+public class SqlCsldUsers implements CsldUserService {
     /**
      * Re-Captcha config - maybe move keys somewhere else?
      */
@@ -38,11 +38,14 @@ public class CsldUserServiceImpl implements CsldUserService {
     private static final String RE_CAPTCHA_SITE_KEY ="6LeEiv8SAAAAABn8qvmZGkez0Lpp-Pbak_Jr6T1t";
     private static final String RE_CAPTCHA_SECRET_KEY ="6LeEiv8SAAAAAAE2ikmbiEJhv5XdVaI4_TiPPEt6";
 
-    @Autowired
     private CsldUserDAO csldUserDao;
+    private ImageService imageService;
 
     @Autowired
-    private ImageService imageService;
+    public SqlCsldUsers(CsldUserDAO csldUserDao, ImageService imageService) {
+        this.csldUserDao = csldUserDao;
+        this.imageService = imageService;
+    }
 
     private ResourceReference userIconReference;
 

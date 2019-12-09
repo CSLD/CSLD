@@ -23,16 +23,25 @@ import java.sql.Timestamp;
 import java.util.*;
 
 /**
- *
+ * Games stored in the SQL data store.
  */
 @Repository
 @Transactional
-public class GameServiceImpl implements GameService {
-    @Autowired private GameDAO gameDAO;
-    @Autowired private SessionFactory sessionFactory;
-    @Autowired private FileService fileService;
-    @Autowired private ImageResizingStrategyFactoryService imageResizingStrategyFactoryService;
-    @Autowired private ImageService imageService;
+public class SqlGames implements GameService {
+    private GameDAO gameDAO;
+    private SessionFactory sessionFactory;
+    private FileService fileService;
+    private ImageResizingStrategyFactoryService imageResizingStrategyFactoryService;
+    private ImageService imageService;
+
+    @Autowired
+    public SqlGames(GameDAO gameDAO, SessionFactory sessionFactory, FileService fileService, ImageResizingStrategyFactoryService imageResizingStrategyFactoryService, ImageService imageService) {
+        this.gameDAO = gameDAO;
+        this.sessionFactory = sessionFactory;
+        this.fileService = fileService;
+        this.imageResizingStrategyFactoryService = imageResizingStrategyFactoryService;
+        this.imageService = imageService;
+    }
 
     private ResourceReference iconResourceReference;
 
@@ -43,7 +52,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void evictGame(Integer id) {
-        Game g1 = (Game)sessionFactory.getCurrentSession().get(Game.class, id);
+        Game g1 = sessionFactory.getCurrentSession().get(Game.class, id);
         sessionFactory.getCurrentSession().evict(g1);
     }
 

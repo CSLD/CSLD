@@ -20,11 +20,17 @@ import java.util.List;
  */
 @Repository
 @Transactional
-public class CommentServiceImpl implements CommentService {
-    private static final Logger logger = Logger.getLogger(CommentServiceImpl.class);
+public class SqlComments implements CommentService {
+    private static final Logger logger = Logger.getLogger(SqlComments.class);
 
-    @Autowired private CommentDAO commentDAO;
-    @Autowired private GameService gameService;
+    private CommentDAO commentDAO;
+    private GameService gameService;
+
+    @Autowired
+    public SqlComments(CommentDAO commentDAO, GameService gameService) {
+        this.commentDAO = commentDAO;
+        this.gameService = gameService;
+    }
 
     @Override
     public List<Comment> getAll() {

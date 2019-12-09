@@ -19,12 +19,15 @@ import java.util.List;
  *
  */
 @Repository
-public class ImageServiceImpl implements ImageService {
-    @Autowired
+public class LocalSqlImages implements ImageService {
     ImageDAO imageDAO;
+    FileService fileService;
 
     @Autowired
-    FileService fileService;
+    public LocalSqlImages(ImageDAO imageDAO, FileService fileService) {
+        this.imageDAO = imageDAO;
+        this.fileService = fileService;
+    }
 
     @Override
     public boolean insert(Image image) {

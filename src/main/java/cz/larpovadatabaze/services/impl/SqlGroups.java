@@ -13,15 +13,19 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- *
+ * Groups represented in the SQL Data Store.
  */
 @Repository
 @Transactional
-public class GroupServiceImpl implements GroupService {
-    @Autowired
+public class SqlGroups implements GroupService {
     private GroupDAO groupDAO;
-    @Autowired
     private ImageService imageService;
+
+    @Autowired
+    public SqlGroups(GroupDAO groupDAO, ImageService imageService) {
+        this.groupDAO = groupDAO;
+        this.imageService = imageService;
+    }
 
     private ResourceReference iconResourceReference;
 

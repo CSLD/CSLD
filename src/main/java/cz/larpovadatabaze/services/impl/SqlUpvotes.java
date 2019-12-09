@@ -14,9 +14,13 @@ import java.util.List;
 
 @Repository
 @Transactional
-public class SqlUpvoteService implements UpvoteService {
+public class SqlUpvotes implements UpvoteService {
+    private UpvoteDAO sqlUpVotes;
+
     @Autowired
-    UpvoteDAO sqlUpVotes;
+    public SqlUpvotes(UpvoteDAO sqlUpVotes) {
+        this.sqlUpVotes = sqlUpVotes;
+    }
 
     @Override
     public void upvote(CsldUser user, Comment comment) {

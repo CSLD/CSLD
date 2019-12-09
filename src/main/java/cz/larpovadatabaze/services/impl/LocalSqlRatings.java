@@ -24,15 +24,13 @@ import java.util.List;
  */
 @Repository
 @Transactional
-public class RatingServiceImpl implements RatingService {
+public class LocalSqlRatings implements RatingService {
     @Autowired
     private RatingDAO ratingDAO;
     @Autowired
     private CsldUserService csldUserService;
-
     @Autowired
     private UserPlayedGameService userPlayedGameService;
-
     @Autowired
     private GameService gameService;
 
