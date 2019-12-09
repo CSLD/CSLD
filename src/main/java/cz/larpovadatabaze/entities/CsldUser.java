@@ -23,8 +23,8 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable, I
 
     @Column(name = "id")
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
-    @SequenceGenerator(sequenceName = "csld_person_id_seq", name="id_gen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_user")
+    @SequenceGenerator(sequenceName = "csld_person_id_seq", name="id_gen_user", allocationSize = 1)
     public Integer getId() {
         return id;
     }
@@ -180,17 +180,6 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable, I
 
     public void setCommented(List<Comment> commented) {
         this.commented = commented;
-    }
-
-    private List<News> news;
-
-    @OneToMany(mappedBy = "author")
-    public List<News> getNews() {
-        return news;
-    }
-
-    public void setNews(List<News> news) {
-        this.news = news;
     }
 
     private String defaultLang;

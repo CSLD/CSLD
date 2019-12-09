@@ -34,7 +34,6 @@ public class CreateGamePanelTest extends AcceptanceTest {
         tester.assertComponent("id:addGame:descriptionWrapper:descriptionFeedback", CsldFeedbackMessageLabel.class);
         tester.assertComponent("id:addGame:year", TextField.class);
         tester.assertComponent("id:addGame:yearFeedback", CsldFeedbackMessageLabel.class);
-        tester.assertComponent("id:addGame:lang", DropDownChoice.class);
         tester.assertComponent("id:addGame:players", TextField.class);
         tester.assertComponent("id:addGame:playersFeedback", CsldFeedbackMessageLabel.class);
         tester.assertComponent("id:addGame:womenRole", TextField.class);

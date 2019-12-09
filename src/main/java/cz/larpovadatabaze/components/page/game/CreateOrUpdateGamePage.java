@@ -66,10 +66,10 @@ public class CreateOrUpdateGamePage extends CsldBasePage {
 
         add(new CreateOrUpdateGamePanel("createOrUpdateGame", (GameModel)getDefaultModel()) {
             @Override
-            protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
-                super.onCsldAction(target, form);
+            protected void onCsldAction(AjaxRequestTarget target, Object object) {
+                super.onCsldAction(target, object);
 
-                Game game = (Game) form.getModelObject();
+                Game game = (Game) object;
                 CsldAuthenticatedWebSession session = CsldAuthenticatedWebSession.get();
                 session.requestClear();
                 throw new RestartResponseException(GameDetail.class, GameDetail.paramsForGame(game));

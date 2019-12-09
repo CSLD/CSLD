@@ -2,7 +2,7 @@ package cz.larpovadatabaze.services;
 
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Photo;
-import org.apache.wicket.util.upload.FileItem;
+import org.apache.commons.fileupload.FileItem;
 
 import java.util.List;
 

@@ -3,6 +3,7 @@ package cz.larpovadatabaze.calendar.component.page;
 import cz.larpovadatabaze.api.Toggles;
 import cz.larpovadatabaze.calendar.component.panel.CreateEventPanel;
 import cz.larpovadatabaze.calendar.model.Event;
+import cz.larpovadatabaze.calendar.model.EventModel;
 import cz.larpovadatabaze.calendar.service.DatabaseEvents;
 import cz.larpovadatabaze.calendar.service.Events;
 import cz.larpovadatabaze.components.page.CsldBasePage;
@@ -15,6 +16,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.core.env.Environment;
 
@@ -28,37 +30,14 @@ public class CreateOrUpdateEventPage extends CsldBasePage {
     @SpringBean
     private Environment env;
 
-    /**
-     * Model for event specified by event id
-     */
-    private class EventModel extends LoadableDetachableModel<Event> {
-
-        // Game id. We could also store id as page property.
-        private Integer eventId;
-
-        private EventModel(Integer eventId) {
-            this.eventId = eventId;
+    private class SqlEventModel extends EventModel {
+        public SqlEventModel(Integer id) {
+            super(id);
         }
 
         @Override
-        protected Event load() {
-            if (eventId == null) return Event.getEmptyEvent(); // Empty event
-            DatabaseEvents eventsInDatabase = new DatabaseEvents(sessionFactory.getCurrentSession());
-
-            List<Event> event = eventsInDatabase.all()
-                    .stream()
-                    .filter(event1 -> Objects.equals(event1.getId(), eventId))
-                    .collect(Collectors.toList());
-
-            return event.get(0);
-        }
-
-        @Override
-        public void detach() {
-            if (eventId != null) {
-                // Detach only when not creating a new game
-                super.detach();
-            }
+        public Session getSession() {
+            return sessionFactory.getCurrentSession();
         }
     }
 
@@ -69,9 +48,9 @@ public class CreateOrUpdateEventPage extends CsldBasePage {
         }
 
         if(!params.isEmpty()) {
-            setDefaultModel(new EventModel(params.get("id").to(Integer.class)));
+            setDefaultModel(new SqlEventModel(params.get("id").to(Integer.class)));
         } else {
-            setDefaultModel(new EventModel(null));
+            setDefaultModel(new SqlEventModel(null));
         }
     }
 
@@ -81,13 +60,13 @@ public class CreateOrUpdateEventPage extends CsldBasePage {
 
         add(new CreateEventPanel("createEvent", (EventModel)getDefaultModel()) {
             @Override
-            protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
-                super.onCsldAction(target, form);
+            protected void onCsldAction(AjaxRequestTarget target, Object object) {
+                super.onCsldAction(target, object);
 
                 CsldAuthenticatedWebSession session = CsldAuthenticatedWebSession.get();
                 session.requestClear();
 
-                throw new RestartResponseException(DetailOfEventPage.class, DetailOfEventPage.pageParameters((Event) form.getModelObject()));
+                throw new RestartResponseException(DetailOfEventPage.class, DetailOfEventPage.pageParameters((Event) object));
             }
         });
     }

@@ -132,6 +132,7 @@ public class EntityBuilder {
         Upvote upvote = new Upvote();
         upvote.setComment(comment);
         upvote.setUser(user);
+        upvote.setAdded(new Timestamp(new java.util.Date().getTime()));
 
         save(upvote);
         return upvote;
@@ -144,16 +145,6 @@ public class EntityBuilder {
         playerOfGame.setStateEnum(UserPlayedGame.UserPlayedGameState.PLAYED);
 
         return playerOfGame;
-    }
-
-    public News news(CsldUser editor, String text) {
-        News news = new News();
-        news.setAuthor(editor);
-        news.setText(text);
-        news.setLang("cs");
-        news.setAdded(Timestamp.from(Instant.now()));
-
-        return null;
     }
 
     public void flush() {

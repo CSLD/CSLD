@@ -7,6 +7,7 @@ import cz.larpovadatabaze.tags.service.FilteredDatabaseTags;
 import cz.larpovadatabaze.tags.service.Tags;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,6 +33,7 @@ public class LarpCzImport {
      */
     public void importEvents(){
         Session session = sessionFactory.openSession();
+        Transaction eventsImport = session.beginTransaction();
 
         DatabaseEvents dbEvents = new DatabaseEvents(session);
         Tags tags = new FilteredDatabaseTags(new DatabaseTags(session), new FilteredDatabaseTags.Filter("LarpCz"));
@@ -45,6 +47,7 @@ public class LarpCzImport {
             }
         }
 
+        eventsImport.commit();
         session.close();
     }
 }

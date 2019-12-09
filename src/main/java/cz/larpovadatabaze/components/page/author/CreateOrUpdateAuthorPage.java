@@ -33,8 +33,8 @@ public class CreateOrUpdateAuthorPage extends CsldBasePage {
 
         add(new CreateOrUpdateAuthorPanel("createOrUpdateAuthor", csldUser != null ? csldUser : CsldUser.getEmptyUser()){
             @Override
-            protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
-                super.onCsldAction(target, form);
+            protected void onCsldAction(AjaxRequestTarget target, Object object) {
+                super.onCsldAction(target, object);
 
                 throw new RestartResponseException(HomePage.class);
             }

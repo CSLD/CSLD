@@ -22,8 +22,10 @@ import cz.larpovadatabaze.components.page.user.*;
 import cz.larpovadatabaze.converters.*;
 import cz.larpovadatabaze.donations.components.DonationPage;
 import cz.larpovadatabaze.donations.service.BankAccount;
-import cz.larpovadatabaze.donations.service.DatabaseDonations;
-import cz.larpovadatabaze.entities.*;
+import cz.larpovadatabaze.entities.CsldGroup;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.entities.Game;
+import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.GameService;
@@ -36,8 +38,8 @@ import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.Session;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
-import org.apache.wicket.core.request.handler.BookmarkableListenerInterfaceRequestHandler;
-import org.apache.wicket.core.request.handler.ListenerInterfaceRequestHandler;
+import org.apache.wicket.core.request.handler.BookmarkableListenerRequestHandler;
+import org.apache.wicket.core.request.handler.ListenerRequestHandler;
 import org.apache.wicket.core.request.mapper.MountedMapper;
 import org.apache.wicket.markup.html.IPackageResourceGuard;
 import org.apache.wicket.markup.html.SecurePackageResourceGuard;
@@ -53,11 +55,9 @@ import org.apache.wicket.request.mapper.info.PageComponentInfo;
 import org.apache.wicket.request.mapper.parameter.PageParametersEncoder;
 import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.request.resource.ResourceReference;
-import org.apache.wicket.settings.IRequestLoggerSettings;
-import org.apache.wicket.settings.def.RequestLoggerSettings;
+import org.apache.wicket.settings.RequestLoggerSettings;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.convert.converter.CalendarConverter;
-import org.apache.wicket.util.convert.converter.DateConverter;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,9 +66,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -109,8 +107,8 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         @Override
         public Url mapHandler(IRequestHandler requestHandler)
         {
-            if (requestHandler instanceof ListenerInterfaceRequestHandler ||
-                    requestHandler instanceof BookmarkableListenerInterfaceRequestHandler) {
+            if (requestHandler instanceof ListenerRequestHandler ||
+                    requestHandler instanceof BookmarkableListenerRequestHandler) {
                 return null;
             } else {
                 return super.mapHandler(requestHandler);
@@ -148,7 +146,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
             }
         });
 
-        IRequestLoggerSettings enableRequestLogger = new RequestLoggerSettings();
+        RequestLoggerSettings enableRequestLogger = new RequestLoggerSettings();
         enableRequestLogger.setRequestLoggerEnabled(true);
         setRequestLoggerSettings(enableRequestLogger);
 
@@ -195,9 +193,15 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
             getDebugSettings().setOutputMarkupContainerClassName(true);
         }
 
-        // Load information about donations and setup timer.
-        new BankAccount(sessionFactory).start();
-        new Thread(() -> new LarpCzImport(sessionFactory).importEvents()).start();
+        // Load information about donations and setup timer. Respect the configuration to ignore this in the context
+        // of the testing.
+        if(env.getProperty("csld.integrate_bank", Boolean.class)) {
+            new BankAccount(sessionFactory).start();
+        }
+
+        if(env.getProperty("csld.integrate_calendar", Boolean.class)) {
+            new Thread(() -> new LarpCzImport(sessionFactory).importEvents()).start();
+        }
 	}
 
     @Override

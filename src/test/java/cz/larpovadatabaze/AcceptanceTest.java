@@ -1,14 +1,10 @@
 package cz.larpovadatabaze;
 
-import cz.larpovadatabaze.api.Entity;
 import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.builders.CzechMasqueradeBuilder;
 import cz.larpovadatabaze.services.builders.EntityBuilder;
-import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.tester.WicketTester;
-import org.dbunit.DataSourceDatabaseTester;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
@@ -17,22 +13,18 @@ import org.dbunit.operation.DatabaseOperation;
 import org.hibernate.FlushMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl;
-import org.hibernate.internal.SessionFactoryImpl;
-import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate4.SessionHolder;
+import org.springframework.orm.hibernate5.SessionHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import java.sql.SQLException;
-import java.util.Collection;
+import java.sql.Connection;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  *
@@ -96,8 +88,10 @@ abstract public class AcceptanceTest {
     }
 
     private void cleanDatabase() throws Exception {
-        SessionFactoryImpl hibernateSessions = (SessionFactoryImpl) sessionFactory;
-        IDatabaseConnection connection = new DatabaseConnection(hibernateSessions.getConnectionProvider().getConnection());
+        Connection toDatabase = sessionFactory.
+                getSessionFactoryOptions().getServiceRegistry().
+                getService(ConnectionProvider.class).getConnection();
+        IDatabaseConnection connection = new DatabaseConnection(toDatabase);
         DatabaseConfig config = connection.getConfig();
         config.setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, true);
 

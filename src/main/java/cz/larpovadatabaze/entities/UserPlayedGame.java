@@ -30,8 +30,8 @@ public class UserPlayedGame implements Serializable {
 
     @Column(name="id")
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
-    @SequenceGenerator(sequenceName = "csld_user_played_game_id_seq", name="id_gen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_upg")
+    @SequenceGenerator(sequenceName = "csld_user_played_game_id_seq", name="id_gen_upg", allocationSize = 1)
     public int getId() {
         return id;
     }

@@ -33,8 +33,8 @@ public class CreateOrUpdateGroupPage extends CsldBasePage {
 
         add(new CreateOrUpdateGroupPanel("addGroup", group){
             @Override
-            protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
-                super.onCsldAction(target, form);
+            protected void onCsldAction(AjaxRequestTarget target, Object object) {
+                super.onCsldAction(target, object);
 
                 throw new RestartResponseException(HomePage.class);
             }

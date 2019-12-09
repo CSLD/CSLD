@@ -89,7 +89,8 @@ public class GameDetail extends CsldBasePage {
                 addOrReplaceTabContentPanel();
 
                 // Redraw
-                RequestCycle.get().find(AjaxRequestTarget.class).add(tabContent);
+                Optional<AjaxRequestTarget> optionalArt = RequestCycle.get().find(AjaxRequestTarget.class);
+                optionalArt.ifPresent(ajaxRequestTarget -> ajaxRequestTarget.add(tabContent));
             }
         }
 
@@ -361,14 +362,14 @@ public class GameDetail extends CsldBasePage {
         DeleteGamePanel deleteGamePanel = new DeleteGamePanel("deleteGamePanel", getModel().getObject().getId());
         add(deleteGamePanel);
 
-        add(new GameListPanel("similarGames", new LoadableDetachableModel<List<? extends Game>>() {
+        add(new GameListPanel("similarGames", new LoadableDetachableModel<List<Game>>() {
             @Override
             protected List<Game> load() {
                 return gameService.getSimilar(getModel().getObject());
             }
         }));
 
-        add(new GameListPanel("gamesOfAuthors", new LoadableDetachableModel<List<? extends Game>>() {
+        add(new GameListPanel("gamesOfAuthors", new LoadableDetachableModel<List<Game>>() {
             @Override
             protected List<Game> load() {
                 return gameService.gamesOfAuthors(getModel().getObject());
@@ -426,7 +427,7 @@ public class GameDetail extends CsldBasePage {
         // Add button
         authorRatePanel.add(new AjaxButton("authorRate", new ResourceModel("Rating.author.button"), authorRatePanel) {
             @Override
-            protected void onSubmit(AjaxRequestTarget art, Form<?> form) {
+            protected void onSubmit(AjaxRequestTarget art) {
                 // Show ratings panel and hide this panel
                 ratingsPanel.setVisible(true);
                 authorRatePanel.setVisible(false);

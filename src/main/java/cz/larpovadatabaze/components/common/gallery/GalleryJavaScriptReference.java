@@ -7,6 +7,7 @@ import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.resource.JQueryResourceReference;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Reference to file upload UI javascript
@@ -26,7 +27,7 @@ public class GalleryJavaScriptReference extends JavaScriptResourceReference {
     }
 
     @Override
-    public Iterable<? extends HeaderItem> getDependencies() {
+    public List<HeaderItem> getDependencies() {
         if (Application.exists()) {
             // Get from application config
             return Arrays.asList(JavaScriptReferenceHeaderItem.forReference(Application.get().getJavaScriptLibrarySettings().getJQueryReference()));

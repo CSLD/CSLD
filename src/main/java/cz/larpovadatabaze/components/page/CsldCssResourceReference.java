@@ -7,6 +7,7 @@ import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.PackageResourceReference;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Resource reference for CSLD css
@@ -19,7 +20,7 @@ public class CsldCssResourceReference extends CssResourceReference {
     }
 
     @Override
-    public Iterable<? extends HeaderItem> getDependencies() {
+    public List<HeaderItem> getDependencies() {
         return Arrays.asList(
             new HeaderItem[] {
                 JavaScriptHeaderItem.forReference(BootstrapResourceReference.get()), // We need bootstrap

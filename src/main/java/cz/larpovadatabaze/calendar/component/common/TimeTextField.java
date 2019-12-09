@@ -23,7 +23,6 @@ public class TimeTextField extends TextField{
         super(id, model, type);
     }
 
-    @Override
     protected String getInputType() {
         return "time";
     }

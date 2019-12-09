@@ -1,13 +1,11 @@
 package cz.larpovadatabaze.calendar.service;
 
 import cz.larpovadatabaze.calendar.model.Event;
-import cz.larpovadatabaze.utils.Pwd;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import sun.security.provider.MD5;
 
 import java.io.IOException;
 import java.text.ParseException;

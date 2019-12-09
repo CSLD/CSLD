@@ -31,8 +31,8 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
             updatable = true
     )
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
-    @SequenceGenerator(sequenceName = "csld_label_id_seq", name="id_gen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_label")
+    @SequenceGenerator(sequenceName = "csld_label_id_seq", name="id_gen_label", allocationSize = 1)
     public Integer getId() {
         return id;
     }

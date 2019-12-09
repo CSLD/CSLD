@@ -9,7 +9,6 @@ import cz.larpovadatabaze.components.page.user.UserDetailPage;
 import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.services.CommentService;
 import cz.larpovadatabaze.services.UpvoteService;
-import cz.larpovadatabaze.services.impl.SqlUpvoteService;
 import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;

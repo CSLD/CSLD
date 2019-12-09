@@ -1,7 +1,9 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import com.googlecode.wicket.jquery.ui.panel.JQueryFeedbackPanel;
+import com.googlecode.wicket.jquery.ui.plugins.wysiwyg.WysiwygEditor;
+import com.googlecode.wicket.jquery.ui.plugins.wysiwyg.toolbar.DefaultWysiwygToolbar;
 import cz.larpovadatabaze.api.ValidatableForm;
-import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
@@ -13,15 +15,15 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
-import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 /**
  * This panel allows user to Comment given game
@@ -33,7 +35,7 @@ public class CommentsPanel extends Panel {
     @SpringBean
     CommentService commentService;
 
-    private TextArea<String> commentContent;
+    private WysiwygEditor commentContent;
 
     private final IModel<Game> gameModel;
 
@@ -110,6 +112,10 @@ public class CommentsPanel extends Panel {
                         actualComment.setAdded(new Timestamp(System.currentTimeMillis()));
                     }
 
+                    if(actualComment.getPluses() == null) {
+                        actualComment.setPluses(new ArrayList<>());
+                    }
+
                     commentService.saveOrUpdate(actualComment);
                 }
             }
@@ -144,12 +150,17 @@ public class CommentsPanel extends Panel {
             };
             commentForm.setOutputMarkupId(true);
 
-            commentContent = new TextArea<>("textOfComment", model);
-            commentContent.add(new CSLDTinyMceBehavior());
-            commentContent.setOutputMarkupId(true);
+            // Wysiwyg // Replacement for TinyMCE
+            DefaultWysiwygToolbar toolbar = new DefaultWysiwygToolbar("toolbar");
+            final WysiwygEditor editor = new WysiwygEditor("textOfComment", model, toolbar);
+
+            final FeedbackPanel feedback = new JQueryFeedbackPanel("feedback");
+            commentForm.add(feedback);
+            commentForm.add(toolbar, editor);
+
             AjaxButton addComment = new AjaxButton("addComment") {
                 @Override
-                protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                protected void onSubmit(AjaxRequestTarget target) {
                     // Reload game
                     gameModel.detach();
 
@@ -159,9 +170,7 @@ public class CommentsPanel extends Panel {
                 }
             };
             addComment.setOutputMarkupId(true);
-            addComment.add(new TinyMceAjaxSubmitModifier());
 
-            commentForm.add(commentContent);
             commentForm.add(addComment);
 
             add(commentForm);
@@ -169,6 +178,8 @@ public class CommentsPanel extends Panel {
     }
 
     protected void onConfigure() {
+        super.onConfigure();
+
         setVisibilityAllowed(CsldAuthenticatedWebSession.get().isSignedIn());
     }
 

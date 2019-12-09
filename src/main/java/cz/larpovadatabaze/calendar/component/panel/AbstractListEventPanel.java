@@ -79,7 +79,7 @@ abstract public class AbstractListEventPanel<T> extends AbstractCsldPanel<T> {
 
                 item.add(new EventNameAndLabelsPanel("nameAndLabels", new EventModel(event.getId())));
                 item.add(new Label("loc", Model.of(event.getLoc())));
-                item.add(new Label("date", Model.of(event.getDate())));
+                item.add(new Label("date", event.getDate()));
                 item.add(new ExternalLink("web", Model.of(event.getWeb()), Model.of(event.getWeb())).setVisible(StringUtils.isNotBlank(event.getWeb())));
             }
         };

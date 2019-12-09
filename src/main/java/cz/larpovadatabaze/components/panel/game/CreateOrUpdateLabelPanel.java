@@ -44,22 +44,22 @@ public abstract class CreateOrUpdateLabelPanel extends Panel {
 
         createOrUpdateLabel.add(new AjaxButton("submit"){
             @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                super.onSubmit(target, form);
+            protected void onSubmit(AjaxRequestTarget target) {
+                super.onSubmit(target);
 
                 if(createOrUpdateLabel.isValid()){
                     Label label = createOrUpdateLabel.getModelObject();
                     if(saveOrUpdateLabel(label)){
-                        onCsldAction(target, form);
+                        onCsldAction(target, label);
                     }
                 }
             }
 
             @Override
-            protected void onError(AjaxRequestTarget target, Form<?> form) {
-                super.onError(target, form);
+            protected void onError(AjaxRequestTarget target) {
+                super.onError(target);
 
-                target.add(form);
+                target.add(CreateOrUpdateLabelPanel.this);
             }
         });
 
@@ -79,5 +79,5 @@ public abstract class CreateOrUpdateLabelPanel extends Panel {
         setVisibilityAllowed(CsldAuthenticatedWebSession.get().isSignedIn());
     }
 
-    protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}
+    protected void onCsldAction(AjaxRequestTarget target, Object object){}
 }

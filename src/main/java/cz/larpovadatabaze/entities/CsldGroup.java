@@ -23,8 +23,8 @@ public class CsldGroup implements Serializable, Identifiable, IAutoCompletable, 
 
     @Column(name = "id", nullable = false, updatable = false)
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
-    @SequenceGenerator(sequenceName = "csld_group_id_seq", name = "id_gen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_group")
+    @SequenceGenerator(sequenceName = "csld_group_id_seq", name = "id_gen_group", allocationSize = 1)
     public Integer getId() {
         return id;
     }

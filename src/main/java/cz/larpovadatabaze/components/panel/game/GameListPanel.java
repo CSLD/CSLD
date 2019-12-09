@@ -20,9 +20,9 @@ import java.util.List;
  * when it was created.
  */
 public class GameListPanel extends Panel {
-    private final IModel<List<? extends Game>> games;
+    private final IModel<List<Game>> games;
 
-    public GameListPanel(String id, IModel<List<? extends Game>> games) {
+    public GameListPanel(String id, IModel<List<Game>> games) {
         super(id);
         this.games = games;
     }

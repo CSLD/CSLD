@@ -2,7 +2,7 @@ package cz.larpovadatabaze;
 
 import com.mchange.v2.c3p0.DriverManagerDataSource;
 import cz.larpovadatabaze.services.FileService;
-import cz.larpovadatabaze.services.impl.FileServiceImpl;
+import cz.larpovadatabaze.services.impl.LocalFiles;
 import cz.larpovadatabaze.utils.MailClient;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +14,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.orm.hibernate4.HibernateTransactionManager;
-import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
@@ -127,6 +126,6 @@ public class RootConfig {
 
     @Bean
     public FileService fileService() {
-        return new FileServiceImpl(env.getProperty("csld.data_dir"));
+        return new LocalFiles(env.getProperty("csld.data_dir"));
     }
 }

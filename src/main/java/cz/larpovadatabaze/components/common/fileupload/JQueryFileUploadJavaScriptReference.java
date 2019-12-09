@@ -1,11 +1,12 @@
 package cz.larpovadatabaze.components.common.fileupload;
 
-import com.googlecode.wicket.jquery.core.resource.JQueryUIResourceReference;
+import com.googlecode.wicket.jquery.ui.resource.JQueryUIResourceReference;
 import org.apache.wicket.markup.head.HeaderItem;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * User: Michal Kara
@@ -23,7 +24,7 @@ public class JQueryFileUploadJavaScriptReference extends JavaScriptResourceRefer
     }
 
     @Override
-    public Iterable<? extends HeaderItem> getDependencies() {
+    public List<HeaderItem> getDependencies() {
         // We need JQuery UI loaded
         return Arrays.asList(JavaScriptHeaderItem.forReference(JQueryUIResourceReference.get()));
     }

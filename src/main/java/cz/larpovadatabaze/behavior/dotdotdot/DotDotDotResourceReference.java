@@ -6,6 +6,7 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.request.resource.PackageResourceReference;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Resource reference for DotDotDot component
@@ -18,7 +19,7 @@ public class DotDotDotResourceReference extends PackageResourceReference {
     }
 
     @Override
-    public Iterable<? extends HeaderItem> getDependencies() {
+    public List<HeaderItem> getDependencies() {
         // We need jQuery
         return Arrays.asList(new HeaderItem[] {JavaScriptHeaderItem.forReference(Application.get().getJavaScriptLibrarySettings().getJQueryReference())});
     }

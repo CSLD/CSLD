@@ -18,6 +18,7 @@ import cz.larpovadatabaze.services.LabelService;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
+import org.apache.wicket.core.request.handler.IPartialPageRequestHandler;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -55,14 +56,15 @@ public class FilterEventsSidePanel extends AbstractCsldPanel<FilterEvent> {
         CsldUser logged = CsldAuthenticatedWebSession.get().getLoggedUser();
 
         filterGames.add(new AjaxDatePicker("from", "dd.MM.yyyy", new Options()){
+
             @Override
-            public void onValueChanged(AjaxRequestTarget target) {
+            public void onValueChanged(IPartialPageRequestHandler handler) {
                 ((FilterablePage)getPage()).filterChanged(false, false, false);
             }
         });
         filterGames.add(new AjaxDatePicker("to", "dd.MM.yyyy", new Options()){
             @Override
-            public void onValueChanged(AjaxRequestTarget target) {
+            public void onValueChanged(IPartialPageRequestHandler handler) {
                 ((FilterablePage)getPage()).filterChanged(false, false, false);
             }
         });

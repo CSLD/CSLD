@@ -1,8 +1,8 @@
 package cz.larpovadatabaze.behavior.dotdotdot;
 
+import com.github.openjson.JSONException;
+import com.github.openjson.JSONObject;
 import org.apache.wicket.Component;
-import org.apache.wicket.ajax.json.JSONException;
-import org.apache.wicket.ajax.json.JSONObject;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.head.IHeaderResponse;

@@ -30,7 +30,7 @@ public class DatabaseEvents implements Events {
             toSave.setAddedBy((CsldUser) session.merge(toSave.getAddedBy()));
         }
         session.persist(toSave);
-        session.flush();  // TODO: Understand why the persist doesn't work. Probably unfinished transaction.
+        session.flush();
 
         event.setId(toSave.getId());
     }

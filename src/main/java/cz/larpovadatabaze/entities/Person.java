@@ -1,8 +1,6 @@
 package cz.larpovadatabaze.entities;
 
 import cz.larpovadatabaze.components.common.multiac.IAutoCompletable;
-import org.joda.time.DateTime;
-import org.joda.time.Interval;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -10,6 +8,9 @@ import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 
 /**
  *
@@ -133,8 +134,12 @@ public class Person implements Serializable, IAutoCompletable {
             return null;
         }
 
-        Interval life = new Interval(new DateTime(getBirthDate()), new DateTime());
-        return life.toPeriod().getYears();
+        LocalDate now = LocalDate.now();
+        LocalDate birthDate = new java.util.Date(getBirthDate().getTime()).toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        Period age = Period.between(now, birthDate);
+        return age.getYears();
     }
 
     @Transient

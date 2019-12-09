@@ -43,6 +43,7 @@ public class RatingDAO extends GenericHibernateDAO<Rating, Integer> {
         return new ArrayList<>(unsorted);
     }
 
+    // Count once in an hour?
     public double getAverageRating() {
         Session session = sessionFactory.getCurrentSession();
         String sqlQuery = String.format("select csld_count_average()");

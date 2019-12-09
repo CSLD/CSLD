@@ -65,6 +65,7 @@ public class DeleteGamePanel extends Panel {
 
     @Override
     protected void onConfigure() {
+        super.onConfigure();
         setVisibilityAllowed(CsldAuthenticatedWebSession.get().isAtLeastEditor());
     }
 }

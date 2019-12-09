@@ -24,7 +24,7 @@ public class GroupDetailPanel extends AbstractCsldPanel<CsldGroup> {
     }
 
     private static class UserList extends ListView<CsldUser> {
-        public UserList(String id, IModel<? extends List<? extends CsldUser>> model) {
+        public UserList(String id, IModel<? extends List<CsldUser>> model) {
             super(id, model);
         }
 

@@ -88,7 +88,9 @@ public class ListEventsPage extends CsldBasePage implements FilterablePage {
                 addOrReplaceTabContentPanel();
 
                 // Redraw
-                RequestCycle.get().find(AjaxRequestTarget.class).add(tabContent);
+
+                Optional<AjaxRequestTarget> optionalArt = RequestCycle.get().find(AjaxRequestTarget.class);
+                optionalArt.ifPresent(ajaxRequestTarget -> ajaxRequestTarget.add(tabContent));
             }
         }
 
@@ -171,7 +173,12 @@ public class ListEventsPage extends CsldBasePage implements FilterablePage {
 
     public void filterChanged(boolean sort, boolean requiredLabelsChanged, boolean otherLabelsChanged) {
         // Re-render what is needed
-        AjaxRequestTarget art = getRequestCycle().find(AjaxRequestTarget.class);
+        Optional<AjaxRequestTarget> optionalArt = getRequestCycle().find(AjaxRequestTarget.class);
+        if(!optionalArt.isPresent()) {
+            return;
+        }
+
+        AjaxRequestTarget art = optionalArt.get();
 
         art.add(eventsList);
 

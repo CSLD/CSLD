@@ -33,8 +33,8 @@ public class Event implements cz.larpovadatabaze.api.Entity {
     private SimpleDateFormat czechDateWithoutTime = new SimpleDateFormat("dd.MM.YYYY");
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
-    @SequenceGenerator(sequenceName = "event_id_seq", name = "id_gen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_calendar")
+    @SequenceGenerator(sequenceName = "event_id_seq", name = "id_gen_calendar", allocationSize = 1)
     private Integer id;
     private String name;
     private String description;
@@ -80,7 +80,7 @@ public class Event implements cz.larpovadatabaze.api.Entity {
     private CsldUser addedBy;
 
     // Constructor without parameters must be there for ORM usage.
-    protected Event() {
+    public Event() {
     }
 
     /**
@@ -94,6 +94,10 @@ public class Event implements cz.larpovadatabaze.api.Entity {
 
     public Event(List<Label> labels) {
         this.labels = labels;
+    }
+
+    public Event(Location location) {
+        this.location = location;
     }
 
     public Event(int id, List<Label> labels) {

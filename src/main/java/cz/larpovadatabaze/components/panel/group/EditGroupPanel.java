@@ -31,6 +31,7 @@ public class EditGroupPanel extends Panel {
 
     @Override
     protected void onConfigure() {
+        super.onConfigure();
         setVisibilityAllowed(UserUtils.isAdminOfGroup(((CsldGroup)getDefaultModelObject())));
     }
 }
