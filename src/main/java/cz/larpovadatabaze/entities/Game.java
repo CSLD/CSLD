@@ -61,10 +61,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     private Integer year;
 
     @Column(
-            name = "year",
-            nullable = true,
-            insertable = true,
-            updatable = true
+            name = "year"
     )
     @Basic
     public Integer getYear() {
@@ -79,10 +76,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
 
     @Column(
             name = "web",
-            nullable = true,
-            insertable = true,
-            updatable = true,
-            length = 2147483647
+            length = 20000
     )
     @Basic
     public String getWeb() {
@@ -96,10 +90,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     private Integer hours;
 
     @Column(
-            name = "hours",
-            nullable = true,
-            insertable = true,
-            updatable = true
+            name = "hours"
     )
     @Basic
     public Integer getHours() {
@@ -113,10 +104,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     private Integer days;
 
     @Column(
-            name = "days",
-            nullable = true,
-            insertable = true,
-            updatable = true
+            name = "days"
     )
     @Basic
     public Integer getDays() {
@@ -130,10 +118,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     private Integer players;
 
     @Column(
-            name = "players",
-            nullable = true,
-            insertable = true,
-            updatable = true
+            name = "players"
     )
     @Basic
     public Integer getPlayers() {
@@ -147,10 +132,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     private Integer menRole;
 
     @Column(
-            name = "men_role",
-            nullable = true,
-            insertable = true,
-            updatable = true
+            name = "men_role"
     )
     @Basic
     public Integer getMenRole() {
@@ -164,10 +146,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     private Integer womenRole;
 
     @Column(
-            name = "women_role",
-            nullable = true,
-            insertable = true,
-            updatable = true
+            name = "women_role"
     )
     @Basic
     public Integer getWomenRole() {
@@ -181,10 +160,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     private Integer bothRole;
 
     @Column(
-            name = "both_role",
-            nullable = true,
-            insertable = true,
-            updatable = true
+            name = "both_role"
     )
     @Basic
     public Integer getBothRole() {
@@ -199,9 +175,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
 
     @Column(
             name = "total_rating",
-            nullable = false,
-            insertable = true,
-            updatable = true
+            nullable = false
     )
     @Basic
     public Double getTotalRating(){
@@ -216,9 +190,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
 
     @Column(
             name = "average_rating",
-            nullable = false,
-            insertable = true,
-            updatable = true
+            nullable = false
     )
     @Basic
     public Double getAverageRating() {
@@ -234,7 +206,6 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     @Column(
             name = "added",
             nullable = false,
-            insertable = true,
             updatable = false)
     @Basic
     public Timestamp getAdded() {
@@ -250,7 +221,6 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     @Column(
             name = "amount_of_comments",
             nullable = false,
-            insertable = true,
             updatable = false)
     @Basic
     public Integer getAmountOfComments() {
@@ -266,7 +236,6 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
     @Column(
             name = "amount_of_played",
             nullable = false,
-            insertable = true,
             updatable = false)
     @Basic
     public Integer getAmountOfPlayed() {
@@ -281,8 +250,6 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
 
     @Column(
             name = "amount_of_ratings",
-            nullable = true,
-            insertable = true,
             updatable = false)
     @Basic
     public Integer getAmountOfRatings() {

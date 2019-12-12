@@ -59,6 +59,8 @@ public class CzechMasqueradeBuilder{
             persistenceStore.game("Masquerades: " + i , "First try to bring Masquerade into the Czech " +
                     "republic", user, authors, masqueradeGamesLabels, new Timestamp(new Date().getTime()), null, 2010 + (i % 5));
         }
+        persistenceStore.similarGame(0,1,0.9);
+        persistenceStore.similarGame(0,2,0.5);
 
         persistenceStore.comment(administrator, firstMasquerade, "I liked it");
         Comment editorComment = persistenceStore.comment(editor, secondMasquerade, "There were some flwas but overally likeable game.");

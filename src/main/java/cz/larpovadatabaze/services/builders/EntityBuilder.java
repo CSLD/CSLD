@@ -147,6 +147,16 @@ public class EntityBuilder {
         return playerOfGame;
     }
 
+    public SimilarGame similarGame(int gameId1, int gameId2, double similarity) {
+        SimilarGame similarGame = new SimilarGame();
+        similarGame.setIdGame1(gameId1);
+        similarGame.setIdGame2(gameId2);
+        similarGame.setSimilarity(similarity);
+
+        save(similarGame);
+        return similarGame;
+    }
+
     public void flush() {
         persistenceStore.getCurrentSession().flush();
     }

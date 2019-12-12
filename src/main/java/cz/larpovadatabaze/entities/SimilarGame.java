@@ -1,9 +1,6 @@
 package cz.larpovadatabaze.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="similar_games")
@@ -14,6 +11,8 @@ public class SimilarGame {
     private Integer idGame2;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_similar_games")
+    @SequenceGenerator(sequenceName = "csld_similar_games_id_seq", name="id_gen_similar_games", allocationSize = 1)
     public Integer getId() {
         return id;
     }

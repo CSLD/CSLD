@@ -21,7 +21,7 @@ public class Person implements Serializable, IAutoCompletable {
 
     private String name;
 
-    @Column(name = "name", nullable = false, insertable = true, updatable = true, length = 2147483647, precision = 0)
+    @Column(name = "name", nullable = false, length = 20000)
     @Basic
     public String getName() {
         return name;
@@ -33,7 +33,7 @@ public class Person implements Serializable, IAutoCompletable {
 
     private String description;
 
-    @Column(name = "description", nullable = true, insertable = true, updatable = true, length = 2147483647, precision = 0)
+    @Column(name = "description", length = 200000)
     @Basic
     public String getDescription() {
         return description;
@@ -45,7 +45,7 @@ public class Person implements Serializable, IAutoCompletable {
 
     private String email;
 
-    @Column(name = "email", nullable = false, insertable = true, updatable = true, unique = true, length = 2147483647, precision = 0)
+    @Column(name = "email", nullable = false, unique = true, length = 20000)
     @Basic
     public String getEmail() {
         return email;
@@ -57,7 +57,7 @@ public class Person implements Serializable, IAutoCompletable {
 
     private String nickname;
 
-    @Column(name = "nickname", nullable = true, insertable = true, updatable = true, length = 2147483647, precision = 0)
+    @Column(name = "nickname", length = 20000)
     @Basic
     public String getNickname() {
         return nickname;
@@ -69,7 +69,7 @@ public class Person implements Serializable, IAutoCompletable {
 
     private Date birthDate;
 
-    @Column(name = "birth_date", nullable = true, insertable = true, updatable = true, length = 13, precision = 0)
+    @Column(name = "birth_date", length = 15)
     @Basic
     public Date getBirthDate() {
         return birthDate;
@@ -81,7 +81,7 @@ public class Person implements Serializable, IAutoCompletable {
 
     private String city;
 
-    @Column(name = "address", nullable = true, insertable = true, updatable = true, length = 2147483647, precision = 0)
+    @Column(name = "address", length = 20000)
     @Basic
     public String getCity() {
         return city;

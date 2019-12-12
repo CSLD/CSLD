@@ -64,10 +64,7 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
     }
 
     @Column(
-            name = "is_required",
-            nullable = true,
-            insertable = true,
-            updatable = true
+            name = "is_required"
     )
     @Basic
     public Boolean getRequired() {
@@ -80,10 +77,7 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
 
 
     @Column(
-            name = "is_authorized",
-            nullable = true,
-            insertable = true,
-            updatable = true
+            name = "is_authorized"
     )
     @Basic
     public Boolean getAuthorized() {
@@ -126,9 +120,7 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
     @JoinColumn(
             name = "added_by",
             referencedColumnName = "`id`",
-            nullable = false,
-            insertable = true,
-            updatable = true)
+            nullable = false)
     public CsldUser getAddedBy() {
         return addedBy;
     }

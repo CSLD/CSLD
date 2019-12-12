@@ -13,12 +13,14 @@ import org.dbunit.operation.DatabaseOperation;
 import org.hibernate.FlushMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.SessionHolder;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -79,7 +81,7 @@ abstract public class AcceptanceTest {
 
     @After
     public void tearDown() throws Exception {
-        //cleanDatabase();
+        cleanDatabase();
 
         session.close();
         TransactionSynchronizationManager.unbindResource(sessionFactory);
@@ -93,11 +95,12 @@ abstract public class AcceptanceTest {
                 getService(ConnectionProvider.class).getConnection();
         IDatabaseConnection connection = new DatabaseConnection(toDatabase);
         DatabaseConfig config = connection.getConfig();
-        config.setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, true);
+        config.setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
 
         IDataSet databaseDataSet = connection.createDataSet();
         try {
-            DatabaseOperation.DELETE_ALL.execute(connection, databaseDataSet);
+            // Remove all the constraints.
+            new DeleteAllIgnoringConstraints().execute(connection, databaseDataSet);
         } finally {
             connection.close();
         }

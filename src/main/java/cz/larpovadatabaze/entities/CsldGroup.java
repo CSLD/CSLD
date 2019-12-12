@@ -96,10 +96,7 @@ public class CsldGroup implements Serializable, Identifiable, IAutoCompletable, 
     @ManyToOne(cascade = javax.persistence.CascadeType.ALL)
     @JoinColumn(
             name = "image",
-            referencedColumnName = "`id`",
-            nullable = true,
-            insertable = true,
-            updatable = true)
+            referencedColumnName = "`id`")
     @Cascade(CascadeType.SAVE_UPDATE)
     public Image getImage() {
         return image;

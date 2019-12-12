@@ -28,7 +28,7 @@ public class Rating implements IGameWithRating, Serializable {
 
     private Integer rating;
 
-    @Column(name = "rating", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "rating", nullable = false, length = 10)
     @Basic
     public Integer getRating() {
         return rating;
@@ -42,9 +42,7 @@ public class Rating implements IGameWithRating, Serializable {
 
     @Column(
             name = "added",
-            nullable = false,
-            insertable = true,
-            updatable = true
+            nullable = false
     )
     @Basic
     public Timestamp getAdded() {

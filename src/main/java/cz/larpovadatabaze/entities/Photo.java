@@ -16,7 +16,7 @@ import java.io.Serializable;
 public class Photo implements Serializable, IEntityWithImage {
     private Integer id;
 
-    @Column(name = "id", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "id", nullable = false, length = 10)
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_photo")
     @SequenceGenerator(sequenceName = "csld_photo_id_seq", name="id_gen_photo", allocationSize = 1)
@@ -30,7 +30,7 @@ public class Photo implements Serializable, IEntityWithImage {
 
     private Integer author;
 
-    @Column(name = "author", nullable = true, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "author", length = 10)
     @Basic
     public Integer getAuthor() {
         return author;
@@ -42,7 +42,7 @@ public class Photo implements Serializable, IEntityWithImage {
 
     private Integer orderSeq;
 
-    @Column(name = "orderseq", nullable = true, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "orderseq", length = 10)
     @Basic
     public Integer getOrderSeq() {
         return orderSeq;
@@ -132,9 +132,7 @@ public class Photo implements Serializable, IEntityWithImage {
     @JoinColumn(
             name="game",
             referencedColumnName = "`id`",
-            nullable = false,
-            insertable = true,
-            updatable = true
+            nullable = false
     )
     public Game getGame() {
         return game;
@@ -150,9 +148,7 @@ public class Photo implements Serializable, IEntityWithImage {
     @JoinColumn(
             name = "image",
             referencedColumnName = "`id`",
-            nullable = false,
-            insertable = true,
-            updatable = true
+            nullable = false
     )
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     public Image getImage() {

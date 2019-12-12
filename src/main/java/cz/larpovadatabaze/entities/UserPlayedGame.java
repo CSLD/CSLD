@@ -42,7 +42,7 @@ public class UserPlayedGame implements Serializable {
 
     private UserPlayedGameState state = UserPlayedGameState.NONE;
 
-    @javax.persistence.Column(name = "state", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @javax.persistence.Column(name = "state", nullable = false, length = 10)
     public Integer getState() {
         return state.dbCode;
     }

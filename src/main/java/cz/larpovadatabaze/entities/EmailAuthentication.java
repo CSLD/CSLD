@@ -33,7 +33,7 @@ public class EmailAuthentication implements Serializable {
 
     private String authToken;
 
-    @javax.persistence.Column(name = "auth_token", nullable = false, insertable = true, updatable = true, length = 2147483647, precision = 0)
+    @javax.persistence.Column(name = "auth_token", nullable = false, length = 20000)
     @Basic
     public String getAuthToken() {
         return authToken;
