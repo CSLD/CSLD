@@ -1,6 +1,5 @@
 package cz.larpovadatabaze.components.panel.user;
 
-import cz.larpovadatabaze.components.common.multiac.MultiAutoCompleteComponent;
 import cz.larpovadatabaze.services.CsldUserService;
 import org.apache.log4j.Logger;
 import org.apache.wicket.markup.head.IHeaderResponse;

@@ -31,7 +31,10 @@ import org.hibernate.SessionFactory;
 import org.springframework.core.env.Environment;
 
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Optional;
 
 public class ListEventsPage extends CsldBasePage implements FilterablePage {
     @SpringBean

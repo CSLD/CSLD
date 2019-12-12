@@ -1,6 +1,5 @@
 package cz.larpovadatabaze.services.impl;
 
-import cz.larpovadatabaze.donations.service.BankAccount;
 import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService.IImageResizingStrategy;
 import org.apache.commons.lang.RandomStringUtils;

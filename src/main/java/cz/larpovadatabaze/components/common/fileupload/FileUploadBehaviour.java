@@ -3,7 +3,6 @@ package cz.larpovadatabaze.components.common.fileupload;
 import com.github.openjson.JSONArray;
 import com.github.openjson.JSONException;
 import com.github.openjson.JSONObject;
-import cz.larpovadatabaze.components.common.JSPingBehavior;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.log4j.Logger;

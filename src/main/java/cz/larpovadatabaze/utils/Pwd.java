@@ -1,6 +1,5 @@
 package cz.larpovadatabaze.utils;
 
-import cz.larpovadatabaze.donations.service.BankAccount;
 import org.apache.log4j.Logger;
 
 import javax.crypto.SecretKeyFactory;

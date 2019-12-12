@@ -3,7 +3,6 @@ package cz.larpovadatabaze;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.util.ReflectionUtils;
 
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;

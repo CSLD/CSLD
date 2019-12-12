@@ -1,6 +1,5 @@
 package cz.larpovadatabaze.components.panel.search;
 
-import cz.larpovadatabaze.components.common.multiac.MultiAutoCompleteComponent;
 import cz.larpovadatabaze.components.page.search.GameSearchProvider;
 import cz.larpovadatabaze.components.page.search.SearchResultsPage;
 import cz.larpovadatabaze.components.panel.game.GameBoxPanel;

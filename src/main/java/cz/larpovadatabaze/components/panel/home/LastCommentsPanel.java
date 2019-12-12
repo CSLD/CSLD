@@ -2,7 +2,6 @@ package cz.larpovadatabaze.components.panel.home;
 
 import cz.larpovadatabaze.behavior.dotdotdot.DotDotDotBehavior;
 import cz.larpovadatabaze.components.common.icons.UserIcon;
-import cz.larpovadatabaze.components.common.multiac.MultiAutoCompleteComponent;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.components.page.user.UserDetailPage;

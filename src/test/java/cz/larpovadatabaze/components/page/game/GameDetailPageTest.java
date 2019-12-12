@@ -1,14 +1,9 @@
 package cz.larpovadatabaze.components.page.game;
 
 import cz.larpovadatabaze.AcceptanceTest;
-import cz.larpovadatabaze.TestUtils;
 import cz.larpovadatabaze.components.panel.game.*;
-import cz.larpovadatabaze.services.builders.CzechMasqueradeBuilder;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import static cz.larpovadatabaze.TestUtils.logUser;
 

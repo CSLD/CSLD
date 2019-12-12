@@ -20,12 +20,6 @@
  */
 package cz.larpovadatabaze;
 
-import org.dbunit.operation.AbstractOperation;
-import org.dbunit.operation.DeleteAllOperation;
-import org.dbunit.operation.TruncateTableOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
@@ -34,6 +28,11 @@ import org.dbunit.database.statement.IStatementFactory;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITableIterator;
 import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.operation.AbstractOperation;
+import org.dbunit.operation.DeleteAllOperation;
+import org.dbunit.operation.TruncateTableOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.HashSet;

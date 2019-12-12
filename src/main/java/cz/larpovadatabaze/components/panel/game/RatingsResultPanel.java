@@ -1,7 +1,6 @@
 package cz.larpovadatabaze.components.panel.game;
 
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
-import cz.larpovadatabaze.components.common.multiac.MultiAutoCompleteComponent;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;

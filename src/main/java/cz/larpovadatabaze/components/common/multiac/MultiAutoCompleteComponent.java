@@ -4,7 +4,6 @@ import com.github.openjson.JSONArray;
 import com.github.openjson.JSONException;
 import com.github.openjson.JSONObject;
 import cz.larpovadatabaze.api.Identifiable;
-import cz.larpovadatabaze.components.common.fileupload.FileUploadBehaviour;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Application;

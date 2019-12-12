@@ -12,8 +12,6 @@ import org.junit.Test;
 
 import java.util.Collection;
 
-import static org.junit.Assert.assertEquals;
-
 /**
  * Tests creation of the event using standard panel. User must be logged in in order for this functionality to work.
  */

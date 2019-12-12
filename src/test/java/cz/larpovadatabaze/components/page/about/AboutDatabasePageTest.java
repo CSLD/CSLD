@@ -2,13 +2,7 @@ package cz.larpovadatabaze.components.page.about;
 
 import cz.larpovadatabaze.AcceptanceTest;
 import cz.larpovadatabaze.components.panel.about.AboutDbPanel;
-import org.apache.wicket.util.tester.WicketTester;
-import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-
-import cz.larpovadatabaze.Csld;
 
 /**
  *

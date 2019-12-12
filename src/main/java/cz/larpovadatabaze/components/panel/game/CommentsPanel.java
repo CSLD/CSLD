@@ -4,7 +4,6 @@ import com.googlecode.wicket.jquery.ui.panel.JQueryFeedbackPanel;
 import com.googlecode.wicket.jquery.ui.plugins.wysiwyg.WysiwygEditor;
 import com.googlecode.wicket.jquery.ui.plugins.wysiwyg.toolbar.DefaultWysiwygToolbar;
 import cz.larpovadatabaze.api.ValidatableForm;
-import cz.larpovadatabaze.components.common.multiac.MultiAutoCompleteComponent;
 import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;

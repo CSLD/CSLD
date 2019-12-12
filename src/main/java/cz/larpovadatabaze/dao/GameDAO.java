@@ -1,7 +1,6 @@
 package cz.larpovadatabaze.dao;
 
 import cz.larpovadatabaze.api.GenericHibernateDAO;
-import cz.larpovadatabaze.components.common.multiac.MultiAutoCompleteComponent;
 import cz.larpovadatabaze.dao.builder.GameBuilder;
 import cz.larpovadatabaze.dao.builder.IBuilder;
 import cz.larpovadatabaze.entities.CsldGroup;

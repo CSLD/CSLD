@@ -1,6 +1,5 @@
 package cz.larpovadatabaze.donations.service;
 
-import cz.larpovadatabaze.components.common.multiac.MultiAutoCompleteComponent;
 import cz.larpovadatabaze.donations.model.Donation;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;

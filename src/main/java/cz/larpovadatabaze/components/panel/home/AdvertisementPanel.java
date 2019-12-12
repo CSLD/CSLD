@@ -3,7 +3,6 @@ package cz.larpovadatabaze.components.panel.home;
 import cz.larpovadatabaze.api.Toggles;
 import cz.larpovadatabaze.calendar.component.page.CreateOrUpdateEventPage;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
-import cz.larpovadatabaze.components.common.multiac.MultiAutoCompleteComponent;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.OwlCarouselResourceReference;
 import cz.larpovadatabaze.components.page.game.CreateOrUpdateGamePage;

@@ -1,6 +1,5 @@
 package cz.larpovadatabaze.components.common;
 
-import cz.larpovadatabaze.api.GenericHibernateDAO;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
