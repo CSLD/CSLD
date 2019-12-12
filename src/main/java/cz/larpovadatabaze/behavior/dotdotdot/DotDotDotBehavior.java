@@ -2,6 +2,7 @@ package cz.larpovadatabaze.behavior.dotdotdot;
 
 import com.github.openjson.JSONException;
 import com.github.openjson.JSONObject;
+import cz.larpovadatabaze.exceptions.CsldRuntimeException;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.ComponentTag;
@@ -16,9 +17,8 @@ import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
  * User: Michal Kara Date: 15.3.15 Time: 16:43
  */
 public class DotDotDotBehavior extends Behavior {
-
     // Possible wrapping modes
-    public static enum Wrap { WORD, LETTER, CHILDREN };
+    public enum Wrap { WORD, LETTER, CHILDREN }
 
     private String ellipsis;
     private Wrap wrap;
@@ -27,7 +27,6 @@ public class DotDotDotBehavior extends Behavior {
     private Boolean watch = Boolean.TRUE; // Always watch by default
     private Integer height;
     private Integer tolerance;
-//    private boolean hideAfterComponentOnNoEllipsis;
 
     /**
      * @param ellipsis Custom ellipsis text
@@ -132,7 +131,7 @@ public class DotDotDotBehavior extends Behavior {
             }
         } catch (JSONException e) {
             // Should not happen
-            throw new RuntimeException(e);
+            throw new CsldRuntimeException(e);
         }
 
         // Render JS to init dotdotdot

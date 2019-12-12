@@ -37,12 +37,12 @@ public class ListEventsPage extends CsldBasePage implements FilterablePage {
     @SpringBean
     private SessionFactory sessionFactory;
     @SpringBean
-    private Environment environment;
+    private transient Environment environment;
 
     private enum TabContentType {LIST, MAP, CALENDAR}
     private ListEventsPage.TabNumberModel tabNumberModel;
     private WebMarkupContainer tabContent;
-    private Vector<ListEventsPage.TabContentType> tabContentType;
+    private ArrayList<ListEventsPage.TabContentType> tabContentType;
 
     private WebMarkupContainer requiredLabelsWrapper;
     private FilterEventsSidePanel sidePanel;
@@ -182,23 +182,20 @@ public class ListEventsPage extends CsldBasePage implements FilterablePage {
     private void addOrReplaceTabContentPanel() {
         Fragment fragment;
 
-        switch (tabContentType.get(tabNumberModel.getObject())) {
-            case LIST:
-                // Create list representing the
-                fragment = new Fragment("tabContentPanel", "events", this);
+        if (tabContentType.get(tabNumberModel.getObject()) == TabContentType.LIST) {// Create list representing the
+            fragment = new Fragment("tabContentPanel", "events", this);
 
-                eventsList = new AbstractListEventPanel<Event>("eventsPanel") {
-                    @Override
-                    protected SortableDataProvider<Event, String> getDataProvider() {
-                        return new SortableEventProvider(sessionFactory, filterModel);
-                    }
-                };
-                eventsList.setOutputMarkupId(true);
+            eventsList = new AbstractListEventPanel<Event>("eventsPanel") {
+                @Override
+                protected SortableDataProvider<Event, String> getDataProvider() {
+                    return new SortableEventProvider(sessionFactory, filterModel);
+                }
+            };
+            eventsList.setOutputMarkupId(true);
 
-                fragment.add(eventsList);
-                break;
-            default:
-                throw new IllegalStateException("Invalid tab content type");
+            fragment.add(eventsList);
+        } else {
+            throw new IllegalStateException("Invalid tab content type");
         }
 
         tabContent.addOrReplace(fragment);
@@ -206,8 +203,8 @@ public class ListEventsPage extends CsldBasePage implements FilterablePage {
 
     protected void addTabComponent() {
         tabNumberModel = new ListEventsPage.TabNumberModel(0);
-        List<IModel> models = new ArrayList<IModel>();
-        tabContentType = new Vector<>();
+        List<IModel> models = new ArrayList<>();
+        tabContentType = new ArrayList<>();
 
         // List
         models.add(Model.of(getString("events")));

@@ -10,12 +10,13 @@ public class ErrorClassAppender extends Behavior
     @Override
     public void onComponentTag(Component component, ComponentTag
             tag) {
-        if (((FormComponent<?>) component).isValid() == false) {
-            String cl = tag.getAttribute("class");
+        final String className = "class";
+        if (!((FormComponent<?>) component).isValid()) {
+            String cl = tag.getAttribute(className);
             if (cl == null) {
-                tag.put("class", "error");
+                tag.put(className, "error");
             } else {
-                tag.put("class", "error " + cl);
+                tag.put(className, "error " + cl);
             }
         }
     }

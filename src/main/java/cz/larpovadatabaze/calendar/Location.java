@@ -11,7 +11,7 @@ import java.io.Serializable;
  */
 @Embeddable
 public class Location implements Serializable {
-    @Basic // TODO: See whether there is another way to specify access through properties
+    @Basic
     private Double latitude;
     private Double longitude;
 

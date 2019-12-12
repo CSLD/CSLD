@@ -11,58 +11,45 @@ import java.io.Serializable;
  * Date: 28.4.13
  * Time: 18:16
  */
-public abstract class AbstractEntityModel<T extends Identifiable< ? >> implements IModel<T>
-{
+public abstract class AbstractEntityModel<T extends Identifiable<?>> implements IModel<T> {
     private final Class clazz;
     private Serializable id;
 
     private T entity;
 
-    public AbstractEntityModel(T entity)
-    {
+    public AbstractEntityModel(T entity) {
         clazz = entity.getClass();
         id = entity.getId();
         this.entity = entity;
     }
 
-    public AbstractEntityModel(Class< ? extends T> clazz, Serializable id)
-    {
+    public AbstractEntityModel(Class<? extends T> clazz, Serializable id) {
         this.clazz = clazz;
         this.id = id;
     }
 
-    public T getObject()
-    {
-        if (entity == null)
-        {
-            if (id != null)
-            {
-                entity = load(clazz, id);
-                if (entity == null)
-                {
-                    throw new EntityNotFoundException();
-                }
+    public T getObject() {
+        if (entity == null && id != null) {
+            entity = load(clazz, id);
+            if (entity == null) {
+                throw new EntityNotFoundException();
             }
         }
         return entity;
     }
 
-    public void detach()
-    {
-        if (entity != null)
-        {
-            if (entity.getId() != null)
-            {
-                id = entity.getId();
-                entity = null;
-            }
+    @Override
+    public void detach() {
+        if (entity != null && entity.getId() != null) {
+            id = entity.getId();
+            entity = null;
         }
     }
 
     protected abstract T load(Class clazz, Serializable id);
 
-    public void setObject(T object)
-    {
+    @Override
+    public void setObject(T object) {
         throw new UnsupportedOperationException(getClass() + " does not support #setObject(T entity)");
     }
 }

@@ -21,7 +21,7 @@ public class DotDotDotResourceReference extends PackageResourceReference {
     @Override
     public List<HeaderItem> getDependencies() {
         // We need jQuery
-        return Arrays.asList(new HeaderItem[] {JavaScriptHeaderItem.forReference(Application.get().getJavaScriptLibrarySettings().getJQueryReference())});
+        return Arrays.asList(JavaScriptHeaderItem.forReference(Application.get().getJavaScriptLibrarySettings().getJQueryReference()));
     }
 
     private static final DotDotDotResourceReference singleton = new DotDotDotResourceReference();

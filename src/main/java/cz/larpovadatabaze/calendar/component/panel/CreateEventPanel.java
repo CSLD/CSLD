@@ -58,9 +58,9 @@ public abstract class CreateEventPanel extends AbstractCsldPanel<Event> {
     @SpringBean
     private SessionFactory sessionFactory;
     @SpringBean
-    private GameService gameService;
+    private transient GameService gameService;
     @SpringBean
-    private MailClient mailClient;
+    private transient MailClient mailClient;
 
     private GLatLng lastSelectedLocation;
     private TextField<String> name;
@@ -215,6 +215,7 @@ public abstract class CreateEventPanel extends AbstractCsldPanel<Event> {
         createEvent.add(labelsFeedbackWrapper);
         labelsFeedbackWrapper.add(new CsldFeedbackMessageLabel("labelsFeedback", chooseLabels, labelsFeedbackWrapper, null));
 
+        // addCustomLocation
         createEvent.add(new TextField<>("customLocation", new PropertyModel<String>(this, "customLocation")).add(new AjaxFormComponentUpdatingBehavior("change") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {}

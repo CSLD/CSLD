@@ -50,6 +50,7 @@ import org.apache.wicket.request.Response;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.component.IRequestablePage;
 import org.apache.wicket.request.cycle.AbstractRequestCycleListener;
+import org.apache.wicket.request.cycle.IRequestCycleListener;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.info.PageComponentInfo;
 import org.apache.wicket.request.mapper.parameter.PageParametersEncoder;
@@ -115,12 +116,6 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
             }
         }
     }
-    /**
-     * Constructor
-     */
-	public Csld()
-	{
-	}
 	
 	/**
 	 * @see org.apache.wicket.Application#getHomePage()
@@ -135,8 +130,8 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
 		super.init();
 
         // Exception reporting
-        getRequestCycleListeners().add(new AbstractRequestCycleListener() {
-            final Logger logger = Logger.getLogger(Csld.class);
+        getRequestCycleListeners().add(new IRequestCycleListener() {
+            final Logger logger = Logger.getLogger(IRequestCycleListener.class);
 
             @Override
             public IRequestHandler onException(RequestCycle cycle, Exception ex) {
@@ -171,10 +166,9 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
             guard.addPattern("+*.ttf");
         }
 
-        getRequestCycleListeners().add(new AbstractRequestCycleListener() {
+        getRequestCycleListeners().add(new IRequestCycleListener() {
             @Override
             public void onBeginRequest(RequestCycle cycle) {
-                super.onBeginRequest(cycle);
                 CsldAuthenticatedWebSession session = CsldAuthenticatedWebSession.get();
                 if (session.isClearRequested()) {
                     session.clear();
@@ -214,6 +208,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         return CsldSignInPage.class;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     protected IConverterLocator newConverterLocator() {
         ConverterLocator locator = (ConverterLocator) super.newConverterLocator();
 
@@ -287,7 +282,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     }
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    public void setApplicationContext(ApplicationContext applicationContext) {
         ctx = applicationContext;
     }
 
