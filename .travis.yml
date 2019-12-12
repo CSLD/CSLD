@@ -23,12 +23,6 @@ branches:
     - master
     - dev
 
-deploy:
-  provider: script
-  script: bash docker_push
-  on:
-    branch: master
-
 addons:
   sonarcloud:
     organization: "csld"
