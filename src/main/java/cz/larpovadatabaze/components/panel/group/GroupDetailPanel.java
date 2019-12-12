@@ -5,7 +5,6 @@ import cz.larpovadatabaze.components.common.icons.GroupIcon;
 import cz.larpovadatabaze.components.page.user.UserDetailPage;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;

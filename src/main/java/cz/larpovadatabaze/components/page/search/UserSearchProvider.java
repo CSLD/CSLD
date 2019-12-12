@@ -1,9 +1,7 @@
 package cz.larpovadatabaze.components.page.search;
 
 import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.utils.HbUtils;
 import cz.larpovadatabaze.utils.Strings;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;

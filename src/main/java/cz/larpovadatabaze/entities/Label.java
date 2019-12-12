@@ -1,10 +1,9 @@
 package cz.larpovadatabaze.entities;
 
-import cz.larpovadatabaze.api.*;
+import cz.larpovadatabaze.api.Identifiable;
 import cz.larpovadatabaze.components.common.multiac.IAutoCompletable;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
 import java.io.Serializable;
 
 /**

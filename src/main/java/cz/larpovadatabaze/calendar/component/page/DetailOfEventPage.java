@@ -6,18 +6,13 @@ import cz.larpovadatabaze.calendar.component.panel.DetailedEventPanel;
 import cz.larpovadatabaze.calendar.component.panel.EditEventPanel;
 import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.calendar.model.EventModel;
-import cz.larpovadatabaze.calendar.service.DatabaseEvents;
-import cz.larpovadatabaze.calendar.service.LarpCzEvents;
-import cz.larpovadatabaze.calendar.service.ReadOnlyEvents;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.components.panel.game.GameListPanel;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.utils.Strings;
-import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -30,11 +25,8 @@ import org.wicketstuff.gmap.GMapHeaderContributor;
 import org.wicketstuff.gmap.api.GLatLng;
 import org.wicketstuff.gmap.api.GMarker;
 import org.wicketstuff.gmap.api.GMarkerOptions;
-import org.wicketstuff.gmap.event.ClickListener;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * It shows detailed information about one event.

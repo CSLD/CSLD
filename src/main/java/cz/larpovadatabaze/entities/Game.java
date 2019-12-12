@@ -3,11 +3,11 @@ package cz.larpovadatabaze.entities;
 import cz.larpovadatabaze.api.Identifiable;
 import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.components.common.multiac.IAutoCompletable;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;

@@ -1,12 +1,10 @@
 package cz.larpovadatabaze.entities;
 
 import cz.larpovadatabaze.api.Identifiable;
-import cz.larpovadatabaze.security.CsldRoles;
 import cz.larpovadatabaze.components.common.multiac.IAutoCompletable;
+import cz.larpovadatabaze.security.CsldRoles;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.io.Serializable;

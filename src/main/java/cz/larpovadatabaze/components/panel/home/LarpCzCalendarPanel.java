@@ -4,7 +4,6 @@ import cz.larpovadatabaze.calendar.component.page.DetailOfEventPage;
 import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.calendar.service.DatabaseEvents;
 import cz.larpovadatabaze.calendar.service.FilteredReadOnlyEvents;
-import cz.larpovadatabaze.calendar.service.ReadOnlyEvents;
 import cz.larpovadatabaze.components.common.BookmarkableLinkWithLabel;
 import cz.larpovadatabaze.models.FilterEvent;
 import org.apache.wicket.markup.html.basic.Label;

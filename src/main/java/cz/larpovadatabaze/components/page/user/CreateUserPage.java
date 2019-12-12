@@ -8,7 +8,6 @@ import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.CsldUserService;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 

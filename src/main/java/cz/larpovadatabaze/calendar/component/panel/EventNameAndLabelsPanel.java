@@ -4,8 +4,6 @@ import cz.larpovadatabaze.calendar.component.page.DetailOfEventPage;
 import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.game.GameDetail;
-import cz.larpovadatabaze.entities.Game;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;

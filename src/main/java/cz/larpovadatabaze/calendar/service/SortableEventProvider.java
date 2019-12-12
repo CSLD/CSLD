@@ -2,7 +2,6 @@ package cz.larpovadatabaze.calendar.service;
 
 import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.models.FilterEvent;
-import cz.larpovadatabaze.models.FilterGame;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;

@@ -1,7 +1,6 @@
 package cz.larpovadatabaze.components.panel.game;
 
 import cz.larpovadatabaze.components.common.FilterablePage;
-import cz.larpovadatabaze.components.page.game.ListGamePage;
 import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.services.LabelService;
 import org.apache.commons.lang.WordUtils;

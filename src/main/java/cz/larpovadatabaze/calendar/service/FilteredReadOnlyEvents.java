@@ -6,7 +6,9 @@ import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.models.FilterEvent;
 import org.apache.wicket.model.IModel;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  *

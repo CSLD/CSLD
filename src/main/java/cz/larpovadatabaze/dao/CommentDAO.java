@@ -10,9 +10,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * TODO: Do not return comments of hidden games.

@@ -6,7 +6,6 @@ import com.googlecode.wicket.jquery.ui.panel.JQueryFeedbackPanel;
 import com.googlecode.wicket.jquery.ui.plugins.wysiwyg.WysiwygEditor;
 import com.googlecode.wicket.jquery.ui.plugins.wysiwyg.toolbar.DefaultWysiwygToolbar;
 import cz.larpovadatabaze.api.ValidatableForm;
-
 import cz.larpovadatabaze.calendar.Location;
 import cz.larpovadatabaze.calendar.component.common.TimeTextField;
 import cz.larpovadatabaze.calendar.component.page.DetailOfEventPage;

@@ -3,7 +3,9 @@ package cz.larpovadatabaze.donations.service;
 import cz.larpovadatabaze.donations.model.Donation;
 import cz.larpovadatabaze.donations.model.Donor;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * When retrieving Donation it aggregates these donations based on the person who donated.

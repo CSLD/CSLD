@@ -1,7 +1,5 @@
 package cz.larpovadatabaze.components.common;
 
-import java.util.Date;
-
 /**
  * Interface necessary to implement for Ajax enabled filtering.
  */

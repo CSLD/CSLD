@@ -1,7 +1,5 @@
 package cz.larpovadatabaze.components.common;
 
-import org.apache.wicket.markup.html.basic.Label;
-import cz.larpovadatabaze.entities.Upvote;
 import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;

@@ -5,7 +5,6 @@ import cz.larpovadatabaze.components.common.social.SocialShareButtons;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.ListGamePage;
 import org.apache.commons.lang.StringUtils;
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -16,12 +15,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.wicketstuff.gmap.GMap;
-import org.wicketstuff.gmap.GMapHeaderContributor;
-import org.wicketstuff.gmap.api.GLatLng;
-import org.wicketstuff.gmap.api.GMarker;
-import org.wicketstuff.gmap.api.GMarkerOptions;
-import org.wicketstuff.gmap.event.ClickListener;
 
 import java.util.List;
 

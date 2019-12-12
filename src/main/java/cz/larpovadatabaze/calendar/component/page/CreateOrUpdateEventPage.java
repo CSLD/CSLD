@@ -4,25 +4,16 @@ import cz.larpovadatabaze.api.Toggles;
 import cz.larpovadatabaze.calendar.component.panel.CreateEventPanel;
 import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.calendar.model.EventModel;
-import cz.larpovadatabaze.calendar.service.DatabaseEvents;
-import cz.larpovadatabaze.calendar.service.Events;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.HomePage;
-import cz.larpovadatabaze.components.panel.game.ChooseLabelsPanel;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.core.env.Environment;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class CreateOrUpdateEventPage extends CsldBasePage {
     @SpringBean
