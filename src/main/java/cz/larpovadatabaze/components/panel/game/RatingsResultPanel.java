@@ -1,12 +1,14 @@
 package cz.larpovadatabaze.components.panel.game;
 
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
+import cz.larpovadatabaze.components.common.multiac.MultiAutoCompleteComponent;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.RatingService;
+import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -30,6 +32,7 @@ import java.util.List;
  * number.
  */
 public class RatingsResultPanel extends AbstractCsldPanel<Game> {
+    private final static Logger logger = Logger.getLogger(RatingsResultPanel.class);
     private static final int NUM_RATINGS = 10;
 
     @SpringBean
@@ -187,7 +190,7 @@ public class RatingsResultPanel extends AbstractCsldPanel<Game> {
                     myRating.setObject(0);
                 }
             } catch (WrongParameterException e) {
-                e.printStackTrace();
+                logger.error(e);
                 myRating.setObject(0);
             }
         } else {

@@ -526,7 +526,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
         this.played = played;
     }
 
-    public Image coverImage;
+    private Image coverImage;
 
     @ManyToOne(cascade = javax.persistence.CascadeType.ALL)
     @JoinColumn(

@@ -1,9 +1,11 @@
 package cz.larpovadatabaze.components.panel.search;
 
+import cz.larpovadatabaze.components.common.multiac.MultiAutoCompleteComponent;
 import cz.larpovadatabaze.components.page.search.GameSearchProvider;
 import cz.larpovadatabaze.components.page.search.SearchResultsPage;
 import cz.larpovadatabaze.components.panel.game.GameBoxPanel;
 import cz.larpovadatabaze.entities.Game;
+import org.apache.log4j.Logger;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
@@ -30,7 +32,7 @@ import java.util.Map;
  * Box containing field for queryString and submitting button.
  */
 public class SearchBoxPanel extends Panel {
-
+    private final static Logger logger = Logger.getLogger(SearchBoxPanel.class);
     public final static String QUERY_PARAMETER_NAME = "queryString";
     private static final int MAX_RESULTS_IN_DROPDOWN = 5;
 
@@ -129,7 +131,7 @@ public class SearchBoxPanel extends Panel {
             args.put("minTermLength", Long.toString(MIN_TERM_LENGTH));
             response.render(OnDomReadyHeaderItem.forScript(tt.asString(args)));
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e);
             throw new RuntimeException(e);
         }
     }

@@ -1,9 +1,11 @@
 package cz.larpovadatabaze.services.impl;
 
+import cz.larpovadatabaze.donations.service.BankAccount;
 import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService.IImageResizingStrategy;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.request.resource.AbstractResource;
 import org.apache.wicket.request.resource.IResource;
@@ -22,7 +24,7 @@ import java.io.*;
  * Time: 20:44
  */
 public class LocalFiles implements FileService {
-
+    private final static Logger logger = Logger.getLogger(LocalFiles.class);
     private static final String PREVIEW_POSTFIX = "-p";
 
     /**
@@ -188,7 +190,7 @@ public class LocalFiles implements FileService {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
 
         int width = 0, height = 0;
@@ -233,10 +235,18 @@ public class LocalFiles implements FileService {
     public void removeFiles(String relativePath) {
         if (relativePath != null) {
             File f = getPathInDataDir(relativePath);
-            if (f.exists()) f.delete();
+            if (f.exists()) {
+                if(!f.delete()) {
+                    logger.warn("It wasn't possible to delete file " + relativePath);
+                }
+            }
 
             f = getFilePreviewInDataDir(relativePath);
-            if (f.exists()) f.delete();
+            if (f.exists()) {
+                if(!f.delete()) {
+                    logger.warn("It wasn't possible to delete file " + relativePath);
+                }
+            }
         }
     }
 }

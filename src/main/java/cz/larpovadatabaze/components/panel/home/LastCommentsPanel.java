@@ -2,6 +2,7 @@ package cz.larpovadatabaze.components.panel.home;
 
 import cz.larpovadatabaze.behavior.dotdotdot.DotDotDotBehavior;
 import cz.larpovadatabaze.components.common.icons.UserIcon;
+import cz.larpovadatabaze.components.common.multiac.MultiAutoCompleteComponent;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.components.page.user.UserDetailPage;
@@ -11,6 +12,7 @@ import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.services.CommentService;
 import cz.larpovadatabaze.services.ImageService;
+import org.apache.log4j.Logger;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
@@ -38,6 +40,7 @@ import java.util.List;
  * This panel shows shortened info about last comments.
  */
 public class LastCommentsPanel extends Panel {
+    private final static Logger logger = Logger.getLogger(LastCommentsPanel.class);
     /** Number of columns */
     private static final int N_COLUMNS = 3;
 
@@ -180,7 +183,7 @@ public class LastCommentsPanel extends Panel {
         try (PackageTextTemplate ptt = (new PackageTextTemplate(getClass(), "LastCommentsPanel.js"))) {
             response.render(OnDomReadyHeaderItem.forScript(ptt.getString()));
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e);
             throw new RuntimeException(e);
         }
     }

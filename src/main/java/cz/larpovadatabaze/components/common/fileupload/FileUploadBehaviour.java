@@ -3,8 +3,10 @@ package cz.larpovadatabaze.components.common.fileupload;
 import com.github.openjson.JSONArray;
 import com.github.openjson.JSONException;
 import com.github.openjson.JSONObject;
+import cz.larpovadatabaze.components.common.JSPingBehavior;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
+import org.apache.log4j.Logger;
 import org.apache.wicket.behavior.AbstractAjaxBehavior;
 import org.apache.wicket.protocol.http.servlet.MultipartServletWebRequest;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
@@ -31,6 +33,7 @@ public class FileUploadBehaviour extends AbstractAjaxBehavior {
     private final long maxUploadSize;
     private final IFileUploadCallback uploadCallback;
     private final String paramName;
+    private final static Logger logger = Logger.getLogger(FileUploadBehaviour.class);
 
     public FileUploadBehaviour(long maxUploadSize, IFileUploadCallback uploadCallback, String paramName) {
         this.maxUploadSize = maxUploadSize;
@@ -83,7 +86,7 @@ public class FileUploadBehaviour extends AbstractAjaxBehavior {
                 try {
                     fileJson.put("error", e.getMessage());
                 } catch (JSONException e1) {
-                    e1.printStackTrace();
+                    logger.error(e1);
                 }
             }
 

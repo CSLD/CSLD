@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.dao;
 
 import cz.larpovadatabaze.api.GenericHibernateDAO;
+import cz.larpovadatabaze.components.common.multiac.MultiAutoCompleteComponent;
 import cz.larpovadatabaze.dao.builder.GameBuilder;
 import cz.larpovadatabaze.dao.builder.IBuilder;
 import cz.larpovadatabaze.entities.CsldGroup;
@@ -9,6 +10,7 @@ import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.models.FilterGame;
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.HibernateException;
@@ -26,6 +28,7 @@ import java.util.List;
  */
 @Repository
 public class GameDAO extends GenericHibernateDAO<Game, Integer> {
+    private final static Logger logger = Logger.getLogger(GameDAO.class);
     /**
      * How old game is considered new
      */
@@ -303,7 +306,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
             flush();
             return true;
         } catch (HibernateException ex) {
-            ex.printStackTrace();
+            logger.error(ex);
         }
 
         try {
@@ -313,7 +316,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
             flush();
             return true;
         } catch (HibernateException ex) {
-            ex.printStackTrace();
+            logger.error(ex);
             return false;
         }
     }

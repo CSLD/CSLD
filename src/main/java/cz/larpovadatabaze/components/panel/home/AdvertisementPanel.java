@@ -3,6 +3,7 @@ package cz.larpovadatabaze.components.panel.home;
 import cz.larpovadatabaze.api.Toggles;
 import cz.larpovadatabaze.calendar.component.page.CreateOrUpdateEventPage;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
+import cz.larpovadatabaze.components.common.multiac.MultiAutoCompleteComponent;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.OwlCarouselResourceReference;
 import cz.larpovadatabaze.components.page.game.CreateOrUpdateGamePage;
@@ -11,6 +12,7 @@ import cz.larpovadatabaze.components.page.user.CreateUserPage;
 import cz.larpovadatabaze.components.page.user.UserDetailPage;
 import cz.larpovadatabaze.entities.Advertisement;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import org.apache.log4j.Logger;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
@@ -38,6 +40,7 @@ import java.util.Map;
 public class AdvertisementPanel extends AbstractCsldPanel<List<Advertisement>> {
     @SpringBean
     private Environment environment;
+    private final static Logger logger = Logger.getLogger(AdvertisementPanel.class);
 
     /**
      * Model to load advertisements
@@ -136,7 +139,7 @@ public class AdvertisementPanel extends AbstractCsldPanel<List<Advertisement>> {
             args.put("carouselId", carousel.getMarkupId());
             response.render(OnDomReadyHeaderItem.forScript(tt.asString(args)));
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e);
             throw new RuntimeException(e);
         }
     }

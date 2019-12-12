@@ -1,11 +1,13 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import cz.larpovadatabaze.components.common.multiac.MultiAutoCompleteComponent;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.RatingService;
+import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -22,6 +24,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * not rated by the user previously.
  */
 public class RatingsPanel extends Panel {
+    private final static Logger logger = Logger.getLogger(RatingsPanel.class);
     private static final int NUM_STARS = 10;
     @SpringBean
     RatingService ratingService;
@@ -45,7 +48,7 @@ public class RatingsPanel extends Panel {
                 actualRating = ratingService.getUserRatingOfGame(loggedId, gameId);
             } catch (WrongParameterException e) {
                 // This should never happen.
-                e.printStackTrace();
+                logger.error(e);
             }
 
             if(actualRating != null){

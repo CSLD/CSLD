@@ -4,7 +4,9 @@ import com.github.openjson.JSONArray;
 import com.github.openjson.JSONException;
 import com.github.openjson.JSONObject;
 import cz.larpovadatabaze.api.Identifiable;
+import cz.larpovadatabaze.components.common.fileupload.FileUploadBehaviour;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.apache.wicket.Application;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -33,7 +35,7 @@ import java.util.Map;
  * User: Michal Kara Date: 27.6.15 Time: 14:58
  */
 public class MultiAutoCompleteComponent<T extends Identifiable & IAutoCompletable> extends FormComponent<List<T>> {
-
+    private final static Logger logger = Logger.getLogger(MultiAutoCompleteComponent.class);
     public static final String QUERY_PARAM = "query";
 
     /**
@@ -105,7 +107,7 @@ public class MultiAutoCompleteComponent<T extends Identifiable & IAutoCompletabl
 
             response.render(OnDomReadyHeaderItem.forScript(ptt.asString(args)));
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e);
             throw new RuntimeException(e);
         }
     }

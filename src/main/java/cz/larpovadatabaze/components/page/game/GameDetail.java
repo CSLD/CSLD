@@ -182,7 +182,7 @@ public class GameDetail extends CsldBasePage {
                 if (o1.getPluses().size() != o2.getPluses().size()) {
                     return o2.getPluses().size() - o1.getPluses().size();
                 } else {
-                    return -o1.getAdded().compareTo(o2.getAdded());
+                    return -(o1.getAdded().compareTo(o2.getAdded()));
                 }
             });
 

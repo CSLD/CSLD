@@ -1,6 +1,8 @@
 package cz.larpovadatabaze.components.panel.user;
 
+import cz.larpovadatabaze.components.common.multiac.MultiAutoCompleteComponent;
 import cz.larpovadatabaze.services.CsldUserService;
+import org.apache.log4j.Logger;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
@@ -21,7 +23,7 @@ import java.util.Map;
  * User: Michal Kara Date: 21.12.14 Time: 7:03
  */
 public class ReCaptchaComponent extends FormComponent<String> {
-
+    private final static Logger logger = Logger.getLogger(ReCaptchaComponent.class);
     private static final String FIELD_NAME="g-recaptcha-response";
 
     @SpringBean
@@ -111,7 +113,7 @@ public class ReCaptchaComponent extends FormComponent<String> {
             args.put("siteKey", userService.getReCaptchaSiteKey());
             response.render(OnDomReadyHeaderItem.forScript(tt.asString(args)));
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e);
             throw new RuntimeException(e);
         }
     }

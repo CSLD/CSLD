@@ -1,9 +1,11 @@
 package cz.larpovadatabaze.components.panel.home;
 
+import cz.larpovadatabaze.components.common.multiac.MultiAutoCompleteComponent;
 import cz.larpovadatabaze.components.page.OwlCarouselResourceReference;
 import cz.larpovadatabaze.components.panel.game.GameBoxPanel;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.services.GameService;
+import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
@@ -25,6 +27,7 @@ import java.util.List;
  * This panel shows information about last added games
  */
 public class RecentGamesPanel extends Panel {
+    private final static Logger logger = Logger.getLogger(MultiAutoCompleteComponent.class);
     @SpringBean
     GameService gameService;
 
@@ -95,7 +98,7 @@ public class RecentGamesPanel extends Panel {
             args.put("carouselId", carousel.getMarkupId());
             response.render(OnDomReadyHeaderItem.forScript(tt.asString(args)));
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e);
             throw new RuntimeException(e);
         }
     }

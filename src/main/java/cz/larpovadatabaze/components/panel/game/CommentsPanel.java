@@ -4,6 +4,7 @@ import com.googlecode.wicket.jquery.ui.panel.JQueryFeedbackPanel;
 import com.googlecode.wicket.jquery.ui.plugins.wysiwyg.WysiwygEditor;
 import com.googlecode.wicket.jquery.ui.plugins.wysiwyg.toolbar.DefaultWysiwygToolbar;
 import cz.larpovadatabaze.api.ValidatableForm;
+import cz.larpovadatabaze.components.common.multiac.MultiAutoCompleteComponent;
 import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
@@ -11,6 +12,7 @@ import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.CommentService;
 import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -30,6 +32,8 @@ import java.util.ArrayList;
 public class CommentsPanel extends Panel {
     private final String VARIATION_DISABLED = "disabled";
     private final String VARIATION_EDIT = "edit";
+
+    private final static Logger logger = Logger.getLogger(CommentsPanel.class);
 
     @SpringBean
     CommentService commentService;
@@ -103,7 +107,7 @@ public class CommentsPanel extends Panel {
                     try {
                         commentService.remove(actualComment);
                     } catch (Exception ex) {
-                        ex.printStackTrace();
+                        logger.error(ex);
                     }
                 } else {
                     actualComment.setComment(Jsoup.clean(newComment, Whitelist.basic()));

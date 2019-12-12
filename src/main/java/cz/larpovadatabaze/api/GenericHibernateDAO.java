@@ -1,6 +1,8 @@
 package cz.larpovadatabaze.api;
 
+import cz.larpovadatabaze.calendar.service.LarpCzEvents;
 import cz.larpovadatabaze.dao.builder.IBuilder;
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
@@ -16,6 +18,8 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 		implements GenericDAO<T, ID> {
     @Autowired
 	protected SessionFactory sessionFactory;
+
+    private final static Logger logger = Logger.getLogger(GenericHibernateDAO.class);
 
 	public GenericHibernateDAO() {}
 
@@ -96,7 +100,7 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
             sessionFactory.getCache().evictEntityRegion(getBuilder().getClassSpecific());
             return true;
         } catch (HibernateException ex){
-            ex.printStackTrace();
+            logger.error(ex);
         }
 
         try{
@@ -104,7 +108,7 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
             flush();
             return true;
         } catch (HibernateException ex){
-            ex.printStackTrace();
+            logger.error(ex);
             return false;
         }
     }

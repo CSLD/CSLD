@@ -1,5 +1,8 @@
 package cz.larpovadatabaze.utils;
 
+import cz.larpovadatabaze.donations.service.BankAccount;
+import org.apache.log4j.Logger;
+
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.io.UnsupportedEncodingException;
@@ -15,6 +18,8 @@ import java.security.spec.InvalidKeySpecException;
  * Time: 13:49
  */
 public class Pwd {
+    private final static Logger logger = Logger.getLogger(Pwd.class);
+
     public static String getMD5(String passwd)
     {
         if(passwd == null) {
@@ -25,16 +30,13 @@ public class Pwd {
             m = MessageDigest.getInstance("MD5");
             m.update(passwd.getBytes("UTF8"));
             byte s[] = m.digest();
-            String result = "";
-            for (int i = 0; i < s.length; i++) {
-                result += Integer.toHexString((0x000000ff & s[i]) | 0xffffff00).substring(6);
+            StringBuilder result = new StringBuilder();
+            for (byte b : s) {
+                result.append(Integer.toHexString((0x000000ff & b) | 0xffffff00).substring(6));
             }
-            return result;
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            return result.toString();
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+            logger.error(e);
             return null;
         }
     }
@@ -50,11 +52,8 @@ public class Pwd {
             SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
             byte[] hash = skf.generateSecret(spec).getEncoded();
             return iterations + ":" + toHex(salt) + ":" + toHex(hash);
-        } catch (NoSuchAlgorithmException ex) {
-            ex.printStackTrace();
-            return null;
-        } catch (InvalidKeySpecException e) {
-            e.printStackTrace();
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            logger.error(e);
             return null;
         }
     }
@@ -90,14 +89,8 @@ public class Pwd {
                 diff |= hash[i] ^ testHash[i];
             }
             return diff == 0;
-        } catch (NoSuchAlgorithmException ex) {
-            ex.printStackTrace();
-            return false;
-        } catch (InvalidKeySpecException e) {
-            e.printStackTrace();
-            return false;
-        } catch(NumberFormatException e) {
-            System.out.println("Old password");
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException | NumberFormatException e) {
+            logger.error(e);
             return false;
         }
     }

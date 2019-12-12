@@ -18,18 +18,18 @@ public class CzechMasqueradeBuilder{
     @Autowired
     private EntityBuilder persistenceStore;
 
-    public CsldUser administrator;
-    public CsldUser editor;
-    public CsldUser user;
+    private CsldUser administrator;
+    private CsldUser editor;
+    private CsldUser user;
 
-    public CsldGroup nosferatu;
-    public CsldGroup toreador;
+    private CsldGroup nosferatu;
+    private CsldGroup toreador;
 
-    public Game firstMasquerade;
-    public Game secondMasquerade;
+    private Game firstMasquerade;
+    private Game secondMasquerade;
 
-    public Label vampire;
-    public Label dramatic;
+    private Label vampire;
+    private Label dramatic;
 
     public void build() {
         String mailTemplate = "%s@masquerade.test";
