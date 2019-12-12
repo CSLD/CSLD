@@ -8,7 +8,7 @@ services:
   - docker
 
 before_install:
-  - psql -c 'create user csld with password\'csld\'; create database csld_dev with owner csld;' -U postgres
+  - psql -c 'create user csld with password '"'"'csld'"'"'; create database csld_dev with owner csld;' -U postgres
   - sudo apt-get -y install awscli
 
 script:
