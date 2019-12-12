@@ -52,7 +52,7 @@ public class ForgotPassword extends CsldBasePage {
                 mailClient.sendMail(mailBody, mail);
                 emailAuthenticationService.saveOrUpdate(emailAuthentication);
 
-                new RestartResponseException(HomePage.class);
+                throw new RestartResponseException(HomePage.class);
             }
         };
         FeedbackPanel feedback = new FeedbackPanel("feedback");

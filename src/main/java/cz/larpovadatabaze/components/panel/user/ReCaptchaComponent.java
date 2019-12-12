@@ -13,6 +13,7 @@ import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -104,10 +105,14 @@ public class ReCaptchaComponent extends FormComponent<String> {
         response.render(JavaScriptHeaderItem.forUrl("https://www.google.com/recaptcha/api.js"));
 
         // Explicitly render re-captcha on load so it works when refreshing form via AJAX
-        PackageTextTemplate tt = new PackageTextTemplate(getClass(), "ReCaptchaComponent_render.js");
-        Map<String, String> args = new HashMap<String, String>();
-        args.put("htmlElementId", getMarkupId());
-        args.put("siteKey", userService.getReCaptchaSiteKey());
-        response.render(OnDomReadyHeaderItem.forScript(tt.asString(args)));
+        try(PackageTextTemplate tt = new PackageTextTemplate(getClass(), "ReCaptchaComponent_render.js")) {
+            Map<String, String> args = new HashMap<String, String>();
+            args.put("htmlElementId", getMarkupId());
+            args.put("siteKey", userService.getReCaptchaSiteKey());
+            response.render(OnDomReadyHeaderItem.forScript(tt.asString(args)));
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 }

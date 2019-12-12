@@ -20,6 +20,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -86,9 +87,13 @@ public class RecentPhotosPanel extends Panel {
         response.render(JavaScriptHeaderItem.forReference(OwlCarouselResourceReference.get()));
 
         // Render carousel init
-        PackageTextTemplate tt = new PackageTextTemplate(getClass(), "RecentPhotosPanel.js");
-        HashMap<String, String> args = new HashMap<String, String>();
-        args.put("carouselId", carousel.getMarkupId());
-        response.render(OnDomReadyHeaderItem.forScript(tt.asString(args)));
+        try(PackageTextTemplate tt = new PackageTextTemplate(getClass(), "RecentPhotosPanel.js")) {
+            HashMap<String, String> args = new HashMap<String, String>();
+            args.put("carouselId", carousel.getMarkupId());
+            response.render(OnDomReadyHeaderItem.forScript(tt.asString(args)));
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 }

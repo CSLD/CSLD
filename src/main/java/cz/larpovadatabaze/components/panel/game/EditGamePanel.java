@@ -54,7 +54,7 @@ public class EditGamePanel extends Panel {
                 if(model.getObject() == null || model.getObject().getAuthors() == null || model.getObject().getAddedBy() == null) {
                     isVisible = false;
                 } else if(!ids.contains(logged.getId()) &&
-                        !(model.getObject().getAddedBy().getId() == logged.getId())){
+                        !(model.getObject().getAddedBy().getId().equals(logged.getId()))){
                     isVisible = false;
                 }
             }

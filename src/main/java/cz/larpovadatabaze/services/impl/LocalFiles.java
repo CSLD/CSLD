@@ -191,7 +191,12 @@ public class LocalFiles implements FileService {
             e.printStackTrace();
         }
 
-        return new ResizeAndSaveReturn(fileName, imageGameSized.getWidth(), imageGameSized.getHeight());
+        int width = 0, height = 0;
+        if(imageGameSized != null) {
+            width = imageGameSized.getWidth();
+            height = imageGameSized.getHeight();
+        }
+        return new ResizeAndSaveReturn(fileName, width, height);
     }
 
     @Override

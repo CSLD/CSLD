@@ -53,7 +53,7 @@ import org.wicketstuff.gmap.event.ClickListener;
 
 import java.util.*;
 
-abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
+public abstract class CreateEventPanel extends AbstractCsldPanel<Event> {
     private static final int AUTOCOMPLETE_CHOICES = 10;
 
     @SpringBean

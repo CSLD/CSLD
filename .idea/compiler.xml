@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="CSLD" target="1.8" />
+      <module name="CSLD" target="9" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -28,9 +28,9 @@ import java.util.List;
 @Entity(name = "event")
 public class Event implements cz.larpovadatabaze.api.Entity {
     @Transient
-    private SimpleDateFormat czechDate = new SimpleDateFormat("dd.MM.YYYY HH:mm");
+    private SimpleDateFormat czechDate = new SimpleDateFormat("dd.MM.yyyy HH:mm");
     @Transient
-    private SimpleDateFormat czechDateWithoutTime = new SimpleDateFormat("dd.MM.YYYY");
+    private SimpleDateFormat czechDateWithoutTime = new SimpleDateFormat("dd.MM.yyyy");
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_calendar")

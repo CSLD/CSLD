@@ -26,6 +26,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
 import org.springframework.core.env.Environment;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -130,9 +131,13 @@ public class AdvertisementPanel extends AbstractCsldPanel<List<Advertisement>> {
         response.render(JavaScriptHeaderItem.forReference(OwlCarouselResourceReference.get()));
 
         /// Init carousel
-        PackageTextTemplate tt = new PackageTextTemplate(getClass(), "AdvertisementPanel.js");
-        Map<String, String> args = new HashMap<String, String>();
-        args.put("carouselId", carousel.getMarkupId());
-        response.render(OnDomReadyHeaderItem.forScript(tt.asString(args)));
+        try(PackageTextTemplate tt = new PackageTextTemplate(getClass(), "AdvertisementPanel.js")) {
+            Map<String, String> args = new HashMap<String, String>();
+            args.put("carouselId", carousel.getMarkupId());
+            response.render(OnDomReadyHeaderItem.forScript(tt.asString(args)));
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 }

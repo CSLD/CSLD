@@ -21,6 +21,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.template.PackageTextTemplate;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -119,14 +120,18 @@ public class SearchBoxPanel extends Panel {
         super.renderHead(response);
 
         // Render javascript for search-on-type
-        PackageTextTemplate tt = new PackageTextTemplate(getClass(), "SearchBoxPanel.js");
-        Map<String, String> args = new HashMap<>();
-        args.put("textInputId", searchExpression.getMarkupId(true));
-        args.put("searchLinkId", previewLink.getMarkupId(true));
-        args.put("resultWrapperId", searchResultWrapper.getMarkupId(true));
-        args.put("timeoutMS", Long.toString(TIMEOUT_MS));
-        args.put("minTermLength", Long.toString(MIN_TERM_LENGTH));
-        response.render(OnDomReadyHeaderItem.forScript(tt.asString(args)));
+        try(PackageTextTemplate tt = new PackageTextTemplate(getClass(), "SearchBoxPanel.js")) {
+            Map<String, String> args = new HashMap<>();
+            args.put("textInputId", searchExpression.getMarkupId(true));
+            args.put("searchLinkId", previewLink.getMarkupId(true));
+            args.put("resultWrapperId", searchResultWrapper.getMarkupId(true));
+            args.put("timeoutMS", Long.toString(TIMEOUT_MS));
+            args.put("minTermLength", Long.toString(MIN_TERM_LENGTH));
+            response.render(OnDomReadyHeaderItem.forScript(tt.asString(args)));
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 
     /**

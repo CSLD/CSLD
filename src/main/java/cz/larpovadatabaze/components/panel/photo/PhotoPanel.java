@@ -80,7 +80,7 @@ public class PhotoPanel extends Panel {
                     if (o1.orderSeq < o2.orderSeq) return -1;
                     if (o1.orderSeq > o2.orderSeq) return 1;
                     if (o1.getId() < o2.getId()) return -1;
-                    if (o2.getId() > o2.getId()) return 1;
+                    if (o1.getId() > o2.getId()) return 1;
                     return 0;
                 }
             });

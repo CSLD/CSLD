@@ -23,6 +23,7 @@ import org.apache.wicket.util.convert.ConversionException;
 import org.apache.wicket.util.string.StringValue;
 import org.apache.wicket.util.template.PackageTextTemplate;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -79,31 +80,34 @@ public class MultiAutoCompleteComponent<T extends Identifiable & IAutoCompletabl
         response.render(CssHeaderItem.forReference(MagicSuggestCssReference.get()));
 
         // Render initialization js
-        PackageTextTemplate ptt = new PackageTextTemplate(getClass(), "MultiAutoCompleteComponent_init.js");
-        Map<String, String> args = new HashMap<String, String>();
-        args.put("componentId", getMarkupId());
-        args.put("dataUrl", sourceBehavior.getCallbackUrl().toString());
+        try(PackageTextTemplate ptt = new PackageTextTemplate(getClass(), "MultiAutoCompleteComponent_init.js")) {
+            Map<String, String> args = new HashMap<String, String>();
+            args.put("componentId", getMarkupId());
+            args.put("dataUrl", sourceBehavior.getCallbackUrl().toString());
 
-        try {
-            // Set initial values
-            JSONArray values = new JSONArray();
+            try {
+                // Set initial values
+                JSONArray values = new JSONArray();
 
-            if (getModelObject() != null) {
-                for(T v : getModelObject()) {
-                    JSONObject value = new JSONObject();
-                    value.put("id", v.getId());
-                    value.put("name", v.getAutoCompleteData());
-                    values.put(value);
+                if (getModelObject() != null) {
+                    for (T v : getModelObject()) {
+                        JSONObject value = new JSONObject();
+                        value.put("id", v.getId());
+                        value.put("name", v.getAutoCompleteData());
+                        values.put(value);
+                    }
                 }
+
+                args.put("value", values.toString());
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
             }
 
-            args.put("value", values.toString());
-        }
-        catch(JSONException e) {
+            response.render(OnDomReadyHeaderItem.forScript(ptt.asString(args)));
+        } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
-
-        response.render(OnDomReadyHeaderItem.forScript(ptt.asString(args)));
     }
 
     private class DataSourceBehavior extends AbstractDefaultAjaxBehavior {

@@ -33,6 +33,7 @@ public class BankAccount {
             return;
         }
 
+        long hour = 60 * 60 * 60 * 1000L;
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -43,7 +44,7 @@ public class BankAccount {
                 storeDonations.commit();
                 current.close();
             }
-        }, 0, 60 * 60 * 60 * 1000);
+        }, 0, hour);
     }
 
 

@@ -91,7 +91,11 @@ public class RatingsResultPanel extends AbstractCsldPanel<Game> {
                     }
                 }
                 for(int i = 0; i < array.length; i++){
-                    array[i] = (int)(((double) array[i] / (double)maxRatings) * 100);
+                    if(maxRatings == 0) {
+                        array[i] = 0;
+                    } else {
+                        array[i] = (int) (((double) array[i] / (double) maxRatings) * 100);
+                    }
                 }
             }
         }

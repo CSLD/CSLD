@@ -11,6 +11,7 @@ import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.util.template.PackageTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,11 +54,14 @@ public class JSPingBehavior extends Behavior {
                 return resource;
             }
         };
-
-        TextTemplate tt = new PackageTextTemplate(getClass(), "JSPingBehavior.js");
-        Map<String, String> variables = new HashMap<String, String>();
-        variables.put("interval", Integer.toString(interval));
-        variables.put("url", component.urlFor(rr, new PageParameters()).toString());
-        response.render(new OnDomReadyHeaderItem(tt.asString(variables)));
+        try(TextTemplate tt = new PackageTextTemplate(getClass(), "JSPingBehavior.js")) {
+            Map<String, String> variables = new HashMap<>();
+            variables.put("interval", Integer.toString(interval));
+            variables.put("url", component.urlFor(rr, new PageParameters()).toString());
+            response.render(new OnDomReadyHeaderItem(tt.asString(variables)));
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 }

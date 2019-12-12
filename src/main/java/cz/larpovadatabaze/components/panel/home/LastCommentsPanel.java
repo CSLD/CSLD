@@ -28,6 +28,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
 import org.jsoup.Jsoup;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -176,6 +177,11 @@ public class LastCommentsPanel extends Panel {
     public void renderHead(IHeaderResponse response) {
         super.renderHead(response);
 
-        response.render(OnDomReadyHeaderItem.forScript(new PackageTextTemplate(getClass(), "LastCommentsPanel.js").getString()));
+        try (PackageTextTemplate ptt = (new PackageTextTemplate(getClass(), "LastCommentsPanel.js"))) {
+            response.render(OnDomReadyHeaderItem.forScript(ptt.getString()));
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 }
