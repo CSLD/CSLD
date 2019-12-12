@@ -18,6 +18,11 @@ script:
 after_success:
   - docker build -t jbalhar/csld .
 
+branches:
+  only:
+    - master
+    - dev
+
 deploy:
   provider: script
   script: bash docker_push
