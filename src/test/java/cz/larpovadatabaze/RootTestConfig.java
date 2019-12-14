@@ -28,7 +28,7 @@ import java.util.Properties;
 @ComponentScan(basePackages = "cz.larpovadatabaze")
 @EnableTransactionManagement
 @PropertySource(value = {"classpath:application.properties"})
-public class RootConfig {
+public class RootTestConfig {
     @Autowired
     private Environment env;
 
@@ -38,18 +38,9 @@ public class RootConfig {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
         dataSource.setDriverClass(env.getProperty("jdbc.driver"));
-        if(env.getProperty("JDBC_DATABASE_URL") != null) {
-            System.out.println(env.getProperty("JDBC_DATABASE_URL") );
-            System.out.println(env.getProperty("JDBC_DATABASE_USERNAME") );
-            System.out.println(env.getProperty("JDBC_DATABASE_PASSWORD") );
-            dataSource.setJdbcUrl(env.getProperty("JDBC_DATABASE_URL"));
-            dataSource.setUser(env.getProperty("JDBC_DATABASE_USERNAME"));
-            dataSource.setPassword(env.getProperty("JDBC_DATABASE_PASSWORD"));
-        } else {
-            dataSource.setJdbcUrl(env.getProperty("jdbc.url"));
-            dataSource.setUser(env.getProperty("jdbc.user"));
-            dataSource.setPassword(env.getProperty("jdbc.password"));
-        }
+        dataSource.setJdbcUrl(env.getProperty("jdbc.url"));
+        dataSource.setUser(env.getProperty("jdbc.user"));
+        dataSource.setPassword(env.getProperty("jdbc.password"));
 
         return dataSource;
     }

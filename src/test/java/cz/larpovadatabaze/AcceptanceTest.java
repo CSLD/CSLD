@@ -30,13 +30,9 @@ import java.util.Locale;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(
-        classes = RootConfig.class
+        classes = RootTestConfig.class
 )
 abstract public class AcceptanceTest {
-    static {
-        System.setProperty("props.path", "src/test/config");
-    }
-
     protected static WicketTester tester;
     protected static SessionHolder sessionHolder;
 

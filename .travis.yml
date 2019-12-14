@@ -15,9 +15,6 @@ before_install:
 script:
   - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=CSLD_CSLD -B
 
-after_success:
-  - docker build -t jbalhar/csld .
-
 branches:
   only:
     - master
@@ -28,3 +25,9 @@ addons:
     organization: "csld"
     token:
       secure: WYfCah03KZg6K/AzzJqAQQn8y6jCsK/MxZ4Fezlxx8YJ6Gk2ofQw/awfP4eGqysoPZgS3fLErExZbKAC00eDTjWhNcjSJEuyoCX6rzzwBnQn3fiVaAdNw0/WrMHV2c4RXWt6ecRFp7OxSFcRzLMRkJ0txYUrbj3cbeoIpsxnNwQ=
+
+deploy:
+  provider: heroku
+  api_key:
+    secure: H6x6EbY413IumsU/tupJQ3+fdBSCCv2bnBIq30SD6B9oymofZlt1C+EDH0mHRmdXvjY29jWTIardqpuQ8l+PrsfYS456AjGiBD6I8hmkQeW1rAzeHSQclahEHQxfkOpfPDyZ5BOGOcGQAhPHcVIP7dxvZd0eWETxK5gMEwR2nHk=
+  app: larp-db-dev

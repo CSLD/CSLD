@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CSLD.iml" filepath="$PROJECT_DIR$/CSLD.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../fb-larp-events/fb-larp-events.iml" filepath="$PROJECT_DIR$/../fb-larp-events/fb-larp-events.iml" />
     </modules>
   </component>
 </project>
