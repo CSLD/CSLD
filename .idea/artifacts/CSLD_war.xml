@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="CSLD:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>CSLD</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="CSLD-1.0.war">
+      <element id="artifact" artifact-name="CSLD:war exploded" />
+    </root>
+  </artifact>
+</component>
