@@ -9,7 +9,6 @@ import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.utils.HbUtils;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -54,10 +53,10 @@ public class UpdateUserPage extends CsldBasePage {
 
         add(new CreateOrUpdateUserPanel("updateUser", user) {
             @Override
-            protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
-                super.onCsldAction(target, form);
+            protected void onCsldAction(AjaxRequestTarget target, Object object) {
+                super.onCsldAction(target, object);
 
-                CsldUser user = (CsldUser) form.getModelObject();
+                CsldUser user = (CsldUser) object;
                 PageParameters params = new PageParameters();
                 params.add("id", user.getId());
 

@@ -1,1 +1,0 @@
-Alter table comment add column added TIMESTAMP DEFAULT CURRENT_TIMESTAMP;

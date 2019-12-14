@@ -2,7 +2,6 @@ package cz.larpovadatabaze.providers;
 
 import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.services.CommentService;
-import org.apache.wicket.Session;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;

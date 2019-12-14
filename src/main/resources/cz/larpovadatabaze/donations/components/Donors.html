@@ -1,0 +1,26 @@
+<wicket:head xmlns:wicket="http://wicket.apache.org">
+    <wicket:link>
+        <link rel="stylesheet" type="text/css" href="Donors.css"/>
+        <script type="application/javascript" src="Donors.js">;</script>
+    </wicket:link>
+</wicket:head>
+
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+
+        <h2>Seznam dárců</h2>
+
+        <table>
+            <thead>
+            <tr class="headerRow">
+                <td class="headerRowTd">Jméno přispěvatele</td>
+                <td>Částka</td>
+            </tr>
+            </thead>
+            <tbody wicket:id="donors">
+            <tr>
+                <td class="donorTd" wicket:id="name"></td>
+                <td wicket:id="amount"></td>
+            </tr>
+            </tbody>
+        </table>
+</wicket:panel>

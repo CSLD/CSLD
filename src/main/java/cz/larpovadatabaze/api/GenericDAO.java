@@ -11,9 +11,9 @@ import java.util.List;
  * @author jmader
  *
  */
-public interface GenericDAO<T, ID extends Serializable> {
+public interface GenericDAO<T, I extends Serializable> {
 	 
-    T findById(ID id);
+    T findById(I id);
  
     List<T> findAll();
  

@@ -1,8 +1,11 @@
 package cz.larpovadatabaze.components.common.fileupload;
 
-import org.apache.wicket.ajax.json.JSONArray;
-import org.apache.wicket.ajax.json.JSONException;
-import org.apache.wicket.ajax.json.JSONObject;
+import com.github.openjson.JSONArray;
+import com.github.openjson.JSONException;
+import com.github.openjson.JSONObject;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.log4j.Logger;
 import org.apache.wicket.behavior.AbstractAjaxBehavior;
 import org.apache.wicket.protocol.http.servlet.MultipartServletWebRequest;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
@@ -12,8 +15,6 @@ import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.util.lang.Bytes;
 import org.apache.wicket.util.string.Strings;
-import org.apache.wicket.util.upload.FileItem;
-import org.apache.wicket.util.upload.FileUploadException;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -31,6 +32,7 @@ public class FileUploadBehaviour extends AbstractAjaxBehavior {
     private final long maxUploadSize;
     private final IFileUploadCallback uploadCallback;
     private final String paramName;
+    private final static Logger logger = Logger.getLogger(FileUploadBehaviour.class);
 
     public FileUploadBehaviour(long maxUploadSize, IFileUploadCallback uploadCallback, String paramName) {
         this.maxUploadSize = maxUploadSize;
@@ -83,7 +85,7 @@ public class FileUploadBehaviour extends AbstractAjaxBehavior {
                 try {
                     fileJson.put("error", e.getMessage());
                 } catch (JSONException e1) {
-                    e1.printStackTrace();
+                    logger.error(e1);
                 }
             }
 

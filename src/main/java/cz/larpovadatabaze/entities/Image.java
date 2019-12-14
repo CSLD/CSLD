@@ -24,8 +24,8 @@ public class Image implements Serializable {
             updatable = true
     )
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
-    @SequenceGenerator(sequenceName = "csld_image_id_seq", name="id_gen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_image")
+    @SequenceGenerator(sequenceName = "csld_image_id_seq", name="id_gen_image", allocationSize = 1)
     public Integer getId() {
         return id;
     }
@@ -36,7 +36,7 @@ public class Image implements Serializable {
 
     private String path;
 
-    @Column(name = "path", nullable = true, insertable = true, updatable = true, length = 2147483647, precision = 0)
+    @Column(name = "path", length = 20000)
     @Basic
     public String getPath() {
         return path;

@@ -1,0 +1,28 @@
+language: java
+jdk: oraclejdk12
+
+sudo: required
+
+services:
+  - postgresql
+  - docker
+
+before_install:
+  - psql -c 'create user csld with password '"'"'csld'"'"';' -U postgres
+  - psql -c 'create database csld_dev with owner csld;' -U postgres
+  - sudo apt-get -y install awscli
+
+script:
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=CSLD_CSLD -B
+  - mvn heroku:deploy-war -B
+
+branches:
+  only:
+    - master
+    - dev
+
+addons:
+  sonarcloud:
+    organization: "csld"
+    token:
+      secure: WYfCah03KZg6K/AzzJqAQQn8y6jCsK/MxZ4Fezlxx8YJ6Gk2ofQw/awfP4eGqysoPZgS3fLErExZbKAC00eDTjWhNcjSJEuyoCX6rzzwBnQn3fiVaAdNw0/WrMHV2c4RXWt6ecRFp7OxSFcRzLMRkJ0txYUrbj3cbeoIpsxnNwQ=

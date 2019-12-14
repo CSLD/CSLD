@@ -15,10 +15,10 @@ import java.util.List;
 public class Video implements Serializable {
     private Integer id;
 
-    @Column(name = "id", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "id", nullable = false, length = 10)
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
-    @SequenceGenerator(sequenceName = "csld_video_id_seq", name="id_gen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_video")
+    @SequenceGenerator(sequenceName = "csld_video_id_seq", name="id_gen_video", allocationSize = 1)
     public Integer getId() {
         return id;
     }
@@ -29,7 +29,7 @@ public class Video implements Serializable {
 
     private String path;
 
-    @Column(name = "path", insertable = true, updatable = true, length = 2147483647, precision = 0)
+    @Column(name = "path", length = 20000)
     @Basic
     public String getPath() {
         return path;
@@ -41,7 +41,7 @@ public class Video implements Serializable {
 
     private Integer type;
 
-    @Column(name = "type", insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "type", length = 10)
     @Basic
     public Integer getType() {
         return type;

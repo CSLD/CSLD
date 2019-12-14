@@ -1,0 +1,30 @@
+<wicket:head xmlns:wicket="http://wicket.apache.org">
+    <wicket:link>
+        <link rel="stylesheet" type="text/css" href="DonationPage.css"/>
+    </wicket:link>
+</wicket:head>
+
+<wicket:extend xmlns:wicket="http://wicket.apache.org">
+    <div class="donor">
+        <div class="profile_bar">
+            <div class="container main">
+                <div class="col-md-12">
+
+
+                    <h1>Podporovatelé a sponzoři</h1>
+
+                    <p>Provoz larpové databáze stojí ročně cca 24 000 Kč. V minulosti tyto peníze platil tým
+                         databáze převážně ze svého. Budeme moc rádi, když nám budete na provoz larpové databáze pravidelně přispívat. Přispívat
+                        je možné na transparentní účet <a href="https://www.fio.cz/ib2/transparent?a=2300942293">2300942293/2010</a>.
+                        Pokud do poznámky přidáte své jméno, zobrazí se i na této stránce v seznamu dárců. Za všechny příspěvky moc děkujeme, dodávají nám motivaci do další práci na databázi.</p>
+
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <div wicket:id="donors"></div>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</wicket:extend>

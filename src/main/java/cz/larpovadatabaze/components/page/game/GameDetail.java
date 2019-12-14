@@ -89,7 +89,8 @@ public class GameDetail extends CsldBasePage {
                 addOrReplaceTabContentPanel();
 
                 // Redraw
-                RequestCycle.get().find(AjaxRequestTarget.class).add(tabContent);
+                Optional<AjaxRequestTarget> optionalArt = RequestCycle.get().find(AjaxRequestTarget.class);
+                optionalArt.ifPresent(ajaxRequestTarget -> ajaxRequestTarget.add(tabContent));
             }
         }
 
@@ -143,6 +144,7 @@ public class GameDetail extends CsldBasePage {
     /**
      * Model for comments of actual game. (Might get GameModel as constructor parameter to be extra clean, but we use the one stored in the page.)
      * The downside is it does not cache results so getObject() may be costly.
+     * The results are ordered by the Amount of upvotes. In case of draw it is ordered by the most recent ones.
      */
     private class CommentsModel extends LoadableDetachableModel<List<Comment>> {
         @Override
@@ -155,8 +157,7 @@ public class GameDetail extends CsldBasePage {
                 List<Comment> comments = getModel().getObject().getComments() != null ? getModel().getObject().getComments():
                         new ArrayList<>();
                 res.addAll(comments);
-            }
-            else {
+            } else {
                 // Filter
                 Integer thisUserId = null;
                 CsldUser user = UserUtils.getLoggedUser();
@@ -176,11 +177,12 @@ public class GameDetail extends CsldBasePage {
             Set<Comment> unique = new HashSet<>(res);
             res = new ArrayList<>(unique);
 
-            // Sort
-            Collections.sort(res, new Comparator<Comment>() {
-                @Override
-                public int compare(Comment o1, Comment o2) {
-                    return -o1.getAdded().compareTo(o2.getAdded());
+            // Sort primarily by the amount of upvotes. Secondarily by the most recent.
+            res.sort((o1, o2) -> {
+                if (o1.getPluses().size() != o2.getPluses().size()) {
+                    return o2.getPluses().size() - o1.getPluses().size();
+                } else {
+                    return -(o1.getAdded().compareTo(o2.getAdded()));
                 }
             });
 
@@ -222,7 +224,7 @@ public class GameDetail extends CsldBasePage {
     @Override
     protected Component provideAdvertisementsPanel(String id) {
         Game game = getModel().getObject();
-        if (game.getCoverImage() == null) {
+        if (game.getCoverImage() == null || game.getCoverImage().getPath() == null) {
             // Nothing visible
             return new WebMarkupContainer(id).setVisible(false);
         }
@@ -360,14 +362,14 @@ public class GameDetail extends CsldBasePage {
         DeleteGamePanel deleteGamePanel = new DeleteGamePanel("deleteGamePanel", getModel().getObject().getId());
         add(deleteGamePanel);
 
-        add(new GameListPanel("similarGames", new LoadableDetachableModel<List<? extends Game>>() {
+        add(new GameListPanel("similarGames", new LoadableDetachableModel<List<Game>>() {
             @Override
             protected List<Game> load() {
                 return gameService.getSimilar(getModel().getObject());
             }
         }));
 
-        add(new GameListPanel("gamesOfAuthors", new LoadableDetachableModel<List<? extends Game>>() {
+        add(new GameListPanel("gamesOfAuthors", new LoadableDetachableModel<List<Game>>() {
             @Override
             protected List<Game> load() {
                 return gameService.gamesOfAuthors(getModel().getObject());
@@ -425,7 +427,7 @@ public class GameDetail extends CsldBasePage {
         // Add button
         authorRatePanel.add(new AjaxButton("authorRate", new ResourceModel("Rating.author.button"), authorRatePanel) {
             @Override
-            protected void onSubmit(AjaxRequestTarget art, Form<?> form) {
+            protected void onSubmit(AjaxRequestTarget art) {
                 // Show ratings panel and hide this panel
                 ratingsPanel.setVisible(true);
                 authorRatePanel.setVisible(false);

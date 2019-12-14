@@ -7,7 +7,6 @@ import cz.larpovadatabaze.models.FilterEvent;
 import org.apache.wicket.model.IModel;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
@@ -36,7 +35,7 @@ public class FilteredReadOnlyEvents implements Events {
     @Override
     public Collection<Event> all() {
         Collection<Event> events = eventsToFilter.all();
-        Collection<Event> filtered = new ArrayList<>();
+        List<Event> filtered = new ArrayList<>();
 
         FilterEvent filterEvent = filterCriteria.getObject();
         for(Event event: events) {
@@ -45,15 +44,50 @@ public class FilteredReadOnlyEvents implements Events {
             }
 
             List<Label> labels = event.getLabels();
-            if(labels.containsAll(filterEvent.getRequiredLabels()) && labels.containsAll(filterEvent.getOtherLabels())) {
-                if(filterEvent.isShowOnlyFuture()) {
-                    if(event.getFrom().after(Calendar.getInstance())) {
-                        filtered.add(event);
-                    }
-                } else {
-                    filtered.add(event);
+
+            boolean containsAllLabels = labels.containsAll(filterEvent.getRequiredLabels()) && labels.containsAll(filterEvent.getOtherLabels());
+            boolean isInGivenTimeFrame = true;
+            boolean endsBeforeLimit = true;
+            boolean startsBeforeLimit = true;
+            boolean startsAfterLimit = true;
+            boolean isInRegion = true;
+
+            // There is some time based filter specified.
+            if((filterEvent.getFrom() != null) || (filterEvent.getTo() != null)) {
+                if(filterEvent.getTo() != null) {
+                    endsBeforeLimit = event.getTo().getTime().before(filterEvent.getTo());
+                    startsBeforeLimit = event.getFrom().getTime().before(filterEvent.getTo());
+                }
+                if(filterEvent.getFrom() != null) {
+                    startsAfterLimit = event.getFrom().getTime().after(filterEvent.getFrom());
+                }
+
+                isInGivenTimeFrame = endsBeforeLimit && startsAfterLimit && startsBeforeLimit;
+            }
+
+            if(filterEvent.getRegion() != null && filterEvent.getFilter() != null && event.getLocation() != null) {
+                if(!filterEvent.getFilter().isGeometryInArea(filterEvent.getRegion(), event.getLocation())) {
+                    isInRegion = false;
                 }
             }
+
+            if(containsAllLabels && isInGivenTimeFrame && isInRegion) {
+                filtered.add(event);
+            }
+        }
+
+        filtered.sort((o1, o2) -> {
+            if(o1.getFrom() == null || o2.getFrom().before(o1.getFrom())) {
+                return 1;
+            } else if(o2.getFrom() == null || o1.getFrom().before(o2.getFrom())) {
+                return -1;
+            } else {
+                return 0;
+            }
+        });
+
+        if(filterEvent.getLimit() != null && filtered.size() > filterEvent.getLimit()) {
+            filtered = new ArrayList<>(filtered).subList(0, filterEvent.getLimit());
         }
 
         return filtered;

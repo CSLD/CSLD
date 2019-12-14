@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.components.panel.user;
 
 import cz.larpovadatabaze.services.CsldUserService;
+import org.apache.log4j.Logger;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
@@ -13,6 +14,7 @@ import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +22,7 @@ import java.util.Map;
  * User: Michal Kara Date: 21.12.14 Time: 7:03
  */
 public class ReCaptchaComponent extends FormComponent<String> {
-
+    private final static Logger logger = Logger.getLogger(ReCaptchaComponent.class);
     private static final String FIELD_NAME="g-recaptcha-response";
 
     @SpringBean
@@ -104,10 +106,14 @@ public class ReCaptchaComponent extends FormComponent<String> {
         response.render(JavaScriptHeaderItem.forUrl("https://www.google.com/recaptcha/api.js"));
 
         // Explicitly render re-captcha on load so it works when refreshing form via AJAX
-        PackageTextTemplate tt = new PackageTextTemplate(getClass(), "ReCaptchaComponent_render.js");
-        Map<String, String> args = new HashMap<String, String>();
-        args.put("htmlElementId", getMarkupId());
-        args.put("siteKey", userService.getReCaptchaSiteKey());
-        response.render(OnDomReadyHeaderItem.forScript(tt.asString(args)));
+        try(PackageTextTemplate tt = new PackageTextTemplate(getClass(), "ReCaptchaComponent_render.js")) {
+            Map<String, String> args = new HashMap<String, String>();
+            args.put("htmlElementId", getMarkupId());
+            args.put("siteKey", userService.getReCaptchaSiteKey());
+            response.render(OnDomReadyHeaderItem.forScript(tt.asString(args)));
+        } catch (IOException e) {
+            logger.error(e);
+            throw new RuntimeException(e);
+        }
     }
 }

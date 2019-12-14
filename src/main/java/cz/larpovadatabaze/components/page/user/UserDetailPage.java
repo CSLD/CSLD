@@ -5,8 +5,6 @@ import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.components.panel.game.CommentsListPanel;
 import cz.larpovadatabaze.components.panel.game.GameListPanel;
 import cz.larpovadatabaze.components.panel.game.ListGamesWithAnnotations;
-import cz.larpovadatabaze.components.panel.news.CreateOrUpdateNewsPanel;
-import cz.larpovadatabaze.components.panel.news.NewsDetailsListPanel;
 import cz.larpovadatabaze.components.panel.user.PersonDetailPanel;
 import cz.larpovadatabaze.components.panel.user.RatingsListPanel;
 import cz.larpovadatabaze.entities.*;
@@ -16,13 +14,8 @@ import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.GameService;
 import cz.larpovadatabaze.services.RatingService;
 import cz.larpovadatabaze.utils.HbUtils;
-import cz.larpovadatabaze.utils.Strings;
 import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.wicket.RestartResponseException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -52,20 +45,21 @@ public class UserDetailPage extends CsldBasePage {
 
         @Override
         protected List<Comment> load() {
-            List<Comment> userComments = new ArrayList<Comment>();
+            List<Comment> userComments = new ArrayList<>();
 
             CsldUser thisUser = (CsldUser)getDefaultModelObject();
             List<Comment> allUserComments = thisUser.getCommented();
 
             // Add comments
-            if (UserUtils.isEditor() || (thisUser.equals(UserUtils.getLoggedUser()))) {
+            if (UserUtils.isEditor()) {
                 // Editors see all, users also see all their comments
                 userComments.addAll(allUserComments);
-            }
-            else {
+            } else {
                 // Filter not-hidden comments
                 for(Comment c : allUserComments) {
-                    if (!Boolean.TRUE.equals(c.getHidden())) userComments.add(c);
+                    if (!Boolean.TRUE.equals(c.getHidden())) {
+                        userComments.add(c);
+                    }
                 }
             }
 
@@ -166,6 +160,8 @@ public class UserDetailPage extends CsldBasePage {
 
         // Add wanted games
         add(new GameListPanel("wantedGamesPanel",Model.ofList(wantedGames)));
+
+        add(new org.apache.wicket.markup.html.basic.Label("ical", Model.of("http://larpovadatabaze.cz/ical?id=" + user.getId())));
     }
 
     public static PageParameters paramsForUser(CsldUser user) {

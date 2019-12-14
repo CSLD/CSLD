@@ -128,6 +128,16 @@ public class EntityBuilder {
         return comment;
     }
 
+    public Upvote plusOne(CsldUser user, Comment comment) {
+        Upvote upvote = new Upvote();
+        upvote.setComment(comment);
+        upvote.setUser(user);
+        upvote.setAdded(new Timestamp(new java.util.Date().getTime()));
+
+        save(upvote);
+        return upvote;
+    }
+
     public UserPlayedGame playerOfGame(CsldUser user, Game game) {
         UserPlayedGame playerOfGame = new UserPlayedGame();
         playerOfGame.setGame(game);
@@ -137,14 +147,14 @@ public class EntityBuilder {
         return playerOfGame;
     }
 
-    public News news(CsldUser editor, String text) {
-        News news = new News();
-        news.setAuthor(editor);
-        news.setText(text);
-        news.setLang("cs");
-        news.setAdded(Timestamp.from(Instant.now()));
+    public SimilarGame similarGame(int gameId1, int gameId2, double similarity) {
+        SimilarGame similarGame = new SimilarGame();
+        similarGame.setIdGame1(gameId1);
+        similarGame.setIdGame2(gameId2);
+        similarGame.setSimilarity(similarity);
 
-        return null;
+        save(similarGame);
+        return similarGame;
     }
 
     public void flush() {

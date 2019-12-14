@@ -24,6 +24,7 @@ public class AddGroupPanel extends Panel {
     }
 
     protected void onConfigure() {
+        super.onConfigure();
         setVisibilityAllowed(CsldAuthenticatedWebSession.get().isSignedIn());
     }
 }

@@ -9,7 +9,6 @@ import cz.larpovadatabaze.utils.HbUtils;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -33,8 +32,8 @@ public class CreateOrUpdateAuthorPage extends CsldBasePage {
 
         add(new CreateOrUpdateAuthorPanel("createOrUpdateAuthor", csldUser != null ? csldUser : CsldUser.getEmptyUser()){
             @Override
-            protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
-                super.onCsldAction(target, form);
+            protected void onCsldAction(AjaxRequestTarget target, Object object) {
+                super.onCsldAction(target, object);
 
                 throw new RestartResponseException(HomePage.class);
             }

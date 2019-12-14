@@ -30,8 +30,8 @@ public class UserPlayedGame implements Serializable {
 
     @Column(name="id")
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
-    @SequenceGenerator(sequenceName = "csld_user_played_game_id_seq", name="id_gen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_upg")
+    @SequenceGenerator(sequenceName = "csld_user_played_game_id_seq", name="id_gen_upg", allocationSize = 1)
     public int getId() {
         return id;
     }
@@ -42,7 +42,7 @@ public class UserPlayedGame implements Serializable {
 
     private UserPlayedGameState state = UserPlayedGameState.NONE;
 
-    @javax.persistence.Column(name = "state", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @javax.persistence.Column(name = "state", nullable = false, length = 10)
     public Integer getState() {
         return state.dbCode;
     }

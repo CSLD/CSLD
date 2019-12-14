@@ -1,1 +1,0 @@
-alter table csld_csld_user add column last_rating int;

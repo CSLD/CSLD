@@ -9,6 +9,7 @@ import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.models.FilterGame;
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.HibernateException;
@@ -17,14 +18,16 @@ import org.hibernate.criterion.*;
 import org.hibernate.sql.JoinType;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * The DAO should already return entity, which is translated to current state. How do I do that?
  */
 @Repository
 public class GameDAO extends GenericHibernateDAO<Game, Integer> {
+    private final static Logger logger = Logger.getLogger(GameDAO.class);
     /**
      * How old game is considered new
      */
@@ -155,29 +158,12 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     public List<Game> getSimilar(Game game) {
         Session session = sessionFactory.getCurrentSession();
 
-        List<Integer> labeledGames = game.getLabels().stream().map(Label::getId).collect(Collectors.toList());
-        Criteria criteria = new GameBuilder().build().getExecutableCriteria(session)
-                .add(Restrictions.not(Restrictions.eq("id", game.getId())))
-                .addOrder(Order.desc("totalRating"))
-                .createCriteria("labels")
-                .add(Restrictions.in("id", labeledGames))
-                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-
-        List<Game> potentiallySimilarGames = criteria.list();
-
-        SortedMap<Float, Game> orderedSimilar = new TreeMap<>();
-        for(Game similarGames: potentiallySimilarGames) {
-            orderedSimilar.put(similarGames.getSimilarity(game), similarGames);
-        }
+        List<Integer> similarGames = session.createQuery("select similarGame.idGame2 from SimilarGame similarGame where similarGame.idGame1 = :id order by similarGame.similarity")
+                .setInteger("id", game.getId()).list();
 
         List<Game> results = new ArrayList<>();
-        int i = 0;
-        for(Game similar: orderedSimilar.values()){
-            if(i >= 5) {
-                break;
-            }
-            i++;
-            results.add(similar);
+        for(Integer gameId: similarGames) {
+               results.add(findById(gameId));
         }
 
         return results;
@@ -319,7 +305,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
             flush();
             return true;
         } catch (HibernateException ex) {
-            ex.printStackTrace();
+            logger.error(ex);
         }
 
         try {
@@ -329,7 +315,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
             flush();
             return true;
         } catch (HibernateException ex) {
-            ex.printStackTrace();
+            logger.error(ex);
             return false;
         }
     }

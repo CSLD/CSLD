@@ -4,7 +4,8 @@ import cz.larpovadatabaze.calendar.Location;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Label;
-import org.apache.commons.lang3.AnnotationUtils;
+import net.fortuna.ical4j.model.component.VEvent;
+import net.fortuna.ical4j.model.property.Uid;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.hibernate.annotations.Cascade;
@@ -15,7 +16,10 @@ import org.jsoup.safety.Whitelist;
 
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Event for the database.
@@ -23,39 +27,42 @@ import java.util.*;
 @Entity(name = "event")
 public class Event implements cz.larpovadatabaze.api.Entity {
     @Transient
-    private SimpleDateFormat czechDate = new SimpleDateFormat("dd.MM.YYYY");
+    private SimpleDateFormat czechDate = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+    @Transient
+    private SimpleDateFormat czechDateWithoutTime = new SimpleDateFormat("dd.MM.yyyy");
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
-    @SequenceGenerator(sequenceName = "event_id_seq", name = "id_gen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_calendar")
+    @SequenceGenerator(sequenceName = "event_id_seq", name = "id_gen_calendar", allocationSize = 1)
     private Integer id;
     private String name;
     private String description;
     private String loc;
     private String web;
+    private String source;
     private boolean deleted;
-    @Column(name="amountofplayers")
-    private String amountOfPlayers;
-    @Temporal(value = TemporalType.DATE)
+    @Column(name = "amountofplayers")
+    private Integer amountOfPlayers;
+    @Temporal(value = TemporalType.TIMESTAMP)
     private Date from;
-    @Temporal(value = TemporalType.DATE)
+    @Temporal(value = TemporalType.TIMESTAMP)
     private Date to;
     // Specify the mapping for the Location.
     @Embedded
     private Location location;
     @ManyToMany
     @JoinTable(name = "event_has_labels", joinColumns = {
-        @JoinColumn(name="event_id")
+            @JoinColumn(name = "event_id")
     }, inverseJoinColumns = {
-        @JoinColumn(name="label_id")
+            @JoinColumn(name = "label_id")
     })
     private List<Label> labels;
 
     @ManyToMany
-    @JoinTable(name="csld_game_has_event", joinColumns = {
-        @JoinColumn(name="event_id")
+    @JoinTable(name = "csld_game_has_event", joinColumns = {
+            @JoinColumn(name = "event_id")
     }, inverseJoinColumns = {
-        @JoinColumn(name="game_id")
+            @JoinColumn(name = "game_id")
     })
     private List<Game> games; // It is possible to be associated with multiple games for the festivals for example. Mainly to show the festival at the game page.
 
@@ -72,7 +79,7 @@ public class Event implements cz.larpovadatabaze.api.Entity {
     private CsldUser addedBy;
 
     // Constructor without parameters must be there for ORM usage.
-    protected Event() {
+    public Event() {
     }
 
     /**
@@ -86,6 +93,10 @@ public class Event implements cz.larpovadatabaze.api.Entity {
 
     public Event(List<Label> labels) {
         this.labels = labels;
+    }
+
+    public Event(Location location) {
+        this.location = location;
     }
 
     public Event(int id, List<Label> labels) {
@@ -114,13 +125,16 @@ public class Event implements cz.larpovadatabaze.api.Entity {
         this.labels = labels;
     }
 
-    public Event(int id, String name, Calendar from, Calendar to,  String amountOfPlayers, String loc) {
+    public Event(int id, String name, Calendar from, Calendar to, Integer amountOfPlayers, String loc, String description, String web, String source) {
         this.id = id;
         this.name = name;
         this.from = from.getTime();
         this.to = to.getTime();
         this.amountOfPlayers = amountOfPlayers;
         this.loc = loc;
+        this.description = description;
+        this.web = web;
+        this.source = source;
     }
 
     public String getName() {
@@ -128,7 +142,7 @@ public class Event implements cz.larpovadatabaze.api.Entity {
     }
 
     public Calendar getFrom() {
-        if(from != null) {
+        if (from != null) {
             Calendar cal = Calendar.getInstance();
             cal.setTime(from);
             return cal;
@@ -139,11 +153,14 @@ public class Event implements cz.larpovadatabaze.api.Entity {
 
     @Transient
     public String getFromCzech() {
+        if(getFrom().get(Calendar.HOUR_OF_DAY) == 0) {
+            return czechDateWithoutTime.format(from);
+        }
         return czechDate.format(from);
     }
 
     public Calendar getTo() {
-        if(to != null) {
+        if (to != null) {
             Calendar cal = Calendar.getInstance();
             cal.setTime(to);
 
@@ -155,6 +172,9 @@ public class Event implements cz.larpovadatabaze.api.Entity {
 
     @Transient
     public String getToCzech() {
+        if(getTo().get(Calendar.HOUR_OF_DAY) == 0) {
+            return czechDateWithoutTime.format(to);
+        }
         return czechDate.format(to);
     }
 
@@ -178,8 +198,12 @@ public class Event implements cz.larpovadatabaze.api.Entity {
         return loc;
     }
 
-    public String getAmountOfPlayers() {
+    public Integer getAmountOfPlayers() {
         return amountOfPlayers;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 
     public void sanitize() {
@@ -273,5 +297,27 @@ public class Event implements cz.larpovadatabaze.api.Entity {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    @Transient
+    public VEvent asIcalEvent() {
+        Calendar dateFrom = getFrom();
+        dateFrom.add(Calendar.DATE, 1);
+        Calendar dateTo = getTo();
+        dateTo.add(Calendar.DATE, 2);
+        VEvent result;
+
+        result = new VEvent(new net.fortuna.ical4j.model.Date(dateFrom), new net.fortuna.ical4j.model.Date(dateTo), getName());
+        result.getProperties().add(new Uid(String.valueOf(getId())));
+
+        return result;
+    }
+
+    public void setFrom(Date from) {
+        this.from = from;
+    }
+
+    public void setTo(Date to) {
+        this.to = to;
     }
 }

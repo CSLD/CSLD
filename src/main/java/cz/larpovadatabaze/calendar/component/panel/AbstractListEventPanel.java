@@ -20,8 +20,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-abstract public class AbstractListEventPanel<T> extends AbstractCsldPanel<T> {
-    private SortableDataProvider<Event, String> sdp;
+public abstract class AbstractListEventPanel<T> extends AbstractCsldPanel<T> {
     @SpringBean
     private SessionFactory sessionFactory;
 
@@ -71,15 +70,15 @@ abstract public class AbstractListEventPanel<T> extends AbstractCsldPanel<T> {
     protected void onInitialize() {
         super.onInitialize();
 
-        sdp = getDataProvider();
-        final DataView<Event> propertyList = new DataView<Event>("listEvents", sdp) {
+        SortableDataProvider<Event, String> sdp = getDataProvider();
+        final DataView<Event> propertyList = new DataView<>("listEvents", sdp) {
             @Override
             protected void populateItem(Item<Event> item) {
                 Event event = item.getModelObject();
 
                 item.add(new EventNameAndLabelsPanel("nameAndLabels", new EventModel(event.getId())));
                 item.add(new Label("loc", Model.of(event.getLoc())));
-                item.add(new Label("date", Model.of(event.getDate())));
+                item.add(new Label("date", event.getDate()));
                 item.add(new ExternalLink("web", Model.of(event.getWeb()), Model.of(event.getWeb())).setVisible(StringUtils.isNotBlank(event.getWeb())));
             }
         };

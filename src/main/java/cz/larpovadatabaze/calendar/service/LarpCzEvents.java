@@ -1,13 +1,11 @@
 package cz.larpovadatabaze.calendar.service;
 
 import cz.larpovadatabaze.calendar.model.Event;
-import cz.larpovadatabaze.utils.Pwd;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import sun.security.provider.MD5;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -16,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * It represents the Events as they are in the Larp.cz page
@@ -53,16 +53,26 @@ public class LarpCzEvents implements Events {
         }
     }
 
-    private Collection<Event> parseEvents(Collection<Event> result, Elements events) {
+    private Collection<Event> parseEvents(Collection<Event> result, Elements events) throws IOException {
         int id = 10000;
         for(Element event: events) {
             LarpCzDate date = new LarpCzDate(event.select("td.views-field-phpcode").get(0).text());
             // Retrieve from and to based on these information.
             String name = event.select("td.views-field-title").get(0).text();
-            String amountOfPlayers = event.select("td.views-field-field-count-value").get(0).text();
+            String detailUrl = event.select("td.views-field-title a").get(0).attr("href");
+
+            Document detailPage = Jsoup.connect("http://www.larp.cz" + detailUrl).get();
+            String web = detailPage.select("td.event-meta-value.eweb").get(0).text();
+            String description = detailPage.select("div.event-content fieldset").get(0).text();
+
+            Matcher matcher = Pattern.compile("\\d+").matcher(event.select("td.views-field-field-count-value").get(0).text());
+            Integer amountOfPlayers = 0;
+            if(matcher.find()) {
+                amountOfPlayers = Integer.valueOf(matcher.group());
+            }
             String loc = event.select("td.views-field-field-region-value").get(0).text() + ", " +
                     event.select("td.views-field-field-city-value").get(0).text();
-            Event toAdd = new Event(id, name, date.getFrom(), date.getTo(), amountOfPlayers, loc);
+            Event toAdd = new Event(id, name, date.getFrom(), date.getTo(), amountOfPlayers, loc, description, web, "larpcz");
             result.add(toAdd);
             logger.debug("Loaded event: " + toAdd);
             id++;
@@ -82,15 +92,30 @@ public class LarpCzEvents implements Events {
                 to = new Date();
                 return;
             }
-            SimpleDateFormat larpCzFormatFrom = new SimpleDateFormat("dd.");
-            SimpleDateFormat larpCzFormatTo = new SimpleDateFormat(" dd. MM. yyyy");
-            try {
-                from = larpCzFormatFrom.parse(parts[0]);
-                to = larpCzFormatTo.parse(parts[1]);
-            } catch (ParseException e) {
-                // Ignore. Sometime the value will be wrong.
-                e.printStackTrace();
+            Collection<SimpleDateFormat>  formatsFrom = new ArrayList<>();
+            formatsFrom.add(new SimpleDateFormat("d."));
+
+            Collection<SimpleDateFormat> formatsTo = new ArrayList<>();
+            formatsTo.add(new SimpleDateFormat(" d. M. yyyy"));
+
+            from = parse(formatsFrom,parts[0].replace("\u00A0"," "));
+            to = parse(formatsTo, parts[1].replace("\u00A0"," "));
+
+            if(to != null) {
+                from.setYear(to.getYear());
+                from.setMonth(to.getMonth());
             }
+        }
+
+        private Date parse(Collection<SimpleDateFormat> formats, String text) {
+            for(SimpleDateFormat format: formats) {
+                try {
+                    return format.parse(text);
+                } catch(ParseException ex) {
+                    logger.debug("Unparseable date: " + text);
+                }
+            }
+            return null;
         }
 
         Calendar getFrom() {

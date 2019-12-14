@@ -1,9 +1,7 @@
 package cz.larpovadatabaze.components.panel.game;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.security.CsldRoles;
 import cz.larpovadatabaze.services.GameService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -65,6 +63,7 @@ public class DeleteGamePanel extends Panel {
 
     @Override
     protected void onConfigure() {
+        super.onConfigure();
         setVisibilityAllowed(CsldAuthenticatedWebSession.get().isAtLeastEditor());
     }
 }

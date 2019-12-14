@@ -27,6 +27,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -174,7 +175,11 @@ public class ListGamePage extends CsldBasePage implements FilterablePage {
 
     public void filterChanged(boolean sortChanged, boolean requiredLabelsChanged, boolean otherLabelsChanged) {
         // Re-render what is needed
-        AjaxRequestTarget art = getRequestCycle().find(AjaxRequestTarget.class);
+        Optional<AjaxRequestTarget> optionalArt = getRequestCycle().find(AjaxRequestTarget.class);
+        if(!optionalArt.isPresent()) {
+            return;
+        }
+        AjaxRequestTarget art = optionalArt.get();
 
         art.add(listGamePanel);
 

@@ -21,8 +21,8 @@ public class EmailAuthentication implements Serializable {
             updatable = true
     )
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
-    @SequenceGenerator(sequenceName = "csld_email_authentication_id_seq", name="id_gen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_auth")
+    @SequenceGenerator(sequenceName = "csld_email_authentication_id_seq", name="id_gen_auth", allocationSize = 1)
     public Integer getId() {
         return id;
     }
@@ -33,7 +33,7 @@ public class EmailAuthentication implements Serializable {
 
     private String authToken;
 
-    @javax.persistence.Column(name = "auth_token", nullable = false, insertable = true, updatable = true, length = 2147483647, precision = 0)
+    @javax.persistence.Column(name = "auth_token", nullable = false, length = 20000)
     @Basic
     public String getAuthToken() {
         return authToken;

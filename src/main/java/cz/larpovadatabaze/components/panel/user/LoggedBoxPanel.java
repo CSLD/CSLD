@@ -32,7 +32,7 @@ public class LoggedBoxPanel extends AbstractCsldPanel<CsldUser> {
     private class UserModel extends LoadableDetachableModel<CsldUser> {
         @Override
         protected CsldUser load() {
-            return ((CsldAuthenticatedWebSession) CsldAuthenticatedWebSession.get()).getLoggedUser();
+            return CsldAuthenticatedWebSession.get().getLoggedUser();
         }
     }
 

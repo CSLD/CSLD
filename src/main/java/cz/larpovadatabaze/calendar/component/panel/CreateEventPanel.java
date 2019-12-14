@@ -2,71 +2,93 @@ package cz.larpovadatabaze.calendar.component.panel;
 
 import com.googlecode.wicket.jquery.core.Options;
 import com.googlecode.wicket.jquery.ui.form.datepicker.DatePicker;
+import com.googlecode.wicket.jquery.ui.panel.JQueryFeedbackPanel;
+import com.googlecode.wicket.jquery.ui.plugins.wysiwyg.WysiwygEditor;
+import com.googlecode.wicket.jquery.ui.plugins.wysiwyg.toolbar.DefaultWysiwygToolbar;
 import cz.larpovadatabaze.api.ValidatableForm;
-import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.calendar.Location;
+import cz.larpovadatabaze.calendar.component.common.TimeTextField;
+import cz.larpovadatabaze.calendar.component.page.DetailOfEventPage;
+import cz.larpovadatabaze.calendar.component.validator.StartDateIsBeforeAfter;
 import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.calendar.service.DatabaseEvents;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
 import cz.larpovadatabaze.components.common.multiac.IMultiAutoCompleteSource;
 import cz.larpovadatabaze.components.common.multiac.MultiAutoCompleteComponent;
-import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
 import cz.larpovadatabaze.components.panel.game.ChooseLabelsPanel;
 import cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Label;
+import cz.larpovadatabaze.entities.UserPlayedGame;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.utils.MailClient;
 import cz.larpovadatabaze.validator.AtLeastOneRequiredLabelValidator;
-import cz.larpovadatabaze.validator.NonEmptyAuthorsValidator;
-import org.apache.wicket.Component;
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.attributes.AjaxCallListener;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.*;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.wicketstuff.gmap.GMap;
 import org.wicketstuff.gmap.GMapHeaderContributor;
 import org.wicketstuff.gmap.api.GLatLng;
 import org.wicketstuff.gmap.api.GMarker;
 import org.wicketstuff.gmap.api.GMarkerOptions;
 import org.wicketstuff.gmap.event.ClickListener;
-import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
-import java.text.DateFormat;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
-abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
+public abstract class CreateEventPanel extends AbstractCsldPanel<Event> {
     private static final int AUTOCOMPLETE_CHOICES = 10;
 
     @SpringBean
     private SessionFactory sessionFactory;
     @SpringBean
-    private GameService gameService;
+    private transient GameService gameService;
+    @SpringBean
+    private transient MailClient mailClient;
 
     private GLatLng lastSelectedLocation;
     private TextField<String> name;
-    private TextField<Integer> amountOfPlayers;
+    private NumberTextField amountOfPlayers;
     private TextField<String> web;
-    private TextArea description;
     private ChooseLabelsPanel chooseLabels;
 
     private List<Label> labelsToTransfer;
+    private GMap map;
+
+    // Used for holding specific information from non model fields.
+    private String customLocation;
+    private String fromTime;
+    private String toTime;
 
     public CreateEventPanel(String id, IModel<Event> model) {
         super(id, model);
+
+        Event event = model.getObject();
+        if(event != null) {
+            if(event.getFrom() != null) {
+                fromTime = String.valueOf(event.getFrom().get(Calendar.HOUR_OF_DAY)) + ":" + String.valueOf(event.getFrom().get(Calendar.MINUTE));
+            }
+
+            if(event.getTo() != null) {
+                toTime = String.valueOf(event.getTo().get(Calendar.HOUR_OF_DAY)) + ":" + String.valueOf(event.getTo().get(Calendar.MINUTE));
+            }
+        }
     }
 
     @Override
@@ -87,17 +109,36 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
         createEvent.add(name);
         createEvent.add(new CsldFeedbackMessageLabel("nameFeedback", name, "form.event.nameHint"));
 
+        // OnUpdate set to to the same date.
         Options czechCalendar = new Options();
         czechCalendar.set("start_weekday", 0);
         FormComponent<Date> from = new DatePicker("from", "dd.MM.yyyy", czechCalendar).setRequired(true);
         createEvent.add(from);
         createEvent.add(new CsldFeedbackMessageLabel("fromFeedback", from, "form.event.fromHint"));
 
+        final FormComponent<String> fromTimeField = new TimeTextField("fromTime", new PropertyModel(this, "fromTime"));
+        fromTimeField.add(new AjaxFormComponentUpdatingBehavior("change") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {}
+        });
+        createEvent.add(fromTimeField);
+        createEvent.add(new CsldFeedbackMessageLabel("fromTimeFeedback", fromTimeField, "form.event.fromTimeHint"));
+
         FormComponent<Date> to = new DatePicker("to", "dd.MM.yyyy", czechCalendar).setRequired(true);
         createEvent.add(to);
         createEvent.add(new CsldFeedbackMessageLabel("toFeedback", to, "form.event.toHint"));
 
-        amountOfPlayers = new RequiredTextField<>("amountOfPlayers");
+        FormComponent<String> toTimeField = new TimeTextField("toTime", new PropertyModel(this, "toTime"));
+        toTimeField.add(new AjaxFormComponentUpdatingBehavior("change") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {}
+        });
+        createEvent.add(toTimeField);
+        createEvent.add(new CsldFeedbackMessageLabel("toTimeFeedback", toTimeField, "form.event.toTimeHint"));
+
+        createEvent.add(new StartDateIsBeforeAfter(from, to));
+
+        amountOfPlayers = new NumberTextField<>("amountOfPlayers");
         amountOfPlayers.setOutputMarkupId(true);
         amountOfPlayers.add(new AjaxFormComponentUpdatingBehavior("change") {
             @Override
@@ -105,6 +146,7 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
                 target.add(amountOfPlayers);
             }
         });
+        amountOfPlayers.setRequired(true);
         createEvent.add(amountOfPlayers);
         createEvent.add(new CsldFeedbackMessageLabel("amountOfPlayersFeedback", amountOfPlayers, "form.event.amountOfPlayersHint"));
 
@@ -135,11 +177,13 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
 
         WebMarkupContainer descriptionWrapper = new WebMarkupContainer("descriptionWrapper");
         createEvent.add(descriptionWrapper);
-        description = (TextArea) new TextArea<String>("description").setRequired(true);
-        description.setOutputMarkupId(true);
-        description.add(new CSLDTinyMceBehavior());
-        descriptionWrapper.add(description);
-        descriptionWrapper.add(new CsldFeedbackMessageLabel("descriptionFeedback", description, descriptionWrapper, "form.event.descriptionHint"));
+        DefaultWysiwygToolbar toolbar = new DefaultWysiwygToolbar("toolbar");
+        final WysiwygEditor editor = new WysiwygEditor("description", toolbar);
+
+        final FeedbackPanel feedback = new JQueryFeedbackPanel("feedback");
+        descriptionWrapper.add(feedback);
+        descriptionWrapper.add(toolbar, editor);
+        descriptionWrapper.add(new CsldFeedbackMessageLabel("descriptionFeedback", editor, descriptionWrapper, "form.event.descriptionHint"));
 
         chooseLabels = new ChooseLabelsPanel("labels", new IModel<List<Label>>() {
             @Override
@@ -171,16 +215,41 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
         createEvent.add(labelsFeedbackWrapper);
         labelsFeedbackWrapper.add(new CsldFeedbackMessageLabel("labelsFeedback", chooseLabels, labelsFeedbackWrapper, null));
 
+        // addCustomLocation
+        createEvent.add(new TextField<>("customLocation", new PropertyModel<String>(this, "customLocation")).add(new AjaxFormComponentUpdatingBehavior("change") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {}
+        }));
+        createEvent.add(new Button("goToLocation").add(new AjaxFormComponentUpdatingBehavior("click") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                Double latitude = null, longitude = null;
+                if(customLocation.matches("^[0-9]+(.[0-9]+)?N, [0-9]+(.[0-9]+)?E$")) {
+                    // Mapy.cz format
+                    String location = customLocation.replace("N", "").replace("E", "");
+                    latitude = Double.parseDouble(location.split(",")[0]);
+                    longitude = Double.parseDouble(location.split(",")[1]);
+                } else if(customLocation.matches("^^[0-9]+(.[0-9]+)?, [0-9]+(.[0-9]+)?$")) {
+                    // Google maps format
+                    latitude = Double.parseDouble(customLocation.split(",")[0]);
+                    longitude = Double.parseDouble(customLocation.split(",")[1]);
+                }
+
+                if(latitude != null && longitude != null) {
+                    map.setCenter(new GLatLng(latitude, longitude));
+                }
+            }
+        }));
+
         addMap(createEvent, ((Event) getDefaultModelObject()).getLocation());
 
-        add(createEvent);
-
-        createEvent.add(new AjaxButton("submit") {
+        final AjaxButton submit = new AjaxButton("submit") {
             @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                super.onSubmit(target, form);
+            protected void onSubmit(AjaxRequestTarget target) {
+                super.onSubmit(target);
+                Transaction storeEventInTransaction = sessionFactory.getCurrentSession().beginTransaction();
 
-                Event event = (Event) form.getModelObject();
+                Event event = CreateEventPanel.this.getModel().getObject();
                 if(lastSelectedLocation != null) {
                     event.setLocation(new Location(lastSelectedLocation.getLat(), lastSelectedLocation.getLng()));
                 }
@@ -188,26 +257,76 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
                     event.setAddedBy(CsldAuthenticatedWebSession.get().getLoggedUser());
                 }
 
+                List<Game> previous;
+                if(event.getGames() != null) {
+                    previous = new ArrayList<>(event.getGames());
+                } else {
+                    previous = new ArrayList<>();
+                }
                 if(createEvent.isValid()) {
                     event.setGames((List<Game>) ((MultiAutoCompleteComponent)createEvent.get("gamesWrapper:games")).getConvertedInput());
                 }
-                new DatabaseEvents(sessionFactory.getCurrentSession()).store(event);
 
-                onCsldAction(target, form);
+                if(StringUtils.isNotBlank(fromTime)){
+                    if(fromTime.split(":").length == 2) {
+                        Calendar from = event.getFrom();
+                        from.set(Calendar.HOUR_OF_DAY, Integer.parseInt(fromTime.split(":")[0]));
+                        from.set(Calendar.MINUTE, Integer.parseInt(fromTime.split(":")[1]));
+                        event.setFrom(from.getTime());
+                    }
+                }
+
+                if(StringUtils.isNotBlank(toTime)){
+                    if(toTime.split(":").length == 2) {
+                        Calendar to = event.getTo();
+                        to.set(Calendar.HOUR_OF_DAY, Integer.parseInt(toTime.split(":")[0]));
+                        to.set(Calendar.MINUTE, Integer.parseInt(toTime.split(":")[1]));
+                        event.setTo(to.getTime());
+                    }
+                }
+
+                new DatabaseEvents(sessionFactory.getCurrentSession()).store(event);
+                if(event != null && event.getGames() != null && event.getGames().size() > 0) {
+                    for(Game game: event.getGames()) {
+                        if(previous.contains(game)) {
+                            continue;
+                        }
+                        for(UserPlayedGame interested: game.getPlayed()) {
+                            if(interested.getStateEnum() == UserPlayedGame.UserPlayedGameState.WANT_TO_PLAY) {
+                                String url = CreateEventPanel.this.urlFor(DetailOfEventPage.class, DetailOfEventPage.pageParameters(event)).toString();
+                                String content = "Byla přidána událost, která se váže ke hře, kterou máte nastavenou jako chci hrát. Odkaz: http://larpovadatabaze.cz/" + url;
+                                mailClient.sendMail(content, interested.getPlayerOfGame().getPerson().getEmail(), "Do kalendáře byla přidána událost ke hře, která vás zajímá.");
+                            }
+                        }
+                    }
+                }
+
+                storeEventInTransaction.commit();
+                onCsldAction(target, event);
             }
 
             @Override
-            protected void onError(AjaxRequestTarget target, Form<?> form) {
-                super.onError(target, form);
+            protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+                super.updateAjaxAttributes(attributes);
+                attributes.getAjaxCallListeners().add(new AjaxCallListener()
+                        .onBefore("$('#" + getMarkupId() + "').prop('disabled',true);")
+                        .onComplete("$('#" + getMarkupId() + "').prop('disabled',false);"));
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target) {
+                super.onError(target);
                 if(!createEvent.isValid()){
                     target.add(getParent());
                 }
             }
-        }.add(new TinyMceAjaxSubmitModifier()));
+        };
+        createEvent.add(submit);
+        add(createEvent);
     }
 
     private void addMap(Form container, Location location){
-        GMap map = new GMap("map", new GMapHeaderContributor("http", "AIzaSyC8K3jrJMl52-Mswi2BsS5UVKDZIT4GWh8")); // TODO: Restrict usage of the key.
+        map = new GMap("map", new GMapHeaderContributor("https", "AIzaSyC8K3jrJMl52-Mswi2BsS5UVKDZIT4GWh8")); // TODO: Restrict usage of the key.
         map.setStreetViewControlEnabled(false);
         map.setScaleControlEnabled(true);
         map.setScrollWheelZoomEnabled(true);
@@ -272,13 +391,13 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
             protected void onEvent(AjaxRequestTarget target) {
                 handleModalOpen(createGameModal, target);
             }
-        }).add(new TinyMceAjaxSubmitModifier()));
+        }));
         createEvent.add(new AjaxButton("createGameSpecButton"){}.setOutputMarkupId(true).add(new AjaxEventBehavior("click") {
             @Override
             protected void onEvent(AjaxRequestTarget target) {
                 handleModalOpen(createGameModal, target);
             }
-        }).add(new TinyMceAjaxSubmitModifier()));
+        }));
     }
 
     private void handleModalOpen(ModalWindow createGameModal, AjaxRequestTarget target) {
@@ -290,18 +409,18 @@ abstract public class CreateEventPanel extends AbstractCsldPanel<Event> {
         }
         game.setName(toUse.getName());
         game.setWeb(toUse.getWeb());
-        game.setPlayers(Integer.parseInt(toUse.getAmountOfPlayers()));
+        game.setPlayers(toUse.getAmountOfPlayers());
         game.setDescription(toUse.getDescription());
 
         createGameModal.setContent(new CreateOrUpdateGamePanel(createGameModal.getContentId(), Model.of(game)){
             @Override
-            protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
-                super.onCsldAction(target, form);
+            protected void onCsldAction(AjaxRequestTarget target, Object object) {
+                super.onCsldAction(target, object);
                 createGameModal.close(target);
             }
         });
         createGameModal.show(target);
     }
 
-    protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}
+    protected void onCsldAction(AjaxRequestTarget target, Object object){}
 }

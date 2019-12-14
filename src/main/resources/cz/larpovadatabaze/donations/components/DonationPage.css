@@ -1,0 +1,21 @@
+.donor h1 {
+    margin-bottom: 18px;
+}
+
+.donor .headerRow {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.donor .headerRowTd {
+    padding-bottom: 6px;
+}
+
+.donor .donorTd {
+    width: 400px;
+    padding: 3px;
+}
+
+.donor {
+    font-size: 14px;
+}

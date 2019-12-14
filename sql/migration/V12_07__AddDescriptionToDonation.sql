@@ -1,0 +1,1 @@
+ALTER TABLE donation ADD COLUMN description text;

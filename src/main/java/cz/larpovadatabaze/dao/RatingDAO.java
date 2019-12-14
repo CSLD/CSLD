@@ -12,7 +12,10 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -43,6 +46,7 @@ public class RatingDAO extends GenericHibernateDAO<Rating, Integer> {
         return new ArrayList<>(unsorted);
     }
 
+    // Count once in an hour?
     public double getAverageRating() {
         Session session = sessionFactory.getCurrentSession();
         String sqlQuery = String.format("select csld_count_average()");

@@ -13,6 +13,7 @@ public class LoginToRatePanel extends Panel {
     }
 
     protected void onConfigure() {
+        super.onConfigure();
         setVisibilityAllowed(!CsldAuthenticatedWebSession.get().isSignedIn());
     }
 }

@@ -1,5 +1,5 @@
-@import url(http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700italic,700,400italic,300italic,300&subset=latin,latin-ext);
-@import url(http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,900italic,900,700italic,700&subset=latin,latin-ext);
+@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700italic,700,400italic,300italic,300&subset=latin,latin-ext);
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,900italic,900,700italic,700&subset=latin,latin-ext);
 
 @media (min-width: 1200px) {
     .container {
@@ -78,11 +78,19 @@ body{
     border-bottom: 1px solid transparent;
 }
 h1 {
+     margin-top: 5px;
+     margin-bottom: 15px;
+     color: #6dc8b7;
+     font-size: 28px;
+     font-weight: bold;
+ }
+
+h2 {
     margin-top: 5px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     color: #6dc8b7;
-    font-size: 28px;
-    font-weight: bold;
+    font-size: 24px;
+    font-weight: normal;
 }
 a {
     color: #98DBCF;
@@ -417,13 +425,13 @@ a:focus {
     margin-bottom: 15px;
     margin-top: 15px;
 }
-.row.description .col-md-11, .row.description col-sm-11, .row.description .col-xs-11{
+.row.description .col-md-11, .row.description .col-sm-11, .row.description .col-xs-11{
     padding: 0px 15px 15px 15px;
     margin-top: 0px;
 }
 @media (min-width: 736px) {
 
-    .row.description .col-md-11, .row.description col-sm-11, .row.description .col-xs-11{
+    .row.description .col-md-11, .row.description .col-sm-11, .row.description .col-xs-11{
         padding: 0 15px;
         padding-top: 0px;
         margin-top: 0px;
@@ -940,13 +948,14 @@ div.recent-game-players{
     margin: 0 10px 0 10px;
 }
 .row.recent-games div.item,
+.recent-games div.item,
 .search-on-type div.item {
     background-color: #2F2F2F;
     padding-bottom:  16px;
     padding-top:  1px;
     border-radius: 4px;
 }
-.row.recent-games.played div.item,{
+.row.recent-games.played div.item{
     background-color: #f4f4f4;   
 }
 .row.recent-games.played div.item:hover{

@@ -1,3 +1,10 @@
+<wicket:head xmlns:wicket="http://wicket.apache.org">
+	<wicket:link>
+		<link rel="stylesheet" type="text/css" href="ListEventsPage.css"/>
+	</wicket:link>
+</wicket:head>
+
+
 <wicket:extend xmlns:wicket="http://wicket.apache.org">
 	<div class="profile_bar">
 		<div class="container">
@@ -26,8 +33,8 @@
 				<div class="row">
 					<div class="col-md-2 col-sm-2 col-xs-12">
 						<div>
-							<div class="nadpisMenu hide">
-								<wicket:message key="filters.filters">filtry</wicket:message>
+							<div class="nadpisMenu">
+								<wicket:message key="filters.filters">Filtry</wicket:message>
 							</div>
 						</div>
 						<div class="sekce" wicket:id="filterEvents"></div>

@@ -1,0 +1,64 @@
+#!/bin/bash
+if [ "${1}" == "start" ] ; then
+    service tomcat7 start
+    service postgresql start
+    cd /opt/csld/www-node
+    forever start index.js
+fi
+if [ "${1}" == "stop" ] ; then
+    service tomcat7 stop
+    kill $(ps aux | grep '[t]omcat7' | awk '{print $2}')
+    service postgresql stop
+    forever stopall
+fi
+if [ "${1}" == "restart" ] ; then
+    _csld stop
+    sleep 10
+    _csld start
+fi
+if [ "${1}" == "init" ] ; then
+    service postgresql start
+    sudo -u postgres psql -c "CREATE USER csld WITH PASSWORD 'csld'"
+    sudo -u postgres psql -c 'CREATE DATABASE csld WITH OWNER csld'
+    rm -rf /opt/csld
+    mkdir /opt/csld
+    mkdir /opt/csld/files
+    mkdir /opt/csld/www
+    mkdir /opt/csld/www/ROOT
+    cd /opt/csld
+    git clone https://github.com/CSLD/CSLD.git
+    git clone https://github.com/MrDulka/fb-larp-events.git
+    cp -R fb-larp-events www-node
+    cd CSLD
+    mvn clean
+    mvn package -DskipTests
+    mvn -Dflyway.locations=filesystem:sql/migration -Dflyway.url=jdbc:postgresql://localhost:5432/csld -Dflyway.user=csld -Dflyway.password=csld flyway:migrate
+    cp -R target/CSLD-1.0/* ../www/ROOT
+    service postgresql stop
+    cd /opt/csld/www-node
+    npm install
+    _csld start
+fi
+if [ "${1}" == "update" ] ; then
+    _csld stop
+    sleep 10
+    service postgresql start
+    cd /opt/csld/CSLD
+    git pull origin master
+    cd /opt/csld/fb-larp-events
+    git pull origin master
+    cd /opt/csld
+    rm -rf /opt/csld/www
+    rm -rf /opt/csld/www-node
+    mkdir /opt/csld/www
+    mkdir /opt/csld/www/ROOT
+    cp -R fb-larp-events www-node
+    cd CSLD
+    mvn clean
+    mvn package -DskipTests
+    mvn -Dflyway.locations=filesystem:sql/migration -Dflyway.url=jdbc:postgresql://localhost:5432/csld -Dflyway.user=csld -Dflyway.password=csld flyway:migrate
+    cp -R target/CSLD-1.0/* ../www/ROOT
+    cd /opt/csld/www-node
+    npm install
+    _csld start
+fi

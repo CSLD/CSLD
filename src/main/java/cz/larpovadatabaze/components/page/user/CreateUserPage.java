@@ -8,7 +8,6 @@ import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.CsldUserService;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -31,11 +30,11 @@ public class CreateUserPage extends CsldBasePage {
 
         add(new CreateOrUpdateUserPanel("createOrUpdateUser", csldUser){
             @Override
-            protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
-                super.onCsldAction(target, form);
+            protected void onCsldAction(AjaxRequestTarget target, Object object) {
+                super.onCsldAction(target, object);
 
                 if(!isNew) {
-                    CsldUser user = (CsldUser) form.getModelObject();
+                    CsldUser user = (CsldUser) object;
                     PageParameters params = new PageParameters();
                     params.add("id", user.getId());
 

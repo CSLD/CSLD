@@ -49,22 +49,22 @@ public abstract class CreateOrUpdateAuthorPanel extends Panel {
 
         createOrUpdateUser.add(new AjaxSubmitLink("submit"){
             @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                super.onSubmit(target, form);
+            protected void onSubmit(AjaxRequestTarget target) {
+                super.onSubmit(target);
                 if(createOrUpdateUser.isValid()){
                     CsldUser author = createOrUpdateUser.getModelObject();
                     if(csldUserService.saveOrUpdateNewAuthor(author)){
-                        onCsldAction(target, form);
+                        onCsldAction(target, author);
                     }
                 }
             }
 
             @Override
-            protected void onError(AjaxRequestTarget target, Form<?> form) {
-                super.onError(target, form);
+            protected void onError(AjaxRequestTarget target) {
+                super.onError(target);
 
                 // Refresh form
-                target.add(form);
+                target.add(CreateOrUpdateAuthorPanel.this);
             }
         });
 
@@ -76,5 +76,5 @@ public abstract class CreateOrUpdateAuthorPanel extends Panel {
         return addFeedbackTo;
     }
 
-    protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}
+    protected void onCsldAction(AjaxRequestTarget target, Object object){}
 }

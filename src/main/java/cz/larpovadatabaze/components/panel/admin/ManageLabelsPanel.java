@@ -82,7 +82,7 @@ public class ManageLabelsPanel extends AbstractCsldPanel<List<Label>> {
 
                 final AjaxButton require = new AjaxButton("require") {
                     @Override
-                    protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                    protected void onSubmit(AjaxRequestTarget target) {
                         final cz.larpovadatabaze.entities.Label iLabel = labelService.getById(label.getId());
 
                         if(iLabel.getRequired() == null){
@@ -105,7 +105,7 @@ public class ManageLabelsPanel extends AbstractCsldPanel<List<Label>> {
 
                 AjaxButton accept = new AjaxButton("accept") {
                     @Override
-                    protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                    protected void onSubmit(AjaxRequestTarget target) {
                         final cz.larpovadatabaze.entities.Label iLabel = labelService.getById(label.getId());
 
                         if(iLabel.getAuthorized() == null){
@@ -127,7 +127,7 @@ public class ManageLabelsPanel extends AbstractCsldPanel<List<Label>> {
 
                 AjaxButton remove = new AjaxButton("remove") {
                     @Override
-                    protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                    protected void onSubmit(AjaxRequestTarget target) {
                         final cz.larpovadatabaze.entities.Label iLabel = labelService.getById(label.getId());
                         labelService.remove(iLabel);
                         target.add(ManageLabelsPanel.this);

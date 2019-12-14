@@ -9,6 +9,7 @@ import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.CsldUserService;
 import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
+import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.Pwd;
 import cz.larpovadatabaze.utils.UserUtils;
 import cz.larpovadatabaze.validator.UniqueUserValidator;
@@ -23,11 +24,13 @@ import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
-import org.apache.wicket.model.*;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
-import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +46,8 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
     FileService fileService;
     @SpringBean
     ImageResizingStrategyFactoryService imageResizingStrategyFactoryService;
+    @SpringBean
+    ImageService imageService;
 
     private FileUploadField fileUpload;
     @SuppressWarnings("unused")
@@ -80,13 +85,13 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
         createOrUpdateUser.setMultiPart(true);
         createOrUpdateUser.setOutputMarkupId(true);
 
-        createOrUpdateUser.add(new Label("header", new StringResourceModel(resourceBase+".header", null)));
-        createOrUpdateUser.add(new Label("subheader", new StringResourceModel(resourceBase+".subheader", null)));
+        createOrUpdateUser.add(new Label("header", new StringResourceModel(resourceBase+".header")));
+        createOrUpdateUser.add(new Label("subheader", new StringResourceModel(resourceBase+".subheader")));
 
         EmailTextField email = new EmailTextField("person.email");
         email.setRequired(true);
         email.setLabel(Model.of("Email"));
-        email.add(new UniqueUserValidator(isEdit, csldUserService));
+        email.add(new UniqueUserValidator(true, csldUserService));
         createOrUpdateUser.add(addFeedbackPanel(email, createOrUpdateUser, "emailFeedback", "form.loginMail"));
 
         PasswordTextField password = new PasswordTextField("password");
@@ -133,10 +138,10 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
          */
 
 
-        createOrUpdateUser.add(new AjaxButton("submit", new StringResourceModel(resourceBase+".submit", null)){
+        createOrUpdateUser.add(new AjaxButton("submit", new StringResourceModel(resourceBase+".submit")){
             @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                super.onSubmit(target, form);
+            protected void onSubmit(AjaxRequestTarget target) {
+                super.onSubmit(target);
 
                 if(createOrUpdateUser.isValid()){
                     CsldUser user = createOrUpdateUser.getModelObject();
@@ -144,19 +149,19 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
                         if(!UserUtils.isSignedIn()){
                             CsldAuthenticatedWebSession.get().signIn(user.getPerson().getEmail(), password.getConvertedInput());
                         }
-                        onCsldAction(target, form);
+                        onCsldAction(target, user);
                     }
                 }
             }
 
             @Override
-            protected void onError(AjaxRequestTarget target, Form<?> form) {
-                super.onError(target, form);
+            protected void onError(AjaxRequestTarget target) {
+                super.onError(target);
                 if(!createOrUpdateUser.isValid()){
                     target.add(getParent());
                 }
             }
-        }.add(new TinyMceAjaxSubmitModifier()));
+        });
         createOrUpdateUser.add(new EqualPasswordInputValidator(password, passwordAgain));
 
         add(createOrUpdateUser);
@@ -184,7 +189,7 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
         if(user.getDefaultLang() == null) {
             user.setDefaultLang(Session.get().getLocale().getLanguage());
         }
-        if (uploads != null) {
+        if (uploads != null && uploads.size() > 0) {
             for (FileUpload upload : uploads) {
                 String filePath = fileService.saveImageFileAndReturnPath(upload, imageResizingStrategyFactoryService.getCuttingSquareStrategy(CsldUserService.USER_IMAGE_SIZE, CsldUserService.USER_IMAGE_LEFTTOP_PERCENT)).path;
                 try
@@ -230,5 +235,5 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
         }
     }
 
-    protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}
+    protected void onCsldAction(AjaxRequestTarget target, Object object){}
 }

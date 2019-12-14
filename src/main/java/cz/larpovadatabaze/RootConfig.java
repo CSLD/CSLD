@@ -2,7 +2,7 @@ package cz.larpovadatabaze;
 
 import com.mchange.v2.c3p0.DriverManagerDataSource;
 import cz.larpovadatabaze.services.FileService;
-import cz.larpovadatabaze.services.impl.FileServiceImpl;
+import cz.larpovadatabaze.services.impl.LocalFiles;
 import cz.larpovadatabaze.utils.MailClient;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +14,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.orm.hibernate4.HibernateTransactionManager;
-import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
@@ -28,7 +27,7 @@ import java.util.Properties;
 @Configuration
 @ComponentScan(basePackages = "cz.larpovadatabaze")
 @EnableTransactionManagement
-@PropertySource(value = {"file:${props.path}/general.properties","file:${props.path}/jdbc.properties","file:${props.path}/mail.properties"})
+@PropertySource(value = {"classpath:application.properties"})
 public class RootConfig {
     @Autowired
     private Environment env;
@@ -39,9 +38,18 @@ public class RootConfig {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
         dataSource.setDriverClass(env.getProperty("jdbc.driver"));
-        dataSource.setJdbcUrl(env.getProperty("jdbc.url"));
-        dataSource.setUser(env.getProperty("jdbc.user"));
-        dataSource.setPassword(env.getProperty("jdbc.password"));
+        if(env.getProperty("JDBC_DATABASE_URL") != null) {
+            System.out.println(env.getProperty("JDBC_DATABASE_URL") );
+            System.out.println(env.getProperty("JDBC_DATABASE_USERNAME") );
+            System.out.println(env.getProperty("JDBC_DATABASE_PASSWORD") );
+            dataSource.setJdbcUrl(env.getProperty("JDBC_DATABASE_URL"));
+            dataSource.setUser(env.getProperty("JDBC_DATABASE_USERNAME"));
+            dataSource.setPassword(env.getProperty("JDBC_DATABASE_PASSWORD"));
+        } else {
+            dataSource.setJdbcUrl(env.getProperty("jdbc.url"));
+            dataSource.setUser(env.getProperty("jdbc.user"));
+            dataSource.setPassword(env.getProperty("jdbc.password"));
+        }
 
         return dataSource;
     }
@@ -68,6 +76,7 @@ public class RootConfig {
         properties.put("hibernate.cache.provider_class", env.getProperty("hibernate.cache.provider_class"));
         properties.put("javax.persistence.sharedCache.mode", env.getProperty("javax.persistence.sharedCache.mode"));
         properties.put("hibernate.cache.default_cache_concurrency_strategy", env.getProperty("hibernate.cache.default_cache_concurrency_strategy"));
+        properties.put("hibernate.default_schema", env.getProperty("hibernate.default_schema"));
 
         return properties;
     }
@@ -127,6 +136,6 @@ public class RootConfig {
 
     @Bean
     public FileService fileService() {
-        return new FileServiceImpl(env.getProperty("csld.data_dir"));
+        return new LocalFiles(env.getProperty("csld.data_dir"));
     }
 }

@@ -6,6 +6,7 @@ import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.entities.Photo;
 import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.services.PhotoService;
+import org.apache.log4j.Logger;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
@@ -20,6 +21,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -28,7 +30,7 @@ import java.util.HashMap;
  * User: Michal Kara Date: 7.3.15 Time: 22:43
  */
 public class RecentPhotosPanel extends Panel {
-
+    private final static Logger logger = Logger.getLogger(RecentPhotosPanel.class);
     private final static int SHOW_PHOTOS = 10;
 
     @SpringBean
@@ -86,9 +88,13 @@ public class RecentPhotosPanel extends Panel {
         response.render(JavaScriptHeaderItem.forReference(OwlCarouselResourceReference.get()));
 
         // Render carousel init
-        PackageTextTemplate tt = new PackageTextTemplate(getClass(), "RecentPhotosPanel.js");
-        HashMap<String, String> args = new HashMap<String, String>();
-        args.put("carouselId", carousel.getMarkupId());
-        response.render(OnDomReadyHeaderItem.forScript(tt.asString(args)));
+        try(PackageTextTemplate tt = new PackageTextTemplate(getClass(), "RecentPhotosPanel.js")) {
+            HashMap<String, String> args = new HashMap<String, String>();
+            args.put("carouselId", carousel.getMarkupId());
+            response.render(OnDomReadyHeaderItem.forScript(tt.asString(args)));
+        } catch (IOException e) {
+            logger.error(e);
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -1,7 +1,9 @@
 package cz.larpovadatabaze.components.panel.game;
 
+import com.googlecode.wicket.jquery.ui.panel.JQueryFeedbackPanel;
+import com.googlecode.wicket.jquery.ui.plugins.wysiwyg.WysiwygEditor;
+import com.googlecode.wicket.jquery.ui.plugins.wysiwyg.toolbar.DefaultWysiwygToolbar;
 import cz.larpovadatabaze.api.ValidatableForm;
-import cz.larpovadatabaze.behavior.CSLDTinyMceBehavior;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
 import cz.larpovadatabaze.components.common.JSPingBehavior;
@@ -18,6 +20,7 @@ import cz.larpovadatabaze.services.VideoService;
 import cz.larpovadatabaze.utils.UserUtils;
 import cz.larpovadatabaze.validator.AtLeastOneRequiredLabelValidator;
 import cz.larpovadatabaze.validator.NonEmptyAuthorsValidator;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -25,14 +28,16 @@ import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.*;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Bytes;
-import wicket.contrib.tinymce.ajax.TinyMceAjaxSubmitModifier;
 
 import java.util.Collection;
 import java.util.List;
@@ -116,10 +121,13 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         // Description
         WebMarkupContainer descriptionWrapper = new WebMarkupContainer("descriptionWrapper");
         createOrUpdateGame.add(descriptionWrapper);
-        TextArea description = (TextArea) new TextArea<String>("description").setRequired(true);
-        description.add(new CSLDTinyMceBehavior());
-        descriptionWrapper.add(description);
-        descriptionWrapper.add(new CsldFeedbackMessageLabel("descriptionFeedback", description, descriptionWrapper, "form.game.descriptionHint"));
+        DefaultWysiwygToolbar toolbar = new DefaultWysiwygToolbar("toolbar");
+        final WysiwygEditor editor = new WysiwygEditor("description", toolbar);
+
+        final FeedbackPanel feedback = new JQueryFeedbackPanel("feedback");
+        descriptionWrapper.add(feedback);
+        descriptionWrapper.add(toolbar, editor);
+        descriptionWrapper.add(new CsldFeedbackMessageLabel("descriptionFeedback", editor, descriptionWrapper, "form.game.descriptionHint"));
 
         // Year
         TextField<Integer> year = new TextField<Integer>("year");
@@ -223,12 +231,17 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
 
         createOrUpdateGame.add(new AjaxButton("submit"){
             @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                super.onSubmit(target, form);
+            protected void onSubmit(AjaxRequestTarget target) {
+                super.onSubmit(target);
 
                 // Process video
-                Game game = (Game) form.getModelObject();
-                String videoURL = videoService.getEmbedingURL(videoField.getConvertedInput());
+                Game game = CreateOrUpdateGamePanel.this.getModelObject();
+                System.out.println("Before retrieving.");
+                String videoURL = "";
+                if(!StringUtils.isBlank(videoField.getConvertedInput())) {
+                    videoURL = videoService.getEmbedingURL(videoField.getConvertedInput());
+                }
+                System.out.println("Retrieved url");
                 if (videoURL == null) {
                     // Bad URL - TODO - does not work - TODO
                     videoField.error("Nerozpoznané URL videa");
@@ -249,22 +262,22 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
                     game.setGroupAuthor((List<CsldGroup>) ((MultiAutoCompleteComponent)createOrUpdateGame.get("groupAuthor")).getConvertedInput());
                     game.setAuthors((List<CsldUser>) ((MultiAutoCompleteComponent)createOrUpdateGame.get("authorsWrapper:authors")).getConvertedInput());
                     if(gameService.saveOrUpdate(game)){
-                        onCsldAction(target, form);
+                        onCsldAction(target, game);
                     } else {
-                        error(getLocalizer().getString("game.cantAdd", form));
+                        error(getLocalizer().getString("game.cantAdd", CreateOrUpdateGamePanel.this));
                         target.add(getParent());
                     }
                 }
             }
 
             @Override
-            protected void onError(AjaxRequestTarget target, Form<?> form) {
-                super.onError(target, form);
+            protected void onError(AjaxRequestTarget target) {
+                super.onError(target);
                 if(!createOrUpdateGame.isValid()){
                     target.add(getParent());
                 }
             }
-        }.add(new TinyMceAjaxSubmitModifier()));
+        });
 
         add(createOrUpdateGame);
 
@@ -289,8 +302,8 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
             protected void onEvent(AjaxRequestTarget target) {
                 createlabelModal.setContent(new CreateOrUpdateLabelPanel(createlabelModal.getContentId()){
                     @Override
-                    protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
-                        super.onCsldAction(target, form);
+                    protected void onCsldAction(AjaxRequestTarget target, Object object) {
+                        super.onCsldAction(target, object);
                         createlabelModal.close(target);
                         chooseLabels.reload(target);
                     }
@@ -312,8 +325,8 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
             protected void onEvent(AjaxRequestTarget target) {
                 createGroupModal.setContent(new CreateOrUpdateGroupPanel(createGroupModal.getContentId()){
                     @Override
-                    protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
-                        super.onCsldAction(target, form);
+                    protected void onCsldAction(AjaxRequestTarget target, Object object) {
+                        super.onCsldAction(target, object);
                         createGroupModal.close(target);
                     }
                 });
@@ -334,8 +347,8 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
             protected void onEvent(AjaxRequestTarget target) {
                 createAuthorModal.setContent(new CreateOrUpdateAuthorPanel(createAuthorModal.getContentId(), null){
                     @Override
-                    protected void onCsldAction(AjaxRequestTarget target, Form<?> form) {
-                        super.onCsldAction(target, form);
+                    protected void onCsldAction(AjaxRequestTarget target, Object object) {
+                        super.onCsldAction(target, object);
                         createAuthorModal.close(target);
                     }
                 });
@@ -381,5 +394,5 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         authorsWrapper.add(new CsldFeedbackMessageLabel("authorsFeedback", authors, authorsWrapper, null));
     }
 
-    protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}
+    protected void onCsldAction(AjaxRequestTarget target, Object object){}
 }

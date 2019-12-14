@@ -1,19 +1,18 @@
 package cz.larpovadatabaze.components.panel.game;
 
-import com.googlecode.wicket.jquery.ui.form.button.AjaxButton;
+import com.googlecode.wicket.jquery.ui.plugins.wysiwyg.WysiwygEditor;
 import cz.larpovadatabaze.AcceptanceTest;
 import cz.larpovadatabaze.TestUtils;
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
 import cz.larpovadatabaze.components.panel.UploadCoverImagePanel;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.markup.html.form.*;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.Model;
 import org.junit.Test;
-
-import java.util.Locale;
 
 /**
  *
@@ -30,11 +29,10 @@ public class CreateGamePanelTest extends AcceptanceTest {
         tester.assertComponent("id:addGame:name", RequiredTextField.class);
         tester.assertComponent("id:addGame:nameFeedback", CsldFeedbackMessageLabel.class);
         tester.assertComponent("id:addGame:labels", ChooseLabelsPanel.class);
-        tester.assertComponent("id:addGame:descriptionWrapper:description", TextArea.class);
+        tester.assertComponent("id:addGame:descriptionWrapper:description", WysiwygEditor.class);
         tester.assertComponent("id:addGame:descriptionWrapper:descriptionFeedback", CsldFeedbackMessageLabel.class);
         tester.assertComponent("id:addGame:year", TextField.class);
         tester.assertComponent("id:addGame:yearFeedback", CsldFeedbackMessageLabel.class);
-        tester.assertComponent("id:addGame:lang", DropDownChoice.class);
         tester.assertComponent("id:addGame:players", TextField.class);
         tester.assertComponent("id:addGame:playersFeedback", CsldFeedbackMessageLabel.class);
         tester.assertComponent("id:addGame:womenRole", TextField.class);

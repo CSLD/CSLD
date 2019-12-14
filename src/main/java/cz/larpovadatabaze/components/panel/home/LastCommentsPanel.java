@@ -11,6 +11,7 @@ import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.services.CommentService;
 import cz.larpovadatabaze.services.ImageService;
+import org.apache.log4j.Logger;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
@@ -28,6 +29,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
 import org.jsoup.Jsoup;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,6 +39,7 @@ import java.util.List;
  * This panel shows shortened info about last comments.
  */
 public class LastCommentsPanel extends Panel {
+    private final static Logger logger = Logger.getLogger(LastCommentsPanel.class);
     /** Number of columns */
     private static final int N_COLUMNS = 3;
 
@@ -51,7 +54,7 @@ public class LastCommentsPanel extends Panel {
     private static int EXPANDED_LAST_COMMENTS = N_COLUMNS*5;
 
     private class CommentsView extends ListView<Comment> {
-        public CommentsView(String id, List<? extends Comment> list) {
+        public CommentsView(String id, List<Comment> list) {
             super(id, list);
         }
 
@@ -115,7 +118,11 @@ public class LastCommentsPanel extends Panel {
             gameLink.add(gameRating);
 
             // Game name
-            final Label gameName = new Label("gameName", game.getName());
+            String name = game.getName();
+            if(name.length() > 20) {
+                name = name.substring(0, 17) + "...";
+            }
+            final Label gameName = new Label("gameName", name);
             gameLink.add(gameName);
 
             // Game date
@@ -172,6 +179,11 @@ public class LastCommentsPanel extends Panel {
     public void renderHead(IHeaderResponse response) {
         super.renderHead(response);
 
-        response.render(OnDomReadyHeaderItem.forScript(new PackageTextTemplate(getClass(), "LastCommentsPanel.js").getString()));
+        try (PackageTextTemplate ptt = (new PackageTextTemplate(getClass(), "LastCommentsPanel.js"))) {
+            response.render(OnDomReadyHeaderItem.forScript(ptt.getString()));
+        } catch (IOException e) {
+            logger.error(e);
+            throw new RuntimeException(e);
+        }
     }
 }

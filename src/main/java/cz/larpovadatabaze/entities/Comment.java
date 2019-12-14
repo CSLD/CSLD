@@ -3,6 +3,7 @@ package cz.larpovadatabaze.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  *
@@ -22,8 +23,8 @@ public class Comment implements Serializable {
 
     @Column(name = "id")
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
-    @SequenceGenerator(sequenceName = "csld_comment_id_seq", name = "id_gen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_comment")
+    @SequenceGenerator(sequenceName = "csld_comment_id_seq", name = "id_gen_comment", allocationSize = 1)
     public int getId() {
         return id;
     }
@@ -116,5 +117,16 @@ public class Comment implements Serializable {
 
     public void setUser(CsldUser user) {
         this.user = user;
+    }
+
+    private List<Upvote> pluses;
+
+    @OneToMany(mappedBy = "comment")
+    public List<Upvote> getPluses() {
+        return pluses;
+    }
+
+    public void setPluses(List<Upvote> pluses) {
+        this.pluses = pluses;
     }
 }

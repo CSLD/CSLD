@@ -11,6 +11,9 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * This panel contains link to the page for editing game.
  * It is shown only to logged user, with rights toward the specific game.
@@ -44,10 +47,13 @@ public class EditGamePanel extends Panel {
             if(logged == null) {
                 isVisible = false;
             }
+
             if(logged != null && logged.getRole() <= CsldRoles.USER.getRole()){
+                List<Integer> ids = model.getObject().getAuthors().stream().map(CsldUser::getId).collect(Collectors.toList());
                 if(model.getObject() == null || model.getObject().getAuthors() == null || model.getObject().getAddedBy() == null) {
                     isVisible = false;
-                } else if(!model.getObject().getAuthors().contains(logged) && !model.getObject().getAddedBy().equals(logged)){
+                } else if(!ids.contains(logged.getId()) &&
+                        !(model.getObject().getAddedBy().getId().equals(logged.getId()))){
                     isVisible = false;
                 }
             }

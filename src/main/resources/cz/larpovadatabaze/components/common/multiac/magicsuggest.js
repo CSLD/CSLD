@@ -191,7 +191,7 @@
              * The maximum number of items the user can select if multiple selection is allowed.
              *    Set to null to remove the limit.
              */
-            maxSelection: 10,
+            maxSelection: null,
 
             /**
              * A function that defines the helper text when the max selection amount has been reached. The function has a single

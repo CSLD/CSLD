@@ -12,7 +12,6 @@ import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.validator.UniqueGroupValidator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
@@ -86,22 +85,22 @@ public abstract class CreateOrUpdateGroupPanel extends AbstractCsldPanel<CsldGro
 
         createGroup.add(new AjaxButton("submit"){
             @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                super.onSubmit(target, form);
+            protected void onSubmit(AjaxRequestTarget target) {
+                super.onSubmit(target);
 
                 if(createGroup.isValid()){
                     CsldGroup group = createGroup.getModelObject();
                     if(saveGroupAndImage(group)){
-                        onCsldAction(target, form);
+                        onCsldAction(target, group);
                     }
                 }
             }
 
             @Override
-            protected void onError(AjaxRequestTarget target, Form<?> form) {
-                super.onError(target, form);
+            protected void onError(AjaxRequestTarget target) {
+                super.onError(target);
 
-                target.add(form);
+                target.add(CreateOrUpdateGroupPanel.this);
             }
         });
         add(createGroup);
@@ -135,5 +134,5 @@ public abstract class CreateOrUpdateGroupPanel extends AbstractCsldPanel<CsldGro
         return false;
     }
 
-    protected void onCsldAction(AjaxRequestTarget target, Form<?> form){}
+    protected void onCsldAction(AjaxRequestTarget target, Object object){}
 }

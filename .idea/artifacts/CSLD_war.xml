@@ -7,7 +7,7 @@
         <packaging>war</packaging>
       </options>
     </properties>
-    <root id="archive" name="CSLD-1.0.war">
+    <root id="archive" name="CSLD-1.0.0.war">
       <element id="artifact" artifact-name="CSLD:war exploded" />
     </root>
   </artifact>

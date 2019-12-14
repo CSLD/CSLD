@@ -1,8 +1,8 @@
 package cz.larpovadatabaze.components.common;
 
 /**
- * Created by jbalhar on 28. 8. 2016.
+ * Interface necessary to implement for Ajax enabled filtering.
  */
 public interface FilterablePage {
-    public void filterChanged(boolean sortChanged, boolean requiredLabelsChanged, boolean otherLabelsChanged);
+    void filterChanged(boolean sortChanged, boolean requiredLabelsChanged, boolean otherLabelsChanged);
 }

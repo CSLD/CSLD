@@ -5,7 +5,6 @@ import cz.larpovadatabaze.components.common.icons.GroupIcon;
 import cz.larpovadatabaze.components.page.user.UserDetailPage;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -24,7 +23,7 @@ public class GroupDetailPanel extends AbstractCsldPanel<CsldGroup> {
     }
 
     private static class UserList extends ListView<CsldUser> {
-        public UserList(String id, IModel<? extends List<? extends CsldUser>> model) {
+        public UserList(String id, IModel<? extends List<CsldUser>> model) {
             super(id, model);
         }
 

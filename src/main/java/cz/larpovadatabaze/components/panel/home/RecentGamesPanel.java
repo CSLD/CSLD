@@ -1,9 +1,11 @@
 package cz.larpovadatabaze.components.panel.home;
 
+import cz.larpovadatabaze.components.common.multiac.MultiAutoCompleteComponent;
 import cz.larpovadatabaze.components.page.OwlCarouselResourceReference;
 import cz.larpovadatabaze.components.panel.game.GameBoxPanel;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.services.GameService;
+import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
@@ -15,6 +17,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -24,6 +27,7 @@ import java.util.List;
  * This panel shows information about last added games
  */
 public class RecentGamesPanel extends Panel {
+    private final static Logger logger = Logger.getLogger(MultiAutoCompleteComponent.class);
     @SpringBean
     GameService gameService;
 
@@ -89,9 +93,13 @@ public class RecentGamesPanel extends Panel {
         response.render(JavaScriptHeaderItem.forReference(OwlCarouselResourceReference.get()));
 
         // Add carousel Javascript
-        PackageTextTemplate tt = new PackageTextTemplate(getClass(), "RecentGamesPanel.js");
-        HashMap<String, String> args = new HashMap<String, String>();
-        args.put("carouselId", carousel.getMarkupId());
-        response.render(OnDomReadyHeaderItem.forScript(tt.asString(args)));
+        try(PackageTextTemplate tt = new PackageTextTemplate(getClass(), "RecentGamesPanel.js")) {
+            HashMap<String, String> args = new HashMap<String, String>();
+            args.put("carouselId", carousel.getMarkupId());
+            response.render(OnDomReadyHeaderItem.forScript(tt.asString(args)));
+        } catch (IOException e) {
+            logger.error(e);
+            throw new RuntimeException(e);
+        }
     }
 }

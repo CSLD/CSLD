@@ -4,7 +4,6 @@ import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.Game;
 
 import java.util.Collection;
-import java.util.Locale;
 
 /**
  * Created by IntelliJ IDEA.

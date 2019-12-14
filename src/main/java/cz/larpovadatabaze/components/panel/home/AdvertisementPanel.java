@@ -11,6 +11,7 @@ import cz.larpovadatabaze.components.page.user.CreateUserPage;
 import cz.larpovadatabaze.components.page.user.UserDetailPage;
 import cz.larpovadatabaze.entities.Advertisement;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import org.apache.log4j.Logger;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
@@ -26,6 +27,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.template.PackageTextTemplate;
 import org.springframework.core.env.Environment;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +39,7 @@ import java.util.Map;
 public class AdvertisementPanel extends AbstractCsldPanel<List<Advertisement>> {
     @SpringBean
     private Environment environment;
+    private final static Logger logger = Logger.getLogger(AdvertisementPanel.class);
 
     /**
      * Model to load advertisements
@@ -130,9 +133,13 @@ public class AdvertisementPanel extends AbstractCsldPanel<List<Advertisement>> {
         response.render(JavaScriptHeaderItem.forReference(OwlCarouselResourceReference.get()));
 
         /// Init carousel
-        PackageTextTemplate tt = new PackageTextTemplate(getClass(), "AdvertisementPanel.js");
-        Map<String, String> args = new HashMap<String, String>();
-        args.put("carouselId", carousel.getMarkupId());
-        response.render(OnDomReadyHeaderItem.forScript(tt.asString(args)));
+        try(PackageTextTemplate tt = new PackageTextTemplate(getClass(), "AdvertisementPanel.js")) {
+            Map<String, String> args = new HashMap<String, String>();
+            args.put("carouselId", carousel.getMarkupId());
+            response.render(OnDomReadyHeaderItem.forScript(tt.asString(args)));
+        } catch (IOException e) {
+            logger.error(e);
+            throw new RuntimeException(e);
+        }
     }
 }

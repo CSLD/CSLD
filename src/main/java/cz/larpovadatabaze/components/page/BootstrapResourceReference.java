@@ -8,6 +8,7 @@ import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.request.resource.PackageResourceReference;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * User: Michal Kara Date: 7.3.15 Time: 23:12
@@ -18,7 +19,7 @@ public class BootstrapResourceReference extends JavaScriptResourceReference {
     }
 
     @Override
-    public Iterable<? extends HeaderItem> getDependencies() {
+    public List<HeaderItem> getDependencies() {
         return Arrays.asList(
             new HeaderItem[]{
                 JavaScriptHeaderItem.forReference(Application.get().getJavaScriptLibrarySettings().getJQueryReference()), // Bootstrap needs jQuery

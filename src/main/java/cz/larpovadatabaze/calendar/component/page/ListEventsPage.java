@@ -4,26 +4,16 @@ import cz.larpovadatabaze.api.Toggles;
 import cz.larpovadatabaze.calendar.component.panel.AbstractListEventPanel;
 import cz.larpovadatabaze.calendar.component.panel.FilterEventsSidePanel;
 import cz.larpovadatabaze.calendar.model.Event;
+import cz.larpovadatabaze.calendar.service.GeographicalFilter;
 import cz.larpovadatabaze.calendar.service.SortableEventProvider;
 import cz.larpovadatabaze.components.common.FilterablePage;
 import cz.larpovadatabaze.components.common.tabs.TabsComponentPanel;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.HomePage;
-import cz.larpovadatabaze.components.page.game.GameDetail;
-import cz.larpovadatabaze.components.panel.YouTubePanel;
-import cz.larpovadatabaze.components.panel.game.CommentsListPanel;
-import cz.larpovadatabaze.components.panel.game.CommentsPanel;
-import cz.larpovadatabaze.components.panel.game.FilterGameTabsPanel;
-import cz.larpovadatabaze.components.panel.game.FilterGamesSidePanel;
-import cz.larpovadatabaze.components.panel.photo.PhotoPanel;
-import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Label;
-import cz.larpovadatabaze.entities.Video;
 import cz.larpovadatabaze.models.FilterEvent;
-import cz.larpovadatabaze.models.FilterGame;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import org.apache.commons.lang.WordUtils;
-import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -33,7 +23,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.cycle.RequestCycle;
@@ -41,24 +30,26 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.hibernate.SessionFactory;
 import org.springframework.core.env.Environment;
 
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
-import java.util.Vector;
+import java.util.Optional;
 
 public class ListEventsPage extends CsldBasePage implements FilterablePage {
     @SpringBean
     private SessionFactory sessionFactory;
     @SpringBean
-    private Environment environment;
+    private transient Environment environment;
 
     private enum TabContentType {LIST, MAP, CALENDAR}
     private ListEventsPage.TabNumberModel tabNumberModel;
     private WebMarkupContainer tabContent;
-    private Vector<ListEventsPage.TabContentType> tabContentType;
+    private ArrayList<ListEventsPage.TabContentType> tabContentType;
 
     private WebMarkupContainer requiredLabelsWrapper;
     private FilterEventsSidePanel sidePanel;
-    private final IModel<FilterEvent> filterModel = new Model(new FilterEvent());
+    private final IModel<FilterEvent> filterModel;
 
     private AbstractListEventPanel eventsList;
 
@@ -87,7 +78,9 @@ public class ListEventsPage extends CsldBasePage implements FilterablePage {
                 addOrReplaceTabContentPanel();
 
                 // Redraw
-                RequestCycle.get().find(AjaxRequestTarget.class).add(tabContent);
+
+                Optional<AjaxRequestTarget> optionalArt = RequestCycle.get().find(AjaxRequestTarget.class);
+                optionalArt.ifPresent(ajaxRequestTarget -> ajaxRequestTarget.add(tabContent));
             }
         }
 
@@ -103,6 +96,12 @@ public class ListEventsPage extends CsldBasePage implements FilterablePage {
                 !CsldAuthenticatedWebSession.get().isAtLeastEditor()) {
             throw new RestartResponseException(HomePage.class);
         }
+
+        URL pathToShape = GeographicalFilter.class.getResource("CZE_adm1.shp");
+
+        FilterEvent defaultFilter = new FilterEvent(new GeographicalFilter(pathToShape));
+        defaultFilter.setFrom(Calendar.getInstance().getTime());
+        filterModel = new Model(defaultFilter);
     }
 
     @Override
@@ -164,7 +163,12 @@ public class ListEventsPage extends CsldBasePage implements FilterablePage {
 
     public void filterChanged(boolean sort, boolean requiredLabelsChanged, boolean otherLabelsChanged) {
         // Re-render what is needed
-        AjaxRequestTarget art = getRequestCycle().find(AjaxRequestTarget.class);
+        Optional<AjaxRequestTarget> optionalArt = getRequestCycle().find(AjaxRequestTarget.class);
+        if(!optionalArt.isPresent()) {
+            return;
+        }
+
+        AjaxRequestTarget art = optionalArt.get();
 
         art.add(eventsList);
 
@@ -181,23 +185,20 @@ public class ListEventsPage extends CsldBasePage implements FilterablePage {
     private void addOrReplaceTabContentPanel() {
         Fragment fragment;
 
-        switch (tabContentType.get(tabNumberModel.getObject())) {
-            case LIST:
-                // Create list representing the
-                fragment = new Fragment("tabContentPanel", "events", this);
+        if (tabContentType.get(tabNumberModel.getObject()) == TabContentType.LIST) {// Create list representing the
+            fragment = new Fragment("tabContentPanel", "events", this);
 
-                eventsList = new AbstractListEventPanel<Event>("eventsPanel") {
-                    @Override
-                    protected SortableDataProvider<Event, String> getDataProvider() {
-                        return new SortableEventProvider(sessionFactory, filterModel);
-                    }
-                };
-                eventsList.setOutputMarkupId(true);
+            eventsList = new AbstractListEventPanel<Event>("eventsPanel") {
+                @Override
+                protected SortableDataProvider<Event, String> getDataProvider() {
+                    return new SortableEventProvider(sessionFactory, filterModel);
+                }
+            };
+            eventsList.setOutputMarkupId(true);
 
-                fragment.add(eventsList);
-                break;
-            default:
-                throw new IllegalStateException("Invalid tab content type");
+            fragment.add(eventsList);
+        } else {
+            throw new IllegalStateException("Invalid tab content type");
         }
 
         tabContent.addOrReplace(fragment);
@@ -205,8 +206,8 @@ public class ListEventsPage extends CsldBasePage implements FilterablePage {
 
     protected void addTabComponent() {
         tabNumberModel = new ListEventsPage.TabNumberModel(0);
-        List<IModel> models = new ArrayList<IModel>();
-        tabContentType = new Vector<>();
+        List<IModel> models = new ArrayList<>();
+        tabContentType = new ArrayList<>();
 
         // List
         models.add(Model.of(getString("events")));

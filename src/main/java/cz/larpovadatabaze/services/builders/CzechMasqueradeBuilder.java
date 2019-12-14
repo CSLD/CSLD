@@ -1,9 +1,6 @@
 package cz.larpovadatabaze.services.builders;
 
-import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Label;
+import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.security.CsldRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,18 +18,18 @@ public class CzechMasqueradeBuilder{
     @Autowired
     private EntityBuilder persistenceStore;
 
-    public CsldUser administrator;
-    public CsldUser editor;
-    public CsldUser user;
+    private CsldUser administrator;
+    private CsldUser editor;
+    private CsldUser user;
 
-    public CsldGroup nosferatu;
-    public CsldGroup toreador;
+    private CsldGroup nosferatu;
+    private CsldGroup toreador;
 
-    public Game firstMasquerade;
-    public Game secondMasquerade;
+    private Game firstMasquerade;
+    private Game secondMasquerade;
 
-    public Label vampire;
-    public Label dramatic;
+    private Label vampire;
+    private Label dramatic;
 
     public void build() {
         String mailTemplate = "%s@masquerade.test";
@@ -62,10 +59,17 @@ public class CzechMasqueradeBuilder{
             persistenceStore.game("Masquerades: " + i , "First try to bring Masquerade into the Czech " +
                     "republic", user, authors, masqueradeGamesLabels, new Timestamp(new Date().getTime()), null, 2010 + (i % 5));
         }
+        persistenceStore.similarGame(0,1,0.9);
+        persistenceStore.similarGame(0,2,0.5);
 
         persistenceStore.comment(administrator, firstMasquerade, "I liked it");
-        persistenceStore.comment(editor, secondMasquerade, "There were some flwas but overally likeable game.");
-        persistenceStore.comment(user, secondMasquerade, "My first LARP and it was so freaking awesome.");
+        Comment editorComment = persistenceStore.comment(editor, secondMasquerade, "There were some flwas but overally likeable game.");
+        Comment userComment = persistenceStore.comment(user, secondMasquerade, "My first LARP and it was so freaking awesome.");
+
+        persistenceStore.plusOne(editor, userComment);
+        persistenceStore.plusOne(administrator, userComment);
+
+        persistenceStore.plusOne(editor, editorComment);
 
         persistenceStore.rating(user, secondMasquerade, 9);
         persistenceStore.rating(editor, firstMasquerade, 6);
@@ -76,9 +80,6 @@ public class CzechMasqueradeBuilder{
         persistenceStore.playerOfGame(user, secondMasquerade);
         persistenceStore.playerOfGame(editor, secondMasquerade);
         persistenceStore.playerOfGame(administrator, secondMasquerade);
-
-        persistenceStore.news(editor, "There is going to be third run of the Masquerade.");
-        persistenceStore.news(administrator, "Hey guys It was nice running the game, but I am done now. Passing this to editor.");
 
         persistenceStore.flush();
     }

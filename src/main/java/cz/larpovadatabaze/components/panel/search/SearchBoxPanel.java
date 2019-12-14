@@ -4,6 +4,7 @@ import cz.larpovadatabaze.components.page.search.GameSearchProvider;
 import cz.larpovadatabaze.components.page.search.SearchResultsPage;
 import cz.larpovadatabaze.components.panel.game.GameBoxPanel;
 import cz.larpovadatabaze.entities.Game;
+import org.apache.log4j.Logger;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
@@ -21,6 +22,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.template.PackageTextTemplate;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,14 +31,14 @@ import java.util.Map;
  * Box containing field for queryString and submitting button.
  */
 public class SearchBoxPanel extends Panel {
-
+    private final static Logger logger = Logger.getLogger(SearchBoxPanel.class);
     public final static String QUERY_PARAMETER_NAME = "queryString";
     private static final int MAX_RESULTS_IN_DROPDOWN = 5;
 
     /**
      * After how many seconds after keyup search-on-type starts
      */
-    private static final long TIMEOUT_MS = 100;
+    private static final long TIMEOUT_MS = 300;
 
     /**
      * Minimum length of query for search-on-type
@@ -92,9 +94,9 @@ public class SearchBoxPanel extends Panel {
         gameSearchProvider = new GameSearchProvider();
         gameSearchProvider.setMaxResults(MAX_RESULTS_IN_DROPDOWN);
 
-        searchResultWrapper.add(new ListView<Game>("games", new AbstractReadOnlyModel<List<? extends Game>>() {
+        searchResultWrapper.add(new ListView<Game>("games", new AbstractReadOnlyModel<List<Game>>() {
             @Override
-            public List<? extends Game> getObject() {
+            public List<Game> getObject() {
                 return gameSearchProvider.getGameList();
             }
         }) {
@@ -119,14 +121,18 @@ public class SearchBoxPanel extends Panel {
         super.renderHead(response);
 
         // Render javascript for search-on-type
-        PackageTextTemplate tt = new PackageTextTemplate(getClass(), "SearchBoxPanel.js");
-        Map<String, String> args = new HashMap<>();
-        args.put("textInputId", searchExpression.getMarkupId(true));
-        args.put("searchLinkId", previewLink.getMarkupId(true));
-        args.put("resultWrapperId", searchResultWrapper.getMarkupId(true));
-        args.put("timeoutMS", Long.toString(TIMEOUT_MS));
-        args.put("minTermLength", Long.toString(MIN_TERM_LENGTH));
-        response.render(OnDomReadyHeaderItem.forScript(tt.asString(args)));
+        try(PackageTextTemplate tt = new PackageTextTemplate(getClass(), "SearchBoxPanel.js")) {
+            Map<String, String> args = new HashMap<>();
+            args.put("textInputId", searchExpression.getMarkupId(true));
+            args.put("searchLinkId", previewLink.getMarkupId(true));
+            args.put("resultWrapperId", searchResultWrapper.getMarkupId(true));
+            args.put("timeoutMS", Long.toString(TIMEOUT_MS));
+            args.put("minTermLength", Long.toString(MIN_TERM_LENGTH));
+            response.render(OnDomReadyHeaderItem.forScript(tt.asString(args)));
+        } catch (IOException e) {
+            logger.error(e);
+            throw new RuntimeException(e);
+        }
     }
 
     /**

@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.api;
 
 import cz.larpovadatabaze.dao.builder.IBuilder;
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
@@ -12,10 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.Serializable;
 import java.util.List;
 
-public abstract class GenericHibernateDAO<T, ID extends Serializable>
-		implements GenericDAO<T, ID> {
+public abstract class GenericHibernateDAO<T, I extends Serializable>
+		implements GenericDAO<T, I> {
     @Autowired
 	protected SessionFactory sessionFactory;
+
+    private static final Logger logger = Logger.getLogger(GenericHibernateDAO.class);
 
 	public GenericHibernateDAO() {}
 
@@ -29,7 +32,7 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
      * @return Existing object
      */
 	@SuppressWarnings("unchecked")
-	public T findById(ID id) {
+	public T findById(I id) {
 		return findSingleByCriteria(Restrictions.eq("id",id));
 	}
 
@@ -92,9 +95,10 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
         try {
             sessionFactory.getCurrentSession().merge(entity);
             flush();
+            sessionFactory.getCurrentSession().evict(entity);
             return true;
         } catch (HibernateException ex){
-            ex.printStackTrace();
+            logger.error(ex);
         }
 
         try{
@@ -102,7 +106,7 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
             flush();
             return true;
         } catch (HibernateException ex){
-            ex.printStackTrace();
+            logger.error(ex);
             return false;
         }
     }

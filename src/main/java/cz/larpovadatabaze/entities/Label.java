@@ -1,10 +1,9 @@
 package cz.larpovadatabaze.entities;
 
-import cz.larpovadatabaze.api.*;
+import cz.larpovadatabaze.api.Identifiable;
 import cz.larpovadatabaze.components.common.multiac.IAutoCompletable;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
 import java.io.Serializable;
 
 /**
@@ -31,8 +30,8 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
             updatable = true
     )
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen")
-    @SequenceGenerator(sequenceName = "csld_label_id_seq", name="id_gen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_label")
+    @SequenceGenerator(sequenceName = "csld_label_id_seq", name="id_gen_label", allocationSize = 1)
     public Integer getId() {
         return id;
     }
@@ -64,10 +63,7 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
     }
 
     @Column(
-            name = "is_required",
-            nullable = true,
-            insertable = true,
-            updatable = true
+            name = "is_required"
     )
     @Basic
     public Boolean getRequired() {
@@ -80,10 +76,7 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
 
 
     @Column(
-            name = "is_authorized",
-            nullable = true,
-            insertable = true,
-            updatable = true
+            name = "is_authorized"
     )
     @Basic
     public Boolean getAuthorized() {
@@ -126,9 +119,7 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
     @JoinColumn(
             name = "added_by",
             referencedColumnName = "`id`",
-            nullable = false,
-            insertable = true,
-            updatable = true)
+            nullable = false)
     public CsldUser getAddedBy() {
         return addedBy;
     }
