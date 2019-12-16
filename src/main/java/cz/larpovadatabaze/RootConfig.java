@@ -5,6 +5,7 @@ import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.impl.LocalFiles;
 import cz.larpovadatabaze.utils.MailClient;
 import org.flywaydb.core.Flyway;
+import org.flywaydb.core.api.configuration.FluentConfiguration;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
@@ -32,11 +33,15 @@ public class RootConfig {
 
     @Bean(initMethod = "migrate")
     Flyway flyway() {
-        return Flyway.configure()
-                .baselineOnMigrate(true)
-                .dataSource(dataSource())
-                .locations("classpath:db/")
-                .load();
+        if(env.getProperty("csld.run_flyway", Boolean.class)) {
+            return Flyway.configure()
+                    .baselineOnMigrate(true)
+                    .dataSource(dataSource())
+                    .locations("classpath:db/")
+                    .load();
+        } else {
+            return null;
+        }
     }
 
     // Data store specification
