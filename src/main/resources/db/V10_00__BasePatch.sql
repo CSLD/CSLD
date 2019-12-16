@@ -482,28 +482,6 @@ $$;
 
 ALTER FUNCTION public.csld_user_amount_of_played(userid integer) OWNER TO csld;
 
---
--- Name: reverse(text); Type: FUNCTION; Schema: public; Owner: csld
---
-
-CREATE FUNCTION reverse(text) RETURNS text
-    LANGUAGE plpgsql IMMUTABLE
-    AS $_$
-DECLARE
-original alias for $1;
-      reverse_str text;
-      i int4;
-BEGIN
-    reverse_str := '';
-    FOR i IN REVERSE LENGTH(original)..1 LOOP
-      reverse_str := reverse_str || substr(original,i,1);
-    END LOOP;
-RETURN reverse_str;
-END;$_$;
-
-
-ALTER FUNCTION public.reverse(text) OWNER TO csld;
-
 SET default_tablespace = '';
 
 SET default_with_oids = false;

@@ -1,4 +1,0 @@
-/* DROP ROLE csld; */
-/* DROP USER csld; */
-
-CREATE USER csld WITH NOSUPERUSER PASSWORD 'csld';

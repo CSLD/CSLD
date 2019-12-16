@@ -140,6 +140,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.xmlbeans:xmlbeans:2.6.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: stax:stax-api:1.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.postgresql:postgresql:42.2.9" level="project" />
+    <orderEntry type="library" name="Maven: org.flywaydb:flyway-core:6.1.1" level="project" />
     <orderEntry type="library" name="Maven: com.mortennobel:java-image-scaling:0.8.4" level="project" />
     <orderEntry type="library" name="Maven: com.jhlabs:filters:2.0.235" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.9" level="project" />

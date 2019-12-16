@@ -175,6 +175,12 @@
             <version>${postgresql.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>6.1.1</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.mortennobel</groupId>
             <artifactId>java-image-scaling</artifactId>
             <version>0.8.4</version>
@@ -342,11 +348,6 @@
                     <debug>true</debug>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-maven-plugin</artifactId>
-                <version>4.0</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
