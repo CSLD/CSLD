@@ -13,8 +13,7 @@ before_install:
   - sudo apt-get -y install awscli
 
 script:
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=CSLD_CSLD -B
-  - mvn heroku:deploy-war -B
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=CSLD_CSLD heroku:deploy-war -B
 
 branches:
   only:
