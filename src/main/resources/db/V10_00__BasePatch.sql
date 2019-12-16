@@ -27,8 +27,6 @@ END
 $$;
 
 
-ALTER FUNCTION public.csld_amount_of_comments(gameid integer) OWNER TO csld;
-
 --
 -- Name: csld_amount_of_played(integer); Type: FUNCTION; Schema: public; Owner: csld
 --
@@ -45,8 +43,6 @@ BEGIN
 END
 $$;
 
-
-ALTER FUNCTION public.csld_amount_of_played(gameid integer) OWNER TO csld;
 
 --
 -- Name: csld_amount_of_ratings(integer); Type: FUNCTION; Schema: public; Owner: csld
@@ -65,8 +61,6 @@ END
 $$;
 
 
-ALTER FUNCTION public.csld_amount_of_ratings(gameid integer) OWNER TO csld;
-
 --
 -- Name: csld_count_average(); Type: FUNCTION; Schema: public; Owner: csld
 --
@@ -82,8 +76,6 @@ BEGIN
 END
 $$;
 
-
-ALTER FUNCTION public.csld_count_average() OWNER TO csld;
 
 --
 -- Name: csld_count_best_game(integer); Type: FUNCTION; Schema: public; Owner: csld
@@ -102,8 +94,6 @@ END
 $$;
 
 
-ALTER FUNCTION public.csld_count_best_game(userid integer) OWNER TO csld;
-
 --
 -- Name: csld_count_games_of_author(integer); Type: FUNCTION; Schema: public; Owner: csld
 --
@@ -119,8 +109,6 @@ BEGIN
 END
 $$;
 
-
-ALTER FUNCTION public.csld_count_games_of_author(userid integer) OWNER TO csld;
 
 --
 -- Name: csld_count_rating(integer); Type: FUNCTION; Schema: public; Owner: csld
@@ -145,8 +133,6 @@ END
 $$;
 
 
-ALTER FUNCTION public.csld_count_rating(gameid integer) OWNER TO csld;
-
 --
 -- Name: csld_count_user_rating(integer); Type: FUNCTION; Schema: public; Owner: csld
 --
@@ -170,8 +156,6 @@ END;
 $$;
 
 
-ALTER FUNCTION public.csld_count_user_rating(userid integer) OWNER TO csld;
-
 --
 -- Name: csld_countcomments(integer); Type: FUNCTION; Schema: public; Owner: csld
 --
@@ -187,8 +171,6 @@ BEGIN
 END;
 $$;
 
-
-ALTER FUNCTION public.csld_countcomments(gameid integer) OWNER TO csld;
 
 --
 -- Name: csld_countrating(integer); Type: FUNCTION; Schema: public; Owner: csld
@@ -211,8 +193,6 @@ BEGIN
 END$$;
 
 
-ALTER FUNCTION public.csld_countrating(gameid integer) OWNER TO csld;
-
 --
 -- Name: csld_countuserrating(integer); Type: FUNCTION; Schema: public; Owner: csld
 --
@@ -232,8 +212,6 @@ BEGIN
 END;
 $$;
 
-
-ALTER FUNCTION public.csld_countuserrating(userid integer) OWNER TO csld;
 
 --
 -- Name: csld_is_similar(integer, integer); Type: FUNCTION; Schema: public; Owner: csld
@@ -257,8 +235,6 @@ END
 $$;
 
 
-ALTER FUNCTION public.csld_is_similar(game1id integer, game2id integer) OWNER TO csld;
-
 --
 -- Name: csld_rev_path(integer); Type: FUNCTION; Schema: public; Owner: csld
 --
@@ -274,8 +250,6 @@ BEGIN
 END
 $$;
 
-
-ALTER FUNCTION public.csld_rev_path(gameid integer) OWNER TO csld;
 
 --
 -- Name: csld_update_amount_of_comments(); Type: FUNCTION; Schema: public; Owner: csld
@@ -306,8 +280,6 @@ END
 $$;
 
 
-ALTER FUNCTION public.csld_update_amount_of_comments() OWNER TO csld;
-
 --
 -- Name: csld_update_amount_of_created(); Type: FUNCTION; Schema: public; Owner: csld
 --
@@ -331,8 +303,6 @@ BEGIN
 END
 $$;
 
-
-ALTER FUNCTION public.csld_update_amount_of_created() OWNER TO csld;
 
 --
 -- Name: csld_update_amount_of_played(); Type: FUNCTION; Schema: public; Owner: csld
@@ -369,8 +339,6 @@ END
 $$;
 
 
-ALTER FUNCTION public.csld_update_amount_of_played() OWNER TO csld;
-
 --
 -- Name: csld_update_amount_of_ratings(); Type: FUNCTION; Schema: public; Owner: csld
 --
@@ -395,8 +363,6 @@ END
 $$;
 
 
-ALTER FUNCTION public.csld_update_amount_of_ratings() OWNER TO csld;
-
 --
 -- Name: csld_update_best_game(); Type: FUNCTION; Schema: public; Owner: csld
 --
@@ -417,8 +383,6 @@ BEGIN
 END
 $$;
 
-
-ALTER FUNCTION public.csld_update_best_game() OWNER TO csld;
 
 --
 -- Name: csld_update_rating(); Type: FUNCTION; Schema: public; Owner: csld
@@ -442,8 +406,6 @@ END
 $$;
 
 
-ALTER FUNCTION public.csld_update_rating() OWNER TO csld;
-
 --
 -- Name: csld_user_amount_of_comments(integer); Type: FUNCTION; Schema: public; Owner: csld
 --
@@ -460,8 +422,6 @@ BEGIN
 END
 $$;
 
-
-ALTER FUNCTION public.csld_user_amount_of_comments(userid integer) OWNER TO csld;
 
 --
 -- Name: csld_user_amount_of_played(integer); Type: FUNCTION; Schema: public; Owner: csld
@@ -480,8 +440,6 @@ END
 $$;
 
 
-ALTER FUNCTION public.csld_user_amount_of_played(userid integer) OWNER TO csld;
-
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -499,8 +457,6 @@ CREATE TABLE csld_comment (
 );
 
 
-ALTER TABLE public.csld_comment OWNER TO csld;
-
 --
 -- Name: csld_group_id_seq; Type: SEQUENCE; Schema: public; Owner: csld
 --
@@ -513,8 +469,6 @@ CREATE SEQUENCE csld_group_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.csld_group_id_seq OWNER TO csld;
-
 --
 -- Name: csld_csld_group; Type: TABLE; Schema: public; Owner: csld; Tablespace: 
 --
@@ -525,8 +479,6 @@ CREATE TABLE csld_csld_group (
     name text NOT NULL
 );
 
-
-ALTER TABLE public.csld_csld_group OWNER TO csld;
 
 --
 -- Name: csld_person_id_seq; Type: SEQUENCE; Schema: public; Owner: csld
@@ -539,8 +491,6 @@ CREATE SEQUENCE csld_person_id_seq
     NO MAXVALUE
     CACHE 1;
 
-
-ALTER TABLE public.csld_person_id_seq OWNER TO csld;
 
 --
 -- Name: csld_csld_user; Type: TABLE; Schema: public; Owner: csld; Tablespace: 
@@ -566,8 +516,6 @@ CREATE TABLE csld_csld_user (
 );
 
 
-ALTER TABLE public.csld_csld_user OWNER TO csld;
-
 --
 -- Name: csld_email_authentication_id_seq; Type: SEQUENCE; Schema: public; Owner: csld
 --
@@ -580,8 +528,6 @@ CREATE SEQUENCE csld_email_authentication_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.csld_email_authentication_id_seq OWNER TO csld;
-
 --
 -- Name: csld_email_authentication; Type: TABLE; Schema: public; Owner: csld; Tablespace: 
 --
@@ -592,8 +538,6 @@ CREATE TABLE csld_email_authentication (
     user_id integer NOT NULL
 );
 
-
-ALTER TABLE public.csld_email_authentication OWNER TO csld;
 
 --
 -- Name: csld_game_id_seq; Type: SEQUENCE; Schema: public; Owner: csld
@@ -606,8 +550,6 @@ CREATE SEQUENCE csld_game_id_seq
     NO MAXVALUE
     CACHE 1;
 
-
-ALTER TABLE public.csld_game_id_seq OWNER TO csld;
 
 --
 -- Name: csld_game; Type: TABLE; Schema: public; Owner: csld; Tablespace: 
@@ -643,8 +585,6 @@ CREATE TABLE csld_game (
 );
 
 
-ALTER TABLE public.csld_game OWNER TO csld;
-
 --
 -- Name: csld_game_has_author; Type: TABLE; Schema: public; Owner: csld; Tablespace: 
 --
@@ -653,9 +593,6 @@ CREATE TABLE csld_game_has_author (
     id_user integer NOT NULL,
     id_game integer NOT NULL
 );
-
-
-ALTER TABLE public.csld_game_has_author OWNER TO csld;
 
 --
 -- Name: csld_game_has_group; Type: TABLE; Schema: public; Owner: csld; Tablespace: 
@@ -667,7 +604,6 @@ CREATE TABLE csld_game_has_group (
 );
 
 
-ALTER TABLE public.csld_game_has_group OWNER TO csld;
 
 --
 -- Name: csld_game_has_label; Type: TABLE; Schema: public; Owner: csld; Tablespace: 
@@ -678,8 +614,6 @@ CREATE TABLE csld_game_has_label (
     id_game integer NOT NULL
 );
 
-
-ALTER TABLE public.csld_game_has_label OWNER TO csld;
 
 --
 -- Name: csld_game_label_id_seq; Type: SEQUENCE; Schema: public; Owner: csld
@@ -693,8 +627,6 @@ CREATE SEQUENCE csld_game_label_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.csld_game_label_id_seq OWNER TO csld;
-
 --
 -- Name: csld_group_has_administrator; Type: TABLE; Schema: public; Owner: csld; Tablespace: 
 --
@@ -704,8 +636,6 @@ CREATE TABLE csld_group_has_administrator (
     id_user integer NOT NULL
 );
 
-
-ALTER TABLE public.csld_group_has_administrator OWNER TO csld;
 
 --
 -- Name: csld_group_has_members; Type: TABLE; Schema: public; Owner: csld; Tablespace: 
@@ -719,8 +649,6 @@ CREATE TABLE csld_group_has_members (
 );
 
 
-ALTER TABLE public.csld_group_has_members OWNER TO csld;
-
 --
 -- Name: csld_image_id_seq; Type: SEQUENCE; Schema: public; Owner: csld
 --
@@ -733,8 +661,6 @@ CREATE SEQUENCE csld_image_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.csld_image_id_seq OWNER TO csld;
-
 --
 -- Name: csld_image; Type: TABLE; Schema: public; Owner: csld; Tablespace: 
 --
@@ -745,8 +671,6 @@ CREATE TABLE csld_image (
     contenttype character varying(256)
 );
 
-
-ALTER TABLE public.csld_image OWNER TO csld;
 
 --
 -- Name: csld_label; Type: TABLE; Schema: public; Owner: csld; Tablespace: 
@@ -762,8 +686,6 @@ CREATE TABLE csld_label (
 );
 
 
-ALTER TABLE public.csld_label OWNER TO csld;
-
 --
 -- Name: csld_photo_id_seq; Type: SEQUENCE; Schema: public; Owner: csld
 --
@@ -775,8 +697,6 @@ CREATE SEQUENCE csld_photo_id_seq
     NO MAXVALUE
     CACHE 1;
 
-
-ALTER TABLE public.csld_photo_id_seq OWNER TO csld;
 
 --
 -- Name: csld_photo; Type: TABLE; Schema: public; Owner: csld; Tablespace: 
@@ -794,8 +714,6 @@ CREATE TABLE csld_photo (
 );
 
 
-ALTER TABLE public.csld_photo OWNER TO csld;
-
 --
 -- Name: csld_rating; Type: TABLE; Schema: public; Owner: csld; Tablespace: 
 --
@@ -808,8 +726,6 @@ CREATE TABLE csld_rating (
 );
 
 
-ALTER TABLE public.csld_rating OWNER TO csld;
-
 --
 -- Name: csld_user_played_game; Type: TABLE; Schema: public; Owner: csld; Tablespace: 
 --
@@ -820,8 +736,6 @@ CREATE TABLE csld_user_played_game (
     state integer
 );
 
-
-ALTER TABLE public.csld_user_played_game OWNER TO csld;
 
 --
 -- Name: csld_video_id_seq; Type: SEQUENCE; Schema: public; Owner: csld
@@ -835,8 +749,6 @@ CREATE SEQUENCE csld_video_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.csld_video_id_seq OWNER TO csld;
-
 --
 -- Name: csld_video; Type: TABLE; Schema: public; Owner: csld; Tablespace: 
 --
@@ -847,8 +759,6 @@ CREATE TABLE csld_video (
     type integer NOT NULL
 );
 
-
-ALTER TABLE public.csld_video OWNER TO csld;
 
 --
 -- Name: csld_comment_pkey; Type: CONSTRAINT; Schema: public; Owner: csld; Tablespace: 
