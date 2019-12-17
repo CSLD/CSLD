@@ -15,6 +15,8 @@ import java.io.FileNotFoundException;
  * Time: 20:41
  */
 public interface FileService {
+    static final String PREVIEW_POSTFIX = "-p";
+
     /**
      * Return class from saveImageFileAndReturnPath
      */

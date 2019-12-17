@@ -24,14 +24,12 @@ import java.io.*;
  */
 public class LocalFiles implements FileService {
     private final static Logger logger = Logger.getLogger(LocalFiles.class);
-    private static final String PREVIEW_POSTFIX = "-p";
 
     /**
      * Base data directory
      */
     private String dataDir;
 
-    @Autowired
     public LocalFiles(String dataDir) {
         this.dataDir = dataDir;
     }
@@ -58,16 +56,20 @@ public class LocalFiles implements FileService {
 
             try {
                 is = new FileInputStream(file);
-                for(;;) {
+                for (; ; ) {
                     int l = is.read(buf, 0, buf.length);
                     if (l <= 0) break; // EOF
 
                     OutputStream os = attributes.getResponse().getOutputStream();
                     os.write(buf, 0, l);
                 }
-            }
-            finally {
-                if (is != null) { try { is.close(); } catch(Exception e) {} }
+            } finally {
+                if (is != null) {
+                    try {
+                        is.close();
+                    } catch (Exception e) {
+                    }
+                }
             }
         }
     }
@@ -91,9 +93,9 @@ public class LocalFiles implements FileService {
         }
     }
 
-    private String getFileType(String fileName){
+    private String getFileType(String fileName) {
         String[] fileParts = fileName.trim().split("\\.");
-        if(fileParts.length > 0){
+        if (fileParts.length > 0) {
             return fileParts[fileParts.length - 1];
         } else {
             return "";
@@ -103,15 +105,12 @@ public class LocalFiles implements FileService {
     /**
      * It cleans space of the file given as parameter, if anything with the same name already existed.
      *
-     * @param newFile
+     * @param newFile File to clean before further usage.
      */
-    private void cleanFileIfExists(File newFile)
-    {
-        if (newFile.exists())
-        {
+    private void cleanFileIfExists(File newFile) {
+        if (newFile.exists()) {
             // Try to delete the file
-            if (!Files.remove(newFile))
-            {
+            if (!Files.remove(newFile)) {
                 throw new IllegalStateException("Unable to overwrite " + newFile.getAbsolutePath());
             }
         }
@@ -127,10 +126,9 @@ public class LocalFiles implements FileService {
         String previewName;
         int di = relativeName.lastIndexOf('.');
         if (di > 0) {
-            previewName = relativeName.substring(0, di)+PREVIEW_POSTFIX+relativeName.substring(di);
-        }
-        else {
-            previewName = relativeName+PREVIEW_POSTFIX;
+            previewName = relativeName.substring(0, di) + PREVIEW_POSTFIX + relativeName.substring(di);
+        } else {
+            previewName = relativeName + PREVIEW_POSTFIX;
         }
 
         return getPathInDataDir(previewName);
@@ -144,17 +142,16 @@ public class LocalFiles implements FileService {
         String ct = upload.getContentType();
         if (StringUtils.isNotBlank(ct)) {
             int si = ct.lastIndexOf('/');
-            if (si > 0) fileType = ct.substring(si+1);
+            if (si > 0) fileType = ct.substring(si + 1);
             else fileType = ct;
-        }
-        else {
+        } else {
             fileType = getFileType(upload.getClientFileName());
         }
 
         // Generate name
         String fileName = RandomStringUtils.randomAlphanumeric(16) + "." + fileType;
-        String dirName = fileName.substring(0,1)+"/"+fileName.substring(1,2);
-        fileName = dirName+'/'+fileName;
+        String dirName = fileName.substring(0, 1) + "/" + fileName.substring(1, 2);
+        fileName = dirName + '/' + fileName;
 
         BufferedImage imageGameSized = null;
 
@@ -166,13 +163,13 @@ public class LocalFiles implements FileService {
 
             File newFile = new File(getPathInDataDir(fileName));
             BufferedImage sourceImage = ImageIO.read(upload.getInputStream());
-            imageGameSized =  fullImageResizingStrategy.convertImage(sourceImage);
+            imageGameSized = fullImageResizingStrategy.convertImage(sourceImage);
 
             // Check new file, delete if it already existed
             cleanFileIfExists(newFile);
 
             // Save to new file
-            if(!newFile.createNewFile()){
+            if (!newFile.createNewFile()) {
                 throw new IllegalStateException("Unable to write file " + newFile.getAbsolutePath());
             }
             ImageIO.write(imageGameSized, fileType, newFile);
@@ -193,7 +190,7 @@ public class LocalFiles implements FileService {
         }
 
         int width = 0, height = 0;
-        if(imageGameSized != null) {
+        if (imageGameSized != null) {
             width = imageGameSized.getWidth();
             height = imageGameSized.getHeight();
         }
@@ -206,7 +203,7 @@ public class LocalFiles implements FileService {
     }
 
     @Override
-    public AbstractResource getFileResource(final String relativeName, final String contentType) throws FileNotFoundException{
+    public AbstractResource getFileResource(final String relativeName, final String contentType) throws FileNotFoundException {
         return new FileResource(new File(getPathInDataDir(relativeName)), contentType);
     }
 
@@ -235,14 +232,14 @@ public class LocalFiles implements FileService {
         if (relativePath != null) {
             File f = new File(getPathInDataDir(relativePath));
             if (f.exists()) {
-                if(!f.delete()) {
+                if (!f.delete()) {
                     logger.warn("It wasn't possible to delete file " + relativePath);
                 }
             }
 
             f = new File(getFilePreviewInDataDir(relativePath));
             if (f.exists()) {
-                if(!f.delete()) {
+                if (!f.delete()) {
                     logger.warn("It wasn't possible to delete file " + relativePath);
                 }
             }
