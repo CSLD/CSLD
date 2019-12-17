@@ -15,6 +15,8 @@ import java.io.FileNotFoundException;
  * Time: 20:41
  */
 public interface FileService {
+    static final String PREVIEW_POSTFIX = "-p";
+
     /**
      * Return class from saveImageFileAndReturnPath
      */
@@ -35,14 +37,14 @@ public interface FileService {
      *
      * @return File object for the specified name in CSLD's data directory
      */
-    File getPathInDataDir(String relativeName);
+    String getPathInDataDir(String relativeName);
 
     /**
      * @param relativeName Relative name
      *
      * @return File object for preview for the specified name in CSLD's data directory
      */
-    File getFilePreviewInDataDir(String relativeName);
+    String getFilePreviewInDataDir(String relativeName);
 
     /**
      * @param relativeName Relative file name
@@ -55,12 +57,12 @@ public interface FileService {
     /**
      * Respond to resource request with the given file
      *
-     * @param file File to output
+     * @param pathToTheFile Path to the file to the output.
      * @param contentType Content type (if known)
      *
      * @return Resonse that will produce file data
      */
-    AbstractResource.ResourceResponse respondWithFile(File file, String contentType);
+    AbstractResource.ResourceResponse respondWithFile(String pathToTheFile, String contentType);
 
     /**
      * Resize and save uploaded image

@@ -12,11 +12,11 @@
     <server-settings>
       <option name="BASE_DIRECTORY_NAME" value="Unnamed_CSLD" />
     </server-settings>
-    <predefined_log_file id="Tomcat" enabled="true" />
-    <predefined_log_file id="Tomcat Catalina" enabled="true" />
-    <predefined_log_file id="Tomcat Manager" enabled="false" />
-    <predefined_log_file id="Tomcat Host Manager" enabled="false" />
-    <predefined_log_file id="Tomcat Localhost Access" enabled="false" />
+    <predefined_log_file enabled="true" id="Tomcat" />
+    <predefined_log_file enabled="true" id="Tomcat Catalina" />
+    <predefined_log_file id="Tomcat Manager" />
+    <predefined_log_file id="Tomcat Host Manager" />
+    <predefined_log_file id="Tomcat Localhost Access" />
     <RunnerSettings RunnerId="Debug">
       <option name="DEBUG_PORT" value="36063" />
     </RunnerSettings>
@@ -64,8 +64,19 @@
         <option name="VM_PARAMETERS" value="" />
         <option name="PROGRAM_PARAMETERS" value="" />
       </SHUTDOWN>
+      <EnvironmentVariables>
+        <option name="NAME" value="AWS_ACCESS_KEY_ID" />
+        <option name="VALUE" value="AKIA55UWCRHVE6UQOW75" />
+        <option name="IS_PREDEFINED" value="false" />
+      </EnvironmentVariables>
+      <EnvironmentVariables>
+        <option name="NAME" value="AWS_SECRET_ACCESS_KEY" />
+        <option name="VALUE" value="gwHdWPzvp6rWeqJGs1h4wqc8h20aBUZ8K6okBe1V" />
+        <option name="IS_PREDEFINED" value="false" />
+      </EnvironmentVariables>
     </ConfigurationWrapper>
-    <method>
+    <method v="2">
+      <option name="Make" enabled="true" />
       <option name="BuildArtifacts" enabled="true">
         <artifact name="CSLD:war exploded" />
       </option>

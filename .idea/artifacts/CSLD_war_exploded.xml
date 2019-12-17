@@ -80,6 +80,37 @@
           <element id="library" level="project" name="Maven: com.mortennobel:java-image-scaling:0.8.4" />
           <element id="library" level="project" name="Maven: com.jhlabs:filters:2.0.235" />
           <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.9" />
+          <element id="library" level="project" name="Maven: software.amazon.awssdk:s3:2.10.35" />
+          <element id="library" level="project" name="Maven: software.amazon.awssdk:aws-xml-protocol:2.10.35" />
+          <element id="library" level="project" name="Maven: software.amazon.awssdk:aws-query-protocol:2.10.35" />
+          <element id="library" level="project" name="Maven: software.amazon.awssdk:protocol-core:2.10.35" />
+          <element id="library" level="project" name="Maven: software.amazon.awssdk:arns:2.10.35" />
+          <element id="library" level="project" name="Maven: software.amazon.awssdk:profiles:2.10.35" />
+          <element id="library" level="project" name="Maven: software.amazon.awssdk:sdk-core:2.10.35" />
+          <element id="library" level="project" name="Maven: org.reactivestreams:reactive-streams:1.0.2" />
+          <element id="library" level="project" name="Maven: software.amazon.awssdk:auth:2.10.35" />
+          <element id="library" level="project" name="Maven: software.amazon.eventstream:eventstream:1.0.1" />
+          <element id="library" level="project" name="Maven: software.amazon.awssdk:http-client-spi:2.10.35" />
+          <element id="library" level="project" name="Maven: software.amazon.awssdk:regions:2.10.35" />
+          <element id="library" level="project" name="Maven: software.amazon.awssdk:annotations:2.10.35" />
+          <element id="library" level="project" name="Maven: software.amazon.awssdk:utils:2.10.35" />
+          <element id="library" level="project" name="Maven: software.amazon.awssdk:aws-core:2.10.35" />
+          <element id="library" level="project" name="Maven: software.amazon.awssdk:apache-client:2.10.35" />
+          <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpclient:4.5.9" />
+          <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpcore:4.4.11" />
+          <element id="library" level="project" name="Maven: software.amazon.awssdk:netty-nio-client:2.10.35" />
+          <element id="library" level="project" name="Maven: io.netty:netty-codec-http:4.1.42.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-codec-http2:4.1.42.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-codec:4.1.42.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-transport:4.1.42.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-resolver:4.1.42.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-common:4.1.42.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-buffer:4.1.42.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-handler:4.1.42.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-transport-native-epoll:linux-x86_64:4.1.42.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-transport-native-unix-common:4.1.42.Final" />
+          <element id="library" level="project" name="Maven: com.typesafe.netty:netty-reactive-streams-http:2.0.3" />
+          <element id="library" level="project" name="Maven: com.typesafe.netty:netty-reactive-streams:2.0.3" />
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.5" />
           <element id="library" level="project" name="Maven: org.slf4j:jcl-over-slf4j:1.7.5" />
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-log4j12:1.7.5" />
