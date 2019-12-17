@@ -64,16 +64,6 @@
         <option name="VM_PARAMETERS" value="" />
         <option name="PROGRAM_PARAMETERS" value="" />
       </SHUTDOWN>
-      <EnvironmentVariables>
-        <option name="NAME" value="AWS_ACCESS_KEY_ID" />
-        <option name="VALUE" value="AKIA55UWCRHVE6UQOW75" />
-        <option name="IS_PREDEFINED" value="false" />
-      </EnvironmentVariables>
-      <EnvironmentVariables>
-        <option name="NAME" value="AWS_SECRET_ACCESS_KEY" />
-        <option name="VALUE" value="gwHdWPzvp6rWeqJGs1h4wqc8h20aBUZ8K6okBe1V" />
-        <option name="IS_PREDEFINED" value="false" />
-      </EnvironmentVariables>
     </ConfigurationWrapper>
     <method v="2">
       <option name="Make" enabled="true" />
