@@ -14,7 +14,7 @@ import org.junit.Test;
 /**
  *
  */
-public class AuthorDetailPageTest extends AcceptanceTest {
+public class AuthorDetailPageIT extends AcceptanceTest {
     @Test
     public void runAsGuest() {
         tester.startPage(UserDetailPage.class, UserDetailPage.paramsForUser(masqueradeBuilder.getUser()));

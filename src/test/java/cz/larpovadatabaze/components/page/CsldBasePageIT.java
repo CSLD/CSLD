@@ -16,7 +16,7 @@ import org.junit.Test;
  * Test functionality specific to the BasePage and therefore to all pages.
  * The functionality is tested using HomePage as an example.
  */
-public class CsldBasePageTest extends AcceptanceTest {
+public class CsldBasePageIT extends AcceptanceTest {
     @Test
     public void homePageIsRenderedForGuest() {
         tester.startPage(HomePage.class);

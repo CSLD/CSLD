@@ -7,7 +7,7 @@ import org.junit.Test;
 /**
  *
  */
-public class SearchResultsPageTest extends AcceptanceTest {
+public class SearchResultsPageIT extends AcceptanceTest {
     @Test
     public void runAsGuest() {
         tester.startPage(SearchResultsPage.class, SearchResultsPage.paramsForSearchResults("masq"));

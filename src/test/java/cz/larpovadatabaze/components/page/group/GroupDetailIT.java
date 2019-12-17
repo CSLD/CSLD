@@ -11,7 +11,7 @@ import org.junit.Test;
 /**
  *
  */
-public class GroupDetailTest extends AcceptanceTest {
+public class GroupDetailIT extends AcceptanceTest {
     @Test
     public void runAsGuest() {
         startPage();

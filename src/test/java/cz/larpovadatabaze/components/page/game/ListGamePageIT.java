@@ -8,7 +8,7 @@ import org.junit.Test;
 /**
  *
  */
-public class ListGamePageTest extends AcceptanceTest {
+public class ListGamePageIT extends AcceptanceTest {
     @Test
     public void runAsGuest() {
         tester.startPage(ListGamePage.class);

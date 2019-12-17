@@ -9,7 +9,7 @@ import org.junit.Test;
 /**
  *
  */
-public class CreateGameTest extends AcceptanceTest {
+public class CreateGameIT extends AcceptanceTest {
     @Test
     public void runAsGuest() {
         tester.startPage(CreateOrUpdateGamePage.class);

@@ -17,7 +17,7 @@ import org.junit.Test;
 /**
  *
  */
-public class CreateGamePanelTest extends AcceptanceTest {
+public class CreateGamePanelIT extends AcceptanceTest {
     @Test
     public void runAsUser() {
         TestUtils.logUser(masqueradeBuilder.getUser());

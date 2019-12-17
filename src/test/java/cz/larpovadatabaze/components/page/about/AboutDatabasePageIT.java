@@ -7,7 +7,7 @@ import org.junit.Test;
 /**
  *
  */
-public class AboutDatabasePageTest extends AcceptanceTest {
+public class AboutDatabasePageIT extends AcceptanceTest {
     @Test
     public void testAboutDatabaseIsRendered() {
         tester.startPage(AboutDatabasePage.class);

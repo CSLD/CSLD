@@ -15,7 +15,7 @@ import java.util.Collection;
 /**
  * Tests creation of the event using standard panel. User must be logged in in order for this functionality to work.
  */
-public class CreateEventPanelTest extends AcceptanceTest {
+public class CreateEventPanelIT extends AcceptanceTest {
     @Test
     public void createValidEventAsUser() {
         tester.startComponentInPage(new CreateEventPanel("id", Model.of(Event.getEmptyEvent())) {});

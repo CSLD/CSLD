@@ -10,7 +10,7 @@ import org.junit.Test;
 /**
  * Test rendering of the HomePage. Validate all panels specific to HomePage are shown.
  */
-public class HomePageTest extends AcceptanceTest{
+public class HomePageIT extends AcceptanceTest{
     @Test
     public void homePageIsRendered() {
         tester.startPage(HomePage.class);
