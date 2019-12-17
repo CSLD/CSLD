@@ -100,12 +100,12 @@ public class PhotoPanel extends Panel {
             Photo p = photoService.get(photoId);
 
             // Try if preview exists
-            File f = fileService.getFilePreviewInDataDir(p.getImage().getPath());
-            if (!f.exists()) {
+            String path = fileService.getFilePreviewInDataDir(p.getImage().getPath());
+            if (path == null) {
                 // Use full image
-                f = fileService.getPathInDataDir(p.getImage().getPath());
+                path = fileService.getPathInDataDir(p.getImage().getPath());
             }
-            return fileService.respondWithFile(f, p.getImage().getContentType());
+            return fileService.respondWithFile(path, p.getImage().getContentType());
         }
 
         @Override
@@ -114,8 +114,8 @@ public class PhotoPanel extends Panel {
             Photo p = photoService.get(photoId);
 
             // Send full path
-            File f = fileService.getPathInDataDir(p.getImage().getPath());
-            return fileService.respondWithFile(f, p.getImage().getContentType());
+            String path = fileService.getPathInDataDir(p.getImage().getPath());
+            return fileService.respondWithFile(path, p.getImage().getContentType());
         }
     }
 

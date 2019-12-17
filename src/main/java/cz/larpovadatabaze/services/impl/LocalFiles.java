@@ -118,12 +118,12 @@ public class LocalFiles implements FileService {
     }
 
     @Override
-    public File getPathInDataDir(String relativeName) {
-        return new File(dataDir, relativeName);
+    public String getPathInDataDir(String relativeName) {
+        return new File(dataDir, relativeName).getAbsolutePath();
     }
 
     @Override
-    public File getFilePreviewInDataDir(String relativeName) {
+    public String getFilePreviewInDataDir(String relativeName) {
         String previewName;
         int di = relativeName.lastIndexOf('.');
         if (di > 0) {
@@ -159,12 +159,12 @@ public class LocalFiles implements FileService {
         BufferedImage imageGameSized = null;
 
         // Create directories
-        getPathInDataDir(dirName).mkdirs();
+        new File(getPathInDataDir(dirName)).mkdirs();
 
         // Create a new file
         try {
 
-            File newFile = getPathInDataDir(fileName);
+            File newFile = new File(getPathInDataDir(fileName));
             BufferedImage sourceImage = ImageIO.read(upload.getInputStream());
             imageGameSized =  fullImageResizingStrategy.convertImage(sourceImage);
 
@@ -181,7 +181,7 @@ public class LocalFiles implements FileService {
                 // Create preview
                 BufferedImage previewImage = previewResizingStrategy.convertImage(sourceImage);
 
-                File previewFile = getFilePreviewInDataDir(fileName);
+                File previewFile = new File(getFilePreviewInDataDir(fileName));
                 if (!previewFile.createNewFile()) {
                     throw new RuntimeException("Unable to write file " + previewFile.getAbsolutePath());
                 }
@@ -207,7 +207,7 @@ public class LocalFiles implements FileService {
 
     @Override
     public AbstractResource getFileResource(final String relativeName, final String contentType) throws FileNotFoundException{
-        return new FileResource(getPathInDataDir(relativeName), contentType);
+        return new FileResource(new File(getPathInDataDir(relativeName)), contentType);
     }
 
     public static AbstractResource.ResourceResponse respondWithFileStatic(final File file, final String contentType) {
@@ -226,21 +226,21 @@ public class LocalFiles implements FileService {
     }
 
     @Override
-    public AbstractResource.ResourceResponse respondWithFile(final File file, final String contentType) {
-        return respondWithFileStatic(file, contentType);
+    public AbstractResource.ResourceResponse respondWithFile(final String fullPath, final String contentType) {
+        return respondWithFileStatic(new File(fullPath), contentType);
     }
 
     @Override
     public void removeFiles(String relativePath) {
         if (relativePath != null) {
-            File f = getPathInDataDir(relativePath);
+            File f = new File(getPathInDataDir(relativePath));
             if (f.exists()) {
                 if(!f.delete()) {
                     logger.warn("It wasn't possible to delete file " + relativePath);
                 }
             }
 
-            f = getFilePreviewInDataDir(relativePath);
+            f = new File(getFilePreviewInDataDir(relativePath));
             if (f.exists()) {
                 if(!f.delete()) {
                     logger.warn("It wasn't possible to delete file " + relativePath);
