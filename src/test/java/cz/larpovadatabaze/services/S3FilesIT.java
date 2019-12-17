@@ -1,15 +1,17 @@
 package cz.larpovadatabaze.services;
 
 import cz.larpovadatabaze.services.impl.ImageResizingStrategyFactoryServiceImpl;
-import cz.larpovadatabaze.services.impl.LocalFiles;
+import cz.larpovadatabaze.services.s3.S3Bucket;
+import cz.larpovadatabaze.services.s3.S3Files;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
-import org.apache.commons.io.FileUtils;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.request.resource.AbstractResource;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,27 +22,28 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class LocalFilesTest {
-    private LocalFiles files;
+public class S3FilesIT {
+    private S3Bucket bucket;
+
     private ImageResizingStrategyFactoryService strategiesToResizeImage;
-    private String pathToUploadDirectory = "./tmpWicketTest";
+    private S3Files files;
 
     @Before
     public void setUp() throws IOException {
-        if(!new File(pathToUploadDirectory).mkdirs()) {
-            throw new RuntimeException("It wasn't possible to create the temporary directory.");
-        }
-        files = new LocalFiles(pathToUploadDirectory);
+        S3Client client = S3Client.builder()
+                .region(Region.EU_CENTRAL_1)
+                .build();
+        bucket = new S3Bucket(client, "larp-db-integration-test");
+        files = new S3Files(bucket);
         strategiesToResizeImage = new ImageResizingStrategyFactoryServiceImpl();
-        FileUtils.copyFile(
-                new File("src/test/java/cz/larpovadatabaze/services/t0Dh33USkSOzdLwc.jpeg"),
-                new File(pathToUploadDirectory + "/t0Dh33USkSOzdLwc.jpeg")
-        );
+        // Upload file to use further.
+        bucket.upload("image/test.jpg",
+                new FileInputStream(new File("src/test/java/cz/larpovadatabaze/services/t0Dh33USkSOzdLwc.jpeg")));
     }
 
     @Test
     public void getFullPathToTheResource() {
-        String expectedPath = new File("./tmpWicketTest/image/test.jpg").getAbsolutePath();
+        String expectedPath = "image/test.jpg";
         String providedPath = files.getPathInDataDir("image/test.jpg");
 
         assertThat(providedPath, is(expectedPath));
@@ -48,7 +51,7 @@ public class LocalFilesTest {
 
     @Test
     public void getFullPathToPreviewResource() {
-        String expectedPath = new File("./tmpWicketTest/image/test-p.jpg").getAbsolutePath();
+        String expectedPath = "image/test-p.jpg";
         String providedPath = files.getFilePreviewInDataDir("image/test.jpg");
 
         assertThat(providedPath, is(expectedPath));
@@ -66,47 +69,49 @@ public class LocalFilesTest {
     }
 
     @Test
-    public void saveImageFileAndPreview() throws IOException {
+    public void saveImageFileAndPreview() {
         FileUpload fileUpload = prepareDummyFileUpload();
         FileService.ResizeAndSaveReturn savedImage = files.saveImageFileAndPreviewAndReturnPath(
                 fileUpload,
                 strategiesToResizeImage.getMaxWidthHeightStrategy(128, 128),
                 strategiesToResizeImage.getMaxWidthHeightStrategy(32, 32));
 
-        File savedImageFull = new File(files.getPathInDataDir(savedImage.path));
-        File savedImagePreview = new File(files.getFilePreviewInDataDir(savedImage.path));
-        assertThat(savedImageFull.exists(), is(true));
-        assertThat(savedImagePreview.exists(), is(true));
+        String fullImagePath = files.getPathInDataDir(savedImage.path);
+        String previewPath = files.getFilePreviewInDataDir(savedImage.path);
+
+        assertThat(bucket.existsObject(fullImagePath), is(true));
+        assertThat(bucket.existsObject(previewPath), is(true));
 
         assertThat(savedImage.savedHeight, is(96));
         assertThat(savedImage.savedWidth, is(128));
 
-        if(!savedImageFull.delete() | !savedImagePreview.delete()){
-            throw new IOException("It wasn't possible to delete file");
-        }
+        bucket.removeObject(fullImagePath);
+        bucket.removeObject(previewPath);
     }
 
     @Test
-    public void saveOnlyImageWithoutPreview() throws IOException {
+    public void saveOnlyImageWithoutPreview() {
         FileUpload fileUpload = prepareDummyFileUpload();
         FileService.ResizeAndSaveReturn savedImage = files.saveImageFileAndReturnPath(
                 fileUpload,
                 strategiesToResizeImage.getMaxWidthHeightStrategy(128, 128));
 
-        File savedImageFull = new File(files.getPathInDataDir(savedImage.path));
-        File savedImagePreview = new File(files.getFilePreviewInDataDir(savedImage.path));
-        assertThat(savedImageFull.exists(), is(true));
-        assertThat(savedImagePreview.exists(), is(false));
+        String fullImagePath = files.getPathInDataDir(savedImage.path);
+        String previewPath = files.getFilePreviewInDataDir(savedImage.path);
 
-        if(!savedImageFull.delete()){
-            throw new IOException("It wasn't possible to delete file");
-        }
+        assertThat(bucket.existsObject(fullImagePath), is(true));
+        assertThat(bucket.existsObject(previewPath), is(false));
+
+        assertThat(savedImage.savedHeight, is(96));
+        assertThat(savedImage.savedWidth, is(128));
+
+        bucket.removeObject(fullImagePath);
     }
 
     @Test
     public void respondWithValidFiles() {
         AbstractResource.ResourceResponse respond = files.respondWithFile(
-                new File("src/test/java/cz/larpovadatabaze/services/t0Dh33USkSOzdLwc.jpeg").getAbsolutePath(),
+                "image/test.jpg",
                 "image/jpeg");
 
         assertThat(respond.getContentType(), is("image/jpeg"));
@@ -115,20 +120,23 @@ public class LocalFilesTest {
 
     @Test
     public void removeFiles() throws IOException {
-        String pathToTheFile = "/to-remove-t0Dh33USkSOzdLwc.jpeg";
-        File toCreateAndRemove = new File(pathToUploadDirectory, pathToTheFile);
-        FileUtils.copyFile(
-                new File("src/test/java/cz/larpovadatabaze/services/t0Dh33USkSOzdLwc.jpeg"),
-                toCreateAndRemove
-        );
+        String key = "/to-remove-t0Dh33USkSOzdLwc.jpeg";
+        String keyPreview = "/to-remove-t0Dh33USkSOzdLwc-p.jpeg";
+        File toUpload = new File("src/test/java/cz/larpovadatabaze/services/t0Dh33USkSOzdLwc.jpeg");
+        bucket.upload(key,
+                new FileInputStream(toUpload));
+        bucket.upload(keyPreview,
+                new FileInputStream(toUpload));
 
-        assertThat(toCreateAndRemove.exists(), is(true));
-        files.removeFiles(pathToTheFile);
-        assertThat(toCreateAndRemove.exists(), is(false));
+        assertThat(bucket.existsObject(key), is(true));
+        assertThat(bucket.existsObject(keyPreview), is(true));
+        files.removeFiles(key);
+        assertThat(bucket.existsObject(key), is(false));
+        assertThat(bucket.existsObject(keyPreview), is(false));
     }
 
     @After
     public void tearDown() throws IOException {
-        FileUtils.deleteDirectory(new File(pathToUploadDirectory));
+        bucket.delete();
     }
 }

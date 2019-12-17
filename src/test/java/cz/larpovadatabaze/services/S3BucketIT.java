@@ -57,12 +57,32 @@ public class S3BucketIT {
     }
 
     @Test
+    public void testNonExistence() {
+        assertThat(bucket.existsObject("nonexistent-file"), is(false));
+    }
+
+    @Test
+    public void testExistence() {
+        String key = "existing-file.jpeg";
+        PutObjectResponse response = client.putObject(PutObjectRequest.builder()
+                        .bucket(bucketName)
+                        .key(key)
+                        .build(),
+                RequestBody.fromFile(new File("src/test/java/cz/larpovadatabaze/services/t0Dh33USkSOzdLwc.jpeg")));
+        if (!response.sdkHttpResponse().isSuccessful()) {
+            throw new RuntimeException("Not possible to upload file.");
+        }
+
+        assertThat(bucket.existsObject(key), is(true));
+    }
+
+    @Test
     public void removeFileFromBucket() throws IOException {
         String key = "toRemove.jpeg";
         PutObjectResponse response = client.putObject(PutObjectRequest.builder()
-                .bucket(bucketName)
-                .key(key)
-                .build(),
+                        .bucket(bucketName)
+                        .key(key)
+                        .build(),
                 RequestBody.fromFile(new File("src/test/java/cz/larpovadatabaze/services/t0Dh33USkSOzdLwc.jpeg")));
         if (!response.sdkHttpResponse().isSuccessful()) {
             throw new RuntimeException("Not possible to upload file.");

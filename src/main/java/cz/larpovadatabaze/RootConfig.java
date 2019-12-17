@@ -3,9 +3,10 @@ package cz.larpovadatabaze;
 import com.mchange.v2.c3p0.DriverManagerDataSource;
 import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.impl.LocalFiles;
+import cz.larpovadatabaze.services.s3.S3Bucket;
+import cz.larpovadatabaze.services.s3.S3Files;
 import cz.larpovadatabaze.utils.MailClient;
 import org.flywaydb.core.Flyway;
-import org.flywaydb.core.api.configuration.FluentConfiguration;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
@@ -16,6 +17,8 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -136,7 +139,7 @@ public class RootConfig {
     }
 
     @Bean
-    public MailClient mailService(){
+    public MailClient mailService() {
         MailClient mail = new MailClient();
 
         mail.setTemplateMessage(templateMessage());
@@ -146,8 +149,30 @@ public class RootConfig {
     }
     // End of email settings
 
+    public S3Client client() {
+        return S3Client.builder()
+                .region(Region.EU_CENTRAL_1)
+                .build();
+    }
+
     @Bean
     public FileService fileService() {
-        return new LocalFiles(env.getProperty("csld.data_dir"));
+        String typeOfFileService = env.getProperty("csld.data.source");
+        if (typeOfFileService == null) {
+            throw new RuntimeException("It is required to specify type of service. Property csld.data_source is missing.");
+        }
+
+        if (typeOfFileService.equals("local")) {
+            return new LocalFiles(env.getProperty("csld.data.dir"));
+        } else if (typeOfFileService.equals("s3")) {
+            return new S3Files(
+                    new S3Bucket(
+                            client(),
+                            env.getProperty("csld.data.s3.bucketName")
+                    )
+            );
+        } else {
+            throw new RuntimeException("Ilegal type of service. Only s3 and files are supported.");
+        }
     }
 }
