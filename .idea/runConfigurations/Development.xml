@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Development" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 7.0.92" ALTERNATIVE_JRE_ENABLED="false">
+  <configuration default="false" name="Development" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 8.5.49" ALTERNATIVE_JRE_ENABLED="false">
     <option name="COMMON_VM_ARGUMENTS" value="-Dprops.path=$PROJECT_DIR$/target/classes" />
     <option name="UPDATING_POLICY" value="restart-server" />
     <deployment>
