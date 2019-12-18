@@ -11,9 +11,9 @@ before_install:
   - psql -c 'create user csld with password '"'"'csld'"'"';' -U postgres
   - psql -c 'create database csld_dev with owner csld;' -U postgres
   - sudo apt-get -y install awscli
-  - ls ${TRAVIS_BUILD_DIR}/CSLD/src/main/resources/application.properties
-  - rm ${TRAVIS_BUILD_DIR}/CSLD/src/main/resources/application.properties
-  - aws cp ${CONFIG_FILE_AWS} ${TRAVIS_BUILD_DIR}/CSLD/src/main/resources/application.properties
+  - ls ${TRAVIS_BUILD_DIR}/src/main/resources/application.properties
+  - rm ${TRAVIS_BUILD_DIR}/src/main/resources/application.properties
+  - aws cp ${CONFIG_FILE_AWS} ${TRAVIS_BUILD_DIR}/src/main/resources/application.properties
 
 script:
   - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=CSLD_CSLD heroku:deploy-war -B -P integration
