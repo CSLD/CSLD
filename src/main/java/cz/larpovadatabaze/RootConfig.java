@@ -54,9 +54,6 @@ public class RootConfig {
 
         dataSource.setDriverClass(env.getProperty("jdbc.driver"));
         if(env.getProperty("JDBC_DATABASE_URL") != null) {
-            System.out.println(env.getProperty("JDBC_DATABASE_URL") );
-            System.out.println(env.getProperty("JDBC_DATABASE_USERNAME") );
-            System.out.println(env.getProperty("JDBC_DATABASE_PASSWORD") );
             dataSource.setJdbcUrl(env.getProperty("JDBC_DATABASE_URL"));
             dataSource.setUser(env.getProperty("JDBC_DATABASE_USERNAME"));
             dataSource.setPassword(env.getProperty("JDBC_DATABASE_PASSWORD"));
