@@ -115,11 +115,13 @@ public class S3Files implements FileService {
 
     @Override
     public AbstractResource getFileResource(String relativeName, String contentType) throws FileNotFoundException {
+        logger.info("getFileResource#RelName " + relativeName + " CT: " + contentType);
         return new FileResource(bucket, getPathInDataDir(relativeName), contentType);
     }
 
     @Override
     public AbstractResource.ResourceResponse respondWithFile(String pathToFile, String contentType) {
+        logger.info("respondWithFile#RelName " + pathToFile + " CT: " + contentType);
         return respondWithFileFromS3(bucket, pathToFile, contentType);
     }
 
