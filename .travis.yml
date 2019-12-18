@@ -13,6 +13,7 @@ before_install:
   - sudo apt-get -y install awscli
   - rm ${TRAVIS_BUILD_DIR}/src/main/resources/application.properties
   - aws s3 cp ${CONFIG_FILE_AWS} ${TRAVIS_BUILD_DIR}/src/main/resources/application.properties --region eu-central-1
+  - echo ${HEROKU_PROCFILE} > ${TRAVIS_BUILD_DIR}/Procfile
 
 script:
   - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=CSLD_CSLD heroku:deploy-war -B -P integration
