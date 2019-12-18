@@ -12,8 +12,9 @@ before_install:
   - psql -c 'create database csld_dev with owner csld;' -U postgres
   - sudo apt-get -y install awscli
   - rm ${TRAVIS_BUILD_DIR}/src/main/resources/application.properties
-  - aws s3 cp ${CONFIG_FILE_AWS} ${TRAVIS_BUILD_DIR}/src/main/resources/application.properties --region eu-central-1
-  - echo ${HEROKU_PROCFILE} > ${TRAVIS_BUILD_DIR}/Procfile
+  - aws s3 cp ${AWS_DIRECTORY}application.properties ${TRAVIS_BUILD_DIR}/src/main/resources/application.properties --region eu-central-1
+  - rm ${TRAVIS_BUILD_DIR}/Procfile
+  - aws s3 cp ${AWS_DIRECTORY}Procfile ${TRAVIS_BUILD_DIR}/Procfile --region eu-central-1
 
 script:
   - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=CSLD_CSLD heroku:deploy-war -B -P integration
