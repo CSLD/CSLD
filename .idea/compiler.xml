@@ -11,7 +11,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="csld" target="9" />
-      <module name="CSLD" target="9" />
+      <module name="CSLD" target="12" />
       <module name="demo" target="1.8" />
     </bytecodeTargetLevel>
   </component>
