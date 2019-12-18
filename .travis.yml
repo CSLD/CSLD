@@ -12,6 +12,7 @@ before_install:
   - psql -c 'create database csld_dev with owner csld;' -U postgres
   - sudo apt-get -y install awscli
   - rm ${TRAVIS_BUILD_DIR}/src/main/resources/application.properties
+  - echo ${CONFIG_FILE_AWS}
   - aws s3 cp ${CONFIG_FILE_AWS} ${TRAVIS_BUILD_DIR}/src/main/resources/application.properties
 
 script:
