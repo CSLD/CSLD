@@ -1,12 +1,15 @@
 package cz.larpovadatabaze.services.s3;
 
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.util.time.Time;
 import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,12 +17,19 @@ import java.util.stream.Collectors;
  * Representation of S3Bucket and associated operations. If the constructor succeeds the bucket will exist. Either
  * it already exists or it is created.
  */
-public class S3Bucket {
-    private S3Client client;
+public class S3Bucket implements Serializable {
+    private LoadableDetachableModel<S3Client> client;
     private String bucketName;
 
-    public S3Bucket(S3Client client, String bucketName) {
-        this.client = client;
+    public S3Bucket(String bucketName) {
+        this.client = new LoadableDetachableModel<>() {
+            @Override
+            protected S3Client load() {
+                return S3Client.builder()
+                        .region(Region.EU_CENTRAL_1)
+                        .build();
+            }
+        };
         this.bucketName = bucketName;
 
         if (!exists()) {
@@ -37,7 +47,7 @@ public class S3Bucket {
      * @return True if exists, false otherwise.
      */
     private boolean exists() {
-        List<Bucket> availableBuckets = client.listBuckets().buckets()
+        List<Bucket> availableBuckets = client.getObject().listBuckets().buckets()
                 .stream()
                 .filter(bucket -> bucket.name().equals(bucketName))
                 .collect(Collectors.toList());
@@ -48,7 +58,7 @@ public class S3Bucket {
      * It creates a Bucket with given name. Used as a part of construction.
      */
     private void create() throws IOException {
-        CreateBucketResponse response = client.createBucket(CreateBucketRequest.builder().bucket(bucketName).build());
+        CreateBucketResponse response = client.getObject().createBucket(CreateBucketRequest.builder().bucket(bucketName).build());
         if (!response.sdkHttpResponse().isSuccessful()) {
             throw new IOException("Can't create the Bucket with name: " + bucketName);
         }
@@ -58,10 +68,10 @@ public class S3Bucket {
      * Delete Bucket with everything present.
      */
     public void delete() throws IOException {
-        ListObjectsResponse allObjectsResponse = client.listObjects(ListObjectsRequest.builder().bucket(bucketName).build());
+        ListObjectsResponse allObjectsResponse = client.getObject().listObjects(ListObjectsRequest.builder().bucket(bucketName).build());
         allObjectsResponse.contents()
                 .forEach(object -> removeObject(object.key()));
-        DeleteBucketResponse response = client.deleteBucket(DeleteBucketRequest.builder().bucket(bucketName).build());
+        DeleteBucketResponse response = client.getObject().deleteBucket(DeleteBucketRequest.builder().bucket(bucketName).build());
         if (!response.sdkHttpResponse().isSuccessful()) {
             throw new IOException("Can't delete bucket with name: " + bucketName);
         }
@@ -75,7 +85,7 @@ public class S3Bucket {
      * @throws IOException Either there is problem with the InputStream
      */
     public void upload(String key, InputStream toUpload) throws IOException {
-        PutObjectResponse response = client.putObject(PutObjectRequest.builder()
+        PutObjectResponse response = client.getObject().putObject(PutObjectRequest.builder()
                 .bucket(bucketName)
                 .key(key)
                 .build(), RequestBody.fromInputStream(toUpload, toUpload.available()));
@@ -90,7 +100,7 @@ public class S3Bucket {
      * @param key Key of the file to remove
      */
     public void removeObject(String key) {
-        DeleteObjectResponse response = client.deleteObject(DeleteObjectRequest.builder()
+        DeleteObjectResponse response = client.getObject().deleteObject(DeleteObjectRequest.builder()
                 .bucket(bucketName)
                 .key(key)
                 .build());
@@ -106,7 +116,7 @@ public class S3Bucket {
      * @return True if the object exists
      */
     public boolean existsObject(String key) {
-        List<S3Object> foundObjectsWithPath = client.listObjects(ListObjectsRequest.builder().bucket(bucketName).build())
+        List<S3Object> foundObjectsWithPath = client.getObject().listObjects(ListObjectsRequest.builder().bucket(bucketName).build())
                 .contents()
                 .stream()
                 .filter(s3Object -> s3Object.key().equals(key))
@@ -119,7 +129,7 @@ public class S3Bucket {
      * @return Time of update in miliseconds
      */
     public Time getLastUpdatedForObject(String key) {
-        List<S3Object> foundObjectsForKey = client.listObjects(ListObjectsRequest.builder().bucket(bucketName).build())
+        List<S3Object> foundObjectsForKey = client.getObject().listObjects(ListObjectsRequest.builder().bucket(bucketName).build())
                 .contents()
                 .stream()
                 .filter(s3Object -> s3Object.key().equals(key))
@@ -138,6 +148,6 @@ public class S3Bucket {
      * @return InputStream for download of the object.
      */
     public InputStream download(String key) {
-        return client.getObject(GetObjectRequest.builder().bucket(bucketName).key(key).build());
+        return client.getObject().getObject(GetObjectRequest.builder().bucket(bucketName).key(key).build());
     }
 }

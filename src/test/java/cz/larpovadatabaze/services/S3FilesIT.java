@@ -10,8 +10,6 @@ import org.apache.wicket.request.resource.AbstractResource;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.services.s3.S3Client;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,10 +28,7 @@ public class S3FilesIT {
 
     @Before
     public void setUp() throws IOException {
-        S3Client client = S3Client.builder()
-                .region(Region.EU_CENTRAL_1)
-                .build();
-        bucket = new S3Bucket(client, "larp-db-integration-test");
+        bucket = new S3Bucket("larp-db-integration-test");
         files = new S3Files(bucket);
         strategiesToResizeImage = new ImageResizingStrategyFactoryServiceImpl();
         // Upload file to use further.

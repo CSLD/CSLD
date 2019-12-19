@@ -17,8 +17,6 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.services.s3.S3Client;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -146,10 +144,11 @@ public class RootConfig {
     }
     // End of email settings
 
-    public S3Client client() {
-        return S3Client.builder()
-                .region(Region.EU_CENTRAL_1)
-                .build();
+    @Bean
+    public S3Bucket bucket() {
+        return new S3Bucket(
+                env.getProperty("csld.data.s3.bucketName")
+        );
     }
 
     @Bean
@@ -162,12 +161,7 @@ public class RootConfig {
         if (typeOfFileService.equals("local")) {
             return new LocalFiles(env.getProperty("csld.data.dir"));
         } else if (typeOfFileService.equals("s3")) {
-            return new S3Files(
-                    new S3Bucket(
-                            client(),
-                            env.getProperty("csld.data.s3.bucketName")
-                    )
-            );
+            return new S3Files(bucket());
         } else {
             throw new RuntimeException("Ilegal type of service. Only s3 and files are supported.");
         }

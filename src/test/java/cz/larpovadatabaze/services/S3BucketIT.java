@@ -31,7 +31,7 @@ public class S3BucketIT {
                 .build();
         CreateBucketResponse response = client.createBucket(CreateBucketRequest.builder().bucket(bucketName).build());
         if (response.sdkHttpResponse().isSuccessful()) {
-            bucket = new S3Bucket(client, bucketName);
+            bucket = new S3Bucket(bucketName);
         } else {
             throw new RuntimeException("Problem with creating bucket.");
         }
@@ -103,7 +103,7 @@ public class S3BucketIT {
         }
 
         // Delete the bucket
-        S3Bucket toDelete = new S3Bucket(client, bucketToDelete);
+        S3Bucket toDelete = new S3Bucket(bucketToDelete);
         toDelete.delete();
     }
 

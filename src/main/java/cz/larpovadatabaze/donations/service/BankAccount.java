@@ -52,7 +52,7 @@ public class BankAccount {
 
     void importData(Donations donations, Session current) {
         try {
-            System.out.println("BANK: Loading Data.");
+            logger.debug("BANK: Loading Data.");
             Document doc = Jsoup.connect("https://www.fio.cz/ib2/transparent?a=2300942293").get();
             Elements linesToParse = doc.select("table.table tbody tr");
             for (Element element : linesToParse) {

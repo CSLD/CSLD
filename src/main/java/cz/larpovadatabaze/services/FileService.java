@@ -4,7 +4,6 @@ import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService.IImageRes
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.request.resource.AbstractResource;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 
 /**
@@ -15,7 +14,7 @@ import java.io.FileNotFoundException;
  * Time: 20:41
  */
 public interface FileService {
-    static final String PREVIEW_POSTFIX = "-p";
+    String PREVIEW_POSTFIX = "-p";
 
     /**
      * Return class from saveImageFileAndReturnPath

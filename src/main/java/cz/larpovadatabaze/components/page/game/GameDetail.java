@@ -47,7 +47,6 @@ public class GameDetail extends CsldBasePage {
 
     @SpringBean
     GameService gameService;
-
     @SpringBean
     ImageService imageService;
 
