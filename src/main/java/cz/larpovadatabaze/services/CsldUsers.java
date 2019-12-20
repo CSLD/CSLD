@@ -8,9 +8,9 @@ import java.util.List;
 /**
  *
  */
-public interface CsldUserService extends GenericService<CsldUser>, IIconReferenceProvider<CsldUser> {
-    int USER_IMAGE_SIZE=120;
-    int USER_IMAGE_LEFTTOP_PERCENT=10;
+public interface CsldUsers extends CRUDService<CsldUser, Integer>, IIconReferenceProvider<CsldUser> {
+    int USER_IMAGE_SIZE = 120;
+    int USER_IMAGE_LEFTTOP_PERCENT = 10;
 
     class ReCaptchaTechnicalException extends Exception {
         public ReCaptchaTechnicalException(Throwable throwable) {
@@ -19,8 +19,6 @@ public interface CsldUserService extends GenericService<CsldUser>, IIconReferenc
     }
 
     CsldUser getById(Integer id);
-
-    boolean saveOrUpdate(CsldUser user);
 
     List<CsldUser> getEditors();
 
@@ -39,7 +37,7 @@ public interface CsldUserService extends GenericService<CsldUser>, IIconReferenc
      * for the database for author like generated email.
      *
      * @param author
-     * @return
+     * @return True if the author was properly created
      */
     boolean saveOrUpdateNewAuthor(CsldUser author);
 

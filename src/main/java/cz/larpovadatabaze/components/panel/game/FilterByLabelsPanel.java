@@ -2,7 +2,7 @@ package cz.larpovadatabaze.components.panel.game;
 
 import cz.larpovadatabaze.components.common.FilterablePage;
 import cz.larpovadatabaze.entities.Label;
-import cz.larpovadatabaze.services.LabelService;
+import cz.larpovadatabaze.services.Labels;
 import org.apache.commons.lang.WordUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class FilterByLabelsPanel extends FormComponentPanel<List<Label>> {
     @SpringBean
-    LabelService labelService;
+    Labels labels;
 
     private final List<Label> possibleLabels;
 

@@ -6,7 +6,7 @@ import cz.larpovadatabaze.components.page.user.UserDetailPage;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
-import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.CsldUsers;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class AdminAllRatingsPanel extends Panel {
     @SpringBean
-    CsldUserService csldUserService;
+    CsldUsers csldUsers;
 
     private IModel<Game> gameModel;
     private OrderedDetachableRatingModel orderedDetachableRatingModel;
@@ -90,6 +90,6 @@ public class AdminAllRatingsPanel extends Panel {
         super.onConfigure();
         orderedDetachableRatingModel.recompute();
 
-        setVisible(csldUserService.isLoggedAtLeastEditor());
+        setVisible(csldUsers.isLoggedAtLeastEditor());
     }
 }

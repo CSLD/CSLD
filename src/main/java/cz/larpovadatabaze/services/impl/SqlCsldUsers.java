@@ -6,8 +6,8 @@ import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.security.CsldRoles;
-import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.ImageService;
+import cz.larpovadatabaze.services.CsldUsers;
+import cz.larpovadatabaze.services.Images;
 import cz.larpovadatabaze.utils.Pwd;
 import cz.larpovadatabaze.utils.RandomString;
 import org.apache.commons.httpclient.HttpClient;
@@ -30,60 +30,36 @@ import java.util.UUID;
  */
 @Repository(value = "csldUserService")
 @Transactional
-public class SqlCsldUsers implements CsldUserService {
+public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
     /**
      * Re-Captcha config - maybe move keys somewhere else?
      */
-    private static final String RE_CAPTCHA_VERIFY_URL="https://www.google.com/recaptcha/api/siteverify";
-    private static final String RE_CAPTCHA_SITE_KEY ="6LeEiv8SAAAAABn8qvmZGkez0Lpp-Pbak_Jr6T1t";
-    private static final String RE_CAPTCHA_SECRET_KEY ="6LeEiv8SAAAAAAE2ikmbiEJhv5XdVaI4_TiPPEt6";
+    private static final String RE_CAPTCHA_VERIFY_URL = "https://www.google.com/recaptcha/api/siteverify";
+    private static final String RE_CAPTCHA_SITE_KEY = "6LeEiv8SAAAAABn8qvmZGkez0Lpp-Pbak_Jr6T1t";
+    private static final String RE_CAPTCHA_SECRET_KEY = "6LeEiv8SAAAAAAE2ikmbiEJhv5XdVaI4_TiPPEt6";
 
     private CsldUserDAO csldUserDao;
-    private ImageService imageService;
+    private Images images;
 
     @Autowired
-    public SqlCsldUsers(CsldUserDAO csldUserDao, ImageService imageService) {
+    public SqlCsldUsers(CsldUserDAO csldUserDao, Images images) {
+        super(csldUserDao);
         this.csldUserDao = csldUserDao;
-        this.imageService = imageService;
+        this.images = images;
     }
 
     private ResourceReference userIconReference;
 
     @Override
-    public CsldUser getById(Integer id) {
-        return csldUserDao.findById(id);
-    }
-
-    @Override
-    public boolean saveOrUpdate(CsldUser user) {
-        return csldUserDao.saveOrUpdate(user);
-    }
-
-    @Override
-    public List<CsldUser> getAll() {
-        return csldUserDao.findAll();
-    }
-
-    @Override
-    public List<CsldUser> getUnique(CsldUser example) {
-        return csldUserDao.findByExample(example, new String[]{});
-    }
-
-    @Override
-    public void remove(CsldUser toRemove) {
-        csldUserDao.makeTransient(toRemove);
-    }
-
-    @Override
     public List<CsldUser> getEditors() {
-        Criterion criterion = Restrictions.eq("role", new Short("2"));
-        return csldUserDao.findByCriteria(criterion);
+        Criterion criterion = Restrictions.eq("role", Short.valueOf("2"));
+        return crudRepository.findByCriteria(criterion);
     }
 
     @Override
     public List<CsldUser> getAdmins() {
-        Criterion criterion = Restrictions.eq("role", new Short("3"));
-        return csldUserDao.findByCriteria(criterion);
+        Criterion criterion = Restrictions.eq("role", Short.valueOf("3"));
+        return crudRepository.findByCriteria(criterion);
     }
 
     @Override
@@ -134,7 +110,7 @@ public class SqlCsldUsers implements CsldUserService {
         // Reference is singleton, lazy-inited
         synchronized(this) {
             if (userIconReference == null) {
-                userIconReference = imageService.createImageTypeResourceReference(csldUserDao);
+                userIconReference = images.createImageTypeResourceReference(csldUserDao);
             }
         }
         return userIconReference;

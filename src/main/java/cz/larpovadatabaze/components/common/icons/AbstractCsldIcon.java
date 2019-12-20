@@ -2,7 +2,7 @@ package cz.larpovadatabaze.components.common.icons;
 
 import cz.larpovadatabaze.api.Identifiable;
 import cz.larpovadatabaze.services.IIconReferenceProvider;
-import cz.larpovadatabaze.services.ImageService;
+import cz.larpovadatabaze.services.Images;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.model.IModel;
@@ -40,7 +40,7 @@ public abstract class AbstractCsldIcon<T extends IIconReferenceProvider<O>, O ex
 
         PageParameters pp = new PageParameters();
         Serializable id = ((Identifiable) getDefaultModelObject()).getId();
-        pp.add(ImageService.RESOURCE_REFERENCE_ID_PARAM_NAME,
+        pp.add(Images.RESOURCE_REFERENCE_ID_PARAM_NAME,
                 id != null ? id : "");
         tag.put("src", urlFor(getService().getIconReference(), pp) + "&imageId=" + new Date().getTime());
     }

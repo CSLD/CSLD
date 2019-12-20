@@ -34,15 +34,11 @@ public class RootConfig {
 
     @Bean(initMethod = "migrate")
     Flyway flyway() {
-        if(env.getProperty("csld.run_flyway", Boolean.class)) {
-            return Flyway.configure()
-                    .baselineOnMigrate(true)
-                    .dataSource(dataSource())
-                    .locations("classpath:db/")
-                    .load();
-        } else {
-            return null;
-        }
+        return Flyway.configure()
+                .baselineOnMigrate(true)
+                .dataSource(dataSource())
+                .locations("classpath:db/")
+                .load();
     }
 
     // Data store specification
@@ -64,8 +60,9 @@ public class RootConfig {
         return dataSource;
     }
 
-    @Bean @DependsOn("flyway")
-    public LocalSessionFactoryBean sessionFactory() {
+    @Bean
+    @DependsOn("flyway")
+    public LocalSessionFactoryBean localSessionFactoryBean() {
         LocalSessionFactoryBean factory = new LocalSessionFactoryBean();
 
         factory.setDataSource(dataSource());

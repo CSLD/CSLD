@@ -11,8 +11,8 @@ import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.models.FilterGame;
 import cz.larpovadatabaze.providers.SortableGameProvider;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.LabelService;
+import cz.larpovadatabaze.services.CsldUsers;
+import cz.larpovadatabaze.services.Labels;
 import org.apache.commons.lang.WordUtils;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -34,9 +34,9 @@ import java.util.Optional;
  */
 public class ListGamePage extends CsldBasePage implements FilterablePage {
     @SpringBean
-    LabelService labelService;
+    Labels labels;
     @SpringBean
-    CsldUserService csldUserService;
+    CsldUsers csldUsers;
 
     /**
      * Filter model used throughout the page
@@ -66,7 +66,7 @@ public class ListGamePage extends CsldBasePage implements FilterablePage {
             // Save for logged user actual state
             logged.setLastRating(labelId);
 
-            csldUserService.saveOrUpdate(logged);
+            csldUsers.saveOrUpdate(logged);
         }
 
         if(labelId == NONE) {
@@ -86,7 +86,7 @@ public class ListGamePage extends CsldBasePage implements FilterablePage {
             filterModel.getObject().setShowArchived(true);
         }
 
-        List<Label> requiredLabels = labelService.getRequired();
+        List<Label> requiredLabels = labels.getRequired();
 
         // Check if selected label is one of required labels
         List<Label> filterRequiredLabels = filterModel.getObject().getRequiredLabels();
@@ -103,7 +103,7 @@ public class ListGamePage extends CsldBasePage implements FilterablePage {
 
         if (labelId != ALL) {
             // Non-required label selected - add it to narrow filter
-            filterOtherLabels.add(labelService.getById(labelId));
+            filterOtherLabels.add(labels.getById(labelId));
         }
 
         // Add user's locale as language

@@ -1,5 +1,7 @@
 package cz.larpovadatabaze.api;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 
 import java.io.Serializable;
@@ -12,16 +14,20 @@ import java.util.List;
  *
  */
 public interface GenericDAO<T, I extends Serializable> {
-	 
+
     T findById(I id);
- 
+
     List<T> findAll();
- 
+
     List<T> findByExample(T exampleInstance, String[] excludeProperty);
- 
+
     T makePersistent(T entity);
- 
+
     void makeTransient(T entity);
 
-    public List<T> findByCriteria(Criterion... criterion);
+    List<T> findByCriteria(Criterion... criterion);
+
+    Criteria getExecutableCriteria();
+
+    Session getCurrentSession();
 }

@@ -22,7 +22,7 @@ import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.entities.UserPlayedGame;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.Games;
 import cz.larpovadatabaze.utils.MailClient;
 import cz.larpovadatabaze.validator.AtLeastOneRequiredLabelValidator;
 import org.apache.commons.lang.StringUtils;
@@ -58,7 +58,7 @@ public abstract class CreateEventPanel extends AbstractCsldPanel<Event> {
     @SpringBean
     private SessionFactory sessionFactory;
     @SpringBean
-    private transient GameService gameService;
+    private transient Games games;
     @SpringBean
     private transient MailClient mailClient;
 
@@ -359,12 +359,12 @@ public abstract class CreateEventPanel extends AbstractCsldPanel<Event> {
         MultiAutoCompleteComponent<Game> associatedGames = new MultiAutoCompleteComponent<>("games", new PropertyModel<>(getModelObject(), "games"), new IMultiAutoCompleteSource<Game>() {
             @Override
             public Collection<Game> getChoices(String input) {
-                return gameService.getFirstChoices(input, AUTOCOMPLETE_CHOICES);
+                return games.getFirstChoices(input, AUTOCOMPLETE_CHOICES);
             }
 
             @Override
             public Game getObjectById(Long id) {
-                return gameService.getById(id.intValue());
+                return games.getById(id.intValue());
             }
         });
 

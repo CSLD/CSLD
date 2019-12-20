@@ -8,8 +8,8 @@ import cz.larpovadatabaze.components.page.user.UpdateUserPage;
 import cz.larpovadatabaze.components.page.user.UserDetailPage;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.ImageService;
+import cz.larpovadatabaze.services.CsldUsers;
+import cz.larpovadatabaze.services.Images;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.AbstractReadOnlyModel;
@@ -24,10 +24,10 @@ public class LoggedBoxPanel extends AbstractCsldPanel<CsldUser> {
     private boolean initiated = false;
 
     @SpringBean
-    CsldUserService csldUserService;
+    CsldUsers csldUsers;
 
     @SpringBean
-    ImageService imageService;
+    Images images;
 
     private class UserModel extends LoadableDetachableModel<CsldUser> {
         @Override

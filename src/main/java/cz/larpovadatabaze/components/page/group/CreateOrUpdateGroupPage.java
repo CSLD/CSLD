@@ -4,7 +4,7 @@ import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.components.panel.group.CreateOrUpdateGroupPanel;
 import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.services.GroupService;
+import cz.larpovadatabaze.services.CsldGroups;
 import cz.larpovadatabaze.utils.HbUtils;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -18,13 +18,13 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 @AuthorizeInstantiation({"User","Editor","Admin"})
 public class CreateOrUpdateGroupPage extends CsldBasePage {
     @SpringBean
-    GroupService groupService;
+    CsldGroups csldGroups;
 
     public CreateOrUpdateGroupPage(PageParameters params){
         CsldGroup group = null;
         if(!params.isEmpty()){
             Integer id = params.get("id").to(Integer.class);
-            group = groupService.getById(id);
+            group = csldGroups.getById(id);
             if(HbUtils.isProxy(group)){
                 group = HbUtils.deproxy(group);
             }

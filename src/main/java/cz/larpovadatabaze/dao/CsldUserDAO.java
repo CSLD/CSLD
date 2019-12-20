@@ -6,12 +6,7 @@ import cz.larpovadatabaze.dao.builder.IBuilder;
 import cz.larpovadatabaze.dto.UserRatesOwnGameDto;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
-import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
+import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
@@ -23,91 +18,24 @@ import java.util.List;
  */
 @Repository
 public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
+    public CsldUserDAO(SessionFactory sessionFactory) {
+        super(sessionFactory, new GenericBuilder<>(CsldUser.class));
+    }
+
     @Override
     public IBuilder getBuilder() {
         return new GenericBuilder<>(CsldUser.class);
     }
 
-    public int getAmountOfAuthors() {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = session.createCriteria(CsldUser.class)
-                .setProjection(Projections.rowCount());
-
-        return ((Long)criteria.uniqueResult()).intValue();
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<CsldUser> getAuthorsByBestGame(Long first, Long amountPerPage) {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = getBuilder().build().getExecutableCriteria(session)
-                .createAlias("bestGame", "best")
-                .addOrder(Order.desc("best.totalRating"))
-                .setFirstResult(first.intValue())
-                .setMaxResults(amountPerPage.intValue());
-
-        return criteria.list();
-    }
-
-    public CsldUser getWithMostComments() {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = getBuilder().build().getExecutableCriteria(session)
-                .addOrder(Order.desc("amountOfComments"))
-                .setMaxResults(1);
-
-        return (CsldUser) criteria.uniqueResult();
-    }
-
-    public CsldUser getWithMostAuthored() {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = getBuilder().build().getExecutableCriteria(session)
-                .addOrder(Order.desc("amountOfCreated"))
-                .setMaxResults(1);
-
-        return (CsldUser) criteria.uniqueResult();
-    }
-
     public CsldUser authenticate(String username, String password) {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = getBuilder().build().getExecutableCriteria(session)
-                .add(Restrictions.eq("person.email",username))
+                .add(Restrictions.eq("person.email", username))
                 .add(Restrictions.eq("password",password));
 
         criteria.setFetchMode("userHasLanguages", FetchMode.JOIN);
 
         return (CsldUser) criteria.uniqueResult();
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<CsldUser> getOrderedUsersByName(Long first, Long amountPerPage) {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = getBuilder().build().getExecutableCriteria(session)
-                .addOrder(Order.asc("person.name"))
-                .setFirstResult(first.intValue())
-                .setMaxResults(amountPerPage.intValue());
-
-        return criteria.list();
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<CsldUser> gerOrderedUsersByComments(Long first, Long amountPerPage) {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = getBuilder().build().getExecutableCriteria(session)
-                .addOrder(Order.desc("amountOfComments"))
-                .setFirstResult(first.intValue())
-                .setMaxResults(amountPerPage.intValue());
-
-        return criteria.list();
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<CsldUser> getOrderedUsersByPlayed(Long first, Long amountPerPage) {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = getBuilder().build().getExecutableCriteria(session)
-                .addOrder(Order.desc("amountOfPlayed"))
-                .setFirstResult(first.intValue())
-                .setMaxResults(amountPerPage.intValue());
-
-        return criteria.list();
     }
 
     /**
@@ -136,27 +64,6 @@ public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
 
         criteria.setFetchMode("userHasLanguages", FetchMode.JOIN);
         return (CsldUser) criteria.uniqueResult();
-    }
-
-    public int getAmountOfOnlyAuthors() {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = getBuilder().build().getExecutableCriteria(session)
-                .add(Restrictions.isNotEmpty("authorOf"))
-                .setProjection(Projections.rowCount());
-
-        return ((Long)criteria.uniqueResult()).intValue();
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<CsldUser> getAuthorsByName(Long first, Long amountPerPage) {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = getBuilder().build().getExecutableCriteria(session)
-                .add(Restrictions.isNotEmpty("authorOf"))
-                .addOrder(Order.asc("person.name"))
-                .setFirstResult(first.intValue())
-                .setMaxResults(amountPerPage.intValue());
-
-        return criteria.list();
     }
 
     @SuppressWarnings("unchecked")

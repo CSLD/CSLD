@@ -3,7 +3,7 @@ package cz.larpovadatabaze.components.page.admin;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.security.CsldRoles;
-import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.CsldUsers;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -27,12 +27,12 @@ import java.util.List;
 @AuthorizeInstantiation({"Admin"})
 public class ManageUserRightsPage extends CsldBasePage {
     @SpringBean
-    CsldUserService csldUserService;
+    CsldUsers csldUsers;
 
     public ManageUserRightsPage(){
         Form manageUsers = new Form("manageUser");
 
-        final List<CsldUser> users = csldUserService.getAll();
+        final List<CsldUser> users = csldUsers.getAll();
         ListView<CsldUser> userView = new ListView<CsldUser>("users", users) {
             @SuppressWarnings("unused")
             private String selected;
@@ -56,7 +56,7 @@ public class ManageUserRightsPage extends CsldBasePage {
                     @Override
                     protected void onUpdate(AjaxRequestTarget target) {
                         user.setRole(CsldRoles.getRoleByName(role.selected));
-                        csldUserService.saveOrUpdate(user);
+                        csldUsers.saveOrUpdate(user);
                     }
                 });
                 item.add(roles);

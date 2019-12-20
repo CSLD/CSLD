@@ -4,7 +4,7 @@ import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.Games;
 import cz.larpovadatabaze.utils.HbUtils;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -19,7 +19,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 @AuthorizeInstantiation({"User","Editor","Admin"})
 public class CreateOrUpdateGamePage extends CsldBasePage {
     @SpringBean
-    GameService gameService;
+    Games games;
 
     /**
      * Model for game specified by game id
@@ -37,7 +37,7 @@ public class CreateOrUpdateGamePage extends CsldBasePage {
         protected Game load() {
             if (gameId == null) return Game.getEmptyGame(); // Empty game
 
-            Game game = gameService.getById(gameId);
+            Game game = games.getById(gameId);
             if(HbUtils.isProxy(game)){
             }    game = HbUtils.deproxy(game);
 

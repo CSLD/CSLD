@@ -2,7 +2,7 @@ package cz.larpovadatabaze.providers;
 
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.models.FilterGame;
-import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.Games;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
@@ -18,7 +18,7 @@ import java.util.List;
 public class SortableGameProvider extends SortableDataProvider<Game, String> {
 
     @SpringBean
-    private GameService gameService;
+    private Games games;
 
     private IModel<FilterGame> filterModel;
 
@@ -32,10 +32,10 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
         Long firstL = first;
 
         return setStart(
-                gameService.getFilteredGames(
+                games.getFilteredGames(
                         filterModel.getObject(),
                         firstL.intValue(),
-                        ((Long)amountPerPage).intValue()),
+                        ((Long) amountPerPage).intValue()),
                 firstL.intValue()
         ).iterator();
     }
@@ -49,7 +49,7 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
 
     @Override
     public long size() {
-        return gameService.getAmountOfFilteredGames(filterModel.getObject());
+        return games.getAmountOfFilteredGames(filterModel.getObject());
     }
 
     @Override

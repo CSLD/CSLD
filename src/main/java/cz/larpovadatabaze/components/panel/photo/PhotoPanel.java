@@ -8,8 +8,8 @@ import cz.larpovadatabaze.components.common.gallery.IGalleryManager;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Photo;
 import cz.larpovadatabaze.services.FileService;
-import cz.larpovadatabaze.services.GameService;
-import cz.larpovadatabaze.services.PhotoService;
+import cz.larpovadatabaze.services.Games;
+import cz.larpovadatabaze.services.Photos;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -22,7 +22,6 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.request.resource.AbstractResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.io.File;
 import java.util.*;
 
 /**
@@ -36,11 +35,9 @@ public class PhotoPanel extends Panel {
     private final static Logger logger = Logger.getLogger(PhotoPanel.class);
 
     @SpringBean
-    private GameService gameService;
-
+    private Games games;
     @SpringBean
-    private PhotoService photoService;
-
+    private Photos sqlPhotos;
     @SpringBean
     private FileService fileService;
 
@@ -97,7 +94,7 @@ public class PhotoPanel extends Panel {
         @Override
         public AbstractResource.ResourceResponse getImagePreview(int photoId) {
             // Load photo
-            Photo p = photoService.get(photoId);
+            Photo p = sqlPhotos.getById(photoId);
 
             // Try if preview exists
             String path = fileService.getFilePreviewInDataDir(p.getImage().getPath());
@@ -111,7 +108,7 @@ public class PhotoPanel extends Panel {
         @Override
         public AbstractResource.ResourceResponse getFullImage(int photoId) {
             // Load photo
-            Photo p = photoService.get(photoId);
+            Photo p = sqlPhotos.getById(photoId);
 
             // Send full path
             String path = fileService.getPathInDataDir(p.getImage().getPath());
@@ -125,15 +122,15 @@ public class PhotoPanel extends Panel {
     private class PhotoGalleryManager implements IGalleryManager {
         @Override
         public void setImageDescription(int imageId, String newDescription) {
-            Photo p = photoService.get(imageId);
+            Photo p = sqlPhotos.getById(imageId);
             p.setDescription(newDescription);
-            photoService.saveOrUpdate(p);
+            sqlPhotos.saveOrUpdate(p);
         }
 
         @Override
         public void deleteImage(int imageId) {
-            Photo p = photoService.get(imageId);
-            photoService.remove(p);
+            Photo p = sqlPhotos.getById(imageId);
+            sqlPhotos.remove(p);
         }
 
         @Override
@@ -163,21 +160,21 @@ public class PhotoPanel extends Panel {
 
             // Set and save
             g.setPhotos(newPhotos);
-            gameService.saveOrUpdate(g);
+            games.saveOrUpdate(g);
         }
 
         @Override
         public void publishPhoto(int id) {
-            Photo p = photoService.get(id);
+            Photo p = sqlPhotos.getById(id);
             p.setFeatured(true);
-            photoService.saveOrUpdate(p);
+            sqlPhotos.saveOrUpdate(p);
         }
 
         @Override
         public void hidePhotoFromFront(int id) {
-            Photo p = photoService.get(id);
+            Photo p = sqlPhotos.getById(id);
             p.setFeatured(false);
-            photoService.saveOrUpdate(p);
+            sqlPhotos.saveOrUpdate(p);
         }
     }
 
@@ -189,8 +186,8 @@ public class PhotoPanel extends Panel {
     protected void onInitialize() {
         super.onInitialize();
 
-        Game game = (Game)getDefaultModelObject();
-        boolean canEdit = gameService.canEditGame(game);
+        Game game = (Game) getDefaultModelObject();
+        boolean canEdit = games.canEditGame(game);
 
         wrapper = new WebMarkupContainer("wrapper"); // Wrapper so that we can refresh ourselves
         wrapper.setOutputMarkupId(true);
@@ -222,7 +219,7 @@ public class PhotoPanel extends Panel {
                             }
 
                             // Create photo
-                            if (!photoService.createNewPhotoForGame((Game)PhotoPanel.this.getDefaultModelObject(), fi)) {
+                            if (!sqlPhotos.createNewPhotoForGame((Game) PhotoPanel.this.getDefaultModelObject(), fi)) {
                                 storedErrors.add(fi.getName() + ": Dosažen maximální počet obrázků ke hře");
                             }
                         }

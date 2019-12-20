@@ -5,7 +5,7 @@ import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.components.panel.user.CreateOrUpdateUserPanel;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.CsldUsers;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -16,7 +16,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  */
 public class CreateUserPage extends CsldBasePage {
     @SpringBean
-    CsldUserService csldUserService;
+    CsldUsers csldUsers;
 
     public CreateUserPage(PageParameters params){
         if ((CsldAuthenticatedWebSession.get()).isSignedIn()) {

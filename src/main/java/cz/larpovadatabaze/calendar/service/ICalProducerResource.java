@@ -1,7 +1,7 @@
 package cz.larpovadatabaze.calendar.service;
 
 import cz.larpovadatabaze.calendar.model.Event;
-import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.CsldUsers;
 import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.component.VEvent;
@@ -20,9 +20,9 @@ import java.util.Collection;
  */
 public class ICalProducerResource extends AbstractResource {
     private SessionFactory sessionFactory;
-    private CsldUserService userService;
+    private CsldUsers userService;
 
-    public ICalProducerResource(SessionFactory sessionFactory, CsldUserService userService) {
+    public ICalProducerResource(SessionFactory sessionFactory, CsldUsers userService) {
         this.sessionFactory = sessionFactory;
         this.userService = userService;
     }

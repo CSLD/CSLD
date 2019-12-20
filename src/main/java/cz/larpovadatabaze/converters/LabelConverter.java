@@ -2,7 +2,7 @@ package cz.larpovadatabaze.converters;
 
 import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
-import cz.larpovadatabaze.services.LabelService;
+import cz.larpovadatabaze.services.Labels;
 import org.apache.wicket.util.convert.IConverter;
 
 import java.util.List;
@@ -13,17 +13,18 @@ import java.util.Locale;
  * Label has unique name.
  */
 public class LabelConverter implements IConverter<Label> {
-    private LabelService labelService;
-    public LabelConverter(LabelService labelService){
-        this.labelService = labelService;
+    private Labels labels;
+
+    public LabelConverter(Labels labels) {
+        this.labels = labels;
     }
 
     @Override
     public Label convertToObject(String labelName, Locale locale) {
         try {
-            List<Label> foundLabels = labelService.getByAutoCompletable(labelName);
+            List<Label> foundLabels = labels.getByAutoCompletable(labelName);
             int amountOfLabels = foundLabels.size();
-            if(amountOfLabels == 1) {
+            if (amountOfLabels == 1) {
                 return foundLabels.get(0);
             } else {
                 return null;

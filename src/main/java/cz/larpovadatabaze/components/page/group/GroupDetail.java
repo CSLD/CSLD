@@ -8,8 +8,8 @@ import cz.larpovadatabaze.components.panel.group.EditGroupPanel;
 import cz.larpovadatabaze.components.panel.group.GroupDetailPanel;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.providers.SortableAnnotatedProvider;
-import cz.larpovadatabaze.services.GameService;
-import cz.larpovadatabaze.services.GroupService;
+import cz.larpovadatabaze.services.CsldGroups;
+import cz.larpovadatabaze.services.Games;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -21,9 +21,9 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  */
 public class GroupDetail extends CsldBasePage {
     @SpringBean
-    GroupService groupService;
+    CsldGroups csldGroups;
     @SpringBean
-    GameService gameService;
+    Games games;
     private final static String GROUP_ID_PARAMETER_NAME = "id";
 
     private class GroupModel extends LoadableDetachableModel<CsldGroup> {
@@ -35,7 +35,7 @@ public class GroupDetail extends CsldBasePage {
 
         @Override
         protected CsldGroup load() {
-            return groupService.getById(groupId);
+            return csldGroups.getById(groupId);
         }
     }
 
@@ -56,7 +56,7 @@ public class GroupDetail extends CsldBasePage {
         GroupDetailPanel groupPanel = new GroupDetailPanel("groupDetail", (IModel<CsldGroup>)getDefaultModel());
         add(groupPanel);
 
-        SortableAnnotatedProvider provider = new SortableAnnotatedProvider(gameService);
+        SortableAnnotatedProvider provider = new SortableAnnotatedProvider(games);
         provider.setGroup(group);
         add(new ListGamesWithAnnotations("annotatedGamesOfAuthor", provider));
 

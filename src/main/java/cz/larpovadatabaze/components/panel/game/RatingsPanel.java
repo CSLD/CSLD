@@ -5,7 +5,7 @@ import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.RatingService;
+import cz.larpovadatabaze.services.Ratings;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
@@ -26,7 +26,7 @@ public class RatingsPanel extends Panel {
     private final static Logger logger = Logger.getLogger(RatingsPanel.class);
     private static final int NUM_STARS = 10;
     @SpringBean
-    RatingService ratingService;
+    Ratings ratings;
 
     private final Component refreshComponent;
     private final int gameId;
@@ -44,7 +44,7 @@ public class RatingsPanel extends Panel {
 
             Rating actualRating = null;
             try {
-                actualRating = ratingService.getUserRatingOfGame(loggedId, gameId);
+                actualRating = ratings.getUserRatingOfGame(loggedId, gameId);
             } catch (WrongParameterException e) {
                 // This should never happen.
                 logger.error(e);
@@ -118,7 +118,7 @@ public class RatingsPanel extends Panel {
     private void updateData(int value){
         // Set and save new value
         model.getObject().setRating(value);
-        ratingService.saveOrUpdate(model.getObject());
+        ratings.saveOrUpdate(model.getObject());
 
         // Flush game so that computed fields are reloaded
         gameModel.detach();

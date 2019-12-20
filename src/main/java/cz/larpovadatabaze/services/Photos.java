@@ -9,17 +9,10 @@ import java.util.List;
 /**
  *
  */
-public interface PhotoService extends GenericService<Photo> {
+public interface Photos extends CRUDService<Photo, Integer> {
     int MAX_PHOTO_WIDTH = 1600;
     int MAX_PHOTO_HEIGHT = 1600;
     int PREVIEW_SIZE = 190;
-
-    boolean saveOrUpdate(Photo actualPhoto);
-
-    /**
-     * @return Photo by id
-     */
-    Photo get(int id);
 
     /**
      * Create new photo for given game (from file upload)

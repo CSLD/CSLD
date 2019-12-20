@@ -5,27 +5,18 @@ import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.builders.CzechMasqueradeBuilder;
 import cz.larpovadatabaze.services.builders.EntityBuilder;
 import org.apache.wicket.util.tester.WicketTester;
-import org.dbunit.database.DatabaseConfig;
-import org.dbunit.database.DatabaseConnection;
-import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.IDataSet;
-import org.hibernate.FlushMode;
+import org.flywaydb.core.Flyway;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.orm.hibernate5.SessionHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import java.sql.Connection;
 import java.util.Locale;
 
 /**
@@ -49,18 +40,22 @@ abstract public class AcceptanceTest {
     protected EntityBuilder persistenceStore;
     @Autowired
     protected CzechMasqueradeBuilder masqueradeBuilder;
+    @Autowired
+    protected Flyway flyWay;
 
 
+    // Before Each Test
     @Before
-    public void setUp(){
-        if(tester == null) {
+    public void setUp() {
+        if (tester == null) {
             tester = new WicketTester(csld);
         }
+
+        flyWay.migrate();
         session = sessionFactory.openSession();
-        session.setFlushMode(FlushMode.MANUAL);
         sessionHolder = new SessionHolder(session);
         masqueradeBuilder.build();
-        if(getLoggedUser() != null) {
+        if (getLoggedUser() != null) {
             TestUtils.logUser(getLoggedUser()); // This way it is at the level of user per class. Probably makes sense.
         }
         TransactionSynchronizationManager.bindResource(sessionFactory, sessionHolder);
@@ -76,29 +71,12 @@ abstract public class AcceptanceTest {
     }
 
     @After
-    public void tearDown() throws Exception {
-        cleanDatabase();
+    public void tearDown() {
+        flyWay.clean();
 
         session.close();
         TransactionSynchronizationManager.unbindResource(sessionFactory);
 
         TestUtils.logoutUser();
-    }
-
-    private void cleanDatabase() throws Exception {
-        Connection toDatabase = sessionFactory.
-                getSessionFactoryOptions().getServiceRegistry().
-                getService(ConnectionProvider.class).getConnection();
-        IDatabaseConnection connection = new DatabaseConnection(toDatabase);
-        DatabaseConfig config = connection.getConfig();
-        config.setProperty(DatabaseConfig.FEATURE_CASE_SENSITIVE_TABLE_NAMES, false);
-
-        IDataSet databaseDataSet = connection.createDataSet();
-        try {
-            // Remove all the constraints.
-            new DeleteAllIgnoringConstraints().execute(connection, databaseDataSet);
-        } finally {
-            connection.close();
-        }
     }
 }

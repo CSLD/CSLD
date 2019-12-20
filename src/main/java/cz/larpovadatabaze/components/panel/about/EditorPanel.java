@@ -4,8 +4,8 @@ import cz.larpovadatabaze.components.common.icons.UserIcon;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.user.UserDetailPage;
 import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.ImageService;
+import cz.larpovadatabaze.services.CsldUsers;
+import cz.larpovadatabaze.services.Images;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -21,15 +21,15 @@ import java.util.List;
  */
 public class EditorPanel extends Panel {
     @SpringBean
-    CsldUserService csldUserService;
+    CsldUsers csldUsers;
 
     @SpringBean
-    ImageService imageService;
+    Images images;
 
     public EditorPanel(String id) {
         super(id);
 
-        List<CsldUser> editors = csldUserService.getEditors();
+        List<CsldUser> editors = csldUsers.getEditors();
         ListView<CsldUser> editorsList = new ListView<CsldUser>("listModerator", editors) {
             @Override
             protected void populateItem(ListItem<CsldUser> item) {

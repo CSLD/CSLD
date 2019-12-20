@@ -1,7 +1,7 @@
 package cz.larpovadatabaze.providers;
 
 import cz.larpovadatabaze.entities.Comment;
-import cz.larpovadatabaze.services.CommentService;
+import cz.larpovadatabaze.services.Comments;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -18,25 +18,25 @@ import java.util.Iterator;
  */
 @Component
 public class SortableCommentProvider extends SortableDataProvider<Comment, String> {
-    private CommentService commentService;
+    private Comments comments;
 
     @Autowired
-    public SortableCommentProvider(CommentService commentService){
-        this.commentService = commentService;
+    public SortableCommentProvider(Comments comments) {
+        this.comments = comments;
     }
 
     @Override
     public Iterator<? extends Comment> iterator(long first, long count) {
-        return commentService.getLastComments(first, count).iterator();
+        return comments.getLastComments((int) first, (int) count).iterator();
     }
 
     @Override
     public long size() {
-        return commentService.getAmountOfComments();
+        return comments.getAmountOfComments();
     }
 
     @Override
     public IModel<Comment> model(Comment object) {
-        return new Model<Comment>(object);
+        return new Model<>(object);
     }
 }

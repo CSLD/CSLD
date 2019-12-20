@@ -2,7 +2,7 @@ package cz.larpovadatabaze.components.panel.admin;
 
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.entities.Label;
-import cz.larpovadatabaze.services.LabelService;
+import cz.larpovadatabaze.services.Labels;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -32,7 +32,7 @@ import java.util.List;
  */
 public class ManageLabelsPanel extends AbstractCsldPanel<List<Label>> {
     @SpringBean
-    LabelService labelService;
+    Labels labels;
 
     Form manageLabels;
     HiddenField<String> editedLabelId;
@@ -42,7 +42,7 @@ public class ManageLabelsPanel extends AbstractCsldPanel<List<Label>> {
     private class LabelsModel extends LoadableDetachableModel<List<Label>> {
         @Override
         protected List<Label> load() {
-            return labelService.getAll();
+            return labels.getAll();
         }
     }
 
@@ -59,9 +59,9 @@ public class ManageLabelsPanel extends AbstractCsldPanel<List<Label>> {
             @Override
             protected void onSubmit() {
                 if (StringUtils.isNotEmpty(editedLabelId.getModelObject())) {
-                    Label label = labelService.getById(Integer.parseInt(editedLabelId.getModelObject()));
+                    Label label = labels.getById(Integer.parseInt(editedLabelId.getModelObject()));
                     label.setDescription(newLabelDescription.getModelObject());
-                    labelService.saveOrUpdate(label);
+                    labels.saveOrUpdate(label);
                 }
             }
         };
@@ -83,13 +83,13 @@ public class ManageLabelsPanel extends AbstractCsldPanel<List<Label>> {
                 final AjaxButton require = new AjaxButton("require") {
                     @Override
                     protected void onSubmit(AjaxRequestTarget target) {
-                        final cz.larpovadatabaze.entities.Label iLabel = labelService.getById(label.getId());
+                        final cz.larpovadatabaze.entities.Label iLabel = labels.getById(label.getId());
 
                         if(iLabel.getRequired() == null){
                             iLabel.setRequired(false);
                         }
                         iLabel.setRequired(!iLabel.getRequired());
-                        labelService.saveOrUpdate(iLabel);
+                        labels.saveOrUpdate(iLabel);
 
                         target.add(this);
                     }
@@ -106,13 +106,13 @@ public class ManageLabelsPanel extends AbstractCsldPanel<List<Label>> {
                 AjaxButton accept = new AjaxButton("accept") {
                     @Override
                     protected void onSubmit(AjaxRequestTarget target) {
-                        final cz.larpovadatabaze.entities.Label iLabel = labelService.getById(label.getId());
+                        final cz.larpovadatabaze.entities.Label iLabel = labels.getById(label.getId());
 
                         if(iLabel.getAuthorized() == null){
                             iLabel.setAuthorized(false);
                         }
                         iLabel.setAuthorized(!iLabel.getAuthorized());
-                        labelService.saveOrUpdate(iLabel);
+                        labels.saveOrUpdate(iLabel);
                         target.add(this);
                     }
                 };
@@ -128,8 +128,8 @@ public class ManageLabelsPanel extends AbstractCsldPanel<List<Label>> {
                 AjaxButton remove = new AjaxButton("remove") {
                     @Override
                     protected void onSubmit(AjaxRequestTarget target) {
-                        final cz.larpovadatabaze.entities.Label iLabel = labelService.getById(label.getId());
-                        labelService.remove(iLabel);
+                        final cz.larpovadatabaze.entities.Label iLabel = labels.getById(label.getId());
+                        labels.remove(iLabel);
                         target.add(ManageLabelsPanel.this);
                     }
                 };

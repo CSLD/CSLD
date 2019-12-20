@@ -4,8 +4,8 @@ import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.CommentService;
-import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.Comments;
+import cz.larpovadatabaze.services.Games;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.markup.html.basic.Label;
@@ -27,9 +27,9 @@ import java.util.List;
  */
 public abstract class AbstractListGamePanel<T> extends AbstractCsldPanel<T> {
     @SpringBean
-    GameService gameService;
+    Games games;
     @SpringBean
-    CommentService commentService;
+    Comments comments;
 
     private SortableDataProvider<Game, String> sdp;
 
@@ -105,7 +105,7 @@ public abstract class AbstractListGamePanel<T> extends AbstractCsldPanel<T> {
             if(userId == 0) {
                 return new ArrayList<>();
             } else {
-                return new ArrayList<>(commentService.getGamesCommentedByUser(userId));
+                return new ArrayList<>(comments.getGamesCommentedByUser(userId));
             }
         }
     }
@@ -122,7 +122,7 @@ public abstract class AbstractListGamePanel<T> extends AbstractCsldPanel<T> {
             if(userId == 0) {
                 return new ArrayList<>();
             } else {
-                return new ArrayList<>(gameService.getGamesRatedByUser(userId));
+                return new ArrayList<>(games.getGamesRatedByUser(userId));
             }
         }
     }

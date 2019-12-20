@@ -1,14 +1,14 @@
 package cz.larpovadatabaze.services.impl;
 
-import cz.larpovadatabaze.dao.VideoDAO;
+import cz.larpovadatabaze.api.GenericHibernateDAO;
+import cz.larpovadatabaze.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.entities.Video;
-import cz.larpovadatabaze.services.VideoService;
+import cz.larpovadatabaze.services.Videos;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
  */
 @Repository
 @Transactional
-public class SqlVideos implements VideoService {
+public class SqlVideos extends CRUD<Video, Integer> implements Videos {
 
     public static class EmbededVideoURLTransform {
         /**
@@ -36,43 +36,15 @@ public class SqlVideos implements VideoService {
         }
     }
 
-    private VideoDAO videoDAO;
-
-    @Autowired
-    public SqlVideos(VideoDAO videoDAO) {
-        this.videoDAO = videoDAO;
+    public SqlVideos(SessionFactory sessionFactory) {
+        super(new GenericHibernateDAO<>(sessionFactory, new GenericBuilder<>(Video.class)));
     }
 
-    private EmbededVideoURLTransform[] embededVideoTransforms =  {
+    private EmbededVideoURLTransform[] embededVideoTransforms = {
             new EmbededVideoURLTransform(Pattern.compile("//www\\.youtube\\.com/embed/([^?/]+)"), "//www.youtube.com/embed/$1"),
             new EmbededVideoURLTransform(Pattern.compile("//www\\.youtube\\.com/watch\\?v=([^&]+)"), "//www.youtube.com/embed/$1"),
             new EmbededVideoURLTransform(Pattern.compile("//youtu\\.be/([^?/]+)"), "//www.youtube.com/embed/$1"),
     };
-
-    @Override
-    public List<Video> getAll() {
-        return videoDAO.findAll();
-    }
-
-    @Override
-    public List<Video> getUnique(Video example) {
-        return videoDAO.findByExample(example, new String[]{});
-    }
-
-    @Override
-    public void remove(Video toRemove) {
-        videoDAO.makeTransient(toRemove);
-    }
-
-    @Override
-    public List<Video> getFirstChoices(String startsWith, int maxChoices) {
-        throw new UnsupportedOperationException("This does not support autocompletion");
-    }
-
-    @Override
-    public boolean saveOrUpdate(Video video) {
-        return videoDAO.saveOrUpdate(video);
-    }
 
     @Override
     public String getEmbedingURL(String url) {

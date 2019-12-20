@@ -5,7 +5,7 @@ import cz.larpovadatabaze.components.panel.user.CreateOrUpdateUserPanel;
 import cz.larpovadatabaze.components.panel.user.PersonDetailPanel;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.CsldUsers;
 import cz.larpovadatabaze.utils.HbUtils;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -20,13 +20,13 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  */
 public class UpdateUserPage extends CsldBasePage {
     @SpringBean
-    CsldUserService csldUserService;
+    CsldUsers csldUsers;
 
     private class UserModel extends LoadableDetachableModel<CsldUser> {
         @Override
         protected CsldUser load() {
             // We reload user, since stored user may have not loaded some data
-            CsldUser res = csldUserService.getById((CsldAuthenticatedWebSession.get()).getLoggedUser().getId());
+            CsldUser res = csldUsers.getById((CsldAuthenticatedWebSession.get()).getLoggedUser().getId());
             if (HbUtils.isProxy(res)) {
                 res = HbUtils.deproxy(res);
             }

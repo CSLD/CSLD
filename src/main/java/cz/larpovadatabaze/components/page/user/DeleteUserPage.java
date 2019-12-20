@@ -3,7 +3,7 @@ package cz.larpovadatabaze.components.page.user;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.CsldUsers;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -19,14 +19,14 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 @SuppressWarnings("unused")
 public class DeleteUserPage extends CsldBasePage {
     @SpringBean
-    CsldUserService csldUserService;
+    CsldUsers csldUsers;
 
     public DeleteUserPage(PageParameters params){
         Integer userId = params.get("id").to(Integer.class);
 
-        CsldUser csldUser = csldUserService.getById(userId);
+        CsldUser csldUser = csldUsers.getById(userId);
         if(csldUser != null) {
-            csldUserService.remove(csldUser);
+            csldUsers.remove(csldUser);
         }
 
         throw new RestartResponseException(HomePage.class);

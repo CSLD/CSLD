@@ -1,7 +1,7 @@
 package cz.larpovadatabaze.components.page.search;
 
 import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.Games;
 import cz.larpovadatabaze.utils.HbUtils;
 import cz.larpovadatabaze.utils.Strings;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
@@ -26,7 +26,7 @@ public class GameSearchProvider extends SortableDataProvider<Game, String> {
     private transient List<Game> filteredGames;
 
     @SpringBean
-    private GameService gameService;
+    private Games games;
 
     private String query;
 
@@ -46,7 +46,7 @@ public class GameSearchProvider extends SortableDataProvider<Game, String> {
 
         @Override
         protected Game load() {
-            Game game = gameService.getById(gameId);
+            Game game = games.getById(gameId);
             if(HbUtils.isProxy(game)){
             }    game = HbUtils.deproxy(game);
 
@@ -67,7 +67,7 @@ public class GameSearchProvider extends SortableDataProvider<Game, String> {
     public List<Game> getGameList() {
         if (filteredGames == null) {
             // Load games
-            List<Game> allResults = new ArrayList<>(new LinkedHashSet<>(gameService.getAll()));
+            List<Game> allResults = new ArrayList<>(new LinkedHashSet<>(games.getAll()));
             filteredGames = new ArrayList<>();
             Collator collator = Collator.getInstance(new Locale("cs"));
             collator.setStrength(Collator.PRIMARY);

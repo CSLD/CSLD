@@ -8,7 +8,7 @@ import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.CommentService;
+import cz.larpovadatabaze.services.Comments;
 import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -35,7 +35,7 @@ public class CommentsPanel extends Panel {
     private final static Logger logger = Logger.getLogger(CommentsPanel.class);
 
     @SpringBean
-    CommentService commentService;
+    Comments comments;
 
     private WysiwygEditor commentContent;
 
@@ -79,7 +79,7 @@ public class CommentsPanel extends Panel {
                 CsldUser user = getUser();
                 int userId = getUserId(user);
 
-                actualComment = commentService.getCommentOnGameFromUser(userId, gameId);
+                actualComment = comments.getCommentOnGameFromUser(userId, gameId);
                 if (actualComment == null) {
                     // Init comment
                     actualComment = new Comment();
@@ -104,7 +104,7 @@ public class CommentsPanel extends Panel {
                 // Comment changed - save
                 if (newComment == null || newComment.equals("")) {
                     try {
-                        commentService.remove(actualComment);
+                        comments.remove(actualComment);
                     } catch (Exception ex) {
                         logger.error(ex);
                     }
@@ -118,7 +118,7 @@ public class CommentsPanel extends Panel {
                         actualComment.setPluses(new ArrayList<>());
                     }
 
-                    commentService.saveOrUpdate(actualComment);
+                    comments.saveOrUpdate(actualComment);
                 }
             }
         }

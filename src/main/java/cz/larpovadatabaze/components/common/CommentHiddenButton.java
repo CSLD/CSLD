@@ -1,7 +1,7 @@
 package cz.larpovadatabaze.components.common;
 
 import cz.larpovadatabaze.entities.Comment;
-import cz.larpovadatabaze.services.CommentService;
+import cz.larpovadatabaze.services.Comments;
 import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -18,7 +18,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  */
 public class CommentHiddenButton extends AbstractCsldPanel<Comment> {
     @SpringBean
-    private CommentService commentService;
+    private Comments comments;
 
     public CommentHiddenButton(String id, IModel<Comment> model) {
         super(id, model);
@@ -40,8 +40,8 @@ public class CommentHiddenButton extends AbstractCsldPanel<Comment> {
             public void onClick(AjaxRequestTarget target) {
                 Comment comment = CommentHiddenButton.this.getModelObject();
 
-                if (Boolean.TRUE.equals(comment.getHidden())) commentService.unHideComment(comment);
-                else commentService.hideComment(comment);
+                if (Boolean.TRUE.equals(comment.getHidden())) comments.unHideComment(comment);
+                else comments.hideComment(comment);
 
                 target.add(this);
             }

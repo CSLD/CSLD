@@ -6,7 +6,7 @@ import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.RatingService;
+import cz.larpovadatabaze.services.Ratings;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.ComponentTag;
@@ -35,7 +35,7 @@ public class RatingsResultPanel extends AbstractCsldPanel<Game> {
     private static final int NUM_RATINGS = 10;
 
     @SpringBean
-    RatingService ratingService;
+    Ratings ratings;
 
     private final Component componentToRefresh;
     private final Component playedToRefresh;
@@ -182,7 +182,7 @@ public class RatingsResultPanel extends AbstractCsldPanel<Game> {
         CsldUser logged = CsldAuthenticatedWebSession.get().getLoggedUser();
         if(logged != null){
             try {
-                Rating mine = ratingService.getUserRatingOfGame(logged.getId(), getModelObject().getId());
+                Rating mine = ratings.getUserRatingOfGame(logged.getId(), getModelObject().getId());
                 if(mine != null){
                     myRating.setObject(mine.getRating());
                 } else {

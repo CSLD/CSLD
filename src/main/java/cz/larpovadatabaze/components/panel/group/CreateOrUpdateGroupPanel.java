@@ -5,10 +5,10 @@ import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.Image;
+import cz.larpovadatabaze.services.CsldGroups;
 import cz.larpovadatabaze.services.FileService;
-import cz.larpovadatabaze.services.GroupService;
 import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
-import cz.larpovadatabaze.services.ImageService;
+import cz.larpovadatabaze.services.Images;
 import cz.larpovadatabaze.validator.UniqueGroupValidator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -32,9 +32,9 @@ public abstract class CreateOrUpdateGroupPanel extends AbstractCsldPanel<CsldGro
     private static final int GROUP_ICON_SIZE=120;
 
     @SpringBean
-    GroupService groupService;
+    CsldGroups csldGroups;
     @SpringBean
-    ImageService imageService;
+    Images sqlImages;
     @SpringBean
     UniqueGroupValidator uniqueGroupValidator;
     @SpringBean
@@ -114,13 +114,13 @@ public abstract class CreateOrUpdateGroupPanel extends AbstractCsldPanel<CsldGro
                 try {
                     Image image = new Image();
                     image.setPath(filePath);
-                    imageService.insert(image);
+                    sqlImages.saveOrUpdate(image);
 
                     group.setImage(image);
-                    if(groupService.insert(group)){
+                    if (csldGroups.saveOrUpdate(group)) {
                         return true;
                     } else {
-                        imageService.remove(image);
+                        images.remove(image);
                         error(getLocalizer().getString("group.cantAdd", this));
                         return false;
                     }
@@ -129,7 +129,7 @@ public abstract class CreateOrUpdateGroupPanel extends AbstractCsldPanel<CsldGro
                 }
             }
         } else {
-            return groupService.insert(group);
+            return csldGroups.saveOrUpdate(group);
         }
         return false;
     }

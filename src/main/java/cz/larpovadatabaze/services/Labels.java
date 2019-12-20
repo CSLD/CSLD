@@ -9,20 +9,14 @@ import java.util.List;
 /**
  *
  */
-public interface LabelService extends GenericService<Label>{
+public interface Labels extends CRUDService<Label, Integer> {
     List<Label> getRequired();
 
     List<Label> getOptional();
-
-    void update(Label label);
 
     List<Label> getAuthorizedOptional(CsldUser authorizedTo);
 
     List<Label> getAuthorizedRequired(CsldUser authorizedTo);
 
     List<Label> getByAutoCompletable(String labelName) throws WrongParameterException;
-
-    boolean saveOrUpdate(Label label);
-
-    Label getById(int filterLabel);
 }

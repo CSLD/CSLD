@@ -10,9 +10,9 @@ import cz.larpovadatabaze.components.panel.user.RatingsListPanel;
 import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.providers.SortableAnnotatedProvider;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.GameService;
-import cz.larpovadatabaze.services.RatingService;
+import cz.larpovadatabaze.services.CsldUsers;
+import cz.larpovadatabaze.services.Games;
+import cz.larpovadatabaze.services.Ratings;
 import cz.larpovadatabaze.utils.HbUtils;
 import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.wicket.RestartResponseException;
@@ -35,11 +35,11 @@ public class UserDetailPage extends CsldBasePage {
     public static final String USER_ID_PARAMETER_NAME = "id";
 
     @SpringBean
-    CsldUserService csldUserService;
+    CsldUsers csldUsers;
     @SpringBean
-    GameService gameService;
+    Games games;
     @SpringBean
-    RatingService ratingService;
+    Ratings ratings;
 
     private class UserCommentsModel extends LoadableDetachableModel<List<Comment>> {
 
@@ -80,7 +80,7 @@ public class UserDetailPage extends CsldBasePage {
 
         @Override
         protected CsldUser load() {
-            CsldUser res = csldUserService.getById(userId);
+            CsldUser res = csldUsers.getById(userId);
             if (HbUtils.isProxy(res)) {
                 res = HbUtils.deproxy(res);
             }
@@ -123,7 +123,7 @@ public class UserDetailPage extends CsldBasePage {
 
         add(new CommentsListPanel("comments", new UserCommentsModel(), true));
 
-        SortableAnnotatedProvider provider = new SortableAnnotatedProvider(gameService);
+        SortableAnnotatedProvider provider = new SortableAnnotatedProvider(games);
         provider.setAuthor(user);
         add(new ListGamesWithAnnotations("annotatedGamesOfAuthor", provider));
 
@@ -133,7 +133,7 @@ public class UserDetailPage extends CsldBasePage {
 
         // Fill played games from rated games
         List<IGameWithRating> playedGames = new ArrayList<>();
-        playedGames.addAll(ratingService.getRatingsOfUser(logged, user));
+        playedGames.addAll(ratings.getRatingsOfUser(logged, user));
 
         // Build set of rated games IDs
         Set<Integer> ratedGamesIds = new HashSet<Integer>();

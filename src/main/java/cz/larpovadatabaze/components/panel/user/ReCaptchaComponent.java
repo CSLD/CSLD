@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.components.panel.user;
 
-import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.CsldUsers;
 import org.apache.log4j.Logger;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
@@ -26,7 +26,7 @@ public class ReCaptchaComponent extends FormComponent<String> {
     private static final String FIELD_NAME="g-recaptcha-response";
 
     @SpringBean
-    private CsldUserService userService;
+    private CsldUsers userService;
 
     private class ReCaptchaValidator implements IValidator<String> {
         /**
@@ -49,8 +49,7 @@ public class ReCaptchaComponent extends FormComponent<String> {
 
                     try {
                         success = userService.checkReCaptcha(value, ip);
-                    }
-                    catch(CsldUserService.ReCaptchaTechnicalException e) {
+                    } catch (CsldUsers.ReCaptchaTechnicalException e) {
                         ValidationError error = new ValidationError();
                         error.addKey("recaptcha.technical");
                         error(error);

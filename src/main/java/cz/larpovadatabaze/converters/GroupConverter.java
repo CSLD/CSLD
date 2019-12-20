@@ -2,7 +2,7 @@ package cz.larpovadatabaze.converters;
 
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
-import cz.larpovadatabaze.services.GroupService;
+import cz.larpovadatabaze.services.CsldGroups;
 import org.apache.wicket.util.convert.IConverter;
 
 import java.util.List;
@@ -13,17 +13,18 @@ import java.util.Locale;
  * Unique for CsldGroup is its name.
  */
 public class GroupConverter implements IConverter<CsldGroup> {
-    private GroupService groupService;
-    public GroupConverter(GroupService groupService){
-        this.groupService = groupService;
+    private CsldGroups csldGroups;
+
+    public GroupConverter(CsldGroups csldGroups) {
+        this.csldGroups = csldGroups;
     }
 
     @Override
     public CsldGroup convertToObject(String groupName, Locale locale) {
         try {
-            List<CsldGroup> foundGroups = groupService.getByAutoCompletable(groupName);
+            List<CsldGroup> foundGroups = csldGroups.getByAutoCompletable(groupName);
             int amountOfGroups = foundGroups.size();
-            if(amountOfGroups == 1) {
+            if (amountOfGroups == 1) {
                 return foundGroups.get(0);
             } else {
                 CsldGroup group = CsldGroup.getEmptyGroup();

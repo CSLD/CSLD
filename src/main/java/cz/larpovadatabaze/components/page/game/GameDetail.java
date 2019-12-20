@@ -13,8 +13,8 @@ import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Video;
-import cz.larpovadatabaze.services.GameService;
-import cz.larpovadatabaze.services.ImageService;
+import cz.larpovadatabaze.services.Games;
+import cz.larpovadatabaze.services.Images;
 import cz.larpovadatabaze.utils.HbUtils;
 import cz.larpovadatabaze.utils.Strings;
 import cz.larpovadatabaze.utils.UserUtils;
@@ -46,9 +46,9 @@ public class GameDetail extends CsldBasePage {
     private enum TabContentType { COMMENTS, PHOTOS, VIDEO };
 
     @SpringBean
-    GameService gameService;
+    Games games;
     @SpringBean
-    ImageService imageService;
+    Images images;
 
     private RatingsResultPanel ratingsResult;
     private RatingsPanel ratingsPanel;
@@ -115,7 +115,7 @@ public class GameDetail extends CsldBasePage {
         protected Game load() {
             logger.debug("Loading game for id "+gameId);
 
-            Game game = gameService.getById(gameId);
+            Game game = games.getById(gameId);
             if(HbUtils.isProxy(game)){
                 game = HbUtils.deproxy(game);
             }
@@ -200,7 +200,7 @@ public class GameDetail extends CsldBasePage {
             }
             int gameId = params.get(ID_PARAM).to(Integer.class);
             // If the game is deleted and I don't have sufficient rights redirect me to game deleted page.
-            if(gameService.getById(gameId) == null){
+            if (games.getById(gameId) == null) {
                 throw new RestartResponseException(GameWasDeleted.class);
             }
 
@@ -231,7 +231,7 @@ public class GameDetail extends CsldBasePage {
             // Send main picture
             Fragment f = new Fragment(id, "mainPicture", this);
 
-            f.add(new NonCachingImage("mainPicture", imageService.getImageResource(game.getCoverImage(), null)));
+            f.add(new NonCachingImage("mainPicture", images.getImageResource(game.getCoverImage(), null)));
 
             return f;
         }
@@ -290,7 +290,7 @@ public class GameDetail extends CsldBasePage {
 
         // Photos
         Game g = getModel().getObject();
-        if (((g.getPhotos() != null) && (!g.getPhotos().isEmpty())) || gameService.canEditGame(g)) {
+        if (((g.getPhotos() != null) && (!g.getPhotos().isEmpty())) || games.canEditGame(g)) {
             models.add(Model.of(getString("photos")));
             tabContentType.add(TabContentType.PHOTOS);
         }
@@ -311,8 +311,8 @@ public class GameDetail extends CsldBasePage {
             @Override
             protected String load() {
                 PageParameters pp = new PageParameters();
-                pp.add(ImageService.RESOURCE_REFERENCE_ID_PARAM_NAME, getModel().getObject().getId());
-                return urlFor(gameService.getIconReference(), pp).toString();
+                pp.add(Images.RESOURCE_REFERENCE_ID_PARAM_NAME, getModel().getObject().getId());
+                return urlFor(games.getIconReference(), pp).toString();
             }
         };
 
@@ -364,14 +364,14 @@ public class GameDetail extends CsldBasePage {
         add(new GameListPanel("similarGames", new LoadableDetachableModel<List<Game>>() {
             @Override
             protected List<Game> load() {
-                return gameService.getSimilar(getModel().getObject());
+                return games.getSimilar(getModel().getObject());
             }
         }));
 
         add(new GameListPanel("gamesOfAuthors", new LoadableDetachableModel<List<Game>>() {
             @Override
             protected List<Game> load() {
-                return gameService.gamesOfAuthors(getModel().getObject());
+                return games.gamesOfAuthors(getModel().getObject());
             }
         }));
 

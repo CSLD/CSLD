@@ -5,7 +5,7 @@ import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.security.CsldRoles;
-import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.CsldUsers;
 
 /**
  * User: Michal Kara
@@ -30,7 +30,7 @@ public class UserUtils {
 
         System.out.println("Loading information about user.");
         int actualUserId = CsldAuthenticatedWebSession.get().getLoggedUser().getId();
-        CsldUserService userService = (CsldUserService) Csld.getApplicationContext().getBean("csldUserService");
+        CsldUsers userService = (CsldUsers) Csld.getApplicationContext().getBean("csldUserService");
         return userService.getById(actualUserId);
     }
 

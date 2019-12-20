@@ -9,7 +9,7 @@ import cz.larpovadatabaze.components.page.user.UserDetailPage;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.services.ImageService;
+import cz.larpovadatabaze.services.Images;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -34,7 +34,7 @@ import java.util.List;
  */
 public class GameDetailPanel extends AbstractCsldPanel<Game> {
     @SpringBean
-    ImageService imageService;
+    Images images;
 
     public GameDetailPanel(String id, IModel<Game> model) {
         super(id, new CompoundPropertyModel<Game>(model));

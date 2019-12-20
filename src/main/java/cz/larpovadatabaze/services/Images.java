@@ -9,11 +9,9 @@ import org.apache.wicket.request.resource.ResourceReference;
 /**
  *
  */
-public interface ImageService extends GenericService<Image> {
+public interface Images extends CRUDService<Image, Integer> {
     // @see getImageResourceReference()
-    String RESOURCE_REFERENCE_ID_PARAM_NAME="id";
-
-    boolean insert(Image image);
+    String RESOURCE_REFERENCE_ID_PARAM_NAME = "id";
 
     IResource getPredefinedImageResource(IEntityWithImage.IPredefinedImage image);
 

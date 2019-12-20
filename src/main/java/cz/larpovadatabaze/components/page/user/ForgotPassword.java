@@ -4,8 +4,8 @@ import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.EmailAuthentication;
-import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.EmailAuthenticationService;
+import cz.larpovadatabaze.services.CsldUsers;
+import cz.larpovadatabaze.services.EmailAuthentications;
 import cz.larpovadatabaze.utils.MailClient;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.markup.html.form.Button;
@@ -22,9 +22,9 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  */
 public class ForgotPassword extends CsldBasePage {
     @SpringBean
-    EmailAuthenticationService emailAuthenticationService;
+    EmailAuthentications emailAuthentications;
     @SpringBean
-    CsldUserService csldUserService;
+    CsldUsers csldUsers;
     @SpringBean
     MailClient mailClient;
 
@@ -36,7 +36,7 @@ public class ForgotPassword extends CsldBasePage {
             @Override
             protected void onSubmit() {
                 EmailAuthentication emailAuthentication = new EmailAuthentication();
-                CsldUser user = csldUserService.getByEmail(mail);
+                CsldUser user = csldUsers.getByEmail(mail);
                 if(user == null) {
                     error("Uživatel s tímto emailem neexistuje");
                     return;
@@ -50,7 +50,7 @@ public class ForgotPassword extends CsldBasePage {
 
                 String mailBody = String.format("Pro vytvoření nového hesla použijte následující odkaz: %s", RequestCycle.get().getUrlRenderer().renderFullUrl(RequestCycle.get().mapUrlFor(ResetPassword.class, params)));
                 mailClient.sendMail(mailBody, mail);
-                emailAuthenticationService.saveOrUpdate(emailAuthentication);
+                emailAuthentications.saveOrUpdate(emailAuthentication);
 
                 throw new RestartResponseException(HomePage.class);
             }

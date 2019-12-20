@@ -8,12 +8,6 @@ import java.util.List;
 /**
  *
  */
-public interface GroupService extends GenericService<CsldGroup>, IIconReferenceProvider<CsldGroup> {
-    boolean insert(CsldGroup group);
-
-    CsldGroup getById(Integer id);
-
+public interface CsldGroups extends CRUDService<CsldGroup, Integer>, IIconReferenceProvider<CsldGroup> {
     List<CsldGroup> getByAutoCompletable(String groupName) throws WrongParameterException;
-
-    void saveOrUpdate(CsldGroup group);
 }

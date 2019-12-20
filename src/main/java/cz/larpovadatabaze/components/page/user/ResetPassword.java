@@ -4,8 +4,8 @@ import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.EmailAuthentication;
-import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.EmailAuthenticationService;
+import cz.larpovadatabaze.services.CsldUsers;
+import cz.larpovadatabaze.services.EmailAuthentications;
 import cz.larpovadatabaze.utils.Pwd;
 import cz.larpovadatabaze.utils.RandomString;
 import org.apache.wicket.RestartResponseException;
@@ -21,9 +21,9 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  */
 public class ResetPassword extends CsldBasePage {
     @SpringBean
-    CsldUserService csldUserService;
+    CsldUsers csldUsers;
     @SpringBean
-    EmailAuthenticationService emailAuthenticationService;
+    EmailAuthentications emailAuthentications;
 
     private String password;
     private String passwordAgain;
@@ -31,19 +31,19 @@ public class ResetPassword extends CsldBasePage {
 
     public ResetPassword(PageParameters params) {
         String key = params.get("0").toString();
-        EmailAuthentication authentication = emailAuthenticationService.getByKey(key);
+        EmailAuthentication authentication = emailAuthentications.getByKey(key);
         if(authentication == null) {
             throw new RestartResponseException(HomePage.class);
         }
         csldUser = authentication.getUser();
-        emailAuthenticationService.remove(authentication);
+        emailAuthentications.remove(authentication);
 
         Form resetPassword = new Form("resetPassword"){
             @Override
             protected void onSubmit() {
                 if(password != null && passwordAgain != null && password.equals(passwordAgain)){
                     csldUser.setPassword(Pwd.generateStrongPasswordHash(password, csldUser.getPerson().getEmail()));
-                    csldUserService.saveOrUpdate(csldUser);
+                    csldUsers.saveOrUpdate(csldUser);
 
                     throw new RestartResponseException(HomePage.class);
                 }

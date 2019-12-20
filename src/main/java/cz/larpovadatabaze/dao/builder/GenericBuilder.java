@@ -6,17 +6,15 @@ import org.hibernate.criterion.DetachedCriteria;
  *
  */
 public class GenericBuilder<T> implements IBuilder {
-    protected DetachedCriteria baseCriteria;
     protected Class<T> clazz;
 
     public GenericBuilder(Class<T> clazz){
-        this.baseCriteria = DetachedCriteria.forClass(clazz);
         this.clazz = clazz;
     }
 
     @Override
     public DetachedCriteria build() {
-        return baseCriteria;
+        return DetachedCriteria.forClass(clazz);
     }
 
     public Class<T> getClassSpecific() {

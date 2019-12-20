@@ -4,8 +4,8 @@ import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.OwlCarouselResourceReference;
 import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.entities.Photo;
-import cz.larpovadatabaze.services.ImageService;
-import cz.larpovadatabaze.services.PhotoService;
+import cz.larpovadatabaze.services.Images;
+import cz.larpovadatabaze.services.Photos;
 import org.apache.log4j.Logger;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -34,10 +34,10 @@ public class RecentPhotosPanel extends Panel {
     private final static int SHOW_PHOTOS = 10;
 
     @SpringBean
-    private PhotoService photoService;
+    private Photos photos;
 
     @SpringBean
-    private ImageService imageService;
+    private Images images;
 
     private WebMarkupContainer carousel;
 
@@ -53,7 +53,7 @@ public class RecentPhotosPanel extends Panel {
         carousel.setOutputMarkupId(true);
         add(carousel);
 
-        carousel.add(new ListView<Photo>("photos", photoService.getRandomPhotos(SHOW_PHOTOS)) {
+        carousel.add(new ListView<Photo>("photos", photos.getRandomPhotos(SHOW_PHOTOS)) {
             @Override
             protected void populateItem(ListItem<Photo> item) {
                 Photo photo = item.getModelObject();
@@ -63,7 +63,7 @@ public class RecentPhotosPanel extends Panel {
                 item.add(link);
 
                 // Image
-                link.add(new NonCachingImage("gameImage", imageService.getImageResource(photo)) {
+                link.add(new NonCachingImage("gameImage", images.getImageResource(photo)) {
                     @Override
                     protected void onComponentTag(ComponentTag tag) {
                         super.onComponentTag(tag);

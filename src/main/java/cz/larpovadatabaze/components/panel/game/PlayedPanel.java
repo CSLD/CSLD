@@ -4,8 +4,7 @@ import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.UserPlayedGame;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.RatingService;
-import cz.larpovadatabaze.services.UserPlayedGameService;
+import cz.larpovadatabaze.services.Ratings;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -25,9 +24,7 @@ import java.util.List;
  */
 public class PlayedPanel extends Panel {
     @SpringBean
-    UserPlayedGameService userPlayedGameService;
-    @SpringBean
-    RatingService ratingService;
+    Ratings ratings;
 
     private final Component[] componentsToRefresh;
     private final int gameId;
@@ -45,7 +42,7 @@ public class PlayedPanel extends Panel {
         @Override
         public UserPlayedGame getObject() {
             int userId = getUserId();
-            UserPlayedGame stateOfGame = userPlayedGameService.getUserPlayedGame(gameId, userId);
+            UserPlayedGame stateOfGame = ratings.getUserPlayedGame(gameId, userId);
             if(stateOfGame == null) {
                 stateOfGame = new UserPlayedGame();
                 stateOfGame.setGame(gameModel.getObject());
@@ -130,7 +127,7 @@ public class PlayedPanel extends Panel {
         UserPlayedGame stateOfGame = model.getObject();
         stateOfGame.setStateEnum(state);
         stateOfGame.setPlayerOfGame((CsldAuthenticatedWebSession.get()).getLoggedUser());
-        userPlayedGameService.saveOrUpdate(stateOfGame);
+        ratings.saveOrUpdate(stateOfGame);
 
         // Refresh model and components and gameModel
         gameModel.detach();

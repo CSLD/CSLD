@@ -1,84 +1,81 @@
 package cz.larpovadatabaze.services.impl;
 
-import cz.larpovadatabaze.dao.CommentDAO;
+import cz.larpovadatabaze.api.GenericHibernateDAO;
+import cz.larpovadatabaze.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.services.CommentService;
-import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.Comments;
+import cz.larpovadatabaze.services.Games;
 import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
-import java.util.List;
 
 /**
  *
  */
 @Repository
 @Transactional
-public class SqlComments implements CommentService {
+public class SqlComments extends CRUD<Comment, Integer> implements Comments {
     private static final Logger logger = Logger.getLogger(SqlComments.class);
 
-    private CommentDAO commentDAO;
-    private GameService gameService;
+    private Games games;
 
     @Autowired
-    public SqlComments(CommentDAO commentDAO, GameService gameService) {
-        this.commentDAO = commentDAO;
-        this.gameService = gameService;
-    }
-
-    @Override
-    public List<Comment> getAll() {
-        return commentDAO.findAll();
+    public SqlComments(SessionFactory sessionFactory, Games games) {
+        super(new GenericHibernateDAO<>(sessionFactory, new GenericBuilder<>(Comment.class)));
+        this.games = games;
     }
 
     @Override
     public Comment getCommentOnGameFromUser(int userId, int gameId) {
-        return commentDAO.getCommentOnGameFromUser(userId, gameId);
+        Criteria uniqueComment = crudRepository.getExecutableCriteria()
+                .add(Restrictions.eq("user.id", userId))
+                .add(Restrictions.eq("game.id", gameId));
+
+        Comment result = (Comment) uniqueComment.uniqueResult();
+        return result;
     }
 
     @Override
     public int getAmountOfComments() {
-        return commentDAO.getAmountOfComments();
+        Criteria amountOfComments = crudRepository.getExecutableCriteria()
+                .setProjection(Projections.rowCount());
+
+        return ((Long) amountOfComments.uniqueResult()).intValue();
     }
 
     @Override
-    public List<Comment> getUnique(Comment example) {
-        List<Comment> uniqueResult = commentDAO.findByExample(example, new String[]{});
-        commentDAO.flush();
-        return uniqueResult;
+    public boolean saveOrUpdate(Comment actualComment) {
+        boolean result = crudRepository.saveOrUpdate(actualComment);
+
+        games.evictGame(actualComment.getGame().getId());
+        return result;
     }
 
     @Override
-    public void remove(Comment toRemove) {
-        commentDAO.makeTransient(toRemove);
+    public Collection<Comment> getLastComments(int count) {
+        return new LinkedHashSet<>(getLastComments(0, count));
     }
 
     @Override
-    public List<Comment> getFirstChoices(String startsWith, int maxChoices) {
-        throw new UnsupportedOperationException("Comments does not support autocompletion");
-    }
+    public Collection<Comment> getLastComments(int first, int count) {
+        Criteria lastComments = crudRepository.getExecutableCriteria()
+                .add(Restrictions.eq("hidden", false))
+                .addOrder(Order.desc("added"))
+                .setMaxResults(count)
+                .setFirstResult(first);
 
-    @Override
-    public void saveOrUpdate(Comment actualComment) {
-        commentDAO.saveOrUpdate(actualComment);
-
-        gameService.evictGame(actualComment.getGame().getId());
-    }
-
-    @Override
-    public Collection<Comment> getLastComments(int amount) {
-        return new LinkedHashSet<>(commentDAO.getLastComments(amount));
-    }
-
-    @Override
-    public Collection<Comment> getLastComments(long first, long count) {
-        return new LinkedHashSet<>(commentDAO.getLastComments(((Long)first).intValue(), ((Long)count).intValue()));
+        return new LinkedHashSet<Comment>(lastComments.list());
     }
 
     @Override
@@ -86,7 +83,7 @@ public class SqlComments implements CommentService {
         if (Boolean.TRUE.equals(comment.getHidden())) return; // Nothing to do
 
         comment.setHidden(true);
-        commentDAO.saveOrUpdate(comment);
+        crudRepository.saveOrUpdate(comment);
 
         // Log
         logger.info("Editor #"+ UserUtils.getLoggedUser().getId()+" hidden comment of user #"+comment.getUser().getId()+" for game #"+comment.getGame().getId());
@@ -97,7 +94,7 @@ public class SqlComments implements CommentService {
         if (Boolean.FALSE.equals(comment.getHidden())) return; // Nothing to do
 
         comment.setHidden(false);
-        commentDAO.saveOrUpdate(comment);
+        crudRepository.saveOrUpdate(comment);
 
         // Log
         logger.info("Editor #"+ UserUtils.getLoggedUser().getId()+" unhidden comment of user #"+comment.getUser().getId()+" for game #"+comment.getGame().getId());
@@ -105,8 +102,6 @@ public class SqlComments implements CommentService {
 
     @Override
     public Collection<Game> getGamesCommentedByUser(int userId) {
-        return gameService.getGamesCommentedByUser(userId);
+        return games.getGamesCommentedByUser(userId);
     }
-
-
 }

@@ -4,7 +4,7 @@ import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
 import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.CsldUsers;
 import cz.larpovadatabaze.utils.HbUtils;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -18,13 +18,13 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 @AuthorizeInstantiation({"User","Editor","Admin"})
 public class CreateOrUpdateAuthorPage extends CsldBasePage {
     @SpringBean
-    CsldUserService csldUserService;
+    CsldUsers csldUsers;
 
     public CreateOrUpdateAuthorPage(PageParameters params){
         CsldUser csldUser  = null;
         if(!params.isEmpty()){
             Integer id = params.get("id").to(Integer.class);
-            csldUser = csldUserService.getById(id);
+            csldUser = csldUsers.getById(id);
             if(HbUtils.isProxy(csldUser)){
                 csldUser = HbUtils.deproxy(csldUser);
             }

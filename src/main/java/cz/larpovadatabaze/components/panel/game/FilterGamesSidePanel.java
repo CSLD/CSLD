@@ -6,7 +6,7 @@ import cz.larpovadatabaze.components.page.game.ListGamePage;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.models.FilterGame;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.LabelService;
+import cz.larpovadatabaze.services.Labels;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -21,7 +21,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 public class FilterGamesSidePanel extends AbstractCsldPanel<FilterGame> {
 
     @SpringBean
-    private LabelService labelService;
+    private Labels labels;
 
     private FilterByLabelsPanel requiredLabels;
 
@@ -48,11 +48,11 @@ public class FilterGamesSidePanel extends AbstractCsldPanel<FilterGame> {
             }
         });
 
-        requiredLabels = new FilterByLabelsPanel("requiredLabels", labelService.getAuthorizedRequired(logged), true);
+        requiredLabels = new FilterByLabelsPanel("requiredLabels", labels.getAuthorizedRequired(logged), true);
         requiredLabels.setOutputMarkupId(true);
         filterGames.add(requiredLabels);
 
-        filterGames.add(new FilterByLabelsPanel("otherLabels", labelService.getAuthorizedOptional(logged), false));
+        filterGames.add(new FilterByLabelsPanel("otherLabels", labels.getAuthorizedOptional(logged), false));
 
         add(filterGames);
     }

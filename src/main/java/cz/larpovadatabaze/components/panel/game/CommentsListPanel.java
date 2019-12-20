@@ -7,8 +7,8 @@ import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.components.page.user.UserDetailPage;
 import cz.larpovadatabaze.entities.*;
-import cz.larpovadatabaze.services.CommentService;
-import cz.larpovadatabaze.services.UpvoteService;
+import cz.larpovadatabaze.services.Comments;
+import cz.larpovadatabaze.services.Upvotes;
 import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -34,10 +34,9 @@ import java.util.List;
  */
 public class CommentsListPanel extends Panel {
     @SpringBean
-    private CommentService commentService;
-
+    private Comments sqlComments;
     @SpringBean
-    private UpvoteService upvotes;
+    private Upvotes upvotes;
 
     private final IModel<List<Comment>> comments;
 
@@ -96,7 +95,7 @@ public class CommentsListPanel extends Panel {
 
         @Override
         protected Comment load() {
-            return commentService.getCommentOnGameFromUser(userId, gameId);
+            return sqlComments.getCommentOnGameFromUser(userId, gameId);
         }
     }
 

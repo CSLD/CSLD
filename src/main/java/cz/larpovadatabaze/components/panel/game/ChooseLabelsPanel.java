@@ -2,7 +2,7 @@ package cz.larpovadatabaze.components.panel.game;
 
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.LabelService;
+import cz.larpovadatabaze.services.Labels;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AttributeAppender;
@@ -28,7 +28,7 @@ import java.util.Set;
  */
 public class ChooseLabelsPanel extends FormComponentPanel<List<cz.larpovadatabaze.entities.Label>> {
     @SpringBean
-    LabelService labelService;
+    Labels labels;
 
     private SimpleListViewer requiredLabels;
     private SimpleListViewer otherLabels;
@@ -45,18 +45,18 @@ public class ChooseLabelsPanel extends FormComponentPanel<List<cz.larpovadatabaz
 
         CsldUser logged = CsldAuthenticatedWebSession.get().getLoggedUser();
 
-        requiredLabels = new SimpleListViewer("requiredLabels", labelService.getAuthorizedRequired(logged));
+        requiredLabels = new SimpleListViewer("requiredLabels", labels.getAuthorizedRequired(logged));
         add(requiredLabels);
 
-        otherLabels = new SimpleListViewer("otherLabels", labelService.getAuthorizedOptional(logged));
+        otherLabels = new SimpleListViewer("otherLabels", labels.getAuthorizedOptional(logged));
         add(otherLabels);
     }
 
     public void reload(AjaxRequestTarget target) {
         CsldUser logged = CsldAuthenticatedWebSession.get().getLoggedUser();
 
-        requiredLabels.setList(labelService.getAuthorizedRequired(logged));
-        otherLabels.setList(labelService.getAuthorizedOptional(logged));
+        requiredLabels.setList(labels.getAuthorizedRequired(logged));
+        otherLabels.setList(labels.getAuthorizedOptional(logged));
 
         target.add(ChooseLabelsPanel.this);
     }

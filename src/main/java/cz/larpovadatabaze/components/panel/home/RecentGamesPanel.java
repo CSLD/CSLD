@@ -4,7 +4,7 @@ import cz.larpovadatabaze.components.common.multiac.MultiAutoCompleteComponent;
 import cz.larpovadatabaze.components.page.OwlCarouselResourceReference;
 import cz.larpovadatabaze.components.panel.game.GameBoxPanel;
 import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.Games;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -29,7 +29,7 @@ import java.util.List;
 public class RecentGamesPanel extends Panel {
     private final static Logger logger = Logger.getLogger(MultiAutoCompleteComponent.class);
     @SpringBean
-    GameService gameService;
+    Games games;
 
     private final static int AMOUNT_OF_GAMES = 6;
 
@@ -50,7 +50,7 @@ public class RecentGamesPanel extends Panel {
         add(carousel);
 
         // Add recent games
-        Collection<Game> recentGames = gameService.getLastGames(AMOUNT_OF_GAMES);
+        Collection<Game> recentGames = games.getLastGames(AMOUNT_OF_GAMES);
         Iterator<Game> gameIterator = recentGames.iterator();
         for(int i=0; i<6; i++) {
             String id = "recent" + (i + 1);
@@ -63,7 +63,7 @@ public class RecentGamesPanel extends Panel {
         }
 
         // Add most popular games
-        List<Game> mostPopularGames = gameService.getMostPopularGames(AMOUNT_OF_GAMES);
+        List<Game> mostPopularGames = games.getMostPopularGames(AMOUNT_OF_GAMES);
         for(int i=0; i<6; i++) {
             String id = "popular" + (i + 1);
             if (recentGames.size() > i) {

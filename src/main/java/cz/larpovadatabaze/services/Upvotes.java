@@ -9,11 +9,12 @@ import java.util.Collection;
 /**
  * Handle the Upvote.
  */
-public interface UpvoteService extends GenericService<Upvote> {
+public interface Upvotes extends CRUDService<Upvote, Integer> {
     /**
      * UpVotes the comment.
+     *
      * @param comment Comment to be upvoted
-     * @param user User doing the upvoting
+     * @param user    User doing the upvoting
      */
     void upvote(CsldUser user, Comment comment);
 

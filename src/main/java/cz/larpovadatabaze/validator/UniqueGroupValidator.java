@@ -1,7 +1,7 @@
 package cz.larpovadatabaze.validator;
 
 import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.services.GroupService;
+import cz.larpovadatabaze.services.CsldGroups;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
@@ -15,19 +15,23 @@ import java.util.List;
  */
 @Component
 public class UniqueGroupValidator implements IValidator<String> {
-    @Autowired
-    GroupService groupService;
+    final CsldGroups csldGroups;
     private boolean updateExisting = false;
+
+    @Autowired
+    public UniqueGroupValidator(CsldGroups csldGroups) {
+        this.csldGroups = csldGroups;
+    }
 
     @Override
     public void validate(IValidatable<String> validatable) {
         CsldGroup example = new CsldGroup();
         example.setName(validatable.getValue());
-        List<CsldGroup> existingPerson = groupService.getUnique(example);
-        if(!updateExisting && existingPerson.size() > 0) {
+        List<CsldGroup> existingPerson = csldGroups.getUnique(example);
+        if (!updateExisting && existingPerson.size() > 0) {
             error(validatable, "person-exists");
         }
-        if(updateExisting && existingPerson.size() == 0){
+        if (updateExisting && existingPerson.size() == 0) {
             error(validatable, "update-nonexistent");
         }
     }

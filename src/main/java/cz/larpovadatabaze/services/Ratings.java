@@ -2,6 +2,7 @@ package cz.larpovadatabaze.services;
 
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Rating;
+import cz.larpovadatabaze.entities.UserPlayedGame;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
 
 import java.util.List;
@@ -9,12 +10,10 @@ import java.util.List;
 /**
  *
  */
-public interface RatingService extends GenericService<Rating> {
+public interface Ratings extends CRUDService<Rating, Integer> {
     Rating getUserRatingOfGame(Integer userId, Integer gameId) throws WrongParameterException;
 
     double getAverageRating();
-
-    void saveOrUpdate(Rating actualRating);
 
     List<Rating> getRatingsOfUser(CsldUser logged, CsldUser actual);
 
@@ -25,4 +24,8 @@ public interface RatingService extends GenericService<Rating> {
      * @param rating rating to hide.
      */
     void delete(Rating rating);
+
+    UserPlayedGame getUserPlayedGame(int gameId, int userId);
+
+    boolean saveOrUpdate(UserPlayedGame stateOfGame);
 }

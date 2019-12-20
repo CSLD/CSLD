@@ -9,8 +9,8 @@ import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
-import cz.larpovadatabaze.services.CommentService;
-import cz.larpovadatabaze.services.ImageService;
+import cz.larpovadatabaze.services.Comments;
+import cz.larpovadatabaze.services.Images;
 import org.apache.log4j.Logger;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -44,10 +44,10 @@ public class LastCommentsPanel extends Panel {
     private static final int N_COLUMNS = 3;
 
     @SpringBean
-    CommentService commentService;
+    Comments comments;
 
     @SpringBean
-    ImageService imageService;
+    Images images;
 
     private static final int MAX_CHARS_IN_COMMENT = 300;
     private static int INITIAL_LAST_COMMENTS = N_COLUMNS*2;
@@ -164,7 +164,7 @@ public class LastCommentsPanel extends Panel {
     protected void onInitialize() {
         super.onInitialize();
 
-        List<Comment> toShow = new ArrayList<Comment>(commentService.getLastComments(EXPANDED_LAST_COMMENTS));
+        List<Comment> toShow = new ArrayList<Comment>(comments.getLastComments(EXPANDED_LAST_COMMENTS));
 
         if(toShow.size() >= INITIAL_LAST_COMMENTS) {
             add(new CommentsView("visibleComments", toColumns(toShow.subList(0, INITIAL_LAST_COMMENTS))));

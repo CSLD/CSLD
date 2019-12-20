@@ -13,10 +13,10 @@ import cz.larpovadatabaze.components.panel.UploadCoverImagePanel;
 import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
 import cz.larpovadatabaze.components.panel.group.CreateOrUpdateGroupPanel;
 import cz.larpovadatabaze.entities.*;
-import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.GameService;
-import cz.larpovadatabaze.services.GroupService;
-import cz.larpovadatabaze.services.VideoService;
+import cz.larpovadatabaze.services.CsldGroups;
+import cz.larpovadatabaze.services.CsldUsers;
+import cz.larpovadatabaze.services.Games;
+import cz.larpovadatabaze.services.Videos;
 import cz.larpovadatabaze.utils.UserUtils;
 import cz.larpovadatabaze.validator.AtLeastOneRequiredLabelValidator;
 import cz.larpovadatabaze.validator.NonEmptyAuthorsValidator;
@@ -50,13 +50,13 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
     private static final int AUTOCOMPLETE_CHOICES = 10;
 
     @SpringBean
-    GameService gameService;
+    Games games;
     @SpringBean
-    CsldUserService csldUserService;
+    CsldUsers csldUsers;
     @SpringBean
-    GroupService groupService;
+    CsldGroups csldGroups;
     @SpringBean
-    VideoService videoService;
+    Videos videos;
 
     private ChooseLabelsPanel chooseLabels;
     private TextField<String> videoField;
@@ -239,7 +239,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
                 System.out.println("Before retrieving.");
                 String videoURL = "";
                 if(!StringUtils.isBlank(videoField.getConvertedInput())) {
-                    videoURL = videoService.getEmbedingURL(videoField.getConvertedInput());
+                    videoURL = videos.getEmbedingURL(videoField.getConvertedInput());
                 }
                 System.out.println("Retrieved url");
                 if (videoURL == null) {
@@ -261,7 +261,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
                     // TODO: find why when editing form the converted input isn't propagated.
                     game.setGroupAuthor((List<CsldGroup>) ((MultiAutoCompleteComponent)createOrUpdateGame.get("groupAuthor")).getConvertedInput());
                     game.setAuthors((List<CsldUser>) ((MultiAutoCompleteComponent)createOrUpdateGame.get("authorsWrapper:authors")).getConvertedInput());
-                    if(gameService.saveOrUpdate(game)){
+                    if (games.saveOrUpdate(game)) {
                         onCsldAction(target, game);
                     } else {
                         error(getLocalizer().getString("game.cantAdd", CreateOrUpdateGamePanel.this));
@@ -362,12 +362,12 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         MultiAutoCompleteComponent<CsldGroup> groups = new MultiAutoCompleteComponent<>("groupAuthor", new PropertyModel<>(getModelObject(), "groupAuthor"), new IMultiAutoCompleteSource<CsldGroup>() {
             @Override
             public Collection<CsldGroup> getChoices(String input) {
-                return groupService.getFirstChoices(input, AUTOCOMPLETE_CHOICES);
+                return csldGroups.getFirstChoices(input, AUTOCOMPLETE_CHOICES);
             }
 
             @Override
             public CsldGroup getObjectById(Long id) {
-                return groupService.getById(id.intValue());
+                return csldGroups.getById(id.intValue());
             }
         });
 
@@ -378,12 +378,12 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         MultiAutoCompleteComponent<CsldUser> authors = new MultiAutoCompleteComponent<CsldUser>("authors", new PropertyModel<>(getModelObject(), "authors"), new IMultiAutoCompleteSource<CsldUser>() {
             @Override
             public Collection<CsldUser> getChoices(String input) {
-                return csldUserService.getFirstChoices(input.toLowerCase(), AUTOCOMPLETE_CHOICES);
+                return csldUsers.getFirstChoices(input.toLowerCase(), AUTOCOMPLETE_CHOICES);
             }
 
             @Override
             public CsldUser getObjectById(Long id) {
-                return csldUserService.getById(id.intValue());
+                return csldUsers.getById(id.intValue());
             }
         });
 

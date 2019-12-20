@@ -12,7 +12,7 @@ import java.util.List;
 /**
  *
  */
-public interface GameService extends GenericService<Game>, IIconReferenceProvider<Game> {
+public interface Games extends CRUDService<Game, Integer>, IIconReferenceProvider<Game> {
     Game getById(Integer id);
 
     /**
@@ -43,8 +43,6 @@ public interface GameService extends GenericService<Game>, IIconReferenceProvide
     long getAmountOfGamesOfAuthor(CsldUser author);
 
     long getAmountOfGamesOfGroup(CsldGroup csldGroup);
-
-    boolean saveOrUpdate(Game game);
 
     /**
      * @return Currently logged user can edit game

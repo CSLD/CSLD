@@ -1,15 +1,19 @@
 package cz.larpovadatabaze.services.impl;
 
-import cz.larpovadatabaze.dao.PhotoDAO;
+import cz.larpovadatabaze.api.GenericHibernateDAO;
+import cz.larpovadatabaze.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Image;
 import cz.larpovadatabaze.entities.Photo;
 import cz.larpovadatabaze.services.FileService;
-import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.Games;
 import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
-import cz.larpovadatabaze.services.PhotoService;
+import cz.larpovadatabaze.services.Photos;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
+import org.hibernate.Criteria;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,55 +25,29 @@ import java.util.List;
  */
 @Repository
 @Transactional
-public class LocalSqlPhotos implements PhotoService {
+public class SqlFilePhotos extends CRUD<Photo, Integer> implements Photos {
     private final int MAX_PHOTOS_PER_GAME = 10;
 
-    private PhotoDAO photoDao;
     private FileService fileService;
-    private GameService gameService;
+    private Games games;
     private ImageResizingStrategyFactoryService imageResizingStrategyFactoryService;
 
     @Autowired
-    public LocalSqlPhotos(PhotoDAO photoDao, FileService fileService, GameService gameService, ImageResizingStrategyFactoryService imageResizingStrategyFactoryService) {
-        this.photoDao = photoDao;
+    public SqlFilePhotos(SessionFactory sessionFactory, FileService fileService, Games games, ImageResizingStrategyFactoryService imageResizingStrategyFactoryService) {
+        super(new GenericHibernateDAO<>(sessionFactory, new GenericBuilder<>(Photo.class)));
         this.fileService = fileService;
-        this.gameService = gameService;
+        this.games = games;
         this.imageResizingStrategyFactoryService = imageResizingStrategyFactoryService;
     }
 
     @Override
-    public boolean saveOrUpdate(Photo actualPhoto) {
-        return photoDao.saveOrUpdate(actualPhoto);
-    }
-
-    @Override
-    public List<Photo> getAll() {
-        return photoDao.findAll();
-    }
-
-    @Override
-    public List<Photo> getUnique(Photo example) {
-        return photoDao.findByExample(example, new String[]{});
-    }
-
-    @Override
     public void remove(Photo toRemove) {
-        photoDao.makeTransient(toRemove);
+        crudRepository.makeTransient(toRemove);
 
         // Delete file(s)
         if (toRemove.getImage() != null) {
             fileService.removeFiles(toRemove.getImage().getPath());
         }
-    }
-
-    @Override
-    public List<Photo> getFirstChoices(String startsWith, int maxChoices) {
-        throw new UnsupportedOperationException("This does not support autocompletion");
-    }
-
-    @Override
-    public Photo get(int id) {
-        return photoDao.findById(id);
     }
 
     /**
@@ -108,13 +86,16 @@ public class LocalSqlPhotos implements PhotoService {
 
         game.getPhotos().add(photo);
 
-        gameService.saveOrUpdate(game);
+        games.saveOrUpdate(game);
 
         return true;
     }
 
     @Override
     public List<Photo> getRandomPhotos(int amount) {
-        return photoDao.getRandom(amount);
+        Criteria criteria = crudRepository.getExecutableCriteria();
+        criteria.add(Restrictions.sqlRestriction("1=1 order by random()"));
+        criteria.setMaxResults(amount);
+        return criteria.list();
     }
 }

@@ -4,25 +4,31 @@ import cz.larpovadatabaze.dao.builder.IBuilder;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.util.List;
 
-public abstract class GenericHibernateDAO<T, I extends Serializable>
-		implements GenericDAO<T, I> {
-    @Autowired
-	protected SessionFactory sessionFactory;
+public class GenericHibernateDAO<T, I extends Serializable>
+        implements GenericDAO<T, I> {
+
+    protected SessionFactory sessionFactory;
+    protected IBuilder builder;
 
     private static final Logger logger = Logger.getLogger(GenericHibernateDAO.class);
 
-	public GenericHibernateDAO() {}
+    public GenericHibernateDAO(SessionFactory sessionFactory, IBuilder builder) {
+        this.sessionFactory = sessionFactory;
+        this.builder = builder;
+    }
 
-	public abstract IBuilder getBuilder();
+    public IBuilder getBuilder() {
+        return builder;
+    }
 
     /**
      * Works only with identifiers specified by Id. Do not use this method, if you expect
@@ -31,8 +37,8 @@ public abstract class GenericHibernateDAO<T, I extends Serializable>
      * @param id id of the object.
      * @return Existing object
      */
-	@SuppressWarnings("unchecked")
-	public T findById(I id) {
+    @SuppressWarnings("unchecked")
+    public T findById(I id) {
 		return findSingleByCriteria(Restrictions.eq("id",id));
 	}
 
@@ -66,6 +72,16 @@ public abstract class GenericHibernateDAO<T, I extends Serializable>
             crit.add(c);
         }
         return crit.list();
+    }
+
+    @Override
+    public Criteria getExecutableCriteria() {
+        return getBuilder().build().getExecutableCriteria(getCurrentSession());
+    }
+
+    @Override
+    public Session getCurrentSession() {
+        return sessionFactory.getCurrentSession();
     }
 
     /**

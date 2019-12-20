@@ -10,7 +10,7 @@ import cz.larpovadatabaze.components.panel.game.FilterByLabelsPanel;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.models.FilterEvent;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.LabelService;
+import cz.larpovadatabaze.services.Labels;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -31,7 +31,7 @@ import java.util.Collection;
 public class FilterEventsSidePanel extends AbstractCsldPanel<FilterEvent> {
 
     @SpringBean
-    private LabelService labelService;
+    private Labels labels;
 
     private FilterByLabelsPanel requiredLabels;
 
@@ -72,11 +72,11 @@ public class FilterEventsSidePanel extends AbstractCsldPanel<FilterEvent> {
             }
         }));
 
-        requiredLabels = new FilterByLabelsPanel("requiredLabels", labelService.getAuthorizedRequired(logged), true);
+        requiredLabels = new FilterByLabelsPanel("requiredLabels", labels.getAuthorizedRequired(logged), true);
         requiredLabels.setOutputMarkupId(true);
         filterGames.add(requiredLabels);
 
-        filterGames.add(new FilterByLabelsPanel("otherLabels", labelService.getAuthorizedOptional(logged), false));
+        filterGames.add(new FilterByLabelsPanel("otherLabels", labels.getAuthorizedOptional(logged), false));
 
         add(filterGames);
     }

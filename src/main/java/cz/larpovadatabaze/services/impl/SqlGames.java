@@ -7,9 +7,9 @@ import cz.larpovadatabaze.models.FilterGame;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.security.CsldRoles;
 import cz.larpovadatabaze.services.FileService;
-import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.Games;
 import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
-import cz.larpovadatabaze.services.ImageService;
+import cz.larpovadatabaze.services.Images;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.hibernate.SessionFactory;
@@ -27,55 +27,30 @@ import java.util.*;
  */
 @Repository
 @Transactional
-public class SqlGames implements GameService {
+public class SqlGames extends CRUD<Game, Integer> implements Games {
     private GameDAO gameDAO;
     private SessionFactory sessionFactory;
     private FileService fileService;
     private ImageResizingStrategyFactoryService imageResizingStrategyFactoryService;
-    private ImageService imageService;
+    private Images images;
 
     @Autowired
-    public SqlGames(GameDAO gameDAO, SessionFactory sessionFactory, FileService fileService, ImageResizingStrategyFactoryService imageResizingStrategyFactoryService, ImageService imageService) {
+    public SqlGames(GameDAO gameDAO, SessionFactory sessionFactory, FileService fileService, ImageResizingStrategyFactoryService imageResizingStrategyFactoryService, Images images) {
+        super(gameDAO);
         this.gameDAO = gameDAO;
         this.sessionFactory = sessionFactory;
         this.fileService = fileService;
         this.imageResizingStrategyFactoryService = imageResizingStrategyFactoryService;
-        this.imageService = imageService;
+        this.images = images;
     }
 
     private ResourceReference iconResourceReference;
 
     @Override
-    public Game getById(Integer id) {
-        return gameDAO.findById(id);
-    }
-
-    @Override
     public void evictGame(Integer id) {
-        Game g1 = sessionFactory.getCurrentSession().get(Game.class, id);
+        Game g1 = crudRepository.findById(id);
         sessionFactory.getCurrentSession().evict(g1);
     }
-
-    @Override
-    public void remove(Game toRemove) {
-        gameDAO.makeTransient(toRemove);
-    }
-
-    @Override
-    public List<Game> getFirstChoices(String startsWith, int maxChoices) {
-        return gameDAO.getFirstChoices(startsWith, maxChoices);
-    }
-
-    @Override
-    public List<Game> getAll() {
-        return gameDAO.findAll();
-    }
-
-    @Override
-    public List<Game> getUnique(Game example) {
-        return gameDAO.findByExample(example, new String[]{});
-    }
-
 
     @Override
     public boolean addGame(Game game) {
@@ -87,7 +62,7 @@ public class SqlGames implements GameService {
             game.setWeb("http://" + game.getWeb());
         }
 
-        return gameDAO.saveOrUpdate(game);
+        return crudRepository.saveOrUpdate(game);
     }
 
     @Override
@@ -105,12 +80,17 @@ public class SqlGames implements GameService {
         List<Game> gamesOfAuthors = new ArrayList<>();
         gamesOfAuthors.addAll(games);
         Collections.sort(gamesOfAuthors, (o1, o2) -> {
-            if(o1.getTotalRating().equals(o2.getTotalRating())) {
+            if (o1.getTotalRating().equals(o2.getTotalRating())) {
                 return 0;
             }
-            return o1.getTotalRating() < o2.getTotalRating()? -1: 1;
+            return o1.getTotalRating() < o2.getTotalRating() ? -1 : 1;
         });
         return gamesOfAuthors;
+    }
+
+    @Override
+    public List<Game> getFirstChoices(String startsWith, int maxChoices) {
+        return gameDAO.getFirstChoices(startsWith, maxChoices);
     }
 
     @Override
@@ -246,7 +226,7 @@ public class SqlGames implements GameService {
 
     @Override
     public void toggleGameState(int gameId) {
-        Game game = gameDAO.findById(gameId);
+        Game game = crudRepository.findById(gameId);
         if(game == null) {
             return;
         }
@@ -261,7 +241,7 @@ public class SqlGames implements GameService {
             }
         }
 
-        gameDAO.saveOrUpdate(game);
+        crudRepository.saveOrUpdate(game);
     }
 
     @Override
@@ -273,7 +253,7 @@ public class SqlGames implements GameService {
     public ResourceReference getIconReference() {
         synchronized (this) {
             if (iconResourceReference == null) {
-                iconResourceReference = imageService.createImageTypeResourceReference(gameDAO);
+                iconResourceReference = images.createImageTypeResourceReference(crudRepository);
             }
         }
 

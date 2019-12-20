@@ -2,20 +2,16 @@ package cz.larpovadatabaze.dao;
 
 import cz.larpovadatabaze.api.GenericHibernateDAO;
 import cz.larpovadatabaze.dao.builder.GameBuilder;
-import cz.larpovadatabaze.dao.builder.IBuilder;
 import cz.larpovadatabaze.entities.CsldGroup;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Label;
-import cz.larpovadatabaze.exceptions.WrongParameterException;
 import cz.larpovadatabaze.models.FilterGame;
 import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
+import org.hibernate.*;
 import org.hibernate.criterion.*;
 import org.hibernate.sql.JoinType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -23,7 +19,7 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * The DAO should already return entity, which is translated to current state. How do I do that?
+ *
  */
 @Repository
 public class GameDAO extends GenericHibernateDAO<Game, Integer> {
@@ -38,9 +34,9 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
      */
     private final static int YEARS_OLD = 5;
 
-    @Override
-    public IBuilder getBuilder() {
-        return new GameBuilder();
+    @Autowired
+    public GameDAO(SessionFactory sessionFactory) {
+        super(sessionFactory, new GameBuilder());
     }
 
     /**
@@ -50,7 +46,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
      * @return It should return only single game or no game if none belongs to given data.
      */
     @SuppressWarnings("unchecked")
-    public List<Game> getByAutoCompletable(String gameName) throws WrongParameterException {
+    public List<Game> getByAutoCompletable(String gameName) {
         Session session = sessionFactory.getCurrentSession();
         Criteria uniqueGame = new GameBuilder().build().getExecutableCriteria(session)
                 .add(Restrictions.eq("name", gameName));
@@ -96,14 +92,6 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
                 .addOrder(Order.desc("totalRating"));
 
         return criteria.list();
-    }
-
-    public int getAmountOfGames() {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = new GameBuilder().build().getExecutableCriteria(session)
-                .setProjection(Projections.rowCount());
-
-        return ((Long) criteria.uniqueResult()).intValue();
     }
 
     @SuppressWarnings("unchecked")

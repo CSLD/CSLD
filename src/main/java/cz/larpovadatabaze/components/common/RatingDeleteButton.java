@@ -2,7 +2,7 @@ package cz.larpovadatabaze.components.common;
 
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
-import cz.larpovadatabaze.services.RatingService;
+import cz.larpovadatabaze.services.Ratings;
 import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -16,7 +16,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  */
 public class RatingDeleteButton extends AbstractCsldPanel<Rating> {
     @SpringBean
-    private RatingService ratingService;
+    private Ratings ratings;
 
     private IModel<Game> gameModel;
 
@@ -41,7 +41,7 @@ public class RatingDeleteButton extends AbstractCsldPanel<Rating> {
             public void onClick(AjaxRequestTarget target) {
                 Rating rating = RatingDeleteButton.this.getModelObject();
 
-                ratingService.delete(rating);
+                ratings.delete(rating);
 
                 gameModel.detach();
             }

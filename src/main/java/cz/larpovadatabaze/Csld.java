@@ -27,10 +27,10 @@ import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.CsldUserService;
-import cz.larpovadatabaze.services.GameService;
-import cz.larpovadatabaze.services.GroupService;
-import cz.larpovadatabaze.services.LabelService;
+import cz.larpovadatabaze.services.CsldGroups;
+import cz.larpovadatabaze.services.CsldUsers;
+import cz.larpovadatabaze.services.Games;
+import cz.larpovadatabaze.services.Labels;
 import org.apache.log4j.Logger;
 import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
@@ -70,27 +70,29 @@ import java.util.Locale;
 
 /**
  * Application object for your web application. If you want to run this application without deploying, run the Start class.
- * 
  */
 @Component(value = "wicketApplication")
-public class Csld extends AuthenticatedWebApplication implements ApplicationContextAware
-{
-    @Autowired
-    private CsldUserService csldUserService;
-    @Autowired
-    private GameService gameService;
-    @Autowired
-    private GroupService groupService;
-    @Autowired
-    private LabelService labelService;
-    @Autowired
-    private SessionFactory sessionFactory;
-    @Autowired
-    private Environment env;
+public class Csld extends AuthenticatedWebApplication implements ApplicationContextAware {
+    private final CsldUsers csldUsers;
+    private final Games sqlGames;
+    private final CsldGroups csldGroups;
+    private final Labels labels;
+    private final SessionFactory sessionFactory;
+    private final Environment env;
 
 
     private static final String DEFAULT_ENCODING = "UTF-8";
     private static ApplicationContext ctx;
+
+    @Autowired
+    public Csld(CsldUsers csldUsers, Games sqlGames, CsldGroups csldGroups, Labels labels, SessionFactory sessionFactory, Environment env) {
+        this.csldUsers = csldUsers;
+        this.sqlGames = sqlGames;
+        this.csldGroups = csldGroups;
+        this.labels = labels;
+        this.sessionFactory = sessionFactory;
+        this.env = env;
+    }
 
     public class MountedMapperWithoutPageComponentInfo extends MountedMapper {
 
@@ -210,10 +212,10 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     protected IConverterLocator newConverterLocator() {
         ConverterLocator locator = (ConverterLocator) super.newConverterLocator();
 
-        locator.set(CsldUser.class, new CsldUserConverter(csldUserService));
-        locator.set(Game.class, new GameConverter(gameService));
-        locator.set(CsldGroup.class, new GroupConverter(groupService));
-        locator.set(Label.class, new LabelConverter(labelService));
+        locator.set(CsldUser.class, new CsldUserConverter(csldUsers));
+        locator.set(Game.class, new GameConverter(sqlGames));
+        locator.set(CsldGroup.class, new GroupConverter(csldGroups));
+        locator.set(Label.class, new LabelConverter(labels));
         locator.set(GregorianCalendar.class, new CalendarConverter(new EnglishDateConverter()));
 
         return locator;
@@ -266,7 +268,8 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         }
 
         ResourceReference icalReference = new ResourceReference("icalReference") {
-            ICalProducerResource resource = new ICalProducerResource(sessionFactory, csldUserService);
+            ICalProducerResource resource = new ICalProducerResource(sessionFactory, csldUsers);
+
             @Override
             public IResource getResource() {
                 return resource;
@@ -276,7 +279,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     }
 
     private void mountResources(String context) {
-        mountResource(context + "/user-icon", csldUserService.getIconReference());
+        mountResource(context + "/user-icon", csldUsers.getIconReference());
     }
 
     @Override

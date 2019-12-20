@@ -11,16 +11,14 @@ import java.util.Collection;
  * Date: 15.5.13
  * Time: 21:42
  */
-public interface CommentService extends GenericService<Comment> {
+public interface Comments extends CRUDService<Comment, Integer> {
     Comment getCommentOnGameFromUser(int userId, int gameId);
-
-    void saveOrUpdate(Comment actualComment);
 
     int getAmountOfComments();
 
     Collection<Comment> getLastComments(int amount);
 
-    Collection<Comment> getLastComments(long first, long count);
+    Collection<Comment> getLastComments(int first, int count);
 
     void hideComment(Comment comment);
 

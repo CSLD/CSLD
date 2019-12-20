@@ -1,11 +1,14 @@
 package cz.larpovadatabaze.services.impl;
 
-import cz.larpovadatabaze.dao.GroupDAO;
+import cz.larpovadatabaze.api.GenericHibernateDAO;
+import cz.larpovadatabaze.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.exceptions.WrongParameterException;
-import cz.larpovadatabaze.services.GroupService;
-import cz.larpovadatabaze.services.ImageService;
+import cz.larpovadatabaze.services.CsldGroups;
+import cz.larpovadatabaze.services.Images;
 import org.apache.wicket.request.resource.ResourceReference;
+import org.hibernate.Criteria;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,63 +20,39 @@ import java.util.List;
  */
 @Repository
 @Transactional
-public class SqlGroups implements GroupService {
-    private GroupDAO groupDAO;
-    private ImageService imageService;
+public class SqlGroups extends CRUD<CsldGroup, Integer> implements CsldGroups {
+    private Images images;
 
     @Autowired
-    public SqlGroups(GroupDAO groupDAO, ImageService imageService) {
-        this.groupDAO = groupDAO;
-        this.imageService = imageService;
+    public SqlGroups(SessionFactory sessionFactory, Images images) {
+        super(new GenericHibernateDAO<>(sessionFactory, new GenericBuilder<>(CsldGroup.class)));
+        this.images = images;
     }
 
     private ResourceReference iconResourceReference;
 
     @Override
-    public boolean insert(CsldGroup group) {
-        return groupDAO.saveOrUpdate(group);
-    }
-
-    @Override
-    public List<CsldGroup> getAll() {
-        return groupDAO.findAll();
-    }
-
-    @Override
-    public List<CsldGroup> getUnique(CsldGroup example) {
-        return groupDAO.findByName(example.getName());
-    }
-
-    @Override
-    public void remove(CsldGroup toRemove) {
-        groupDAO.makeTransient(toRemove);
-    }
-
-    @Override
     public List<CsldGroup> getFirstChoices(String startsWith, int maxChoices) {
-        return groupDAO.getFirstChoices(startsWith, maxChoices);
+        Criteria firstChoices = crudRepository.getExecutableCriteria()
+                .setMaxResults(maxChoices)
+                .add(Restrictions.ilike("name", "%" + startsWith + "%"));
+
+        return firstChoices.list();
     }
 
     @Override
-    public CsldGroup getById(Integer id){
-        return groupDAO.findById(id);
-    }
+    public List<CsldGroup> getByAutoCompletable(String groupName) {
+        Criteria uniqueGroup = crudRepository.getExecutableCriteria()
+                .add(Restrictions.eq("name", groupName));
 
-    @Override
-    public List<CsldGroup> getByAutoCompletable(String groupName) throws WrongParameterException {
-        return groupDAO.getByAutoCompletable(groupName);
-    }
-
-    @Override
-    public void saveOrUpdate(CsldGroup group) {
-        groupDAO.saveOrUpdate(group);
+        return uniqueGroup.list();
     }
 
     @Override
     public ResourceReference getIconReference() {
         synchronized(this) {
             if (iconResourceReference == null) {
-                iconResourceReference = imageService.createImageTypeResourceReference(groupDAO);
+                iconResourceReference = images.createImageTypeResourceReference(crudRepository);
             }
         }
 

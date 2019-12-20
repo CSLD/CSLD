@@ -7,7 +7,7 @@ import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.UserPlayedGame;
 import cz.larpovadatabaze.security.CsldRoles;
-import cz.larpovadatabaze.services.GameService;
+import cz.larpovadatabaze.services.Games;
 import cz.larpovadatabaze.utils.MailClient;
 import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.wicket.Component;
@@ -30,7 +30,7 @@ public class SendInformation extends AbstractCsldPanel<Game> {
     @SpringBean
     private MailClient mailClient;
     @SpringBean
-    private GameService gameService;
+    private Games games;
 
     public Component getWantedToPlay() {
         return wantedToPlay;
@@ -74,7 +74,7 @@ public class SendInformation extends AbstractCsldPanel<Game> {
                     return CsldRoles.EDITOR;
                 } else if (UserUtils.isAdmin()) {
                     return CsldRoles.ADMIN;
-                } else if (gameService.canEditGame(getModelObject())) {
+                } else if (games.canEditGame(getModelObject())) {
                     return CsldRoles.AUTHOR;
                 } else if (UserUtils.isSignedIn()) {
                     return CsldRoles.USER;
@@ -89,7 +89,7 @@ public class SendInformation extends AbstractCsldPanel<Game> {
         Form sendInfo = new Form("sendInfoForm") {
             @Override
             protected void onSubmit() {
-                if (gameService.canEditGame(SendInformation.this.getModelObject())) {
+                if (games.canEditGame(SendInformation.this.getModelObject())) {
                     List<SelectedUser> recipients = getAllSelected();
                     for (SelectedUser recipient : recipients) {
                         mailClient.sendMail(

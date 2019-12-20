@@ -6,10 +6,9 @@ import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Image;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.CsldUsers;
 import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
-import cz.larpovadatabaze.services.ImageService;
 import cz.larpovadatabaze.utils.Pwd;
 import cz.larpovadatabaze.utils.UserUtils;
 import cz.larpovadatabaze.validator.UniqueUserValidator;
@@ -41,13 +40,11 @@ import java.util.List;
 public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser> {
 
     @SpringBean
-    CsldUserService csldUserService;
+    CsldUsers csldUsers;
     @SpringBean
     FileService fileService;
     @SpringBean
     ImageResizingStrategyFactoryService imageResizingStrategyFactoryService;
-    @SpringBean
-    ImageService imageService;
 
     private FileUploadField fileUpload;
     @SuppressWarnings("unused")
@@ -91,7 +88,7 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
         EmailTextField email = new EmailTextField("person.email");
         email.setRequired(true);
         email.setLabel(Model.of("Email"));
-        email.add(new UniqueUserValidator(true, csldUserService));
+        email.add(new UniqueUserValidator(true, csldUsers));
         createOrUpdateUser.add(addFeedbackPanel(email, createOrUpdateUser, "emailFeedback", "form.loginMail"));
 
         PasswordTextField password = new PasswordTextField("password");
@@ -191,7 +188,7 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
         }
         if (uploads != null && uploads.size() > 0) {
             for (FileUpload upload : uploads) {
-                String filePath = fileService.saveImageFileAndReturnPath(upload, imageResizingStrategyFactoryService.getCuttingSquareStrategy(CsldUserService.USER_IMAGE_SIZE, CsldUserService.USER_IMAGE_LEFTTOP_PERCENT)).path;
+                String filePath = fileService.saveImageFileAndReturnPath(upload, imageResizingStrategyFactoryService.getCuttingSquareStrategy(CsldUsers.USER_IMAGE_SIZE, CsldUsers.USER_IMAGE_LEFTTOP_PERCENT)).path;
                 try
                 {
                     Image image = new Image();
@@ -227,7 +224,7 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
             user.setPassword(Pwd.generateStrongPasswordHash(user.getPassword(), user.getPerson().getEmail()));
         }
 
-        if(csldUserService.saveOrUpdate(user)){
+        if (csldUsers.saveOrUpdate(user)) {
             return true;
         } else {
             error(getLocalizer().getString("user.cantAdd", this));

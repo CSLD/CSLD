@@ -2,10 +2,10 @@ package cz.larpovadatabaze.dao;
 
 import cz.larpovadatabaze.api.GenericHibernateDAO;
 import cz.larpovadatabaze.dao.builder.GenericBuilder;
-import cz.larpovadatabaze.dao.builder.IBuilder;
 import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Upvote;
+import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
@@ -17,14 +17,14 @@ import java.util.List;
  */
 @Repository
 public class UpvoteDAO extends GenericHibernateDAO<Upvote, Integer> {
-    @Override
-    public IBuilder getBuilder() {
-        return new GenericBuilder<>(Upvote.class);
+    public UpvoteDAO(SessionFactory sessionFactory) {
+        super(sessionFactory, new GenericBuilder<>(Upvote.class));
     }
 
     /**
      * Create Upvote based on the parameters and insert it into the database.
-     * @param user User upvoting
+     *
+     * @param user    User upvoting
      * @param comment Comment to be upvoted.
      */
     public void upvote(CsldUser user, Comment comment) {

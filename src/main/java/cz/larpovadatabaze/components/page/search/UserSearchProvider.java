@@ -1,7 +1,7 @@
 package cz.larpovadatabaze.components.page.search;
 
 import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.CsldUsers;
 import cz.larpovadatabaze.utils.HbUtils;
 import cz.larpovadatabaze.utils.Strings;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
@@ -26,7 +26,7 @@ public class UserSearchProvider extends SortableDataProvider<CsldUser, String> {
     private transient List<CsldUser> filteredUsers;
 
     @SpringBean
-    private CsldUserService userService;
+    private CsldUsers userService;
 
 
     private class UserModel extends LoadableDetachableModel<CsldUser> {

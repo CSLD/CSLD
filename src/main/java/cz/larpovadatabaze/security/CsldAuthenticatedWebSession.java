@@ -1,7 +1,7 @@
 package cz.larpovadatabaze.security;
 
 import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.CsldUsers;
 import cz.larpovadatabaze.utils.Pwd;
 import org.apache.wicket.Session;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
@@ -24,7 +24,7 @@ public class CsldAuthenticatedWebSession extends AuthenticatedWebSession {
     private boolean setLanguage = true;
 
     @SpringBean
-    private CsldUserService csldUserService;
+    private CsldUsers csldUsers;
 
     /**
      * Construct.
@@ -55,7 +55,7 @@ public class CsldAuthenticatedWebSession extends AuthenticatedWebSession {
     {
         CsldUser authenticated =  null;
         try {
-            authenticated = csldUserService.getByEmail(username);
+            authenticated = csldUsers.getByEmail(username);
         } catch(HibernateException ex) {
             authenticated = null;
         }
@@ -63,10 +63,10 @@ public class CsldAuthenticatedWebSession extends AuthenticatedWebSession {
             return false;
         }
         if(!Pwd.validatePassword(password, authenticated.getPassword())) {
-            authenticated = csldUserService.authenticate(username, Pwd.getMD5(password));
+            authenticated = csldUsers.authenticate(username, Pwd.getMD5(password));
             if(authenticated != null){
                 authenticated.setPassword(Pwd.generateStrongPasswordHash(password, username));
-                csldUserService.saveOrUpdate(authenticated);
+                csldUsers.saveOrUpdate(authenticated);
             }
         }
 

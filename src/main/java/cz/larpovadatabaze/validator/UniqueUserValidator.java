@@ -1,7 +1,7 @@
 package cz.larpovadatabaze.validator;
 
 import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.CsldUsers;
 import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
@@ -12,11 +12,11 @@ import org.hibernate.NonUniqueResultException;
  *
  */
 public class UniqueUserValidator implements IValidator<String> {
-    CsldUserService personService;
+    CsldUsers personService;
 
     private boolean updateExisting;
 
-    public UniqueUserValidator(boolean updateExisting, CsldUserService personService){
+    public UniqueUserValidator(boolean updateExisting, CsldUsers personService) {
         this.personService = personService;
         this.updateExisting = updateExisting;
     }

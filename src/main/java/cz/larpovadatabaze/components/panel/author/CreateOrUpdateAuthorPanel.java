@@ -3,7 +3,7 @@ package cz.larpovadatabaze.components.panel.author;
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
 import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.services.CsldUserService;
+import cz.larpovadatabaze.services.CsldUsers;
 import cz.larpovadatabaze.validator.UniqueUserValidator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
@@ -17,7 +17,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  */
 public abstract class CreateOrUpdateAuthorPanel extends Panel {
     @SpringBean
-    CsldUserService csldUserService;
+    CsldUsers csldUsers;
 
     public CreateOrUpdateAuthorPanel(String id, CsldUser author) {
         super(id);
@@ -33,7 +33,7 @@ public abstract class CreateOrUpdateAuthorPanel extends Panel {
         createOrUpdateUser.setOutputMarkupId(true);
 
         EmailTextField email = new EmailTextField("person.email");
-        email.add(new UniqueUserValidator(false, csldUserService));
+        email.add(new UniqueUserValidator(false, csldUsers));
         createOrUpdateUser.add(addFeedbackPanel(email, createOrUpdateUser, "emailFeedback", "form.loginMail"));
 
         TextField<String> name = new TextField<String>("person.name");
@@ -53,7 +53,7 @@ public abstract class CreateOrUpdateAuthorPanel extends Panel {
                 super.onSubmit(target);
                 if(createOrUpdateUser.isValid()){
                     CsldUser author = createOrUpdateUser.getModelObject();
-                    if(csldUserService.saveOrUpdateNewAuthor(author)){
+                    if (csldUsers.saveOrUpdateNewAuthor(author)) {
                         onCsldAction(target, author);
                     }
                 }

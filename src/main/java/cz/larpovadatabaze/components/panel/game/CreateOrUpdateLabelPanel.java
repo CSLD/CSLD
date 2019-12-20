@@ -5,7 +5,7 @@ import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.LabelService;
+import cz.larpovadatabaze.services.Labels;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -19,7 +19,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  */
 public abstract class CreateOrUpdateLabelPanel extends Panel {
     @SpringBean
-    LabelService labelService;
+    Labels labels;
 
     public CreateOrUpdateLabelPanel(String id){
         this(id,Label.getEmptyLabel());
@@ -69,7 +69,7 @@ public abstract class CreateOrUpdateLabelPanel extends Panel {
         CsldUser loggedUser = CsldAuthenticatedWebSession.get().getLoggedUser();
         label.setAddedBy(loggedUser);
         label.setRequired(false);
-        return labelService.saveOrUpdate(label);
+        return labels.saveOrUpdate(label);
     }
 
     @Override
