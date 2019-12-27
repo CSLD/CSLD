@@ -18,16 +18,62 @@ import java.util.List;
  * Name of every game must be unique. Or at least I expect it to be.
  */
 @Entity
-@Table(name="csld_game")
-public class Game implements Serializable, Identifiable, IAutoCompletable, IEntityWithImage {
-    public Game(){ }
+@Table(name = "csld_game")
+public class Game implements Serializable, Identifiable<Integer>, IAutoCompletable, IEntityWithImage {
+    public Game() {
+    }
+
+    public Game(String name, String description, CsldUser addedBy, List<CsldUser> authors,
+                List<Label> labels, Timestamp added) {
+        this(name, description, addedBy, authors, labels, added, null);
+    }
+
+    public Game(Integer id, String name, String description, CsldUser addedBy, List<CsldUser> authors,
+                List<Label> labels, Timestamp added) {
+        this(id, name, description, addedBy, authors, labels, added, null, 0);
+    }
+
+    public Game(String name, String description, CsldUser addedBy, List<CsldUser> authors,
+                List<Label> labels, Timestamp added, Image coverImage) {
+        this(name, description, addedBy, authors, labels, added, coverImage, 0);
+    }
+
+    public Game(Integer id, String name, String description, CsldUser addedBy, List<CsldUser> authors,
+                List<Label> labels, Timestamp added, Image coverImage, Integer year) {
+        this(name, description, addedBy, authors, labels, added, coverImage, year);
+
+        this.id = id;
+    }
+
+    public Game(String name, String description, CsldUser addedBy, List<CsldUser> authors,
+                List<Label> labels, Timestamp added, Image coverImage, Integer year) {
+        this.totalRating = 0d;
+        this.name = name;
+        this.description = description;
+        this.addedBy = addedBy;
+        this.added = added;
+        this.amountOfComments = 0;
+        this.amountOfRatings = 0;
+        this.amountOfPlayed = 0;
+        this.authors = authors;
+        this.averageRating = 0.0;
+        this.menRole = 4;
+        this.womenRole = 5;
+        this.labels = labels;
+        this.coverImage = coverImage;
+        this.year = year;
+
+        for (CsldUser author : authors) {
+            author.getAuthorOf().add(this);
+        }
+    }
 
     private Integer id;
 
     @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_game")
-    @SequenceGenerator(sequenceName = "csld_game_id_seq", name="id_gen_game", allocationSize = 1)
+    @SequenceGenerator(sequenceName = "csld_game_id_seq", name = "id_gen_game", allocationSize = 1)
     public Integer getId() {
         return id;
     }
@@ -362,7 +408,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
         return result;
     }
 
-    private List<CsldUser> authors;
+    private List<CsldUser> authors = new ArrayList<>();
 
     @JoinTable(
             name = "csld_game_has_author",
@@ -384,7 +430,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
         this.authors = authors;
     }
 
-    private List<CsldGroup> groupAuthor;
+    private List<CsldGroup> groupAuthor = new ArrayList<>();
 
     @JoinTable(
             name = "csld_game_has_group",
@@ -406,9 +452,9 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
         this.groupAuthor = groupAuthor;
     }
 
-    private List<Event> events;
+    private List<Event> events = new ArrayList<>();
 
-    private List<Photo> photos;
+    private List<Photo> photos = new ArrayList<>();
 
     @OneToMany(mappedBy = "game")
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
@@ -426,7 +472,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
         return PredefinedImage.DEFAULT_GAME_ICON;
     }
 
-    private List<Label> labels;
+    private List<Label> labels = new ArrayList<>();
 
     @JoinTable(
             name = "csld_game_has_label",
@@ -486,7 +532,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
         this.addedBy = addedBy;
     }
 
-    private List<Rating> ratings;
+    private List<Rating> ratings = new ArrayList<>();
 
     @OneToMany(
             mappedBy = "game"
@@ -500,7 +546,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
         this.ratings = ratings;
     }
 
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(
             mappedBy = "game"
@@ -514,7 +560,7 @@ public class Game implements Serializable, Identifiable, IAutoCompletable, IEnti
         this.comments = comments;
     }
 
-    private List<UserPlayedGame> played;
+    private List<UserPlayedGame> played = new ArrayList<>();
 
     @OneToMany(mappedBy = "game")
     @Cascade({org.hibernate.annotations.CascadeType.DELETE})

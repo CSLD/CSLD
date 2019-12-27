@@ -1,12 +1,12 @@
 package cz.larpovadatabaze.components.common;
 
-import cz.larpovadatabaze.utils.UserUtils;
+import cz.larpovadatabaze.services.AppUsers;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * The button represents +1 in either the highlighted form or in the non highlighted form.
@@ -14,6 +14,9 @@ import org.apache.wicket.model.IModel;
  * The non highlighted form means that the current user has the possibility to add +1 to specific item.
  */
 public class UpvoteButton extends AbstractCsldPanel<Integer> {
+    @SpringBean
+    private AppUsers appUsers;
+
     public UpvoteButton(String id, IModel<Integer> model) {
         super(id, model);
     }
@@ -23,7 +26,7 @@ public class UpvoteButton extends AbstractCsldPanel<Integer> {
     protected void onInitialize() {
         super.onInitialize();
 
-        if (!UserUtils.isSignedIn()) {
+        if (!appUsers.isSignedIn()) {
             // Not visible - do not show at all
             setVisible(false);
             return;
@@ -46,12 +49,8 @@ public class UpvoteButton extends AbstractCsldPanel<Integer> {
 
         WebMarkupContainer icon = new WebMarkupContainer("icon");
         add(icon);
-        icon.add(new AttributeAppender("class", new AbstractReadOnlyModel<String>() {
-            @Override
-            public String getObject() {
-                return UpvoteButton.this.getModelObject() == 0 ? "far" : "fas";
-            }
-        }, " "));
+        icon.add(new AttributeAppender("class", (IModel<Object>) () ->
+                UpvoteButton.this.getModelObject() == 0 ? "far" : "fas", " "));
 
         button.add(icon);
 

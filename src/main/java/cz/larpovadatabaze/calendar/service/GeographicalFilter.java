@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.calendar.service;
 
+import cz.larpovadatabaze.calendar.Area;
 import cz.larpovadatabaze.calendar.Location;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;

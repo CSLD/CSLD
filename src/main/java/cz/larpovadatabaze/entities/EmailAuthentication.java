@@ -1,5 +1,7 @@
 package cz.larpovadatabaze.entities;
 
+import cz.larpovadatabaze.api.Identifiable;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -11,7 +13,7 @@ import java.io.Serializable;
  */
 @javax.persistence.Table(name = "csld_email_authentication")
 @Entity
-public class EmailAuthentication implements Serializable {
+public class EmailAuthentication implements Identifiable<Integer>, Serializable {
     private Integer id;
 
     @javax.persistence.Column(

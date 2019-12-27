@@ -6,6 +6,7 @@ import cz.larpovadatabaze.calendar.component.panel.DetailedEventPanel;
 import cz.larpovadatabaze.calendar.component.panel.EditEventPanel;
 import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.calendar.model.EventModel;
+import cz.larpovadatabaze.calendar.service.Events;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.components.panel.game.GameListPanel;
@@ -17,8 +18,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.core.env.Environment;
 import org.wicketstuff.gmap.GMap;
 import org.wicketstuff.gmap.GMapHeaderContributor;
@@ -37,7 +36,7 @@ public class DetailOfEventPage extends CsldBasePage {
     @SpringBean
     private Environment environment;
     @SpringBean
-    private SessionFactory sessionFactory;
+    private Events events;
 
     private class SqlEventModel extends EventModel {
         public SqlEventModel(Integer id) {
@@ -45,8 +44,8 @@ public class DetailOfEventPage extends CsldBasePage {
         }
 
         @Override
-        public Session getSession() {
-            return sessionFactory.getCurrentSession();
+        public Events getEvents() {
+            return events;
         }
     }
 

@@ -3,7 +3,6 @@ package cz.larpovadatabaze.api;
 import cz.larpovadatabaze.dao.builder.IBuilder;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
@@ -108,23 +107,8 @@ public class GenericHibernateDAO<T, I extends Serializable>
 	}
 
     public boolean saveOrUpdate(T entity) {
-        try {
-            sessionFactory.getCurrentSession().merge(entity);
-            flush();
-            sessionFactory.getCurrentSession().evict(entity);
-            return true;
-        } catch (HibernateException ex){
-            logger.error(ex);
-        }
-
-        try{
-            sessionFactory.getCurrentSession().saveOrUpdate(entity);
-            flush();
-            return true;
-        } catch (HibernateException ex){
-            logger.error(ex);
-            return false;
-        }
+        sessionFactory.getCurrentSession().saveOrUpdate(entity);
+        return true;
     }
 
 	public void flush() {

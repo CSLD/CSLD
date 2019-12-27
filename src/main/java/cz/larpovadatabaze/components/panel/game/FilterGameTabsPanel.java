@@ -9,7 +9,6 @@ import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 
@@ -65,7 +64,7 @@ public class FilterGameTabsPanel extends AbstractCsldPanel<FilterGame> {
                         filter.setShowOnlyNew(config.showOnlyNew);
 
                         // Let page know filter changed
-                        ((ListGamePage)getPage()).filterChanged(true, false, false);
+                        ((ListGamePage) getPage()).filterChanged(true, false, false);
                     }
                 };
                 item.add(link);
@@ -74,15 +73,12 @@ public class FilterGameTabsPanel extends AbstractCsldPanel<FilterGame> {
                 link.add(new Label("text", new StringResourceModel(item.getModelObject().resourceKey, this, null)));
 
                 // Add selected class when tab is selected
-                link.add(new AttributeAppender("class", new AbstractReadOnlyModel<String >() {
-                    @Override
-                    public String getObject() {
-                        FilterGame filter = FilterGameTabsPanel.this.getModelObject();
-                        boolean selected = (filter.getOrderBy() == config.orderBy)
-                                           && (filter.isShowOnlyNew() == config.showOnlyNew);
+                link.add(new AttributeAppender("class", (IModel<String>) () -> {
+                    FilterGame filter = FilterGameTabsPanel.this.getModelObject();
+                    boolean selected = (filter.getOrderBy() == config.orderBy)
+                            && (filter.isShowOnlyNew() == config.showOnlyNew);
 
-                        return selected?"active":null;
-                    }
+                    return selected ? "active" : null;
                 }, " "));
             }
         });

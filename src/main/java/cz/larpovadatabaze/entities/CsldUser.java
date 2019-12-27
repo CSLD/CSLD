@@ -3,12 +3,15 @@ package cz.larpovadatabaze.entities;
 import cz.larpovadatabaze.api.Identifiable;
 import cz.larpovadatabaze.components.common.multiac.IAutoCompletable;
 import cz.larpovadatabaze.security.CsldRoles;
+import cz.larpovadatabaze.utils.Pwd;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -16,13 +19,43 @@ import java.util.List;
  */
 @Table(name = "csld_csld_user")
 @Entity
-public class CsldUser implements Serializable, Identifiable, IAutoCompletable, IEntityWithImage {
+public class CsldUser implements Serializable, Identifiable<Integer>, IAutoCompletable, IEntityWithImage {
+    public CsldUser() {
+    }
+
+    public CsldUser(Integer id, String email, String name, String nickName, String city, String description, Short role,
+                    String password) {
+        this(email, name, nickName, city, description, role, password);
+
+        this.id = id;
+    }
+
+    public CsldUser(String email, String name, String nickName, String city, String description, Short role,
+                    String password) {
+        Person person = new Person(
+                name,
+                description,
+                email,
+                nickName,
+                new Date(Calendar.getInstance().getTime().getTime()),
+                city);
+
+        this.person = person;
+        this.password = Pwd.generateStrongPasswordHash(password, person.getEmail());
+        this.amountOfComments = 1;
+        this.amountOfCreated = 1;
+        this.amountOfPlayed = 1;
+        this.isAuthor = false;
+        this.role = role;
+        this.defaultLang = "cs";
+    }
+
     private Integer id;
 
     @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_user")
-    @SequenceGenerator(sequenceName = "csld_person_id_seq", name="id_gen_user", allocationSize = 1)
+    @SequenceGenerator(sequenceName = "csld_person_id_seq", name = "id_gen_user", allocationSize = 1)
     public Integer getId() {
         return id;
     }
@@ -147,7 +180,7 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable, I
         return result;
     }
 
-    private List<Game> authorOf;
+    private List<Game> authorOf = new ArrayList<>();
 
     @ManyToMany(mappedBy = "authors")
     public List<Game> getAuthorOf() {
@@ -158,7 +191,7 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable, I
         this.authorOf = authorOf;
     }
 
-    private List<UserPlayedGame> playedGames;
+    private List<UserPlayedGame> playedGames = new ArrayList<>();
 
     @OneToMany(mappedBy = "playerOfGame")
     public List<UserPlayedGame> getPlayedGames() {
@@ -169,7 +202,7 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable, I
         this.playedGames = playedGames;
     }
 
-    private List<Comment> commented;
+    private List<Comment> commented = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     public List<Comment> getCommented() {
@@ -199,9 +232,7 @@ public class CsldUser implements Serializable, Identifiable, IAutoCompletable, I
     @ManyToOne(cascade= javax.persistence.CascadeType.ALL)
     @JoinColumn(
             name = "image",
-            referencedColumnName = "`id`",
-            insertable = true,
-            updatable = true
+            referencedColumnName = "`id`"
     )
     @Cascade(CascadeType.SAVE_UPDATE)
     public Image getImage() {

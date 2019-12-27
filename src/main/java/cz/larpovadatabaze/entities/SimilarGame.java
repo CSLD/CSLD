@@ -1,18 +1,30 @@
 package cz.larpovadatabaze.entities;
 
+import cz.larpovadatabaze.api.Identifiable;
+
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-@Table(name="similar_games")
-public class SimilarGame {
+@Table(name = "similar_games")
+public class SimilarGame implements Identifiable<Integer>, Serializable {
     private Integer id;
     private Double similarity;
     private Integer idGame1;
     private Integer idGame2;
 
+    public SimilarGame() {
+    }
+
+    public SimilarGame(int gameId1, int gameId2, double similarity) {
+        this.idGame1 = gameId1;
+        this.idGame2 = gameId2;
+        this.similarity = similarity;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_similar_games")
-    @SequenceGenerator(sequenceName = "csld_similar_games_id_seq", name="id_gen_similar_games", allocationSize = 1)
+    @SequenceGenerator(sequenceName = "csld_similar_games_id_seq", name = "id_gen_similar_games", allocationSize = 1)
     public Integer getId() {
         return id;
     }

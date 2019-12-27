@@ -1,5 +1,7 @@
 package cz.larpovadatabaze.entities;
 
+import cz.larpovadatabaze.api.Identifiable;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -11,14 +13,14 @@ import java.util.List;
  * Time: 14:01
  */
 @Entity
-@Table(name="csld_video")
-public class Video implements Serializable {
+@Table(name = "csld_video")
+public class Video implements Identifiable<Integer>, Serializable {
     private Integer id;
 
     @Column(name = "id", nullable = false, length = 10)
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_video")
-    @SequenceGenerator(sequenceName = "csld_video_id_seq", name="id_gen_video", allocationSize = 1)
+    @SequenceGenerator(sequenceName = "csld_video_id_seq", name = "id_gen_video", allocationSize = 1)
     public Integer getId() {
         return id;
     }

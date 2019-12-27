@@ -1,13 +1,12 @@
 package cz.larpovadatabaze.components.common;
 
 import cz.larpovadatabaze.entities.Comment;
+import cz.larpovadatabaze.services.AppUsers;
 import cz.larpovadatabaze.services.Comments;
-import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -19,6 +18,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 public class CommentHiddenButton extends AbstractCsldPanel<Comment> {
     @SpringBean
     private Comments comments;
+    @SpringBean
+    private AppUsers appUsers;
 
     public CommentHiddenButton(String id, IModel<Comment> model) {
         super(id, model);
@@ -29,7 +30,7 @@ public class CommentHiddenButton extends AbstractCsldPanel<Comment> {
         super.onInitialize();
 
         // Determine if we are visible
-        if (!UserUtils.isEditor()) {
+        if (!appUsers.isEditor()) {
             // Not visible - do not show at all
             setVisible(false);
             return;
@@ -50,12 +51,9 @@ public class CommentHiddenButton extends AbstractCsldPanel<Comment> {
 
         WebMarkupContainer icon = new WebMarkupContainer("icon");
         add(icon);
-        icon.add(new AttributeAppender("class", new AbstractReadOnlyModel<String>() {
-            @Override
-            public String getObject() {
-                return Boolean.TRUE.equals(CommentHiddenButton.this.getModelObject().getHidden())?"fa-eye-slash":"fa-eye";
-            }
-        }," "));
+        icon.add(new AttributeAppender("class", (IModel<Object>) () ->
+                Boolean.TRUE.equals(CommentHiddenButton.this.getModelObject().getHidden()) ?
+                        "fa-eye-slash" : "fa-eye", " "));
 
         button.add(icon);
 

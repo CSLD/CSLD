@@ -3,7 +3,7 @@ package cz.larpovadatabaze.calendar.component.panel;
 import com.googlecode.wicket.jquery.core.Options;
 import com.googlecode.wicket.jquery.ui.form.datepicker.AjaxDatePicker;
 import cz.larpovadatabaze.api.ValidatableForm;
-import cz.larpovadatabaze.calendar.service.Area;
+import cz.larpovadatabaze.calendar.Area;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.common.FilterablePage;
 import cz.larpovadatabaze.components.panel.game.FilterByLabelsPanel;

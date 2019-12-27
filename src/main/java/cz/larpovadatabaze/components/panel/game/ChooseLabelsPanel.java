@@ -77,8 +77,7 @@ public class ChooseLabelsPanel extends FormComponentPanel<List<cz.larpovadatabaz
                 item.add(new AttributeAppender("title", ourLabel.getDescription()));
             }
 
-            wrapper.add(new CheckBox("checkbox", new Model<Boolean>(ChooseLabelsPanel.this.getModelObject().contains(ourLabel)))
-            {
+            wrapper.add(new CheckBox("checkbox", new Model<>(ChooseLabelsPanel.this.getModelObject().contains(ourLabel))) {
                 @Override
                 public void convertInput() {
                     super.convertInput();

@@ -6,11 +6,11 @@ import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Image;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.services.AppUsers;
 import cz.larpovadatabaze.services.CsldUsers;
 import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.utils.Pwd;
-import cz.larpovadatabaze.utils.UserUtils;
 import cz.larpovadatabaze.validator.UniqueUserValidator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Session;
@@ -45,6 +45,8 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
     FileService fileService;
     @SpringBean
     ImageResizingStrategyFactoryService imageResizingStrategyFactoryService;
+    @SpringBean
+    private AppUsers appUsers;
 
     private FileUploadField fileUpload;
     @SuppressWarnings("unused")
@@ -88,7 +90,7 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
         EmailTextField email = new EmailTextField("person.email");
         email.setRequired(true);
         email.setLabel(Model.of("Email"));
-        email.add(new UniqueUserValidator(true, csldUsers));
+        email.add(new UniqueUserValidator(true, csldUsers, appUsers));
         createOrUpdateUser.add(addFeedbackPanel(email, createOrUpdateUser, "emailFeedback", "form.loginMail"));
 
         PasswordTextField password = new PasswordTextField("password");
@@ -143,7 +145,7 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
                 if(createOrUpdateUser.isValid()){
                     CsldUser user = createOrUpdateUser.getModelObject();
                     if(saveOrUpdateUserAndImage(user)){
-                        if(!UserUtils.isSignedIn()){
+                        if (!appUsers.isSignedIn()) {
                             CsldAuthenticatedWebSession.get().signIn(user.getPerson().getEmail(), password.getConvertedInput());
                         }
                         onCsldAction(target, user);

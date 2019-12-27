@@ -1,5 +1,7 @@
 package cz.larpovadatabaze.entities;
 
+import cz.larpovadatabaze.api.Identifiable;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -11,7 +13,7 @@ import java.io.Serializable;
  */
 @javax.persistence.Table(name = "csld_user_played_game")
 @Entity
-public class UserPlayedGame implements Serializable {
+public class UserPlayedGame implements Identifiable<Integer>, Serializable {
     public static final int STATE_CODE_PLAYED = 2;
     public static final int STATE_CODE_WANT_TO_PLAY = 1;
     public static final int STATE_CODE_NONE = 0;
@@ -23,20 +25,30 @@ public class UserPlayedGame implements Serializable {
 
         private final int dbCode;
 
-        UserPlayedGameState(int dbCode) { this.dbCode = dbCode; }
+        UserPlayedGameState(int dbCode) {
+            this.dbCode = dbCode;
+        }
     }
 
-    private int id;
+    public UserPlayedGame() {
+    }
 
-    @Column(name="id")
+    public UserPlayedGame(CsldUser player, Game played) {
+        this.setGame(played);
+        this.setPlayerOfGame(player);
+    }
+
+    private Integer id;
+
+    @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_upg")
-    @SequenceGenerator(sequenceName = "csld_user_played_game_id_seq", name="id_gen_upg", allocationSize = 1)
-    public int getId() {
+    @SequenceGenerator(sequenceName = "csld_user_played_game_id_seq", name = "id_gen_upg", allocationSize = 1)
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

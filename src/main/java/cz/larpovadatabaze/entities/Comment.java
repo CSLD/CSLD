@@ -1,8 +1,11 @@
 package cz.larpovadatabaze.entities;
 
+import cz.larpovadatabaze.api.Identifiable;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 
 /**
@@ -10,26 +13,34 @@ import java.util.List;
  */
 @Table(name = "csld_comment")
 @Entity
-public class Comment implements Serializable {
-    public Comment() {}
+public class Comment implements Identifiable<Integer>, Serializable {
+    public Comment() {
+    }
 
-    public Comment(int id, String comment, Timestamp added) {
+    public Comment(Integer id, String comment, Timestamp added) {
         this.id = id;
         this.comment = comment;
         this.added = added;
     }
 
-    private int id;
+    public Comment(CsldUser user, Game game, String commentText) {
+        this.game = game;
+        this.comment = commentText;
+        this.user = user;
+        this.added = Timestamp.from(Instant.now());
+    }
+
+    private Integer id;
 
     @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_comment")
     @SequenceGenerator(sequenceName = "csld_comment_id_seq", name = "id_gen_comment", allocationSize = 1)
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

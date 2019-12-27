@@ -1,0 +1,154 @@
+package cz.larpovadatabaze;
+
+import cz.larpovadatabaze.calendar.service.Events;
+import cz.larpovadatabaze.calendar.service.events.InMemoryEvents;
+import cz.larpovadatabaze.services.*;
+import cz.larpovadatabaze.services.builders.InMemoryMasqueradeBuilder;
+import cz.larpovadatabaze.services.masqueradeStubs.*;
+import cz.larpovadatabaze.services.wicket.FilterServiceReflection;
+import cz.larpovadatabaze.services.wicket.WicketUsers;
+import cz.larpovadatabaze.utils.MailClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import java.util.Properties;
+
+@Configuration
+@EnableTransactionManagement
+@PropertySource(value = {"classpath:application.properties"})
+public class RootTestWicketContext {
+    @Autowired
+    Environment env;
+
+    @Bean
+    public CsldUsers csldUsers() {
+        return new InMemoryCsldUsers();
+    }
+
+    @Bean
+    public Comments comments() {
+        return new InMemoryComments();
+    }
+
+    @Bean
+    public EmailAuthentications emailAuthentications() {
+        return new InMemoryEmailAuthenticationTokens();
+    }
+
+    @Bean
+    public Images images() {
+        return new InMemoryFileImages();
+    }
+
+    @Bean
+    public Photos photos() {
+        return new InMemoryFilePhotos();
+    }
+
+    @Bean
+    public Games games() {
+        return new InMemoryGames();
+    }
+
+    @Bean
+    public CsldGroups groups() {
+        return new InMemoryGroups();
+    }
+
+    @Bean
+    public Labels labels() {
+        return new InMemoryLabels();
+    }
+
+    @Bean
+    public Ratings ratings() {
+        return new InMemoryRatings();
+    }
+
+    @Bean
+    public Upvotes upvotes() {
+        return new InMemoryUpvotes();
+    }
+
+    @Bean
+    public Videos videos() {
+        return new InMemoryVideos();
+    }
+
+    @Bean
+    public Events events() {
+        return new InMemoryEvents();
+    }
+
+    @Bean
+    public AppUsers appUsers() {
+        return new WicketUsers();
+    }
+
+    @Bean
+    public FilterService filterService() {
+        return new FilterServiceReflection();
+    }
+
+    @Bean(initMethod = "build")
+    public InMemoryMasqueradeBuilder builder() {
+        return new InMemoryMasqueradeBuilder(comments(), csldUsers(), games(),
+                groups(), labels(), ratings(), upvotes());
+    }
+
+    @Bean
+    public Csld csld() {
+        return new Csld(csldUsers(), games(), groups(), labels(), null, env, events());
+    }
+
+    // Start of email settings
+    @Bean
+    public JavaMailSender mailSender() {
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+
+        mailSender.setHost(env.getProperty("mail.host"));
+        mailSender.setPort(Integer.parseInt(env.getProperty("mail.port")));
+        mailSender.setUsername(env.getProperty("mail.username"));
+        mailSender.setPassword(env.getProperty("mail.password"));
+        mailSender.setJavaMailProperties(javaMailProperties());
+
+        return mailSender;
+    }
+
+    private Properties javaMailProperties() {
+        Properties mailProperties = new Properties();
+
+        mailProperties.put("mail.smtp.auth", env.getProperty("mail.smtp.auth"));
+        mailProperties.put("mail.smtp.starttls.enable", env.getProperty("mail.smtp.starttls.enable"));
+
+        return mailProperties;
+    }
+
+    @Bean
+    public SimpleMailMessage templateMessage() {
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        message.setFrom(env.getProperty("mail.from"));
+        message.setSubject(env.getProperty("mail.subject"));
+
+        return message;
+    }
+
+    @Bean
+    public MailClient mailService() {
+        MailClient mail = new MailClient();
+
+        mail.setTemplateMessage(templateMessage());
+        mail.setMailSender(mailSender());
+
+        return mail;
+    }
+    // End of email settings
+}

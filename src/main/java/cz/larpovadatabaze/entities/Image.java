@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.entities;
 
+import cz.larpovadatabaze.api.Identifiable;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 
 import javax.persistence.*;
@@ -13,8 +14,8 @@ import java.util.List;
  * Time: 14:01
  */
 @Entity
-@Table(name="csld_image")
-public class Image implements Serializable {
+@Table(name = "csld_image")
+public class Image implements Identifiable<Integer>, Serializable {
     private Integer id;
 
     @Column(

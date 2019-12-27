@@ -17,7 +17,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.template.PackageTextTemplate;
@@ -94,12 +94,9 @@ public class SearchBoxPanel extends Panel {
         gameSearchProvider = new GameSearchProvider();
         gameSearchProvider.setMaxResults(MAX_RESULTS_IN_DROPDOWN);
 
-        searchResultWrapper.add(new ListView<Game>("games", new AbstractReadOnlyModel<List<Game>>() {
-            @Override
-            public List<Game> getObject() {
-                return gameSearchProvider.getGameList();
-            }
-        }) {
+        searchResultWrapper.add(new ListView<>("games", (IModel<List<Game>>) () ->
+                gameSearchProvider.getGameList()
+        ) {
             @Override
             protected void populateItem(ListItem<Game> item) {
                 item.add(new GameBoxPanel("game", item.getModel()));

@@ -7,9 +7,9 @@ import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.game.GameDetail;
 import cz.larpovadatabaze.components.page.user.UserDetailPage;
 import cz.larpovadatabaze.entities.*;
+import cz.larpovadatabaze.services.AppUsers;
 import cz.larpovadatabaze.services.Comments;
 import cz.larpovadatabaze.services.Upvotes;
-import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -17,7 +17,6 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
@@ -37,6 +36,8 @@ public class CommentsListPanel extends Panel {
     private Comments sqlComments;
     @SpringBean
     private Upvotes upvotes;
+    @SpringBean
+    private AppUsers appUsers;
 
     private final IModel<List<Comment>> comments;
 
@@ -56,7 +57,7 @@ public class CommentsListPanel extends Panel {
         }
 
         private CsldUser getUser() {
-            return UserUtils.getLoggedUser();
+            return appUsers.getLoggedUser();
         }
 
         @Override
@@ -140,16 +141,12 @@ public class CommentsListPanel extends Panel {
                 PageParameters params = new PageParameters();
                 params.add("id", authorOfComment.getId());
                 final BookmarkablePageLink<CsldBasePage> authorLink =
-                    new BookmarkablePageLink<CsldBasePage>("authorLink", UserDetailPage.class, params);
+                        new BookmarkablePageLink<CsldBasePage>("authorLink", UserDetailPage.class, params);
                 item.add(authorLink);
 
                 // Author image
-                final UserIcon authorsAvatar = new UserIcon("avatar", new AbstractReadOnlyModel<CsldUser>() {
-                    @Override
-                    public CsldUser getObject() {
-                        return item.getModelObject().getUser();
-                    }
-                });
+                final UserIcon authorsAvatar = new UserIcon("avatar", (IModel<CsldUser>) () ->
+                        item.getModelObject().getUser());
                 authorLink.add(authorsAvatar);
 
                 // Author nick && name

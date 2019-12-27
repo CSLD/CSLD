@@ -17,6 +17,6 @@ public class DatabaseTags implements Tags {
 
     @Override
     public Collection<Label> all() {
-        return session.createCriteria(Label.class).list();
+        return session.createQuery("from Label", Label.class).list();
     }
 }

@@ -12,7 +12,7 @@ import cz.larpovadatabaze.services.CsldUsers;
 import cz.larpovadatabaze.services.Images;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -48,19 +48,16 @@ public class LoggedBoxPanel extends AbstractCsldPanel<CsldUser> {
         // Add user info
         Integer loggedUserId = getModelObject().getId();
 
-        final Label loggedUserName = new Label("loggedUserName", new AbstractReadOnlyModel<String>() {
-            @Override
-            public String getObject() {
-                return getModelObject().getPerson().getName();
-            }
-        });
+        final Label loggedUserName = new Label("loggedUserName", (IModel<String>) () ->
+                getModelObject().getPerson().getName());
 
         add(new UserIcon("loggedUserImage", getModel()));
         add(loggedUserName);
 
-        PageParameters params = new PageParameters(); params.add("id", loggedUserId);
+        PageParameters params = new PageParameters();
+        params.add("id", loggedUserId);
         final BookmarkablePageLink<CsldBasePage> loggedUserLink =
-            new BookmarkablePageLink<CsldBasePage>("loggedUserLink", UserDetailPage.class, params);
+                new BookmarkablePageLink<CsldBasePage>("loggedUserLink", UserDetailPage.class, params);
         add(loggedUserLink);
 
 

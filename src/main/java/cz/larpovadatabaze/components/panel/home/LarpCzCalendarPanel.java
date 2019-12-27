@@ -2,8 +2,7 @@ package cz.larpovadatabaze.components.panel.home;
 
 import cz.larpovadatabaze.calendar.component.page.DetailOfEventPage;
 import cz.larpovadatabaze.calendar.model.Event;
-import cz.larpovadatabaze.calendar.service.DatabaseEvents;
-import cz.larpovadatabaze.calendar.service.FilteredReadOnlyEvents;
+import cz.larpovadatabaze.calendar.service.Events;
 import cz.larpovadatabaze.components.common.BookmarkableLinkWithLabel;
 import cz.larpovadatabaze.models.FilterEvent;
 import org.apache.wicket.markup.html.basic.Label;
@@ -13,9 +12,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.hibernate.SessionFactory;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -26,7 +23,7 @@ import java.util.List;
  */
 public class LarpCzCalendarPanel extends Panel {
     @SpringBean
-    private SessionFactory sessionFactory;
+    private Events events;
 
     public LarpCzCalendarPanel(String id) {
         super(id);
@@ -40,12 +37,7 @@ public class LarpCzCalendarPanel extends Panel {
             filter.setLimit(6);
             filter.setSorted(FilterEvent.Sort.TIME_MOST_RECENT);
 
-            return new ArrayList<>(
-                    new FilteredReadOnlyEvents(
-                            new Model(filter),
-                            new DatabaseEvents(sessionFactory.getCurrentSession())
-                    ).all()
-            );
+            return events.filtered(new Model<>(filter));
         }
     }
 

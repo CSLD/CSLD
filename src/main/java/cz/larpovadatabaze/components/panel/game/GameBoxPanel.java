@@ -26,7 +26,7 @@ public class GameBoxPanel extends AbstractCsldPanel<Game> {
 
         // Link
         final BookmarkablePageLink<CsldBasePage> gameLinkContent =
-            new BookmarkablePageLink<CsldBasePage>("gameLink", GameDetail.class, GameDetail.paramsForGame(game));
+                new BookmarkablePageLink<>("gameLink", GameDetail.class, GameDetail.paramsForGame(game));
         add(gameLinkContent);
 
         // Rating

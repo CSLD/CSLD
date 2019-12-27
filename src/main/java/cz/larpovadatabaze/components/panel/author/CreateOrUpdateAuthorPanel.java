@@ -3,6 +3,7 @@ package cz.larpovadatabaze.components.panel.author;
 import cz.larpovadatabaze.api.ValidatableForm;
 import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
 import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.services.AppUsers;
 import cz.larpovadatabaze.services.CsldUsers;
 import cz.larpovadatabaze.validator.UniqueUserValidator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -18,12 +19,14 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 public abstract class CreateOrUpdateAuthorPanel extends Panel {
     @SpringBean
     CsldUsers csldUsers;
+    @SpringBean
+    AppUsers appUsers;
 
     public CreateOrUpdateAuthorPanel(String id, CsldUser author) {
         super(id);
 
         boolean isEdit = true;
-        if(author == null) {
+        if (author == null) {
             isEdit = false;
             author = CsldUser.getEmptyUser();
         }
@@ -33,7 +36,7 @@ public abstract class CreateOrUpdateAuthorPanel extends Panel {
         createOrUpdateUser.setOutputMarkupId(true);
 
         EmailTextField email = new EmailTextField("person.email");
-        email.add(new UniqueUserValidator(false, csldUsers));
+        email.add(new UniqueUserValidator(false, csldUsers, appUsers));
         createOrUpdateUser.add(addFeedbackPanel(email, createOrUpdateUser, "emailFeedback", "form.loginMail"));
 
         TextField<String> name = new TextField<String>("person.name");

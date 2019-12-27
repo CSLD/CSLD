@@ -7,6 +7,7 @@ import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.models.FilterGame;
+import cz.larpovadatabaze.services.AppUsers;
 import org.apache.log4j.Logger;
 import org.hibernate.*;
 import org.hibernate.criterion.*;
@@ -35,8 +36,8 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     private final static int YEARS_OLD = 5;
 
     @Autowired
-    public GameDAO(SessionFactory sessionFactory) {
-        super(sessionFactory, new GameBuilder());
+    public GameDAO(SessionFactory sessionFactory, AppUsers appUsers) {
+        super(sessionFactory, new GameBuilder(appUsers));
     }
 
     /**
@@ -47,15 +48,14 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
      */
     @SuppressWarnings("unchecked")
     public List<Game> getByAutoCompletable(String gameName) {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria uniqueGame = new GameBuilder().build().getExecutableCriteria(session)
+        Criteria uniqueGame = getExecutableCriteria()
                 .add(Restrictions.eq("name", gameName));
         return uniqueGame.list();
     }
 
     @Override
     public List<Game> findAll() {
-        Criteria crit = new GameBuilder().build().getExecutableCriteria(sessionFactory.getCurrentSession());
+        Criteria crit = getExecutableCriteria();
 
         crit.setFetchMode("availableLanguages", FetchMode.JOIN);
 
@@ -66,11 +66,11 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     public List<Game> getLastGames(int amountOfGames) {
         Session session = sessionFactory.getCurrentSession();
 
-        DetachedCriteria subQueryCriteria = new GameBuilder().build();
+        DetachedCriteria subQueryCriteria = getBuilder().build();
 
         subQueryCriteria.setProjection(Projections.distinct(Projections.id()));
 
-        Criteria criteria = new GameBuilder().build().getExecutableCriteria(session);
+        Criteria criteria = getExecutableCriteria();
 
         criteria.add(Subqueries.propertyIn("id", subQueryCriteria));
 
@@ -83,11 +83,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
 
     @SuppressWarnings("unchecked")
     public List<Game> getMostPopularGames(int amountOfGames) {
-        Session session = sessionFactory.getCurrentSession();
-
-        DetachedCriteria dc = new GameBuilder().build();
-
-        Criteria criteria = dc.getExecutableCriteria(session)
+        Criteria criteria = getExecutableCriteria()
                 .setMaxResults(amountOfGames)
                 .addOrder(Order.desc("totalRating"));
 
@@ -96,8 +92,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
 
     @SuppressWarnings("unchecked")
     public List<Game> getGamesOfAuthor(CsldUser author, int first, int count) {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = new GameBuilder().build().getExecutableCriteria(session)
+        Criteria criteria = getExecutableCriteria()
                 .createAlias("game.authors", "author")
                 .add(Restrictions.eq("author.id", author.getId()))
                 .addOrder(Order.asc("totalRating"))
@@ -109,8 +104,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
 
     @SuppressWarnings("unchecked")
     public List<Game> getGamesOfGroup(CsldGroup csldGroup, int first, int count) {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = new GameBuilder().build().getExecutableCriteria(session)
+        Criteria criteria = getExecutableCriteria()
                 .createAlias("game.groupAuthor", "group")
                 .add(Restrictions.eq("group.id", csldGroup.getId()))
                 .addOrder(Order.asc("totalRating"))
@@ -121,9 +115,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     }
 
     public long getAmountOfGamesOfAuthor(CsldUser author) {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = new GameBuilder().build().getExecutableCriteria(session)
+        Criteria criteria = getExecutableCriteria()
                 .createAlias("game.authors", "author")
                 .add(Restrictions.eq("author.id", author.getId()))
                 .setProjection(Projections.countDistinct("game.id"));
@@ -132,9 +124,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     }
 
     public long getAmountOfGamesOfGroup(CsldGroup csldGroup) {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = new GameBuilder().build().getExecutableCriteria(session)
+        Criteria criteria = getExecutableCriteria()
                 .createAlias("game.groupAuthor", "group")
                 .add(Restrictions.eq("group.id", csldGroup.getId()))
                 .setProjection(Projections.countDistinct("game.id"));
@@ -224,15 +214,13 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
 
     @SuppressWarnings("unchecked")
     public List<Game> getFilteredGames(FilterGame filterGame, int first, int count) {
-        Session session = sessionFactory.getCurrentSession();
-
-        DetachedCriteria subQueryCriteria = new GameBuilder().build();
+        DetachedCriteria subQueryCriteria = getBuilder().build();
 
         applyGameFilter(subQueryCriteria, filterGame);
 
         subQueryCriteria.setProjection(Projections.distinct(Projections.id()));
 
-        Criteria criteria = new GameBuilder().build().getExecutableCriteria(session);
+        Criteria criteria = getExecutableCriteria();
 
         criteria.add(Subqueries.propertyIn("id", subQueryCriteria));
 
@@ -264,7 +252,7 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     public long getAmountOfFilteredGames(FilterGame filterGame) {
         Session session = sessionFactory.getCurrentSession();
 
-        DetachedCriteria dc = new GameBuilder().build();
+        DetachedCriteria dc = getBuilder().build();
 
         applyGameFilter(dc, filterGame);
 

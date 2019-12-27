@@ -1,25 +1,34 @@
 package cz.larpovadatabaze.entities;
 
+import cz.larpovadatabaze.api.Identifiable;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Table(name = "csld_comment_upvote")
 @Entity
-public class Upvote implements Serializable {
-    public Upvote() {}
+public class Upvote implements Identifiable<Integer>, Serializable {
+    public Upvote() {
+    }
 
-    private int id;
+    public Upvote(CsldUser user, Comment comment) {
+        this.user = user;
+        this.comment = comment;
+        this.added = new Timestamp(new java.util.Date().getTime());
+    }
+
+    private Integer id;
 
     @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_upvote")
     @SequenceGenerator(sequenceName = "csld_plus_one_id_seq", name = "id_gen_upvote", allocationSize = 1)
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -6,8 +6,12 @@ import cz.larpovadatabaze.dao.builder.IBuilder;
 import cz.larpovadatabaze.dto.UserRatesOwnGameDto;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.exceptions.WrongParameterException;
-import org.hibernate.*;
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
@@ -81,7 +85,7 @@ public class CsldUserDAO extends GenericHibernateDAO<CsldUser, Integer> {
     @SuppressWarnings("unchecked")
     public List<UserRatesOwnGameDto> getUsersWhoRatesOwnGames() {
         Session session = sessionFactory.getCurrentSession();
-        Query q = session.createSQLQuery("select game.name as \"gameName\", usr.name as \"userName\", usr.email as \"userEmail\", " +
+        NativeQuery<UserRatesOwnGameDto> q = session.createSQLQuery("select game.name as \"gameName\", usr.name as \"userName\", usr.email as \"userEmail\", " +
                 "id_user as \"userId\", id_game as \"gameId\"    from csld_game_has_author cgha join csld_rating cr" +
                 "          on cgha.id_user = cr.user_id and cgha.id_game = cr.game_id " +
                 "  join csld_game game on game.id = cgha.id_game " +

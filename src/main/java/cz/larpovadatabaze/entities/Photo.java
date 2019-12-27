@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.entities;
 
+import cz.larpovadatabaze.api.Identifiable;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
@@ -12,14 +13,14 @@ import java.io.Serializable;
  * Time: 14:01
  */
 @Entity
-@Table(name="csld_photo")
-public class Photo implements Serializable, IEntityWithImage {
+@Table(name = "csld_photo")
+public class Photo implements Identifiable<Integer>, Serializable, IEntityWithImage {
     private Integer id;
 
     @Column(name = "id", nullable = false, length = 10)
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_photo")
-    @SequenceGenerator(sequenceName = "csld_photo_id_seq", name="id_gen_photo", allocationSize = 1)
+    @SequenceGenerator(sequenceName = "csld_photo_id_seq", name = "id_gen_photo", allocationSize = 1)
     public Integer getId() {
         return id;
     }

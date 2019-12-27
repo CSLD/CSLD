@@ -34,6 +34,6 @@ public class DatabaseDonations implements Donations {
 
     @Override
     public Collection<Donation> all() {
-        return session.createCriteria(Donation.class).list();
+        return session.createQuery("from donation ", Donation.class).list();
     }
 }

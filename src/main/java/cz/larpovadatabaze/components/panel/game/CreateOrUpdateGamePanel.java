@@ -13,11 +13,7 @@ import cz.larpovadatabaze.components.panel.UploadCoverImagePanel;
 import cz.larpovadatabaze.components.panel.author.CreateOrUpdateAuthorPanel;
 import cz.larpovadatabaze.components.panel.group.CreateOrUpdateGroupPanel;
 import cz.larpovadatabaze.entities.*;
-import cz.larpovadatabaze.services.CsldGroups;
-import cz.larpovadatabaze.services.CsldUsers;
-import cz.larpovadatabaze.services.Games;
-import cz.larpovadatabaze.services.Videos;
-import cz.larpovadatabaze.utils.UserUtils;
+import cz.larpovadatabaze.services.*;
 import cz.larpovadatabaze.validator.AtLeastOneRequiredLabelValidator;
 import cz.larpovadatabaze.validator.NonEmptyAuthorsValidator;
 import org.apache.commons.lang3.StringUtils;
@@ -57,6 +53,8 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
     CsldGroups csldGroups;
     @SpringBean
     Videos videos;
+    @SpringBean
+    AppUsers appUsers;
 
     private ChooseLabelsPanel chooseLabels;
     private TextField<String> videoField;
@@ -281,7 +279,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
 
         add(createOrUpdateGame);
 
-        if (UserUtils.isSignedIn()) {
+        if (appUsers.isSignedIn()) {
             add(new JSPingBehavior());
         }
     }

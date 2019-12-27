@@ -10,7 +10,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -38,12 +37,12 @@ public class PlayedPanel extends Panel {
     /**
      * Model for user played game - implemented as loadable / detachable
      */
-    private class UserPlayedGameModel extends AbstractReadOnlyModel<UserPlayedGame> {
+    private class UserPlayedGameModel implements IModel<UserPlayedGame> {
         @Override
         public UserPlayedGame getObject() {
             int userId = getUserId();
             UserPlayedGame stateOfGame = ratings.getUserPlayedGame(gameId, userId);
-            if(stateOfGame == null) {
+            if (stateOfGame == null) {
                 stateOfGame = new UserPlayedGame();
                 stateOfGame.setGame(gameModel.getObject());
                 stateOfGame.setPlayerOfGame(getUser());
@@ -56,7 +55,7 @@ public class PlayedPanel extends Panel {
     /**
      * Model that returns "active" string when user played game state is equal to state passed in constructor
      */
-    private class StateActiveModel extends AbstractReadOnlyModel<String> {
+    private class StateActiveModel implements IModel<String> {
         private UserPlayedGame.UserPlayedGameState state;
 
         private StateActiveModel(UserPlayedGame.UserPlayedGameState state) {
@@ -65,7 +64,7 @@ public class PlayedPanel extends Panel {
 
         @Override
         public String getObject() {
-            return model.getObject().getStateEnum().equals(state)?"btn-primary":"btn-default";
+            return model.getObject().getStateEnum().equals(state) ? "btn-primary" : "btn-default";
         }
     }
 

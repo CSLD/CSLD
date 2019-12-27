@@ -18,32 +18,33 @@ import java.util.List;
  * It is run on the startup of application.
  */
 public class LarpCzImport {
-    private SessionFactory sessionFactory;
+    private Events dbEvents;
     private Tags tags;
-    private Events events;
+    private LarpCzEvents events;
+    private SessionFactory sessionFactory;
 
-    public LarpCzImport(SessionFactory sessionFactory) {
+    public LarpCzImport(Events dbEvents, LarpCzEvents larpEvents, SessionFactory sessionFactory) {
+        this.dbEvents = dbEvents;
+        this.events = larpEvents;
         this.sessionFactory = sessionFactory;
-        events = new LarpCzEvents();
     }
 
     /**
      * Goes through all events on the first page of Larp cz calendar and if they aren't already present in the database
      * it stores them.
      */
-    public void importEvents(){
+    public void importEvents() {
         Session session = sessionFactory.openSession();
         Transaction eventsImport = session.beginTransaction();
 
-        DatabaseEvents dbEvents = new DatabaseEvents(session);
         Tags tags = new FilteredDatabaseTags(new DatabaseTags(session), new FilteredDatabaseTags.Filter("LarpCz"));
         Collection<Event> imported = events.all();
 
         List<Label> larpCz = new ArrayList<>(tags.all());
         for(Event larpCzEvent: imported) {
-            if(!dbEvents.isPersisted(larpCzEvent.getName())){
+            if (dbEvents.byName(larpCzEvent.getName()).size() == 0) {
                 larpCzEvent.setLabels(larpCz);
-                dbEvents.store(larpCzEvent);
+                dbEvents.saveOrUpdate(larpCzEvent);
             }
         }
 

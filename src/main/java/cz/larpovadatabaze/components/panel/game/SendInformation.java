@@ -7,14 +7,13 @@ import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.UserPlayedGame;
 import cz.larpovadatabaze.security.CsldRoles;
+import cz.larpovadatabaze.services.AppUsers;
 import cz.larpovadatabaze.services.Games;
 import cz.larpovadatabaze.utils.MailClient;
-import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -31,6 +30,8 @@ public class SendInformation extends AbstractCsldPanel<Game> {
     private MailClient mailClient;
     @SpringBean
     private Games games;
+    @SpringBean
+    private AppUsers appUsers;
 
     public Component getWantedToPlay() {
         return wantedToPlay;
@@ -40,11 +41,11 @@ public class SendInformation extends AbstractCsldPanel<Game> {
      * Model for users who want to play the game. (Might get GameModel as constructor parameter to be extra clean, but we use the one stored in the page.)
      * The downside is it does not cache results so getObject() may be costly.
      */
-    private class WantedByModel extends AbstractReadOnlyModel<List<CsldUser>> {
+    private class WantedByModel implements IModel<List<CsldUser>> {
 
         @Override
         public List<CsldUser> getObject() {
-            if(getModelObject() == null || getModelObject().getPlayed() == null) {
+            if (getModelObject() == null || getModelObject().getPlayed() == null) {
                 return new ArrayList<>();
             }
 
@@ -70,13 +71,13 @@ public class SendInformation extends AbstractCsldPanel<Game> {
         wantedToPlay = new CheckBoxSelectionUsers("wantsToPlay", new WantedByModel()) {
             @Override
             public CsldRoles getRoleOfActualUser() {
-                if (UserUtils.isEditor()) {
+                if (appUsers.isEditor()) {
                     return CsldRoles.EDITOR;
-                } else if (UserUtils.isAdmin()) {
+                } else if (appUsers.isAdmin()) {
                     return CsldRoles.ADMIN;
                 } else if (games.canEditGame(getModelObject())) {
                     return CsldRoles.AUTHOR;
-                } else if (UserUtils.isSignedIn()) {
+                } else if (appUsers.isSignedIn()) {
                     return CsldRoles.USER;
                 } else {
                     return CsldRoles.ANONYMOUS;
@@ -98,7 +99,7 @@ public class SendInformation extends AbstractCsldPanel<Game> {
                                 String.format(getString("mail.from.author.subject"), SendInformation.this.getModelObject().getName()));
                     }
                 } else {
-                    CsldUser loggedUser = UserUtils.getLoggedUser();
+                    CsldUser loggedUser = appUsers.getLoggedUser();
                     for (CsldUser author : SendInformation.this.getModelObject().getAuthors()) {
                         mailClient.sendMail(
                                 String.format(getString("mail.from.user"),
@@ -125,7 +126,7 @@ public class SendInformation extends AbstractCsldPanel<Game> {
     @Override
     protected void onConfigure() {
         super.onConfigure();
-        setVisibilityAllowed(UserUtils.isSignedIn());
+        setVisibilityAllowed(appUsers.isSignedIn());
     }
 
     /**

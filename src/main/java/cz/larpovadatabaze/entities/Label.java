@@ -17,10 +17,25 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
     private Boolean isRequired;
     private CsldUser addedBy;
 
-    public Label() {}
+    public Label() {
+    }
 
     public Label(int id) {
         this.id = id;
+    }
+
+    public Label(Integer id, CsldUser owner, String name, String description, boolean authorized, boolean required) {
+        this(owner, name, description, authorized, required);
+
+        this.id = id;
+    }
+
+    public Label(CsldUser owner, String name, String description, boolean authorized, boolean required) {
+        this.addedBy = owner;
+        this.name = name;
+        this.description = description;
+        this.isAuthorized = authorized;
+        this.isRequired = required;
     }
 
     @Column(
@@ -31,7 +46,7 @@ public class Label implements Serializable, IAutoCompletable, Identifiable<Integ
     )
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_label")
-    @SequenceGenerator(sequenceName = "csld_label_id_seq", name="id_gen_label", allocationSize = 1)
+    @SequenceGenerator(sequenceName = "csld_label_id_seq", name = "id_gen_label", allocationSize = 1)
     public Integer getId() {
         return id;
     }

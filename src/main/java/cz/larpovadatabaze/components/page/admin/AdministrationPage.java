@@ -2,16 +2,20 @@ package cz.larpovadatabaze.components.page.admin;
 
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.security.CsldRoles;
-import cz.larpovadatabaze.utils.UserUtils;
+import cz.larpovadatabaze.services.AppUsers;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
- *  This page shall contain links to most of the tasks that editors takes care of.
+ * This page shall contain links to most of the tasks that editors takes care of.
  */
-@AuthorizeInstantiation({"Editor","Admin"})
+@AuthorizeInstantiation({"Editor", "Admin"})
 public class AdministrationPage extends CsldBasePage {
-    public AdministrationPage(){
+    @SpringBean
+    private AppUsers appUsers;
+
+    public AdministrationPage() {
         super();
     }
 
@@ -21,7 +25,7 @@ public class AdministrationPage extends CsldBasePage {
 
         BookmarkablePageLink<CsldBasePage> manageUserRights =
                 new BookmarkablePageLink<CsldBasePage>("manageUserRights", ManageUserRightsPage.class);
-        manageUserRights.setVisible(UserUtils.getLoggedUser().getRole().equals(CsldRoles.ADMIN.getRole()));
+        manageUserRights.setVisible(appUsers.getLoggedUser().getRole().equals(CsldRoles.ADMIN.getRole()));
         add(manageUserRights);
 
         BookmarkablePageLink<CsldBasePage> manageLabels =

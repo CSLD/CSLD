@@ -1,8 +1,8 @@
 package cz.larpovadatabaze.validator;
 
 import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.services.AppUsers;
 import cz.larpovadatabaze.services.CsldUsers;
-import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
@@ -13,12 +13,14 @@ import org.hibernate.NonUniqueResultException;
  */
 public class UniqueUserValidator implements IValidator<String> {
     CsldUsers personService;
+    AppUsers appUsers;
 
     private boolean updateExisting;
 
-    public UniqueUserValidator(boolean updateExisting, CsldUsers personService) {
+    public UniqueUserValidator(boolean updateExisting, CsldUsers personService, AppUsers appUsers) {
         this.personService = personService;
         this.updateExisting = updateExisting;
+        this.appUsers = appUsers;
     }
 
     @Override
@@ -26,7 +28,7 @@ public class UniqueUserValidator implements IValidator<String> {
         // TODO - I am not sure, if this is the right place.
         try {
             CsldUser existing = personService.getByEmail(validatable.getValue());
-            CsldUser loggedIn = UserUtils.getLoggedUser();
+            CsldUser loggedIn = appUsers.getLoggedUser();
 
             if(!updateExisting && (existing != null)) {
                 error(validatable, "person-exists");

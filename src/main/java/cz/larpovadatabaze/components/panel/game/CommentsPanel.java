@@ -8,8 +8,8 @@ import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.services.AppUsers;
 import cz.larpovadatabaze.services.Comments;
-import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
@@ -36,6 +36,8 @@ public class CommentsPanel extends Panel {
 
     @SpringBean
     Comments comments;
+    @SpringBean
+    private AppUsers appUsers;
 
     private WysiwygEditor commentContent;
 
@@ -66,7 +68,7 @@ public class CommentsPanel extends Panel {
         }
 
         private CsldUser getUser() {
-            return UserUtils.getLoggedUser();
+            return appUsers.getLoggedUser();
         }
 
         private int getUserId(CsldUser user) {

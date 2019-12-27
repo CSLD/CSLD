@@ -10,7 +10,6 @@ import net.fortuna.ical4j.model.property.ProdId;
 import net.fortuna.ical4j.model.property.Version;
 import org.apache.wicket.request.resource.AbstractResource;
 import org.apache.wicket.util.string.StringValue;
-import org.hibernate.SessionFactory;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -19,11 +18,11 @@ import java.util.Collection;
  * Returns all future events
  */
 public class ICalProducerResource extends AbstractResource {
-    private SessionFactory sessionFactory;
+    private Events events;
     private CsldUsers userService;
 
-    public ICalProducerResource(SessionFactory sessionFactory, CsldUsers userService) {
-        this.sessionFactory = sessionFactory;
+    public ICalProducerResource(Events events, CsldUsers userService) {
+        this.events = events;
         this.userService = userService;
     }
 
@@ -69,7 +68,7 @@ public class ICalProducerResource extends AbstractResource {
     }
 
     private void addAllEvents(Calendar ical, java.util.Calendar to) {
-        Collection<Event> eventsToExport = new EventsInTimeFrame(new DatabaseEvents(sessionFactory.getCurrentSession()), java.util.Calendar.getInstance(), to).all();
+        Collection<Event> eventsToExport = events.inTheTimeFrame(java.util.Calendar.getInstance(), to);
         for (Event toExport : eventsToExport) {
             ical.getComponents().add(toExport.asIcalEvent());
         }
@@ -78,7 +77,8 @@ public class ICalProducerResource extends AbstractResource {
     private void addEventsForUser(StringValue id, Calendar ical, java.util.Calendar to) {
 // TODO: Sanitize for incorrect usage.
         int userId = id.toInt();
-        Collection<Event> eventsToExport = new EventsForWantedGames(userService.getById(userId), new EventsInTimeFrame(new DatabaseEvents(sessionFactory.getCurrentSession()), java.util.Calendar.getInstance(), to)).all();
+        Collection<Event> eventsToExport = events.forWantedGames(userService.getById(userId),
+                events.inTheTimeFrame(java.util.Calendar.getInstance(), to));
         for (Event toExport : eventsToExport) {
             ical.getComponents().add(toExport.asIcalEvent());
         }

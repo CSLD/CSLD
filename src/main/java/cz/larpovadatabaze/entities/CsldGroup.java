@@ -18,7 +18,20 @@ import java.util.List;
  */
 @Entity
 @Table(name = "csld_csld_group")
-public class CsldGroup implements Serializable, Identifiable, IAutoCompletable, IEntityWithImage {
+public class CsldGroup implements Serializable, Identifiable<Integer>, IAutoCompletable, IEntityWithImage {
+    public CsldGroup() {
+    }
+
+    public CsldGroup(String name) {
+        this.name = name;
+    }
+
+    public CsldGroup(Integer id, String name) {
+        this(name);
+
+        this.id = id;
+    }
+
     private Integer id;
 
     @Column(name = "id", nullable = false, updatable = false)
@@ -64,7 +77,7 @@ public class CsldGroup implements Serializable, Identifiable, IAutoCompletable, 
         return result;
     }
 
-    private List<Game> authorsOf;
+    private List<Game> authorsOf = new ArrayList<>();
 
     @ManyToMany(mappedBy = "groupAuthor")
     public List<Game> getAuthorsOf() {

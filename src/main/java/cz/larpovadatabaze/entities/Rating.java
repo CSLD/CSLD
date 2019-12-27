@@ -1,28 +1,41 @@
 package cz.larpovadatabaze.entities;
 
+import cz.larpovadatabaze.api.Identifiable;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.Instant;
 
 /**
  * User: Jakub Balhar
  * Date: 27.3.13
  * Time: 14:01
  */
-@Table(name="csld_rating")
+@Table(name = "csld_rating")
 @Entity
-public class Rating implements IGameWithRating, Serializable {
-    private int id;
+public class Rating implements Identifiable<Integer>, IGameWithRating, Serializable {
+    public Rating() {
+    }
 
-    @Column(name="id")
+    public Rating(CsldUser user, Game game, int rating) {
+        this.added = Timestamp.from(Instant.now());
+        this.game = game;
+        this.user = user;
+        this.rating = rating;
+    }
+
+    private Integer id;
+
+    @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_rating")
-    @SequenceGenerator(sequenceName = "csld_rating_id_seq", name="id_gen_rating", allocationSize = 1)
-    public int getId() {
+    @SequenceGenerator(sequenceName = "csld_rating_id_seq", name = "id_gen_rating", allocationSize = 1)
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

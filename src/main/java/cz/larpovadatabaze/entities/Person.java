@@ -17,6 +17,18 @@ import java.time.ZoneId;
  */
 @Embeddable
 public class Person implements Serializable, IAutoCompletable {
+    public Person() {
+    }
+
+    public Person(String name, String description, String email, String nickName, Date birthDate, String city) {
+        this.name = name;
+        this.description = description;
+        this.email = email;
+        this.nickname = nickName;
+        this.birthDate = birthDate;
+        this.city = city;
+    }
+
     private Integer id;
 
     private String name;

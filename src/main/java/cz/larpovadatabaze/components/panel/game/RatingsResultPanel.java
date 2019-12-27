@@ -16,7 +16,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -46,7 +45,7 @@ public class RatingsResultPanel extends AbstractCsldPanel<Game> {
     /**
      * Model to provide color for the game
      */
-    private class RatingColorModel extends AbstractReadOnlyModel<String> {
+    private class RatingColorModel implements IModel<String> {
 
         @Override
         public String getObject() {
@@ -58,12 +57,12 @@ public class RatingsResultPanel extends AbstractCsldPanel<Game> {
     /**
      * Model to provide textual rating for the game
      */
-    private class RatingResultModel extends AbstractReadOnlyModel<String> {
+    private class RatingResultModel implements IModel<String> {
         private DecimalFormat df = new DecimalFormat("0.0");
 
         @Override
         public String getObject() {
-            double ratingOfGame = getModelObject().getAverageRating() != null ? getModelObject().getAverageRating()/10d : 0;
+            double ratingOfGame = getModelObject().getAverageRating() != null ? getModelObject().getAverageRating() / 10d : 0;
             return df.format(ratingOfGame);
         }
     }
@@ -71,7 +70,7 @@ public class RatingsResultPanel extends AbstractCsldPanel<Game> {
     /**
      * Holds array of ratings. Value is cached and refreshed on-request.
      */
-    private class RatingsArrayModel extends AbstractReadOnlyModel<int[]> {
+    private class RatingsArrayModel implements IModel<int[]> {
 
         // Backing array
         private int[] array;
@@ -81,7 +80,7 @@ public class RatingsResultPanel extends AbstractCsldPanel<Game> {
          */
         public void recompute() {
             array = new int[10];
-            Arrays.fill(array,0);
+            Arrays.fill(array, 0);
             if(getModelObject().getAmountOfRatings() > 3) {
                 for(Rating rating: getModelObject().getRatings()) {
                     array[rating.getRating() - 1]++;
@@ -132,12 +131,8 @@ public class RatingsResultPanel extends AbstractCsldPanel<Game> {
         add(myResult);
 
         // Amount of results
-        Label amountOfResults = new Label("amountOfResults", new AbstractReadOnlyModel<Integer>() {
-            @Override
-            public Integer getObject() {
-                return getModelObject().getAmountOfRatings();
-            }
-        });
+        Label amountOfResults = new Label("amountOfResults", (IModel<Object>) () ->
+                getModelObject().getAmountOfRatings());
         add(amountOfResults);
 
         // Played panel

@@ -16,7 +16,7 @@ import org.apache.wicket.markup.html.form.HiddenField;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -85,7 +85,7 @@ public class ManageLabelsPanel extends AbstractCsldPanel<List<Label>> {
                     protected void onSubmit(AjaxRequestTarget target) {
                         final cz.larpovadatabaze.entities.Label iLabel = labels.getById(label.getId());
 
-                        if(iLabel.getRequired() == null){
+                        if (iLabel.getRequired() == null) {
                             iLabel.setRequired(false);
                         }
                         iLabel.setRequired(!iLabel.getRequired());
@@ -95,12 +95,8 @@ public class ManageLabelsPanel extends AbstractCsldPanel<List<Label>> {
                     }
                 };
                 require.setOutputMarkupId(true);
-                require.add(new AttributeAppender("class", new AbstractReadOnlyModel<String>() {
-                    @Override
-                    public String getObject() {
-                        return Boolean.TRUE.equals(item.getModelObject().getRequired())?"selected":"";
-                    }
-                }, " "));
+                require.add(new AttributeAppender("class", (IModel<String>) () ->
+                        Boolean.TRUE.equals(item.getModelObject().getRequired()) ? "selected" : "", " "));
                 item.add(require);
 
                 AjaxButton accept = new AjaxButton("accept") {
@@ -108,7 +104,7 @@ public class ManageLabelsPanel extends AbstractCsldPanel<List<Label>> {
                     protected void onSubmit(AjaxRequestTarget target) {
                         final cz.larpovadatabaze.entities.Label iLabel = labels.getById(label.getId());
 
-                        if(iLabel.getAuthorized() == null){
+                        if (iLabel.getAuthorized() == null) {
                             iLabel.setAuthorized(false);
                         }
                         iLabel.setAuthorized(!iLabel.getAuthorized());
@@ -116,12 +112,8 @@ public class ManageLabelsPanel extends AbstractCsldPanel<List<Label>> {
                         target.add(this);
                     }
                 };
-                accept.add(new AttributeAppender("class", new AbstractReadOnlyModel<String>() {
-                    @Override
-                    public String getObject() {
-                        return Boolean.TRUE.equals(item.getModelObject().getAuthorized())?"selected":"";
-                    }
-                }, " "));
+                accept.add(new AttributeAppender("class", (IModel<String>) () ->
+                        Boolean.TRUE.equals(item.getModelObject().getAuthorized()) ? "selected" : "", " "));
                 accept.setOutputMarkupId(true);
                 item.add(accept);
 

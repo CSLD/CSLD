@@ -5,19 +5,18 @@ import cz.larpovadatabaze.models.FilterEvent;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.hibernate.SessionFactory;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 public class SortableEventProvider extends SortableDataProvider<Event, String> {
-    private SessionFactory sessionFactory;
+    private Events events;
 
     private IModel<FilterEvent> filterModel;
 
-    public SortableEventProvider(SessionFactory sessionFactory, IModel<FilterEvent> filterModel) {
-        this.sessionFactory = sessionFactory;
+    public SortableEventProvider(Events events, IModel<FilterEvent> filterModel) {
+        this.events = events;
         this.filterModel = filterModel;
     }
 
@@ -25,7 +24,7 @@ public class SortableEventProvider extends SortableDataProvider<Event, String> {
     public Iterator<? extends Event> iterator(long first, long count) {
         List<Event> eventsFromTheDatabase = (List<Event>) getEvents();
         int last = (int) count + (int) first;
-        if(first + count > eventsFromTheDatabase.size()) {
+        if (first + count > eventsFromTheDatabase.size()) {
             last = eventsFromTheDatabase.size() - 1;
         }
         return eventsFromTheDatabase.subList((int)first, last).iterator();
@@ -42,9 +41,6 @@ public class SortableEventProvider extends SortableDataProvider<Event, String> {
     }
 
     private Collection<Event> getEvents() {
-        return new FilteredReadOnlyEvents(
-                filterModel,
-                new DatabaseEvents(sessionFactory.getCurrentSession())
-        ).all();
+        return events.filtered(filterModel);
     }
 }

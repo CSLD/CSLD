@@ -5,14 +5,17 @@ import cz.larpovadatabaze.components.common.icons.UserIcon;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Person;
 import cz.larpovadatabaze.entities.UserPlayedGame;
-import cz.larpovadatabaze.utils.UserUtils;
+import cz.larpovadatabaze.services.AppUsers;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * It shows detail of user.
  */
 public class PersonDetailPanel extends AbstractCsldPanel<CsldUser> {
+    @SpringBean
+    private AppUsers appUsers;
 
     public PersonDetailPanel(String id, IModel<CsldUser> model) {
         super(id, model);
@@ -31,7 +34,7 @@ public class PersonDetailPanel extends AbstractCsldPanel<CsldUser> {
         add(new Label("name",person.getName()));
 
         Label emailLabel = new Label("email", person.getEmail());
-        emailLabel.setVisibilityAllowed(UserUtils.isAtLeastEditor());
+        emailLabel.setVisibilityAllowed(appUsers.isAtLeastEditor());
         add(emailLabel);
 
         Integer age = person.getAge();

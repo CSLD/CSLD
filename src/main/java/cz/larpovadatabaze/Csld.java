@@ -3,7 +3,9 @@ package cz.larpovadatabaze;
 import cz.larpovadatabaze.calendar.component.page.CreateOrUpdateEventPage;
 import cz.larpovadatabaze.calendar.component.page.DetailOfEventPage;
 import cz.larpovadatabaze.calendar.component.page.ListEventsPage;
+import cz.larpovadatabaze.calendar.service.Events;
 import cz.larpovadatabaze.calendar.service.ICalProducerResource;
+import cz.larpovadatabaze.calendar.service.LarpCzEvents;
 import cz.larpovadatabaze.calendar.service.LarpCzImport;
 import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.components.page.TestDatabase;
@@ -79,19 +81,22 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     private final Labels labels;
     private final SessionFactory sessionFactory;
     private final Environment env;
+    private final Events events;
 
 
     private static final String DEFAULT_ENCODING = "UTF-8";
     private static ApplicationContext ctx;
 
     @Autowired
-    public Csld(CsldUsers csldUsers, Games sqlGames, CsldGroups csldGroups, Labels labels, SessionFactory sessionFactory, Environment env) {
+    public Csld(CsldUsers csldUsers, Games sqlGames, CsldGroups csldGroups, Labels labels,
+                SessionFactory sessionFactory, Environment env, Events events) {
         this.csldUsers = csldUsers;
         this.sqlGames = sqlGames;
         this.csldGroups = csldGroups;
         this.labels = labels;
         this.sessionFactory = sessionFactory;
         this.env = env;
+        this.events = events;
     }
 
     public class MountedMapperWithoutPageComponentInfo extends MountedMapper {
@@ -194,7 +199,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         }
 
         if(env.getProperty("csld.integrate_calendar", Boolean.class)) {
-            new Thread(() -> new LarpCzImport(sessionFactory).importEvents()).start();
+            new Thread(() -> new LarpCzImport(events, new LarpCzEvents(), sessionFactory).importEvents()).start();
         }
 	}
 
@@ -268,7 +273,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         }
 
         ResourceReference icalReference = new ResourceReference("icalReference") {
-            ICalProducerResource resource = new ICalProducerResource(sessionFactory, csldUsers);
+            ICalProducerResource resource = new ICalProducerResource(events, csldUsers);
 
             @Override
             public IResource getResource() {
@@ -297,7 +302,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
 
     @Override
     public Session newSession(Request request, Response response) {
-        Session session = super.newSession(request, response);
+        Session session = new CsldAuthenticatedWebSession(request, csldUsers);
         session.setLocale(Locale.forLanguageTag("cs"));
         return session;
     }

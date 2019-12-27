@@ -2,8 +2,8 @@ package cz.larpovadatabaze.components.common;
 
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Rating;
+import cz.larpovadatabaze.services.AppUsers;
 import cz.larpovadatabaze.services.Ratings;
-import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.model.IModel;
@@ -17,6 +17,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 public class RatingDeleteButton extends AbstractCsldPanel<Rating> {
     @SpringBean
     private Ratings ratings;
+    @SpringBean
+    private AppUsers appUsers;
 
     private IModel<Game> gameModel;
 
@@ -30,7 +32,7 @@ public class RatingDeleteButton extends AbstractCsldPanel<Rating> {
         super.onInitialize();
 
         // Determine if we are visible
-        if (!UserUtils.isEditor()) {
+        if (!appUsers.isEditor()) {
             // Not visible - do not show at all
             setVisible(false);
             return;

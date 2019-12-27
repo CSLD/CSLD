@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.calendar.model;
 
+import cz.larpovadatabaze.api.Identifiable;
 import cz.larpovadatabaze.calendar.Location;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
@@ -25,7 +26,7 @@ import java.util.List;
  * Event for the database.
  */
 @Entity(name = "event")
-public class Event implements cz.larpovadatabaze.api.Entity {
+public class Event implements cz.larpovadatabaze.api.Entity, Identifiable<Integer> {
     @Transient
     private SimpleDateFormat czechDate = new SimpleDateFormat("dd.MM.yyyy HH:mm");
     @Transient

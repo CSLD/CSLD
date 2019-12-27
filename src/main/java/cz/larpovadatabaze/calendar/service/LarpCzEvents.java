@@ -20,20 +20,9 @@ import java.util.regex.Pattern;
 /**
  * It represents the Events as they are in the Larp.cz page
  */
-public class LarpCzEvents implements Events {
+public class LarpCzEvents {
     private final static Logger logger = Logger.getLogger(LarpCzEvents.class);
 
-    @Override
-    public void store(Event event) {
-        throw new UnsupportedOperationException("It isn't possible to store events in Larp.cz");
-    }
-
-    @Override
-    public void delete(Event event) {
-        throw new UnsupportedOperationException("It isn't possible to delete events from Larp.cz");
-    }
-
-    @Override
     public Collection<Event> all() {
         logger.info("Loading all events form larp.cz page");
         try {

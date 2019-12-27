@@ -22,7 +22,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -81,8 +81,8 @@ public class LastCommentsPanel extends Panel {
 
             // Content
             String commentToShow = Jsoup.parse(comment.getComment()).text();
-            if(commentToShow.length() > MAX_CHARS_IN_COMMENT){
-                commentToShow = commentToShow.substring(0,MAX_CHARS_IN_COMMENT);
+            if (commentToShow.length() > MAX_CHARS_IN_COMMENT) {
+                commentToShow = commentToShow.substring(0, MAX_CHARS_IN_COMMENT);
             }
             Label commentsContent = new Label("commentsContent", Model.of(commentToShow));
             commentsContent.setEscapeModelStrings(false);
@@ -90,19 +90,15 @@ public class LastCommentsPanel extends Panel {
             commentWrapper.add(new DotDotDotBehavior().setAfterComponentId(moreLink.getMarkupId(true)));
 
             // User icon
-            final UserIcon commenterIcon = new UserIcon("commenterIcon", new AbstractReadOnlyModel<CsldUser>() {
-                @Override
-                public CsldUser getObject() {
-                    return item.getModelObject().getUser();
-                }
-            });
+            final UserIcon commenterIcon = new UserIcon("commenterIcon", (IModel<CsldUser>) () ->
+                    item.getModelObject().getUser());
             f.add(commenterIcon);
 
             // Link and name
             PageParameters userParams = new PageParameters();
             userParams.add("id", commenter.getId());
             final BookmarkablePageLink<CsldBasePage> commenterLink =
-                new BookmarkablePageLink<CsldBasePage>("commenterLink", UserDetailPage.class, userParams);
+                    new BookmarkablePageLink<CsldBasePage>("commenterLink", UserDetailPage.class, userParams);
             Label commenterName = new Label("commenterName", Model.of(commenter.getPerson().getNickNameView()));
             commenterLink.add(commenterName);
             f.add(commenterLink);

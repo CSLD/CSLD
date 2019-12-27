@@ -1,7 +1,7 @@
 package cz.larpovadatabaze.calendar.component.panel;
 
 import cz.larpovadatabaze.calendar.model.Event;
-import cz.larpovadatabaze.calendar.service.DatabaseEvents;
+import cz.larpovadatabaze.calendar.service.Events;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -13,7 +13,6 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.hibernate.SessionFactory;
 
 /**
  * It contains logic for showing and hiding and allows deletion of an event.
@@ -23,7 +22,7 @@ public class DeleteEventPanel extends Panel {
     private IModel<String> deletedEventLabelModel;
 
     @SpringBean
-    private SessionFactory sessionFactory;
+    private Events events;
 
     public DeleteEventPanel(String id, IModel<Event> model) {
         super(id);
@@ -52,8 +51,7 @@ public class DeleteEventPanel extends Panel {
             @Override
             public void onClick(AjaxRequestTarget ajaxRequestTarget) {
                 event.setDeleted(!event.isDeleted());
-                DatabaseEvents events = new DatabaseEvents(sessionFactory.getCurrentSession());
-                events.store(event);
+                events.saveOrUpdate(event);
                 deletedEventLabelModel.detach();
                 ajaxRequestTarget.add(DeleteEventPanel.this);
             }

@@ -11,7 +11,7 @@ import cz.larpovadatabaze.calendar.component.common.TimeTextField;
 import cz.larpovadatabaze.calendar.component.page.DetailOfEventPage;
 import cz.larpovadatabaze.calendar.component.validator.StartDateIsBeforeAfter;
 import cz.larpovadatabaze.calendar.model.Event;
-import cz.larpovadatabaze.calendar.service.DatabaseEvents;
+import cz.larpovadatabaze.calendar.service.Events;
 import cz.larpovadatabaze.components.common.AbstractCsldPanel;
 import cz.larpovadatabaze.components.common.CsldFeedbackMessageLabel;
 import cz.larpovadatabaze.components.common.multiac.IMultiAutoCompleteSource;
@@ -41,8 +41,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.wicketstuff.gmap.GMap;
 import org.wicketstuff.gmap.GMapHeaderContributor;
 import org.wicketstuff.gmap.api.GLatLng;
@@ -56,7 +54,7 @@ public abstract class CreateEventPanel extends AbstractCsldPanel<Event> {
     private static final int AUTOCOMPLETE_CHOICES = 10;
 
     @SpringBean
-    private SessionFactory sessionFactory;
+    private Events events;
     @SpringBean
     private transient Games games;
     @SpringBean
@@ -82,11 +80,11 @@ public abstract class CreateEventPanel extends AbstractCsldPanel<Event> {
         Event event = model.getObject();
         if(event != null) {
             if(event.getFrom() != null) {
-                fromTime = String.valueOf(event.getFrom().get(Calendar.HOUR_OF_DAY)) + ":" + String.valueOf(event.getFrom().get(Calendar.MINUTE));
+                fromTime = event.getFrom().get(Calendar.HOUR_OF_DAY) + ":" + event.getFrom().get(Calendar.MINUTE);
             }
 
             if(event.getTo() != null) {
-                toTime = String.valueOf(event.getTo().get(Calendar.HOUR_OF_DAY)) + ":" + String.valueOf(event.getTo().get(Calendar.MINUTE));
+                toTime = event.getTo().get(Calendar.HOUR_OF_DAY) + ":" + event.getTo().get(Calendar.MINUTE);
             }
         }
     }
@@ -247,7 +245,6 @@ public abstract class CreateEventPanel extends AbstractCsldPanel<Event> {
             @Override
             protected void onSubmit(AjaxRequestTarget target) {
                 super.onSubmit(target);
-                Transaction storeEventInTransaction = sessionFactory.getCurrentSession().beginTransaction();
 
                 Event event = CreateEventPanel.this.getModel().getObject();
                 if(lastSelectedLocation != null) {
@@ -285,7 +282,7 @@ public abstract class CreateEventPanel extends AbstractCsldPanel<Event> {
                     }
                 }
 
-                new DatabaseEvents(sessionFactory.getCurrentSession()).store(event);
+                events.saveOrUpdate(event);
                 if(event != null && event.getGames() != null && event.getGames().size() > 0) {
                     for(Game game: event.getGames()) {
                         if(previous.contains(game)) {
@@ -301,7 +298,6 @@ public abstract class CreateEventPanel extends AbstractCsldPanel<Event> {
                     }
                 }
 
-                storeEventInTransaction.commit();
                 onCsldAction(target, event);
             }
 

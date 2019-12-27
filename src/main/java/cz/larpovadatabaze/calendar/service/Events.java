@@ -1,28 +1,26 @@
 package cz.larpovadatabaze.calendar.service;
 
+import cz.larpovadatabaze.calendar.BoundingBox;
 import cz.larpovadatabaze.calendar.model.Event;
+import cz.larpovadatabaze.entities.CsldUser;
+import cz.larpovadatabaze.models.FilterEvent;
+import cz.larpovadatabaze.services.CRUDService;
+import org.apache.wicket.model.IModel;
 
-import java.util.Collection;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * Service for manipulating events.
  */
-public interface Events {
-    /**
-     * Store Event into persistent store, for example database.
-     * @param event Event to store into persistent store.
-     */
-    void store(Event event);
+public interface Events extends CRUDService<Event, Integer> {
+    List<Event> forWantedGames(CsldUser user, List<Event> events);
 
-    /**
-     * Remove instance with given id if present. If it isn't present it shouldn't do anything.
-     * @param event Event to be removed from persistent storage.
-     */
-    void delete(Event event);
+    List<Event> inTheTimeFrame(Calendar from, Calendar to);
 
-    /**
-     * It returns all events in current store.
-     * @return Events stored in current store.
-     */
-    Collection<Event> all();
+    List<Event> filtered(IModel<FilterEvent> filter);
+
+    List<Event> geographicallyFiltered(BoundingBox limitation);
+
+    List<Event> byName(String name);
 }

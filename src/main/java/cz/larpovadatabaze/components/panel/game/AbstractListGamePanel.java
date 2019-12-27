@@ -105,7 +105,7 @@ public abstract class AbstractListGamePanel<T> extends AbstractCsldPanel<T> {
             if(userId == 0) {
                 return new ArrayList<>();
             } else {
-                return new ArrayList<>(comments.getGamesCommentedByUser(userId));
+                return new ArrayList<>(games.getGamesCommentedByUser(userId));
             }
         }
     }

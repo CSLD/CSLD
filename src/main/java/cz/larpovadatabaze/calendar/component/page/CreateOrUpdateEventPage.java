@@ -4,6 +4,7 @@ import cz.larpovadatabaze.api.Toggles;
 import cz.larpovadatabaze.calendar.component.panel.CreateEventPanel;
 import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.calendar.model.EventModel;
+import cz.larpovadatabaze.calendar.service.Events;
 import cz.larpovadatabaze.components.page.CsldBasePage;
 import cz.larpovadatabaze.components.page.HomePage;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
@@ -11,13 +12,11 @@ import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.core.env.Environment;
 
 public class CreateOrUpdateEventPage extends CsldBasePage {
     @SpringBean
-    private SessionFactory sessionFactory;
+    private Events events;
     @SpringBean
     private Environment env;
 
@@ -27,8 +26,8 @@ public class CreateOrUpdateEventPage extends CsldBasePage {
         }
 
         @Override
-        public Session getSession() {
-            return sessionFactory.getCurrentSession();
+        public Events getEvents() {
+            return events;
         }
     }
 

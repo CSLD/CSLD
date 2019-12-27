@@ -13,11 +13,11 @@ import cz.larpovadatabaze.entities.Comment;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.Game;
 import cz.larpovadatabaze.entities.Video;
+import cz.larpovadatabaze.services.AppUsers;
 import cz.larpovadatabaze.services.Games;
 import cz.larpovadatabaze.services.Images;
 import cz.larpovadatabaze.utils.HbUtils;
 import cz.larpovadatabaze.utils.Strings;
-import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
@@ -43,12 +43,16 @@ import java.util.*;
 public class GameDetail extends CsldBasePage {
     private static final String ID_PARAM = "id";
 
-    private enum TabContentType { COMMENTS, PHOTOS, VIDEO };
+    private enum TabContentType {COMMENTS, PHOTOS, VIDEO}
+
+    ;
 
     @SpringBean
     Games games;
     @SpringBean
     Images images;
+    @SpringBean
+    private AppUsers appUsers;
 
     private RatingsResultPanel ratingsResult;
     private RatingsPanel ratingsPanel;
@@ -151,15 +155,15 @@ public class GameDetail extends CsldBasePage {
             List<Comment> res = new ArrayList<Comment>();
 
             // Fill in array
-            if (UserUtils.isEditor()) {
+            if (appUsers.isEditor()) {
                 // Editors see everything
-                List<Comment> comments = getModel().getObject().getComments() != null ? getModel().getObject().getComments():
+                List<Comment> comments = getModel().getObject().getComments() != null ? getModel().getObject().getComments() :
                         new ArrayList<>();
                 res.addAll(comments);
             } else {
                 // Filter
                 Integer thisUserId = null;
-                CsldUser user = UserUtils.getLoggedUser();
+                CsldUser user = appUsers.getLoggedUser();
                 if (user != null) {
                     thisUserId = user.getId();
                 }
@@ -261,12 +265,8 @@ public class GameDetail extends CsldBasePage {
             case VIDEO:
                 // Create video
                 fragment = new Fragment("tabContentPanel", "video", this);
-                fragment.add(new YouTubePanel("video", new AbstractReadOnlyModel<Video>() {
-                    @Override
-                    public Video getObject() {
-                        return getModel().getObject().getVideo();
-                    }
-                }));
+                fragment.add(new YouTubePanel("video", (IModel<Video>) () ->
+                        getModel().getObject().getVideo()));
                 break;
             default:
                 throw new IllegalStateException("Invalid tab content type");
@@ -388,7 +388,7 @@ public class GameDetail extends CsldBasePage {
         ratingsOfUsersPanelEnclosure.add(adminRatingsPanel);
         add(ratingsOfUsersPanelEnclosure);
 
-        if (UserUtils.isSignedIn()) {
+        if (appUsers.isSignedIn()) {
             add(new JSPingBehavior());
         }
     }
@@ -403,9 +403,9 @@ public class GameDetail extends CsldBasePage {
 
         // Check if current user is author of the game
         boolean showPanel = false;
-        if (UserUtils.isSignedIn() && !ratingsPanel.isRatingSet()) {
-            Integer userId = UserUtils.getLoggedUser().getId();
-            for(CsldUser u : getModel().getObject().getAuthors()) {
+        if (appUsers.isSignedIn() && !ratingsPanel.isRatingSet()) {
+            Integer userId = appUsers.getLoggedUser().getId();
+            for (CsldUser u : getModel().getObject().getAuthors()) {
                 if (userId.equals(u.getId())) {
                     showPanel = true;
                     break;

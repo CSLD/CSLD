@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.models;
 
-import cz.larpovadatabaze.calendar.service.Area;
+import cz.larpovadatabaze.calendar.Area;
 import cz.larpovadatabaze.calendar.service.GeographicalFilter;
 import cz.larpovadatabaze.entities.Label;
 

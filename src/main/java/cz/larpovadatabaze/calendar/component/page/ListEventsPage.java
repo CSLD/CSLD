@@ -4,6 +4,7 @@ import cz.larpovadatabaze.api.Toggles;
 import cz.larpovadatabaze.calendar.component.panel.AbstractListEventPanel;
 import cz.larpovadatabaze.calendar.component.panel.FilterEventsSidePanel;
 import cz.larpovadatabaze.calendar.model.Event;
+import cz.larpovadatabaze.calendar.service.Events;
 import cz.larpovadatabaze.calendar.service.GeographicalFilter;
 import cz.larpovadatabaze.calendar.service.SortableEventProvider;
 import cz.larpovadatabaze.components.common.FilterablePage;
@@ -27,7 +28,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.hibernate.SessionFactory;
 import org.springframework.core.env.Environment;
 
 import java.net.URL;
@@ -38,7 +38,7 @@ import java.util.Optional;
 
 public class ListEventsPage extends CsldBasePage implements FilterablePage {
     @SpringBean
-    private SessionFactory sessionFactory;
+    private Events events;
     @SpringBean
     private transient Environment environment;
 
@@ -191,7 +191,7 @@ public class ListEventsPage extends CsldBasePage implements FilterablePage {
             eventsList = new AbstractListEventPanel<Event>("eventsPanel") {
                 @Override
                 protected SortableDataProvider<Event, String> getDataProvider() {
-                    return new SortableEventProvider(sessionFactory, filterModel);
+                    return new SortableEventProvider(events, filterModel);
                 }
             };
             eventsList.setOutputMarkupId(true);

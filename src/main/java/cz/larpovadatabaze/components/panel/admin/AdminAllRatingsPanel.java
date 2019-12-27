@@ -11,7 +11,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -37,12 +36,12 @@ public class AdminAllRatingsPanel extends Panel {
         this.gameModel = gameModel;
     }
 
-    private class OrderedDetachableRatingModel extends AbstractReadOnlyModel<List<Rating>> {
+    private class OrderedDetachableRatingModel implements IModel<List<Rating>> {
         private List<Rating> ratings;
 
         @Override
         public List<Rating> getObject() {
-            if(ratings == null) recompute();
+            if (ratings == null) recompute();
             return ratings;
         }
 

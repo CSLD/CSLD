@@ -10,11 +10,11 @@ import cz.larpovadatabaze.components.panel.user.RatingsListPanel;
 import cz.larpovadatabaze.entities.*;
 import cz.larpovadatabaze.providers.SortableAnnotatedProvider;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.services.AppUsers;
 import cz.larpovadatabaze.services.CsldUsers;
 import cz.larpovadatabaze.services.Games;
 import cz.larpovadatabaze.services.Ratings;
 import cz.larpovadatabaze.utils.HbUtils;
-import cz.larpovadatabaze.utils.UserUtils;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
@@ -40,6 +40,8 @@ public class UserDetailPage extends CsldBasePage {
     Games games;
     @SpringBean
     Ratings ratings;
+    @SpringBean
+    AppUsers appUsers;
 
     private class UserCommentsModel extends LoadableDetachableModel<List<Comment>> {
 
@@ -47,16 +49,16 @@ public class UserDetailPage extends CsldBasePage {
         protected List<Comment> load() {
             List<Comment> userComments = new ArrayList<>();
 
-            CsldUser thisUser = (CsldUser)getDefaultModelObject();
+            CsldUser thisUser = (CsldUser) getDefaultModelObject();
             List<Comment> allUserComments = thisUser.getCommented();
 
             // Add comments
-            if (UserUtils.isEditor()) {
+            if (appUsers.isEditor()) {
                 // Editors see all, users also see all their comments
                 userComments.addAll(allUserComments);
             } else {
                 // Filter not-hidden comments
-                for(Comment c : allUserComments) {
+                for (Comment c : allUserComments) {
                     if (!Boolean.TRUE.equals(c.getHidden())) {
                         userComments.add(c);
                     }

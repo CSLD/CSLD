@@ -13,7 +13,7 @@ import cz.larpovadatabaze.components.panel.user.LoginBoxPanel;
 import cz.larpovadatabaze.donations.components.DonationPage;
 import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.utils.UserUtils;
+import cz.larpovadatabaze.services.AppUsers;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.authentication.IAuthenticationStrategy;
@@ -41,6 +41,8 @@ import java.util.Locale;
 public abstract class CsldBasePage extends WebPage {
     @SpringBean
     private Environment env;
+    @SpringBean
+    private AppUsers appUsers;
 
     public CsldBasePage() {
     }
@@ -67,7 +69,7 @@ public abstract class CsldBasePage extends WebPage {
             if(data != null && data.length > 1){
                 // TODO: Verify setting language on login.
                 CsldAuthenticatedWebSession.get().signIn(data[0], data[1]);
-                CsldUser user = UserUtils.getLoggedUser();
+                CsldUser user = appUsers.getLoggedUser();
                 if(user != null && user.getDefaultLang() != null) {
                     CsldAuthenticatedWebSession.get().setLocale(Locale.forLanguageTag(user.getDefaultLang()));
                 }

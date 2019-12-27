@@ -18,7 +18,7 @@ public enum CsldRoles {
 
     CsldRoles(String roleName, int role) {
         this.roleName = roleName;
-        this.role = new Short(String.valueOf(role));
+        this.role = Short.valueOf(String.valueOf(role));
     }
 
     public String getRoleName() {
@@ -31,11 +31,11 @@ public enum CsldRoles {
 
     public static Short getRoleByName(String name) {
         if (name.equals("Administrátor")) {
-            return new Short((short)3);
+            return (short) 3;
         } else if (name.equals("Editor")) {
-            return new Short((short)2);
+            return (short) 2;
         } else {
-            return new Short((short)1);
+            return (short) 1;
         }
     }
 
