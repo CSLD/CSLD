@@ -5,7 +5,7 @@ import cz.larpovadatabaze.services.FileService;
 import cz.larpovadatabaze.services.s3.S3Bucket;
 import cz.larpovadatabaze.services.s3.S3Files;
 import cz.larpovadatabaze.services.wicket.LocalFiles;
-import cz.larpovadatabaze.utils.MailClient;
+import cz.larpovadatabaze.services.wicket.MailClient;
 import org.flywaydb.core.Flyway;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,10 +2,8 @@ package cz.larpovadatabaze;
 
 import com.mchange.v2.c3p0.DriverManagerDataSource;
 import cz.larpovadatabaze.services.FileService;
-import cz.larpovadatabaze.services.s3.S3Bucket;
-import cz.larpovadatabaze.services.s3.S3Files;
 import cz.larpovadatabaze.services.wicket.LocalFiles;
-import cz.larpovadatabaze.utils.MailClient;
+import cz.larpovadatabaze.services.wicket.MailClient;
 import org.flywaydb.core.Flyway;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,25 +140,7 @@ public class RootTestWithDbConfig {
     // End of email settings
 
     @Bean
-    public S3Bucket bucket() {
-        return new S3Bucket(
-                env.getProperty("csld.data.s3.bucketName")
-        );
-    }
-
-    @Bean
     public FileService fileService() {
-        String typeOfFileService = env.getProperty("csld.data.source");
-        if (typeOfFileService == null) {
-            throw new RuntimeException("It is required to specify type of service. Property csld.data_source is missing.");
-        }
-
-        if (typeOfFileService.equals("local")) {
-            return new LocalFiles(env.getProperty("csld.data.dir"));
-        } else if (typeOfFileService.equals("s3")) {
-            return new S3Files(bucket());
-        } else {
-            throw new RuntimeException("Ilegal type of service. Only s3 and files are supported.");
-        }
+        return new LocalFiles(env.getProperty("csld.data.dir"));
     }
 }

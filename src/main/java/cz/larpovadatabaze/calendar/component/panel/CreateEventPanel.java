@@ -23,7 +23,7 @@ import cz.larpovadatabaze.entities.Label;
 import cz.larpovadatabaze.entities.UserPlayedGame;
 import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.services.Games;
-import cz.larpovadatabaze.utils.MailClient;
+import cz.larpovadatabaze.services.wicket.MailClient;
 import cz.larpovadatabaze.validator.AtLeastOneRequiredLabelValidator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxEventBehavior;
@@ -114,7 +114,7 @@ public abstract class CreateEventPanel extends AbstractCsldPanel<Event> {
         createEvent.add(from);
         createEvent.add(new CsldFeedbackMessageLabel("fromFeedback", from, "form.event.fromHint"));
 
-        final FormComponent<String> fromTimeField = new TimeTextField("fromTime", new PropertyModel(this, "fromTime"));
+        final FormComponent<String> fromTimeField = new TimeTextField("fromTime", new PropertyModel<>(this, "fromTime"));
         fromTimeField.add(new AjaxFormComponentUpdatingBehavior("change") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {}
@@ -126,7 +126,7 @@ public abstract class CreateEventPanel extends AbstractCsldPanel<Event> {
         createEvent.add(to);
         createEvent.add(new CsldFeedbackMessageLabel("toFeedback", to, "form.event.toHint"));
 
-        FormComponent<String> toTimeField = new TimeTextField("toTime", new PropertyModel(this, "toTime"));
+        FormComponent<String> toTimeField = new TimeTextField("toTime", new PropertyModel<>(this, "toTime"));
         toTimeField.add(new AjaxFormComponentUpdatingBehavior("change") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {}

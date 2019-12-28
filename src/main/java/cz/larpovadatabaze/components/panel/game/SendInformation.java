@@ -9,7 +9,7 @@ import cz.larpovadatabaze.entities.UserPlayedGame;
 import cz.larpovadatabaze.security.CsldRoles;
 import cz.larpovadatabaze.services.AppUsers;
 import cz.larpovadatabaze.services.Games;
-import cz.larpovadatabaze.utils.MailClient;
+import cz.larpovadatabaze.services.wicket.MailClient;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;

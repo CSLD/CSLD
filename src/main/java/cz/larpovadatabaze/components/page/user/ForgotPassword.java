@@ -6,7 +6,7 @@ import cz.larpovadatabaze.entities.CsldUser;
 import cz.larpovadatabaze.entities.EmailAuthentication;
 import cz.larpovadatabaze.services.CsldUsers;
 import cz.larpovadatabaze.services.EmailAuthentications;
-import cz.larpovadatabaze.utils.MailClient;
+import cz.larpovadatabaze.services.wicket.MailClient;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.EmailTextField;
