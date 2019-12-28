@@ -13,8 +13,6 @@ import java.util.List;
  *
  */
 public interface Games extends CRUDService<Game, Integer>, IIconReferenceProvider<Game> {
-    Game getById(Integer id);
-
     /**
      * Flush game from Hibernate cache / session cache
      *

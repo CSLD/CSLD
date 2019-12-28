@@ -18,16 +18,37 @@ public interface CsldUsers extends CRUDService<CsldUser, Integer>, IIconReferenc
         }
     }
 
-    CsldUser getById(Integer id);
-
+    /**
+     * Return all the editors in the store. The administrator isn't an editor.
+     *
+     * @return List of all the editors.
+     */
     List<CsldUser> getEditors();
 
+    /**
+     * Return all administrator in the store.
+     *
+     * @return List of all the administrators.
+     */
     List<CsldUser> getAdmins();
 
+    /**
+     * Verify whether the User with given Username and Password is a valid user.
+     *
+     * @param username Email of the user
+     * @param password Password of the user already as the hash.
+     * @return Valid user or null if there is no user with given credentials.
+     */
     CsldUser authenticate(String username, String password);
 
     List<CsldUser> getByAutoCompletable(String autoCompletable) throws WrongParameterException;
 
+    /**
+     * Return the user with given email. If there is none with the mail return null.
+     *
+     * @param mail Email to seek after.
+     * @return Valid user or null.
+     */
     CsldUser getByEmail(String mail);
 
     boolean isLoggedAtLeastEditor();
