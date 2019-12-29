@@ -2,8 +2,8 @@ package cz.larpovadatabaze.calendar.component.panel;
 
 import cz.larpovadatabaze.calendar.component.page.DetailOfEventPage;
 import cz.larpovadatabaze.calendar.model.Event;
-import cz.larpovadatabaze.components.common.AbstractCsldPanel;
-import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.common.components.AbstractCsldPanel;
+import cz.larpovadatabaze.common.components.page.CsldBasePage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
@@ -28,7 +28,7 @@ public class EventNameAndLabelsPanel extends AbstractCsldPanel<Event> {
         add(eventLink);
 
         StringBuilder labels = new StringBuilder();
-        for(cz.larpovadatabaze.entities.Label l : getModelObject().getLabels()) {
+        for (cz.larpovadatabaze.common.entities.Label l : getModelObject().getLabels()) {
             if (labels.length() > 0) {
                 // Add divisor
                 labels.append(", ");

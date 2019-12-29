@@ -1,16 +1,16 @@
 package cz.larpovadatabaze.calendar.service.events;
 
-import cz.larpovadatabaze.api.GenericHibernateDAO;
 import cz.larpovadatabaze.calendar.BoundingBox;
 import cz.larpovadatabaze.calendar.model.Event;
+import cz.larpovadatabaze.calendar.model.FilterEvent;
 import cz.larpovadatabaze.calendar.service.Events;
-import cz.larpovadatabaze.dao.builder.GenericBuilder;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Label;
-import cz.larpovadatabaze.entities.UserPlayedGame;
-import cz.larpovadatabaze.models.FilterEvent;
-import cz.larpovadatabaze.services.sql.CRUD;
+import cz.larpovadatabaze.common.api.GenericHibernateDAO;
+import cz.larpovadatabaze.common.dao.builder.GenericBuilder;
+import cz.larpovadatabaze.common.entities.CsldUser;
+import cz.larpovadatabaze.common.entities.Game;
+import cz.larpovadatabaze.common.entities.Label;
+import cz.larpovadatabaze.common.entities.UserPlayedGame;
+import cz.larpovadatabaze.common.services.sql.CRUD;
 import org.apache.wicket.model.IModel;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;

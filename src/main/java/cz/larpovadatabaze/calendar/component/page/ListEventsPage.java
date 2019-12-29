@@ -1,19 +1,19 @@
 package cz.larpovadatabaze.calendar.component.page;
 
-import cz.larpovadatabaze.api.Toggles;
 import cz.larpovadatabaze.calendar.component.panel.AbstractListEventPanel;
 import cz.larpovadatabaze.calendar.component.panel.FilterEventsSidePanel;
 import cz.larpovadatabaze.calendar.model.Event;
+import cz.larpovadatabaze.calendar.model.FilterEvent;
 import cz.larpovadatabaze.calendar.service.Events;
 import cz.larpovadatabaze.calendar.service.GeographicalFilter;
 import cz.larpovadatabaze.calendar.service.SortableEventProvider;
-import cz.larpovadatabaze.components.common.FilterablePage;
-import cz.larpovadatabaze.components.common.tabs.TabsComponentPanel;
-import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.HomePage;
-import cz.larpovadatabaze.entities.Label;
-import cz.larpovadatabaze.models.FilterEvent;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.common.api.Toggles;
+import cz.larpovadatabaze.common.components.FilterablePage;
+import cz.larpovadatabaze.common.components.page.CsldBasePage;
+import cz.larpovadatabaze.common.components.page.HomePage;
+import cz.larpovadatabaze.common.components.tabs.TabsComponentPanel;
+import cz.larpovadatabaze.common.entities.Label;
+import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
 import org.apache.commons.lang.WordUtils;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxEventBehavior;

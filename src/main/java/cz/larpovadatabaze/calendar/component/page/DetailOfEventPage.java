@@ -1,18 +1,18 @@
 package cz.larpovadatabaze.calendar.component.page;
 
-import cz.larpovadatabaze.api.Toggles;
 import cz.larpovadatabaze.calendar.component.panel.DeleteEventPanel;
 import cz.larpovadatabaze.calendar.component.panel.DetailedEventPanel;
 import cz.larpovadatabaze.calendar.component.panel.EditEventPanel;
 import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.calendar.model.EventModel;
 import cz.larpovadatabaze.calendar.service.Events;
-import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.HomePage;
-import cz.larpovadatabaze.components.panel.game.GameListPanel;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.utils.Strings;
+import cz.larpovadatabaze.common.api.Toggles;
+import cz.larpovadatabaze.common.components.page.CsldBasePage;
+import cz.larpovadatabaze.common.components.page.HomePage;
+import cz.larpovadatabaze.common.entities.Game;
+import cz.larpovadatabaze.common.utils.Strings;
+import cz.larpovadatabaze.games.components.panel.GameListPanel;
+import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;

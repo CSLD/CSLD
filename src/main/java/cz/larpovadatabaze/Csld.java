@@ -1,5 +1,8 @@
 package cz.larpovadatabaze;
 
+import cz.larpovadatabaze.administration.components.page.AdministrationPage;
+import cz.larpovadatabaze.administration.components.page.ManageLabelsPage;
+import cz.larpovadatabaze.administration.components.page.ManageUserRightsPage;
 import cz.larpovadatabaze.calendar.component.page.CreateOrUpdateEventPage;
 import cz.larpovadatabaze.calendar.component.page.DetailOfEventPage;
 import cz.larpovadatabaze.calendar.component.page.ListEventsPage;
@@ -7,32 +10,30 @@ import cz.larpovadatabaze.calendar.service.Events;
 import cz.larpovadatabaze.calendar.service.ICalProducerResource;
 import cz.larpovadatabaze.calendar.service.LarpCzEvents;
 import cz.larpovadatabaze.calendar.service.LarpCzImport;
-import cz.larpovadatabaze.components.page.HomePage;
-import cz.larpovadatabaze.components.page.TestDatabase;
-import cz.larpovadatabaze.components.page.about.AboutDatabasePage;
-import cz.larpovadatabaze.components.page.admin.AdministrationPage;
-import cz.larpovadatabaze.components.page.admin.ManageLabelsPage;
-import cz.larpovadatabaze.components.page.admin.ManageUserRightsPage;
-import cz.larpovadatabaze.components.page.author.CreateOrUpdateAuthorPage;
-import cz.larpovadatabaze.components.page.error.Error404Page;
-import cz.larpovadatabaze.components.page.error.Error500Page;
-import cz.larpovadatabaze.components.page.game.*;
-import cz.larpovadatabaze.components.page.group.CreateOrUpdateGroupPage;
-import cz.larpovadatabaze.components.page.group.GroupDetail;
-import cz.larpovadatabaze.components.page.search.SearchResultsPage;
-import cz.larpovadatabaze.components.page.user.*;
-import cz.larpovadatabaze.converters.*;
+import cz.larpovadatabaze.common.components.page.HomePage;
+import cz.larpovadatabaze.common.components.page.TestDatabase;
+import cz.larpovadatabaze.common.components.page.error.Error404Page;
+import cz.larpovadatabaze.common.components.page.error.Error500Page;
+import cz.larpovadatabaze.common.converters.EnglishDateConverter;
+import cz.larpovadatabaze.common.entities.CsldGroup;
+import cz.larpovadatabaze.common.entities.CsldUser;
+import cz.larpovadatabaze.common.entities.Game;
+import cz.larpovadatabaze.common.entities.Label;
 import cz.larpovadatabaze.donations.components.DonationPage;
 import cz.larpovadatabaze.donations.service.BankAccount;
-import cz.larpovadatabaze.entities.CsldGroup;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Label;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.services.CsldGroups;
-import cz.larpovadatabaze.services.CsldUsers;
-import cz.larpovadatabaze.services.Games;
-import cz.larpovadatabaze.services.Labels;
+import cz.larpovadatabaze.games.components.page.*;
+import cz.larpovadatabaze.games.converters.GameConverter;
+import cz.larpovadatabaze.games.converters.LabelConverter;
+import cz.larpovadatabaze.games.services.Games;
+import cz.larpovadatabaze.games.services.Labels;
+import cz.larpovadatabaze.search.components.SearchResultsPage;
+import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.users.components.page.*;
+import cz.larpovadatabaze.users.components.page.about.AboutDatabasePage;
+import cz.larpovadatabaze.users.converters.CsldUserConverter;
+import cz.larpovadatabaze.users.converters.GroupConverter;
+import cz.larpovadatabaze.users.services.CsldGroups;
+import cz.larpovadatabaze.users.services.CsldUsers;
 import org.apache.log4j.Logger;
 import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
@@ -199,7 +200,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         }
 
         if(env.getProperty("csld.integrate_calendar", Boolean.class)) {
-            new Thread(() -> new LarpCzImport(events, new LarpCzEvents(), sessionFactory).importEvents()).start();
+            new Thread(() -> new LarpCzImport(events, new LarpCzEvents(), sessionFactory, labels).importEvents()).start();
         }
 	}
 

@@ -1,7 +1,7 @@
 package cz.larpovadatabaze;
 
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.common.entities.CsldUser;
+import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.After;
 import org.junit.Before;

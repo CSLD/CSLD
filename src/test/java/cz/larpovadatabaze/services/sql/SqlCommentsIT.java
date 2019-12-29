@@ -1,10 +1,11 @@
 package cz.larpovadatabaze.services.sql;
 
 import cz.larpovadatabaze.WithDatabase;
-import cz.larpovadatabaze.entities.Comment;
-import cz.larpovadatabaze.services.AppUsers;
-import cz.larpovadatabaze.services.Comments;
-import cz.larpovadatabaze.services.Games;
+import cz.larpovadatabaze.common.entities.Comment;
+import cz.larpovadatabaze.games.services.Comments;
+import cz.larpovadatabaze.games.services.Games;
+import cz.larpovadatabaze.games.services.sql.SqlComments;
+import cz.larpovadatabaze.users.services.AppUsers;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;

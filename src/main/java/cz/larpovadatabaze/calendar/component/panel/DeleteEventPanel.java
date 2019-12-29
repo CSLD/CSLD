@@ -2,8 +2,8 @@ package cz.larpovadatabaze.calendar.component.panel;
 
 import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.calendar.service.Events;
-import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.common.components.page.CsldBasePage;
+import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;

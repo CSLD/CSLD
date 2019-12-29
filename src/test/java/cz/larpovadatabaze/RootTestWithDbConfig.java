@@ -1,9 +1,9 @@
 package cz.larpovadatabaze;
 
 import com.mchange.v2.c3p0.DriverManagerDataSource;
-import cz.larpovadatabaze.services.FileService;
-import cz.larpovadatabaze.services.wicket.LocalFiles;
-import cz.larpovadatabaze.services.wicket.MailClient;
+import cz.larpovadatabaze.common.services.FileService;
+import cz.larpovadatabaze.common.services.wicket.LocalFiles;
+import cz.larpovadatabaze.common.services.wicket.MailClient;
 import org.flywaydb.core.Flyway;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import java.util.Properties;
  * Configuration of Spring and its dependencies.
  */
 @Configuration
-@ComponentScan(basePackages = {"cz.larpovadatabaze.services", "cz.larpovadatabaze.dao"})
+@ComponentScan(basePackages = {"cz.larpovadatabaze.services", "cz.larpovadatabaze.common.dao"})
 @EnableTransactionManagement
 @PropertySource(value = {"classpath:application.properties"})
 public class RootTestWithDbConfig {

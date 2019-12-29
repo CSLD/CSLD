@@ -1,5 +1,8 @@
 package cz.larpovadatabaze.api;
 
+import cz.larpovadatabaze.common.api.NoResultException;
+import cz.larpovadatabaze.common.api.NullOptional;
+import cz.larpovadatabaze.common.api.Option;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;

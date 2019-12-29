@@ -1,10 +1,10 @@
 package cz.larpovadatabaze.calendar.model;
 
-import cz.larpovadatabaze.api.Identifiable;
 import cz.larpovadatabaze.calendar.Location;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.entities.Label;
+import cz.larpovadatabaze.common.api.Identifiable;
+import cz.larpovadatabaze.common.entities.CsldUser;
+import cz.larpovadatabaze.common.entities.Game;
+import cz.larpovadatabaze.common.entities.Label;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.property.Uid;
 import org.apache.wicket.model.IModel;
@@ -26,7 +26,7 @@ import java.util.List;
  * Event for the database.
  */
 @Entity(name = "event")
-public class Event implements cz.larpovadatabaze.api.Entity, Identifiable<Integer> {
+public class Event implements cz.larpovadatabaze.common.api.Entity, Identifiable<Integer> {
     @Transient
     private SimpleDateFormat czechDate = new SimpleDateFormat("dd.MM.yyyy HH:mm");
     @Transient

@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.donations.components;
 
-import cz.larpovadatabaze.components.page.CsldBasePage;
+import cz.larpovadatabaze.common.components.page.CsldBasePage;
 
 /**
  * Page with information about donations and donators.

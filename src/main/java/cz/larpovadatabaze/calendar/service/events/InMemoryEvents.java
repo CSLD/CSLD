@@ -2,10 +2,10 @@ package cz.larpovadatabaze.calendar.service.events;
 
 import cz.larpovadatabaze.calendar.BoundingBox;
 import cz.larpovadatabaze.calendar.model.Event;
+import cz.larpovadatabaze.calendar.model.FilterEvent;
 import cz.larpovadatabaze.calendar.service.Events;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.models.FilterEvent;
-import cz.larpovadatabaze.services.masqueradeStubs.InMemoryCrud;
+import cz.larpovadatabaze.common.entities.CsldUser;
+import cz.larpovadatabaze.common.services.masqueradeStubs.InMemoryCrud;
 import org.apache.wicket.model.IModel;
 
 import java.util.ArrayList;

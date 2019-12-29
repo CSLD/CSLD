@@ -2,12 +2,13 @@ package cz.larpovadatabaze.components.page.group;
 
 import cz.larpovadatabaze.TestUtils;
 import cz.larpovadatabaze.WithWicket;
-import cz.larpovadatabaze.components.panel.game.ListGamesWithAnnotations;
-import cz.larpovadatabaze.components.panel.group.AddGroupPanel;
-import cz.larpovadatabaze.components.panel.group.EditGroupPanel;
-import cz.larpovadatabaze.components.panel.group.GroupDetailPanel;
-import cz.larpovadatabaze.services.CsldGroups;
-import cz.larpovadatabaze.services.CsldUsers;
+import cz.larpovadatabaze.games.components.panel.ListGamesWithAnnotations;
+import cz.larpovadatabaze.users.components.page.GroupDetail;
+import cz.larpovadatabaze.users.components.panel.AddGroupPanel;
+import cz.larpovadatabaze.users.components.panel.EditGroupPanel;
+import cz.larpovadatabaze.users.components.panel.GroupDetailPanel;
+import cz.larpovadatabaze.users.services.CsldGroups;
+import cz.larpovadatabaze.users.services.CsldUsers;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

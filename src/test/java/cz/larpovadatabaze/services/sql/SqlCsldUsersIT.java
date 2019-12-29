@@ -1,11 +1,12 @@
 package cz.larpovadatabaze.services.sql;
 
 import cz.larpovadatabaze.WithDatabase;
-import cz.larpovadatabaze.dao.CsldUserDAO;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.services.CsldUsers;
-import cz.larpovadatabaze.services.Images;
-import cz.larpovadatabaze.utils.Pwd;
+import cz.larpovadatabaze.common.dao.CsldUserDAO;
+import cz.larpovadatabaze.common.entities.CsldUser;
+import cz.larpovadatabaze.games.services.Images;
+import cz.larpovadatabaze.users.Pwd;
+import cz.larpovadatabaze.users.services.CsldUsers;
+import cz.larpovadatabaze.users.services.sql.SqlCsldUsers;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;

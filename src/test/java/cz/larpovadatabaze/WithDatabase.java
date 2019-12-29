@@ -1,6 +1,6 @@
 package cz.larpovadatabaze;
 
-import cz.larpovadatabaze.services.builders.CzechMasqueradeBuilder;
+import cz.larpovadatabaze.common.services.builders.CzechMasqueradeBuilder;
 import org.flywaydb.core.Flyway;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

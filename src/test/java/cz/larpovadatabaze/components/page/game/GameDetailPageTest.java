@@ -1,10 +1,11 @@
 package cz.larpovadatabaze.components.page.game;
 
 import cz.larpovadatabaze.WithWicket;
-import cz.larpovadatabaze.components.panel.game.*;
-import cz.larpovadatabaze.entities.Game;
-import cz.larpovadatabaze.services.CsldUsers;
-import cz.larpovadatabaze.services.Games;
+import cz.larpovadatabaze.common.entities.Game;
+import cz.larpovadatabaze.games.components.page.GameDetail;
+import cz.larpovadatabaze.games.components.panel.*;
+import cz.larpovadatabaze.games.services.Games;
+import cz.larpovadatabaze.users.services.CsldUsers;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.junit.Before;
 import org.junit.Test;

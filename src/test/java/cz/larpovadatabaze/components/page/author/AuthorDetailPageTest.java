@@ -1,14 +1,14 @@
 package cz.larpovadatabaze.components.page.author;
 
 import cz.larpovadatabaze.WithWicket;
-import cz.larpovadatabaze.components.page.user.UserDetailPage;
-import cz.larpovadatabaze.components.panel.game.CommentsListPanel;
-import cz.larpovadatabaze.components.panel.game.GameListPanel;
-import cz.larpovadatabaze.components.panel.game.ListGamesWithAnnotations;
-import cz.larpovadatabaze.components.panel.user.PersonDetailPanel;
-import cz.larpovadatabaze.components.panel.user.RatingsListPanel;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.services.CsldUsers;
+import cz.larpovadatabaze.common.entities.CsldUser;
+import cz.larpovadatabaze.games.components.panel.CommentsListPanel;
+import cz.larpovadatabaze.games.components.panel.GameListPanel;
+import cz.larpovadatabaze.games.components.panel.ListGamesWithAnnotations;
+import cz.larpovadatabaze.users.components.page.UserDetailPage;
+import cz.larpovadatabaze.users.components.panel.PersonDetailPanel;
+import cz.larpovadatabaze.users.components.panel.RatingsListPanel;
+import cz.larpovadatabaze.users.services.CsldUsers;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.junit.Before;
 import org.junit.Test;

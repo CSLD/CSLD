@@ -2,10 +2,10 @@ package cz.larpovadatabaze.calendar.component.panel;
 
 import cz.larpovadatabaze.calendar.component.page.CreateOrUpdateEventPage;
 import cz.larpovadatabaze.calendar.model.Event;
-import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.entities.CsldUser;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.security.CsldRoles;
+import cz.larpovadatabaze.common.components.page.CsldBasePage;
+import cz.larpovadatabaze.common.entities.CsldUser;
+import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.users.CsldRoles;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;

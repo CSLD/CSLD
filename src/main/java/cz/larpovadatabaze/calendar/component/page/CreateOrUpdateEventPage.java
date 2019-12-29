@@ -1,13 +1,13 @@
 package cz.larpovadatabaze.calendar.component.page;
 
-import cz.larpovadatabaze.api.Toggles;
 import cz.larpovadatabaze.calendar.component.panel.CreateEventPanel;
 import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.calendar.model.EventModel;
 import cz.larpovadatabaze.calendar.service.Events;
-import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.HomePage;
-import cz.larpovadatabaze.security.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.common.api.Toggles;
+import cz.larpovadatabaze.common.components.page.CsldBasePage;
+import cz.larpovadatabaze.common.components.page.HomePage;
+import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.request.mapper.parameter.PageParameters;

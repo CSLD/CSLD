@@ -2,9 +2,10 @@ package cz.larpovadatabaze.components.page.game;
 
 import cz.larpovadatabaze.TestUtils;
 import cz.larpovadatabaze.WithWicket;
-import cz.larpovadatabaze.components.page.user.CsldSignInPage;
-import cz.larpovadatabaze.components.panel.game.CreateOrUpdateGamePanel;
-import cz.larpovadatabaze.services.CsldUsers;
+import cz.larpovadatabaze.games.components.page.CreateOrUpdateGamePage;
+import cz.larpovadatabaze.games.components.panel.CreateOrUpdateGamePanel;
+import cz.larpovadatabaze.users.components.page.CsldSignInPage;
+import cz.larpovadatabaze.users.services.CsldUsers;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -1,7 +1,7 @@
 package cz.larpovadatabaze.calendar.service;
 
 import cz.larpovadatabaze.calendar.model.Event;
-import cz.larpovadatabaze.services.CsldUsers;
+import cz.larpovadatabaze.users.services.CsldUsers;
 import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.component.VEvent;

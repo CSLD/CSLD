@@ -1,10 +1,11 @@
 package cz.larpovadatabaze.components.page;
 
 import cz.larpovadatabaze.WithWicket;
-import cz.larpovadatabaze.components.panel.home.LarpCzCalendarPanel;
-import cz.larpovadatabaze.components.panel.home.LastCommentsPanel;
-import cz.larpovadatabaze.components.panel.home.RecentGamesPanel;
-import cz.larpovadatabaze.components.panel.home.RecentPhotosPanel;
+import cz.larpovadatabaze.common.components.home.LarpCzCalendarPanel;
+import cz.larpovadatabaze.common.components.home.LastCommentsPanel;
+import cz.larpovadatabaze.common.components.home.RecentGamesPanel;
+import cz.larpovadatabaze.common.components.home.RecentPhotosPanel;
+import cz.larpovadatabaze.common.components.page.HomePage;
 import org.junit.Test;
 
 /**

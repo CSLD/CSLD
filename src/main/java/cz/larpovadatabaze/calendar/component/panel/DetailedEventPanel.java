@@ -1,9 +1,9 @@
 package cz.larpovadatabaze.calendar.component.panel;
 
 import cz.larpovadatabaze.calendar.model.Event;
-import cz.larpovadatabaze.components.common.social.SocialShareButtons;
-import cz.larpovadatabaze.components.page.CsldBasePage;
-import cz.larpovadatabaze.components.page.game.ListGamePage;
+import cz.larpovadatabaze.common.components.page.CsldBasePage;
+import cz.larpovadatabaze.common.components.social.SocialShareButtons;
+import cz.larpovadatabaze.games.components.page.ListGamePage;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.basic.Label;
@@ -48,11 +48,11 @@ public class DetailedEventPanel extends Panel {
 
         // TODO: Move labels to separate component.
         // Labels
-        List<cz.larpovadatabaze.entities.Label> labels = event.getLabels();
-        ListView<cz.larpovadatabaze.entities.Label> view = new ListView<cz.larpovadatabaze.entities.Label>("labels", labels) {
+        List<cz.larpovadatabaze.common.entities.Label> labels = event.getLabels();
+        ListView<cz.larpovadatabaze.common.entities.Label> view = new ListView<cz.larpovadatabaze.common.entities.Label>("labels", labels) {
             @Override
-            protected void populateItem(ListItem<cz.larpovadatabaze.entities.Label> item) {
-                cz.larpovadatabaze.entities.Label label = item.getModelObject();
+            protected void populateItem(ListItem<cz.larpovadatabaze.common.entities.Label> item) {
+                cz.larpovadatabaze.common.entities.Label label = item.getModelObject();
 
                 BookmarkablePageLink link = new BookmarkablePageLink<CsldBasePage>("link", ListGamePage.class, ListGamePage.getParametersForLabel(label.getId()));
                 item.add(link);

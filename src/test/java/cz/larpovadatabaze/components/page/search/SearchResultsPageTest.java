@@ -1,7 +1,8 @@
 package cz.larpovadatabaze.components.page.search;
 
 import cz.larpovadatabaze.WithWicket;
-import cz.larpovadatabaze.components.panel.game.AbstractListGamePanel;
+import cz.larpovadatabaze.games.components.panel.AbstractListGamePanel;
+import cz.larpovadatabaze.search.components.SearchResultsPage;
 import org.junit.Test;
 
 /**

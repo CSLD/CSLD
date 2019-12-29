@@ -1,0 +1,33 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+    <!--
+    It shows information about all editors of the database
+    It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/about/EditorPanel.html
+    Code - cz.larpovadatabaze.users.components.panel.about.EditorPanel.html
+    -->
+<div class="panel panel-default">
+
+    <div class="panel-heading">
+        <h2 class="panel-title"><wicket:message key="editors">Moderátoři</wicket:message></h2>
+
+    <table class="moderators-table">
+        <tbody>
+        <tr wicket:id="listModerator">
+            <!-- Beginning of repetitive part for every editor -->
+            <td>
+                <a wicket:id="moderatorLink">
+                    <img wicket:id="moderatorImage" class="obrazekModerator">
+                </a>
+            </td>
+            <td class="obsah">
+                <a wicket:id="moderatorLinkContent">
+                    <span wicket:id="moderatorNick" class="nick">Čiki</span>
+                    <span wicket:id="moderatorName" class="jmeno">Petr Kuběnský</span>
+                </a>
+            </td>
+            <!-- End of repetitive part for every editor -->
+        </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+</wicket:panel>

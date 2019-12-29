@@ -1,11 +1,11 @@
 package cz.larpovadatabaze;
 
 import com.mchange.v2.c3p0.DriverManagerDataSource;
-import cz.larpovadatabaze.services.FileService;
-import cz.larpovadatabaze.services.s3.S3Bucket;
-import cz.larpovadatabaze.services.s3.S3Files;
-import cz.larpovadatabaze.services.wicket.LocalFiles;
-import cz.larpovadatabaze.services.wicket.MailClient;
+import cz.larpovadatabaze.common.services.FileService;
+import cz.larpovadatabaze.common.services.s3.S3Bucket;
+import cz.larpovadatabaze.common.services.s3.S3Files;
+import cz.larpovadatabaze.common.services.wicket.LocalFiles;
+import cz.larpovadatabaze.common.services.wicket.MailClient;
 import org.flywaydb.core.Flyway;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
