@@ -5,9 +5,7 @@ import cz.larpovadatabaze.common.components.home.LastCommentsPanel;
 import cz.larpovadatabaze.common.components.home.RecentGamesPanel;
 import cz.larpovadatabaze.common.components.home.RecentPhotosPanel;
 import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.request.http.WebResponse;
-import org.apache.wicket.request.resource.PackageResourceReference;
 
 /**
  *
@@ -43,6 +41,5 @@ public class HomePage extends CsldBasePage {
     @Override
     public void renderHead(IHeaderResponse response) {
         super.renderHead(response);
-        response.render(JavaScriptHeaderItem.forReference(new PackageResourceReference(CsldBasePage.class, "js/homePage.js")));
     }
 }

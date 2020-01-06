@@ -29,7 +29,7 @@ public class SqlFileImages extends CRUD<Image, Integer> implements Images {
 
     @Override
     public void remove(Image toRemove) {
-        crudRepository.makeTransient(toRemove);
+        crudRepository.delete(toRemove);
 
         // Delete file(s)
         fileService.removeFiles(toRemove.getPath());

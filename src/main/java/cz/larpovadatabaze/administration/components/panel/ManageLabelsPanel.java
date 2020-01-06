@@ -2,7 +2,7 @@ package cz.larpovadatabaze.administration.components.panel;
 
 import cz.larpovadatabaze.common.components.AbstractCsldPanel;
 import cz.larpovadatabaze.common.entities.Label;
-import cz.larpovadatabaze.games.services.Labels;
+import cz.larpovadatabaze.common.services.CRUDService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -32,9 +32,9 @@ import java.util.List;
  */
 public class ManageLabelsPanel extends AbstractCsldPanel<List<Label>> {
     @SpringBean
-    Labels labels;
+    CRUDService<Label, Integer> labels;
 
-    Form manageLabels;
+    Form<List<Label>> manageLabels;
     HiddenField<String> editedLabelId;
     TextArea<String> newLabelDescription;
     PackageTextTemplate initJS;
@@ -55,7 +55,7 @@ public class ManageLabelsPanel extends AbstractCsldPanel<List<Label>> {
     protected void onInitialize() {
         super.onInitialize();
 
-        manageLabels = new Form("manageLabels") {
+        manageLabels = new Form<>("manageLabels") {
             @Override
             protected void onSubmit() {
                 if (StringUtils.isNotEmpty(editedLabelId.getModelObject())) {

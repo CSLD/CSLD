@@ -72,11 +72,6 @@ public class InMemoryCsldUsers extends InMemoryCrud<CsldUser, Integer> implement
     }
 
     @Override
-    public boolean isLoggedAtLeastEditor() {
-        return false;
-    }
-
-    @Override
     public boolean saveOrUpdateNewAuthor(CsldUser author) {
         inMemory.add(author);
 

@@ -1,4 +1,4 @@
-package cz.larpovadatabaze.games.components;
+package cz.larpovadatabaze.administration.components;
 
 import cz.larpovadatabaze.common.components.AbstractCsldPanel;
 import cz.larpovadatabaze.common.entities.Game;
@@ -39,7 +39,7 @@ public class RatingDeleteButton extends AbstractCsldPanel<Rating> {
             return;
         }
 
-        AjaxLink button = new AjaxLink("button") {
+        AjaxLink<Game> button = new AjaxLink<>("button") {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 Rating rating = RatingDeleteButton.this.getModelObject();

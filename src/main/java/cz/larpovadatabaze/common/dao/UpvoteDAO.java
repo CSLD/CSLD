@@ -33,7 +33,7 @@ public class UpvoteDAO extends GenericHibernateDAO<Upvote, Integer> {
         toAdd.setComment(comment);
         toAdd.setAdded(new Timestamp(new Date().getTime()));
 
-        makePersistent(toAdd);
+        saveOrUpdate(toAdd);
     }
 
     /**
@@ -49,7 +49,7 @@ public class UpvoteDAO extends GenericHibernateDAO<Upvote, Integer> {
 
         List<Upvote> upvotes = findByExample(toRemove);
         for(Upvote upvote: upvotes) {
-            makeTransient(upvote);
+            delete(upvote);
         }
     }
 }

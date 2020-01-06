@@ -33,7 +33,7 @@ public class UpvoteButton extends AbstractCsldPanel<Integer> {
             return;
         }
 
-        AjaxLink button = new AjaxLink("button") {
+        AjaxLink<Integer> button = new AjaxLink<>("button") {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 IModel<Integer> model = UpvoteButton.this.getModel();

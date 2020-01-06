@@ -8,7 +8,7 @@ import cz.larpovadatabaze.common.entities.UserPlayedGame;
 import cz.larpovadatabaze.common.services.sql.CRUD;
 import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.games.services.Ratings;
-import cz.larpovadatabaze.users.services.CsldUsers;
+import cz.larpovadatabaze.users.services.AppUsers;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -29,15 +29,15 @@ import java.util.*;
 @Repository
 @Transactional
 public class SqlRatings extends CRUD<Rating, Integer> implements Ratings {
-    private final CsldUsers csldUsers;
+    private final AppUsers appUsers;
     private final GenericHibernateDAO<UserPlayedGame, Integer> statesOfGameForUsers;
     private final Games games;
 
     @Autowired
-    public SqlRatings(SessionFactory sessionFactory, CsldUsers csldUsers, Games games) {
+    public SqlRatings(SessionFactory sessionFactory, AppUsers appUsers, Games games) {
         super(new GenericHibernateDAO<>(sessionFactory, new GenericBuilder<>(Rating.class)));
 
-        this.csldUsers = csldUsers;
+        this.appUsers = appUsers;
         this.statesOfGameForUsers = new GenericHibernateDAO<>(sessionFactory, new GenericBuilder<>(UserPlayedGame.class));
         this.games = games;
     }
@@ -52,7 +52,7 @@ public class SqlRatings extends CRUD<Rating, Integer> implements Ratings {
 
     @Override
     public void remove(Rating toRemove) {
-        crudRepository.makeTransient(toRemove);
+        crudRepository.delete(toRemove);
 
         // Some fields in the game object are computed by triggers - flush corresponding game from hibernate cache so it is reloaded
         games.evictGame(toRemove.getGame().getId());
@@ -97,7 +97,7 @@ public class SqlRatings extends CRUD<Rating, Integer> implements Ratings {
 
     @Override
     public List<Rating> getRatingsOfUser(CsldUser logged, CsldUser actual) {
-        if (logged == null || (!logged.getId().equals(actual.getId()) && !csldUsers.isLoggedAtLeastEditor())) {
+        if (logged == null || (!logged.getId().equals(actual.getId()) && !appUsers.isAtLeastEditor())) {
             return new ArrayList<>();
         } else {
             Criteria criteria = crudRepository.getExecutableCriteria()
@@ -111,7 +111,7 @@ public class SqlRatings extends CRUD<Rating, Integer> implements Ratings {
 
     @Override
     public void delete(Rating rating) {
-        crudRepository.makeTransient(rating);
+        crudRepository.delete(rating);
 
         games.evictGame(rating.getGame().getId());
     }

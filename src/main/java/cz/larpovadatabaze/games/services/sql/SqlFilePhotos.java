@@ -43,7 +43,7 @@ public class SqlFilePhotos extends CRUD<Photo, Integer> implements Photos {
 
     @Override
     public void remove(Photo toRemove) {
-        crudRepository.makeTransient(toRemove);
+        crudRepository.delete(toRemove);
 
         // Delete file(s)
         if (toRemove.getImage() != null) {

@@ -6,8 +6,6 @@ import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.exceptions.WrongParameterException;
 import cz.larpovadatabaze.common.services.sql.CRUD;
 import cz.larpovadatabaze.games.services.Images;
-import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.users.CsldRoles;
 import cz.larpovadatabaze.users.Pwd;
 import cz.larpovadatabaze.users.RandomString;
 import cz.larpovadatabaze.users.services.CsldUsers;
@@ -83,14 +81,6 @@ public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
         return csldUserDao.getFirstChoices(startsWith, maxChoices);
     }
 
-    @Override
-    public boolean isLoggedAtLeastEditor() {
-        CsldUser user = CsldAuthenticatedWebSession.get().getLoggedUser();
-        if(user == null){
-            return false;
-        }
-        return user.getRole() >= CsldRoles.getRoleByName("Editor");
-    }
 
     @Override
     public boolean saveOrUpdateNewAuthor(CsldUser author) {

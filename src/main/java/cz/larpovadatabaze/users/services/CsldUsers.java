@@ -53,8 +53,6 @@ public interface CsldUsers extends CRUDService<CsldUser, Integer>, IIconReferenc
      */
     CsldUser getByEmail(String mail);
 
-    boolean isLoggedAtLeastEditor();
-
     /**
      * It updates given author, with all data that user is not forced to add, but we actually need
      * for the database for author like generated email.

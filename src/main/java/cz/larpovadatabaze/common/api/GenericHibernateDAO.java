@@ -1,7 +1,6 @@
 package cz.larpovadatabaze.common.api;
 
 import cz.larpovadatabaze.common.dao.builder.IBuilder;
-import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -18,8 +17,6 @@ public class GenericHibernateDAO<T, I extends Serializable>
     protected SessionFactory sessionFactory;
     protected IBuilder builder;
 
-    private static final Logger logger = Logger.getLogger(GenericHibernateDAO.class);
-
     public GenericHibernateDAO(SessionFactory sessionFactory, IBuilder builder) {
         this.sessionFactory = sessionFactory;
         this.builder = builder;
@@ -29,17 +26,9 @@ public class GenericHibernateDAO<T, I extends Serializable>
         return builder;
     }
 
-    /**
-     * Works only with identifiers specified by Id. Do not use this method, if you expect
-     * entity to be nonexistent.
-     *
-     * @param id id of the object.
-     * @return Existing object
-     */
-    @SuppressWarnings("unchecked")
-    public T findById(I id) {
-		return findSingleByCriteria(Restrictions.eq("id",id));
-	}
+   public T findById(I id) {
+       return findSingleByCriteria(Restrictions.eq("id", id));
+   }
 
 	@SuppressWarnings("unchecked")
 	public List<T> findAll() {
@@ -95,23 +84,17 @@ public class GenericHibernateDAO<T, I extends Serializable>
         return (T) crit.uniqueResult();
     }
 
-	@SuppressWarnings("unchecked")
-	public T makePersistent(T entity) {
-		sessionFactory.getCurrentSession().saveOrUpdate(entity);
-		return entity;
-	}
-
-	public void makeTransient(T entity) {
+    public void delete(T entity) {
         sessionFactory.getCurrentSession().delete(entity);
         sessionFactory.getCurrentSession().flush();
-	}
+    }
 
     public boolean saveOrUpdate(T entity) {
         sessionFactory.getCurrentSession().saveOrUpdate(entity);
         return true;
     }
 
-	public void flush() {
+    public void flush() {
 		sessionFactory.getCurrentSession().flush();
 	}
 
