@@ -2,8 +2,6 @@ package cz.larpovadatabaze.common.services.sql;
 
 import cz.larpovadatabaze.common.api.GenericHibernateDAO;
 import cz.larpovadatabaze.common.services.CRUDService;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.List;
@@ -14,8 +12,6 @@ import java.util.List;
  * @param <T> Entity which takes part in the standard CRUD
  * @param <I> Identity for entity.
  */
-@Repository
-@Transactional
 public class CRUD<T, I extends Serializable> implements CRUDService<T, I> {
     protected GenericHibernateDAO<T, I> crudRepository;
 

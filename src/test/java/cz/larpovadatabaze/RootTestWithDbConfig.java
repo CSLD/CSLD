@@ -23,7 +23,13 @@ import java.util.Properties;
  * Configuration of Spring and its dependencies.
  */
 @Configuration
-@ComponentScan(basePackages = {"cz.larpovadatabaze.services", "cz.larpovadatabaze.common.dao"})
+@ComponentScan(basePackages = {
+        "cz.larpovadatabaze.administration.services",
+        "cz.larpovadatabaze.common.services",
+        "cz.larpovadatabaze.games.services",
+        "cz.larpovadatabaze.search.services",
+        "cz.larpovadatabaze.users.services",
+        "cz.larpovadatabaze.common.dao"})
 @EnableTransactionManagement
 @PropertySource(value = {"classpath:application.properties"})
 public class RootTestWithDbConfig {
