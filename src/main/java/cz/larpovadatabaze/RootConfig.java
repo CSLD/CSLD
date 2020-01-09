@@ -62,7 +62,7 @@ public class RootConfig {
 
     @Bean
     @DependsOn("flyway")
-    public LocalSessionFactoryBean localSessionFactoryBean() {
+    public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean factory = new LocalSessionFactoryBean();
 
         factory.setDataSource(dataSource());
