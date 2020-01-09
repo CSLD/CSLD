@@ -1,12 +1,12 @@
 package cz.larpovadatabaze.users;
 
+import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.users.services.CsldUsers;
 import org.apache.wicket.Session;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.request.Request;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.hibernate.HibernateException;
 
 /**
@@ -21,18 +21,13 @@ public class CsldAuthenticatedWebSession extends AuthenticatedWebSession {
     private CsldUser csldUser;
     private boolean setLanguage = true;
 
-    @SpringBean
-    private CsldUsers csldUsers;
-
     /**
      * Construct.
      *
      * @param request The current request object
      */
-    public CsldAuthenticatedWebSession(Request request, CsldUsers users) {
+    public CsldAuthenticatedWebSession(Request request) {
         super(request);
-
-        csldUsers = users;
     }
 
     public boolean isSetLanguage() {
@@ -50,7 +45,8 @@ public class CsldAuthenticatedWebSession extends AuthenticatedWebSession {
     @Override
     public boolean authenticate(final String username, final String password)
     {
-        CsldUser authenticated =  null;
+        CsldUsers csldUsers = (CsldUsers) Csld.getApplicationContext().getBean("csldUsers");
+        CsldUser authenticated = null;
         try {
             authenticated = csldUsers.getByEmail(username);
         } catch(HibernateException ex) {

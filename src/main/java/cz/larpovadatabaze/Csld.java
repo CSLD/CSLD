@@ -303,7 +303,8 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
 
     @Override
     public Session newSession(Request request, Response response) {
-        Session session = new CsldAuthenticatedWebSession(request, csldUsers);
+        // The csldUsers aren't created as serializable proxy.
+        Session session = new CsldAuthenticatedWebSession(request);
         session.setLocale(Locale.forLanguageTag("cs"));
         return session;
     }
