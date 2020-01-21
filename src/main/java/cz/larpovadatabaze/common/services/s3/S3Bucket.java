@@ -150,4 +150,11 @@ public class S3Bucket implements Serializable {
     public InputStream download(String key) {
         return client.getObject().getObject(GetObjectRequest.builder().bucket(bucketName).key(key).build());
     }
+
+    @Override
+    public String toString() {
+        return "S3Bucket{" +
+                "bucketName='" + bucketName + '\'' +
+                '}';
+    }
 }

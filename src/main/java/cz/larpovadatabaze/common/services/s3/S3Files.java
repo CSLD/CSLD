@@ -72,10 +72,11 @@ public class S3Files implements FileService {
     }
 
     public static AbstractResource.ResourceResponse respondWithFileFromS3(final S3Bucket bucket, final String key, final String contentType) {
-        logger.log(Level.INFO, "Bucket: " + bucket + " Key: " + key);
+        logger.log(Level.INFO, "Bucket: " + bucket.toString() + " Key: " + key);
         AbstractResource.ResourceResponse res = new AbstractResource.ResourceResponse();
 
         if (!bucket.existsObject(key)) {
+            logger.error("Key: " + key + " Doesn't exist in the bucket: " + bucket.toString());
             res.setStatusCode(HttpStatus.NOT_FOUND.value());
             return res;
         }
