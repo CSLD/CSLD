@@ -1,6 +1,5 @@
 package cz.larpovadatabaze.common.services.s3;
 
-import org.apache.log4j.Logger;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.util.time.Time;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -19,7 +18,6 @@ import java.util.stream.Collectors;
  * it already exists or it is created.
  */
 public class S3Bucket implements Serializable {
-    private final static Logger logger = Logger.getLogger(S3Bucket.class);
     private LoadableDetachableModel<S3Client> client;
     private String bucketName;
 
@@ -121,10 +119,7 @@ public class S3Bucket implements Serializable {
         List<S3Object> foundObjectsWithPath = client.getObject().listObjects(ListObjectsRequest.builder().bucket(bucketName).build())
                 .contents()
                 .stream()
-                .filter(s3Object -> {
-                    logger.info("Key of the object in bucket: " + s3Object.key() + " Key: " + key);
-                    return s3Object.key().equals(key);
-                })
+                .filter(s3Object -> s3Object.key().equals(key))
                 .collect(Collectors.toList());
         return foundObjectsWithPath.size() > 0;
     }
