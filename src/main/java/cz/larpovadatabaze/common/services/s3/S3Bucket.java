@@ -66,6 +66,7 @@ public class S3Bucket implements Serializable {
 
     /**
      * Delete Bucket with everything present.
+     * TODO: Won't work with buckets over 1000 items.
      */
     public void delete() throws IOException {
         ListObjectsResponse allObjectsResponse = client.getObject().listObjects(ListObjectsRequest.builder().bucket(bucketName).build());
@@ -116,12 +117,7 @@ public class S3Bucket implements Serializable {
      * @return True if the object exists
      */
     public boolean existsObject(String key) {
-        List<S3Object> foundObjectsWithPath = client.getObject().listObjects(ListObjectsRequest.builder().bucket(bucketName).build())
-                .contents()
-                .stream()
-                .filter(s3Object -> s3Object.key().equals(key))
-                .collect(Collectors.toList());
-        return foundObjectsWithPath.size() > 0;
+        return objectsForKey(key).size() > 0;
     }
 
     /**
@@ -129,16 +125,28 @@ public class S3Bucket implements Serializable {
      * @return Time of update in miliseconds
      */
     public Time getLastUpdatedForObject(String key) {
-        List<S3Object> foundObjectsForKey = client.getObject().listObjects(ListObjectsRequest.builder().bucket(bucketName).build())
-                .contents()
-                .stream()
-                .filter(s3Object -> s3Object.key().equals(key))
-                .collect(Collectors.toList());
+        List<S3Object> foundObjectsForKey = objectsForKey(key);
         if (foundObjectsForKey.size() == 0) {
             throw new RuntimeException("File with given key doesn't exist");
         }
 
         return Time.millis(foundObjectsForKey.get(0).lastModified().toEpochMilli());
+    }
+
+    /**
+     * Get all objects with given key.
+     *
+     * @param key Key to filter on.
+     * @return Array of the S3Objects with given key.
+     */
+    private List<S3Object> objectsForKey(String key) {
+        return client.getObject().listObjects(
+                ListObjectsRequest.builder().bucket(bucketName).prefix(key).build()
+        )
+                .contents()
+                .stream()
+                .filter(s3Object -> s3Object.key().equals(key))
+                .collect(Collectors.toList());
     }
 
     /**

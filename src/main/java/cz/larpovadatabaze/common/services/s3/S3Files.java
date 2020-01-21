@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.request.resource.AbstractResource;
 import org.apache.wicket.request.resource.IResource;
+import org.springframework.http.HttpStatus;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -75,7 +76,9 @@ public class S3Files implements FileService {
         AbstractResource.ResourceResponse res = new AbstractResource.ResourceResponse();
 
         if (!bucket.existsObject(key)) {
-            logger.warn("Key: " + key + " Doesn't exist in the bucket: " + bucket.toString());
+            logger.error("Key: " + key + " Doesn't exist in the bucket: " + bucket.toString());
+            res.setStatusCode(HttpStatus.NOT_FOUND.value());
+            return res;
         }
 
 
