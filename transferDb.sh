@@ -1,4 +1,11 @@
+# Under root acount.
+sudo su
+cd /home/csld/files
+# export AWS Credentials
+export AWS_ACCESS_KEY_ID=sdfsdf
+export AWS_SECRET_ACCESS_KEY=sdfsdfsd
 ~/.local/bin/aws s3 cp production/ s3://larpdb-master/ --recursive --region eu-central-1
+# Transfer the database.
 pg_dump -Fc --no-acl --no-owner -h localhost -U csld csld > csld.dump
 ~/.local/bin/aws s3 cp csld.dump s3://larpdb-master/csld.dump --region eu-central-1
 ~/.local/bin/aws s3 presign s3://larpdb-master/csld.dump --region eu-central-1
