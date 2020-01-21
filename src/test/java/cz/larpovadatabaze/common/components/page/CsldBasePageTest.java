@@ -1,9 +1,8 @@
-package cz.larpovadatabaze.components.page;
+package cz.larpovadatabaze.common.components.page;
 
 import cz.larpovadatabaze.TestUtils;
 import cz.larpovadatabaze.WithWicket;
 import cz.larpovadatabaze.common.components.home.AdvertisementPanel;
-import cz.larpovadatabaze.common.components.page.HomePage;
 import cz.larpovadatabaze.games.components.page.ListGamePage;
 import cz.larpovadatabaze.search.components.SearchBoxPanel;
 import cz.larpovadatabaze.users.components.page.about.AboutDatabasePage;

@@ -1,8 +1,7 @@
-package cz.larpovadatabaze.components.page.game;
+package cz.larpovadatabaze.games.components.page;
 
 import cz.larpovadatabaze.WithWicket;
 import cz.larpovadatabaze.common.entities.Game;
-import cz.larpovadatabaze.games.components.page.GameDetail;
 import cz.larpovadatabaze.games.components.panel.*;
 import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.users.services.CsldUsers;

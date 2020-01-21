@@ -1,8 +1,7 @@
-package cz.larpovadatabaze.components.page.game;
+package cz.larpovadatabaze.games.components.page;
 
 import cz.larpovadatabaze.TestUtils;
 import cz.larpovadatabaze.WithWicket;
-import cz.larpovadatabaze.games.components.page.CreateOrUpdateGamePage;
 import cz.larpovadatabaze.games.components.panel.CreateOrUpdateGamePanel;
 import cz.larpovadatabaze.users.components.page.CsldSignInPage;
 import cz.larpovadatabaze.users.services.CsldUsers;

@@ -1,13 +1,10 @@
-package cz.larpovadatabaze.components.panel.game;
+package cz.larpovadatabaze.games.components.panel;
 
 import com.googlecode.wicket.jquery.ui.plugins.wysiwyg.WysiwygEditor;
 import cz.larpovadatabaze.TestUtils;
 import cz.larpovadatabaze.WithWicket;
 import cz.larpovadatabaze.common.api.ValidatableForm;
 import cz.larpovadatabaze.common.components.CsldFeedbackMessageLabel;
-import cz.larpovadatabaze.games.components.panel.ChooseLabelsPanel;
-import cz.larpovadatabaze.games.components.panel.CreateOrUpdateGamePanel;
-import cz.larpovadatabaze.games.components.panel.UploadCoverImagePanel;
 import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.users.services.CsldUsers;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;

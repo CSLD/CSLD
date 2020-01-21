@@ -1,4 +1,4 @@
-package cz.larpovadatabaze.services.sql;
+package cz.larpovadatabaze.games.services.sql;
 
 import cz.larpovadatabaze.WithDatabase;
 import cz.larpovadatabaze.common.dao.GameDAO;
@@ -7,7 +7,6 @@ import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.games.services.Images;
-import cz.larpovadatabaze.games.services.sql.SqlGames;
 import cz.larpovadatabaze.users.services.AppUsers;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,10 +1,9 @@
-package cz.larpovadatabaze.services.sql;
+package cz.larpovadatabaze.games.services.sql;
 
 import cz.larpovadatabaze.WithDatabase;
 import cz.larpovadatabaze.common.entities.Comment;
 import cz.larpovadatabaze.games.services.Comments;
 import cz.larpovadatabaze.games.services.Games;
-import cz.larpovadatabaze.games.services.sql.SqlComments;
 import cz.larpovadatabaze.users.services.AppUsers;
 import org.junit.Before;
 import org.junit.Test;

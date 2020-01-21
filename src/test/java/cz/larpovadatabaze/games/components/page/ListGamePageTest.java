@@ -1,7 +1,6 @@
-package cz.larpovadatabaze.components.page.game;
+package cz.larpovadatabaze.games.components.page;
 
 import cz.larpovadatabaze.WithWicket;
-import cz.larpovadatabaze.games.components.page.ListGamePage;
 import cz.larpovadatabaze.games.components.panel.FilterGameTabsPanel;
 import cz.larpovadatabaze.games.components.panel.FilterGamesSidePanel;
 import org.junit.Test;

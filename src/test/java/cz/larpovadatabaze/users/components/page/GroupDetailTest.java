@@ -1,9 +1,8 @@
-package cz.larpovadatabaze.components.page.group;
+package cz.larpovadatabaze.users.components.page;
 
 import cz.larpovadatabaze.TestUtils;
 import cz.larpovadatabaze.WithWicket;
 import cz.larpovadatabaze.games.components.panel.ListGamesWithAnnotations;
-import cz.larpovadatabaze.users.components.page.GroupDetail;
 import cz.larpovadatabaze.users.components.panel.AddGroupPanel;
 import cz.larpovadatabaze.users.components.panel.EditGroupPanel;
 import cz.larpovadatabaze.users.components.panel.GroupDetailPanel;

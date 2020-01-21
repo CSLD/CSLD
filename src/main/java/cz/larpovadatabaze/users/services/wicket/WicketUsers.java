@@ -29,7 +29,6 @@ public class WicketUsers implements AppUsers {
             return null;
         }
 
-        System.out.println("Loading information about user.");
         int actualUserId = CsldAuthenticatedWebSession.get().getLoggedUser().getId();
         CsldUsers userService = (CsldUsers) Csld.getApplicationContext().getBean("csldUsers");
         return userService.getById(actualUserId);

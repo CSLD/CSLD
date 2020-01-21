@@ -1,11 +1,10 @@
-package cz.larpovadatabaze.components.page.author;
+package cz.larpovadatabaze.users.components.page;
 
 import cz.larpovadatabaze.WithWicket;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.games.components.panel.CommentsListPanel;
 import cz.larpovadatabaze.games.components.panel.GameListPanel;
 import cz.larpovadatabaze.games.components.panel.ListGamesWithAnnotations;
-import cz.larpovadatabaze.users.components.page.UserDetailPage;
 import cz.larpovadatabaze.users.components.panel.PersonDetailPanel;
 import cz.larpovadatabaze.users.components.panel.RatingsListPanel;
 import cz.larpovadatabaze.users.services.CsldUsers;
