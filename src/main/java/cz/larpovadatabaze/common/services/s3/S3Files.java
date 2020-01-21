@@ -4,6 +4,7 @@ import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.request.resource.AbstractResource;
@@ -71,6 +72,7 @@ public class S3Files implements FileService {
     }
 
     public static AbstractResource.ResourceResponse respondWithFileFromS3(final S3Bucket bucket, final String key, final String contentType) {
+        logger.log(Level.INFO, "Bucket: " + bucket + " Key: " + key);
         AbstractResource.ResourceResponse res = new AbstractResource.ResourceResponse();
 
         if (!bucket.existsObject(key)) {
