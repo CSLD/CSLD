@@ -9,8 +9,8 @@ import cz.larpovadatabaze.common.services.sql.CRUD;
 import cz.larpovadatabaze.games.models.FilterGame;
 import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.games.services.Images;
-import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.users.CsldRoles;
+import cz.larpovadatabaze.users.services.AppUsers;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.hibernate.SessionFactory;
@@ -34,15 +34,19 @@ public class SqlGames extends CRUD<Game, Integer> implements Games {
     private FileService fileService;
     private ImageResizingStrategyFactoryService imageResizingStrategyFactoryService;
     private Images images;
+    private AppUsers appUsers;
 
     @Autowired
-    public SqlGames(GameDAO gameDAO, SessionFactory sessionFactory, FileService fileService, ImageResizingStrategyFactoryService imageResizingStrategyFactoryService, Images images) {
+    public SqlGames(GameDAO gameDAO, SessionFactory sessionFactory, FileService fileService,
+                    ImageResizingStrategyFactoryService imageResizingStrategyFactoryService,
+                    Images images, AppUsers appUsers) {
         super(gameDAO);
         this.gameDAO = gameDAO;
         this.sessionFactory = sessionFactory;
         this.fileService = fileService;
         this.imageResizingStrategyFactoryService = imageResizingStrategyFactoryService;
         this.images = images;
+        this.appUsers = appUsers;
     }
 
     private ResourceReference iconResourceReference;
@@ -142,7 +146,7 @@ public class SqlGames extends CRUD<Game, Integer> implements Games {
     public boolean saveOrUpdate(Game game) {
         game.setAdded(new Timestamp(new Date().getTime()));
 
-        CsldUser logged = (CsldAuthenticatedWebSession.get()).getLoggedUser();
+        CsldUser logged = appUsers.getLoggedUser();
         game.setAddedBy(logged);
 
         if(game.getAmountOfComments() == null){
@@ -199,7 +203,7 @@ public class SqlGames extends CRUD<Game, Integer> implements Games {
 
     @Override
     public boolean canEditGame(Game game) {
-        CsldUser loggedUser = CsldAuthenticatedWebSession.get().getLoggedUser();
+        CsldUser loggedUser = appUsers.getLoggedUser();
         if(loggedUser != null){
             for(CsldUser author : game.getAuthors()) {
                 if (author.getId().equals(loggedUser.getId())) {

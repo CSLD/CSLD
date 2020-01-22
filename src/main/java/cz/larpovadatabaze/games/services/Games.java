@@ -24,8 +24,13 @@ public interface Games extends CRUDService<Game, Integer>, IIconReferenceProvide
 
     boolean addGame(Game game);
 
+    /**
+     * @param game
+     * @return
+     */
     List<Game> getSimilar(Game game);
 
+    // Fitlered Games?
     List<Game> gamesOfAuthors(Game game);
 
     List<Game> getByAutoCompletable(String gameName) throws WrongParameterException;
@@ -34,11 +39,12 @@ public interface Games extends CRUDService<Game, Integer>, IIconReferenceProvide
 
     List<Game> getFilteredGames(FilterGame filterGame, int offset, int limit);
 
-    long getAmountOfFilteredGames(FilterGame filterGame);
-
     Collection<Game> getGamesOfAuthor(CsldUser author, int first, int count);
 
     Collection<Game> getGamesOfGroup(CsldGroup csldGroup, int first, int count);
+
+    // Statistics about filtered Games
+    long getAmountOfFilteredGames(FilterGame filterGame);
 
     long getAmountOfGamesOfAuthor(CsldUser author);
 

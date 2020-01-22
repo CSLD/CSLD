@@ -66,7 +66,7 @@ public class SqlLabels extends CRUD<Label, Integer> implements Labels {
     @Override
     public List<Label> getByAutoCompletable(String labelName) {
         return crudRepository.getExecutableCriteria()
-                .add(Restrictions.eq("name", labelName))
+                .add(Restrictions.ilike("name", "%" + labelName + "%"))
                 .list();
     }
 }

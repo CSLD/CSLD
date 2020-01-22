@@ -1,6 +1,7 @@
 package cz.larpovadatabaze;
 
 import cz.larpovadatabaze.common.services.builders.CzechMasqueradeBuilder;
+import cz.larpovadatabaze.common.services.builders.MasqueradeEntities;
 import org.flywaydb.core.Flyway;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -24,6 +25,7 @@ abstract public class WithDatabase {
     protected static SessionHolder sessionHolder;
 
     protected Session session;
+    protected MasqueradeEntities masqueradeEntities;
 
     @Autowired
     protected SessionFactory sessionFactory;
@@ -39,8 +41,9 @@ abstract public class WithDatabase {
         flyWay.migrate();
         session = sessionFactory.openSession();
         sessionHolder = new SessionHolder(session);
-        masqueradeBuilder.build();
         TransactionSynchronizationManager.bindResource(sessionFactory, sessionHolder);
+
+        masqueradeEntities = masqueradeBuilder.build();
     }
 
     @After

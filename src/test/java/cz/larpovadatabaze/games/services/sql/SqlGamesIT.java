@@ -29,7 +29,8 @@ public class SqlGamesIT extends WithDatabase {
         underTest = new SqlGames(dao, sessionFactory,
                 Mockito.mock(FileService.class),
                 Mockito.mock(ImageResizingStrategyFactoryService.class),
-                Mockito.mock(Images.class));
+                Mockito.mock(Images.class),
+                Mockito.mock(AppUsers.class));
     }
 
     @Test

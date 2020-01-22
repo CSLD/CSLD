@@ -3,7 +3,7 @@ package cz.larpovadatabaze.common.api;
 import java.io.Serializable;
 
 /**
- * Created by IntelliJ IDEA.
+ * All entities needs to be identifiable.
  * User: Jakub Balhar
  * Date: 28.4.13
  * Time: 18:14

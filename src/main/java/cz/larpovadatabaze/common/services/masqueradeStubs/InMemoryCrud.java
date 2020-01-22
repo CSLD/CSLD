@@ -2,13 +2,17 @@ package cz.larpovadatabaze.common.services.masqueradeStubs;
 
 import cz.larpovadatabaze.common.api.Identifiable;
 import cz.larpovadatabaze.common.services.CRUDService;
+import org.apache.log4j.Logger;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 public class InMemoryCrud<T extends Identifiable, I> implements CRUDService<T, I>, Serializable {
+    private static final Logger logger = Logger.getLogger(InMemoryCrud.class);
     protected List<T> inMemory = new ArrayList<>();
+    private int idSequence = 0;
 
     @Override
     public List<T> getAll() {
@@ -59,6 +63,17 @@ public class InMemoryCrud<T extends Identifiable, I> implements CRUDService<T, I
 
     @Override
     public boolean saveOrUpdate(T entity) {
+        if (entity.getId() == null) {
+            try {
+                Field f1 = entity.getClass().getDeclaredField("id");
+                f1.setAccessible(true);
+                f1.set(entity, ++idSequence);
+                f1.setAccessible(false);
+            } catch (NoSuchFieldException | IllegalAccessException ex) {
+                logger.warn("The id property doesn't exist for entity: " + entity);
+            }
+        }
+
         inMemory.add(entity);
 
         return true;

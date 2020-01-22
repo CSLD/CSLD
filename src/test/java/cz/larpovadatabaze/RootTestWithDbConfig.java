@@ -4,8 +4,10 @@ import com.mchange.v2.c3p0.DriverManagerDataSource;
 import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.common.services.wicket.LocalFiles;
 import cz.larpovadatabaze.common.services.wicket.MailClient;
+import cz.larpovadatabaze.users.services.AppUsers;
 import org.flywaydb.core.Flyway;
 import org.hibernate.SessionFactory;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
@@ -122,6 +124,11 @@ public class RootTestWithDbConfig {
         mailProperties.put("mail.smtp.starttls.enable", env.getProperty("mail.smtp.starttls.enable"));
 
         return mailProperties;
+    }
+
+    @Bean
+    public AppUsers appUsers() {
+        return Mockito.mock(AppUsers.class);
     }
 
     @Bean

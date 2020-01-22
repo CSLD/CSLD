@@ -5,6 +5,7 @@ import cz.larpovadatabaze.common.entities.Comment;
 import cz.larpovadatabaze.games.services.Comments;
 import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.users.services.AppUsers;
+import org.hibernate.Transaction;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -20,9 +21,7 @@ public class SqlCommentsIT extends WithDatabase {
     private AppUsers mockAppUsers;
 
     @Before()
-    public void setUp() {
-        super.setUp();
-
+    public void prepareClassUnderTest() {
         mockGames = Mockito.mock(Games.class);
         mockAppUsers = Mockito.mock(AppUsers.class);
         underTest = new SqlComments(sessionFactory, mockGames, mockAppUsers);
@@ -31,7 +30,7 @@ public class SqlCommentsIT extends WithDatabase {
     @Test
     public void getExistingCommentOnGameForUser() {
         Comment result = underTest.getCommentOnGameFromUser(
-                masqueradeBuilder.getEditor().getId(), masqueradeBuilder.getSecondMasquerade().getId());
+                masqueradeEntities.editor.getId(), masqueradeEntities.secondMasquerade.getId());
 
         assertThat(result.getComment(), is("There were some flwas but overally likeable game."));
     }
@@ -65,14 +64,21 @@ public class SqlCommentsIT extends WithDatabase {
 
     @Test
     public void hidingOfCommentsProperlyChangeState() {
-        int editorCommentId = masqueradeBuilder.getEditorComment().getId();
-        underTest.hideComment(masqueradeBuilder.getEditorComment());
+        Transaction current = sessionFactory.getCurrentSession().beginTransaction();
+        int editorCommentId = masqueradeEntities.editorComment.getId();
+        underTest.hideComment(masqueradeEntities.editorComment);
+        current.commit();
 
-        sessionFactory.getCurrentSession().evict(masqueradeBuilder.getEditorComment());
+        sessionFactory.getCurrentSession().evict(masqueradeEntities.editorComment);
+
         Comment hidden = underTest.getById(editorCommentId);
         assertThat(hidden.getHidden(), is(true));
 
+        current = sessionFactory.getCurrentSession().beginTransaction();
         underTest.unHideComment(hidden);
-        assertThat(sessionFactory.getCurrentSession().get(Comment.class, 2).getHidden(), is(false));
+        current.commit();
+
+        Comment shown = underTest.getById(editorCommentId);
+        assertThat(shown.getHidden(), is(false));
     }
 }
