@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.common.entities;
 
-import cz.larpovadatabaze.common.api.Identifiable;
+import cz.larpovadatabaze.common.Identifiable;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 
 import javax.persistence.*;

@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.common.entities;
 
-import cz.larpovadatabaze.common.api.Identifiable;
+import cz.larpovadatabaze.common.Identifiable;
 import cz.larpovadatabaze.common.components.multiac.IAutoCompletable;
 
 import javax.persistence.*;
@@ -11,7 +11,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "csld_label")
-public class Label implements Serializable, IAutoCompletable, Identifiable<Integer>, cz.larpovadatabaze.common.api.Entity {
+public class Label implements Serializable, IAutoCompletable, Identifiable<Integer> {
     private Integer id;
     private Boolean isAuthorized;
     private Boolean isRequired;

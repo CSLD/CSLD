@@ -7,7 +7,7 @@ import cz.larpovadatabaze.calendar.model.FilterEvent;
 import cz.larpovadatabaze.calendar.service.Events;
 import cz.larpovadatabaze.calendar.service.GeographicalFilter;
 import cz.larpovadatabaze.calendar.service.SortableEventProvider;
-import cz.larpovadatabaze.common.api.Toggles;
+import cz.larpovadatabaze.common.Toggles;
 import cz.larpovadatabaze.common.components.FilterablePage;
 import cz.larpovadatabaze.common.components.page.CsldBasePage;
 import cz.larpovadatabaze.common.components.page.HomePage;

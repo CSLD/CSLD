@@ -7,7 +7,7 @@ import java.util.Date;
  *
  */
 @Entity(name = "donation")
-public class Donation implements cz.larpovadatabaze.common.api.Entity {
+public class Donation {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_donation")
     @SequenceGenerator(sequenceName = "donation_id_seq", name = "id_gen_donation", allocationSize = 1)

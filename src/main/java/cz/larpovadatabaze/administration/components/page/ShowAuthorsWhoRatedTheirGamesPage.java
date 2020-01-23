@@ -1,9 +1,9 @@
 package cz.larpovadatabaze.administration.components.page;
 
 import cz.larpovadatabaze.administration.model.UserRatesOwnGameDto;
+import cz.larpovadatabaze.administration.services.AdministeredUsers;
 import cz.larpovadatabaze.common.components.BookmarkableLinkWithLabel;
 import cz.larpovadatabaze.common.components.page.CsldBasePage;
-import cz.larpovadatabaze.common.dao.CsldUserDAO;
 import cz.larpovadatabaze.games.components.page.GameDetail;
 import cz.larpovadatabaze.users.components.page.UserDetailPage;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -22,7 +22,7 @@ import java.util.List;
 @AuthorizeInstantiation({"Editor","Admin"})
 public class ShowAuthorsWhoRatedTheirGamesPage extends CsldBasePage {
     @SpringBean
-    private CsldUserDAO authors;
+    private AdministeredUsers authors;
 
     @Override
     protected void onInitialize() {

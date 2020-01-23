@@ -1,8 +1,7 @@
 package cz.larpovadatabaze.games.converters;
 
 import cz.larpovadatabaze.common.entities.Label;
-import cz.larpovadatabaze.common.exceptions.WrongParameterException;
-import cz.larpovadatabaze.games.services.Labels;
+import cz.larpovadatabaze.search.services.TokenSearch;
 import org.apache.wicket.util.convert.IConverter;
 
 import java.util.List;
@@ -13,23 +12,19 @@ import java.util.Locale;
  * Label has unique name.
  */
 public class LabelConverter implements IConverter<Label> {
-    private Labels labels;
+    private TokenSearch tokenSearch;
 
-    public LabelConverter(Labels labels) {
-        this.labels = labels;
+    public LabelConverter(TokenSearch tokenSearch) {
+        this.tokenSearch = tokenSearch;
     }
 
     @Override
     public Label convertToObject(String labelName, Locale locale) {
-        try {
-            List<Label> foundLabels = labels.getByAutoCompletable(labelName);
-            int amountOfLabels = foundLabels.size();
-            if (amountOfLabels == 1) {
-                return foundLabels.get(0);
-            } else {
-                return null;
-            }
-        } catch(WrongParameterException ex) {
+        List<Label> foundLabels = tokenSearch.findLabels(labelName);
+        int amountOfLabels = foundLabels.size();
+        if (amountOfLabels == 1) {
+            return foundLabels.get(0);
+        } else {
             return null;
         }
     }

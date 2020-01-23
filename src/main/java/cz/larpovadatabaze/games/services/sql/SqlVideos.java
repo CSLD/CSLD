@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.games.services.sql;
 
-import cz.larpovadatabaze.common.api.GenericHibernateDAO;
+import cz.larpovadatabaze.common.dao.GenericHibernateDAO;
 import cz.larpovadatabaze.common.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.common.entities.Video;
 import cz.larpovadatabaze.common.services.sql.CRUD;

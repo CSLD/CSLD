@@ -2,7 +2,6 @@ package cz.larpovadatabaze.games.services.masqueradeStubs;
 
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Label;
-import cz.larpovadatabaze.common.exceptions.WrongParameterException;
 import cz.larpovadatabaze.common.services.masqueradeStubs.InMemoryCrud;
 import cz.larpovadatabaze.games.services.Labels;
 
@@ -32,10 +31,5 @@ public class InMemoryLabels extends InMemoryCrud<Label, Integer> implements Labe
     @Override
     public List<Label> getAuthorizedRequired(CsldUser authorizedTo) {
         return getRequired();
-    }
-
-    @Override
-    public List<Label> getByAutoCompletable(String labelName) throws WrongParameterException {
-        return null;
     }
 }

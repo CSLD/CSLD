@@ -4,7 +4,6 @@ import cz.larpovadatabaze.common.components.AbstractCsldPanel;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.entities.Rating;
-import cz.larpovadatabaze.common.exceptions.WrongParameterException;
 import cz.larpovadatabaze.games.services.Ratings;
 import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
 import org.apache.log4j.Logger;
@@ -176,15 +175,10 @@ public class RatingsResultPanel extends AbstractCsldPanel<Game> {
         // Refresh my rating
         CsldUser logged = CsldAuthenticatedWebSession.get().getLoggedUser();
         if(logged != null){
-            try {
-                Rating mine = ratings.getUserRatingOfGame(logged.getId(), getModelObject().getId());
-                if(mine != null){
-                    myRating.setObject(mine.getRating());
-                } else {
-                    myRating.setObject(0);
-                }
-            } catch (WrongParameterException e) {
-                logger.error(e);
+            Rating mine = ratings.getUserRatingOfGame(logged.getId(), getModelObject().getId());
+            if (mine != null) {
+                myRating.setObject(mine.getRating());
+            } else {
                 myRating.setObject(0);
             }
         } else {

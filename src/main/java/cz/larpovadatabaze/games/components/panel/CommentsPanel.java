@@ -3,7 +3,7 @@ package cz.larpovadatabaze.games.components.panel;
 import com.googlecode.wicket.jquery.ui.panel.JQueryFeedbackPanel;
 import com.googlecode.wicket.jquery.ui.plugins.wysiwyg.WysiwygEditor;
 import com.googlecode.wicket.jquery.ui.plugins.wysiwyg.toolbar.DefaultWysiwygToolbar;
-import cz.larpovadatabaze.common.api.ValidatableForm;
+import cz.larpovadatabaze.common.components.ValidatableForm;
 import cz.larpovadatabaze.common.entities.Comment;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;

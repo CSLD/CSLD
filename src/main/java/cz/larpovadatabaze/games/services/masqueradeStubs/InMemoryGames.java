@@ -3,7 +3,6 @@ package cz.larpovadatabaze.games.services.masqueradeStubs;
 import cz.larpovadatabaze.common.entities.CsldGroup;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
-import cz.larpovadatabaze.common.exceptions.WrongParameterException;
 import cz.larpovadatabaze.common.services.masqueradeStubs.InMemoryCrud;
 import cz.larpovadatabaze.games.models.FilterGame;
 import cz.larpovadatabaze.games.services.Games;
@@ -32,11 +31,6 @@ public class InMemoryGames extends InMemoryCrud<Game, Integer> implements Games 
     @Override
     public List<Game> gamesOfAuthors(Game game) {
         return inMemory.subList(0, 5);
-    }
-
-    @Override
-    public List<Game> getByAutoCompletable(String gameName) throws WrongParameterException {
-        return null;
     }
 
     @Override

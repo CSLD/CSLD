@@ -1,4 +1,4 @@
-package cz.larpovadatabaze.common.api;
+package cz.larpovadatabaze.common.dao;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;

@@ -3,10 +3,8 @@ package cz.larpovadatabaze.games.components.panel;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.entities.Rating;
-import cz.larpovadatabaze.common.exceptions.WrongParameterException;
 import cz.larpovadatabaze.games.services.Ratings;
 import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
-import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -22,7 +20,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * not rated by the user previously.
  */
 public class RatingsPanel extends Panel {
-    private final static Logger logger = Logger.getLogger(RatingsPanel.class);
     private static final int NUM_STARS = 10;
     @SpringBean
     Ratings ratings;
@@ -41,13 +38,7 @@ public class RatingsPanel extends Panel {
             CsldUser logged = getLoggedUser();
             int loggedId = getLoggedUserId();
 
-            Rating actualRating = null;
-            try {
-                actualRating = ratings.getUserRatingOfGame(loggedId, gameId);
-            } catch (WrongParameterException e) {
-                // This should never happen.
-                logger.error(e);
-            }
+            Rating actualRating = ratings.getUserRatingOfGame(loggedId, gameId);
 
             if(actualRating != null){
                 if(actualRating.getUser() == null){

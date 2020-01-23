@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.common.entities;
 
-import cz.larpovadatabaze.common.api.Identifiable;
+import cz.larpovadatabaze.common.Identifiable;
 import cz.larpovadatabaze.common.components.multiac.IAutoCompletable;
 import cz.larpovadatabaze.users.CsldRoles;
 import cz.larpovadatabaze.users.Pwd;

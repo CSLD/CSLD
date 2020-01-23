@@ -4,7 +4,7 @@ import cz.larpovadatabaze.calendar.BoundingBox;
 import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.calendar.model.FilterEvent;
 import cz.larpovadatabaze.calendar.service.Events;
-import cz.larpovadatabaze.common.api.GenericHibernateDAO;
+import cz.larpovadatabaze.common.dao.GenericHibernateDAO;
 import cz.larpovadatabaze.common.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;

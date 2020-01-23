@@ -1,4 +1,4 @@
-package cz.larpovadatabaze.common.api;
+package cz.larpovadatabaze.common.dao;
 
 import cz.larpovadatabaze.common.dao.builder.IBuilder;
 import org.hibernate.Criteria;

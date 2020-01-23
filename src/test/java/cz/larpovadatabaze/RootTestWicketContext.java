@@ -8,6 +8,8 @@ import cz.larpovadatabaze.common.services.wicket.FilterServiceReflection;
 import cz.larpovadatabaze.common.services.wicket.MailClient;
 import cz.larpovadatabaze.games.services.*;
 import cz.larpovadatabaze.games.services.masqueradeStubs.*;
+import cz.larpovadatabaze.search.services.TokenSearch;
+import cz.larpovadatabaze.search.services.masqueradeStubs.InMemoryTokenSearch;
 import cz.larpovadatabaze.users.services.AppUsers;
 import cz.larpovadatabaze.users.services.CsldGroups;
 import cz.larpovadatabaze.users.services.CsldUsers;
@@ -101,6 +103,11 @@ public class RootTestWicketContext {
     }
 
     @Bean
+    public TokenSearch tokenSearch() {
+        return new InMemoryTokenSearch();
+    }
+
+    @Bean
     public FilterService filterService() {
         return new FilterServiceReflection();
     }
@@ -113,7 +120,7 @@ public class RootTestWicketContext {
 
     @Bean
     public Csld csld() {
-        return new Csld(csldUsers(), games(), groups(), labels(), null, env, events());
+        return new Csld(tokenSearch(), csldUsers(), null, env, events());
     }
 
     // Start of email settings

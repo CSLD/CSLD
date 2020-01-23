@@ -1,7 +1,6 @@
 package cz.larpovadatabaze.users.services.masqueradeStubs;
 
 import cz.larpovadatabaze.common.entities.CsldUser;
-import cz.larpovadatabaze.common.exceptions.WrongParameterException;
 import cz.larpovadatabaze.common.services.masqueradeStubs.InMemoryCrud;
 import cz.larpovadatabaze.games.services.Images;
 import cz.larpovadatabaze.users.CsldRoles;
@@ -52,11 +51,6 @@ public class InMemoryCsldUsers extends InMemoryCrud<CsldUser, Integer> implement
         } else {
             return null;
         }
-    }
-
-    @Override
-    public List<CsldUser> getByAutoCompletable(String autoCompletable) throws WrongParameterException {
-        return null;
     }
 
     @Override

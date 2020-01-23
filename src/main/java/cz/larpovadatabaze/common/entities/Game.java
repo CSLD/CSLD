@@ -1,7 +1,7 @@
 package cz.larpovadatabaze.common.entities;
 
 import cz.larpovadatabaze.calendar.model.Event;
-import cz.larpovadatabaze.common.api.Identifiable;
+import cz.larpovadatabaze.common.Identifiable;
 import cz.larpovadatabaze.common.components.multiac.IAutoCompletable;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;

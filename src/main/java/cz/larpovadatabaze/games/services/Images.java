@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.games.services;
 
-import cz.larpovadatabaze.common.api.GenericHibernateDAO;
+import cz.larpovadatabaze.common.dao.GenericHibernateDAO;
 import cz.larpovadatabaze.common.entities.IEntityWithImage;
 import cz.larpovadatabaze.common.entities.Image;
 import cz.larpovadatabaze.common.services.CRUDService;

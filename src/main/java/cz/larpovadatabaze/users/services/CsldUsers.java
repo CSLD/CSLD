@@ -1,7 +1,6 @@
 package cz.larpovadatabaze.users.services;
 
 import cz.larpovadatabaze.common.entities.CsldUser;
-import cz.larpovadatabaze.common.exceptions.WrongParameterException;
 import cz.larpovadatabaze.common.services.CRUDService;
 import cz.larpovadatabaze.common.services.IIconReferenceProvider;
 
@@ -42,8 +41,6 @@ public interface CsldUsers extends CRUDService<CsldUser, Integer>, IIconReferenc
      * @return Valid user or null if there is no user with given credentials.
      */
     CsldUser authenticate(String username, String password);
-
-    List<CsldUser> getByAutoCompletable(String autoCompletable) throws WrongParameterException;
 
     /**
      * Return the user with given email. If there is none with the mail return null.

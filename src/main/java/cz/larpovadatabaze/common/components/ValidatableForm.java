@@ -1,4 +1,4 @@
-package cz.larpovadatabaze.common.api;
+package cz.larpovadatabaze.common.components;
 
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;

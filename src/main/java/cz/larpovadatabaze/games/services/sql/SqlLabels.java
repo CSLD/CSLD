@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.games.services.sql;
 
-import cz.larpovadatabaze.common.api.GenericHibernateDAO;
+import cz.larpovadatabaze.common.dao.GenericHibernateDAO;
 import cz.larpovadatabaze.common.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Label;
@@ -11,7 +11,6 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,40 +32,28 @@ public class SqlLabels extends CRUD<Label, Integer> implements Labels {
     }
 
     private List<Label> getByRequired(boolean required) {
-        return crudRepository
-                .getExecutableCriteria()
-                .add(Restrictions.eq("required", required))
-                .list();
+        return crudRepository.findByCriteria(
+                Restrictions.eq("required", required)
+        );
     }
 
     @Override
     public List<Label> getAuthorizedRequired(CsldUser authorizedTo) {
-        return filterAuthorizedLabels(getRequired(), authorizedTo);
+        return filterAuthorizedLabels(true, authorizedTo);
     }
 
     @Override
     public List<Label> getAuthorizedOptional(CsldUser authorizedTo) {
-        return filterAuthorizedLabels(getOptional(), authorizedTo);
+        return filterAuthorizedLabels(false, authorizedTo);
     }
 
-    private List<Label> filterAuthorizedLabels(List<Label> labelsToFilter, CsldUser authorizedTo) {
-        List<Label> labels = new ArrayList<>();
-        for (Label label : labelsToFilter) {
-            if (label.getAuthorized() != null && !label.getAuthorized()) {
-                if (!label.getAddedBy().equals(authorizedTo)) {
-                    continue;
-                }
-            }
-
-            labels.add(label);
-        }
-        return labels;
-    }
-
-    @Override
-    public List<Label> getByAutoCompletable(String labelName) {
-        return crudRepository.getExecutableCriteria()
-                .add(Restrictions.ilike("name", "%" + labelName + "%"))
-                .list();
+    private List<Label> filterAuthorizedLabels(boolean required, CsldUser authorizedTo) {
+        return crudRepository.findByCriteria(Restrictions.and(
+                Restrictions.eq("required", required),
+                Restrictions.or(
+                        Restrictions.eq("authorized", true),
+                        Restrictions.eq("addedBy.id", authorizedTo.getId())
+                )
+        ));
     }
 }

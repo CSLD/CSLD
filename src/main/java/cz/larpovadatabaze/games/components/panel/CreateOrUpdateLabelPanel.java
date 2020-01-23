@@ -1,7 +1,7 @@
 package cz.larpovadatabaze.games.components.panel;
 
-import cz.larpovadatabaze.common.api.ValidatableForm;
 import cz.larpovadatabaze.common.components.CsldFeedbackMessageLabel;
+import cz.larpovadatabaze.common.components.ValidatableForm;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Label;
 import cz.larpovadatabaze.games.services.Labels;

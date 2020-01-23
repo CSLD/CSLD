@@ -1,4 +1,4 @@
-package cz.larpovadatabaze.common.api;
+package cz.larpovadatabaze.common;
 
 public class Toggles {
     private Toggles() {

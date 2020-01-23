@@ -2,8 +2,7 @@ package cz.larpovadatabaze.calendar.service;
 
 import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.common.entities.Label;
-import cz.larpovadatabaze.common.exceptions.WrongParameterException;
-import cz.larpovadatabaze.games.services.Labels;
+import cz.larpovadatabaze.search.services.TokenSearch;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -18,15 +17,15 @@ import java.util.List;
  */
 public class LarpCzImport {
     private Events dbEvents;
-    private Labels labels;
+    private TokenSearch tokenSearch;
     private LarpCzEvents events;
     private SessionFactory sessionFactory;
 
-    public LarpCzImport(Events dbEvents, LarpCzEvents larpEvents, SessionFactory sessionFactory, Labels labels) {
+    public LarpCzImport(Events dbEvents, LarpCzEvents larpEvents, SessionFactory sessionFactory, TokenSearch tokenSearch) {
         this.dbEvents = dbEvents;
         this.events = larpEvents;
         this.sessionFactory = sessionFactory;
-        this.labels = labels;
+        this.tokenSearch = tokenSearch;
     }
 
     /**
@@ -39,21 +38,16 @@ public class LarpCzImport {
 
         Collection<Event> imported = events.all();
 
-        try {
-            List<Label> larpCz = new ArrayList<>(labels.getByAutoCompletable("LarpCz"));
+        List<Label> larpCz = new ArrayList<>(tokenSearch.findLabels("LarpCz"));
 
-            for (Event larpCzEvent : imported) {
-                if (dbEvents.byName(larpCzEvent.getName()).size() == 0) {
-                    larpCzEvent.setLabels(larpCz);
-                    dbEvents.saveOrUpdate(larpCzEvent);
-                }
+        for (Event larpCzEvent : imported) {
+            if (dbEvents.byName(larpCzEvent.getName()).size() == 0) {
+                larpCzEvent.setLabels(larpCz);
+                dbEvents.saveOrUpdate(larpCzEvent);
             }
-
-            eventsImport.commit();
-            session.close();
-        } catch (WrongParameterException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Issue with loading label by name");
         }
+
+        eventsImport.commit();
+        session.close();
     }
 }

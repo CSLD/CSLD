@@ -3,7 +3,6 @@ package cz.larpovadatabaze.games.services.masqueradeStubs;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Rating;
 import cz.larpovadatabaze.common.entities.UserPlayedGame;
-import cz.larpovadatabaze.common.exceptions.WrongParameterException;
 import cz.larpovadatabaze.common.services.masqueradeStubs.InMemoryCrud;
 import cz.larpovadatabaze.games.services.Ratings;
 
@@ -12,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class InMemoryRatings extends InMemoryCrud<Rating, Integer> implements Ratings {
     @Override
-    public Rating getUserRatingOfGame(Integer userId, Integer gameId) throws WrongParameterException {
+    public Rating getUserRatingOfGame(Integer userId, Integer gameId) {
         List<Rating> candidates = inMemory.stream()
                 .filter(rating -> rating.getUser().getId().equals(userId) &&
                         rating.getGame().getId().equals(gameId))

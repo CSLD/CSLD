@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.common.services.masqueradeStubs;
 
-import cz.larpovadatabaze.common.api.Identifiable;
+import cz.larpovadatabaze.common.Identifiable;
 import cz.larpovadatabaze.common.services.CRUDService;
 import org.apache.log4j.Logger;
 

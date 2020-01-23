@@ -2,7 +2,6 @@ package cz.larpovadatabaze.games.services.sql;
 
 import cz.larpovadatabaze.common.dao.GameDAO;
 import cz.larpovadatabaze.common.entities.*;
-import cz.larpovadatabaze.common.exceptions.WrongParameterException;
 import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.common.services.sql.CRUD;
@@ -96,11 +95,6 @@ public class SqlGames extends CRUD<Game, Integer> implements Games {
     @Override
     public List<Game> getFirstChoices(String startsWith, int maxChoices) {
         return gameDAO.getFirstChoices(startsWith, maxChoices);
-    }
-
-    @Override
-    public List<Game> getByAutoCompletable(String gameName) throws WrongParameterException {
-        return gameDAO.getByAutoCompletable(gameName);
     }
 
     @Override

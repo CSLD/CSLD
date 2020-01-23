@@ -1,7 +1,6 @@
 package cz.larpovadatabaze.users.services.sql;
 
 import cz.larpovadatabaze.WithDatabase;
-import cz.larpovadatabaze.common.dao.CsldUserDAO;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.games.services.Images;
 import cz.larpovadatabaze.users.Pwd;
@@ -23,8 +22,7 @@ public class SqlCsldUsersIT extends WithDatabase {
         super.setUp();
 
         Images images = Mockito.mock(Images.class);
-        CsldUserDAO dao = new CsldUserDAO(sessionFactory);
-        underTest = new SqlCsldUsers(dao, images);
+        underTest = new SqlCsldUsers(sessionFactory, images);
     }
 
     @Test

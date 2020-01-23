@@ -3,7 +3,6 @@ package cz.larpovadatabaze.games.services;
 import cz.larpovadatabaze.common.entities.CsldGroup;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
-import cz.larpovadatabaze.common.exceptions.WrongParameterException;
 import cz.larpovadatabaze.common.services.CRUDService;
 import cz.larpovadatabaze.common.services.IIconReferenceProvider;
 import cz.larpovadatabaze.games.models.FilterGame;
@@ -32,8 +31,6 @@ public interface Games extends CRUDService<Game, Integer>, IIconReferenceProvide
 
     // Fitlered Games?
     List<Game> gamesOfAuthors(Game game);
-
-    List<Game> getByAutoCompletable(String gameName) throws WrongParameterException;
 
     List<Game> getLastGames(int amountOfGames);
 

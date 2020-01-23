@@ -1,9 +1,9 @@
 package cz.larpovadatabaze.users.services.sql;
 
 import com.github.openjson.JSONObject;
-import cz.larpovadatabaze.common.dao.CsldUserDAO;
+import cz.larpovadatabaze.common.dao.GenericHibernateDAO;
+import cz.larpovadatabaze.common.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.common.entities.CsldUser;
-import cz.larpovadatabaze.common.exceptions.WrongParameterException;
 import cz.larpovadatabaze.common.services.sql.CRUD;
 import cz.larpovadatabaze.games.services.Images;
 import cz.larpovadatabaze.users.Pwd;
@@ -13,6 +13,8 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.wicket.request.resource.ResourceReference;
+import org.hibernate.Criteria;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.jsoup.Jsoup;
@@ -37,13 +39,11 @@ public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
     private static final String RE_CAPTCHA_SITE_KEY = "6LeEiv8SAAAAABn8qvmZGkez0Lpp-Pbak_Jr6T1t";
     private static final String RE_CAPTCHA_SECRET_KEY = "6LeEiv8SAAAAAAE2ikmbiEJhv5XdVaI4_TiPPEt6";
 
-    private CsldUserDAO csldUserDao;
     private Images images;
 
     @Autowired
-    public SqlCsldUsers(CsldUserDAO csldUserDao, Images images) {
-        super(csldUserDao);
-        this.csldUserDao = csldUserDao;
+    public SqlCsldUsers(SessionFactory sessionFactory, Images images) {
+        super(new GenericHibernateDAO<>(sessionFactory, new GenericBuilder<>(CsldUser.class)));
         this.images = images;
     }
 
@@ -63,22 +63,29 @@ public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
 
     @Override
     public CsldUser authenticate(String username, String password) {
-        return csldUserDao.authenticate(username, password);
-    }
-
-    @Override
-    public List<CsldUser> getByAutoCompletable(String autoCompletable) throws WrongParameterException {
-        return csldUserDao.getByAutoCompletable(autoCompletable);
+        return crudRepository.findSingleByCriteria(
+                Restrictions.and(
+                        Restrictions.eq("person.email", username),
+                        Restrictions.eq("password", password))
+        );
     }
 
     @Override
     public CsldUser getByEmail(String mail) {
-        return csldUserDao.getByEmail(mail);
+        return crudRepository.findSingleByCriteria(
+                Restrictions.eq("person.email", mail).ignoreCase()
+        );
     }
 
     @Override
     public List<CsldUser> getFirstChoices(String startsWith, int maxChoices) {
-        return csldUserDao.getFirstChoices(startsWith, maxChoices);
+        Criteria criteria = crudRepository.getExecutableCriteria()
+                .setMaxResults(maxChoices)
+                .add(Restrictions.or(
+                        Restrictions.ilike("person.name", "%" + startsWith + "%"),
+                        Restrictions.ilike("person.nickname", "%" + startsWith + "%")));
+
+        return criteria.list();
     }
 
 
@@ -101,7 +108,7 @@ public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
         // Reference is singleton, lazy-inited
         synchronized(this) {
             if (userIconReference == null) {
-                userIconReference = images.createImageTypeResourceReference(csldUserDao);
+                userIconReference = images.createImageTypeResourceReference(crudRepository);
             }
         }
         return userIconReference;

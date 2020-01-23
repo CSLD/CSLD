@@ -1,6 +1,5 @@
 package cz.larpovadatabaze.common.dao;
 
-import cz.larpovadatabaze.common.api.GenericHibernateDAO;
 import cz.larpovadatabaze.common.dao.builder.GameBuilder;
 import cz.larpovadatabaze.common.entities.CsldGroup;
 import cz.larpovadatabaze.common.entities.CsldUser;
@@ -38,19 +37,6 @@ public class GameDAO extends GenericHibernateDAO<Game, Integer> {
     @Autowired
     public GameDAO(SessionFactory sessionFactory, AppUsers appUsers) {
         super(sessionFactory, new GameBuilder(appUsers));
-    }
-
-    /**
-     * Used when autoCompletable field is used.
-     *
-     * @param gameName Expected format is {Name} Name is unique identifier of game.
-     * @return It should return only single game or no game if none belongs to given data.
-     */
-    @SuppressWarnings("unchecked")
-    public List<Game> getByAutoCompletable(String gameName) {
-        Criteria uniqueGame = getExecutableCriteria()
-                .add(Restrictions.eq("name", gameName));
-        return uniqueGame.list();
     }
 
     @Override
