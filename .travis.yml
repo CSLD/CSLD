@@ -23,8 +23,7 @@ branches:
   only:
     - master
     - dev
-    - integration/jakubb
-    - integration/michalk
+    - /^integration.*$/
 
 addons:
   sonarcloud:
