@@ -108,13 +108,28 @@ public class RootTestWicketContext {
     }
 
     @Bean
+    public SimilarGames similarGames() {
+        return new InMemorySimilarGames();
+    }
+
+    @Bean
+    public FilteredGames filteredGames() {
+        return new InMemoryFilteredGames();
+    }
+
+    @Bean
+    public AuthoredGames authoredGames() {
+        return new InMemoryAuthoredGames();
+    }
+
+    @Bean
     public FilterService filterService() {
         return new FilterServiceReflection();
     }
 
     @Bean(initMethod = "build")
     public InMemoryMasqueradeBuilder builder() {
-        return new InMemoryMasqueradeBuilder(comments(), csldUsers(), games(),
+        return new InMemoryMasqueradeBuilder(comments(), csldUsers(), games(), similarGames(),
                 groups(), labels(), ratings(), upvotes());
     }
 

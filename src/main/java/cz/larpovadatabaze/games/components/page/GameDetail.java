@@ -13,8 +13,10 @@ import cz.larpovadatabaze.common.entities.Video;
 import cz.larpovadatabaze.common.utils.HbUtils;
 import cz.larpovadatabaze.common.utils.Strings;
 import cz.larpovadatabaze.games.components.panel.*;
+import cz.larpovadatabaze.games.services.AuthoredGames;
 import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.games.services.Images;
+import cz.larpovadatabaze.games.services.SimilarGames;
 import cz.larpovadatabaze.users.services.AppUsers;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -47,6 +49,10 @@ public class GameDetail extends CsldBasePage {
 
     @SpringBean
     Games games;
+    @SpringBean
+    AuthoredGames authoredGames;
+    @SpringBean
+    SimilarGames similarGames;
     @SpringBean
     Images images;
     @SpringBean
@@ -359,17 +365,17 @@ public class GameDetail extends CsldBasePage {
         DeleteGamePanel deleteGamePanel = new DeleteGamePanel("deleteGamePanel", getModel().getObject().getId());
         add(deleteGamePanel);
 
-        add(new GameListPanel("similarGames", new LoadableDetachableModel<List<Game>>() {
+        add(new GameListPanel("similarGames", new LoadableDetachableModel<>() {
             @Override
             protected List<Game> load() {
-                return games.getSimilar(getModel().getObject());
+                return similarGames.allForGame(getModel().getObject());
             }
         }));
 
-        add(new GameListPanel("gamesOfAuthors", new LoadableDetachableModel<List<Game>>() {
+        add(new GameListPanel("gamesOfAuthors", new LoadableDetachableModel<>() {
             @Override
             protected List<Game> load() {
-                return games.gamesOfAuthors(getModel().getObject());
+                return authoredGames.gamesOfAuthors(getModel().getObject());
             }
         }));
 

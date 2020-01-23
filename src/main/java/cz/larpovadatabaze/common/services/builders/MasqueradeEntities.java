@@ -3,28 +3,30 @@ package cz.larpovadatabaze.common.services.builders;
 import cz.larpovadatabaze.common.entities.*;
 
 public class MasqueradeEntities {
-    public CsldUser administrator;
-    public CsldUser editor;
-    public CsldUser user;
+    public final Game wrongMasquerade;
+    public final CsldUser administrator;
+    public final CsldUser editor;
+    public final CsldUser user;
 
-    public CsldGroup nosferatu;
-    public CsldGroup toreador;
+    public final CsldGroup nosferatu;
+    public final CsldGroup toreador;
 
-    public Game firstMasquerade;
-    public Game secondMasquerade;
+    public final Game firstMasquerade;
+    public final Game secondMasquerade;
+    public final Game bestMasquerade;
 
-    public Label vampire;
-    public Label dramatic;
-    public Label emotional;
-    public Label chamber;
+    public final Label vampire;
+    public final Label dramatic;
+    public final Label emotional;
+    public final Label chamber;
 
-    public Comment editorComment;
-    public Comment userComment;
+    public final Comment editorComment;
+    public final Comment userComment;
 
     public MasqueradeEntities(CsldUser administrator, CsldUser editor, CsldUser user,
-                              CsldGroup nosferatu, CsldGroup toreador, Game firstMasquerade,
-                              Game secondMasquerade, Label vampire, Label dramatic,
-                              Label emotional, Label chamber,
+                              CsldGroup nosferatu, CsldGroup toreador,
+                              Game firstMasquerade, Game secondMasquerade, Game bestMasquerade, Game wrongMasquerade,
+                              Label vampire, Label dramatic, Label emotional, Label chamber,
                               Comment editorComment, Comment userComment) {
         this.administrator = administrator;
         this.editor = editor;
@@ -33,6 +35,8 @@ public class MasqueradeEntities {
         this.toreador = toreador;
         this.firstMasquerade = firstMasquerade;
         this.secondMasquerade = secondMasquerade;
+        this.bestMasquerade = bestMasquerade;
+        this.wrongMasquerade = wrongMasquerade;
         this.vampire = vampire;
         this.dramatic = dramatic;
         this.emotional = emotional;

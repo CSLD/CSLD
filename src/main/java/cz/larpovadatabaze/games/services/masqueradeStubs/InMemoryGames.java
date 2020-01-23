@@ -1,10 +1,7 @@
 package cz.larpovadatabaze.games.services.masqueradeStubs;
 
-import cz.larpovadatabaze.common.entities.CsldGroup;
-import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.services.masqueradeStubs.InMemoryCrud;
-import cz.larpovadatabaze.games.models.FilterGame;
 import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.games.services.Images;
 import org.apache.wicket.request.resource.IResource;
@@ -24,48 +21,8 @@ public class InMemoryGames extends InMemoryCrud<Game, Integer> implements Games 
     }
 
     @Override
-    public List<Game> getSimilar(Game game) {
+    public List<Game> getLastGames(int limit) {
         return inMemory.subList(0, 5);
-    }
-
-    @Override
-    public List<Game> gamesOfAuthors(Game game) {
-        return inMemory.subList(0, 5);
-    }
-
-    @Override
-    public List<Game> getLastGames(int amountOfGames) {
-        return inMemory.subList(0, 5);
-    }
-
-    @Override
-    public List<Game> getFilteredGames(FilterGame filterGame, int offset, int limit) {
-        return inMemory.subList(0, limit);
-    }
-
-    @Override
-    public long getAmountOfFilteredGames(FilterGame filterGame) {
-        return inMemory.size();
-    }
-
-    @Override
-    public Collection<Game> getGamesOfAuthor(CsldUser author, int first, int count) {
-        return inMemory.subList(0, 5);
-    }
-
-    @Override
-    public Collection<Game> getGamesOfGroup(CsldGroup csldGroup, int first, int count) {
-        return inMemory.subList(0, 5);
-    }
-
-    @Override
-    public long getAmountOfGamesOfAuthor(CsldUser author) {
-        return 5;
-    }
-
-    @Override
-    public long getAmountOfGamesOfGroup(CsldGroup csldGroup) {
-        return 5;
     }
 
     @Override
@@ -94,7 +51,7 @@ public class InMemoryGames extends InMemoryCrud<Game, Integer> implements Games 
     }
 
     @Override
-    public List<Game> getMostPopularGames(int amountOfGames) {
+    public List<Game> getMostPopularGames(int limit) {
         return inMemory.subList(0, 5);
     }
 

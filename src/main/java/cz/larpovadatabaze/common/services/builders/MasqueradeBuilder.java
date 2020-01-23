@@ -16,17 +16,19 @@ abstract public class
 MasqueradeBuilder implements Builder {
     private Comments comments;
     private CsldUsers users;
+    private SimilarGames similarGames;
     private Games games;
     private CsldGroups groups;
     private Labels labels;
     private Ratings ratings;
     private Upvotes upvotes;
 
-    public MasqueradeBuilder(Comments comments, CsldUsers users, Games games, CsldGroups groups, Labels labels,
+    public MasqueradeBuilder(Comments comments, CsldUsers users, Games games, SimilarGames similarGames, CsldGroups groups, Labels labels,
                              Ratings ratings, Upvotes upvotes) {
         this.comments = comments;
         this.users = users;
         this.games = games;
+        this.similarGames = similarGames;
         this.groups = groups;
         this.labels = labels;
         this.ratings = ratings;
@@ -41,9 +43,18 @@ MasqueradeBuilder implements Builder {
                 "Editor", "Prague", "Editor of Czech Masquerade group", CsldRoles.EDITOR.getRole(), "editor");
         CsldUser user = new CsldUser(String.format(mailTemplate, "user"), "User",
                 "User", "Prague", "User of Czech Masquerade group", CsldRoles.USER.getRole(), "user");
+        CsldUser tom = new CsldUser(String.format(mailTemplate, "tom"), "Tom",
+                "User", "Prague", "User of Czech Masquerade group", CsldRoles.USER.getRole(), "user");
+        CsldUser anna = new CsldUser(String.format(mailTemplate, "anna"), "Anna",
+                "User", "Prague", "User of Czech Masquerade group", CsldRoles.USER.getRole(), "user");
+        CsldUser joe = new CsldUser(String.format(mailTemplate, "joe"), "Joe",
+                "User", "Prague", "User of Czech Masquerade group", CsldRoles.USER.getRole(), "user");
         users.saveOrUpdate(administrator);
         users.saveOrUpdate(editor);
         users.saveOrUpdate(user);
+        users.saveOrUpdate(tom);
+        users.saveOrUpdate(anna);
+        users.saveOrUpdate(joe);
 
         Label dramatic = new Label(editor, "Dramatic", "Dramatic larp is about drama", true, true);
         Label vampire = new Label(editor, "Vampire", "Vampire larp contains vampire in any shape.", true, false);
@@ -63,17 +74,32 @@ MasqueradeBuilder implements Builder {
 
         List<CsldUser> authors = new ArrayList<CsldUser>();
         Collections.addAll(authors, editor, administrator);
+        for (int i = 3; i < 43; i++) {
+            games.saveOrUpdate(new Game("Masquerades: " + i, i + " th try to bring Masquerade into the Czech " +
+                    "republic", user, authors, masqueradeGamesLabels, new Timestamp(new Date().getTime()), null, 2010 + (i % 5)));
+        }
+
+        List<CsldUser> authorsIncludingUser = new ArrayList<>();
+        Collections.addAll(authorsIncludingUser, user, editor, administrator);
+        Game bestMasquerade = new Game("Best Masquerade", "Best Masquerade in the Czech " +
+                "republic", user, authorsIncludingUser, masqueradeGamesLabels, new Timestamp(new Date().getTime()));
+        Game wrongMasquerade = new Game("Wrong Masquerade", "Just an error", user, authors,
+                masqueradeGamesLabels, new Timestamp(new Date().getTime()));
+        wrongMasquerade.setDeleted(true);
         Game firstMasquerade = new Game("Masquerade 1", "First try to bring Masquerade into the Czech " +
                 "republic", user, authors, masqueradeGamesLabels, new Timestamp(new Date().getTime()));
         Game secondMasquerade = new Game("Masquerade 2", "Second try to bring Masquerade into the Czech " +
                 "republic", editor, authors, masqueradeGamesLabels, new Timestamp(new Date().getTime()));
+        firstMasquerade.getGroupAuthor().add(nosferatu);
+        secondMasquerade.getGroupAuthor().add(nosferatu);
+
+        games.saveOrUpdate(bestMasquerade);
+        games.saveOrUpdate(wrongMasquerade);
         games.saveOrUpdate(firstMasquerade);
         games.saveOrUpdate(secondMasquerade);
 
-        for (int i = 0; i < 40; i++) {
-            games.saveOrUpdate(new Game("Masquerades: " + i, "First try to bring Masquerade into the Czech " +
-                    "republic", user, authors, masqueradeGamesLabels, new Timestamp(new Date().getTime()), null, 2010 + (i % 5)));
-        }
+        similarGames.saveOrUpdate(new SimilarGame(firstMasquerade.getId(), secondMasquerade.getId(), 0.94));
+        similarGames.saveOrUpdate(new SimilarGame(firstMasquerade.getId(), bestMasquerade.getId(), 0.72));
 
         comments.saveOrUpdate(new Comment(administrator, firstMasquerade, "I liked it"));
         Comment editorComment = new Comment(editor, secondMasquerade, "There were some flwas but overally likeable game.");
@@ -86,17 +112,29 @@ MasqueradeBuilder implements Builder {
 
         upvotes.saveOrUpdate(new Upvote(editor, editorComment));
 
+        ratings.saveOrUpdate(new Rating(user, bestMasquerade, 9));
+        ratings.saveOrUpdate(new Rating(editor, bestMasquerade, 10));
+        ratings.saveOrUpdate(new Rating(administrator, bestMasquerade, 9));
+        ratings.saveOrUpdate(new Rating(tom, bestMasquerade, 9));
+        ratings.saveOrUpdate(new Rating(anna, bestMasquerade, 10));
+
         ratings.saveOrUpdate(new Rating(user, secondMasquerade, 9));
+
         ratings.saveOrUpdate(new Rating(editor, firstMasquerade, 6));
         ratings.saveOrUpdate(new Rating(administrator, firstMasquerade, 7));
+        ratings.saveOrUpdate(new Rating(tom, firstMasquerade, 6));
+        ratings.saveOrUpdate(new Rating(anna, firstMasquerade, 7));
+        ratings.saveOrUpdate(new Rating(joe, firstMasquerade, 5));
 
-        ratings.saveOrUpdate(new UserPlayedGame(editor, firstMasquerade));
-        ratings.saveOrUpdate(new UserPlayedGame(administrator, firstMasquerade));
-        ratings.saveOrUpdate(new UserPlayedGame(user, secondMasquerade));
         ratings.saveOrUpdate(new UserPlayedGame(editor, secondMasquerade));
         ratings.saveOrUpdate(new UserPlayedGame(administrator, secondMasquerade));
 
-        return new MasqueradeEntities(administrator, editor, user, nosferatu, toreador, firstMasquerade,
-                secondMasquerade, vampire, dramatic, emotional, chamber, editorComment, userComment);
+        return new MasqueradeEntities(
+                administrator, editor, user,
+                nosferatu, toreador,
+                firstMasquerade, secondMasquerade, bestMasquerade, wrongMasquerade,
+                vampire, dramatic, emotional, chamber,
+                editorComment, userComment
+        );
     }
 }

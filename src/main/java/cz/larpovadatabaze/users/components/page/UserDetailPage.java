@@ -7,7 +7,7 @@ import cz.larpovadatabaze.common.utils.HbUtils;
 import cz.larpovadatabaze.games.components.panel.CommentsListPanel;
 import cz.larpovadatabaze.games.components.panel.GameListPanel;
 import cz.larpovadatabaze.games.components.panel.ListGamesWithAnnotations;
-import cz.larpovadatabaze.games.services.Games;
+import cz.larpovadatabaze.games.services.AuthoredGames;
 import cz.larpovadatabaze.games.services.Ratings;
 import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.users.components.panel.PersonDetailPanel;
@@ -37,7 +37,7 @@ public class UserDetailPage extends CsldBasePage {
     @SpringBean
     CsldUsers csldUsers;
     @SpringBean
-    Games games;
+    AuthoredGames games;
     @SpringBean
     Ratings ratings;
     @SpringBean
