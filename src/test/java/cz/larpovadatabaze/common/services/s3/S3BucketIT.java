@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.core.Is.is;
@@ -21,7 +22,7 @@ public class S3BucketIT {
     S3Client client;
 
     private S3Bucket bucket;
-    private String bucketName = "larpdb-images";
+    private String bucketName = UUID.randomUUID().toString();
 
     @Before
     public void setUp() {
@@ -95,7 +96,7 @@ public class S3BucketIT {
     @Test
     public void deleteBucket() throws IOException {
         // Create new bucket
-        String bucketToDelete = "larpdb-to-delete";
+        String bucketToDelete = UUID.randomUUID().toString();
         CreateBucketResponse response = client.createBucket(CreateBucketRequest.builder().bucket(bucketToDelete).build());
         if (!response.sdkHttpResponse().isSuccessful()) {
             throw new IOException("Can't create the Bucket with name: " + bucketToDelete);

@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.core.Is.is;
@@ -28,7 +29,7 @@ public class S3FilesIT {
 
     @Before
     public void setUp() throws IOException {
-        bucket = new S3Bucket("larp-db-integration-test");
+        bucket = new S3Bucket(UUID.randomUUID().toString());
         files = new S3Files(bucket);
         strategiesToResizeImage = new ImageResizingStrategyFactoryServiceImpl();
         // Upload file to use further.
