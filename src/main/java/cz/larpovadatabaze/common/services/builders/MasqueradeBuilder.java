@@ -81,8 +81,10 @@ MasqueradeBuilder implements Builder {
 
         List<CsldUser> authorsIncludingUser = new ArrayList<>();
         Collections.addAll(authorsIncludingUser, user, editor, administrator);
+        List<Label> masqueradeLabelsChamber = new ArrayList<>();
+        Collections.addAll(masqueradeLabelsChamber, chamber, vampire);
         Game bestMasquerade = new Game("Best Masquerade", "Best Masquerade in the Czech " +
-                "republic", user, authorsIncludingUser, masqueradeGamesLabels, new Timestamp(new Date().getTime()));
+                "republic", user, authorsIncludingUser, masqueradeLabelsChamber, new Timestamp(new Date().getTime()));
         Game wrongMasquerade = new Game("Wrong Masquerade", "Just an error", user, authors,
                 masqueradeGamesLabels, new Timestamp(new Date().getTime()));
         wrongMasquerade.setDeleted(true);

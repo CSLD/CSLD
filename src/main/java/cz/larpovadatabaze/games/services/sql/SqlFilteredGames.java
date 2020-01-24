@@ -4,7 +4,7 @@ import cz.larpovadatabaze.common.dao.GenericHibernateDAO;
 import cz.larpovadatabaze.common.dao.builder.GameBuilder;
 import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.entities.Label;
-import cz.larpovadatabaze.games.models.FilterGame;
+import cz.larpovadatabaze.games.models.FilterGameDTO;
 import cz.larpovadatabaze.games.services.FilteredGames;
 import cz.larpovadatabaze.users.services.AppUsers;
 import org.hibernate.Criteria;
@@ -39,7 +39,7 @@ public class SqlFilteredGames implements FilteredGames {
     }
 
     @Override
-    public List<Game> paginated(FilterGame filter, int offset, int limit) {
+    public List<Game> paginated(FilterGameDTO filter, int offset, int limit) {
         DetachedCriteria subQueryCriteria = games.getBuilder().build();
 
         applyGameFilter(subQueryCriteria, filter);
@@ -75,7 +75,7 @@ public class SqlFilteredGames implements FilteredGames {
     }
 
     @Override
-    public long totalAmount(FilterGame filter) {
+    public long totalAmount(FilterGameDTO filter) {
         DetachedCriteria dc = games.getBuilder().build();
         applyGameFilter(dc, filter);
 
@@ -91,7 +91,7 @@ public class SqlFilteredGames implements FilteredGames {
      * @param criteria   Criteria to affect
      * @param filterGame Filter to use
      */
-    private void applyGameFilter(DetachedCriteria criteria, FilterGame filterGame) {
+    private void applyGameFilter(DetachedCriteria criteria, FilterGameDTO filterGame) {
         addLabelCriteria(criteria, filterGame.getRequiredLabels());
         addLabelCriteria(criteria, filterGame.getOtherLabels());
 

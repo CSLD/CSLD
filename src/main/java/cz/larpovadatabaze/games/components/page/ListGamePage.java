@@ -8,7 +8,7 @@ import cz.larpovadatabaze.common.entities.Label;
 import cz.larpovadatabaze.games.components.panel.AbstractListGamePanel;
 import cz.larpovadatabaze.games.components.panel.FilterGameTabsPanel;
 import cz.larpovadatabaze.games.components.panel.FilterGamesSidePanel;
-import cz.larpovadatabaze.games.models.FilterGame;
+import cz.larpovadatabaze.games.models.FilterGameDTO;
 import cz.larpovadatabaze.games.providers.SortableGameProvider;
 import cz.larpovadatabaze.games.services.Labels;
 import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
@@ -41,7 +41,7 @@ public class ListGamePage extends CsldBasePage implements FilterablePage {
     /**
      * Filter model used throughout the page
      */
-    private final IModel<FilterGame> filterModel = new Model(new FilterGame());
+    private final IModel<FilterGameDTO> filterModel = new Model(new FilterGameDTO());
 
     private FilterGameTabsPanel tabsPanel;
     private WebMarkupContainer requiredLabelsWrapper;
@@ -80,10 +80,6 @@ public class ListGamePage extends CsldBasePage implements FilterablePage {
                     labelId = ALL;
                 }
             }
-
-            // By default show all games.
-            filterModel.getObject().setShowOnlyNew(false);
-            filterModel.getObject().setShowArchived(true);
         }
 
         List<Label> requiredLabels = labels.getRequired();
@@ -105,9 +101,6 @@ public class ListGamePage extends CsldBasePage implements FilterablePage {
             // Non-required label selected - add it to narrow filter
             filterOtherLabels.add(labels.getById(labelId));
         }
-
-        // Add user's locale as language
-        filterModel.getObject().getLanguages().add((CsldAuthenticatedWebSession.get()).getLocale());
     }
 
     @Override
@@ -133,7 +126,7 @@ public class ListGamePage extends CsldBasePage implements FilterablePage {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
                         // Set just this link to model
-                        FilterGame filter = filterModel.getObject();
+                        FilterGameDTO filter = filterModel.getObject();
                         filter.getRequiredLabels().clear();
                         filter.getRequiredLabels().add(labelObj);
 
@@ -150,7 +143,7 @@ public class ListGamePage extends CsldBasePage implements FilterablePage {
                 removeLink.add(new AjaxEventBehavior("click") {
                     @Override
                     protected void onEvent(AjaxRequestTarget target) {
-                        FilterGame filter = filterModel.getObject();
+                        FilterGameDTO filter = filterModel.getObject();
                         filter.getRequiredLabels().remove(labelObj);
 
                         filterChanged(false, true, false);
@@ -159,7 +152,7 @@ public class ListGamePage extends CsldBasePage implements FilterablePage {
             }
         });
 
-        listGamePanel = new AbstractListGamePanel<FilterGame>("listGame", filterModel) {
+        listGamePanel = new AbstractListGamePanel<FilterGameDTO>("listGame", filterModel) {
             @Override
             protected SortableDataProvider<Game, String> getDataProvider() {
                 return new SortableGameProvider(getModel());

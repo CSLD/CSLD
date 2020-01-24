@@ -4,7 +4,7 @@ import cz.larpovadatabaze.common.components.AbstractCsldPanel;
 import cz.larpovadatabaze.common.components.ValidatableForm;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.games.components.page.ListGamePage;
-import cz.larpovadatabaze.games.models.FilterGame;
+import cz.larpovadatabaze.games.models.FilterGameDTO;
 import cz.larpovadatabaze.games.services.Labels;
 import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
 import org.apache.wicket.Component;
@@ -18,14 +18,14 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 /**
  * It contains basic characteristics of the game and allows user to filter by them.
  */
-public class FilterGamesSidePanel extends AbstractCsldPanel<FilterGame> {
+public class FilterGamesSidePanel extends AbstractCsldPanel<FilterGameDTO> {
 
     @SpringBean
     private Labels labels;
 
     private FilterByLabelsPanel requiredLabels;
 
-    public FilterGamesSidePanel(String id, IModel<FilterGame> model) {
+    public FilterGamesSidePanel(String id, IModel<FilterGameDTO> model) {
         super(id, model);
     }
 
@@ -33,8 +33,9 @@ public class FilterGamesSidePanel extends AbstractCsldPanel<FilterGame> {
     protected void onInitialize() {
         super.onInitialize();
 
-        final ValidatableForm<FilterGame> filterGames =
-                new ValidatableForm<FilterGame>("filterForm", new CompoundPropertyModel<FilterGame>(getModel())){};
+        final ValidatableForm<FilterGameDTO> filterGames =
+                new ValidatableForm<FilterGameDTO>("filterForm", new CompoundPropertyModel<FilterGameDTO>(getModel())) {
+                };
 
 
         CsldUser logged = CsldAuthenticatedWebSession.get().getLoggedUser();

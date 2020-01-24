@@ -1,7 +1,7 @@
 package cz.larpovadatabaze.games.services;
 
 import cz.larpovadatabaze.common.entities.Game;
-import cz.larpovadatabaze.games.models.FilterGame;
+import cz.larpovadatabaze.games.models.FilterGameDTO;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public interface FilteredGames {
      * @param limit  Limit of the items to be returned.
      * @return Page of the games satisfying the filtering criteria.
      */
-    List<Game> paginated(FilterGame filter, int offset, int limit);
+    List<Game> paginated(FilterGameDTO filter, int offset, int limit);
 
     /**
      * The toatl amount of the games in the database satisfying given filtering options.
@@ -26,5 +26,5 @@ public interface FilteredGames {
      * @param filter The filtering options
      * @return Amount of the games in the db satisfying the filtering criteria
      */
-    long totalAmount(FilterGame filter);
+    long totalAmount(FilterGameDTO filter);
 }

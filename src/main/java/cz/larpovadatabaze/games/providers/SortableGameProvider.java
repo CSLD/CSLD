@@ -1,7 +1,7 @@
 package cz.larpovadatabaze.games.providers;
 
 import cz.larpovadatabaze.common.entities.Game;
-import cz.larpovadatabaze.games.models.FilterGame;
+import cz.larpovadatabaze.games.models.FilterGameDTO;
 import cz.larpovadatabaze.games.services.FilteredGames;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.injection.Injector;
@@ -20,9 +20,9 @@ public class SortableGameProvider extends SortableDataProvider<Game, String> {
     @SpringBean
     private FilteredGames games;
 
-    private IModel<FilterGame> filterModel;
+    private IModel<FilterGameDTO> filterModel;
 
-    public SortableGameProvider(IModel<FilterGame> filterModel) {
+    public SortableGameProvider(IModel<FilterGameDTO> filterModel) {
         Injector.get().inject(this);
         this.filterModel = filterModel;
     }
