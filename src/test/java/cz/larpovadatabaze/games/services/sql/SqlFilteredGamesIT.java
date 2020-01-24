@@ -18,7 +18,6 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.IsCollectionContaining.hasItem;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 
-// TODO: Provide tests for the filtered games.
 public class SqlFilteredGamesIT extends WithDatabase {
     private FilteredGames underTest;
 
