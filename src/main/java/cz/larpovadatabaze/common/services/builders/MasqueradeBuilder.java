@@ -112,7 +112,8 @@ MasqueradeBuilder implements Builder {
         comments.saveOrUpdate(editorComment);
         comments.saveOrUpdate(userComment);
 
-        upvotes.saveOrUpdate(new Upvote(editor, userComment));
+        Upvote editorUserComment = new Upvote(editor, userComment);
+        upvotes.saveOrUpdate(editorUserComment);
         upvotes.saveOrUpdate(new Upvote(administrator, userComment));
 
         upvotes.saveOrUpdate(new Upvote(editor, editorComment));
@@ -142,7 +143,8 @@ MasqueradeBuilder implements Builder {
                 firstMasquerade, secondMasquerade, bestMasquerade, wrongMasquerade,
                 vampire, dramatic, emotional, chamber,
                 editorComment, userComment,
-                userRatedBest, userRatedSecond
+                userRatedBest, userRatedSecond,
+                editorUserComment
         );
     }
 }

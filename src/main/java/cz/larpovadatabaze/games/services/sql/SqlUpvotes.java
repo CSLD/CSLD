@@ -8,6 +8,7 @@ import cz.larpovadatabaze.common.entities.Upvote;
 import cz.larpovadatabaze.common.services.sql.CRUD;
 import cz.larpovadatabaze.games.services.Upvotes;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,10 +50,9 @@ public class SqlUpvotes extends CRUD<Upvote, Integer> implements Upvotes {
 
     @Override
     public Collection<Upvote> forUserAndComment(CsldUser user, Comment comment) {
-        Upvote upvote = new Upvote();
-        upvote.setComment(comment);
-        upvote.setUser(user);
-
-        return crudRepository.findByExample(upvote);
+        return crudRepository.findByCriteria(Restrictions.and(
+                Restrictions.eq("comment", comment),
+                Restrictions.eq("user", user)
+        ));
     }
 }
