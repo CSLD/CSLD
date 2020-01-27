@@ -99,10 +99,6 @@ public class GenericHibernateDAO<T, I extends Serializable>
         return true;
     }
 
-    public void flush() {
-		sessionFactory.getCurrentSession().flush();
-	}
-
 	public void clear() {
 		sessionFactory.getCurrentSession().clear();
 	}
