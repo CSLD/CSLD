@@ -4,11 +4,14 @@ import com.github.openjson.JSONObject;
 import cz.larpovadatabaze.common.dao.GenericHibernateDAO;
 import cz.larpovadatabaze.common.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.common.entities.CsldUser;
+import cz.larpovadatabaze.common.entities.EmailAuthentication;
+import cz.larpovadatabaze.common.services.MailService;
 import cz.larpovadatabaze.common.services.sql.CRUD;
 import cz.larpovadatabaze.games.services.Images;
 import cz.larpovadatabaze.users.Pwd;
 import cz.larpovadatabaze.users.RandomString;
 import cz.larpovadatabaze.users.services.CsldUsers;
+import cz.larpovadatabaze.users.services.EmailAuthentications;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -40,14 +43,29 @@ public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
     private static final String RE_CAPTCHA_SECRET_KEY = "6LeEiv8SAAAAAAE2ikmbiEJhv5XdVaI4_TiPPEt6";
 
     private Images images;
+    private MailService mails;
+    private EmailAuthentications authentications;
 
     @Autowired
-    public SqlCsldUsers(SessionFactory sessionFactory, Images images) {
+    public SqlCsldUsers(SessionFactory sessionFactory, Images images,
+                        MailService mails, EmailAuthentications authentications) {
         super(new GenericHibernateDAO<>(sessionFactory, new GenericBuilder<>(CsldUser.class)));
         this.images = images;
+        this.mails = mails;
+        this.authentications = authentications;
     }
 
     private ResourceReference userIconReference;
+
+    @Override
+    public void sendForgottenPassword(CsldUser user, EmailAuthentication emailAuthentication, String url) {
+        String content = String.format("Pro vytvoření nového hesla použijte následující odkaz: %s", url);
+        String subject = "[LarpDB] Zaslani odkazu na vytvoreni noveho hesla.";
+
+        mails.sendForgottenPassword(user, subject, content);
+
+        authentications.saveOrUpdate(emailAuthentication);
+    }
 
     @Override
     public List<CsldUser> getEditors() {

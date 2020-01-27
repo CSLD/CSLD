@@ -62,6 +62,11 @@ public class GenericHibernateDAO<T, I extends Serializable>
         return crit.list();
     }
 
+    @SuppressWarnings("unchecked")
+    public List<T> findByExecutableCriteria(Criteria criteria) {
+        return criteria.list();
+    }
+
     @Override
     public Criteria getExecutableCriteria() {
         return getBuilder().build().getExecutableCriteria(getCurrentSession());

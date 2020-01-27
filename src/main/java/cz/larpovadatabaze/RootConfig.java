@@ -2,16 +2,17 @@ package cz.larpovadatabaze;
 
 import com.mchange.v2.c3p0.DriverManagerDataSource;
 import cz.larpovadatabaze.common.services.FileService;
+import cz.larpovadatabaze.common.services.MailService;
 import cz.larpovadatabaze.common.services.s3.S3Bucket;
 import cz.larpovadatabaze.common.services.s3.S3Files;
+import cz.larpovadatabaze.common.services.smtp.SmtpMailService;
 import cz.larpovadatabaze.common.services.wicket.LocalFiles;
-import cz.larpovadatabaze.common.services.wicket.MailClient;
+import cz.larpovadatabaze.users.services.AppUsers;
 import org.flywaydb.core.Flyway;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
@@ -31,6 +32,8 @@ import java.util.Properties;
 public class RootConfig {
     @Autowired
     private Environment env;
+    @Autowired
+    private AppUsers appUsers;
 
     @Bean(initMethod = "migrate")
     Flyway flyway() {
@@ -121,23 +124,12 @@ public class RootConfig {
     }
 
     @Bean
-    public SimpleMailMessage templateMessage() {
-        SimpleMailMessage message = new SimpleMailMessage();
-
-        message.setFrom(env.getProperty("mail.from"));
-        message.setSubject(env.getProperty("mail.subject"));
-
-        return message;
-    }
-
-    @Bean
-    public MailClient mailService() {
-        MailClient mail = new MailClient();
-
-        mail.setTemplateMessage(templateMessage());
-        mail.setMailSender(mailSender());
-
-        return mail;
+    public MailService mailService() {
+        return new SmtpMailService(
+                mailSender(),
+                appUsers,
+                env.getProperty("mail.from")
+        );
     }
     // End of email settings
 

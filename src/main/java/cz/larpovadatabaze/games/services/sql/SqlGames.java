@@ -225,7 +225,8 @@ public class SqlGames extends CRUD<Game, Integer> implements Games {
     public Collection<Game> getGamesRatedByUser(int userId) {
         Criteria criteria = crudRepository.getExecutableCriteria()
                 .createAlias("game.ratings", "ratings")
-                .add(Restrictions.eq("ratings.user.id", userId));
+                .add(Restrictions.eq("ratings.user.id", userId))
+                .add(Restrictions.isNotNull("ratings.rating"));
 
         return new LinkedHashSet<>(criteria.list());
     }

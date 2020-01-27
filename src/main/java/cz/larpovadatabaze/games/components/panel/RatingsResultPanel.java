@@ -48,8 +48,7 @@ public class RatingsResultPanel extends AbstractCsldPanel<Game> {
 
         @Override
         public String getObject() {
-            double ratingOfGame = getModelObject().getTotalRating() != null ? getModelObject().getTotalRating() : 0;
-            return Rating.getColorOf(ratingOfGame);
+            return ratings.getColor(getModelObject().getTotalRating());
         }
     }
 
@@ -158,7 +157,7 @@ public class RatingsResultPanel extends AbstractCsldPanel<Game> {
                         super.onComponentTag(tag);
 
                         int percent = ratingsArrayModel.getObject()[n-1];
-                        tag.put("class", tag.getAttribute("class")+" "+Rating.getColorOf(n*10d));
+                        tag.put("class", tag.getAttribute("class") + " " + ratings.getColor(n * 10d));
                         tag.put("aria-valuenow", percent);
                         tag.put("style", "width: "+percent+"%");
                     }

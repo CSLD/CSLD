@@ -2,8 +2,9 @@ package cz.larpovadatabaze;
 
 import com.mchange.v2.c3p0.DriverManagerDataSource;
 import cz.larpovadatabaze.common.services.FileService;
+import cz.larpovadatabaze.common.services.MailService;
+import cz.larpovadatabaze.common.services.smtp.SmtpMailService;
 import cz.larpovadatabaze.common.services.wicket.LocalFiles;
-import cz.larpovadatabaze.common.services.wicket.MailClient;
 import cz.larpovadatabaze.users.services.AppUsers;
 import org.flywaydb.core.Flyway;
 import org.hibernate.SessionFactory;
@@ -11,7 +12,6 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
@@ -103,6 +103,12 @@ public class RootTestWithDbConfig {
     }
     // End of data store specification
 
+
+    @Bean
+    public AppUsers appUsers() {
+        return Mockito.mock(AppUsers.class);
+    }
+
     // Start of email settings
     @Bean
     public JavaMailSender mailSender() {
@@ -127,28 +133,12 @@ public class RootTestWithDbConfig {
     }
 
     @Bean
-    public AppUsers appUsers() {
-        return Mockito.mock(AppUsers.class);
-    }
-
-    @Bean
-    public SimpleMailMessage templateMessage() {
-        SimpleMailMessage message = new SimpleMailMessage();
-
-        message.setFrom(env.getProperty("mail.from"));
-        message.setSubject(env.getProperty("mail.subject"));
-
-        return message;
-    }
-
-    @Bean
-    public MailClient mailService() {
-        MailClient mail = new MailClient();
-
-        mail.setTemplateMessage(templateMessage());
-        mail.setMailSender(mailSender());
-
-        return mail;
+    public MailService mailService() {
+        return new SmtpMailService(
+                mailSender(),
+                appUsers(),
+                env.getProperty("mail.from")
+        );
     }
     // End of email settings
 

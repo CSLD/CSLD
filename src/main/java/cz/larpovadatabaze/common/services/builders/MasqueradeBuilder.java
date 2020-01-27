@@ -12,6 +12,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import static cz.larpovadatabaze.common.entities.Rating.GameState.PLAYED;
+import static cz.larpovadatabaze.common.entities.Rating.GameState.WANT_TO_PLAY;
+
 abstract public class
 MasqueradeBuilder implements Builder {
     private Comments comments;
@@ -114,13 +117,15 @@ MasqueradeBuilder implements Builder {
 
         upvotes.saveOrUpdate(new Upvote(editor, editorComment));
 
-        ratings.saveOrUpdate(new Rating(user, bestMasquerade, 9));
+        Rating userRatedBest = new Rating(user, bestMasquerade, 9, WANT_TO_PLAY);
+        ratings.saveOrUpdate(userRatedBest);
         ratings.saveOrUpdate(new Rating(editor, bestMasquerade, 10));
         ratings.saveOrUpdate(new Rating(administrator, bestMasquerade, 9));
         ratings.saveOrUpdate(new Rating(tom, bestMasquerade, 9));
         ratings.saveOrUpdate(new Rating(anna, bestMasquerade, 10));
 
-        ratings.saveOrUpdate(new Rating(user, secondMasquerade, 9));
+        Rating userRatedSecond = new Rating(user, secondMasquerade, 9);
+        ratings.saveOrUpdate(userRatedSecond);
 
         ratings.saveOrUpdate(new Rating(editor, firstMasquerade, 6));
         ratings.saveOrUpdate(new Rating(administrator, firstMasquerade, 7));
@@ -128,15 +133,16 @@ MasqueradeBuilder implements Builder {
         ratings.saveOrUpdate(new Rating(anna, firstMasquerade, 7));
         ratings.saveOrUpdate(new Rating(joe, firstMasquerade, 5));
 
-        ratings.saveOrUpdate(new UserPlayedGame(editor, secondMasquerade));
-        ratings.saveOrUpdate(new UserPlayedGame(administrator, secondMasquerade));
+        ratings.saveOrUpdate(new Rating(editor, secondMasquerade, PLAYED));
+        ratings.saveOrUpdate(new Rating(administrator, secondMasquerade, PLAYED));
 
         return new MasqueradeEntities(
                 administrator, editor, user,
                 nosferatu, toreador,
                 firstMasquerade, secondMasquerade, bestMasquerade, wrongMasquerade,
                 vampire, dramatic, emotional, chamber,
-                editorComment, userComment
+                editorComment, userComment,
+                userRatedBest, userRatedSecond
         );
     }
 }

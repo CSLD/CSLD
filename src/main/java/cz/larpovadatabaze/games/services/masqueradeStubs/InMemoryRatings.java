@@ -2,7 +2,6 @@ package cz.larpovadatabaze.games.services.masqueradeStubs;
 
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Rating;
-import cz.larpovadatabaze.common.entities.UserPlayedGame;
 import cz.larpovadatabaze.common.services.masqueradeStubs.InMemoryCrud;
 import cz.larpovadatabaze.games.services.Ratings;
 
@@ -24,27 +23,12 @@ public class InMemoryRatings extends InMemoryCrud<Rating, Integer> implements Ra
     }
 
     @Override
-    public double getAverageRating() {
-        return 5.5;
-    }
-
-    @Override
     public List<Rating> getRatingsOfUser(CsldUser logged, CsldUser actual) {
         return inMemory;
     }
 
     @Override
-    public void delete(Rating rating) {
-
-    }
-
-    @Override
-    public UserPlayedGame getUserPlayedGame(int gameId, int userId) {
-        return null;
-    }
-
-    @Override
-    public boolean saveOrUpdate(UserPlayedGame stateOfGame) {
-        return false;
+    public String getColor(Double rating) {
+        return "average";
     }
 }

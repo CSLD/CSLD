@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Tokens created for the user when requesting a new password.
  */
-@Repository
+@Repository(value = "emailAuthentications")
 @Transactional
 public class SqlEmailAuthenticationTokens extends CRUD<EmailAuthentication, Integer> implements EmailAuthentications {
     @Autowired

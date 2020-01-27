@@ -2,10 +2,14 @@ package cz.larpovadatabaze.games.components.panel;
 
 import cz.larpovadatabaze.common.components.CommentHiddenButton;
 import cz.larpovadatabaze.common.components.page.CsldBasePage;
-import cz.larpovadatabaze.common.entities.*;
+import cz.larpovadatabaze.common.entities.Comment;
+import cz.larpovadatabaze.common.entities.CsldUser;
+import cz.larpovadatabaze.common.entities.Game;
+import cz.larpovadatabaze.common.entities.Upvote;
 import cz.larpovadatabaze.games.components.UpvoteButton;
 import cz.larpovadatabaze.games.components.page.GameDetail;
 import cz.larpovadatabaze.games.services.Comments;
+import cz.larpovadatabaze.games.services.Ratings;
 import cz.larpovadatabaze.games.services.Upvotes;
 import cz.larpovadatabaze.users.components.icons.UserIcon;
 import cz.larpovadatabaze.users.components.page.UserDetailPage;
@@ -38,6 +42,8 @@ public class CommentsListPanel extends Panel {
     private Upvotes upvotes;
     @SpringBean
     private AppUsers appUsers;
+    @SpringBean
+    private Ratings ratings;
 
     private final IModel<List<Comment>> comments;
 
@@ -174,8 +180,8 @@ public class CommentsListPanel extends Panel {
 
     private WebMarkupContainer createGameDetailLink(Game game) {
         WebMarkupContainer toShow = new WebMarkupContainer("showGame");
-        String gameRatingColor = Rating.getColorOf(game.getAverageRating());
-        Label gameRating = new Label("gameRating","");
+        String gameRatingColor = ratings.getColor(game.getTotalRating());
+        Label gameRating = new Label("gameRating", "");
         gameRating.add(new AttributeAppender("class", Model.of(gameRatingColor), " "));
         toShow.add(gameRating);
 

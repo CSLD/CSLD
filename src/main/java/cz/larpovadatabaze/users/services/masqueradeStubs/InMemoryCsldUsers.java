@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.users.services.masqueradeStubs;
 
 import cz.larpovadatabaze.common.entities.CsldUser;
+import cz.larpovadatabaze.common.entities.EmailAuthentication;
 import cz.larpovadatabaze.common.services.masqueradeStubs.InMemoryCrud;
 import cz.larpovadatabaze.games.services.Images;
 import cz.larpovadatabaze.users.CsldRoles;
@@ -21,6 +22,11 @@ public class InMemoryCsldUsers extends InMemoryCrud<CsldUser, Integer> implement
                 "Editor", "Prague", "Editor of Czech Masquerade group", CsldRoles.EDITOR.getRole(), "editor"));
         inMemory.add(new CsldUser(3, String.format(mailTemplate, "user"), "User",
                 "User", "Prague", "User of Czech Masquerade group", CsldRoles.USER.getRole(), "user"));
+
+    }
+
+    @Override
+    public void sendForgottenPassword(CsldUser user, EmailAuthentication emailAuthentication, String url) {
 
     }
 

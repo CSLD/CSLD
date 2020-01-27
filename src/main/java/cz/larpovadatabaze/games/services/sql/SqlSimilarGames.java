@@ -52,6 +52,28 @@ public class SqlSimilarGames extends CRUD<SimilarGame, Integer> implements Simil
 
     @Override
     public void recalculateForAll() {
+        /* List<Label> potentiallySimilar = game.getLabels();
+        List<Label> currentLabels = this.getLabels();
+
+        Float result = 0f;
+        Float required = 0f;
+        for(Label label: currentLabels) {
+            for(Label similar: potentiallySimilar) {
+                if(similar.equals(label)) {
+                    if(similar.getRequired()) {
+                        required = 1f;
+                    }
+
+                    result += 1f;
+                }
+            }
+        }
+
+        // Ascending order means that more to 0 means more similar game.
+        // +1 means that if the required labels are shared, it brings better information
+        Float similarity = 1 - ((result + required) / currentLabels.size() + 1);
+        */
+
         throw new NotImplementedException("Not yet");
     }
 }

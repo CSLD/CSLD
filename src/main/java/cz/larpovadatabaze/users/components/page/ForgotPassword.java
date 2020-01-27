@@ -4,9 +4,7 @@ import cz.larpovadatabaze.common.components.page.CsldBasePage;
 import cz.larpovadatabaze.common.components.page.HomePage;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.EmailAuthentication;
-import cz.larpovadatabaze.common.services.wicket.MailClient;
 import cz.larpovadatabaze.users.services.CsldUsers;
-import cz.larpovadatabaze.users.services.EmailAuthentications;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.EmailTextField;
@@ -22,22 +20,19 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  */
 public class ForgotPassword extends CsldBasePage {
     @SpringBean
-    EmailAuthentications emailAuthentications;
-    @SpringBean
     CsldUsers csldUsers;
-    @SpringBean
-    MailClient mailClient;
 
     @SuppressWarnings("UnusedDeclaration")
     private String mail;
 
     public ForgotPassword(){
-        Form forgotPassword = new Form("forgotPassword"){
+        Form<Void> forgotPassword = new Form<>("forgotPassword") {
             @Override
             protected void onSubmit() {
+
                 EmailAuthentication emailAuthentication = new EmailAuthentication();
                 CsldUser user = csldUsers.getByEmail(mail);
-                if(user == null) {
+                if (user == null) {
                     error("Uživatel s tímto emailem neexistuje");
                     return;
                 }
@@ -47,10 +42,10 @@ public class ForgotPassword extends CsldBasePage {
                 PageParameters params = new PageParameters();
                 params.add("0", key);
                 emailAuthentication.setAuthToken(key);
+                String url = RequestCycle.get().getUrlRenderer()
+                        .renderFullUrl(RequestCycle.get().mapUrlFor(ResetPassword.class, params));
 
-                String mailBody = String.format("Pro vytvoření nového hesla použijte následující odkaz: %s", RequestCycle.get().getUrlRenderer().renderFullUrl(RequestCycle.get().mapUrlFor(ResetPassword.class, params)));
-                mailClient.sendMail(mailBody, mail);
-                emailAuthentications.saveOrUpdate(emailAuthentication);
+                csldUsers.sendForgottenPassword(user, emailAuthentication, url);
 
                 throw new RestartResponseException(HomePage.class);
             }

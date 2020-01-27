@@ -9,8 +9,8 @@ import cz.larpovadatabaze.common.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.entities.Label;
-import cz.larpovadatabaze.common.entities.UserPlayedGame;
 import cz.larpovadatabaze.common.services.sql.CRUD;
+import cz.larpovadatabaze.games.services.GamesWithState;
 import org.apache.wicket.model.IModel;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -30,10 +30,13 @@ import java.util.stream.Collectors;
 @Repository
 @Transactional
 public class SqlEvents extends CRUD<Event, Integer> implements Events {
+    private GamesWithState games;
+
     @Autowired
-    public SqlEvents(SessionFactory sessionFactory) {
+    public SqlEvents(SessionFactory sessionFactory, GamesWithState games) {
         super(new GenericHibernateDAO<>(sessionFactory,
                 new GenericBuilder<>(Event.class)));
+        this.games = games;
     }
 
     @Override
@@ -44,16 +47,10 @@ public class SqlEvents extends CRUD<Event, Integer> implements Events {
 
     @Override
     public List<Event> forWantedGames(CsldUser user, List<Event> events) {
-        Collection<Event> all = events;
         List<Event> filtered = new ArrayList<>();
-        Collection<Game> wantsToPlay = new ArrayList<>();
-        for (UserPlayedGame stateOfGame : user.getPlayedGames()) {
-            if (stateOfGame.getStateEnum() == UserPlayedGame.UserPlayedGameState.WANT_TO_PLAY) {
-                wantsToPlay.add(stateOfGame.getGame());
-            }
-        }
+        Collection<Game> wantsToPlay = games.getWantedByUser(user);
 
-        for (Event event : all) {
+        for (Event event : events) {
             for (Game game : event.getGames()) {
                 if (wantsToPlay.contains(game)) {
                     filtered.add(event);

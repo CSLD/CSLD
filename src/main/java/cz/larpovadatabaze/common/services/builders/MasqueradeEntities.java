@@ -23,11 +23,14 @@ public class MasqueradeEntities {
     public final Comment editorComment;
     public final Comment userComment;
 
+    public final Rating userRatedBest;
+    public final Rating userRatedSecond;
+
     public MasqueradeEntities(CsldUser administrator, CsldUser editor, CsldUser user,
                               CsldGroup nosferatu, CsldGroup toreador,
                               Game firstMasquerade, Game secondMasquerade, Game bestMasquerade, Game wrongMasquerade,
                               Label vampire, Label dramatic, Label emotional, Label chamber,
-                              Comment editorComment, Comment userComment) {
+                              Comment editorComment, Comment userComment, Rating userRatedBest, Rating userRatedSecond) {
         this.administrator = administrator;
         this.editor = editor;
         this.user = user;
@@ -43,5 +46,7 @@ public class MasqueradeEntities {
         this.chamber = chamber;
         this.editorComment = editorComment;
         this.userComment = userComment;
+        this.userRatedBest = userRatedBest;
+        this.userRatedSecond = userRatedSecond;
     }
 }

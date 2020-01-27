@@ -3,9 +3,10 @@ package cz.larpovadatabaze;
 import cz.larpovadatabaze.calendar.service.Events;
 import cz.larpovadatabaze.calendar.service.events.InMemoryEvents;
 import cz.larpovadatabaze.common.services.FilterService;
+import cz.larpovadatabaze.common.services.MailService;
 import cz.larpovadatabaze.common.services.builders.InMemoryMasqueradeBuilder;
+import cz.larpovadatabaze.common.services.smtp.SmtpMailService;
 import cz.larpovadatabaze.common.services.wicket.FilterServiceReflection;
-import cz.larpovadatabaze.common.services.wicket.MailClient;
 import cz.larpovadatabaze.games.services.*;
 import cz.larpovadatabaze.games.services.masqueradeStubs.*;
 import cz.larpovadatabaze.search.services.TokenSearch;
@@ -23,7 +24,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -127,6 +127,11 @@ public class RootTestWicketContext {
         return new FilterServiceReflection();
     }
 
+    @Bean
+    public GamesWithState gamesWithState() {
+        return new InMemoryGamesWithState();
+    }
+
     @Bean(initMethod = "build")
     public InMemoryMasqueradeBuilder builder() {
         return new InMemoryMasqueradeBuilder(comments(), csldUsers(), games(), similarGames(),
@@ -162,23 +167,12 @@ public class RootTestWicketContext {
     }
 
     @Bean
-    public SimpleMailMessage templateMessage() {
-        SimpleMailMessage message = new SimpleMailMessage();
-
-        message.setFrom(env.getProperty("mail.from"));
-        message.setSubject(env.getProperty("mail.subject"));
-
-        return message;
-    }
-
-    @Bean
-    public MailClient mailService() {
-        MailClient mail = new MailClient();
-
-        mail.setTemplateMessage(templateMessage());
-        mail.setMailSender(mailSender());
-
-        return mail;
+    public MailService mailService() {
+        return new SmtpMailService(
+                mailSender(),
+                appUsers(),
+                env.getProperty("mail.from")
+        );
     }
     // End of email settings
 }
