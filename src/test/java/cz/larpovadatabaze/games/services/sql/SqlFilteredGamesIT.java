@@ -74,6 +74,6 @@ public class SqlFilteredGamesIT extends WithDatabase {
     public void getAmountOfFilteredByAmountOfComments() {
         long amount = underTest.totalAmount(new FilterGameDTO(FilterGameDTO.OrderBy.ADDED_DESC));
 
-        assertThat(amount, is(2L));
+        assertThat(amount, is(43L));
     }
 }
