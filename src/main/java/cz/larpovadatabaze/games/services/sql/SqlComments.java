@@ -3,6 +3,8 @@ package cz.larpovadatabaze.games.services.sql;
 import cz.larpovadatabaze.common.dao.GenericHibernateDAO;
 import cz.larpovadatabaze.common.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.common.entities.Comment;
+import cz.larpovadatabaze.common.entities.CsldUser;
+import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.services.sql.CRUD;
 import cz.larpovadatabaze.games.services.Comments;
 import cz.larpovadatabaze.games.services.Games;
@@ -17,8 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.LinkedHashSet;
+import java.util.*;
 
 /**
  *
@@ -100,5 +101,48 @@ public class SqlComments extends CRUD<Comment, Integer> implements Comments {
 
         // Log
         logger.info("Editor #" + appUsers.getLoggedUserId() + " unhidden comment of user #" + comment.getUser().getId() + " for game #" + comment.getGame().getId());
+    }
+
+    @Override
+    public List<Comment> visibleForCurrentUserOrderedByUpvotes(Game game) {
+        List<Comment> res = new ArrayList<Comment>();
+
+        // Fill in array
+        if (appUsers.isAtLeastEditor()) {
+            // Editors see everything
+            List<Comment> comments = game.getComments() != null ? game.getComments() :
+                    new ArrayList<>();
+            res.addAll(comments);
+        } else {
+            // Filter
+            Integer thisUserId = null;
+            CsldUser user = appUsers.getLoggedUser();
+            if (user != null) {
+                thisUserId = user.getId();
+            }
+            List<Comment> comments = game.getComments() != null ? game.getComments() :
+                    new ArrayList<>();
+            for (Comment c : comments) {
+                if (c.getHidden()) {
+                    if (!c.getUser().getId().equals(thisUserId))
+                        continue; // Hidden comment and user is not creator - hide
+                }
+                res.add(c);
+            }
+        }
+
+        Set<Comment> unique = new HashSet<>(res);
+        res = new ArrayList<>(unique);
+
+        // Sort primarily by the amount of upvotes. Secondarily by the most recent.
+        res.sort((o1, o2) -> {
+            if (o1.getPluses().size() != o2.getPluses().size()) {
+                return o2.getPluses().size() - o1.getPluses().size();
+            } else {
+                return -(o1.getAdded().compareTo(o2.getAdded()));
+            }
+        });
+
+        return res;
     }
 }

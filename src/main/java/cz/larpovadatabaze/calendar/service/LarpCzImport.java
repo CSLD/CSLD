@@ -33,21 +33,21 @@ public class LarpCzImport {
      * it stores them.
      */
     public void importEvents() {
-        Session session = sessionFactory.openSession();
-        Transaction eventsImport = session.beginTransaction();
+        try (Session session = sessionFactory.openSession()) {
+            Transaction eventsImport = session.beginTransaction();
 
-        Collection<Event> imported = events.all();
+            Collection<Event> imported = events.all();
 
-        List<Label> larpCz = new ArrayList<>(tokenSearch.findLabels("LarpCz"));
+            List<Label> larpCz = new ArrayList<>(tokenSearch.findLabels("LarpCz"));
 
-        for (Event larpCzEvent : imported) {
-            if (dbEvents.byName(larpCzEvent.getName()).size() == 0) {
-                larpCzEvent.setLabels(larpCz);
-                dbEvents.saveOrUpdate(larpCzEvent);
+            for (Event larpCzEvent : imported) {
+                if (dbEvents.byName(larpCzEvent.getName()).size() == 0) {
+                    larpCzEvent.setLabels(larpCz);
+                    dbEvents.saveOrUpdate(larpCzEvent);
+                }
             }
-        }
 
-        eventsImport.commit();
-        session.close();
+            eventsImport.commit();
+        }
     }
 }

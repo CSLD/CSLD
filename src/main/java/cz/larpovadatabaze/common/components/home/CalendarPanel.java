@@ -17,15 +17,15 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * Panel for upcoming events from larp.cz
- *
+ * Panel for upcoming events
+ * <p>
  * User: Michal Kara Date: 7.3.15 Time: 21:19
  */
-public class LarpCzCalendarPanel extends Panel {
+public class CalendarPanel extends Panel {
     @SpringBean
     private Events events;
 
-    public LarpCzCalendarPanel(String id) {
+    public CalendarPanel(String id) {
         super(id);
     }
 

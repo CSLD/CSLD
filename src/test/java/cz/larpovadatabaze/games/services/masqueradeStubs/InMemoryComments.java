@@ -1,9 +1,11 @@
 package cz.larpovadatabaze.games.services.masqueradeStubs;
 
 import cz.larpovadatabaze.common.entities.Comment;
+import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.services.masqueradeStubs.InMemoryCrud;
 import cz.larpovadatabaze.games.services.Comments;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -60,5 +62,10 @@ public class InMemoryComments extends InMemoryCrud<Comment, Integer> implements 
     @Override
     public void unHideComment(Comment comment) {
         comment.setHidden(true);
+    }
+
+    @Override
+    public List<Comment> visibleForCurrentUserOrderedByUpvotes(Game game) {
+        return new ArrayList<>();
     }
 }
