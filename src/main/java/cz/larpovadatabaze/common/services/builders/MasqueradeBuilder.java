@@ -47,11 +47,11 @@ MasqueradeBuilder implements Builder {
         CsldUser user = new CsldUser(String.format(mailTemplate, "user"), "User",
                 "User", "Prague", "User of Czech Masquerade group", CsldRoles.USER.getRole(), "user");
         CsldUser tom = new CsldUser(String.format(mailTemplate, "tom"), "Tom",
-                "User", "Prague", "User of Czech Masquerade group", CsldRoles.USER.getRole(), "user");
+                "User", "Prague", "Tom", CsldRoles.USER.getRole(), "user");
         CsldUser anna = new CsldUser(String.format(mailTemplate, "anna"), "Anna",
-                "User", "Prague", "User of Czech Masquerade group", CsldRoles.USER.getRole(), "user");
+                "User", "Prague", "Anna, fun od Mas", CsldRoles.USER.getRole(), "user");
         CsldUser joe = new CsldUser(String.format(mailTemplate, "joe"), "Joe",
-                "User", "Prague", "User of Czech Masquerade group", CsldRoles.USER.getRole(), "user");
+                "User", "Prague", "Joe, the hater", CsldRoles.USER.getRole(), "user");
         users.saveOrUpdate(administrator);
         users.saveOrUpdate(editor);
         users.saveOrUpdate(user);
@@ -78,23 +78,19 @@ MasqueradeBuilder implements Builder {
         List<CsldUser> authors = new ArrayList<CsldUser>();
         Collections.addAll(authors, editor, administrator);
         for (int i = 3; i < 43; i++) {
-            games.saveOrUpdate(new Game("Masquerades: " + i, i + " th try to bring Masquerade into the Czech " +
-                    "republic", user, authors, masqueradeGamesLabels, new Timestamp(new Date().getTime()), null, 2010 + (i % 5)));
+            games.saveOrUpdate(new Game("Masquerades: " + i, i + " th try to bring Masquerade into the Czech", user, authors, masqueradeGamesLabels, new Timestamp(new Date().getTime()), null, 2010 + (i % 5)));
         }
 
         List<CsldUser> authorsIncludingUser = new ArrayList<>();
         Collections.addAll(authorsIncludingUser, user, editor, administrator);
         List<Label> masqueradeLabelsChamber = new ArrayList<>();
         Collections.addAll(masqueradeLabelsChamber, chamber, vampire);
-        Game bestMasquerade = new Game("Best Masquerade", "Best Masquerade in the Czech " +
-                "republic", user, authorsIncludingUser, masqueradeLabelsChamber, new Timestamp(new Date().getTime()));
+        Game bestMasquerade = new Game("Best Masquerade", "Best Masquerade", user, authorsIncludingUser, masqueradeLabelsChamber, new Timestamp(new Date().getTime()));
         Game wrongMasquerade = new Game("Wrong Masquerade", "Just an error", user, authors,
                 masqueradeGamesLabels, new Timestamp(new Date().getTime()));
         wrongMasquerade.setDeleted(true);
-        Game firstMasquerade = new Game("Masquerade 1", "First try to bring Masquerade into the Czech " +
-                "republic", user, authors, masqueradeGamesLabels, new Timestamp(new Date().getTime()));
-        Game secondMasquerade = new Game("Masquerade 2", "Second try to bring Masquerade into the Czech " +
-                "republic", editor, authors, masqueradeGamesLabels, new Timestamp(new Date().getTime()));
+        Game firstMasquerade = new Game("Masquerade 1", "First try ", user, authors, masqueradeGamesLabels, new Timestamp(new Date().getTime()));
+        Game secondMasquerade = new Game("Masquerade 2", "Second try", editor, authors, masqueradeGamesLabels, new Timestamp(new Date().getTime()));
         firstMasquerade.getGroupAuthor().add(nosferatu);
         secondMasquerade.getGroupAuthor().add(nosferatu);
 

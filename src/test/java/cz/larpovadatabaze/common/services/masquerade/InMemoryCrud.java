@@ -1,4 +1,4 @@
-package cz.larpovadatabaze.common.services.masqueradeStubs;
+package cz.larpovadatabaze.common.services.masquerade;
 
 import cz.larpovadatabaze.common.Identifiable;
 import cz.larpovadatabaze.common.services.CRUDService;

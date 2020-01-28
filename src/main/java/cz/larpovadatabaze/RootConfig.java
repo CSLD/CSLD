@@ -32,8 +32,6 @@ import java.util.Properties;
 public class RootConfig {
     @Autowired
     private Environment env;
-    @Autowired
-    private AppUsers appUsers;
 
     @Bean(initMethod = "migrate")
     Flyway flyway() {
@@ -124,7 +122,7 @@ public class RootConfig {
     }
 
     @Bean
-    public MailService mailService() {
+    public MailService mailService(AppUsers appUsers) {
         return new SmtpMailService(
                 mailSender(),
                 appUsers,

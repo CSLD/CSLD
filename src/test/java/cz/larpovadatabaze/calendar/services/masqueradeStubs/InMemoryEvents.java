@@ -5,7 +5,7 @@ import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.calendar.model.FilterEvent;
 import cz.larpovadatabaze.calendar.service.Events;
 import cz.larpovadatabaze.common.entities.CsldUser;
-import cz.larpovadatabaze.common.services.masqueradeStubs.InMemoryCrud;
+import cz.larpovadatabaze.common.services.masquerade.InMemoryCrud;
 import org.apache.wicket.model.IModel;
 
 import java.util.ArrayList;

@@ -1,8 +1,8 @@
-package cz.larpovadatabaze.games.services.masqueradeStubs;
+package cz.larpovadatabaze.games.services.masquerade;
 
 import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.entities.SimilarGame;
-import cz.larpovadatabaze.common.services.masqueradeStubs.InMemoryCrud;
+import cz.larpovadatabaze.common.services.masquerade.InMemoryCrud;
 import cz.larpovadatabaze.games.services.SimilarGames;
 
 import java.util.List;

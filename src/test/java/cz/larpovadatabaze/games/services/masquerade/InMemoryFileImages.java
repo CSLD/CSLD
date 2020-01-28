@@ -1,9 +1,9 @@
-package cz.larpovadatabaze.games.services.masqueradeStubs;
+package cz.larpovadatabaze.games.services.masquerade;
 
 import cz.larpovadatabaze.common.dao.GenericHibernateDAO;
 import cz.larpovadatabaze.common.entities.IEntityWithImage;
 import cz.larpovadatabaze.common.entities.Image;
-import cz.larpovadatabaze.common.services.masqueradeStubs.InMemoryCrud;
+import cz.larpovadatabaze.common.services.masquerade.InMemoryCrud;
 import cz.larpovadatabaze.games.services.Images;
 import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.request.resource.ResourceReference;

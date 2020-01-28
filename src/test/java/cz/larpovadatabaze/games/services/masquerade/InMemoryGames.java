@@ -1,7 +1,7 @@
-package cz.larpovadatabaze.games.services.masqueradeStubs;
+package cz.larpovadatabaze.games.services.masquerade;
 
 import cz.larpovadatabaze.common.entities.Game;
-import cz.larpovadatabaze.common.services.masqueradeStubs.InMemoryCrud;
+import cz.larpovadatabaze.common.services.masquerade.InMemoryCrud;
 import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.games.services.Images;
 import org.apache.wicket.request.resource.IResource;

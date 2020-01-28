@@ -1,4 +1,4 @@
-package cz.larpovadatabaze.games.services.masqueradeStubs;
+package cz.larpovadatabaze.games.services.masquerade;
 
 import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.games.models.FilterGameDTO;
