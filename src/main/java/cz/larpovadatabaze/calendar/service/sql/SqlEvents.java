@@ -71,6 +71,54 @@ public class SqlEvents extends CRUD<Event, Integer> implements Events {
                 .collect(Collectors.toList());
     }
 
+    private boolean isInGivenTimeFrame(Event event, FilterEvent filterEvent) {
+        boolean endsBeforeLimit = true;
+        boolean startsBeforeLimit = true;
+        boolean startsAfterLimit = true;
+        boolean isInGivenTimeFrame = true;
+        if ((filterEvent.getFrom() != null) || (filterEvent.getTo() != null)) {
+            if (filterEvent.getTo() != null) {
+                endsBeforeLimit = event.getTo().getTime().before(filterEvent.getTo());
+                startsBeforeLimit = event.getFrom().getTime().before(filterEvent.getTo());
+            }
+            if (filterEvent.getFrom() != null) {
+                startsAfterLimit = event.getFrom().getTime().after(filterEvent.getFrom());
+            }
+
+            isInGivenTimeFrame = endsBeforeLimit && startsAfterLimit && startsBeforeLimit;
+        }
+        return isInGivenTimeFrame;
+    }
+
+    private boolean isInRegion(Event event, FilterEvent filterEvent) {
+        if (filterEvent.getRegion() != null && filterEvent.getFilter() != null && event.getLocation() != null) {
+            if (!filterEvent.getFilter().isGeometryInArea(filterEvent.getRegion(), event.getLocation())) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private void sortByTime(List<Event> filtered) {
+        filtered.sort((o1, o2) -> {
+            if (o1.getFrom() == null || o2.getFrom().before(o1.getFrom())) {
+                return 1;
+            } else if (o2.getFrom() == null || o1.getFrom().before(o2.getFrom())) {
+                return -1;
+            } else {
+                return 0;
+            }
+        });
+    }
+
+    private List<Event> limit(List<Event> filtered, FilterEvent filterEvent) {
+        if (filterEvent.getLimit() != null && filtered.size() > filterEvent.getLimit()) {
+            return new ArrayList<>(filtered).subList(0, filterEvent.getLimit());
+        }
+        return filtered;
+    }
+
     @Override
     public List<Event> filtered(IModel<FilterEvent> filterCriteria) {
         Collection<Event> events = getAll();
@@ -84,52 +132,18 @@ public class SqlEvents extends CRUD<Event, Integer> implements Events {
 
             List<Label> labels = event.getLabels();
 
-            boolean containsAllLabels = labels.containsAll(filterEvent.getRequiredLabels()) && labels.containsAll(filterEvent.getOtherLabels());
-            boolean isInGivenTimeFrame = true;
-            boolean endsBeforeLimit = true;
-            boolean startsBeforeLimit = true;
-            boolean startsAfterLimit = true;
-            boolean isInRegion = true;
-
-            // There is some time based filter specified.
-            if ((filterEvent.getFrom() != null) || (filterEvent.getTo() != null)) {
-                if (filterEvent.getTo() != null) {
-                    endsBeforeLimit = event.getTo().getTime().before(filterEvent.getTo());
-                    startsBeforeLimit = event.getFrom().getTime().before(filterEvent.getTo());
-                }
-                if (filterEvent.getFrom() != null) {
-                    startsAfterLimit = event.getFrom().getTime().after(filterEvent.getFrom());
-                }
-
-                isInGivenTimeFrame = endsBeforeLimit && startsAfterLimit && startsBeforeLimit;
-            }
-
-            if (filterEvent.getRegion() != null && filterEvent.getFilter() != null && event.getLocation() != null) {
-                if (!filterEvent.getFilter().isGeometryInArea(filterEvent.getRegion(), event.getLocation())) {
-                    isInRegion = false;
-                }
-            }
+            boolean containsAllLabels = labels.containsAll(filterEvent.getRequiredLabels()) &&
+                    labels.containsAll(filterEvent.getOtherLabels());
+            boolean isInGivenTimeFrame = isInGivenTimeFrame(event, filterEvent);
+            boolean isInRegion = isInRegion(event, filterEvent);
 
             if (containsAllLabels && isInGivenTimeFrame && isInRegion) {
                 filtered.add(event);
             }
         }
 
-        filtered.sort((o1, o2) -> {
-            if (o1.getFrom() == null || o2.getFrom().before(o1.getFrom())) {
-                return 1;
-            } else if (o2.getFrom() == null || o1.getFrom().before(o2.getFrom())) {
-                return -1;
-            } else {
-                return 0;
-            }
-        });
-
-        if (filterEvent.getLimit() != null && filtered.size() > filterEvent.getLimit()) {
-            filtered = new ArrayList<>(filtered).subList(0, filterEvent.getLimit());
-        }
-
-        return filtered;
+        sortByTime(filtered);
+        return limit(filtered, filterEvent);
     }
 
     @Override

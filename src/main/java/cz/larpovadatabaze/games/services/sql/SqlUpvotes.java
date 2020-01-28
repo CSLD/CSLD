@@ -32,18 +32,20 @@ public class SqlUpvotes extends CRUD<Upvote, Integer> implements Upvotes {
         toAdd.setUser(user);
         toAdd.setComment(comment);
         toAdd.setAdded(new Timestamp(new Date().getTime()));
+        comment.getPluses().add(toAdd);
 
         saveOrUpdate(toAdd);
     }
 
     @Override
     public void downvote(CsldUser user, Comment comment) {
-        Upvote toRemove = new Upvote();
-        toRemove.setComment(comment);
-        toRemove.setUser(user);
-
-        List<Upvote> upvotes = crudRepository.findByExample(toRemove);
+        List<Upvote> upvotes = crudRepository.findByCriteria(
+                Restrictions.and(
+                        Restrictions.eq("user", user),
+                        Restrictions.eq("comment", comment)
+                ));
         for (Upvote upvote : upvotes) {
+            comment.getPluses().remove(upvote);
             crudRepository.delete(upvote);
         }
     }

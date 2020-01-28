@@ -3,7 +3,6 @@ package cz.larpovadatabaze.games.services.sql;
 import cz.larpovadatabaze.common.dao.GenericHibernateDAO;
 import cz.larpovadatabaze.common.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.common.entities.Comment;
-import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.services.sql.CRUD;
 import cz.larpovadatabaze.games.services.Comments;
@@ -12,6 +11,7 @@ import cz.larpovadatabaze.users.services.AppUsers;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -19,7 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.List;
 
 /**
  *
@@ -105,37 +107,23 @@ public class SqlComments extends CRUD<Comment, Integer> implements Comments {
 
     @Override
     public List<Comment> visibleForCurrentUserOrderedByUpvotes(Game game) {
-        List<Comment> res = new ArrayList<Comment>();
-
-        // Fill in array
+        Criterion restrictions;
         if (appUsers.isAtLeastEditor()) {
-            // Editors see everything
-            List<Comment> comments = game.getComments() != null ? game.getComments() :
-                    new ArrayList<>();
-            res.addAll(comments);
+            restrictions = Restrictions.eq("game.id", game.getId());
         } else {
-            // Filter
-            Integer thisUserId = null;
-            CsldUser user = appUsers.getLoggedUser();
-            if (user != null) {
-                thisUserId = user.getId();
-            }
-            List<Comment> comments = game.getComments() != null ? game.getComments() :
-                    new ArrayList<>();
-            for (Comment c : comments) {
-                if (c.getHidden()) {
-                    if (!c.getUser().getId().equals(thisUserId))
-                        continue; // Hidden comment and user is not creator - hide
-                }
-                res.add(c);
-            }
+            restrictions = Restrictions.and(
+                    Restrictions.eq("game.id", game.getId()),
+                    Restrictions.or(
+                            Restrictions.eq("hidden", false),
+                            Restrictions.eq("user.id", appUsers.getLoggedUserId())
+                    )
+            );
         }
 
-        Set<Comment> unique = new HashSet<>(res);
-        res = new ArrayList<>(unique);
+        List<Comment> visibleComments = crudRepository.findByCriteria(restrictions);
 
         // Sort primarily by the amount of upvotes. Secondarily by the most recent.
-        res.sort((o1, o2) -> {
+        visibleComments.sort((o1, o2) -> {
             if (o1.getPluses().size() != o2.getPluses().size()) {
                 return o2.getPluses().size() - o1.getPluses().size();
             } else {
@@ -143,6 +131,6 @@ public class SqlComments extends CRUD<Comment, Integer> implements Comments {
             }
         });
 
-        return res;
+        return visibleComments;
     }
 }

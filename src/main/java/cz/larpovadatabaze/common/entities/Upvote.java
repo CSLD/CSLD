@@ -49,7 +49,9 @@ public class Upvote implements Identifiable<Integer>, Serializable {
     @ManyToOne
     @JoinColumn(
             name = "comment_id",
-            referencedColumnName = "`id`"
+            referencedColumnName = "`id`",
+            insertable = false,
+            updatable = false
     )
     public Comment getComment() {
         return comment;

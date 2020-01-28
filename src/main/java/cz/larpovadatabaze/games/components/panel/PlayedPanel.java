@@ -88,57 +88,60 @@ public class PlayedPanel extends Panel {
 
         setOutputMarkupId(true);
 
-        AjaxLink<Rating> didntPlay = new AjaxLink<>("didntPlay") {
-            @Override
-            public void onClick(AjaxRequestTarget target) {
-                saveStateAndReload(target, Rating.GameState.NONE);
-            }
-        };
-        AjaxLink<Rating> played = new AjaxLink<>("played") {
-            @Override
-            public void onClick(AjaxRequestTarget target) {
-                saveStateAndReload(target, Rating.GameState.PLAYED);
-            }
-        };
-        AjaxLink<Rating> wantToPlay = new AjaxLink<>("wantToPlay") {
-            @Override
-            public void onClick(AjaxRequestTarget target) {
-                saveStateAndReload(target, Rating.GameState.WANT_TO_PLAY);
-            }
-        };
+        AjaxLink<Rating> didntPlay = new StateAjaxLink<>("didntPlay", Rating.GameState.NONE);
+        AjaxLink<Rating> played = new StateAjaxLink<>("played", Rating.GameState.PLAYED);
+        AjaxLink<Rating> wantToPlay = new StateAjaxLink<>("wantToPlay", Rating.GameState.WANT_TO_PLAY);
 
+        String CSS_CLASS = "class";
         /* Add attribute modifiers to buttons */
-        played.add(new AttributeAppender("class", new StateActiveModel(Rating.GameState.PLAYED), " "));
-        wantToPlay.add(new AttributeAppender("class", new StateActiveModel(Rating.GameState.WANT_TO_PLAY), " "));
-        didntPlay.add(new AttributeAppender("class", new StateActiveModel(Rating.GameState.NONE), " "));
+        played.add(new AttributeAppender(CSS_CLASS, new StateActiveModel(Rating.GameState.PLAYED), " "));
+        wantToPlay.add(new AttributeAppender(CSS_CLASS, new StateActiveModel(Rating.GameState.WANT_TO_PLAY), " "));
+        didntPlay.add(new AttributeAppender(CSS_CLASS, new StateActiveModel(Rating.GameState.NONE), " "));
 
         add(didntPlay);
         add(played);
         add(wantToPlay);
     }
 
-    private void saveStateAndReload(AjaxRequestTarget target, Rating.GameState state) {
-        // Update in DB
-        Rating stateOfGame = model.getObject();
-        stateOfGame.setStateEnum(state);
-        stateOfGame.setUser((CsldAuthenticatedWebSession.get()).getLoggedUser());
-        ratings.saveOrUpdate(stateOfGame);
-
-        // Refresh model and components and gameModel
-        gameModel.detach();
-        // Clean empty placeholders from componentsToRefresh.
-        List<Component> actComponents = new ArrayList<Component>();
-        for(Component component: componentsToRefresh) {
-            if(component != null) {
-                actComponents.add(component);
-            }
-        }
-        target.add(actComponents.toArray(new Component[]{}));
-    }
 
     @Override
     protected void onConfigure() {
         super.onConfigure();
         setVisibilityAllowed(CsldAuthenticatedWebSession.get().isSignedIn());
+    }
+
+    private class StateAjaxLink<T> extends AjaxLink<T> {
+        private Rating.GameState state;
+
+        public StateAjaxLink(String id, Rating.GameState state) {
+            super(id);
+
+            this.state = state;
+        }
+
+        @Override
+        public void onClick(AjaxRequestTarget target) {
+            saveStateAndReload(target, state);
+        }
+
+        private void saveStateAndReload(AjaxRequestTarget target, Rating.GameState state) {
+            // Update in DB
+            Rating stateOfGame = model.getObject();
+            stateOfGame.setStateEnum(state);
+            stateOfGame.setUser((CsldAuthenticatedWebSession.get()).getLoggedUser());
+            ratings.saveOrUpdate(stateOfGame);
+
+            // Refresh model and components and gameModel
+            gameModel.detach();
+
+            // Clean empty placeholders from componentsToRefresh.
+            List<Component> actComponents = new ArrayList<Component>();
+            for (Component component : componentsToRefresh) {
+                if (component != null) {
+                    actComponents.add(component);
+                }
+            }
+            target.add(actComponents.toArray(new Component[]{}));
+        }
     }
 }

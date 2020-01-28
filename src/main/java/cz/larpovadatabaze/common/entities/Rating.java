@@ -111,6 +111,8 @@ public class Rating implements Identifiable<Integer>, Serializable, IGameWithRat
             case STATE_CODE_WANT_TO_PLAY:
                 this.state = GameState.WANT_TO_PLAY;
                 break;
+            default:
+                break;
         }
 
         // Sanity check

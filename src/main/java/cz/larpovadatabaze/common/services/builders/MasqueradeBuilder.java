@@ -105,14 +105,21 @@ MasqueradeBuilder implements Builder {
         comments.saveOrUpdate(new Comment(administrator, firstMasquerade, "I liked it"));
         Comment editorComment = new Comment(editor, secondMasquerade, "There were some flwas but overally likeable game.");
         Comment userComment = new Comment(user, secondMasquerade, "My first LARP and it was so freaking awesome.");
+        Comment administratorComment = new Comment(administrator, secondMasquerade, "I hated it", true);
         comments.saveOrUpdate(editorComment);
         comments.saveOrUpdate(userComment);
+        comments.saveOrUpdate(administratorComment);
 
         Upvote editorUserComment = new Upvote(editor, userComment);
+        userComment.getPluses().add(editorUserComment);
         upvotes.saveOrUpdate(editorUserComment);
-        upvotes.saveOrUpdate(new Upvote(administrator, userComment));
+        Upvote administratorUserComment = new Upvote(administrator, userComment);
+        userComment.getPluses().add(administratorUserComment);
+        upvotes.saveOrUpdate(administratorUserComment);
 
-        upvotes.saveOrUpdate(new Upvote(editor, editorComment));
+        Upvote editorEditorComment = new Upvote(editor, editorComment);
+        editorComment.getPluses().add(editorEditorComment);
+        upvotes.saveOrUpdate(editorEditorComment);
 
         Rating userRatedBest = new Rating(user, bestMasquerade, 9, WANT_TO_PLAY);
         ratings.saveOrUpdate(userRatedBest);
@@ -142,7 +149,7 @@ MasqueradeBuilder implements Builder {
                 nosferatu, toreador,
                 firstMasquerade, secondMasquerade, bestMasquerade, wrongMasquerade,
                 vampire, dramatic, emotional, chamber,
-                editorComment, userComment,
+                editorComment, userComment, administratorComment,
                 userRatedBest, userRatedSecond,
                 editorUserComment
         );
