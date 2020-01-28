@@ -24,12 +24,12 @@ public class SqlFilteredGames implements FilteredGames {
     /**
      * How old game is considered new
      */
-    private final static int YEARS_NEW = 2;
+    private static final int YEARS_NEW = 2;
 
     /**
      * How old game is considered old
      */
-    private final static int YEARS_OLD = 5;
+    private static final int YEARS_OLD = 5;
 
     private GenericHibernateDAO<Game, Integer> games;
 

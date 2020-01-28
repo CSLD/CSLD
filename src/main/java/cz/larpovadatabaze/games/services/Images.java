@@ -16,7 +16,6 @@ public interface Images extends CRUDService<Image, Integer> {
 
     IResource getPredefinedImageResource(IEntityWithImage.IPredefinedImage image);
 
-
     /**
      * Create resource reference for entity type
      *

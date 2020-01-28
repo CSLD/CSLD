@@ -15,6 +15,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItem;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 
@@ -67,5 +68,12 @@ public class SqlFilteredGamesIT extends WithDatabase {
                 masqueradeEntities.secondMasquerade,
                 masqueradeEntities.firstMasquerade
         ));
+    }
+
+    @Test
+    public void getAmountOfFilteredByAmountOfComments() {
+        long amount = underTest.totalAmount(new FilterGameDTO(FilterGameDTO.OrderBy.ADDED_DESC));
+
+        assertThat(amount, is(2L));
     }
 }

@@ -1,7 +1,7 @@
 package cz.larpovadatabaze;
 
 import cz.larpovadatabaze.calendar.service.Events;
-import cz.larpovadatabaze.calendar.service.events.InMemoryEvents;
+import cz.larpovadatabaze.calendar.services.masqueradeStubs.InMemoryEvents;
 import cz.larpovadatabaze.common.services.FilterService;
 import cz.larpovadatabaze.common.services.MailService;
 import cz.larpovadatabaze.common.services.builders.InMemoryMasqueradeBuilder;

@@ -1,4 +1,4 @@
-package cz.larpovadatabaze.calendar.service.events;
+package cz.larpovadatabaze.calendar.service.sql;
 
 import cz.larpovadatabaze.calendar.BoundingBox;
 import cz.larpovadatabaze.calendar.model.Event;
