@@ -46,7 +46,11 @@ public class SqlRatings extends CRUD<Rating, Integer> implements Ratings {
 
     @Override
     public List<Rating> getRatingsOfUser(CsldUser logged, CsldUser actual) {
-        boolean isActualLogged = logged != null && logged.equals(actual);
+        if (logged == null) {
+            return new ArrayList<>();
+        }
+
+        boolean isActualLogged = logged.equals(actual);
         boolean isAtLeastEditor = logged.getRole() >= CsldRoles.EDITOR.getRole();
         if (isActualLogged || isAtLeastEditor) {
             Criteria criteria = crudRepository.getExecutableCriteria()

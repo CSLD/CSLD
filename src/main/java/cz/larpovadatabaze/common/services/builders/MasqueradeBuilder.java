@@ -137,6 +137,10 @@ MasqueradeBuilder implements Builder {
         ratings.saveOrUpdate(new Rating(editor, secondMasquerade, PLAYED));
         ratings.saveOrUpdate(new Rating(administrator, secondMasquerade, PLAYED));
 
+        // Create Images
+
+        // Create Photos
+
         return new MasqueradeEntities(
                 administrator, editor, user,
                 nosferatu, toreador,
