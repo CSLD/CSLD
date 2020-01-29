@@ -6,7 +6,6 @@ import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.entities.Rating;
 import cz.larpovadatabaze.games.services.Ratings;
 import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
-import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -29,7 +28,6 @@ import java.util.List;
  * number.
  */
 public class RatingsResultPanel extends AbstractCsldPanel<Game> {
-    private final static Logger logger = Logger.getLogger(RatingsResultPanel.class);
     private static final int NUM_RATINGS = 10;
 
     @SpringBean

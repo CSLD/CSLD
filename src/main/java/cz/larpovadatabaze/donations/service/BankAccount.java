@@ -14,8 +14,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * This service represents Bank Account and as such allows us to retrieve the information from the bank account. These information are then stored in the persistent store.
@@ -24,31 +22,18 @@ import java.util.TimerTask;
 public class BankAccount {
     private final static Logger logger = Logger.getLogger(BankAccount.class);
     private SessionFactory sessionFactory;
-    private Timer timer;
 
     public BankAccount(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
-    public void start() {
-        if(timer != null) {
-            return;
-        }
-
-        long hour = 60 * 60 * 60 * 1000L;
-        timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                Session current = sessionFactory.openSession();
-                Transaction storeDonations = current.beginTransaction();
-                importData(new DatabaseDonations(current), current);
-                storeDonations.commit();
-                current.close();
-            }
-        }, 0, hour);
+    public void importData() {
+        Session current = sessionFactory.openSession();
+        Transaction storeDonations = current.beginTransaction();
+        importData(new DatabaseDonations(current), current);
+        storeDonations.commit();
+        current.close();
     }
-
 
     void importData(Donations donations, Session current) {
         try {

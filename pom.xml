@@ -217,11 +217,6 @@
             <artifactId>log4j</artifactId>
             <version>1.2.14</version>
         </dependency>
-        <dependency>
-            <groupId>net.sf.dozer</groupId>
-            <artifactId>dozer</artifactId>
-            <version>5.5.1</version>
-        </dependency>
 
         <!-- JSOUP Parser -->
         <dependency>
@@ -259,6 +254,11 @@
             <groupId>commons-httpclient</groupId>
             <artifactId>commons-httpclient</artifactId>
             <version>${http.client.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2.2</version>
         </dependency>
 
         <dependency>

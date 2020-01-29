@@ -8,8 +8,6 @@ import cz.larpovadatabaze.calendar.component.page.DetailOfEventPage;
 import cz.larpovadatabaze.calendar.component.page.ListEventsPage;
 import cz.larpovadatabaze.calendar.service.Events;
 import cz.larpovadatabaze.calendar.service.ICalProducerResource;
-import cz.larpovadatabaze.calendar.service.LarpCzEvents;
-import cz.larpovadatabaze.calendar.service.LarpCzImport;
 import cz.larpovadatabaze.common.components.page.HomePage;
 import cz.larpovadatabaze.common.components.page.TestDatabase;
 import cz.larpovadatabaze.common.components.page.error.Error404Page;
@@ -20,7 +18,6 @@ import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.entities.Label;
 import cz.larpovadatabaze.donations.components.DonationPage;
-import cz.larpovadatabaze.donations.service.BankAccount;
 import cz.larpovadatabaze.games.components.page.*;
 import cz.larpovadatabaze.games.converters.GameConverter;
 import cz.larpovadatabaze.games.converters.LabelConverter;
@@ -59,7 +56,6 @@ import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.settings.RequestLoggerSettings;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.convert.converter.CalendarConverter;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -76,20 +72,17 @@ import java.util.Locale;
 public class Csld extends AuthenticatedWebApplication implements ApplicationContextAware {
     private final TokenSearch tokenSearch;
     private final CsldUsers csldUsers;
-    private final SessionFactory sessionFactory;
     private final Environment env;
     private final Events events;
-
 
     private static final String DEFAULT_ENCODING = "UTF-8";
     private static ApplicationContext ctx;
 
     @Autowired
     public Csld(TokenSearch tokenSearch, CsldUsers csldUsers,
-                SessionFactory sessionFactory, Environment env, Events events) {
+                Environment env, Events events) {
         this.tokenSearch = tokenSearch;
         this.csldUsers = csldUsers;
-        this.sessionFactory = sessionFactory;
         this.env = env;
         this.events = events;
     }
@@ -185,16 +178,6 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         if (isDevelopmentMode()) {
             // Turn on containers names when debugging
             getDebugSettings().setOutputMarkupContainerClassName(true);
-        }
-
-        // Load information about donations and setup timer. Respect the configuration to ignore this in the context
-        // of the testing.
-        if(env.getProperty("csld.integrate_bank", Boolean.class)) {
-            new BankAccount(sessionFactory).start();
-        }
-
-        if(env.getProperty("csld.integrate_calendar", Boolean.class)) {
-            new Thread(() -> new LarpCzImport(events, new LarpCzEvents(), sessionFactory, tokenSearch).importEvents()).start();
         }
 	}
 
