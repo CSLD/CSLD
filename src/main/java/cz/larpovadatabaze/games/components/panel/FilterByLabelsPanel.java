@@ -3,7 +3,7 @@ package cz.larpovadatabaze.games.components.panel;
 import cz.larpovadatabaze.common.components.FilterablePage;
 import cz.larpovadatabaze.common.entities.Label;
 import cz.larpovadatabaze.games.services.Labels;
-import org.apache.commons.lang.WordUtils;
+import org.apache.commons.lang3.text.WordUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.html.WebMarkupContainer;

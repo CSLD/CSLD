@@ -216,11 +216,11 @@ public class GameDetail extends CsldBasePage {
                 // Create comments
                 fragment = new Fragment("tabContentPanel", "comments", this);
 
-                final CommentsListPanel comments = new CommentsListPanel("commentsList", new CommentsModel());
-                comments.setOutputMarkupId(true);
+                final CommentsListPanel listOfComments = new CommentsListPanel("commentsList", new CommentsModel());
+                listOfComments.setOutputMarkupId(true);
 
-                fragment.add(new CommentsPanel("addComment", getModel(), new Component[] { comments }));
-                fragment.add(comments);
+                fragment.add(new CommentsPanel("addComment", getModel(), new Component[]{listOfComments}));
+                fragment.add(listOfComments);
                 break;
             case PHOTOS:
                 // Create photos
@@ -248,8 +248,8 @@ public class GameDetail extends CsldBasePage {
 
     protected void addTabComponent() {
         tabNumberModel = new TabNumberModel(0);
-        List<IModel> models = new ArrayList<IModel>();
-        tabContentType = new Vector<TabContentType>();
+        List<IModel> models = new ArrayList<>();
+        tabContentType = new Vector<>();
 
         // Comments
         models.add(Model.of(getString("comments")));
@@ -274,7 +274,7 @@ public class GameDetail extends CsldBasePage {
     @Override
     protected void onInitialize() {
         // Init this model ASAP, since parent needs it
-        previewImageUrlModel = new LoadableDetachableModel<String>() {
+        previewImageUrlModel = new LoadableDetachableModel<>() {
             @Override
             protected String load() {
                 PageParameters pp = new PageParameters();
@@ -364,7 +364,7 @@ public class GameDetail extends CsldBasePage {
      * Add container for case when author wants to rate his/her own game
      */
     private void addAuthorRatePanel(final MarkupContainer container) {
-        final Form<Void> authorRatePanel = new Form<Void>("authorRatePanel");
+        final Form<Void> authorRatePanel = new Form<>("authorRatePanel");
         container.add(authorRatePanel);
         container.setOutputMarkupId(true);
 

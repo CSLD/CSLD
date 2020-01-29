@@ -45,7 +45,7 @@ public class CalendarPanel extends Panel {
     protected void onInitialize() {
         super.onInitialize();
 
-        ListView<Event> events = new ListView<Event>("events", new EventsModel()) {
+        ListView<Event> eventsToDisplay = new ListView<>("events", new EventsModel()) {
             @Override
             protected void populateItem(ListItem<Event> item) {
                 Event event = item.getModelObject();
@@ -65,6 +65,6 @@ public class CalendarPanel extends Panel {
             }
         };
 
-        add(events);
+        add(eventsToDisplay);
     }
 }

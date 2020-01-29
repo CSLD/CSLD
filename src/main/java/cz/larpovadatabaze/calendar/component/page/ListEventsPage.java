@@ -14,7 +14,7 @@ import cz.larpovadatabaze.common.components.page.HomePage;
 import cz.larpovadatabaze.common.components.tabs.TabsComponentPanel;
 import cz.larpovadatabaze.common.entities.Label;
 import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
-import org.apache.commons.lang.WordUtils;
+import org.apache.commons.text.WordUtils;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;

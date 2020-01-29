@@ -30,6 +30,8 @@ import java.util.List;
 @Transactional
 public class SqlComments extends CRUD<Comment, Integer> implements Comments {
     private static final Logger logger = Logger.getLogger(SqlComments.class);
+    private final String GAME_BY_ID = "game.id";
+    private final String USER_BY_ID = "user.id";
 
     private Games games;
     private AppUsers appUsers;
@@ -44,8 +46,8 @@ public class SqlComments extends CRUD<Comment, Integer> implements Comments {
     @Override
     public Comment getCommentOnGameFromUser(int userId, int gameId) {
         Criteria uniqueComment = crudRepository.getExecutableCriteria()
-                .add(Restrictions.eq("user.id", userId))
-                .add(Restrictions.eq("game.id", gameId));
+                .add(Restrictions.eq(USER_BY_ID, userId))
+                .add(Restrictions.eq(GAME_BY_ID, gameId));
 
         Comment result = (Comment) uniqueComment.uniqueResult();
         return result;
@@ -109,13 +111,13 @@ public class SqlComments extends CRUD<Comment, Integer> implements Comments {
     public List<Comment> visibleForCurrentUserOrderedByUpvotes(Game game) {
         Criterion restrictions;
         if (appUsers.isAtLeastEditor()) {
-            restrictions = Restrictions.eq("game.id", game.getId());
+            restrictions = Restrictions.eq(GAME_BY_ID, game.getId());
         } else {
             restrictions = Restrictions.and(
-                    Restrictions.eq("game.id", game.getId()),
+                    Restrictions.eq(GAME_BY_ID, game.getId()),
                     Restrictions.or(
                             Restrictions.eq("hidden", false),
-                            Restrictions.eq("user.id", appUsers.getLoggedUserId())
+                            Restrictions.eq(USER_BY_ID, appUsers.getLoggedUserId())
                     )
             );
         }

@@ -8,7 +8,7 @@ import cz.larpovadatabaze.common.entities.SimilarGame;
 import cz.larpovadatabaze.common.services.sql.CRUD;
 import cz.larpovadatabaze.games.services.SimilarGames;
 import cz.larpovadatabaze.users.services.AppUsers;
-import org.apache.commons.lang.NotImplementedException;
+import org.apache.commons.lang3.NotImplementedException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;

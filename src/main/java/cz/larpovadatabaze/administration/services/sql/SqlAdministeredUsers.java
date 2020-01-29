@@ -12,6 +12,8 @@ import java.util.List;
 public class SqlAdministeredUsers implements AdministeredUsers {
     @Override
     public List<UserRatesOwnGameDto> getUsersWhoRatesOwnGames() {
+        // TODO: Implement.
+
         return null;
     }
 }

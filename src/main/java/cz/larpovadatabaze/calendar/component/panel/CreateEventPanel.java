@@ -24,7 +24,7 @@ import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.games.services.GamesWithState;
 import cz.larpovadatabaze.games.validator.AtLeastOneRequiredLabelValidator;
 import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxCallListener;
