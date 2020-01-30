@@ -115,11 +115,12 @@ public class SqlSimilarGames extends CRUD<SimilarGame, Integer> implements Simil
     }
 
     private double similarityByMathematicalDistance(Double current, Double candidate) {
-        if (current == null && candidate == null ||
-                (current == 0.0 && candidate == 0.0)) {
+        if (current == null && candidate == null) {
             return 1;
         } else if (current == null || candidate == null) {
             return 0;
+        } else if (current == 0.0 && candidate == 0.0) {
+            return 1;
         }
 
         double size = Math.max(current, candidate);
@@ -138,8 +139,8 @@ public class SqlSimilarGames extends CRUD<SimilarGame, Integer> implements Simil
         long requiredLabels = differing.stream()
                 .filter(label -> label.getRequired())
                 .count();
-        double distance = differing.size() + requiredLabels;
-        double size = Math.max(current.size(), candidate.size()) + requiredLabels;
+        double distance = differing.size() + (double) requiredLabels;
+        double size = Math.max(current.size(), candidate.size()) + (double) requiredLabels;
         return (1 - (distance / size));
     }
 }
