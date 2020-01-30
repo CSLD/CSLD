@@ -93,7 +93,7 @@ public class RootTestWicketContext {
     }
 
     @Bean
-    public Events events() {
+    public Events sqlEvents() {
         return new InMemoryEvents();
     }
 
@@ -128,7 +128,7 @@ public class RootTestWicketContext {
     }
 
     @Bean
-    public GamesWithState gamesWithState() {
+    public GamesWithState sqlGamesWithState() {
         return new InMemoryGamesWithState();
     }
 
@@ -140,7 +140,7 @@ public class RootTestWicketContext {
 
     @Bean
     public Csld csld() {
-        return new Csld(tokenSearch(), csldUsers(), env, events());
+        return new Csld(tokenSearch(), csldUsers(), env, sqlEvents());
     }
 
     // Start of email settings
