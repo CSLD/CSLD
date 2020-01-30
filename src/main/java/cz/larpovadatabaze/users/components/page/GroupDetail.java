@@ -4,7 +4,7 @@ import cz.larpovadatabaze.common.components.page.CsldBasePage;
 import cz.larpovadatabaze.common.components.page.HomePage;
 import cz.larpovadatabaze.common.entities.CsldGroup;
 import cz.larpovadatabaze.games.components.panel.ListGamesWithAnnotations;
-import cz.larpovadatabaze.games.services.Games;
+import cz.larpovadatabaze.games.services.AuthoredGames;
 import cz.larpovadatabaze.users.components.panel.AddGroupPanel;
 import cz.larpovadatabaze.users.components.panel.EditGroupPanel;
 import cz.larpovadatabaze.users.components.panel.GroupDetailPanel;
@@ -23,7 +23,7 @@ public class GroupDetail extends CsldBasePage {
     @SpringBean
     CsldGroups csldGroups;
     @SpringBean
-    Games games;
+    AuthoredGames games;
     private final static String GROUP_ID_PARAMETER_NAME = "id";
 
     private class GroupModel extends LoadableDetachableModel<CsldGroup> {

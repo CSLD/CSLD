@@ -3,8 +3,8 @@ package cz.larpovadatabaze.games.components.panel;
 import cz.larpovadatabaze.common.components.AbstractCsldPanel;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
-import cz.larpovadatabaze.common.entities.UserPlayedGame;
-import cz.larpovadatabaze.common.services.wicket.MailClient;
+import cz.larpovadatabaze.common.entities.Rating;
+import cz.larpovadatabaze.common.services.MailService;
 import cz.larpovadatabaze.games.models.SelectedUser;
 import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.users.CsldRoles;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  */
 public class SendInformation extends AbstractCsldPanel<Game> {
     @SpringBean
-    private MailClient mailClient;
+    private MailService mailService;
     @SpringBean
     private Games games;
     @SpringBean
@@ -45,18 +45,20 @@ public class SendInformation extends AbstractCsldPanel<Game> {
 
         @Override
         public List<CsldUser> getObject() {
-            if (getModelObject() == null || getModelObject().getPlayed() == null) {
+            if (getModelObject() == null || getModelObject().getRatings() == null) {
                 return new ArrayList<>();
             }
 
-            return getModelObject().getPlayed().stream()
-                    .filter(played -> played.getStateEnum().equals(UserPlayedGame.UserPlayedGameState.WANT_TO_PLAY))
-                    .map(UserPlayedGame::getPlayerOfGame)
+            return getModelObject().getRatings().stream()
+                    .filter(gameState -> gameState.getStateEnum().equals(Rating.GameState.WANT_TO_PLAY))
+                    .map(Rating::getUser)
                     .collect(Collectors.toList());
         }
     }
 
-
+    /*
+    Internal model property. Used directly by wicket.
+     */
     private String mail;
     private CheckBoxSelectionUsers wantedToPlay;
 
@@ -87,26 +89,22 @@ public class SendInformation extends AbstractCsldPanel<Game> {
         wantedToPlay.setOutputMarkupId(true);
 
 
-        Form sendInfo = new Form("sendInfoForm") {
+        Form<Void> sendInfo = new Form<>("sendInfoForm") {
+            // TODO: Move to service and thread.
             @Override
             protected void onSubmit() {
-                if (games.canEditGame(SendInformation.this.getModelObject())) {
-                    List<SelectedUser> recipients = getAllSelected();
-                    for (SelectedUser recipient : recipients) {
-                        mailClient.sendMail(
-                                String.format(getString("mail.from.author"), SendInformation.this.getModelObject().getName(), mail),
-                                recipient.getEmail(),
-                                String.format(getString("mail.from.author.subject"), SendInformation.this.getModelObject().getName()));
-                    }
+                Game currentGame = SendInformation.this.getModelObject();
+                if (games.canEditGame(currentGame)) {
+                    mailService.sendInfoToInterestedUsers(
+                            getAllSelected(),
+                            currentGame.getName(),
+                            mail,
+                            getString("mail.from.author.subject"));
                 } else {
-                    CsldUser loggedUser = appUsers.getLoggedUser();
-                    for (CsldUser author : SendInformation.this.getModelObject().getAuthors()) {
-                        mailClient.sendMail(
-                                String.format(getString("mail.from.user"),
-                                        loggedUser.getPerson().getEmail(), SendInformation.this.getModelObject().getName(), mail),
-                                author.getPerson().getEmail(),
-                                String.format(getString("mail.from.user.subject"), loggedUser.getPerson().getName(), SendInformation.this.getModelObject().getName()));
-                    }
+                    mailService.sendInfoToAuthors(
+                            currentGame,
+                            mail,
+                            getString("mail.from.user.subject"));
                 }
                 info(getString("mail.success"));
             }

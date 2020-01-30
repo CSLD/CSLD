@@ -11,7 +11,7 @@ import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.games.services.Photos;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;

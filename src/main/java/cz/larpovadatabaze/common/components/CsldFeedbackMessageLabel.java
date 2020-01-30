@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.common.components;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.feedback.FeedbackMessage;
@@ -61,7 +61,8 @@ public class CsldFeedbackMessageLabel extends Label {
             }
             else {
                 setVisible(true);
-                ((IModel<String>)getDefaultModel()).setObject(StringEscapeUtils.escapeHtml(new StringResourceModel(defaultKey, this, null).getString()));
+                ((IModel<String>) getDefaultModel()).setObject(
+                        StringEscapeUtils.escapeHtml4(new StringResourceModel(defaultKey, this, null).getString()));
             }
         }
         else {

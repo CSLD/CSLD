@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.common.entities;
 
-import cz.larpovadatabaze.common.api.Identifiable;
+import cz.larpovadatabaze.common.Identifiable;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -49,7 +49,9 @@ public class Upvote implements Identifiable<Integer>, Serializable {
     @ManyToOne
     @JoinColumn(
             name = "comment_id",
-            referencedColumnName = "`id`"
+            referencedColumnName = "`id`",
+            insertable = false,
+            updatable = false
     )
     public Comment getComment() {
         return comment;

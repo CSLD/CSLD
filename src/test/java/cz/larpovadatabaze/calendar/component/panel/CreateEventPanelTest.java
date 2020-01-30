@@ -2,7 +2,7 @@ package cz.larpovadatabaze.calendar.component.panel;
 
 import cz.larpovadatabaze.WithWicket;
 import cz.larpovadatabaze.calendar.model.Event;
-import cz.larpovadatabaze.common.api.ValidatableForm;
+import cz.larpovadatabaze.common.components.ValidatableForm;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.FormTester;
 import org.junit.Test;

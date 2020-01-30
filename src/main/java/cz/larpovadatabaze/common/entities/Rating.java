@@ -1,11 +1,12 @@
 package cz.larpovadatabaze.common.entities;
 
-import cz.larpovadatabaze.common.api.Identifiable;
+import cz.larpovadatabaze.common.Identifiable;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Objects;
 
 /**
  * User: Jakub Balhar
@@ -14,16 +15,42 @@ import java.time.Instant;
  */
 @Table(name = "csld_rating")
 @Entity
-public class Rating implements Identifiable<Integer>, IGameWithRating, Serializable {
+public class Rating implements Identifiable<Integer>, Serializable, IGameWithRating {
+    public static final int STATE_CODE_PLAYED = 2;
+    public static final int STATE_CODE_WANT_TO_PLAY = 1;
+    public static final int STATE_CODE_NONE = 0;
+
+    public enum GameState {
+        NONE(STATE_CODE_NONE),
+        WANT_TO_PLAY(STATE_CODE_WANT_TO_PLAY),
+        PLAYED(STATE_CODE_PLAYED);
+
+        private final int dbCode;
+
+        GameState(int dbCode) {
+            this.dbCode = dbCode;
+        }
+    }
+
     public Rating() {
     }
 
     public Rating(CsldUser user, Game game, int rating) {
+        this(user, game, rating, GameState.NONE);
+    }
+
+    public Rating(CsldUser user, Game game, GameState state) {
+        this(user, game, null, state);
+    }
+
+    public Rating(CsldUser user, Game game, Integer rating, GameState state) {
         this.added = Timestamp.from(Instant.now());
         this.game = game;
         this.user = user;
         this.rating = rating;
+        this.state = state;
     }
+
 
     private Integer id;
 
@@ -41,7 +68,7 @@ public class Rating implements Identifiable<Integer>, IGameWithRating, Serializa
 
     private Integer rating;
 
-    @Column(name = "rating", nullable = false, length = 10)
+    @Column(name = "rating", length = 10)
     @Basic
     public Integer getRating() {
         return rating;
@@ -66,26 +93,60 @@ public class Rating implements Identifiable<Integer>, IGameWithRating, Serializa
         this.added = added;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    private boolean byAuthor;
 
-        Rating rating1 = (Rating) o;
-
-        if (game != null ? !game.equals(rating1.game) : rating1.game != null) return false;
-        if (rating != null ? !rating.equals(rating1.rating) : rating1.rating != null) return false;
-        if (user != null ? !user.equals(rating1.user) : rating1.user != null) return false;
-
-        return true;
+    @Column(
+            name = "by_author",
+            nullable = false
+    )
+    public boolean getByAuthor() {
+        return byAuthor;
     }
 
-    @Override
-    public int hashCode() {
-        int result = user != null ? user.hashCode() : 0;
-        result = 31 * result + (game != null ? game.hashCode() : 0);
-        result = 31 * result + (rating != null ? rating.hashCode() : 0);
-        return result;
+    public void setByAuthor(boolean byAuthor) {
+        this.byAuthor = byAuthor;
+    }
+
+    private GameState state = GameState.NONE;
+
+    @Column(name = "state", nullable = false, length = 10)
+    public Integer getState() {
+        return state.dbCode;
+    }
+
+    public void setState(Integer state) {
+        if (state == null) {
+            this.state = GameState.NONE;
+            return;
+        }
+
+        switch (state) {
+            case STATE_CODE_NONE:
+                this.state = GameState.NONE;
+                break;
+            case STATE_CODE_PLAYED:
+                this.state = GameState.PLAYED;
+                break;
+            case STATE_CODE_WANT_TO_PLAY:
+                this.state = GameState.WANT_TO_PLAY;
+                break;
+            default:
+                break;
+        }
+
+        // Sanity check
+        if (this.state.dbCode != state) {
+            throw new IllegalArgumentException("Invalid state code or configuration error");
+        }
+    }
+
+    @Transient
+    public GameState getStateEnum() {
+        return this.state;
+    }
+
+    public void setStateEnum(GameState state) {
+        this.state = state;
     }
 
     private Game game;
@@ -118,23 +179,19 @@ public class Rating implements Identifiable<Integer>, IGameWithRating, Serializa
         this.user = user;
     }
 
-    public static String getColorOf(Double gameAsAverageRating){
-        double gameAverage;
-        if(gameAsAverageRating == null) {
-            gameAverage = 0;
-        } else {
-            gameAverage = gameAsAverageRating;
-        }
-        String gameRatingColor = "notrated";
-        if(gameAverage > 0){
-            gameRatingColor = "mediocre";
-        }
-        if(gameAverage > 40) {
-            gameRatingColor = "average";
-        }
-        if(gameAverage > 70) {
-            gameRatingColor = "great";
-        }
-        return gameRatingColor;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Rating rating1 = (Rating) o;
+        return Objects.equals(id, rating1.id) &&
+                Objects.equals(rating, rating1.rating) &&
+                Objects.equals(added, rating1.added) &&
+                state == rating1.state;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, rating, added, state);
     }
 }

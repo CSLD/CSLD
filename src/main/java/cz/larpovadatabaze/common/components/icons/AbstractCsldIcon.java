@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.common.components.icons;
 
-import cz.larpovadatabaze.common.api.Identifiable;
+import cz.larpovadatabaze.common.Identifiable;
 import cz.larpovadatabaze.common.services.IIconReferenceProvider;
 import cz.larpovadatabaze.games.services.Images;
 import org.apache.wicket.markup.ComponentTag;

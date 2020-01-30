@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.common.components.multiac;
 
-import cz.larpovadatabaze.common.api.Identifiable;
+import cz.larpovadatabaze.common.Identifiable;
 
 import java.io.Serializable;
 import java.util.Collection;

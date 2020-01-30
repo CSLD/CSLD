@@ -1,7 +1,7 @@
 package cz.larpovadatabaze.calendar.model;
 
 import cz.larpovadatabaze.calendar.Location;
-import cz.larpovadatabaze.common.api.Identifiable;
+import cz.larpovadatabaze.common.Identifiable;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.entities.Label;
@@ -16,6 +16,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,7 +27,7 @@ import java.util.List;
  * Event for the database.
  */
 @Entity(name = "event")
-public class Event implements cz.larpovadatabaze.common.api.Entity, Identifiable<Integer> {
+public class Event implements Identifiable<Integer>, Serializable {
     @Transient
     private SimpleDateFormat czechDate = new SimpleDateFormat("dd.MM.yyyy HH:mm");
     @Transient

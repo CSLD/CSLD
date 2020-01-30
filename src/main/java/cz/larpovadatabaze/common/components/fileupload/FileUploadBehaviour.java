@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import static org.apache.commons.lang.StringEscapeUtils.escapeHtml;
+import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
 
 /**
  * User: Michal Kara
@@ -58,10 +58,11 @@ public class FileUploadBehaviour extends AbstractAjaxBehavior {
     protected void sendResponse(ServletWebRequest webRequest, WebResponse webResponse, List<FileItem> fileItems) throws FileUploadException, IOException {
 
         String accept = webRequest.getHeader("Accept");
-        if (wantsHtml(accept))
-        {
+        if (wantsHtml(accept)) {
             // Internet Explorer
-            RequestCycle.get().scheduleRequestHandlerAfterCurrent(new TextRequestHandler("text/html", "utf-8", escapeHtml(generateJsonResponse(webRequest, webResponse, fileItems))));
+            RequestCycle.get().scheduleRequestHandlerAfterCurrent(
+                    new TextRequestHandler("text/html", "utf-8",
+                            escapeHtml4(generateJsonResponse(webRequest, webResponse, fileItems))));
         }
         else
         {

@@ -6,7 +6,6 @@
     <option name="METHOD_NAME" value="" />
     <option name="TEST_OBJECT" value="package" />
     <option name="PARAMETERS" value="" />
-    <fork_mode value="class" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

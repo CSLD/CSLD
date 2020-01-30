@@ -6,7 +6,7 @@ import cz.larpovadatabaze.calendar.component.panel.EditEventPanel;
 import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.calendar.model.EventModel;
 import cz.larpovadatabaze.calendar.service.Events;
-import cz.larpovadatabaze.common.api.Toggles;
+import cz.larpovadatabaze.common.Toggles;
 import cz.larpovadatabaze.common.components.page.CsldBasePage;
 import cz.larpovadatabaze.common.components.page.HomePage;
 import cz.larpovadatabaze.common.entities.Game;

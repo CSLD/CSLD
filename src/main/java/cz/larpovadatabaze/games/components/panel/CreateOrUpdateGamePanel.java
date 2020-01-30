@@ -3,10 +3,10 @@ package cz.larpovadatabaze.games.components.panel;
 import com.googlecode.wicket.jquery.ui.panel.JQueryFeedbackPanel;
 import com.googlecode.wicket.jquery.ui.plugins.wysiwyg.WysiwygEditor;
 import com.googlecode.wicket.jquery.ui.plugins.wysiwyg.toolbar.DefaultWysiwygToolbar;
-import cz.larpovadatabaze.common.api.ValidatableForm;
 import cz.larpovadatabaze.common.components.AbstractCsldPanel;
 import cz.larpovadatabaze.common.components.CsldFeedbackMessageLabel;
 import cz.larpovadatabaze.common.components.JSPingBehavior;
+import cz.larpovadatabaze.common.components.ValidatableForm;
 import cz.larpovadatabaze.common.components.multiac.IMultiAutoCompleteSource;
 import cz.larpovadatabaze.common.components.multiac.MultiAutoCompleteComponent;
 import cz.larpovadatabaze.common.entities.*;
@@ -19,7 +19,6 @@ import cz.larpovadatabaze.users.services.AppUsers;
 import cz.larpovadatabaze.users.services.CsldGroups;
 import cz.larpovadatabaze.users.services.CsldUsers;
 import cz.larpovadatabaze.users.validator.NonEmptyAuthorsValidator;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -61,6 +60,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
 
     private ChooseLabelsPanel chooseLabels;
     private TextField<String> videoField;
+    private UploadCoverImagePanel coverImagePanel;
 
     public CreateOrUpdateGamePanel(String id, IModel<Game> model) {
         super(id, model);
@@ -198,8 +198,9 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         }));
         createOrUpdateGame.add(new CsldFeedbackMessageLabel("videoFeedback", videoField, "form.game.videoHint"));
 
+        coverImagePanel = new UploadCoverImagePanel("coverImage");
         // Cover photo
-        createOrUpdateGame.add(new UploadCoverImagePanel("coverImage"));
+        createOrUpdateGame.add(coverImagePanel);
 
         // Ratings disabled
         createOrUpdateGame.add(new CheckBox("ratingsDisabled") {
@@ -234,34 +235,17 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
             @Override
             protected void onSubmit(AjaxRequestTarget target) {
                 super.onSubmit(target);
+                coverImagePanel.convertInput();
 
-                // Process video
                 Game game = CreateOrUpdateGamePanel.this.getModelObject();
-                System.out.println("Before retrieving.");
-                String videoURL = "";
-                if(!StringUtils.isBlank(videoField.getConvertedInput())) {
-                    videoURL = videos.getEmbedingURL(videoField.getConvertedInput());
-                }
-                System.out.println("Retrieved url");
-                if (videoURL == null) {
-                    // Bad URL - TODO - does not work - TODO
-                    videoField.error("Nerozpoznané URL videa");
-                }
-                else {
-                    // Set URL
-                    Video v = game.getVideo();
-                    if (v == null) {
-                        v = new Video();
-                        v.setType(0);
-                        game.setVideo(v);
-                    }
-                    game.getVideo().setPath(videoURL);
-                }
+                game.setCoverImage(coverImagePanel.getConvertedInput());
 
-                if(createOrUpdateGame.isValid()){
+                if (createOrUpdateGame.isValid()) {
+                    String videoUrl = videoField.getConvertedInput();
                     // TODO: find why when editing form the converted input isn't propagated.
-                    game.setGroupAuthor((List<CsldGroup>) ((MultiAutoCompleteComponent)createOrUpdateGame.get("groupAuthor")).getConvertedInput());
-                    game.setAuthors((List<CsldUser>) ((MultiAutoCompleteComponent)createOrUpdateGame.get("authorsWrapper:authors")).getConvertedInput());
+                    game.setVideo(new Video(videos.getEmbedingURL(videoUrl)));
+                    game.setGroupAuthor((List<CsldGroup>) ((MultiAutoCompleteComponent) createOrUpdateGame.get("groupAuthor")).getConvertedInput());
+                    game.setAuthors((List<CsldUser>) ((MultiAutoCompleteComponent) createOrUpdateGame.get("authorsWrapper:authors")).getConvertedInput());
                     if (games.saveOrUpdate(game)) {
                         onCsldAction(target, game);
                     } else {

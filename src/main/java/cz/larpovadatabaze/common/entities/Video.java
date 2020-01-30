@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.common.entities;
 
-import cz.larpovadatabaze.common.api.Identifiable;
+import cz.larpovadatabaze.common.Identifiable;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,6 +16,14 @@ import java.util.List;
 @Table(name = "csld_video")
 public class Video implements Identifiable<Integer>, Serializable {
     private Integer id;
+
+    public Video() {
+    }
+
+    public Video(String videoUrl) {
+        this.path = videoUrl;
+        this.type = 0;
+    }
 
     @Column(name = "id", nullable = false, length = 10)
     @Id

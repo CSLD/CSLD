@@ -10,7 +10,7 @@ import cz.larpovadatabaze.games.components.page.ListGamePage;
 import cz.larpovadatabaze.games.services.Images;
 import cz.larpovadatabaze.users.components.page.GroupDetail;
 import cz.larpovadatabaze.users.components.page.UserDetailPage;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;

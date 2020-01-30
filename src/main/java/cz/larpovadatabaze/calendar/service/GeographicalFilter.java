@@ -35,7 +35,6 @@ public class GeographicalFilter implements Serializable {
         this.filePath = filePath;
     }
 
-
     public Collection<Area> areas() {
         try {
             File file = new File(this.filePath.toURI());

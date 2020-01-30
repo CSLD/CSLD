@@ -1,27 +1,31 @@
 package cz.larpovadatabaze;
 
+import cz.larpovadatabaze.administration.services.Statistics;
+import cz.larpovadatabaze.administration.services.masquerade.InMemoryStatistics;
 import cz.larpovadatabaze.calendar.service.Events;
-import cz.larpovadatabaze.calendar.service.events.InMemoryEvents;
+import cz.larpovadatabaze.calendar.services.masqueradeStubs.InMemoryEvents;
 import cz.larpovadatabaze.common.services.FilterService;
+import cz.larpovadatabaze.common.services.MailService;
 import cz.larpovadatabaze.common.services.builders.InMemoryMasqueradeBuilder;
+import cz.larpovadatabaze.common.services.smtp.SmtpMailService;
 import cz.larpovadatabaze.common.services.wicket.FilterServiceReflection;
-import cz.larpovadatabaze.common.services.wicket.MailClient;
 import cz.larpovadatabaze.games.services.*;
-import cz.larpovadatabaze.games.services.masqueradeStubs.*;
+import cz.larpovadatabaze.games.services.masquerade.*;
+import cz.larpovadatabaze.search.services.TokenSearch;
+import cz.larpovadatabaze.search.services.masqueradeStubs.InMemoryTokenSearch;
 import cz.larpovadatabaze.users.services.AppUsers;
 import cz.larpovadatabaze.users.services.CsldGroups;
 import cz.larpovadatabaze.users.services.CsldUsers;
 import cz.larpovadatabaze.users.services.EmailAuthentications;
-import cz.larpovadatabaze.users.services.masqueradeStubs.InMemoryCsldUsers;
-import cz.larpovadatabaze.users.services.masqueradeStubs.InMemoryEmailAuthenticationTokens;
-import cz.larpovadatabaze.users.services.masqueradeStubs.InMemoryGroups;
+import cz.larpovadatabaze.users.services.masquerade.InMemoryCsldUsers;
+import cz.larpovadatabaze.users.services.masquerade.InMemoryEmailAuthenticationTokens;
+import cz.larpovadatabaze.users.services.masquerade.InMemoryGroups;
 import cz.larpovadatabaze.users.services.wicket.WicketUsers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -91,7 +95,7 @@ public class RootTestWicketContext {
     }
 
     @Bean
-    public Events events() {
+    public Events sqlEvents() {
         return new InMemoryEvents();
     }
 
@@ -101,19 +105,49 @@ public class RootTestWicketContext {
     }
 
     @Bean
+    public TokenSearch tokenSearch() {
+        return new InMemoryTokenSearch();
+    }
+
+    @Bean
+    public SimilarGames similarGames() {
+        return new InMemorySimilarGames();
+    }
+
+    @Bean
+    public FilteredGames filteredGames() {
+        return new InMemoryFilteredGames();
+    }
+
+    @Bean
+    public AuthoredGames authoredGames() {
+        return new InMemoryAuthoredGames();
+    }
+
+    @Bean
     public FilterService filterService() {
         return new FilterServiceReflection();
     }
 
+    @Bean
+    public GamesWithState sqlGamesWithState() {
+        return new InMemoryGamesWithState();
+    }
+
+    @Bean
+    public Statistics sqlStatistics() {
+        return new InMemoryStatistics();
+    }
+
     @Bean(initMethod = "build")
     public InMemoryMasqueradeBuilder builder() {
-        return new InMemoryMasqueradeBuilder(comments(), csldUsers(), games(),
+        return new InMemoryMasqueradeBuilder(comments(), csldUsers(), games(), similarGames(),
                 groups(), labels(), ratings(), upvotes());
     }
 
     @Bean
     public Csld csld() {
-        return new Csld(csldUsers(), games(), groups(), labels(), null, env, events());
+        return new Csld(tokenSearch(), csldUsers(), env, sqlEvents(), sqlStatistics());
     }
 
     // Start of email settings
@@ -140,23 +174,12 @@ public class RootTestWicketContext {
     }
 
     @Bean
-    public SimpleMailMessage templateMessage() {
-        SimpleMailMessage message = new SimpleMailMessage();
-
-        message.setFrom(env.getProperty("mail.from"));
-        message.setSubject(env.getProperty("mail.subject"));
-
-        return message;
-    }
-
-    @Bean
-    public MailClient mailService() {
-        MailClient mail = new MailClient();
-
-        mail.setTemplateMessage(templateMessage());
-        mail.setMailSender(mailSender());
-
-        return mail;
+    public MailService mailService() {
+        return new SmtpMailService(
+                mailSender(),
+                appUsers(),
+                env.getProperty("mail.from")
+        );
     }
     // End of email settings
 }

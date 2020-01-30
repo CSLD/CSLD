@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.common.entities;
 
-import cz.larpovadatabaze.common.api.Identifiable;
+import cz.larpovadatabaze.common.Identifiable;
 import cz.larpovadatabaze.common.components.multiac.IAutoCompletable;
 import cz.larpovadatabaze.users.CsldRoles;
 import cz.larpovadatabaze.users.Pwd;
@@ -191,17 +191,6 @@ public class CsldUser implements Serializable, Identifiable<Integer>, IAutoCompl
         this.authorOf = authorOf;
     }
 
-    private List<UserPlayedGame> playedGames = new ArrayList<>();
-
-    @OneToMany(mappedBy = "playerOfGame")
-    public List<UserPlayedGame> getPlayedGames() {
-        return playedGames;
-    }
-
-    public void setPlayedGames(List<UserPlayedGame> playedGames) {
-        this.playedGames = playedGames;
-    }
-
     private List<Comment> commented = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
@@ -273,7 +262,6 @@ public class CsldUser implements Serializable, Identifiable<Integer>, IAutoCompl
         emptyUser.setCommented(new ArrayList<Comment>());
         emptyUser.setImage(null);
         emptyUser.setPerson(Person.getEmptyPerson());
-        emptyUser.setPlayedGames(new ArrayList<UserPlayedGame>());
         emptyUser.setRole(CsldRoles.USER.getRole());
         return emptyUser;
     }

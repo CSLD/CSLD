@@ -3,10 +3,8 @@ package cz.larpovadatabaze.games.components.panel;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.entities.Rating;
-import cz.larpovadatabaze.common.exceptions.WrongParameterException;
 import cz.larpovadatabaze.games.services.Ratings;
 import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
-import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -14,7 +12,6 @@ import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -22,7 +19,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * not rated by the user previously.
  */
 public class RatingsPanel extends Panel {
-    private final static Logger logger = Logger.getLogger(RatingsPanel.class);
     private static final int NUM_STARS = 10;
     @SpringBean
     Ratings ratings;
@@ -35,22 +31,16 @@ public class RatingsPanel extends Panel {
     /**
      * Model for rating of a game, implemented as loaded and detachable
      */
-    private class RatingModel extends LoadableDetachableModel<Rating> {
+    private class RatingModel implements IModel<Rating> {
         @Override
-        protected Rating load() {
+        public Rating getObject() {
             CsldUser logged = getLoggedUser();
             int loggedId = getLoggedUserId();
 
-            Rating actualRating = null;
-            try {
-                actualRating = ratings.getUserRatingOfGame(loggedId, gameId);
-            } catch (WrongParameterException e) {
-                // This should never happen.
-                logger.error(e);
-            }
+            Rating actualRating = ratings.getUserRatingOfGame(loggedId, gameId);
 
-            if(actualRating != null){
-                if(actualRating.getUser() == null){
+            if (actualRating != null) {
+                if (actualRating.getUser() == null) {
                     actualRating.setUser(logged);
                 }
             } else {
@@ -114,10 +104,11 @@ public class RatingsPanel extends Panel {
         setOutputMarkupId(true);
     }
 
-    private void updateData(int value){
+    private void updateData(int value) {
         // Set and save new value
-        model.getObject().setRating(value);
-        ratings.saveOrUpdate(model.getObject());
+        Rating current = model.getObject();
+        current.setRating(value);
+        ratings.saveOrUpdate(current);
 
         // Flush game so that computed fields are reloaded
         gameModel.detach();

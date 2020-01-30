@@ -43,7 +43,7 @@ public class LarpCzEvents {
     }
 
     private Collection<Event> parseEvents(Collection<Event> result, Elements events) throws IOException {
-        int id = 10000;
+        int id = 10000; // Get current from database.
         for(Element event: events) {
             LarpCzDate date = new LarpCzDate(event.select("td.views-field-phpcode").get(0).text());
             // Retrieve from and to based on these information.

@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.common.services.sql;
 
-import cz.larpovadatabaze.common.api.GenericHibernateDAO;
+import cz.larpovadatabaze.common.dao.GenericHibernateDAO;
 import cz.larpovadatabaze.common.services.CRUDService;
 
 import java.io.Serializable;

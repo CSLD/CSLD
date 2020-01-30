@@ -1,11 +1,14 @@
 package cz.larpovadatabaze.users.services.sql;
 
 import cz.larpovadatabaze.WithDatabase;
-import cz.larpovadatabaze.common.dao.CsldUserDAO;
 import cz.larpovadatabaze.common.entities.CsldUser;
+import cz.larpovadatabaze.common.services.FileService;
+import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService;
+import cz.larpovadatabaze.common.services.MailService;
 import cz.larpovadatabaze.games.services.Images;
 import cz.larpovadatabaze.users.Pwd;
 import cz.larpovadatabaze.users.services.CsldUsers;
+import cz.larpovadatabaze.users.services.EmailAuthentications;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -22,9 +25,13 @@ public class SqlCsldUsersIT extends WithDatabase {
     public void setUp() {
         super.setUp();
 
-        Images images = Mockito.mock(Images.class);
-        CsldUserDAO dao = new CsldUserDAO(sessionFactory);
-        underTest = new SqlCsldUsers(dao, images);
+        underTest = new SqlCsldUsers(sessionFactory,
+                Mockito.mock(Images.class),
+                Mockito.mock(MailService.class),
+                Mockito.mock(EmailAuthentications.class),
+                Mockito.mock(FileService.class),
+                Mockito.mock(ImageResizingStrategyFactoryService.class)
+        );
     }
 
     @Test

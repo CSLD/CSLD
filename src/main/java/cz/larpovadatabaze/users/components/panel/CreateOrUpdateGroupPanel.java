@@ -1,8 +1,8 @@
 package cz.larpovadatabaze.users.components.panel;
 
-import cz.larpovadatabaze.common.api.ValidatableForm;
 import cz.larpovadatabaze.common.components.AbstractCsldPanel;
 import cz.larpovadatabaze.common.components.CsldFeedbackMessageLabel;
+import cz.larpovadatabaze.common.components.ValidatableForm;
 import cz.larpovadatabaze.common.entities.CsldGroup;
 import cz.larpovadatabaze.common.entities.Image;
 import cz.larpovadatabaze.common.services.FileService;

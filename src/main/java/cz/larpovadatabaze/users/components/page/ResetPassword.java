@@ -38,10 +38,10 @@ public class ResetPassword extends CsldBasePage {
         csldUser = authentication.getUser();
         emailAuthentications.remove(authentication);
 
-        Form resetPassword = new Form("resetPassword"){
+        Form<Void> resetPassword = new Form<>("resetPassword") {
             @Override
             protected void onSubmit() {
-                if(password != null && passwordAgain != null && password.equals(passwordAgain)){
+                if (password != null && passwordAgain != null && password.equals(passwordAgain)) {
                     csldUser.setPassword(Pwd.generateStrongPasswordHash(password, csldUser.getPerson().getEmail()));
                     csldUsers.saveOrUpdate(csldUser);
 

@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.users.services.sql;
 
-import cz.larpovadatabaze.common.api.GenericHibernateDAO;
+import cz.larpovadatabaze.common.dao.GenericHibernateDAO;
 import cz.larpovadatabaze.common.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.common.entities.CsldGroup;
 import cz.larpovadatabaze.common.services.sql.CRUD;
@@ -39,14 +39,6 @@ public class SqlGroups extends CRUD<CsldGroup, Integer> implements CsldGroups {
                 .add(Restrictions.ilike("name", "%" + startsWith + "%"));
 
         return firstChoices.list();
-    }
-
-    @Override
-    public List<CsldGroup> getByAutoCompletable(String groupName) {
-        Criteria uniqueGroup = crudRepository.getExecutableCriteria()
-                .add(Restrictions.eq("name", groupName));
-
-        return uniqueGroup.list();
     }
 
     @Override

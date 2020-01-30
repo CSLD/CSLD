@@ -1,18 +1,27 @@
 package cz.larpovadatabaze.users.services.sql;
 
 import com.github.openjson.JSONObject;
-import cz.larpovadatabaze.common.dao.CsldUserDAO;
+import cz.larpovadatabaze.common.dao.GenericHibernateDAO;
+import cz.larpovadatabaze.common.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.common.entities.CsldUser;
-import cz.larpovadatabaze.common.exceptions.WrongParameterException;
+import cz.larpovadatabaze.common.entities.EmailAuthentication;
+import cz.larpovadatabaze.common.entities.Image;
+import cz.larpovadatabaze.common.services.FileService;
+import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService;
+import cz.larpovadatabaze.common.services.MailService;
 import cz.larpovadatabaze.common.services.sql.CRUD;
 import cz.larpovadatabaze.games.services.Images;
 import cz.larpovadatabaze.users.Pwd;
 import cz.larpovadatabaze.users.RandomString;
 import cz.larpovadatabaze.users.services.CsldUsers;
+import cz.larpovadatabaze.users.services.EmailAuthentications;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.request.resource.ResourceReference;
+import org.hibernate.Criteria;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.jsoup.Jsoup;
@@ -37,17 +46,35 @@ public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
     private static final String RE_CAPTCHA_SITE_KEY = "6LeEiv8SAAAAABn8qvmZGkez0Lpp-Pbak_Jr6T1t";
     private static final String RE_CAPTCHA_SECRET_KEY = "6LeEiv8SAAAAAAE2ikmbiEJhv5XdVaI4_TiPPEt6";
 
-    private CsldUserDAO csldUserDao;
     private Images images;
+    private MailService mails;
+    private EmailAuthentications authentications;
+    private FileService files;
+    private ImageResizingStrategyFactoryService imageResizingStrategyFactoryService;
 
     @Autowired
-    public SqlCsldUsers(CsldUserDAO csldUserDao, Images images) {
-        super(csldUserDao);
-        this.csldUserDao = csldUserDao;
+    public SqlCsldUsers(SessionFactory sessionFactory, Images images,
+                        MailService mails, EmailAuthentications authentications, FileService files,
+                        ImageResizingStrategyFactoryService imageResizingStrategyFactoryService) {
+        super(new GenericHibernateDAO<>(sessionFactory, new GenericBuilder<>(CsldUser.class)));
         this.images = images;
+        this.mails = mails;
+        this.authentications = authentications;
+        this.files = files;
+        this.imageResizingStrategyFactoryService = imageResizingStrategyFactoryService;
     }
 
     private ResourceReference userIconReference;
+
+    @Override
+    public void sendForgottenPassword(CsldUser user, EmailAuthentication emailAuthentication, String url) {
+        String content = String.format("Pro vytvoření nového hesla použijte následující odkaz: %s", url);
+        String subject = "[LarpDB] Zaslani odkazu na vytvoreni noveho hesla.";
+
+        mails.sendForgottenPassword(user, subject, content);
+
+        authentications.saveOrUpdate(emailAuthentication);
+    }
 
     @Override
     public List<CsldUser> getEditors() {
@@ -63,22 +90,29 @@ public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
 
     @Override
     public CsldUser authenticate(String username, String password) {
-        return csldUserDao.authenticate(username, password);
-    }
-
-    @Override
-    public List<CsldUser> getByAutoCompletable(String autoCompletable) throws WrongParameterException {
-        return csldUserDao.getByAutoCompletable(autoCompletable);
+        return crudRepository.findSingleByCriteria(
+                Restrictions.and(
+                        Restrictions.eq("person.email", username),
+                        Restrictions.eq("password", password))
+        );
     }
 
     @Override
     public CsldUser getByEmail(String mail) {
-        return csldUserDao.getByEmail(mail);
+        return crudRepository.findSingleByCriteria(
+                Restrictions.eq("person.email", mail).ignoreCase()
+        );
     }
 
     @Override
     public List<CsldUser> getFirstChoices(String startsWith, int maxChoices) {
-        return csldUserDao.getFirstChoices(startsWith, maxChoices);
+        Criteria criteria = crudRepository.getExecutableCriteria()
+                .setMaxResults(maxChoices)
+                .add(Restrictions.or(
+                        Restrictions.ilike("person.name", "%" + startsWith + "%"),
+                        Restrictions.ilike("person.nickname", "%" + startsWith + "%")));
+
+        return criteria.list();
     }
 
 
@@ -101,7 +135,7 @@ public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
         // Reference is singleton, lazy-inited
         synchronized(this) {
             if (userIconReference == null) {
-                userIconReference = images.createImageTypeResourceReference(csldUserDao);
+                userIconReference = images.createImageTypeResourceReference(crudRepository);
             }
         }
         return userIconReference;
@@ -130,9 +164,39 @@ public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
             JSONObject responseObject = new JSONObject(responseFromGoogle);
             return responseObject.getBoolean("success");
 
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             throw new ReCaptchaTechnicalException(e);
         }
+    }
+
+    @Override
+    public boolean saveOrUpdate(CsldUser model, List<FileUpload> uploads) {
+        CsldUser currentInSession = getById(model.getId());
+        String description = model.getPerson().getDescription();
+        if (description != null) {
+            currentInSession.getPerson().setDescription(
+                    Jsoup.clean(description, Whitelist.basic()));
+        }
+        currentInSession.setPerson(model.getPerson());
+        if (model.getPassword() != null) {
+            currentInSession.setPassword(
+                    Pwd.generateStrongPasswordHash(model.getPassword(), model.getPerson().getEmail())
+            );
+        }
+        if (uploads != null && uploads.size() > 0) {
+            for (FileUpload upload : uploads) {
+                String filePath = files.saveImageFileAndReturnPath(upload,
+                        imageResizingStrategyFactoryService.getCuttingSquareStrategy(
+                                CsldUsers.USER_IMAGE_SIZE, CsldUsers.USER_IMAGE_LEFTTOP_PERCENT)).path;
+                try {
+                    Image image = new Image();
+                    image.setPath(filePath);
+                    currentInSession.setImage(image);
+                } catch (Exception e) {
+                    throw new IllegalStateException("Unable to write file", e);
+                }
+            }
+        }
+        return crudRepository.saveOrUpdate(currentInSession);
     }
 }

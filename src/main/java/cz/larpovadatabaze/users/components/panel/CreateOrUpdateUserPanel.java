@@ -1,19 +1,14 @@
 package cz.larpovadatabaze.users.components.panel;
 
-import cz.larpovadatabaze.common.api.ValidatableForm;
 import cz.larpovadatabaze.common.components.AbstractCsldPanel;
 import cz.larpovadatabaze.common.components.CsldFeedbackMessageLabel;
+import cz.larpovadatabaze.common.components.ValidatableForm;
 import cz.larpovadatabaze.common.entities.CsldUser;
-import cz.larpovadatabaze.common.entities.Image;
-import cz.larpovadatabaze.common.services.FileService;
-import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.users.Pwd;
 import cz.larpovadatabaze.users.services.AppUsers;
 import cz.larpovadatabaze.users.services.CsldUsers;
 import cz.larpovadatabaze.users.validator.UniqueUserValidator;
-import org.apache.commons.lang.StringUtils;
-import org.apache.wicket.Session;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
@@ -28,8 +23,6 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,10 +34,6 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
 
     @SpringBean
     CsldUsers csldUsers;
-    @SpringBean
-    FileService fileService;
-    @SpringBean
-    ImageResizingStrategyFactoryService imageResizingStrategyFactoryService;
     @SpringBean
     private AppUsers appUsers;
 
@@ -172,61 +161,11 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
     }
 
     private boolean saveOrUpdateUserAndImage(CsldUser user){
-        final List<FileUpload> uploads = fileUpload.getFileUploads();
-        if(user.getAmountOfComments() == null){
-            user.setAmountOfComments(0);
-        }
-        if(user.getAmountOfCreated() == null) {
-            user.setAmountOfCreated(0);
-        }
-        if(user.getAmountOfPlayed() == null) {
-            user.setAmountOfPlayed(0);
-        }
-        if(user.getPerson().getDescription() != null) {
-            user.getPerson().setDescription(Jsoup.clean(user.getPerson().getDescription(), Whitelist.basic()));
-        }
-        if(user.getDefaultLang() == null) {
-            user.setDefaultLang(Session.get().getLocale().getLanguage());
-        }
-        if (uploads != null && uploads.size() > 0) {
-            for (FileUpload upload : uploads) {
-                String filePath = fileService.saveImageFileAndReturnPath(upload, imageResizingStrategyFactoryService.getCuttingSquareStrategy(CsldUsers.USER_IMAGE_SIZE, CsldUsers.USER_IMAGE_LEFTTOP_PERCENT)).path;
-                try
-                {
-                    Image image = new Image();
-                    image.setPath(filePath);
-                    user.setImage(image);
-                    if(saveOrUpdateUser(user)){
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
-                catch (Exception e)
-                {
-                    throw new IllegalStateException("Unable to write file", e);
-                }
-            }
-        } else {
-            return saveOrUpdateUser(user);
-        }
-        return false;
-    }
-
-    private boolean saveOrUpdateUser(CsldUser user){
-        user.setIsAuthor(false);
-
-        // Process password
-        if (StringUtils.isEmpty(user.getPassword()) || StringUtils.isEmpty(passwordAgain)) {
-            // Keep password
-            user.setPassword(oldPassword);
-        }
-        else {
-            // Set new password
-            user.setPassword(Pwd.generateStrongPasswordHash(user.getPassword(), user.getPerson().getEmail()));
+        if (StringUtils.isEmpty(passwordAgain)) {
+            user.setPassword(null);
         }
 
-        if (csldUsers.saveOrUpdate(user)) {
+        if (csldUsers.saveOrUpdate(user, fileUpload.getFileUploads())) {
             return true;
         } else {
             error(getLocalizer().getString("user.cantAdd", this));

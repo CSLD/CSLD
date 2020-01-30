@@ -2,7 +2,6 @@ package cz.larpovadatabaze.games.services.sql;
 
 import cz.larpovadatabaze.WithDatabase;
 import cz.larpovadatabaze.common.entities.Label;
-import cz.larpovadatabaze.common.exceptions.WrongParameterException;
 import cz.larpovadatabaze.games.services.Labels;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,12 +46,5 @@ public class SqlLabelsIT extends WithDatabase {
         List<Label> validLabels = underTest.getAuthorizedRequired(masqueradeEntities.editor);
         assertThat(validLabels.size(), is(1));
         assertThat(validLabels, hasItem(masqueradeEntities.dramatic));
-    }
-
-    @Test
-    public void getByAutoCompletableReturnsAllContainingThePartOfTheName() throws WrongParameterException {
-        List<Label> found = underTest.getByAutoCompletable("am");
-        assertThat(found.size(), is(3));
-        assertThat(found, hasItems(masqueradeEntities.vampire, masqueradeEntities.chamber, masqueradeEntities.dramatic));
     }
 }

@@ -2,7 +2,7 @@ package cz.larpovadatabaze.common.components.page;
 
 import com.googlecode.wicket.jquery.ui.resource.JQueryUIResourceReference;
 import cz.larpovadatabaze.calendar.component.page.ListEventsPage;
-import cz.larpovadatabaze.common.api.Toggles;
+import cz.larpovadatabaze.common.Toggles;
 import cz.larpovadatabaze.common.components.CsldCssResourceReference;
 import cz.larpovadatabaze.common.components.home.AdvertisementPanel;
 import cz.larpovadatabaze.common.entities.CsldUser;
