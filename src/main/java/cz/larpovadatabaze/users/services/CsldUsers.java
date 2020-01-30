@@ -4,6 +4,7 @@ import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.EmailAuthentication;
 import cz.larpovadatabaze.common.services.CRUDService;
 import cz.larpovadatabaze.common.services.IIconReferenceProvider;
+import org.apache.wicket.markup.html.form.upload.FileUpload;
 
 import java.util.List;
 
@@ -78,4 +79,13 @@ public interface CsldUsers extends CRUDService<CsldUser, Integer>, IIconReferenc
      * @throws ReCaptchaTechnicalException When there are technical problems connecting to re-captcha
      */
     boolean checkReCaptcha(String response, String remoteIp) throws ReCaptchaTechnicalException;
+
+    /**
+     * Upload files related to the user and update the state of the current user.
+     *
+     * @param model   User object storing the new values.
+     * @param uploads List of items to upload and store
+     * @return True if the process was ok.
+     */
+    boolean saveOrUpdate(CsldUser model, List<FileUpload> uploads);
 }

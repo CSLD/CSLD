@@ -18,6 +18,13 @@ import java.util.List;
 public class Image implements Identifiable<Integer>, Serializable {
     private Integer id;
 
+    public Image() {
+    }
+
+    public Image(String filePath) {
+        this.path = filePath;
+    }
+
     @Column(
             name = "id",
             nullable = false,
@@ -26,7 +33,7 @@ public class Image implements Identifiable<Integer>, Serializable {
     )
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_image")
-    @SequenceGenerator(sequenceName = "csld_image_id_seq", name="id_gen_image", allocationSize = 1)
+    @SequenceGenerator(sequenceName = "csld_image_id_seq", name = "id_gen_image", allocationSize = 1)
     public Integer getId() {
         return id;
     }

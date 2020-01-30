@@ -17,7 +17,7 @@ public class UploadCoverImagePanel extends FormComponentPanel<Image> {
     public UploadCoverImagePanel(String id) {
         super(id);
 
-        IModel<List<FileUpload>> listIModel = new IModel<List<FileUpload>>(){
+        IModel<List<FileUpload>> listIModel = new IModel<>() {
             private List<FileUpload> uploadedFields;
 
             @Override

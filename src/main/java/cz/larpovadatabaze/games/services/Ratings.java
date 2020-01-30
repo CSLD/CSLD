@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.games.services;
 
 import cz.larpovadatabaze.common.entities.CsldUser;
+import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.entities.Rating;
 import cz.larpovadatabaze.common.services.CRUDService;
 
@@ -37,4 +38,13 @@ public interface Ratings extends CRUDService<Rating, Integer> {
      * @return String representing the valid name for the rating of the game
      */
     String getColor(Double rating);
+
+    /**
+     * Return ratings associated with game that have rating other than null ordered
+     * by the rating
+     *
+     * @param game Game to limit ratings.
+     * @return Ordered list of ratings.
+     */
+    List<Rating> getRatingsOfGame(Game game);
 }

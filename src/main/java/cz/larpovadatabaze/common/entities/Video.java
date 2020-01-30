@@ -17,6 +17,14 @@ import java.util.List;
 public class Video implements Identifiable<Integer>, Serializable {
     private Integer id;
 
+    public Video() {
+    }
+
+    public Video(String videoUrl) {
+        this.path = videoUrl;
+        this.type = 0;
+    }
+
     @Column(name = "id", nullable = false, length = 10)
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_gen_video")

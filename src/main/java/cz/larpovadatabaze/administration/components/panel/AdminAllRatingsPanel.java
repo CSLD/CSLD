@@ -5,6 +5,7 @@ import cz.larpovadatabaze.common.components.BookmarkableLinkWithLabel;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.entities.Rating;
+import cz.larpovadatabaze.games.services.Ratings;
 import cz.larpovadatabaze.users.components.page.UserDetailPage;
 import cz.larpovadatabaze.users.services.AppUsers;
 import org.apache.wicket.markup.html.basic.Label;
@@ -16,7 +17,6 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +25,8 @@ import java.util.List;
 public class AdminAllRatingsPanel extends Panel {
     @SpringBean
     AppUsers users;
+    @SpringBean
+    Ratings ratings;
 
     private IModel<Game> gameModel;
     private OrderedDetachableRatingModel orderedDetachableRatingModel;
@@ -35,21 +37,16 @@ public class AdminAllRatingsPanel extends Panel {
     }
 
     private class OrderedDetachableRatingModel implements IModel<List<Rating>> {
-        private List<Rating> ratings;
+        private List<Rating> currentRatings;
 
         @Override
         public List<Rating> getObject() {
-            if (ratings == null) recompute();
-            return ratings;
+            if (currentRatings == null) recompute();
+            return currentRatings;
         }
 
         public void recompute() {
-            List<Rating> ratings = gameModel.getObject().getRatings();
-            if(ratings == null) {
-                ratings = new ArrayList<>();
-            }
-            ratings.sort((o1, o2) -> o2.getRating() - o1.getRating());
-            this.ratings = ratings;
+            currentRatings = ratings.getRatingsOfGame(gameModel.getObject());
         }
     }
 

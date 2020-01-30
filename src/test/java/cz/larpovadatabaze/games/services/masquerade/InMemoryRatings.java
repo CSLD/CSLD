@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.games.services.masquerade;
 
 import cz.larpovadatabaze.common.entities.CsldUser;
+import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.entities.Rating;
 import cz.larpovadatabaze.common.services.masquerade.InMemoryCrud;
 import cz.larpovadatabaze.games.services.Ratings;
@@ -30,5 +31,10 @@ public class InMemoryRatings extends InMemoryCrud<Rating, Integer> implements Ra
     @Override
     public String getColor(Double rating) {
         return "average";
+    }
+
+    @Override
+    public List<Rating> getRatingsOfGame(Game game) {
+        return null;
     }
 }

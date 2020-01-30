@@ -1,0 +1,34 @@
+1
+<wicket:extend xmlns:wicket="http://wicket.apache.org">
+
+    <div class="container main">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="userWhoRatedGame" style="display: table">
+                    <div style="display: table-row">
+                        <div style="display: table-cell">
+                            <wicket:message key="statistics.year">Rok</wicket:message>
+                        </div>
+                        <div style="display: table-cell">
+                            <wicket:message key="statistics.month">Měsíc</wicket:message>
+                        </div>
+                        <div style="display: table-cell">
+                            <wicket:message key="statistics.amountOfRatings">Počet hodnocení</wicket:message>
+                        </div>
+                        <div style="display: table-cell">
+                            <wicket:message key="statistics.averageRating">Průměrné hodnocení</wicket:message>
+                        </div>
+                    </div>
+                    <div style="display: table-row-group" wicket:id="ratingStatistics">
+                        <div style="display: table-row">
+                            <div style="display: table-cell"><span wicket:id="year"></span></div>
+                            <div style="display: table-cell"><span wicket:id="month"></span></div>
+                            <div style="display: table-cell"><span wicket:id="amountOfRatings"></span></div>
+                            <div style="display: table-cell"><span wicket:id="averageRating"></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</wicket:extend>

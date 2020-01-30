@@ -598,6 +598,11 @@ public class Game implements Serializable, Identifiable<Integer>, IAutoCompletab
         emptyGame.setCoverImage(null);
         emptyGame.setPhotos(new ArrayList<>());
         emptyGame.setRatings(new ArrayList<>());
+        emptyGame.setAmountOfComments(0);
+        emptyGame.setAmountOfPlayed(0);
+        emptyGame.setAmountOfRatings(0);
+        emptyGame.setAverageRating(0.0);
+        emptyGame.setTotalRating(0.0);
         return emptyGame;
     }
 

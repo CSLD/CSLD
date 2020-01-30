@@ -37,7 +37,7 @@ public class PlayedPanel extends Panel {
         @Override
         public Rating getObject() {
             int userId = getUserId();
-            Rating stateOfGame = ratings.getUserRatingOfGame(gameId, userId);
+            Rating stateOfGame = ratings.getUserRatingOfGame(userId, gameId);
             if (stateOfGame == null) {
                 stateOfGame = new Rating();
                 stateOfGame.setGame(gameModel.getObject());
@@ -126,10 +126,14 @@ public class PlayedPanel extends Panel {
 
         private void saveStateAndReload(AjaxRequestTarget target, Rating.GameState state) {
             // Update in DB
-            Rating stateOfGame = model.getObject();
-            stateOfGame.setStateEnum(state);
-            stateOfGame.setUser((CsldAuthenticatedWebSession.get()).getLoggedUser());
-            ratings.saveOrUpdate(stateOfGame);
+            if (state != Rating.GameState.NONE) {
+                Rating stateOfGame = model.getObject();
+                stateOfGame.setStateEnum(state);
+                stateOfGame.setUser((CsldAuthenticatedWebSession.get()).getLoggedUser());
+                ratings.saveOrUpdate(stateOfGame);
+            } else {
+                ratings.remove(model.getObject());
+            }
 
             // Refresh model and components and gameModel
             gameModel.detach();

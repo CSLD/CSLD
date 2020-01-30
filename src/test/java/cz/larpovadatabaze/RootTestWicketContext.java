@@ -1,5 +1,7 @@
 package cz.larpovadatabaze;
 
+import cz.larpovadatabaze.administration.services.Statistics;
+import cz.larpovadatabaze.administration.services.masquerade.InMemoryStatistics;
 import cz.larpovadatabaze.calendar.service.Events;
 import cz.larpovadatabaze.calendar.services.masqueradeStubs.InMemoryEvents;
 import cz.larpovadatabaze.common.services.FilterService;
@@ -132,6 +134,11 @@ public class RootTestWicketContext {
         return new InMemoryGamesWithState();
     }
 
+    @Bean
+    public Statistics sqlStatistics() {
+        return new InMemoryStatistics();
+    }
+
     @Bean(initMethod = "build")
     public InMemoryMasqueradeBuilder builder() {
         return new InMemoryMasqueradeBuilder(comments(), csldUsers(), games(), similarGames(),
@@ -140,7 +147,7 @@ public class RootTestWicketContext {
 
     @Bean
     public Csld csld() {
-        return new Csld(tokenSearch(), csldUsers(), env, sqlEvents());
+        return new Csld(tokenSearch(), csldUsers(), env, sqlEvents(), sqlStatistics());
     }
 
     // Start of email settings

@@ -8,6 +8,7 @@ import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.entities.IGameWithRating;
 import cz.larpovadatabaze.common.entities.Rating;
 import cz.larpovadatabaze.common.services.MailService;
+import cz.larpovadatabaze.games.models.GameWithoutRating;
 import cz.larpovadatabaze.games.services.GamesWithState;
 import cz.larpovadatabaze.users.services.AppUsers;
 import org.hibernate.Criteria;
@@ -31,12 +32,14 @@ public class SqlGamesWithState implements GamesWithState {
     private GenericHibernateDAO<Game, Integer> games;
     private GenericHibernateDAO<Rating, Integer> ratings;
     private MailService mails;
+    private AppUsers appUsers;
 
     @Autowired
     public SqlGamesWithState(SessionFactory sessionFactory, AppUsers appUsers, MailService mails) {
         games = new GenericHibernateDAO<>(sessionFactory, new GameBuilder(appUsers));
         ratings = new GenericHibernateDAO<>(sessionFactory, new GenericBuilder<>(Rating.class));
         this.mails = mails;
+        this.appUsers = appUsers;
     }
 
     @Override
@@ -46,7 +49,15 @@ public class SqlGamesWithState implements GamesWithState {
                 Restrictions.eq("state", PLAYED.ordinal())
         ));
 
-        return new ArrayList<>(playedByUser);
+        // If the user doesn't have rights. Nullify the ratings.
+        if (appUsers.isAtLeastEditor() ||
+                (appUsers.isSignedIn() && appUsers.getLoggedUserId().equals(user.getId()))) {
+            return new ArrayList<>(playedByUser);
+        } else {
+            return playedByUser.stream()
+                    .map(rating -> new GameWithoutRating(rating.getGame()))
+                    .collect(Collectors.toList());
+        }
     }
 
     @Override
