@@ -93,6 +93,20 @@ public class Rating implements Identifiable<Integer>, Serializable, IGameWithRat
         this.added = added;
     }
 
+    private boolean byAuthor;
+
+    @Column(
+            name = "by_author",
+            nullable = false
+    )
+    public boolean getByAuthor() {
+        return byAuthor;
+    }
+
+    public void setByAuthor(boolean byAuthor) {
+        this.byAuthor = byAuthor;
+    }
+
     private GameState state = GameState.NONE;
 
     @Column(name = "state", nullable = false, length = 10)

@@ -96,6 +96,14 @@ public class SqlRatings extends CRUD<Rating, Integer> implements Ratings {
                 && actualRating.getRating() != null) {
             actualRating.setStateEnum(Rating.GameState.PLAYED);
         }
+
+        // If the author rates own game, flag it
+        if (actualRating.getRating() != null && actualRating.getGame() != null) {
+            CsldUser addedBy = actualRating.getUser();
+            List<CsldUser> authors = actualRating.getGame().getAuthors();
+            actualRating.setByAuthor(authors.indexOf(addedBy) != -1);
+        }
+
         crudRepository.saveOrUpdate(actualRating);
 
         // Some fields in the game object are computed by triggers - flush corresponding game from hibernate cache so it is reloaded

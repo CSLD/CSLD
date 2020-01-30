@@ -34,11 +34,11 @@ public class ShowAuthorsWhoRatedTheirGamesPage extends CsldBasePage {
             protected void populateItem(ListItem<UserRatesOwnGameDto> item) {
                 UserRatesOwnGameDto userRatesOwnGameDto = item.getModel().getObject();
 
-                item.add(new Label("email", userRatesOwnGameDto.getUserEmail()));
-                item.add(new BookmarkableLinkWithLabel("user", UserDetailPage.class, Model.of(userRatesOwnGameDto.getUserName()),
-                        Model.of(new PageParameters().set("id", userRatesOwnGameDto.getUserId()))));
-                item.add(new BookmarkableLinkWithLabel("game", GameDetail.class, Model.of(userRatesOwnGameDto.getGameName()),
-                        Model.of(new PageParameters().set("id", userRatesOwnGameDto.getGameId()))));
+                item.add(new Label("email", userRatesOwnGameDto.userEmail));
+                item.add(new BookmarkableLinkWithLabel("user", UserDetailPage.class, Model.of(userRatesOwnGameDto.userName),
+                        Model.of(new PageParameters().set("id", userRatesOwnGameDto.userId))));
+                item.add(new BookmarkableLinkWithLabel("game", GameDetail.class, Model.of(userRatesOwnGameDto.gameName),
+                        Model.of(new PageParameters().set("id", userRatesOwnGameDto.gameId))));
             }
         };
 
