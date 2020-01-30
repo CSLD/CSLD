@@ -25,7 +25,7 @@ public class SqlAdministeredUsers implements AdministeredUsers {
     @Override
     public List<UserRatesOwnGameDto> getUsersWhoRatesOwnGames() {
         List<Rating> ratedByAuthors = ratings.findByCriteria(
-                Restrictions.eq("by_author", true)
+                Restrictions.eq("byAuthor", true)
         );
 
         return ratedByAuthors.stream()
