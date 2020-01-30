@@ -1,67 +1,45 @@
 ČSLD
 ====
 
-Larp database is an implementation of the portal for inserting Larp games and events and allowing the users to comment on them and rate them. 
+Československá larpová databáze je portál pro larpy české a slovenské larpové komunity.
+
+## Jak rozběhat vývojové prostředí
+
+### Rozběhnutí dockeru
+1. Nainstalujte si docker z docker.com.
+_Pokud máte docker pro Windows, musíte udělat:_
+1.1. Open Hyper-V Manager (Windows search : “Hyper-V …”)
+1.2. Go to Virtual Switch Manager on the right side.
+1.3. Go to DockerNAT then choose Connection type -> to External network -> #which interface you deside.
+1.4. Hope that help you, too.
+1. Spusťe docker
+1. Pullněte si nejnovější obraz z veřejně přístupného docker hubu:
+`docker pull jbalhar/csld:latest`
+1. Spusťe kontejner:
+`docker run -it --net host --name csld jbalhar/csld:latest bash`
+_Vysvětlení jednotlivých parametrů:
+`-it`: TO-DO
+`--net`: Přesměruje všechny porty dockeru do operačního systému(?)
+`host`: TO-DO
+`--name`: Alias pro právě spouštěný kontejner
+`jbalhar/csld:latest`: Definuje, který obraz konterjneru se má spustit
+`bash`: Spouští proces po nastartování kontejneru. V tomto případě se díky procesu bash objeví konzole.
+
+### Rozběhnutí serveru
+1. Spusťe skript pro inicializaci serveru:
+`_csld init`
+_Co přesně skript dělá se můžete podívat na https://github.com/CSLD/CSLD/blob/master/docker/_csld_
+
+#### Poznámky
+_Co je docker a proč ho používat: https://www.zdrojak.cz/clanky/proc-pouzivat-docker/_
+_Dokumentace dockeru: https://docs.docker.com/engine/reference/commandline/docker/_
+
+## Running the development environemnt without docker (obsolete)
 
 ### Set up for local Development
-
-The whole application and its dependencies is packaged as the Docker container. First download the Docker for your platform. The information about how to start are available here: https://www.docker.com/get-started
-
-#### Linux
-
-The next step is in the terminal to download and start the image. It expects that you didn't do all the steps to access the docker from your current user. Following commands under the linux should solve this:
-
-```
-sudo docker pull jbalhar/csld
-sudo docker run -it -p 8080:8080 --name csld jbalhar/csld:latest bash
-```
-
-At this moment in the terminal you are in the bash of the running container. To initialize and start the database run:
-
-```
-_csld init
-```
-
-Initialize the database by going to the page [http://localhost:8081/testDatabase]()
-
-The database is then available on the page [http://localhost:8081]() 
-
-
-#### Windows
-
-Under the windows it is necessary to run the PowerShell as administrator to run the commands:
-
-```
-docker pull jbalhar/csld
-docker run -it -p 8080:8080 --name csld jbalhar/csld:latest bash
-```
-
-Initialize the database by going to the page [http://10.0.75.2:8081/testDatabase]() 
-
-The database is then available on the page [http://10.0.75.2:8081]() 
-
-### Start the stopped container
-
-#### Linux 
-
-The following command will start the container, log you into the container and start the database. 
-
-```
-sudo docker start csld
-sudo docker exec -it bash
-_csld start 
-```
-
-#### Windows
-
-The following command will start the container, log you into the container and start the database. 
-
-```
-docker start csld
-docker exec -it bash
-_csld start 
-```
-
-### Update the database to new version
-
-The command relevant for updating the CSLD to new version is `_csld update`
+1. Set up Java at least 1.7
+1. Set up PostgreSql database csld with user csld and password csld.
+1. Run mvn flyway:migrate -Dflyway.locations=filesystem:sql/migration -Dflyway.url=jdbc:postgresql://localhost:5432/csld -Dflyway.user=csld -Dflyway.password=csld
+1. Run the Project in Wicket development mode. 
+1. Initialize the database by going to the page /testDatabase
+_Don't forget inside of the tomcat, which the application is run on insert jars for mail._
