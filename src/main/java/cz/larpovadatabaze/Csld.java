@@ -3,6 +3,8 @@ package cz.larpovadatabaze;
 import cz.larpovadatabaze.administration.components.page.AdministrationPage;
 import cz.larpovadatabaze.administration.components.page.ManageLabelsPage;
 import cz.larpovadatabaze.administration.components.page.ManageUserRightsPage;
+import cz.larpovadatabaze.administration.rest.StatisticsProducer;
+import cz.larpovadatabaze.administration.services.Statistics;
 import cz.larpovadatabaze.calendar.component.page.CreateOrUpdateEventPage;
 import cz.larpovadatabaze.calendar.component.page.DetailOfEventPage;
 import cz.larpovadatabaze.calendar.component.page.ListEventsPage;
@@ -74,17 +76,19 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     private final CsldUsers csldUsers;
     private final Environment env;
     private final Events events;
+    private final Statistics statistics;
 
     private static final String DEFAULT_ENCODING = "UTF-8";
     private static ApplicationContext ctx;
 
     @Autowired
     public Csld(TokenSearch tokenSearch, CsldUsers csldUsers,
-                Environment env, Events events) {
+                Environment env, Events events, Statistics statistics) {
         this.tokenSearch = tokenSearch;
         this.csldUsers = csldUsers;
         this.env = env;
         this.events = events;
+        this.statistics = statistics;
     }
 
     public class MountedMapperWithoutPageComponentInfo extends MountedMapper {
@@ -246,7 +250,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         mountPage(context + "/error404", Error404Page.class);
         mountPage(context + "/error500", Error500Page.class);
 
-        if(isDevelopmentMode()) {
+        if (isDevelopmentMode()) {
             mountPage(context + "/testDatabase", TestDatabase.class);
         }
 
@@ -258,7 +262,17 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
                 return resource;
             }
         };
+
+        ResourceReference statsReference = new ResourceReference("statsReference") {
+            StatisticsProducer resource = new StatisticsProducer(statistics);
+
+            @Override
+            public IResource getResource() {
+                return resource;
+            }
+        };
         mountResource(context + "/ical", icalReference);
+        mountResource(context + "/stats", statsReference);
     }
 
     private void mountResources(String context) {

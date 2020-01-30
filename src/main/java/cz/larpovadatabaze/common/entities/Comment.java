@@ -137,7 +137,7 @@ public class Comment implements Identifiable<Integer>, Serializable {
         this.user = user;
     }
 
-    private List<Upvote> pluses;
+    private List<Upvote> pluses = new ArrayList<>();
 
     @OneToMany
     @JoinColumn(name = "comment_id", nullable = false)

@@ -57,9 +57,11 @@ public class CommentsListPanel extends Panel {
          * Cached comment
          */
         private Comment actualComment;
+        private Integer commentId;
 
         private UpvoteModel(Comment comment) {
             actualComment = comment;
+            commentId = comment.getId();
         }
 
         private CsldUser getUser() {
@@ -68,16 +70,24 @@ public class CommentsListPanel extends Panel {
 
         @Override
         public Integer getObject() {
-            return upvotes.forUserAndComment(getUser(), actualComment).size();
+            return upvotes.forUserAndComment(getUser(), getActualComment()).size();
+        }
+
+        private Comment getActualComment() {
+            if (actualComment == null) {
+                actualComment = sqlComments.getById(commentId);
+            }
+
+            return actualComment;
         }
 
         @Override
         public void setObject(Integer amountOfVotes) {
-            if(amountOfVotes == null) {
-                upvotes.downvote(getUser(), actualComment);
+            if (amountOfVotes == null) {
+                upvotes.downvote(getUser(), getActualComment());
             } else {
                 for (int i = 0; i < amountOfVotes; i++) {
-                    upvotes.upvote(getUser(), actualComment);
+                    upvotes.upvote(getUser(), getActualComment());
                 }
             }
         }

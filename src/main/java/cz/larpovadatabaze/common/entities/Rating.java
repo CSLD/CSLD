@@ -115,6 +115,11 @@ public class Rating implements Identifiable<Integer>, Serializable, IGameWithRat
     }
 
     public void setState(Integer state) {
+        if (state == null) {
+            this.state = GameState.NONE;
+            return;
+        }
+
         switch (state) {
             case STATE_CODE_NONE:
                 this.state = GameState.NONE;

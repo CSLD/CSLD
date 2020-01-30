@@ -112,13 +112,18 @@ public class SqlComments extends CRUD<Comment, Integer> implements Comments {
         Criterion restrictions;
         if (appUsers.isAtLeastEditor()) {
             restrictions = Restrictions.eq(GAME_BY_ID, game.getId());
-        } else {
+        } else if (appUsers.isSignedIn()) {
             restrictions = Restrictions.and(
                     Restrictions.eq(GAME_BY_ID, game.getId()),
                     Restrictions.or(
                             Restrictions.eq("hidden", false),
                             Restrictions.eq(USER_BY_ID, appUsers.getLoggedUserId())
                     )
+            );
+        } else {
+            restrictions = Restrictions.and(
+                    Restrictions.eq(GAME_BY_ID, game.getId()),
+                    Restrictions.eq("hidden", false)
             );
         }
 

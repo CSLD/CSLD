@@ -3,6 +3,7 @@ package cz.larpovadatabaze.games.services.sql;
 import cz.larpovadatabaze.common.dao.GenericHibernateDAO;
 import cz.larpovadatabaze.common.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.common.entities.CsldUser;
+import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.entities.Rating;
 import cz.larpovadatabaze.common.services.sql.CRUD;
 import cz.larpovadatabaze.games.services.Games;
@@ -79,6 +80,16 @@ public class SqlRatings extends CRUD<Rating, Integer> implements Ratings {
         } else {
             return "notrated";
         }
+    }
+
+    @Override
+    public List<Rating> getRatingsOfGame(Game game) {
+        Criteria criteria = crudRepository.getExecutableCriteria()
+                .add(Restrictions.eq("game", game))
+                .add(Restrictions.isNotNull("rating"))
+                .addOrder(Order.desc("rating"));
+
+        return criteria.list();
     }
 
     @Override

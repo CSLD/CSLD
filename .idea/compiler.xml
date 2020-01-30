@@ -12,6 +12,7 @@
     <bytecodeTargetLevel>
       <module name="csld" target="9" />
       <module name="CSLD" target="12" />
+      <module name="CSLD (1)" target="1.8" />
       <module name="demo" target="1.8" />
     </bytecodeTargetLevel>
   </component>
