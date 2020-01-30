@@ -32,6 +32,10 @@ public class AdministrationPage extends CsldBasePage {
                 new BookmarkablePageLink<CsldBasePage>("manageLabels", ManageLabelsPage.class);
         add(manageLabels);
 
+        BookmarkablePageLink<CsldBasePage> ratingStatistics =
+                new BookmarkablePageLink<CsldBasePage>("ratingStatistics", RatingStatistics.class);
+        add(ratingStatistics);
+
         BookmarkablePageLink<CsldBasePage> showAuthorsWhoRatedTheirOwnGames =
                 new BookmarkablePageLink<CsldBasePage>("authorRatedOwnGame", ShowAuthorsWhoRatedTheirGamesPage.class);
         add(showAuthorsWhoRatedTheirOwnGames);
