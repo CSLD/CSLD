@@ -44,7 +44,7 @@ public class RatingDeleteButton extends AbstractCsldPanel<Rating> {
             public void onClick(AjaxRequestTarget target) {
                 Rating rating = RatingDeleteButton.this.getModelObject();
 
-                ratings.delete(rating);
+                ratings.remove(rating);
 
                 gameModel.detach();
             }

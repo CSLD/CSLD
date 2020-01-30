@@ -1,8 +1,9 @@
 package cz.larpovadatabaze.games.services.sql;
 
-import cz.larpovadatabaze.common.api.GenericHibernateDAO;
+import cz.larpovadatabaze.common.dao.GenericHibernateDAO;
 import cz.larpovadatabaze.common.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.common.entities.Comment;
+import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.services.sql.CRUD;
 import cz.larpovadatabaze.games.services.Comments;
 import cz.larpovadatabaze.games.services.Games;
@@ -10,6 +11,7 @@ import cz.larpovadatabaze.users.services.AppUsers;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
+import java.util.List;
 
 /**
  *
@@ -27,6 +30,8 @@ import java.util.LinkedHashSet;
 @Transactional
 public class SqlComments extends CRUD<Comment, Integer> implements Comments {
     private static final Logger logger = Logger.getLogger(SqlComments.class);
+    private final String GAME_BY_ID = "game.id";
+    private final String USER_BY_ID = "user.id";
 
     private Games games;
     private AppUsers appUsers;
@@ -41,8 +46,8 @@ public class SqlComments extends CRUD<Comment, Integer> implements Comments {
     @Override
     public Comment getCommentOnGameFromUser(int userId, int gameId) {
         Criteria uniqueComment = crudRepository.getExecutableCriteria()
-                .add(Restrictions.eq("user.id", userId))
-                .add(Restrictions.eq("game.id", gameId));
+                .add(Restrictions.eq(USER_BY_ID, userId))
+                .add(Restrictions.eq(GAME_BY_ID, gameId));
 
         Comment result = (Comment) uniqueComment.uniqueResult();
         return result;
@@ -100,5 +105,34 @@ public class SqlComments extends CRUD<Comment, Integer> implements Comments {
 
         // Log
         logger.info("Editor #" + appUsers.getLoggedUserId() + " unhidden comment of user #" + comment.getUser().getId() + " for game #" + comment.getGame().getId());
+    }
+
+    @Override
+    public List<Comment> visibleForCurrentUserOrderedByUpvotes(Game game) {
+        Criterion restrictions;
+        if (appUsers.isAtLeastEditor()) {
+            restrictions = Restrictions.eq(GAME_BY_ID, game.getId());
+        } else {
+            restrictions = Restrictions.and(
+                    Restrictions.eq(GAME_BY_ID, game.getId()),
+                    Restrictions.or(
+                            Restrictions.eq("hidden", false),
+                            Restrictions.eq(USER_BY_ID, appUsers.getLoggedUserId())
+                    )
+            );
+        }
+
+        List<Comment> visibleComments = crudRepository.findByCriteria(restrictions);
+
+        // Sort primarily by the amount of upvotes. Secondarily by the most recent.
+        visibleComments.sort((o1, o2) -> {
+            if (o1.getPluses().size() != o2.getPluses().size()) {
+                return o2.getPluses().size() - o1.getPluses().size();
+            } else {
+                return -(o1.getAdded().compareTo(o2.getAdded()));
+            }
+        });
+
+        return visibleComments;
     }
 }

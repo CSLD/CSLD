@@ -13,8 +13,7 @@ import cz.larpovadatabaze.common.entities.Video;
 import cz.larpovadatabaze.common.utils.HbUtils;
 import cz.larpovadatabaze.common.utils.Strings;
 import cz.larpovadatabaze.games.components.panel.*;
-import cz.larpovadatabaze.games.services.Games;
-import cz.larpovadatabaze.games.services.Images;
+import cz.larpovadatabaze.games.services.*;
 import cz.larpovadatabaze.users.services.AppUsers;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -33,7 +32,10 @@ import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Vector;
 
 /**
  *
@@ -43,14 +45,18 @@ public class GameDetail extends CsldBasePage {
 
     private enum TabContentType {COMMENTS, PHOTOS, VIDEO}
 
-    ;
-
     @SpringBean
     Games games;
+    @SpringBean
+    AuthoredGames authoredGames;
+    @SpringBean
+    SimilarGames similarGames;
     @SpringBean
     Images images;
     @SpringBean
     private AppUsers appUsers;
+    @SpringBean
+    private Comments comments;
 
     private RatingsResultPanel ratingsResult;
     private RatingsPanel ratingsPanel;
@@ -150,44 +156,7 @@ public class GameDetail extends CsldBasePage {
     private class CommentsModel extends LoadableDetachableModel<List<Comment>> {
         @Override
         public List<Comment> load() {
-            List<Comment> res = new ArrayList<Comment>();
-
-            // Fill in array
-            if (appUsers.isEditor()) {
-                // Editors see everything
-                List<Comment> comments = getModel().getObject().getComments() != null ? getModel().getObject().getComments() :
-                        new ArrayList<>();
-                res.addAll(comments);
-            } else {
-                // Filter
-                Integer thisUserId = null;
-                CsldUser user = appUsers.getLoggedUser();
-                if (user != null) {
-                    thisUserId = user.getId();
-                }
-                List<Comment> comments = getModel().getObject().getComments() != null ? getModel().getObject().getComments():
-                        new ArrayList<>();
-                for(Comment c : comments) {
-                    if (c.getHidden()) {
-                        if (!c.getUser().getId().equals(thisUserId)) continue; // Hidden comment and user is not creator - hide
-                    }
-                    res.add(c);
-                }
-            }
-
-            Set<Comment> unique = new HashSet<>(res);
-            res = new ArrayList<>(unique);
-
-            // Sort primarily by the amount of upvotes. Secondarily by the most recent.
-            res.sort((o1, o2) -> {
-                if (o1.getPluses().size() != o2.getPluses().size()) {
-                    return o2.getPluses().size() - o1.getPluses().size();
-                } else {
-                    return -(o1.getAdded().compareTo(o2.getAdded()));
-                }
-            });
-
-            return res;
+            return comments.visibleForCurrentUserOrderedByUpvotes(getModel().getObject());
         }
     }
 
@@ -247,11 +216,11 @@ public class GameDetail extends CsldBasePage {
                 // Create comments
                 fragment = new Fragment("tabContentPanel", "comments", this);
 
-                final CommentsListPanel comments = new CommentsListPanel("commentsList", new CommentsModel());
-                comments.setOutputMarkupId(true);
+                final CommentsListPanel listOfComments = new CommentsListPanel("commentsList", new CommentsModel());
+                listOfComments.setOutputMarkupId(true);
 
-                fragment.add(new CommentsPanel("addComment", getModel(), new Component[] { comments }));
-                fragment.add(comments);
+                fragment.add(new CommentsPanel("addComment", getModel(), new Component[]{listOfComments}));
+                fragment.add(listOfComments);
                 break;
             case PHOTOS:
                 // Create photos
@@ -279,8 +248,8 @@ public class GameDetail extends CsldBasePage {
 
     protected void addTabComponent() {
         tabNumberModel = new TabNumberModel(0);
-        List<IModel> models = new ArrayList<IModel>();
-        tabContentType = new Vector<TabContentType>();
+        List<IModel> models = new ArrayList<>();
+        tabContentType = new Vector<>();
 
         // Comments
         models.add(Model.of(getString("comments")));
@@ -305,7 +274,7 @@ public class GameDetail extends CsldBasePage {
     @Override
     protected void onInitialize() {
         // Init this model ASAP, since parent needs it
-        previewImageUrlModel = new LoadableDetachableModel<String>() {
+        previewImageUrlModel = new LoadableDetachableModel<>() {
             @Override
             protected String load() {
                 PageParameters pp = new PageParameters();
@@ -359,17 +328,17 @@ public class GameDetail extends CsldBasePage {
         DeleteGamePanel deleteGamePanel = new DeleteGamePanel("deleteGamePanel", getModel().getObject().getId());
         add(deleteGamePanel);
 
-        add(new GameListPanel("similarGames", new LoadableDetachableModel<List<Game>>() {
+        add(new GameListPanel("similarGames", new LoadableDetachableModel<>() {
             @Override
             protected List<Game> load() {
-                return games.getSimilar(getModel().getObject());
+                return similarGames.allForGame(getModel().getObject());
             }
         }));
 
-        add(new GameListPanel("gamesOfAuthors", new LoadableDetachableModel<List<Game>>() {
+        add(new GameListPanel("gamesOfAuthors", new LoadableDetachableModel<>() {
             @Override
             protected List<Game> load() {
-                return games.gamesOfAuthors(getModel().getObject());
+                return authoredGames.gamesOfAuthors(getModel().getObject());
             }
         }));
 
@@ -395,7 +364,7 @@ public class GameDetail extends CsldBasePage {
      * Add container for case when author wants to rate his/her own game
      */
     private void addAuthorRatePanel(final MarkupContainer container) {
-        final Form<Void> authorRatePanel = new Form<Void>("authorRatePanel");
+        final Form<Void> authorRatePanel = new Form<>("authorRatePanel");
         container.add(authorRatePanel);
         container.setOutputMarkupId(true);
 

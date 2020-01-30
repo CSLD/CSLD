@@ -11,9 +11,13 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.util.Collection;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
 
 public class SqlCommentsIT extends WithDatabase {
     private Comments underTest;
@@ -39,7 +43,7 @@ public class SqlCommentsIT extends WithDatabase {
     public void returnRealAmountOfComments() {
         int result = underTest.getAmountOfComments();
 
-        assertThat(result, is(3));
+        assertThat(result, is(4));
     }
 
     @Test
@@ -80,5 +84,33 @@ public class SqlCommentsIT extends WithDatabase {
 
         Comment shown = underTest.getById(editorCommentId);
         assertThat(shown.getHidden(), is(false));
+    }
+
+    @Test
+    public void returnVisibleForGameAndStandardUser() {
+        when(mockAppUsers.isAtLeastEditor()).thenReturn(false);
+
+        List<Comment> visibleOrderedComments =
+                underTest.visibleForCurrentUserOrderedByUpvotes(masqueradeEntities.secondMasquerade);
+
+        assertThat(visibleOrderedComments, hasSize(2));
+        assertThat(visibleOrderedComments, contains(
+                masqueradeEntities.userComment,
+                masqueradeEntities.editorComment));
+    }
+
+    @Test
+    public void returnVisibleForGameAndEditor() {
+        when(mockAppUsers.isAtLeastEditor()).thenReturn(true);
+        when(mockAppUsers.getLoggedUserId()).thenReturn(-1);
+
+        List<Comment> visibleOrderedComments =
+                underTest.visibleForCurrentUserOrderedByUpvotes(masqueradeEntities.secondMasquerade);
+
+        assertThat(visibleOrderedComments, hasSize(3));
+        assertThat(visibleOrderedComments, contains(
+                masqueradeEntities.userComment,
+                masqueradeEntities.editorComment,
+                masqueradeEntities.administratorComment));
     }
 }

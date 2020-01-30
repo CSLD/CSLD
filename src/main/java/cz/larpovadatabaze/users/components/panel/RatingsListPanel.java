@@ -3,8 +3,8 @@ package cz.larpovadatabaze.users.components.panel;
 import cz.larpovadatabaze.common.components.page.CsldBasePage;
 import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.entities.IGameWithRating;
-import cz.larpovadatabaze.common.entities.Rating;
 import cz.larpovadatabaze.games.components.page.GameDetail;
+import cz.larpovadatabaze.games.services.Ratings;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -14,6 +14,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.List;
 
@@ -21,6 +22,8 @@ import java.util.List;
  * It lists ratings given in as parameter in similar way to games. You get Game info and then your rating of game.
  */
 public class RatingsListPanel extends Panel {
+    @SpringBean
+    private Ratings ratings;
 
     private final IModel<List<IGameWithRating>> model;
 
@@ -40,7 +43,7 @@ public class RatingsListPanel extends Panel {
                 Game game = rating.getGame();
 
                 WebMarkupContainer gameRating = new WebMarkupContainer("gameRating");
-                gameRating.add(new AttributeAppender("class", Model.of(Rating.getColorOf(game.getAverageRating())), " "));
+                gameRating.add(new AttributeAppender("class", Model.of(ratings.getColor(game.getTotalRating())), " "));
                 item.add(gameRating);
 
                 final BookmarkablePageLink<CsldBasePage> gameDetail =

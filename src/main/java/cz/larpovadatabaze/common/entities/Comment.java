@@ -1,11 +1,12 @@
 package cz.larpovadatabaze.common.entities;
 
-import cz.larpovadatabaze.common.api.Identifiable;
+import cz.larpovadatabaze.common.Identifiable;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,13 +25,19 @@ public class Comment implements Identifiable<Integer>, Serializable {
     }
 
     public Comment(CsldUser user, Game game, String commentText) {
+        this(user, game, commentText, false);
+    }
+
+    private Integer id;
+
+    public Comment(CsldUser user, Game game, String commentText, boolean hidden) {
         this.game = game;
         this.comment = commentText;
         this.user = user;
         this.added = Timestamp.from(Instant.now());
+        this.isHidden = hidden;
+        this.pluses = new ArrayList<>();
     }
-
-    private Integer id;
 
     @Column(name = "id")
     @Id
@@ -132,7 +139,8 @@ public class Comment implements Identifiable<Integer>, Serializable {
 
     private List<Upvote> pluses;
 
-    @OneToMany(mappedBy = "comment")
+    @OneToMany
+    @JoinColumn(name = "comment_id", nullable = false)
     public List<Upvote> getPluses() {
         return pluses;
     }

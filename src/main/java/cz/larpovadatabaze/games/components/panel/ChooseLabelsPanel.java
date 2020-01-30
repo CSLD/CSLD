@@ -3,7 +3,7 @@ package cz.larpovadatabaze.games.components.panel;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.games.services.Labels;
 import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.ComponentTag;

@@ -1,12 +1,8 @@
 package cz.larpovadatabaze.games.services;
 
-import cz.larpovadatabaze.common.entities.CsldGroup;
-import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
-import cz.larpovadatabaze.common.exceptions.WrongParameterException;
 import cz.larpovadatabaze.common.services.CRUDService;
 import cz.larpovadatabaze.common.services.IIconReferenceProvider;
-import cz.larpovadatabaze.games.models.FilterGame;
 
 import java.util.Collection;
 import java.util.List;
@@ -22,40 +18,49 @@ public interface Games extends CRUDService<Game, Integer>, IIconReferenceProvide
      */
     void evictGame(Integer id);
 
+    // TODO: Remove in some future version.
     boolean addGame(Game game);
 
     /**
-     * @param game
-     * @return
+     * Return games ordered based on the time of creation limited by the amount of the
+     * requested games
+     *
+     * @param limit Limit of the games to the return
+     * @return List of the latest added games.
      */
-    List<Game> getSimilar(Game game);
-
-    // Fitlered Games?
-    List<Game> gamesOfAuthors(Game game);
-
-    List<Game> getByAutoCompletable(String gameName) throws WrongParameterException;
-
-    List<Game> getLastGames(int amountOfGames);
-
-    List<Game> getFilteredGames(FilterGame filterGame, int offset, int limit);
-
-    Collection<Game> getGamesOfAuthor(CsldUser author, int first, int count);
-
-    Collection<Game> getGamesOfGroup(CsldGroup csldGroup, int first, int count);
-
-    // Statistics about filtered Games
-    long getAmountOfFilteredGames(FilterGame filterGame);
-
-    long getAmountOfGamesOfAuthor(CsldUser author);
-
-    long getAmountOfGamesOfGroup(CsldGroup csldGroup);
+    List<Game> getLastGames(int limit);
 
     /**
+     * Return games sorted by the rating limited by the limit for the requested games.
+     *
+     * @param limit Limit for the games to return.
+     * @return List of the games.
+     */
+    List<Game> getMostPopularGames(int limit);
+
+    /**
+     * It returns list of all games given user rated.
+     *
+     * @param userId Id of the user.
+     * @return List of all rated games.
+     */
+    Collection<Game> getGamesRatedByUser(int userId);
+
+    /**
+     * It returns all games, which were commented by single user. The games are distinct.
+     *
+     * @param userId Id of the user, whose games we want to get.
+     * @return List of games this user commented.
+     */
+    Collection<Game> getGamesCommentedByUser(int userId);
+
+    /**
+     * TODO: Maybe moved to the Authorized games?
+     * The user who is author of the game or administrator can edit the game. Nobody else.
+     *
      * @return Currently logged user can edit game
      */
     boolean canEditGame(Game game);
-
-    Collection<Game> getGamesCommentedByUser(int userId);
 
     /**
      * It returns whether the game with given id is hidden. It returns hidden if this game does not exist.
@@ -71,14 +76,4 @@ public interface Games extends CRUDService<Game, Integer>, IIconReferenceProvide
      * @param gameId Id which state will be shown.
      */
     void toggleGameState(int gameId);
-
-    /**
-     * It returns list of all games given user rated.
-     *
-     * @param userId Id of the user.
-     * @return List of all rated games.
-     */
-    Collection<Game> getGamesRatedByUser(int userId);
-
-    List<Game> getMostPopularGames(int amountOfGames);
 }

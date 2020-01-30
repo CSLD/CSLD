@@ -8,8 +8,6 @@ import cz.larpovadatabaze.calendar.component.page.DetailOfEventPage;
 import cz.larpovadatabaze.calendar.component.page.ListEventsPage;
 import cz.larpovadatabaze.calendar.service.Events;
 import cz.larpovadatabaze.calendar.service.ICalProducerResource;
-import cz.larpovadatabaze.calendar.service.LarpCzEvents;
-import cz.larpovadatabaze.calendar.service.LarpCzImport;
 import cz.larpovadatabaze.common.components.page.HomePage;
 import cz.larpovadatabaze.common.components.page.TestDatabase;
 import cz.larpovadatabaze.common.components.page.error.Error404Page;
@@ -20,19 +18,16 @@ import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.entities.Label;
 import cz.larpovadatabaze.donations.components.DonationPage;
-import cz.larpovadatabaze.donations.service.BankAccount;
 import cz.larpovadatabaze.games.components.page.*;
 import cz.larpovadatabaze.games.converters.GameConverter;
 import cz.larpovadatabaze.games.converters.LabelConverter;
-import cz.larpovadatabaze.games.services.Games;
-import cz.larpovadatabaze.games.services.Labels;
 import cz.larpovadatabaze.search.components.SearchResultsPage;
+import cz.larpovadatabaze.search.services.TokenSearch;
 import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.users.components.page.*;
 import cz.larpovadatabaze.users.components.page.about.AboutDatabasePage;
 import cz.larpovadatabaze.users.converters.CsldUserConverter;
 import cz.larpovadatabaze.users.converters.GroupConverter;
-import cz.larpovadatabaze.users.services.CsldGroups;
 import cz.larpovadatabaze.users.services.CsldUsers;
 import org.apache.log4j.Logger;
 import org.apache.wicket.ConverterLocator;
@@ -61,7 +56,6 @@ import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.settings.RequestLoggerSettings;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.convert.converter.CalendarConverter;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -76,26 +70,19 @@ import java.util.Locale;
  */
 @Component(value = "wicketApplication")
 public class Csld extends AuthenticatedWebApplication implements ApplicationContextAware {
+    private final TokenSearch tokenSearch;
     private final CsldUsers csldUsers;
-    private final Games sqlGames;
-    private final CsldGroups csldGroups;
-    private final Labels labels;
-    private final SessionFactory sessionFactory;
     private final Environment env;
     private final Events events;
-
 
     private static final String DEFAULT_ENCODING = "UTF-8";
     private static ApplicationContext ctx;
 
     @Autowired
-    public Csld(CsldUsers csldUsers, Games sqlGames, CsldGroups csldGroups, Labels labels,
-                SessionFactory sessionFactory, Environment env, Events events) {
+    public Csld(TokenSearch tokenSearch, CsldUsers csldUsers,
+                Environment env, Events events) {
+        this.tokenSearch = tokenSearch;
         this.csldUsers = csldUsers;
-        this.sqlGames = sqlGames;
-        this.csldGroups = csldGroups;
-        this.labels = labels;
-        this.sessionFactory = sessionFactory;
         this.env = env;
         this.events = events;
     }
@@ -192,16 +179,6 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
             // Turn on containers names when debugging
             getDebugSettings().setOutputMarkupContainerClassName(true);
         }
-
-        // Load information about donations and setup timer. Respect the configuration to ignore this in the context
-        // of the testing.
-        if(env.getProperty("csld.integrate_bank", Boolean.class)) {
-            new BankAccount(sessionFactory).start();
-        }
-
-        if(env.getProperty("csld.integrate_calendar", Boolean.class)) {
-            new Thread(() -> new LarpCzImport(events, new LarpCzEvents(), sessionFactory, labels).importEvents()).start();
-        }
 	}
 
     @Override
@@ -218,10 +195,10 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     protected IConverterLocator newConverterLocator() {
         ConverterLocator locator = (ConverterLocator) super.newConverterLocator();
 
-        locator.set(CsldUser.class, new CsldUserConverter(csldUsers));
-        locator.set(Game.class, new GameConverter(sqlGames));
-        locator.set(CsldGroup.class, new GroupConverter(csldGroups));
-        locator.set(Label.class, new LabelConverter(labels));
+        locator.set(CsldUser.class, new CsldUserConverter(tokenSearch));
+        locator.set(Game.class, new GameConverter(tokenSearch));
+        locator.set(CsldGroup.class, new GroupConverter(tokenSearch));
+        locator.set(Label.class, new LabelConverter(tokenSearch));
         locator.set(GregorianCalendar.class, new CalendarConverter(new EnglishDateConverter()));
 
         return locator;

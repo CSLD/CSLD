@@ -1,9 +1,9 @@
 package cz.larpovadatabaze.administration.components.page;
 
 import cz.larpovadatabaze.administration.model.UserRatesOwnGameDto;
+import cz.larpovadatabaze.administration.services.AdministeredUsers;
 import cz.larpovadatabaze.common.components.BookmarkableLinkWithLabel;
 import cz.larpovadatabaze.common.components.page.CsldBasePage;
-import cz.larpovadatabaze.common.dao.CsldUserDAO;
 import cz.larpovadatabaze.games.components.page.GameDetail;
 import cz.larpovadatabaze.users.components.page.UserDetailPage;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -22,7 +22,7 @@ import java.util.List;
 @AuthorizeInstantiation({"Editor","Admin"})
 public class ShowAuthorsWhoRatedTheirGamesPage extends CsldBasePage {
     @SpringBean
-    private CsldUserDAO authors;
+    private AdministeredUsers authors;
 
     @Override
     protected void onInitialize() {
@@ -34,11 +34,11 @@ public class ShowAuthorsWhoRatedTheirGamesPage extends CsldBasePage {
             protected void populateItem(ListItem<UserRatesOwnGameDto> item) {
                 UserRatesOwnGameDto userRatesOwnGameDto = item.getModel().getObject();
 
-                item.add(new Label("email", userRatesOwnGameDto.getUserEmail()));
-                item.add(new BookmarkableLinkWithLabel("user", UserDetailPage.class, Model.of(userRatesOwnGameDto.getUserName()),
-                        Model.of(new PageParameters().set("id", userRatesOwnGameDto.getUserId()))));
-                item.add(new BookmarkableLinkWithLabel("game", GameDetail.class, Model.of(userRatesOwnGameDto.getGameName()),
-                        Model.of(new PageParameters().set("id", userRatesOwnGameDto.getGameId()))));
+                item.add(new Label("email", userRatesOwnGameDto.userEmail));
+                item.add(new BookmarkableLinkWithLabel("user", UserDetailPage.class, Model.of(userRatesOwnGameDto.userName),
+                        Model.of(new PageParameters().set("id", userRatesOwnGameDto.userId))));
+                item.add(new BookmarkableLinkWithLabel("game", GameDetail.class, Model.of(userRatesOwnGameDto.gameName),
+                        Model.of(new PageParameters().set("id", userRatesOwnGameDto.gameId))));
             }
         };
 

@@ -2,7 +2,7 @@ package cz.larpovadatabaze.games.components.panel;
 
 import cz.larpovadatabaze.common.components.AbstractCsldPanel;
 import cz.larpovadatabaze.games.components.page.ListGamePage;
-import cz.larpovadatabaze.games.models.FilterGame;
+import cz.larpovadatabaze.games.models.FilterGameDTO;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.AttributeAppender;
@@ -16,32 +16,33 @@ import java.util.Arrays;
 
 /**
  * Panel for tabs in
- *
+ * <p>
  * User: Michal Kara Date: 29.3.15 Time: 14:26
  */
-public class FilterGameTabsPanel extends AbstractCsldPanel<FilterGame> {
+public class FilterGameTabsPanel extends AbstractCsldPanel<FilterGameDTO> {
 
     /**
      * Config for tabs
      */
     private enum FilterTab {
-        POPULAR_NEW(FilterGame.OrderBy.NUM_RATINGS_DESC, true, "game.filter.popularNew"),
-        ALL_NEW(FilterGame.OrderBy.ADDED_DESC, true, "game.filter.allNew"),
-        BEST_RATED(FilterGame.OrderBy.RATING_DESC, false, "game.filter.bestRated"),
-        MOST_POPULAR(FilterGame.OrderBy.NUM_RATINGS_DESC, false, "game.filter.mostPopular"),
-        MOST_COMMENTED(FilterGame.OrderBy.NUM_COMMENTS_DESC, false, "game.filter.mostCommented");
+        POPULAR_NEW(FilterGameDTO.OrderBy.NUM_RATINGS_DESC, true, "game.filter.popularNew"),
+        ALL_NEW(FilterGameDTO.OrderBy.ADDED_DESC, true, "game.filter.allNew"),
+        BEST_RATED(FilterGameDTO.OrderBy.RATING_DESC, false, "game.filter.bestRated"),
+        MOST_POPULAR(FilterGameDTO.OrderBy.NUM_RATINGS_DESC, false, "game.filter.mostPopular"),
+        MOST_COMMENTED(FilterGameDTO.OrderBy.NUM_COMMENTS_DESC, false, "game.filter.mostCommented");
 
-        private final FilterGame.OrderBy orderBy;
+        private final FilterGameDTO.OrderBy orderBy;
         private final boolean showOnlyNew;
-        private final  String resourceKey;
-        FilterTab(FilterGame.OrderBy orderBy, boolean showOnlyNew, String resourceKey) {
+        private final String resourceKey;
+
+        FilterTab(FilterGameDTO.OrderBy orderBy, boolean showOnlyNew, String resourceKey) {
             this.orderBy = orderBy;
             this.showOnlyNew = showOnlyNew;
             this.resourceKey = resourceKey;
         }
     }
 
-    public FilterGameTabsPanel(String id, IModel<FilterGame> model) {
+    public FilterGameTabsPanel(String id, IModel<FilterGameDTO> model) {
         super(id, model);
     }
 
@@ -59,9 +60,10 @@ public class FilterGameTabsPanel extends AbstractCsldPanel<FilterGame> {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
                         // Affect filter
-                        FilterGame filter = FilterGameTabsPanel.this.getModelObject();
-                        filter.setOrderBy(config.orderBy);
-                        filter.setShowOnlyNew(config.showOnlyNew);
+                        FilterGameDTO filter = FilterGameTabsPanel.this.getModelObject();
+                        FilterGameTabsPanel.this.getModel().setObject(
+                                new FilterGameDTO(filter, config.orderBy, config.showOnlyNew)
+                        );
 
                         // Let page know filter changed
                         ((ListGamePage) getPage()).filterChanged(true, false, false);
@@ -74,7 +76,7 @@ public class FilterGameTabsPanel extends AbstractCsldPanel<FilterGame> {
 
                 // Add selected class when tab is selected
                 link.add(new AttributeAppender("class", (IModel<String>) () -> {
-                    FilterGame filter = FilterGameTabsPanel.this.getModelObject();
+                    FilterGameDTO filter = FilterGameTabsPanel.this.getModelObject();
                     boolean selected = (filter.getOrderBy() == config.orderBy)
                             && (filter.isShowOnlyNew() == config.showOnlyNew);
 

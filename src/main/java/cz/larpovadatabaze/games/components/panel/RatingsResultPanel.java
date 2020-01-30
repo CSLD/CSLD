@@ -4,10 +4,8 @@ import cz.larpovadatabaze.common.components.AbstractCsldPanel;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.entities.Rating;
-import cz.larpovadatabaze.common.exceptions.WrongParameterException;
 import cz.larpovadatabaze.games.services.Ratings;
 import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
-import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -30,7 +28,6 @@ import java.util.List;
  * number.
  */
 public class RatingsResultPanel extends AbstractCsldPanel<Game> {
-    private final static Logger logger = Logger.getLogger(RatingsResultPanel.class);
     private static final int NUM_RATINGS = 10;
 
     @SpringBean
@@ -49,8 +46,7 @@ public class RatingsResultPanel extends AbstractCsldPanel<Game> {
 
         @Override
         public String getObject() {
-            double ratingOfGame = getModelObject().getTotalRating() != null ? getModelObject().getTotalRating() : 0;
-            return Rating.getColorOf(ratingOfGame);
+            return ratings.getColor(getModelObject().getTotalRating());
         }
     }
 
@@ -159,7 +155,7 @@ public class RatingsResultPanel extends AbstractCsldPanel<Game> {
                         super.onComponentTag(tag);
 
                         int percent = ratingsArrayModel.getObject()[n-1];
-                        tag.put("class", tag.getAttribute("class")+" "+Rating.getColorOf(n*10d));
+                        tag.put("class", tag.getAttribute("class") + " " + ratings.getColor(n * 10d));
                         tag.put("aria-valuenow", percent);
                         tag.put("style", "width: "+percent+"%");
                     }
@@ -176,15 +172,10 @@ public class RatingsResultPanel extends AbstractCsldPanel<Game> {
         // Refresh my rating
         CsldUser logged = CsldAuthenticatedWebSession.get().getLoggedUser();
         if(logged != null){
-            try {
-                Rating mine = ratings.getUserRatingOfGame(logged.getId(), getModelObject().getId());
-                if(mine != null){
-                    myRating.setObject(mine.getRating());
-                } else {
-                    myRating.setObject(0);
-                }
-            } catch (WrongParameterException e) {
-                logger.error(e);
+            Rating mine = ratings.getUserRatingOfGame(logged.getId(), getModelObject().getId());
+            if (mine != null) {
+                myRating.setObject(mine.getRating());
+            } else {
                 myRating.setObject(0);
             }
         } else {

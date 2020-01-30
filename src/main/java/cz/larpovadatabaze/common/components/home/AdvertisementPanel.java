@@ -1,7 +1,7 @@
 package cz.larpovadatabaze.common.components.home;
 
 import cz.larpovadatabaze.calendar.component.page.CreateOrUpdateEventPage;
-import cz.larpovadatabaze.common.api.Toggles;
+import cz.larpovadatabaze.common.Toggles;
 import cz.larpovadatabaze.common.components.AbstractCsldPanel;
 import cz.larpovadatabaze.common.components.OwlCarouselResourceReference;
 import cz.larpovadatabaze.common.components.page.CsldBasePage;

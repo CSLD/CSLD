@@ -1,7 +1,7 @@
 package cz.larpovadatabaze.common.entities;
 
 import cz.larpovadatabaze.calendar.model.Event;
-import cz.larpovadatabaze.common.api.Identifiable;
+import cz.larpovadatabaze.common.Identifiable;
 import cz.larpovadatabaze.common.components.multiac.IAutoCompletable;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
@@ -560,18 +560,6 @@ public class Game implements Serializable, Identifiable<Integer>, IAutoCompletab
         this.comments = comments;
     }
 
-    private List<UserPlayedGame> played = new ArrayList<>();
-
-    @OneToMany(mappedBy = "game")
-    @Cascade({org.hibernate.annotations.CascadeType.DELETE})
-    public List<UserPlayedGame> getPlayed() {
-        return played;
-    }
-
-    public void setPlayed(List<UserPlayedGame> played) {
-        this.played = played;
-    }
-
     private Image coverImage;
 
     @ManyToOne(cascade = javax.persistence.CascadeType.ALL)
@@ -609,7 +597,6 @@ public class Game implements Serializable, Identifiable<Integer>, IAutoCompletab
         emptyGame.setLabels(new ArrayList<>());
         emptyGame.setCoverImage(null);
         emptyGame.setPhotos(new ArrayList<>());
-        emptyGame.setPlayed(new ArrayList<>());
         emptyGame.setRatings(new ArrayList<>());
         return emptyGame;
     }
@@ -625,29 +612,6 @@ public class Game implements Serializable, Identifiable<Integer>, IAutoCompletab
     @Transient
     public void setFirst(int first) {
         this.first = first;
-    }
-
-    public Float getSimilarity(Game game) {
-        List<Label> potentiallySimilar = game.getLabels();
-        List<Label> currentLabels = this.getLabels();
-
-        Float result = 0f;
-        Float required = 0f;
-        for(Label label: currentLabels) {
-            for(Label similar: potentiallySimilar) {
-                if(similar.equals(label)) {
-                    if(similar.getRequired()) {
-                        required = 1f;
-                    }
-
-                    result += 1f;
-                }
-            }
-        }
-
-        // Ascending order means that more to 0 means more similar game.
-        // +1 means that if the required labels are shared, it brings better information
-        return 1 - ((result + required) / currentLabels.size() + 1);
     }
 
     @ManyToMany

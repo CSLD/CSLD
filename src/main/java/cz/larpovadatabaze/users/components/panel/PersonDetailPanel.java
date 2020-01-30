@@ -3,7 +3,7 @@ package cz.larpovadatabaze.users.components.panel;
 import cz.larpovadatabaze.common.components.AbstractCsldPanel;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Person;
-import cz.larpovadatabaze.common.entities.UserPlayedGame;
+import cz.larpovadatabaze.games.services.GamesWithState;
 import cz.larpovadatabaze.users.components.icons.UserIcon;
 import cz.larpovadatabaze.users.services.AppUsers;
 import org.apache.wicket.markup.html.basic.Label;
@@ -14,6 +14,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * It shows detail of user.
  */
 public class PersonDetailPanel extends AbstractCsldPanel<CsldUser> {
+    @SpringBean
+    private GamesWithState games;
     @SpringBean
     private AppUsers appUsers;
 
@@ -38,18 +40,8 @@ public class PersonDetailPanel extends AbstractCsldPanel<CsldUser> {
         add(emailLabel);
 
         Integer age = person.getAge();
-        add(new Label("age",age).setVisible(age != null));
-
-  //      add(new Label("city",person.getCity()));
-        int played = 0;
-        for(UserPlayedGame playedGame: user.getPlayedGames()){
-            if(playedGame.getStateEnum().equals(UserPlayedGame.UserPlayedGameState.PLAYED)){
-                played++;
-            }
-        }
-        add(new Label("played",played));
-        add(new Label("organized",user.getAuthorOf().size()));
-
-//        add(new Label("description",person.getDescription()).setEscapeModelStrings(false));
+        add(new Label("age", age).setVisible(age != null));
+        add(new Label("played", games.getAmountOfGamesPlayedBy(user)));
+        add(new Label("organized", user.getAuthorOf().size()));
     }
 }

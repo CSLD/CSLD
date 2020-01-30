@@ -11,21 +11,20 @@ import cz.larpovadatabaze.calendar.component.page.DetailOfEventPage;
 import cz.larpovadatabaze.calendar.component.validator.StartDateIsBeforeAfter;
 import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.calendar.service.Events;
-import cz.larpovadatabaze.common.api.ValidatableForm;
 import cz.larpovadatabaze.common.components.AbstractCsldPanel;
 import cz.larpovadatabaze.common.components.CsldFeedbackMessageLabel;
+import cz.larpovadatabaze.common.components.ValidatableForm;
 import cz.larpovadatabaze.common.components.multiac.IMultiAutoCompleteSource;
 import cz.larpovadatabaze.common.components.multiac.MultiAutoCompleteComponent;
 import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.entities.Label;
-import cz.larpovadatabaze.common.entities.UserPlayedGame;
-import cz.larpovadatabaze.common.services.wicket.MailClient;
 import cz.larpovadatabaze.games.components.panel.ChooseLabelsPanel;
 import cz.larpovadatabaze.games.components.panel.CreateOrUpdateGamePanel;
 import cz.larpovadatabaze.games.services.Games;
+import cz.larpovadatabaze.games.services.GamesWithState;
 import cz.larpovadatabaze.games.validator.AtLeastOneRequiredLabelValidator;
 import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxCallListener;
@@ -58,7 +57,7 @@ public abstract class CreateEventPanel extends AbstractCsldPanel<Event> {
     @SpringBean
     private transient Games games;
     @SpringBean
-    private transient MailClient mailClient;
+    private transient GamesWithState gamesWithState;
 
     private GLatLng lastSelectedLocation;
     private TextField<String> name;
@@ -285,16 +284,11 @@ public abstract class CreateEventPanel extends AbstractCsldPanel<Event> {
                 events.saveOrUpdate(event);
                 if(event != null && event.getGames() != null && event.getGames().size() > 0) {
                     for(Game game: event.getGames()) {
-                        if(previous.contains(game)) {
+                        if (previous.contains(game)) {
                             continue;
                         }
-                        for(UserPlayedGame interested: game.getPlayed()) {
-                            if(interested.getStateEnum() == UserPlayedGame.UserPlayedGameState.WANT_TO_PLAY) {
-                                String url = CreateEventPanel.this.urlFor(DetailOfEventPage.class, DetailOfEventPage.pageParameters(event)).toString();
-                                String content = "Byla přidána událost, která se váže ke hře, kterou máte nastavenou jako chci hrát. Odkaz: http://larpovadatabaze.cz/" + url;
-                                mailClient.sendMail(content, interested.getPlayerOfGame().getPerson().getEmail(), "Do kalendáře byla přidána událost ke hře, která vás zajímá.");
-                            }
-                        }
+                        String url = CreateEventPanel.this.urlFor(DetailOfEventPage.class, DetailOfEventPage.pageParameters(event)).toString();
+                        gamesWithState.sendEmailToInterested(game, url);
                     }
                 }
 

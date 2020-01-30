@@ -1,9 +1,11 @@
 package cz.larpovadatabaze.games.services;
 
 import cz.larpovadatabaze.common.entities.Comment;
+import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.services.CRUDService;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * CRUD Service providing further methods to simplify work with the Comments.
@@ -56,4 +58,12 @@ public interface Comments extends CRUDService<Comment, Integer> {
      * @param comment Comment to make visible.
      */
     void unHideComment(Comment comment);
+
+    /**
+     * Return all comments that the current user has rights towards ordered by amount of upvotes
+     * and then most recent.
+     *
+     * @return comments associated with given game
+     */
+    List<Comment> visibleForCurrentUserOrderedByUpvotes(Game game);
 }

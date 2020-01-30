@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.users.services.sql;
 
-import cz.larpovadatabaze.common.api.GenericHibernateDAO;
+import cz.larpovadatabaze.common.dao.GenericHibernateDAO;
 import cz.larpovadatabaze.common.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.common.entities.EmailAuthentication;
 import cz.larpovadatabaze.common.services.sql.CRUD;
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Tokens created for the user when requesting a new password.
  */
-@Repository
+@Repository(value = "emailAuthentications")
 @Transactional
 public class SqlEmailAuthenticationTokens extends CRUD<EmailAuthentication, Integer> implements EmailAuthentications {
     @Autowired

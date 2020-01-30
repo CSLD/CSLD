@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.common.components.page;
 
-import cz.larpovadatabaze.common.components.home.LarpCzCalendarPanel;
+import cz.larpovadatabaze.common.components.home.CalendarPanel;
 import cz.larpovadatabaze.common.components.home.LastCommentsPanel;
 import cz.larpovadatabaze.common.components.home.RecentGamesPanel;
 import cz.larpovadatabaze.common.components.home.RecentPhotosPanel;
@@ -21,7 +21,7 @@ public class HomePage extends CsldBasePage {
         
         add(new RecentGamesPanel("recentGames"));
 
-        add(new LarpCzCalendarPanel("calendar"));
+        add(new CalendarPanel("calendar"));
 
         add(new LastCommentsPanel("lastComments"));
 

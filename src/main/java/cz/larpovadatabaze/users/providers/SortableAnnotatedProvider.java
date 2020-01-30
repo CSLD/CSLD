@@ -3,7 +3,7 @@ package cz.larpovadatabaze.users.providers;
 import cz.larpovadatabaze.common.entities.CsldGroup;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
-import cz.larpovadatabaze.games.services.Games;
+import cz.larpovadatabaze.games.services.AuthoredGames;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -18,11 +18,11 @@ import java.util.Iterator;
  * Time: 15:32
  */
 public class SortableAnnotatedProvider extends SortableDataProvider<Game, String> {
-    private Games games;
+    private AuthoredGames games;
     private CsldGroup csldGroup = null;
     private CsldUser author = null;
 
-    public SortableAnnotatedProvider(Games games) {
+    public SortableAnnotatedProvider(AuthoredGames games) {
         this.games = games;
     }
 

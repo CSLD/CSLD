@@ -1,19 +1,24 @@
 package cz.larpovadatabaze.games.services.sql;
 
-import cz.larpovadatabaze.common.dao.GameDAO;
-import cz.larpovadatabaze.common.entities.*;
-import cz.larpovadatabaze.common.exceptions.WrongParameterException;
+import cz.larpovadatabaze.common.dao.GenericHibernateDAO;
+import cz.larpovadatabaze.common.dao.builder.GameBuilder;
+import cz.larpovadatabaze.common.entities.Comment;
+import cz.larpovadatabaze.common.entities.CsldUser;
+import cz.larpovadatabaze.common.entities.Game;
+import cz.larpovadatabaze.common.entities.Image;
 import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.common.services.sql.CRUD;
-import cz.larpovadatabaze.games.models.FilterGame;
 import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.games.services.Images;
 import cz.larpovadatabaze.users.CsldRoles;
 import cz.larpovadatabaze.users.services.AppUsers;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.request.resource.ResourceReference;
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.*;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +26,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.List;
 
 /**
  * Games stored in the SQL data store.
@@ -29,7 +37,6 @@ import java.util.*;
 @Repository
 @Transactional
 public class SqlGames extends CRUD<Game, Integer> implements Games {
-    private GameDAO gameDAO;
     private SessionFactory sessionFactory;
     private FileService fileService;
     private ImageResizingStrategyFactoryService imageResizingStrategyFactoryService;
@@ -37,11 +44,11 @@ public class SqlGames extends CRUD<Game, Integer> implements Games {
     private AppUsers appUsers;
 
     @Autowired
-    public SqlGames(GameDAO gameDAO, SessionFactory sessionFactory, FileService fileService,
+    public SqlGames(SessionFactory sessionFactory, FileService fileService,
                     ImageResizingStrategyFactoryService imageResizingStrategyFactoryService,
                     Images images, AppUsers appUsers) {
-        super(gameDAO);
-        this.gameDAO = gameDAO;
+        super(new GenericHibernateDAO<>(sessionFactory, new GameBuilder(appUsers)));
+
         this.sessionFactory = sessionFactory;
         this.fileService = fileService;
         this.imageResizingStrategyFactoryService = imageResizingStrategyFactoryService;
@@ -58,11 +65,44 @@ public class SqlGames extends CRUD<Game, Integer> implements Games {
     }
 
     @Override
+    public List<Game> getFirstChoices(String startsWith, int maxChoices) {
+        Criteria criteria = crudRepository.getExecutableCriteria()
+                .setMaxResults(maxChoices)
+                .add(Restrictions.ilike("name", "%" + startsWith + "%"));
+
+        return criteria.list();
+    }
+
+    @Override
+    public List<Game> getLastGames(int limit) {
+        DetachedCriteria subQueryCriteria = crudRepository.getBuilder().build();
+        subQueryCriteria.setProjection(Projections.distinct(Projections.id()));
+
+        Criteria criteria = crudRepository.getExecutableCriteria();
+
+        criteria.add(Subqueries.propertyIn("id", subQueryCriteria));
+        criteria.setMaxResults(limit)
+                .addOrder(Order.desc("added"));
+        criteria.setFetchMode("availableLanguages", FetchMode.SELECT);
+
+        return criteria.list();
+    }
+
+    @Override
+    public List<Game> getMostPopularGames(int limit) {
+        Criteria criteria = crudRepository.getExecutableCriteria()
+                .setMaxResults(limit)
+                .addOrder(Order.desc("totalRating"));
+
+        return criteria.list();
+    }
+
+    @Override
     public boolean addGame(Game game) {
         if (game.getCoverImage() != null) {
             if (game.getCoverImage().getPath() == null) game.setCoverImage(null);
         }
-        if(game.getWeb() != null && !game.getWeb().isEmpty() && (!game.getWeb().startsWith("http://") &&
+        if (game.getWeb() != null && !game.getWeb().isEmpty() && (!game.getWeb().startsWith("http://") &&
                 !game.getWeb().startsWith("https://"))) {
             game.setWeb("http://" + game.getWeb());
         }
@@ -71,78 +111,6 @@ public class SqlGames extends CRUD<Game, Integer> implements Games {
     }
 
     @Override
-    public List<Game> getSimilar(Game game) {
-        return gameDAO.getSimilar(game);
-    }
-
-    @Override
-    public List<Game> gamesOfAuthors(Game game) {
-        // TODO sort games by rating.
-        Set<Game> games = new LinkedHashSet<>();
-        for(CsldUser author: game.getAuthors()){
-            games.addAll(author.getAuthorOf());
-        }
-        List<Game> gamesOfAuthors = new ArrayList<>();
-        gamesOfAuthors.addAll(games);
-        Collections.sort(gamesOfAuthors, (o1, o2) -> {
-            if (o1.getTotalRating().equals(o2.getTotalRating())) {
-                return 0;
-            }
-            return o1.getTotalRating() < o2.getTotalRating() ? -1 : 1;
-        });
-        return gamesOfAuthors;
-    }
-
-    @Override
-    public List<Game> getFirstChoices(String startsWith, int maxChoices) {
-        return gameDAO.getFirstChoices(startsWith, maxChoices);
-    }
-
-    @Override
-    public List<Game> getByAutoCompletable(String gameName) throws WrongParameterException {
-        return gameDAO.getByAutoCompletable(gameName);
-    }
-
-    @Override
-    public List<Game> getLastGames(int amountOfGames) {
-        return gameDAO.getLastGames(amountOfGames);
-    }
-
-    @Override
-    public List<Game> getMostPopularGames(int amountOfGames) {
-        return gameDAO.getMostPopularGames(amountOfGames);
-    }
-
-    @Override
-    public List<Game> getFilteredGames(FilterGame filterGame, int offset, int limit) {
-        return gameDAO.getFilteredGames(filterGame, offset, limit);
-    }
-
-    @Override
-    public long getAmountOfFilteredGames(FilterGame filterGame) {
-        return gameDAO.getAmountOfFilteredGames(filterGame);
-    }
-
-    @Override
-    public Collection<Game> getGamesOfAuthor(CsldUser author, int first, int count) {
-        return new LinkedHashSet<>(gameDAO.getGamesOfAuthor(author, first, count));
-    }
-
-    @Override
-    public Collection<Game> getGamesOfGroup(CsldGroup csldGroup, int first, int count) {
-        return new LinkedHashSet<>(gameDAO.getGamesOfGroup(csldGroup, first, count));
-    }
-
-    @Override
-    public long getAmountOfGamesOfAuthor(CsldUser author) {
-        return gameDAO.getAmountOfGamesOfAuthor(author);
-    }
-
-    @Override
-    public long getAmountOfGamesOfGroup(CsldGroup csldGroup) {
-        return gameDAO.getAmountOfGamesOfGroup(csldGroup);
-    }
-
     public boolean saveOrUpdate(Game game) {
         game.setAdded(new Timestamp(new Date().getTime()));
 
@@ -220,7 +188,11 @@ public class SqlGames extends CRUD<Game, Integer> implements Games {
 
     @Override
     public Collection<Game> getGamesCommentedByUser(int userId) {
-        return new LinkedHashSet<>(gameDAO.getGamesCommentedByUser(userId));
+        Criteria criteria = crudRepository.getExecutableCriteria()
+                .createAlias("game.comments", "comments")
+                .add(Restrictions.eq("comments.user.id", userId));
+
+        return new LinkedHashSet<Game>(criteria.list());
     }
 
     @Override
@@ -251,7 +223,12 @@ public class SqlGames extends CRUD<Game, Integer> implements Games {
 
     @Override
     public Collection<Game> getGamesRatedByUser(int userId) {
-        return new LinkedHashSet<>(gameDAO.getGamesRatedByUser(userId));
+        Criteria criteria = crudRepository.getExecutableCriteria()
+                .createAlias("game.ratings", "ratings")
+                .add(Restrictions.eq("ratings.user.id", userId))
+                .add(Restrictions.isNotNull("ratings.rating"));
+
+        return new LinkedHashSet<>(criteria.list());
     }
 
     @Override

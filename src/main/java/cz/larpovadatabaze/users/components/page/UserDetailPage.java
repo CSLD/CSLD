@@ -2,13 +2,14 @@ package cz.larpovadatabaze.users.components.page;
 
 import cz.larpovadatabaze.common.components.page.CsldBasePage;
 import cz.larpovadatabaze.common.components.page.HomePage;
-import cz.larpovadatabaze.common.entities.*;
+import cz.larpovadatabaze.common.entities.Comment;
+import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.utils.HbUtils;
 import cz.larpovadatabaze.games.components.panel.CommentsListPanel;
 import cz.larpovadatabaze.games.components.panel.GameListPanel;
 import cz.larpovadatabaze.games.components.panel.ListGamesWithAnnotations;
-import cz.larpovadatabaze.games.services.Games;
-import cz.larpovadatabaze.games.services.Ratings;
+import cz.larpovadatabaze.games.services.AuthoredGames;
+import cz.larpovadatabaze.games.services.GamesWithState;
 import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.users.components.panel.PersonDetailPanel;
 import cz.larpovadatabaze.users.components.panel.RatingsListPanel;
@@ -23,7 +24,9 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -37,9 +40,9 @@ public class UserDetailPage extends CsldBasePage {
     @SpringBean
     CsldUsers csldUsers;
     @SpringBean
-    Games games;
+    AuthoredGames authoredGames;
     @SpringBean
-    Ratings ratings;
+    GamesWithState games;
     @SpringBean
     AppUsers appUsers;
 
@@ -125,43 +128,21 @@ public class UserDetailPage extends CsldBasePage {
 
         add(new CommentsListPanel("comments", new UserCommentsModel(), true));
 
-        SortableAnnotatedProvider provider = new SortableAnnotatedProvider(games);
+        SortableAnnotatedProvider provider = new SortableAnnotatedProvider(authoredGames);
         provider.setAuthor(user);
         add(new ListGamesWithAnnotations("annotatedGamesOfAuthor", provider));
 
-        if(HbUtils.isProxy(user)){
+        if (HbUtils.isProxy(user)) {
             user = HbUtils.deproxy(user);
         }
 
-        // Fill played games from rated games
-        List<IGameWithRating> playedGames = new ArrayList<>();
-        playedGames.addAll(ratings.getRatingsOfUser(logged, user));
-
-        // Build set of rated games IDs
-        Set<Integer> ratedGamesIds = new HashSet<Integer>();
-        for(IGameWithRating r : playedGames) {
-            ratedGamesIds.add(r.getGame().getId());
-        }
-
-        // Pass user's games, build list of wanted games, add played games to ratings
-        List<Game> wantedGames = new ArrayList<Game>();
-        for(UserPlayedGame played : user.getPlayedGames()){
-            if(played.getStateEnum().equals(UserPlayedGame.UserPlayedGameState.WANT_TO_PLAY)){
-                // Add to wanted games
-                wantedGames.add(played.getGame());
-            } else if(played.getStateEnum().equals(UserPlayedGame.UserPlayedGameState.PLAYED)) {
-                if (!ratedGamesIds.contains(played.getGame().getId())) {
-                    // Add to list of played games, without rating
-                    playedGames.add(new GameWithoutRating(played.getGame()));
-                }
-            }
-        }
-
         // Add player games
-        add(new RatingsListPanel("ratedGames", Model.ofList(playedGames)));
+        add(new RatingsListPanel("ratedGames", Model.ofList(
+                games.getPlayedByUser(user))));
 
         // Add wanted games
-        add(new GameListPanel("wantedGamesPanel",Model.ofList(wantedGames)));
+        add(new GameListPanel("wantedGamesPanel", Model.ofList(
+                games.getWantedByUser(user))));
 
         add(new org.apache.wicket.markup.html.basic.Label("ical", Model.of("http://larpovadatabaze.cz/ical?id=" + user.getId())));
     }

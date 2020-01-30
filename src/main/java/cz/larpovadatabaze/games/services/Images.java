@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.games.services;
 
-import cz.larpovadatabaze.common.api.GenericHibernateDAO;
+import cz.larpovadatabaze.common.dao.GenericHibernateDAO;
 import cz.larpovadatabaze.common.entities.IEntityWithImage;
 import cz.larpovadatabaze.common.entities.Image;
 import cz.larpovadatabaze.common.services.CRUDService;
@@ -15,7 +15,6 @@ public interface Images extends CRUDService<Image, Integer> {
     String RESOURCE_REFERENCE_ID_PARAM_NAME = "id";
 
     IResource getPredefinedImageResource(IEntityWithImage.IPredefinedImage image);
-
 
     /**
      * Create resource reference for entity type

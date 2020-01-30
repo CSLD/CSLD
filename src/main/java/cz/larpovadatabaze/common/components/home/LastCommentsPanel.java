@@ -5,10 +5,10 @@ import cz.larpovadatabaze.common.components.page.CsldBasePage;
 import cz.larpovadatabaze.common.entities.Comment;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
-import cz.larpovadatabaze.common.entities.Rating;
 import cz.larpovadatabaze.games.components.page.GameDetail;
 import cz.larpovadatabaze.games.services.Comments;
 import cz.larpovadatabaze.games.services.Images;
+import cz.larpovadatabaze.games.services.Ratings;
 import cz.larpovadatabaze.users.components.icons.UserIcon;
 import cz.larpovadatabaze.users.components.page.UserDetailPage;
 import org.apache.log4j.Logger;
@@ -40,18 +40,21 @@ import java.util.List;
  */
 public class LastCommentsPanel extends Panel {
     private final static Logger logger = Logger.getLogger(LastCommentsPanel.class);
-    /** Number of columns */
+    /**
+     * Number of columns
+     */
     private static final int N_COLUMNS = 3;
 
     @SpringBean
     Comments comments;
-
     @SpringBean
     Images images;
+    @SpringBean
+    Ratings ratings;
 
     private static final int MAX_CHARS_IN_COMMENT = 300;
-    private static int INITIAL_LAST_COMMENTS = N_COLUMNS*2;
-    private static int EXPANDED_LAST_COMMENTS = N_COLUMNS*5;
+    private static int INITIAL_LAST_COMMENTS = N_COLUMNS * 2;
+    private static int EXPANDED_LAST_COMMENTS = N_COLUMNS * 5;
 
     private class CommentsView extends ListView<Comment> {
         public CommentsView(String id, List<Comment> list) {
@@ -108,7 +111,7 @@ public class LastCommentsPanel extends Panel {
             f.add(gameLink);
 
             // Game rating
-            String gameRatingColor = Rating.getColorOf(game.getAverageRating());
+            String gameRatingColor = ratings.getColor(game.getTotalRating());
             Label gameRating = new Label("gameRating","");
             gameRating.add(new AttributeAppender("class", Model.of(gameRatingColor), " "));
             gameLink.add(gameRating);

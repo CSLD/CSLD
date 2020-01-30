@@ -2,7 +2,7 @@ package cz.larpovadatabaze.games.components.panel;
 
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
-import cz.larpovadatabaze.common.entities.UserPlayedGame;
+import cz.larpovadatabaze.common.entities.Rating;
 import cz.larpovadatabaze.games.services.Ratings;
 import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
 import org.apache.wicket.Component;
@@ -27,25 +27,21 @@ public class PlayedPanel extends Panel {
 
     private final Component[] componentsToRefresh;
     private final int gameId;
-    private final IModel<UserPlayedGame> model;
+    private final IModel<Rating> model;
     private final IModel<Game> gameModel;
-
-    private AjaxLink<UserPlayedGame> didntPlay;
-    private AjaxLink<UserPlayedGame> played;
-    private AjaxLink<UserPlayedGame> wantToPlay;
 
     /**
      * Model for user played game - implemented as loadable / detachable
      */
-    private class UserPlayedGameModel implements IModel<UserPlayedGame> {
+    private class UserPlayedGameModel implements IModel<Rating> {
         @Override
-        public UserPlayedGame getObject() {
+        public Rating getObject() {
             int userId = getUserId();
-            UserPlayedGame stateOfGame = ratings.getUserPlayedGame(gameId, userId);
+            Rating stateOfGame = ratings.getUserRatingOfGame(gameId, userId);
             if (stateOfGame == null) {
-                stateOfGame = new UserPlayedGame();
+                stateOfGame = new Rating();
                 stateOfGame.setGame(gameModel.getObject());
-                stateOfGame.setPlayerOfGame(getUser());
+                stateOfGame.setUser(getUser());
             }
 
             return stateOfGame;
@@ -56,9 +52,9 @@ public class PlayedPanel extends Panel {
      * Model that returns "active" string when user played game state is equal to state passed in constructor
      */
     private class StateActiveModel implements IModel<String> {
-        private UserPlayedGame.UserPlayedGameState state;
+        private Rating.GameState state;
 
-        private StateActiveModel(UserPlayedGame.UserPlayedGameState state) {
+        private StateActiveModel(Rating.GameState state) {
             this.state = state;
         }
 
@@ -92,57 +88,60 @@ public class PlayedPanel extends Panel {
 
         setOutputMarkupId(true);
 
-        didntPlay = new AjaxLink<UserPlayedGame>("didntPlay") {
-            @Override
-            public void onClick(AjaxRequestTarget target) {
-                saveStateAndReload(target, UserPlayedGame.UserPlayedGameState.NONE);
-            }
-        };
-        played = new AjaxLink<UserPlayedGame>("played") {
-            @Override
-            public void onClick(AjaxRequestTarget target) {
-                saveStateAndReload(target, UserPlayedGame.UserPlayedGameState.PLAYED);
-            }
-        };
-        wantToPlay = new AjaxLink<UserPlayedGame>("wantToPlay") {
-            @Override
-            public void onClick(AjaxRequestTarget target) {
-                saveStateAndReload(target, UserPlayedGame.UserPlayedGameState.WANT_TO_PLAY);
-            }
-        };
+        AjaxLink<Rating> didntPlay = new StateAjaxLink<>("didntPlay", Rating.GameState.NONE);
+        AjaxLink<Rating> played = new StateAjaxLink<>("played", Rating.GameState.PLAYED);
+        AjaxLink<Rating> wantToPlay = new StateAjaxLink<>("wantToPlay", Rating.GameState.WANT_TO_PLAY);
 
+        String CSS_CLASS = "class";
         /* Add attribute modifiers to buttons */
-        played.add(new AttributeAppender("class", new StateActiveModel(UserPlayedGame.UserPlayedGameState.PLAYED), " "));
-        wantToPlay.add(new AttributeAppender("class", new StateActiveModel(UserPlayedGame.UserPlayedGameState.WANT_TO_PLAY), " "));
-        didntPlay.add(new AttributeAppender("class", new StateActiveModel(UserPlayedGame.UserPlayedGameState.NONE), " "));
+        played.add(new AttributeAppender(CSS_CLASS, new StateActiveModel(Rating.GameState.PLAYED), " "));
+        wantToPlay.add(new AttributeAppender(CSS_CLASS, new StateActiveModel(Rating.GameState.WANT_TO_PLAY), " "));
+        didntPlay.add(new AttributeAppender(CSS_CLASS, new StateActiveModel(Rating.GameState.NONE), " "));
 
         add(didntPlay);
         add(played);
         add(wantToPlay);
     }
 
-    private void saveStateAndReload(AjaxRequestTarget target, UserPlayedGame.UserPlayedGameState state) {
-        // Update in DB
-        UserPlayedGame stateOfGame = model.getObject();
-        stateOfGame.setStateEnum(state);
-        stateOfGame.setPlayerOfGame((CsldAuthenticatedWebSession.get()).getLoggedUser());
-        ratings.saveOrUpdate(stateOfGame);
-
-        // Refresh model and components and gameModel
-        gameModel.detach();
-        // Clean empty placeholders from componentsToRefresh.
-        List<Component> actComponents = new ArrayList<Component>();
-        for(Component component: componentsToRefresh) {
-            if(component != null) {
-                actComponents.add(component);
-            }
-        }
-        target.add(actComponents.toArray(new Component[]{}));
-    }
 
     @Override
     protected void onConfigure() {
         super.onConfigure();
         setVisibilityAllowed(CsldAuthenticatedWebSession.get().isSignedIn());
+    }
+
+    private class StateAjaxLink<T> extends AjaxLink<T> {
+        private Rating.GameState state;
+
+        public StateAjaxLink(String id, Rating.GameState state) {
+            super(id);
+
+            this.state = state;
+        }
+
+        @Override
+        public void onClick(AjaxRequestTarget target) {
+            saveStateAndReload(target, state);
+        }
+
+        private void saveStateAndReload(AjaxRequestTarget target, Rating.GameState state) {
+            // Update in DB
+            Rating stateOfGame = model.getObject();
+            stateOfGame.setStateEnum(state);
+            stateOfGame.setUser((CsldAuthenticatedWebSession.get()).getLoggedUser());
+            ratings.saveOrUpdate(stateOfGame);
+
+            // Refresh model and components and gameModel
+            gameModel.detach();
+
+            // Clean empty placeholders from componentsToRefresh.
+            List<Component> actComponents = new ArrayList<Component>();
+            for (Component component : componentsToRefresh) {
+                if (component != null) {
+                    actComponents.add(component);
+                }
+            }
+            target.add(actComponents.toArray(new Component[]{}));
+        }
     }
 }

@@ -4,7 +4,7 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:100,300,400);
 
 body{
-    font-family: Open Sans;
+    font-family: Open Sans, sans-serif;
     font-size: 13px;
 }
 a{
@@ -18,8 +18,8 @@ nav .navbar-form {
     padding-right: 25px;
 }
 
-nav .navbar-brand{
-    font-family: Lobster;
+nav .navbar-brand {
+    font-family: Lobster, sans-serif;
     font-size: 2em;
     color: #00A0B0;
 }
@@ -77,8 +77,8 @@ footer {
 .scores .btn {
     margin-bottom: 3px;
 }
-.scores .alert-info{
-    font-family: 'Roboto', Helvetica;
+.scores .alert-info {
+    font-family: 'Roboto', Helvetica, sans-serif;
     color: white;
     font-weight: normal;
 }
