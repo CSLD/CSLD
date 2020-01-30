@@ -18,9 +18,6 @@ public interface Games extends CRUDService<Game, Integer>, IIconReferenceProvide
      */
     void evictGame(Integer id);
 
-    // TODO: Remove in some future version.
-    boolean addGame(Game game);
-
     /**
      * Return games ordered based on the time of creation limited by the amount of the
      * requested games

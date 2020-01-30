@@ -16,11 +16,6 @@ public class InMemoryGames extends InMemoryCrud<Game, Integer> implements Games 
     }
 
     @Override
-    public boolean addGame(Game game) {
-        return saveOrUpdate(game);
-    }
-
-    @Override
     public List<Game> getLastGames(int limit) {
         return inMemory.subList(0, 5);
     }

@@ -2,6 +2,8 @@ package cz.larpovadatabaze.users.services.sql;
 
 import cz.larpovadatabaze.WithDatabase;
 import cz.larpovadatabaze.common.entities.CsldUser;
+import cz.larpovadatabaze.common.services.FileService;
+import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.common.services.MailService;
 import cz.larpovadatabaze.games.services.Images;
 import cz.larpovadatabaze.users.Pwd;
@@ -26,7 +28,9 @@ public class SqlCsldUsersIT extends WithDatabase {
         underTest = new SqlCsldUsers(sessionFactory,
                 Mockito.mock(Images.class),
                 Mockito.mock(MailService.class),
-                Mockito.mock(EmailAuthentications.class)
+                Mockito.mock(EmailAuthentications.class),
+                Mockito.mock(FileService.class),
+                Mockito.mock(ImageResizingStrategyFactoryService.class)
         );
     }
 

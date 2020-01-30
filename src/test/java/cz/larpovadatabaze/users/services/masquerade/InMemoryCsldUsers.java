@@ -6,6 +6,7 @@ import cz.larpovadatabaze.common.services.masquerade.InMemoryCrud;
 import cz.larpovadatabaze.games.services.Images;
 import cz.larpovadatabaze.users.CsldRoles;
 import cz.larpovadatabaze.users.services.CsldUsers;
+import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.request.resource.ResourceReference;
 
@@ -86,6 +87,11 @@ public class InMemoryCsldUsers extends InMemoryCrud<CsldUser, Integer> implement
     @Override
     public boolean checkReCaptcha(String response, String remoteIp) throws ReCaptchaTechnicalException {
         return true;
+    }
+
+    @Override
+    public boolean saveOrUpdate(CsldUser model, List<FileUpload> uploads) {
+        return saveOrUpdate(model);
     }
 
     @Override

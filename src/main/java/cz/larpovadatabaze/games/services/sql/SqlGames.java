@@ -2,10 +2,7 @@ package cz.larpovadatabaze.games.services.sql;
 
 import cz.larpovadatabaze.common.dao.GenericHibernateDAO;
 import cz.larpovadatabaze.common.dao.builder.GameBuilder;
-import cz.larpovadatabaze.common.entities.Comment;
-import cz.larpovadatabaze.common.entities.CsldUser;
-import cz.larpovadatabaze.common.entities.Game;
-import cz.larpovadatabaze.common.entities.Image;
+import cz.larpovadatabaze.common.entities.*;
 import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.common.services.sql.CRUD;
@@ -13,6 +10,7 @@ import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.games.services.Images;
 import cz.larpovadatabaze.users.CsldRoles;
 import cz.larpovadatabaze.users.services.AppUsers;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.hibernate.Criteria;
@@ -98,82 +96,61 @@ public class SqlGames extends CRUD<Game, Integer> implements Games {
     }
 
     @Override
-    public boolean addGame(Game game) {
-        if (game.getCoverImage() != null) {
-            if (game.getCoverImage().getPath() == null) game.setCoverImage(null);
-        }
-        if (game.getWeb() != null && !game.getWeb().isEmpty() && (!game.getWeb().startsWith("http://") &&
-                !game.getWeb().startsWith("https://"))) {
-            game.setWeb("http://" + game.getWeb());
-        }
-
-        return crudRepository.saveOrUpdate(game);
-    }
-
-    @Override
-    public boolean saveOrUpdate(Game game) {
-        game.setAdded(new Timestamp(new Date().getTime()));
+    public boolean saveOrUpdate(Game model) {
+        model.setAdded(new Timestamp(new Date().getTime()));
 
         CsldUser logged = appUsers.getLoggedUser();
-        game.setAddedBy(logged);
+        model.setAddedBy(logged);
 
-        if(game.getAmountOfComments() == null){
-            game.setAmountOfComments(0);
-        }
-        if(game.getAmountOfRatings() == null){
-            game.setAmountOfRatings(0);
-        }
-        if(game.getAmountOfPlayed() == null){
-            game.setAmountOfPlayed(0);
-        }
-        if(game.getTotalRating() == null){
-            game.setTotalRating(0d);
-        }
-        if(game.getAverageRating() == null){
-            game.setAverageRating(0d);
-        }
-        if(game.getDescription() != null){
-            game.setDescription(Jsoup.clean(game.getDescription(), Whitelist.basic()));
+        String newDescription = model.getDescription();
+        if (newDescription != null) {
+            model.setDescription(
+                    Jsoup.clean(newDescription, Whitelist.basic()));
         }
 
-        final List<FileUpload> uploads = (game.getCoverImage() != null)?game.getCoverImage().getFileUpload():null;
+        // Save video.
+        if (!isValidVideoPresent(model.getVideo())) {
+            model.setVideo(null);
+        }
+
+        if (model.getWeb() != null && !model.getWeb().isEmpty() && (!model.getWeb().startsWith("http://") &&
+                !model.getWeb().startsWith("https://"))) {
+            model.setWeb("http://" + model.getWeb());
+        }
+
+        final List<FileUpload> uploads = (model.getCoverImage() != null) ?
+                model.getCoverImage().getFileUpload() : null;
         if (uploads != null && uploads.size() > 0) {
             FileUpload upload = uploads.get(0);
-            String filePath = fileService.saveImageFileAndReturnPath(upload, imageResizingStrategyFactoryService.getCoverImageStrategy()).path;
-            try {
-                Image image = new Image();
-                image.setPath(filePath);
-                game.setCoverImage(image);
-
-                if(game.getVideo() == null ||
-                        game.getVideo().getPath() == null ||
-                        game.getVideo().getPath().equals("") ||
-                        game.getVideo().getPath().equals("Video")){
-                    //TODO problem when internationalizating.
-                    game.setVideo(null);
-                }
-
-                return addGame(game);
-            } catch (Exception e) {
-                throw new IllegalStateException("Unable to write file", e);
-            }
-        } else {
-            if(game.getVideo() == null ||
-                    game.getVideo().getPath() == null ||
-                    game.getVideo().getPath().equals("") ||
-                    game.getVideo().getPath().equals("Video")){
-                game.setVideo(null);
-            }
-
-            return addGame(game);
+            String filePath = fileService.saveImageFileAndReturnPath(
+                    upload, imageResizingStrategyFactoryService.getCoverImageStrategy()).path;
+            model.setCoverImage(new Image(filePath));
         }
+
+        if (model.getCoverImage() != null && model.getCoverImage().getPath() == null) {
+            model.setCoverImage(null);
+        }
+
+        if (getById(model.getId()) != null) {
+            model = (Game) sessionFactory.getCurrentSession().merge(model);
+        }
+        return crudRepository.saveOrUpdate(model);
+    }
+
+    private boolean isValidVideoPresent(Video video) {
+        if (video == null) {
+            return false;
+        }
+        String videoPath = video.getPath();
+        return videoPath != null && !StringUtils.isEmpty(videoPath) &&
+                !videoPath.equals("Video");
     }
 
     @Override
     public boolean canEditGame(Game game) {
         CsldUser loggedUser = appUsers.getLoggedUser();
-        if(loggedUser != null){
-            for(CsldUser author : game.getAuthors()) {
+        if (loggedUser != null) {
+            for (CsldUser author : game.getAuthors()) {
                 if (author.getId().equals(loggedUser.getId())) {
                     return true;
                 }
