@@ -35,7 +35,7 @@ public class RegularTasks {
         larpImport = new LarpCzImport(events, new LarpCzEvents(), sessionFactory, tokenSearch);
     }
 
-    @Scheduled(cron = "0 2 * * * *")
+    @Scheduled(cron = "0 0 2 * * *")
     public void nightly() {
         logger.info("Run Nightly Tasks");
 

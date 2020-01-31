@@ -190,7 +190,7 @@ public class CommentsListPanel extends Panel {
 
     private WebMarkupContainer createGameDetailLink(Game game) {
         WebMarkupContainer toShow = new WebMarkupContainer("showGame");
-        String gameRatingColor = ratings.getColor(game.getTotalRating());
+        String gameRatingColor = ratings.getColor(game.getAverageRating());
         Label gameRating = new Label("gameRating", "");
         gameRating.add(new AttributeAppender("class", Model.of(gameRatingColor), " "));
         toShow.add(gameRating);

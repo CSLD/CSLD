@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.administration.services;
 
+import cz.larpovadatabaze.administration.model.MonthlyAmountsStatisticsDto;
 import cz.larpovadatabaze.administration.model.RatingStatisticsDto;
 
 import java.util.List;
@@ -12,4 +13,12 @@ public interface Statistics {
      * @return Monthly stats on amount and average of ratings.
      */
     List<RatingStatisticsDto> amountAndRatingsPerMonth();
+
+    /**
+     * Return aggregated information for every month since the start of the database.
+     * Show amount of comments
+     *
+     * @return Monthly stats on amount of comments
+     */
+    List<MonthlyAmountsStatisticsDto> amountOfCommentsPerMonth();
 }

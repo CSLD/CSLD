@@ -15,6 +15,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * It lists games given in parameter as square with color based on the rating of game followed by its name and year
@@ -35,11 +37,18 @@ public class GameListPanel extends Panel {
     protected void onInitialize() {
         super.onInitialize();
 
+        if (gamesToDisplay.getObject() != null) {
+            List<Game> gamesList = gamesToDisplay.getObject().stream()
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+            gamesToDisplay.setObject(gamesList);
+        }
+
         final ListView<Game> listView = new ListView<Game>("listGames", gamesToDisplay) {
             @Override
             protected void populateItem(ListItem item) {
                 Game game = (Game) item.getModelObject();
-                String gameRatingColor = ratings.getColor(game.getTotalRating());
+                String gameRatingColor = ratings.getColor(game.getAverageRating());
                 Label gameRating = new Label("gameRating", "");
                 gameRating.add(new AttributeAppender("class", Model.of(gameRatingColor), " "));
                 item.add(gameRating);
