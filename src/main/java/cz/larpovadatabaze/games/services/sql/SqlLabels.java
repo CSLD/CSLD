@@ -6,6 +6,7 @@ import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Label;
 import cz.larpovadatabaze.common.services.sql.CRUD;
 import cz.larpovadatabaze.games.services.Labels;
+import cz.larpovadatabaze.users.CsldRoles;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -48,12 +49,23 @@ public class SqlLabels extends CRUD<Label, Integer> implements Labels {
     }
 
     private List<Label> filterAuthorizedLabels(boolean required, CsldUser authorizedTo) {
-        return crudRepository.findByCriteria(Restrictions.and(
-                Restrictions.eq("required", required),
-                Restrictions.or(
-                        Restrictions.eq("authorized", true),
-                        Restrictions.eq("addedBy.id", authorizedTo.getId())
-                )
-        ));
+        if (authorizedTo == null) {
+            return crudRepository.findByCriteria(Restrictions.and(
+                    Restrictions.eq("required", required),
+                    Restrictions.eq("authorized", true)
+            ));
+        } else if (authorizedTo.getRole() >= CsldRoles.EDITOR.getRole()) {
+            return crudRepository.findByCriteria(Restrictions.and(
+                    Restrictions.eq("required", required)
+            ));
+        } else {
+            return crudRepository.findByCriteria(Restrictions.and(
+                    Restrictions.eq("required", required),
+                    Restrictions.or(
+                            Restrictions.eq("authorized", true),
+                            Restrictions.eq("addedBy.id", authorizedTo.getId())
+                    )
+            ));
+        }
     }
 }

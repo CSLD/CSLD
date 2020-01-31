@@ -72,7 +72,7 @@ public class SearchBoxPanel extends Panel {
         search.add(new Button("sendSearch"));
 
         previewLink = new AjaxSubmitLink("previewLink", search) {
-            public void onSubmit(AjaxRequestTarget target, Form form) {
+            public void onSubmit(AjaxRequestTarget target) {
                 // Set new query
                 gameSearchProvider.setQuery(searchExpression.getModelObject());
 

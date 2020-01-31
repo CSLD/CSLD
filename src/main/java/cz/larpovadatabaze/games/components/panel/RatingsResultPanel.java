@@ -18,7 +18,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,30 +39,6 @@ public class RatingsResultPanel extends AbstractCsldPanel<Game> {
     private RatingsArrayModel ratingsArrayModel;
 
     /**
-     * Model to provide color for the game
-     */
-    private class RatingColorModel implements IModel<String> {
-
-        @Override
-        public String getObject() {
-            return ratings.getColor(getModelObject().getTotalRating());
-        }
-    }
-
-    /**
-     * Model to provide textual rating for the game
-     */
-    private class RatingResultModel implements IModel<String> {
-        private DecimalFormat df = new DecimalFormat("0.0");
-
-        @Override
-        public String getObject() {
-            double ratingOfGame = getModelObject().getAverageRating() != null ? getModelObject().getAverageRating() / 10d : 0;
-            return df.format(ratingOfGame);
-        }
-    }
-
-    /**
      * Holds array of ratings. Value is cached and refreshed on-request.
      */
     private class RatingsArrayModel implements IModel<int[]> {
@@ -77,18 +52,20 @@ public class RatingsResultPanel extends AbstractCsldPanel<Game> {
         public void recompute() {
             array = new int[10];
             Arrays.fill(array, 0);
-            if(getModelObject().getAmountOfRatings() > 3) {
-                for(Rating rating: getModelObject().getRatings()) {
+
+            List<Rating> ratingsOfGame = ratings.getRatingsOfGame(getModelObject());
+            if (ratingsOfGame.size() > 3) {
+                for (Rating rating : ratingsOfGame) {
                     array[rating.getRating() - 1]++;
                 }
                 int maxRatings = 0;
-                for(int actRating: array){
-                    if(actRating > maxRatings) {
+                for (int actRating : array) {
+                    if (actRating > maxRatings) {
                         maxRatings = actRating;
                     }
                 }
-                for(int i = 0; i < array.length; i++){
-                    if(maxRatings == 0) {
+                for (int i = 0; i < array.length; i++) {
+                    if (maxRatings == 0) {
                         array[i] = 0;
                     } else {
                         array[i] = (int) (((double) array[i] / (double) maxRatings) * 100);

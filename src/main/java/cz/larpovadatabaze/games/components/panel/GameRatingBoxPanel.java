@@ -43,16 +43,15 @@ public class GameRatingBoxPanel extends AbstractCsldPanel<Game> {
         // Wrapper && wrapper
         wrapper = new WebMarkupContainer("wrapper");
         add(wrapper);
-        wrapper.add(new AttributeAppender("class", Model.of(ratings.getColor(g.getTotalRating())), " "));
+        wrapper.add(new AttributeAppender("class", Model.of(ratings.getColor(g.getAverageRating())), " "));
 
         // Rating
-        if (g.getTotalRating() == 0) {
+        if (g.getAverageRating() == 0) {
             // No rating
             wrapper.add(new Label("rating", "–"));
-        }
-        else {
+        } else {
             // Numeric rating
-            wrapper.add(new Label("rating", format.format(getMainRating()/10d)));
+            wrapper.add(new Label("rating", format.format(getMainRating() / 10d)));
         }
     }
 }

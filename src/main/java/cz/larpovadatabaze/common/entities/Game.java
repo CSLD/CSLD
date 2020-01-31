@@ -225,6 +225,9 @@ public class Game implements Serializable, Identifiable<Integer>, IAutoCompletab
     )
     @Basic
     public Double getTotalRating(){
+        if (totalRating == null) {
+            return 0.0;
+        }
         return totalRating;
     }
 
@@ -240,6 +243,9 @@ public class Game implements Serializable, Identifiable<Integer>, IAutoCompletab
     )
     @Basic
     public Double getAverageRating() {
+        if (averageRating == null) {
+            return 0.0;
+        }
         return averageRating;
     }
 
@@ -270,6 +276,9 @@ public class Game implements Serializable, Identifiable<Integer>, IAutoCompletab
             updatable = false)
     @Basic
     public Integer getAmountOfComments() {
+        if (amountOfComments == null) {
+            return 0;
+        }
         return amountOfComments;
     }
 
@@ -285,6 +294,9 @@ public class Game implements Serializable, Identifiable<Integer>, IAutoCompletab
             updatable = false)
     @Basic
     public Integer getAmountOfPlayed() {
+        if (amountOfPlayed == null) {
+            return 0;
+        }
         return amountOfPlayed;
     }
 
@@ -299,6 +311,9 @@ public class Game implements Serializable, Identifiable<Integer>, IAutoCompletab
             updatable = false)
     @Basic
     public Integer getAmountOfRatings() {
+        if (amountOfRatings == null) {
+            return 0;
+        }
         return amountOfRatings;
     }
 

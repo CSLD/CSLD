@@ -104,7 +104,8 @@ public class CommentsPanel extends Panel {
 
             if (!actualComment.getComment().equals(newComment)) {
                 // Comment changed - save
-                if (newComment == null || newComment.equals("")) {
+                if (newComment == null || newComment.equals("") ||
+                        newComment.equals("<p><br></p>") || newComment.equals("<p><br /></p>")) {
                     try {
                         comments.remove(actualComment);
                     } catch (Exception ex) {

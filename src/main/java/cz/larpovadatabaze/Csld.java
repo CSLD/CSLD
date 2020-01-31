@@ -1,9 +1,6 @@
 package cz.larpovadatabaze;
 
-import cz.larpovadatabaze.administration.components.page.AdministrationPage;
-import cz.larpovadatabaze.administration.components.page.ManageLabelsPage;
-import cz.larpovadatabaze.administration.components.page.ManageUserRightsPage;
-import cz.larpovadatabaze.administration.components.page.RatingStatistics;
+import cz.larpovadatabaze.administration.components.page.*;
 import cz.larpovadatabaze.administration.rest.StatisticsProducer;
 import cz.larpovadatabaze.administration.services.Statistics;
 import cz.larpovadatabaze.calendar.component.page.CreateOrUpdateEventPage;
@@ -245,6 +242,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         mountPage(context + "/admin/manage-labels", ManageLabelsPage.class);
         mountPage(context + "/admin/manage-users", ManageUserRightsPage.class);
         mountPage(context + "/admin/rating-stats", RatingStatistics.class);
+        mountPage(context + "/admin/comment-stats", CommentStatistics.class);
 
         mountPage(context + "/home", HomePage.class);
         mountPage(context + "/game-was-deleted", GameWasDeleted.class);
