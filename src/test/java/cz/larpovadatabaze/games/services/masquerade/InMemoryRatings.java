@@ -35,6 +35,8 @@ public class InMemoryRatings extends InMemoryCrud<Rating, Integer> implements Ra
 
     @Override
     public List<Rating> getRatingsOfGame(Game game) {
-        return null;
+        return inMemory.stream()
+                .filter(rating -> rating.getGame().equals(game))
+                .collect(Collectors.toList());
     }
 }

@@ -1,6 +1,8 @@
 package cz.larpovadatabaze.administration.model;
 
-public class RatingStatisticsDto {
+import java.io.Serializable;
+
+public class RatingStatisticsDto implements Serializable {
     Object year;
     Object month;
     Object average_rating;

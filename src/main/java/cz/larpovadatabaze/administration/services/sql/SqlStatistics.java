@@ -32,6 +32,7 @@ public class SqlStatistics implements Statistics {
                 "   avg(rating) as average_rating," +
                 "   count(*) as amount " +
                 "from csld_rating " +
+                "   WHERE rating IS NOT NULL" +
                 "   group by year, month " +
                 "   order by year, month;")
                 .addScalar("year")

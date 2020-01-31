@@ -4,13 +4,11 @@ import cz.larpovadatabaze.WithDatabase;
 import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.entities.SimilarGame;
 import cz.larpovadatabaze.games.services.SimilarGames;
-import cz.larpovadatabaze.users.services.AppUsers;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import java.util.List;
 
@@ -25,8 +23,7 @@ public class SqlSimilarGamesIT extends WithDatabase {
     @Before
     public void prepareService() {
         underTest = new SqlSimilarGames(
-                sessionFactory,
-                Mockito.mock(AppUsers.class)
+                sessionFactory
         );
     }
 

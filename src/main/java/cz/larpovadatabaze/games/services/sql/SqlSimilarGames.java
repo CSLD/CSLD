@@ -1,7 +1,6 @@
 package cz.larpovadatabaze.games.services.sql;
 
 import cz.larpovadatabaze.common.dao.GenericHibernateDAO;
-import cz.larpovadatabaze.common.dao.builder.GameBuilder;
 import cz.larpovadatabaze.common.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
@@ -9,7 +8,6 @@ import cz.larpovadatabaze.common.entities.Label;
 import cz.larpovadatabaze.common.entities.SimilarGame;
 import cz.larpovadatabaze.common.services.sql.CRUD;
 import cz.larpovadatabaze.games.services.SimilarGames;
-import cz.larpovadatabaze.users.services.AppUsers;
 import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Criteria;
 import org.hibernate.ScrollMode;
@@ -33,11 +31,11 @@ public class SqlSimilarGames extends CRUD<SimilarGame, Integer> implements Simil
     private GenericHibernateDAO<Game, Integer> games;
 
     @Autowired
-    public SqlSimilarGames(SessionFactory sessionFactory, AppUsers appUsers) {
+    public SqlSimilarGames(SessionFactory sessionFactory) {
         super(new GenericHibernateDAO<>(sessionFactory, new GenericBuilder<>(SimilarGame.class)));
 
         this.sessionFactory = sessionFactory;
-        this.games = new GenericHibernateDAO<>(sessionFactory, new GameBuilder(appUsers));
+        this.games = new GenericHibernateDAO<>(sessionFactory, new GenericBuilder<>(Game.class));
     }
 
     @Override
