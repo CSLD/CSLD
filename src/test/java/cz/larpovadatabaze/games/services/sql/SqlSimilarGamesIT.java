@@ -48,7 +48,7 @@ public class SqlSimilarGamesIT extends WithDatabase {
                 .getExecutableCriteria(sessionFactory.getCurrentSession())
                 .setProjection(Projections.rowCount())
                 .uniqueResult();
-        assertThat(amountOfResults, is(387L));
+        assertThat(amountOfResults, is(396L));
     }
 
     @Test

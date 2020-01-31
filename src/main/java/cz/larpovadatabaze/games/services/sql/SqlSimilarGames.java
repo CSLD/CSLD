@@ -44,6 +44,7 @@ public class SqlSimilarGames extends CRUD<SimilarGame, Integer> implements Simil
                 .add(Restrictions.eq("idGame1", game.getId()))
                 .addOrder(Order.desc("similarity"));
 
+        // TODO: verify that deleted isn't returned.
         List<SimilarGame> similarGames = allSimilarities.list();
         List<Game> results = new ArrayList<>();
         for (SimilarGame similar : similarGames) {

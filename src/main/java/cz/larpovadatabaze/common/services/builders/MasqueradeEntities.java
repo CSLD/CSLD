@@ -7,6 +7,8 @@ public class MasqueradeEntities {
     public final CsldUser administrator;
     public final CsldUser editor;
     public final CsldUser user;
+    public final CsldUser joe;
+    public final CsldUser anna;
 
     public final CsldGroup nosferatu;
     public final CsldGroup toreador;
@@ -30,7 +32,7 @@ public class MasqueradeEntities {
     public final Upvote editorUserComment;
 
     public MasqueradeEntities(CsldUser administrator, CsldUser editor, CsldUser user,
-                              CsldGroup nosferatu, CsldGroup toreador,
+                              CsldUser anna, CsldUser joe, CsldGroup nosferatu, CsldGroup toreador,
                               Game firstMasquerade, Game secondMasquerade, Game bestMasquerade, Game wrongMasquerade,
                               Label vampire, Label dramatic, Label emotional, Label chamber,
                               Comment editorComment, Comment userComment, Comment administratorComment,
@@ -39,6 +41,8 @@ public class MasqueradeEntities {
         this.administrator = administrator;
         this.editor = editor;
         this.user = user;
+        this.anna = anna;
+        this.joe = joe;
         this.nosferatu = nosferatu;
         this.toreador = toreador;
         this.firstMasquerade = firstMasquerade;

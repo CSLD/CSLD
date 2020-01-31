@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.administration.services.sql;
 
+import cz.larpovadatabaze.administration.model.MonthlyAmountsStatisticsDto;
 import cz.larpovadatabaze.administration.model.RatingStatisticsDto;
 import cz.larpovadatabaze.administration.services.Statistics;
 import org.hibernate.Query;
@@ -41,5 +42,23 @@ public class SqlStatistics implements Statistics {
                 .addScalar("average_rating")
                 .setResultTransformer(Transformers.aliasToBean(RatingStatisticsDto.class));
         return (List<RatingStatisticsDto>) ratingRelatedStats.list();
+    }
+
+    @Override
+    public List<MonthlyAmountsStatisticsDto> amountOfCommentsPerMonth() {
+        Session currentSession = sessionFactory.getCurrentSession();
+        Query monthlyCommentsStats = currentSession.createSQLQuery("" +
+                "select " +
+                "   extract (year from added) as year, " +
+                "   extract (month from added) as month, " +
+                "   count(*) as amount " +
+                "from csld_comment " +
+                "   group by year, month " +
+                "   order by year, month;")
+                .addScalar("year")
+                .addScalar("month")
+                .addScalar("amount")
+                .setResultTransformer(Transformers.aliasToBean(MonthlyAmountsStatisticsDto.class));
+        return (List<MonthlyAmountsStatisticsDto>) monthlyCommentsStats.list();
     }
 }

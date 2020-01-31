@@ -36,14 +36,14 @@ public class SqlLabelsIT extends WithDatabase {
     @Test
     // The person who didn't add the label, can't use it.
     public void getAuthorizedOptionalReturnsOptionalFurtherFiltered() {
-        List<Label> validLabels = underTest.getAuthorizedOptional(masqueradeEntities.editor);
+        List<Label> validLabels = underTest.getAuthorizedOptional(masqueradeEntities.anna);
         assertThat(validLabels.size(), is(1));
         assertThat(validLabels, hasItem(masqueradeEntities.vampire));
     }
 
     @Test
     public void getAuthorizedRequiredReturnsRequiredFurtherFiltered() {
-        List<Label> validLabels = underTest.getAuthorizedRequired(masqueradeEntities.editor);
+        List<Label> validLabels = underTest.getAuthorizedRequired(masqueradeEntities.anna);
         assertThat(validLabels.size(), is(1));
         assertThat(validLabels, hasItem(masqueradeEntities.dramatic));
     }

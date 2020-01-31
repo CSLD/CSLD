@@ -145,7 +145,7 @@ MasqueradeBuilder implements Builder {
         // Create Photos
 
         return new MasqueradeEntities(
-                administrator, editor, user,
+                administrator, editor, user, anna, joe,
                 nosferatu, toreador,
                 firstMasquerade, secondMasquerade, bestMasquerade, wrongMasquerade,
                 vampire, dramatic, emotional, chamber,
