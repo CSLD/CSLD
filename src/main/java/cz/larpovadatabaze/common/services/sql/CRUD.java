@@ -2,6 +2,7 @@ package cz.larpovadatabaze.common.services.sql;
 
 import cz.larpovadatabaze.common.dao.GenericHibernateDAO;
 import cz.larpovadatabaze.common.services.CRUDService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.List;
@@ -34,6 +35,7 @@ public class CRUD<T, I extends Serializable> implements CRUDService<T, I> {
         return crudRepository.findById(id);
     }
 
+    @Transactional
     @Override
     public void remove(T toRemove) {
         crudRepository.delete(toRemove);

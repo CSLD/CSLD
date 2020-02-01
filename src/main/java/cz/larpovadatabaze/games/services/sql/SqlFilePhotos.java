@@ -2,6 +2,7 @@ package cz.larpovadatabaze.games.services.sql;
 
 import cz.larpovadatabaze.common.dao.GenericHibernateDAO;
 import cz.larpovadatabaze.common.dao.builder.GenericBuilder;
+import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.entities.Image;
 import cz.larpovadatabaze.common.entities.Photo;
@@ -98,5 +99,17 @@ public class SqlFilePhotos extends CRUD<Photo, Integer> implements Photos {
         criteria.add(Restrictions.sqlRestriction("1=1 order by random()"));
         criteria.setMaxResults(amount);
         return criteria.list();
+    }
+
+    @Override
+    public void removeAddedBy(CsldUser toRemove) {
+        List<Photo> photosAddedBy = crudRepository.findByCriteria(
+                Restrictions.eq("author", toRemove.getId())
+        );
+
+        photosAddedBy.forEach(photo -> {
+            photo.setAuthor(null);
+            saveOrUpdate(photo);
+        });
     }
 }

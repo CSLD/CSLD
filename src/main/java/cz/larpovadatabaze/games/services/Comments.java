@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.games.services;
 
 import cz.larpovadatabaze.common.entities.Comment;
+import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.services.CRUDService;
 
@@ -66,4 +67,11 @@ public interface Comments extends CRUDService<Comment, Integer> {
      * @return comments associated with given game
      */
     List<Comment> visibleForCurrentUserOrderedByUpvotes(Game game);
+
+    /**
+     * Remove all comments created by specific user.
+     *
+     * @param toRemove User whose comments should be removed.
+     */
+    void removeForUser(CsldUser toRemove);
 }

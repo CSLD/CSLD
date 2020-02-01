@@ -39,4 +39,9 @@ public class InMemoryRatings extends InMemoryCrud<Rating, Integer> implements Ra
                 .filter(rating -> rating.getGame().equals(game))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void removeForUser(CsldUser toRemove) {
+
+    }
 }

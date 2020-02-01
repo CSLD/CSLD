@@ -47,4 +47,11 @@ public interface Ratings extends CRUDService<Rating, Integer> {
      * @return Ordered list of ratings.
      */
     List<Rating> getRatingsOfGame(Game game);
+
+    /**
+     * Remove all ratings created by specific user.
+     *
+     * @param toRemove User whose ratings should be removed.
+     */
+    void removeForUser(CsldUser toRemove);
 }

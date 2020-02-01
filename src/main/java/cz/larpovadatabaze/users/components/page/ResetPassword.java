@@ -50,8 +50,8 @@ public class ResetPassword extends CsldBasePage {
             }
         };
 
-        resetPassword.add(new PasswordTextField("password", new PropertyModel<String>(this, "password")));
-        resetPassword.add(new PasswordTextField("passwordAgain", new PropertyModel<String>(this, "passwordAgain")));
+        resetPassword.add(new PasswordTextField("password", new PropertyModel<>(this, "password")));
+        resetPassword.add(new PasswordTextField("passwordAgain", new PropertyModel<>(this, "passwordAgain")));
         resetPassword.add(new Button("submit"));
 
         add(resetPassword);

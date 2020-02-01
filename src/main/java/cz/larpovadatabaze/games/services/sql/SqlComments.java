@@ -3,6 +3,7 @@ package cz.larpovadatabaze.games.services.sql;
 import cz.larpovadatabaze.common.dao.GenericHibernateDAO;
 import cz.larpovadatabaze.common.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.common.entities.Comment;
+import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.services.sql.CRUD;
 import cz.larpovadatabaze.games.services.Comments;
@@ -139,5 +140,13 @@ public class SqlComments extends CRUD<Comment, Integer> implements Comments {
         });
 
         return visibleComments;
+    }
+
+    @Override
+    public void removeForUser(CsldUser toRemove) {
+        List<Comment> comments = crudRepository.findByCriteria(
+                Restrictions.eq("user", toRemove));
+
+        comments.forEach(this::remove);
     }
 }
