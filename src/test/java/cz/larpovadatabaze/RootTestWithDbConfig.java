@@ -27,10 +27,12 @@ import java.util.Properties;
 @Configuration
 @ComponentScan(basePackages = {
         "cz.larpovadatabaze.administration.services",
+        "cz.larpovadatabaze.calendar.service",
         "cz.larpovadatabaze.common.services",
         "cz.larpovadatabaze.games.services",
         "cz.larpovadatabaze.search.services",
         "cz.larpovadatabaze.users.services",
+
         "cz.larpovadatabaze.common.dao"})
 @EnableTransactionManagement
 @PropertySource(value = {"classpath:application.properties"})

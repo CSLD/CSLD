@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.users.services.sql;
 
 import com.github.openjson.JSONObject;
+import cz.larpovadatabaze.calendar.service.Events;
 import cz.larpovadatabaze.common.dao.GenericHibernateDAO;
 import cz.larpovadatabaze.common.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.common.entities.CsldUser;
@@ -10,14 +11,16 @@ import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.common.services.MailService;
 import cz.larpovadatabaze.common.services.sql.CRUD;
-import cz.larpovadatabaze.games.services.Images;
+import cz.larpovadatabaze.games.services.*;
 import cz.larpovadatabaze.users.Pwd;
 import cz.larpovadatabaze.users.RandomString;
+import cz.larpovadatabaze.users.services.AppUsers;
 import cz.larpovadatabaze.users.services.CsldUsers;
 import cz.larpovadatabaze.users.services.EmailAuthentications;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.log4j.Logger;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.hibernate.Criteria;
@@ -39,6 +42,7 @@ import java.util.UUID;
 @Repository(value = "csldUsers")
 @Transactional
 public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
+    private final static Logger logger = Logger.getLogger(SqlCsldUsers.class);
     /**
      * Re-Captcha config - maybe move keys somewhere else?
      */
@@ -51,17 +55,37 @@ public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
     private EmailAuthentications authentications;
     private FileService files;
     private ImageResizingStrategyFactoryService imageResizingStrategyFactoryService;
+    private Ratings ratings;
+    private Comments comments;
+    private Upvotes upvotes;
+    private Events events;
+    private Labels labels;
+    private Photos photos;
+    private AppUsers appUsers;
+    private Games games;
+    private SessionFactory sessionFactory;
 
     @Autowired
     public SqlCsldUsers(SessionFactory sessionFactory, Images images,
                         MailService mails, EmailAuthentications authentications, FileService files,
-                        ImageResizingStrategyFactoryService imageResizingStrategyFactoryService) {
+                        ImageResizingStrategyFactoryService imageResizingStrategyFactoryService,
+                        Ratings ratings, Comments comments, Upvotes upvotes, Events events, Labels labels,
+                        Photos photos, AppUsers appUsers, Games games) {
         super(new GenericHibernateDAO<>(sessionFactory, new GenericBuilder<>(CsldUser.class)));
+        this.sessionFactory = sessionFactory;
         this.images = images;
         this.mails = mails;
         this.authentications = authentications;
         this.files = files;
         this.imageResizingStrategyFactoryService = imageResizingStrategyFactoryService;
+        this.ratings = ratings;
+        this.comments = comments;
+        this.upvotes = upvotes;
+        this.events = events;
+        this.labels = labels;
+        this.photos = photos;
+        this.appUsers = appUsers;
+        this.games = games;
     }
 
     private ResourceReference userIconReference;
@@ -198,5 +222,43 @@ public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
             }
         }
         return crudRepository.saveOrUpdate(currentInSession);
+    }
+
+    @Override
+    public void remove(CsldUser toRemoveDto) {
+        if (!appUsers.isAtLeastEditor()) {
+            logger.warn("Try to remove user: " + toRemoveDto.getId() + " By: " + appUsers.getLoggedUserId());
+            return;
+        }
+
+        CsldUser toRemove = getById(toRemoveDto.getId());
+        // Remove from authors but keep the games
+        toRemove.getAuthorOf()
+                .forEach(game -> {
+                    game.getAuthors().remove(toRemove);
+                    games.saveOrUpdate(game);
+
+                    sessionFactory.getCurrentSession()
+                            .createSQLQuery("delete from csld_game_has_author " +
+                                    "where id_user = :idUser and id_game = :idGame")
+                            .setParameter("idUser", toRemove.getId())
+                            .setParameter("idGame", game.getId())
+                            .executeUpdate();
+                });
+
+        // Remove comments
+        comments.removeForUser(toRemove);
+        // Remove ratings
+        ratings.removeForUser(toRemove);
+        // Remove upvotes
+        upvotes.removeForUser(toRemove);
+        // Replace as added by for Events
+        events.removeAddedBy(toRemove);
+        // Replace as added by for Labels
+        labels.removeAddedBy(toRemove);
+        // Remove as author from photos
+        photos.removeAddedBy(toRemove);
+
+        super.remove(toRemove);
     }
 }

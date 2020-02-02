@@ -1,6 +1,5 @@
 package cz.larpovadatabaze.calendar.services.masqueradeStubs;
 
-import cz.larpovadatabaze.calendar.BoundingBox;
 import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.calendar.model.FilterEvent;
 import cz.larpovadatabaze.calendar.service.Events;
@@ -29,12 +28,12 @@ public class InMemoryEvents extends InMemoryCrud<Event, Integer> implements Even
     }
 
     @Override
-    public List<Event> geographicallyFiltered(BoundingBox limitation) {
+    public List<Event> byName(String name) {
         return new ArrayList<>();
     }
 
     @Override
-    public List<Event> byName(String name) {
-        return new ArrayList<>();
+    public void removeAddedBy(CsldUser toRemove) {
+
     }
 }

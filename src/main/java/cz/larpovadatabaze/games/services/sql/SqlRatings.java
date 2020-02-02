@@ -93,6 +93,14 @@ public class SqlRatings extends CRUD<Rating, Integer> implements Ratings {
     }
 
     @Override
+    public void removeForUser(CsldUser toRemove) {
+        List<Rating> ratedBy = crudRepository.findByCriteria(
+                Restrictions.eq("user", toRemove));
+
+        ratedBy.forEach(this::remove);
+    }
+
+    @Override
     public void remove(Rating toRemove) {
         crudRepository.delete(toRemove);
 

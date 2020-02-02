@@ -44,6 +44,11 @@ public class SqlLabels extends CRUD<Label, Integer> implements Labels {
     }
 
     @Override
+    public void removeAddedBy(CsldUser toRemove) {
+        // Find labels added by the user.
+    }
+
+    @Override
     public List<Label> getAuthorizedOptional(CsldUser authorizedTo) {
         return filterAuthorizedLabels(false, authorizedTo);
     }

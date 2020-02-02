@@ -1,12 +1,14 @@
 package cz.larpovadatabaze.users.services.sql;
 
 import cz.larpovadatabaze.WithDatabase;
+import cz.larpovadatabaze.calendar.service.Events;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.common.services.MailService;
-import cz.larpovadatabaze.games.services.Images;
+import cz.larpovadatabaze.games.services.*;
 import cz.larpovadatabaze.users.Pwd;
+import cz.larpovadatabaze.users.services.AppUsers;
 import cz.larpovadatabaze.users.services.CsldUsers;
 import cz.larpovadatabaze.users.services.EmailAuthentications;
 import org.junit.Before;
@@ -30,7 +32,15 @@ public class SqlCsldUsersIT extends WithDatabase {
                 Mockito.mock(MailService.class),
                 Mockito.mock(EmailAuthentications.class),
                 Mockito.mock(FileService.class),
-                Mockito.mock(ImageResizingStrategyFactoryService.class)
+                Mockito.mock(ImageResizingStrategyFactoryService.class),
+                Mockito.mock(Ratings.class),
+                Mockito.mock(Comments.class),
+                Mockito.mock(Upvotes.class),
+                Mockito.mock(Events.class),
+                Mockito.mock(Labels.class),
+                Mockito.mock(Photos.class),
+                Mockito.mock(AppUsers.class),
+                Mockito.mock(Games.class)
         );
     }
 

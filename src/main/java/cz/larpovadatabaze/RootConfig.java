@@ -131,7 +131,6 @@ public class RootConfig {
     }
     // End of email settings
 
-    @Bean
     public S3Bucket bucket() {
         return new S3Bucket(
                 env.getProperty("csld.data.s3.bucketName")

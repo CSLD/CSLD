@@ -57,4 +57,12 @@ public class SqlUpvotes extends CRUD<Upvote, Integer> implements Upvotes {
                 Restrictions.eq("user", user)
         ));
     }
+
+    @Override
+    public void removeForUser(CsldUser toRemove) {
+        List<Upvote> upvotesBy = crudRepository.findByCriteria(
+                Restrictions.eq("user", toRemove));
+
+        upvotesBy.forEach(this::remove);
+    }
 }

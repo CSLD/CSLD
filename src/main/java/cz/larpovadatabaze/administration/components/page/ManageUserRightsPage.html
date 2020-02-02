@@ -13,7 +13,10 @@
                                 <wicket:message key="form.name">Jméno</wicket:message>
                             </th>
                             <th scope="col">
-                                <wicket:message key="form.description">Pr8va</wicket:message>
+                                <wicket:message key="form.description">Práva</wicket:message>
+                            </th>
+                            <th scope="col">
+                                <wicket:message key="form.user">Smazat</wicket:message>
                             </th>
                         </tr>
                         </thead>
@@ -26,10 +29,19 @@
                             </td>
                             <td>
                                 <select wicket:id="role">
-                                    <option wicket:id="user"><wicket:message key="user.user">Uživatel</wicket:message></option>
-                                    <option wicket:id="editor"><wicket:message key="user.editor">Editor</wicket:message></option>
-                                    <option wicket:id="admin"><wicket:message key="user.administrator">Administrátor</wicket:message></option>
+                                    <option wicket:id="user">
+                                        <wicket:message key="user.user">Uživatel</wicket:message>
+                                    </option>
+                                    <option wicket:id="editor">
+                                        <wicket:message key="user.editor">Editor</wicket:message>
+                                    </option>
+                                    <option wicket:id="admin">
+                                        <wicket:message key="user.administrator">Administrátor</wicket:message>
+                                    </option>
                                 </select>
+                            </td>
+                            <td>
+                                <input type="submit" value="Smazat" wicket:id="delete"/>
                             </td>
                         </tr>
                         <!-- End of part, which is repeated for every user -->
