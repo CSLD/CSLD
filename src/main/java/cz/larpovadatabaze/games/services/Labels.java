@@ -39,4 +39,11 @@ public interface Labels extends CRUDService<Label, Integer> {
      * @return List of the required labels further limited by the Access rights of the given user.
      */
     List<Label> getAuthorizedRequired(CsldUser authorizedTo);
+
+    /**
+     * Replace who added the labels added by specific user by nobody
+     *
+     * @param toRemove User whose labels we need to clean.
+     */
+    void removeAddedBy(CsldUser toRemove);
 }

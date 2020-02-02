@@ -11,7 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CzechMasqueradeBuilder extends MasqueradeBuilder {
     @Autowired
-    public CzechMasqueradeBuilder(Comments comments, CsldUsers users, Games games, SimilarGames similarGames, CsldGroups groups, Labels labels,
+    public CzechMasqueradeBuilder(Comments comments, CsldUsers users, Games games, SimilarGames similarGames,
+                                  CsldGroups groups, Labels labels,
                                   Ratings ratings, Upvotes upvotes) {
         super(comments, users, games, similarGames, groups, labels, ratings, upvotes);
     }

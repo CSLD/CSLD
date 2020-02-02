@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.games.services;
 
+import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.entities.Photo;
 import cz.larpovadatabaze.common.services.CRUDService;
@@ -31,4 +32,11 @@ public interface Photos extends CRUDService<Photo, Integer> {
      * @param amount
      */
     List<Photo> getRandomPhotos(int amount);
+
+    /**
+     * Replace who added the photos added by specific user by nobody
+     *
+     * @param toRemove User whose photos we need to clean.
+     */
+    void removeAddedBy(CsldUser toRemove);
 }

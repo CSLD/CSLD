@@ -1,3 +1,15 @@
+# Deploy to the new production
+#   Set maintenance - https://larpdb-maintenance.s3.eu-central-1.amazonaws.com/FullMaintenancePage.html
+
+#   Copy the files.
+#   Prepare the database localy
+#   Move the database to heroku
+
+#   Move the data
+
+# Run the new production
+#   Switch the path to the new production
+
 # Under root acount.
 sudo su
 cd /home/csld/files

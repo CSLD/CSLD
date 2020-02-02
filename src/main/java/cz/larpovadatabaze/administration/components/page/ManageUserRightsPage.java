@@ -6,6 +6,7 @@ import cz.larpovadatabaze.users.CsldRoles;
 import cz.larpovadatabaze.users.services.CsldUsers;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.form.select.Select;
 import org.apache.wicket.extensions.markup.html.form.select.SelectOption;
@@ -44,13 +45,12 @@ public class ManageUserRightsPage extends CsldBasePage {
                 Label name = new Label("name", Model.of(personName));
                 item.add(name);
 
-
                 final UserRole role = new UserRole();
                 role.selected = CsldRoles.getNameByRole(user.getRole());
-                Select<String> roles = new Select<String>("role", new PropertyModel<String>(role, "selected"));
-                roles.add(new SelectOption<String>("user", new StringResourceModel("admin.user", this, null)));
-                roles.add(new SelectOption<String>("editor", new StringResourceModel("admin.editor", this, null)));
-                roles.add(new SelectOption<String>("admin", new StringResourceModel("admin.admin", this, null)));
+                Select<String> roles = new Select<>("role", new PropertyModel<String>(role, "selected"));
+                roles.add(new SelectOption<>("user", new StringResourceModel("admin.user", this, null)));
+                roles.add(new SelectOption<>("editor", new StringResourceModel("admin.editor", this, null)));
+                roles.add(new SelectOption<>("admin", new StringResourceModel("admin.admin", this, null)));
                 roles.setOutputMarkupId(true);
                 roles.add(new AjaxFormComponentUpdatingBehavior("change") {
                     @Override
@@ -60,6 +60,17 @@ public class ManageUserRightsPage extends CsldBasePage {
                     }
                 });
                 item.add(roles);
+
+                item.add(new AjaxButton("delete") {
+                    @Override
+                    protected void onSubmit(AjaxRequestTarget target) {
+                        super.onSubmit(target);
+
+                        csldUsers.remove(user);
+
+                        target.add(ManageUserRightsPage.this);
+                    }
+                });
             }
         };
         manageUsers.add(userView);

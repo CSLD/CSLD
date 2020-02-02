@@ -1,6 +1,5 @@
 package cz.larpovadatabaze.calendar.service.sql;
 
-import cz.larpovadatabaze.calendar.BoundingBox;
 import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.calendar.model.FilterEvent;
 import cz.larpovadatabaze.calendar.service.Events;
@@ -147,19 +146,23 @@ public class SqlEvents extends CRUD<Event, Integer> implements Events {
     }
 
     @Override
-    public List<Event> geographicallyFiltered(BoundingBox limitation) {
-        Collection<Event> loaded = getAll();
-        return loaded
-                .stream()
-                .filter(event -> limitation.isInArea(event.getLocation()))
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public List<Event> byName(String name) {
         return crudRepository.getExecutableCriteria()
                 .add(Restrictions.eq("name", name))
                 .list();
+    }
+
+    @Override
+    public void removeAddedBy(CsldUser toRemove) {
+        // Find all added by user
+        List<Event> eventsAddedBy = crudRepository.findByCriteria(
+                Restrictions.eq("addedBy", toRemove)
+        );
+        // Remove user, save
+        eventsAddedBy.forEach(event -> {
+            event.setAddedBy(null);
+            saveOrUpdate(event);
+        });
     }
 
     // Time related limitations.

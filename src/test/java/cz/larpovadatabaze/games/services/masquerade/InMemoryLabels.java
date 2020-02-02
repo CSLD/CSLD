@@ -32,4 +32,9 @@ public class InMemoryLabels extends InMemoryCrud<Label, Integer> implements Labe
     public List<Label> getAuthorizedRequired(CsldUser authorizedTo) {
         return getRequired();
     }
+
+    @Override
+    public void removeAddedBy(CsldUser toRemove) {
+
+    }
 }

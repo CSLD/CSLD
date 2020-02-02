@@ -23,4 +23,9 @@ public class InMemoryUpvotes extends InMemoryCrud<Upvote, Integer> implements Up
     public Collection<Upvote> forUserAndComment(CsldUser user, Comment comment) {
         return null;
     }
+
+    @Override
+    public void removeForUser(CsldUser toRemove) {
+
+    }
 }

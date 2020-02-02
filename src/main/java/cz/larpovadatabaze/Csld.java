@@ -21,6 +21,8 @@ import cz.larpovadatabaze.donations.components.DonationPage;
 import cz.larpovadatabaze.games.components.page.*;
 import cz.larpovadatabaze.games.converters.GameConverter;
 import cz.larpovadatabaze.games.converters.LabelConverter;
+import cz.larpovadatabaze.games.rest.GameProducer;
+import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.search.components.SearchResultsPage;
 import cz.larpovadatabaze.search.services.TokenSearch;
 import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
@@ -75,18 +77,21 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     private final Environment env;
     private final Events events;
     private final Statistics statistics;
+    private final Games games;
 
     private static final String DEFAULT_ENCODING = "UTF-8";
     private static ApplicationContext ctx;
 
     @Autowired
     public Csld(TokenSearch tokenSearch, CsldUsers csldUsers,
-                Environment env, Events events, Statistics statistics) {
+                Environment env, Events events, Statistics statistics,
+                Games games) {
         this.tokenSearch = tokenSearch;
         this.csldUsers = csldUsers;
         this.env = env;
         this.events = events;
         this.statistics = statistics;
+        this.games = games;
     }
 
     public class MountedMapperWithoutPageComponentInfo extends MountedMapper {
@@ -271,8 +276,18 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
                 return resource;
             }
         };
+
+        ResourceReference gameReference = new ResourceReference("gameReference") {
+            GameProducer resource = new GameProducer(games);
+
+            @Override
+            public IResource getResource() {
+                return resource;
+            }
+        };
         mountResource(context + "/ical", icalReference);
-        mountResource(context + "/stats", statsReference);
+        mountResource(context + "/rest/stats", statsReference);
+        mountResource(context + "/rest/game", gameReference);
     }
 
     private void mountResources(String context) {

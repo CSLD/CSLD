@@ -1,6 +1,5 @@
 package cz.larpovadatabaze.calendar.service;
 
-import cz.larpovadatabaze.calendar.BoundingBox;
 import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.calendar.model.FilterEvent;
 import cz.larpovadatabaze.common.entities.CsldUser;
@@ -20,7 +19,13 @@ public interface Events extends CRUDService<Event, Integer> {
 
     List<Event> filtered(IModel<FilterEvent> filter);
 
-    List<Event> geographicallyFiltered(BoundingBox limitation);
-
     List<Event> byName(String name);
+
+    /**
+     * Replace who added the events added by specific user by nobody
+     *
+     * @param toRemove User whose events we need to clean.
+     */
+    void removeAddedBy(CsldUser toRemove);
 }
+
