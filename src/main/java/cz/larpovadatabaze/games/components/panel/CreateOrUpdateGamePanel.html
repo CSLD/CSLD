@@ -180,8 +180,19 @@ Code - cz.larpovadatabaze.games.components.panel.CreateOrUpdateGamePanel.html
                         </label>
                     </section>
                 </div>
+                <div class="row">
+                    <section class="col col-12">
+                        <label class="input">
+                            <i class="icon-append fa fa-upload"></i>
+                            <wicket:container wicket:id="gameBlueprint"/>
+                            <b class="tooltip tooltip-bottom-right">
+                                <wicket:message key="form.game.blueprintHint"/>
+                            </b>
+                        </label>
+                    </section>
+                </div>
 
-                    <wicket:message key="form.game.section.presentation"/>
+                <wicket:message key="form.game.section.presentation"/>
             </fieldset>
 
             <fieldset>

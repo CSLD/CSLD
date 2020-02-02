@@ -37,7 +37,7 @@ public class GameDetailPanel extends AbstractCsldPanel<Game> {
     Images images;
 
     public GameDetailPanel(String id, IModel<Game> model) {
-        super(id, new CompoundPropertyModel<Game>(model));
+        super(id, new CompoundPropertyModel<>(model));
     }
 
     @Override
@@ -62,6 +62,9 @@ public class GameDetailPanel extends AbstractCsldPanel<Game> {
 
         // Web link
         add(new ExternalLink("webGameLink", Model.of(game.getWeb()), Model.of(game.getWeb())).setVisible(StringUtils.isNotBlank(game.getWeb())));
+        // Add new link to the blueprint.
+        add(new ExternalLink("bluePrintLink", Model.of(game.getBlueprintPath()), Model.of(game.getBlueprintPath()))
+                .setVisible(StringUtils.isNotBlank(game.getWeb())));
 
         // Gallery
         String galleryURL = game.getGalleryURL();
@@ -76,18 +79,18 @@ public class GameDetailPanel extends AbstractCsldPanel<Game> {
 
         // Authors
         List<CsldUser> authors = game.getAuthors();
-        ListView<CsldUser> authorsList = new ListView<CsldUser>("authors",authors) {
+        ListView<CsldUser> authorsList = new ListView<>("authors", authors) {
             @Override
             protected void populateItem(ListItem<CsldUser> item) {
                 // Add separator
-                item.add(new Label("separator", (item.getIndex() == 0)?"":", "));
+                item.add(new Label("separator", (item.getIndex() == 0) ? "" : ", "));
 
                 // Add author itself
                 CsldUser author = item.getModelObject();
                 PageParameters params = new PageParameters();
                 params.add("id", author.getId());
 
-                Link<CsldBasePage> authorDetailLink = new BookmarkablePageLink<CsldBasePage>("authorDetailLink", UserDetailPage.class, params);
+                Link<CsldBasePage> authorDetailLink = new BookmarkablePageLink<>("authorDetailLink", UserDetailPage.class, params);
                 authorDetailLink.add(
                         new Label("authorName", author.getPerson().getNickNameView() + " " + author.getPerson().getName()));
                 item.add(authorDetailLink);
@@ -101,11 +104,11 @@ public class GameDetailPanel extends AbstractCsldPanel<Game> {
         if(groups == null) {
             groups = new ArrayList<>();
         }
-        ListView<CsldGroup> groupsList = new ListView<CsldGroup>("authorsGroups",groups) {
+        ListView<CsldGroup> groupsList = new ListView<>("authorsGroups", groups) {
             @Override
             protected void populateItem(ListItem<CsldGroup> item) {
                 // Add separator
-                item.add(new Label("separator", (item.getIndex() == 0)?"":", "));
+                item.add(new Label("separator", (item.getIndex() == 0) ? "" : ", "));
 
                 // Add group
                 CsldGroup group = item.getModelObject();
@@ -130,7 +133,7 @@ public class GameDetailPanel extends AbstractCsldPanel<Game> {
 
         // Labels
         List<cz.larpovadatabaze.common.entities.Label> labels = game.getLabels();
-        ListView<cz.larpovadatabaze.common.entities.Label> view = new ListView<cz.larpovadatabaze.common.entities.Label>("labels", labels) {
+        ListView<cz.larpovadatabaze.common.entities.Label> view = new ListView<>("labels", labels) {
             @Override
             protected void populateItem(ListItem<cz.larpovadatabaze.common.entities.Label> item) {
                 cz.larpovadatabaze.common.entities.Label label = item.getModelObject();

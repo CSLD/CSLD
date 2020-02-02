@@ -157,21 +157,8 @@ public class S3Files implements FileService {
     @Override
     public ResizeAndSaveReturn saveImageFileAndPreviewAndReturnPath(FileUpload upload, ImageResizingStrategyFactoryService.IImageResizingStrategy fullImageResizingStrategy, ImageResizingStrategyFactoryService.IImageResizingStrategy previewResizingStrategy) {
         // Determine file type
-        String fileType;
-        String ct = upload.getContentType();
-        if (StringUtils.isNotBlank(ct)) {
-            int si = ct.lastIndexOf('/');
-            if (si > 0) fileType = ct.substring(si + 1);
-            else fileType = ct;
-        } else {
-            fileType = getFileType(upload.getClientFileName());
-        }
-
-        // Generate name
-        String fileName = RandomStringUtils.randomAlphanumeric(16) + "." + fileType;
-        String dirName = fileName.substring(0, 1) + "/" + fileName.substring(1, 2);
-        fileName = dirName + '/' + fileName;
-
+        String fileType = getCandidateFileType(upload);
+        String fileName = getFilePath(fileType);
         BufferedImage imageGameSized = null;
 
         // Create a new file
@@ -204,6 +191,42 @@ public class S3Files implements FileService {
             height = imageGameSized.getHeight();
         }
         return new ResizeAndSaveReturn(fileName, width, height);
+    }
+
+    private String getCandidateFileType(FileUpload upload) {
+        String fileType;
+        String ct = upload.getContentType();
+        if (StringUtils.isNotBlank(ct)) {
+            int si = ct.lastIndexOf('/');
+            if (si > 0) fileType = ct.substring(si + 1);
+            else fileType = ct;
+        } else {
+            fileType = getFileType(upload.getClientFileName());
+        }
+        return fileType;
+    }
+
+    private String getFilePath(String fileType) {
+        // Generate name
+        String fileName = RandomStringUtils.randomAlphanumeric(16) + "." + fileType;
+        String dirName = fileName.substring(0, 1) + "/" + fileName.substring(1, 2);
+        return dirName + '/' + fileName;
+    }
+
+    @Override
+    public String saveFileAndReturnPath(FileUpload upload) {
+        String fileType = getCandidateFileType(upload);
+        String filePath = getFilePath(fileType);
+
+        try {
+            bucket.upload(filePath, upload.getInputStream());
+
+            return filePath;
+        } catch (IOException ex) {
+            logger.error(ex);
+        }
+
+        return null;
     }
 
     @Override

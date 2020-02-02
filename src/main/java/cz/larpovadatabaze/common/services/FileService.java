@@ -85,9 +85,17 @@ public interface FileService {
     ResizeAndSaveReturn saveImageFileAndPreviewAndReturnPath(FileUpload upload, IImageResizingStrategy fullImageResizingStrategy, IImageResizingStrategy previewResizingStrategy);
 
     /**
+     * Save any file to the storage.
+     *
+     * @param blueprintFile File to be upload.
+     * @return Path in the storage
+     */
+    String saveFileAndReturnPath(FileUpload blueprintFile);
+
+    /**
      * Delete file(s) belonging to this relative path (used when file is about to be deleted)
      *
      * @param relativePath Path to be deleted
      */
     void removeFiles(String relativePath);
- }
+}
