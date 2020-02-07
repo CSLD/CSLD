@@ -3,6 +3,7 @@ package cz.larpovadatabaze.games.services.sql;
 import cz.larpovadatabaze.common.dao.GenericHibernateDAO;
 import cz.larpovadatabaze.common.dao.builder.GameBuilder;
 import cz.larpovadatabaze.common.entities.*;
+import cz.larpovadatabaze.common.models.UploadedFile;
 import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.common.services.sql.CRUD;
@@ -123,7 +124,7 @@ public class SqlGames extends CRUD<Game, Integer> implements Games {
         if (uploads != null && uploads.size() > 0) {
             FileUpload upload = uploads.get(0);
             String filePath = fileService.saveImageFileAndReturnPath(
-                    upload, imageResizingStrategyFactoryService.getCoverImageStrategy()).path;
+                    new UploadedFile(upload), imageResizingStrategyFactoryService.getCoverImageStrategy()).path;
             model.setCoverImage(new Image(filePath));
         }
 

@@ -17,21 +17,35 @@
                     <wicket:container wicket:id="players" /> <wicket:message key="game.detail.players">hráčů</wicket:message>,
                     <wicket:container wicket:id="menRole" /> <wicket:message key="game.detail.men">mužů</wicket:message>,
                     <wicket:container wicket:id="womenRole" /> <wicket:message key="game.detail.women">žen</wicket:message>,
-                    <wicket:container wicket:id="bothRole" /> <wicket:message key="game.detail.both">obojetných</wicket:message>
+                    <wicket:container wicket:id="bothRole"/>
+                    <wicket:message key="game.detail.both">obojetných</wicket:message>
                 </p>
                 <p>
-                    <wicket:container wicket:id="hours" /> <wicket:message key="game.detail.hours">hodin</wicket:message>,
-                    <wicket:container wicket:id="days" /> <wicket:message key="game.detail.days">dnů</wicket:message>,
-                    <wicket:container wicket:id="year" />
+                    <wicket:container wicket:id="hours"/>
+                    <wicket:message key="game.detail.hours">hodin</wicket:message>
+                    ,
+                    <wicket:container wicket:id="days"/>
+                    <wicket:message key="game.detail.days">dnů</wicket:message>
+                    ,
+                    <wicket:container wicket:id="year"/>
                 </p>
                 <wicket:enclosure child="webGameLink">
                     <p>Web: <a wicket:id="webGameLink"></a></p>
                 </wicket:enclosure>
+                <wicket:enclosure child="bluePrintLink">
+                    <p>Web: <a wicket:id="bluePrintLink"></a></p>
+                </wicket:enclosure>
                 <wicket:enclosure child="webGalleryLink">
-                    <p><wicket:message key="form.galleryURL">Galerie</wicket:message>: <a wicket:id="webGalleryLink"></a></p>
+                    <p>
+                        <wicket:message key="form.galleryURL">Galerie</wicket:message>
+                        : <a wicket:id="webGalleryLink"></a></p>
                 </wicket:enclosure>
                 <wicket:enclosure child="photoAuthor">
-                    <p><wicket:message key="game.detail.photos.author">Autor fotografií</wicket:message>: <wicket:container wicket:id="photoAuthor" /></p>
+                    <p>
+                        <wicket:message key="game.detail.photos.author">Autor fotografií</wicket:message>
+                        :
+                        <wicket:container wicket:id="photoAuthor"/>
+                    </p>
                 </wicket:enclosure>
             </div>
 

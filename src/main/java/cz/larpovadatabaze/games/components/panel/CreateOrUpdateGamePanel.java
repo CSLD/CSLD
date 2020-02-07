@@ -10,6 +10,8 @@ import cz.larpovadatabaze.common.components.ValidatableForm;
 import cz.larpovadatabaze.common.components.multiac.IMultiAutoCompleteSource;
 import cz.larpovadatabaze.common.components.multiac.MultiAutoCompleteComponent;
 import cz.larpovadatabaze.common.entities.*;
+import cz.larpovadatabaze.common.models.UploadedFile;
+import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.games.services.Videos;
 import cz.larpovadatabaze.games.validator.AtLeastOneRequiredLabelValidator;
@@ -30,6 +32,8 @@ import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.upload.FileUpload;
+import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
@@ -57,10 +61,13 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
     Videos videos;
     @SpringBean
     AppUsers appUsers;
+    @SpringBean
+    FileService files;
 
     private ChooseLabelsPanel chooseLabels;
     private TextField<String> videoField;
     private UploadCoverImagePanel coverImagePanel;
+    private FileUploadField blueprint;
 
     public CreateOrUpdateGamePanel(String id, IModel<Game> model) {
         super(id, model);
@@ -94,7 +101,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
 
 
         // Labels
-        chooseLabels = new ChooseLabelsPanel("labels", new IModel<List<Label>>() {
+        chooseLabels = new ChooseLabelsPanel("labels", new IModel<>() {
             @Override
             public List<Label> getObject() {
                 return createOrUpdateGame.getModelObject().getLabels();
@@ -181,10 +188,10 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
         createOrUpdateGame.add(new CsldFeedbackMessageLabel("galleryURLFeedback", galleryURL, "form.game.galleryURLHint"));
 
         // Video path
-        createOrUpdateGame.add(videoField = new TextField<String>("video", new IModel<String>() {
+        createOrUpdateGame.add(videoField = new TextField<>("video", new IModel<>() {
             @Override
             public String getObject() {
-                return (getModelObject().getVideo()==null)?"":getModelObject().getVideo().getPath();
+                return (getModelObject().getVideo() == null) ? "" : getModelObject().getVideo().getPath();
             }
 
             @Override
@@ -220,6 +227,20 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
             }
         });
 
+        blueprint = new FileUploadField("gameBlueprint", new IModel<>() {
+            private List<FileUpload> uploads;
+
+            @Override
+            public List<FileUpload> getObject() {
+                return uploads;
+            }
+
+            @Override
+            public void setObject(List<FileUpload> uploads) {
+                this.uploads = uploads;
+            }
+        });
+        createOrUpdateGame.add(blueprint);
 
         WebMarkupContainer authorsWrapper = new WebMarkupContainer("authorsWrapper");
         createOrUpdateGame.add(authorsWrapper);
@@ -239,6 +260,12 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
 
                 Game game = CreateOrUpdateGamePanel.this.getModelObject();
                 game.setCoverImage(coverImagePanel.getConvertedInput());
+                // TODO: Clean while moving the Game to the DTO model
+                FileUpload blueprintFile = blueprint.getFileUpload();
+                if (blueprintFile != null) {
+                    String bluePrintPath = files.saveFileAndReturnPath(new UploadedFile(blueprintFile));
+                    game.setBlueprintPath(bluePrintPath);
+                }
 
                 if (createOrUpdateGame.isValid()) {
                     String videoUrl = videoField.getConvertedInput();
