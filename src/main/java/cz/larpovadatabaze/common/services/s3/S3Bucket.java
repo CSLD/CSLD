@@ -89,6 +89,7 @@ public class S3Bucket implements Serializable {
         PutObjectResponse response = client.getObject().putObject(PutObjectRequest.builder()
                 .bucket(bucketName)
                 .key(key)
+                .acl(ObjectCannedACL.PUBLIC_READ)
                 .build(), RequestBody.fromInputStream(toUpload, toUpload.available()));
         if (!response.sdkHttpResponse().isSuccessful()) {
             throw new IOException("Wasn't possible to upload file " + key);
@@ -164,5 +165,14 @@ public class S3Bucket implements Serializable {
         return "S3Bucket{" +
                 "bucketName='" + bucketName + '\'' +
                 '}';
+    }
+
+    /**
+     * Return public URL usable to work with file.
+     *
+     * @param key Key of the file to work with
+     */
+    public String getPublicUrl(String key) {
+        return "https://" + bucketName + ".s3.eu-central-1.amazonaws.com/" + key;
     }
 }

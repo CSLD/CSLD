@@ -1,7 +1,7 @@
 package cz.larpovadatabaze.common.services;
 
+import cz.larpovadatabaze.common.models.UploadedFile;
 import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService.IImageResizingStrategy;
-import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.request.resource.AbstractResource;
 
 import java.io.FileNotFoundException;
@@ -66,23 +66,29 @@ public interface FileService {
     /**
      * Resize and save uploaded image
      *
-     * @param upload Upload to save
+     * @param upload           Upload to save
      * @param resizingStrategy Strategy to use to resize the image
-     *
      * @return Result class
      */
-    ResizeAndSaveReturn saveImageFileAndReturnPath(FileUpload upload, IImageResizingStrategy resizingStrategy);
+    ResizeAndSaveReturn saveImageFileAndReturnPath(UploadedFile upload, IImageResizingStrategy resizingStrategy);
 
     /**
      * Resize and save uploaded image plus save image preview
      *
-     * @param upload Upload to save
+     * @param upload                    Upload to save
      * @param fullImageResizingStrategy Strategy used to resize the full image
-     * @param previewResizingStrategy Strategy used to resize image preview
-     *
+     * @param previewResizingStrategy   Strategy used to resize image preview
      * @return Result class
      */
-    ResizeAndSaveReturn saveImageFileAndPreviewAndReturnPath(FileUpload upload, IImageResizingStrategy fullImageResizingStrategy, IImageResizingStrategy previewResizingStrategy);
+    ResizeAndSaveReturn saveImageFileAndPreviewAndReturnPath(UploadedFile upload, IImageResizingStrategy fullImageResizingStrategy, IImageResizingStrategy previewResizingStrategy);
+
+    /**
+     * Save any file to the storage.
+     *
+     * @param blueprintFile File to be upload.
+     * @return Path in the storage
+     */
+    String saveFileAndReturnPath(UploadedFile blueprintFile);
 
     /**
      * Delete file(s) belonging to this relative path (used when file is about to be deleted)
@@ -90,4 +96,4 @@ public interface FileService {
      * @param relativePath Path to be deleted
      */
     void removeFiles(String relativePath);
- }
+}
