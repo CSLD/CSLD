@@ -6,6 +6,7 @@ import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.entities.Image;
 import cz.larpovadatabaze.common.entities.Photo;
+import cz.larpovadatabaze.common.models.UploadedFile;
 import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.common.services.sql.CRUD;
@@ -71,7 +72,7 @@ public class SqlFilePhotos extends CRUD<Photo, Integer> implements Photos {
 
     @Override
     public boolean createNewPhotoForGame(Game game, FileItem fileItem) {
-        FileService.ResizeAndSaveReturn ret = fileService.saveImageFileAndPreviewAndReturnPath(new FileUpload(fileItem), imageResizingStrategyFactoryService.getMaxWidthHeightStrategy(MAX_PHOTO_WIDTH, MAX_PHOTO_HEIGHT), imageResizingStrategyFactoryService.getCuttingSquareStrategy(PREVIEW_SIZE, 50));
+        FileService.ResizeAndSaveReturn ret = fileService.saveImageFileAndPreviewAndReturnPath(new UploadedFile(new FileUpload(fileItem)), imageResizingStrategyFactoryService.getMaxWidthHeightStrategy(MAX_PHOTO_WIDTH, MAX_PHOTO_HEIGHT), imageResizingStrategyFactoryService.getCuttingSquareStrategy(PREVIEW_SIZE, 50));
         Image image = new Image();
         image.setPath(ret.path);
         image.setContentType(fileItem.getContentType());

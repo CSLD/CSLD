@@ -118,12 +118,12 @@ public class Game implements Serializable, Identifiable<Integer>, IAutoCompletab
         this.year = year;
     }
 
+    private String blueprintPath;
+
     @Column(
             name = "blueprint_path"
     )
     @Basic
-    private String blueprintPath;
-
     public String getBlueprintPath() {
         return blueprintPath;
     }

@@ -10,6 +10,7 @@ import cz.larpovadatabaze.common.components.ValidatableForm;
 import cz.larpovadatabaze.common.components.multiac.IMultiAutoCompleteSource;
 import cz.larpovadatabaze.common.components.multiac.MultiAutoCompleteComponent;
 import cz.larpovadatabaze.common.entities.*;
+import cz.larpovadatabaze.common.models.UploadedFile;
 import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.games.services.Videos;
@@ -226,7 +227,19 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
             }
         });
 
-        blueprint = new FileUploadField("gameBlueprint");
+        blueprint = new FileUploadField("gameBlueprint", new IModel<>() {
+            private List<FileUpload> uploads;
+
+            @Override
+            public List<FileUpload> getObject() {
+                return uploads;
+            }
+
+            @Override
+            public void setObject(List<FileUpload> uploads) {
+                this.uploads = uploads;
+            }
+        });
         createOrUpdateGame.add(blueprint);
 
         WebMarkupContainer authorsWrapper = new WebMarkupContainer("authorsWrapper");
@@ -249,8 +262,10 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
                 game.setCoverImage(coverImagePanel.getConvertedInput());
                 // TODO: Clean while moving the Game to the DTO model
                 FileUpload blueprintFile = blueprint.getFileUpload();
-                String bluePrintPath = files.saveFileAndReturnPath(blueprintFile);
-                game.setBlueprintPath(bluePrintPath);
+                if (blueprintFile != null) {
+                    String bluePrintPath = files.saveFileAndReturnPath(new UploadedFile(blueprintFile));
+                    game.setBlueprintPath(bluePrintPath);
+                }
 
                 if (createOrUpdateGame.isValid()) {
                     String videoUrl = videoField.getConvertedInput();

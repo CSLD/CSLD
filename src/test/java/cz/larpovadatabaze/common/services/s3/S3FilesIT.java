@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.common.services.s3;
 
+import cz.larpovadatabaze.common.models.UploadedFile;
 import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.common.services.wicket.ImageResizingStrategyFactoryServiceImpl;
@@ -68,7 +69,7 @@ public class S3FilesIT {
     public void saveImageFileAndPreview() {
         FileUpload fileUpload = prepareDummyFileUpload();
         FileService.ResizeAndSaveReturn savedImage = files.saveImageFileAndPreviewAndReturnPath(
-                fileUpload,
+                new UploadedFile(fileUpload),
                 strategiesToResizeImage.getMaxWidthHeightStrategy(128, 128),
                 strategiesToResizeImage.getMaxWidthHeightStrategy(32, 32));
 
@@ -89,7 +90,7 @@ public class S3FilesIT {
     public void saveOnlyImageWithoutPreview() {
         FileUpload fileUpload = prepareDummyFileUpload();
         FileService.ResizeAndSaveReturn savedImage = files.saveImageFileAndReturnPath(
-                fileUpload,
+                new UploadedFile(fileUpload),
                 strategiesToResizeImage.getMaxWidthHeightStrategy(128, 128));
 
         String fullImagePath = files.getPathInDataDir(savedImage.path);

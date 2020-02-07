@@ -1,12 +1,10 @@
 package cz.larpovadatabaze.common.services.s3;
 
+import cz.larpovadatabaze.common.models.UploadedFile;
 import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.request.resource.AbstractResource;
 import org.apache.wicket.request.resource.IResource;
 import org.springframework.http.HttpStatus;
@@ -89,15 +87,6 @@ public class S3Files implements FileService {
         return res;
     }
 
-    private String getFileType(String fileName) {
-        String[] fileParts = fileName.trim().split("\\.");
-        if (fileParts.length > 0) {
-            return fileParts[fileParts.length - 1];
-        } else {
-            return "";
-        }
-    }
-
     @Override
     public String getPathInDataDir(String key) {
         return key;
@@ -129,7 +118,7 @@ public class S3Files implements FileService {
     }
 
     @Override
-    public ResizeAndSaveReturn saveImageFileAndReturnPath(FileUpload upload, ImageResizingStrategyFactoryService.IImageResizingStrategy resizingStrategy) {
+    public ResizeAndSaveReturn saveImageFileAndReturnPath(UploadedFile upload, ImageResizingStrategyFactoryService.IImageResizingStrategy resizingStrategy) {
         return saveImageFileAndPreviewAndReturnPath(upload, resizingStrategy, null);
     }
 
@@ -155,10 +144,10 @@ public class S3Files implements FileService {
     }
 
     @Override
-    public ResizeAndSaveReturn saveImageFileAndPreviewAndReturnPath(FileUpload upload, ImageResizingStrategyFactoryService.IImageResizingStrategy fullImageResizingStrategy, ImageResizingStrategyFactoryService.IImageResizingStrategy previewResizingStrategy) {
+    public ResizeAndSaveReturn saveImageFileAndPreviewAndReturnPath(UploadedFile upload, ImageResizingStrategyFactoryService.IImageResizingStrategy fullImageResizingStrategy, ImageResizingStrategyFactoryService.IImageResizingStrategy previewResizingStrategy) {
         // Determine file type
-        String fileType = getCandidateFileType(upload);
-        String fileName = getFilePath(fileType);
+        String fileType = upload.candidateFileType();
+        String fileName = upload.filePath();
         BufferedImage imageGameSized = null;
 
         // Create a new file
@@ -193,35 +182,13 @@ public class S3Files implements FileService {
         return new ResizeAndSaveReturn(fileName, width, height);
     }
 
-    private String getCandidateFileType(FileUpload upload) {
-        String fileType;
-        String ct = upload.getContentType();
-        if (StringUtils.isNotBlank(ct)) {
-            int si = ct.lastIndexOf('/');
-            if (si > 0) fileType = ct.substring(si + 1);
-            else fileType = ct;
-        } else {
-            fileType = getFileType(upload.getClientFileName());
-        }
-        return fileType;
-    }
-
-    private String getFilePath(String fileType) {
-        // Generate name
-        String fileName = RandomStringUtils.randomAlphanumeric(16) + "." + fileType;
-        String dirName = fileName.substring(0, 1) + "/" + fileName.substring(1, 2);
-        return dirName + '/' + fileName;
-    }
-
     @Override
-    public String saveFileAndReturnPath(FileUpload upload) {
-        String fileType = getCandidateFileType(upload);
-        String filePath = getFilePath(fileType);
+    public String saveFileAndReturnPath(UploadedFile upload) {
+        String filePath = upload.filePath();
 
         try {
             bucket.upload(filePath, upload.getInputStream());
-
-            return filePath;
+            return bucket.getPublicUrl(filePath);
         } catch (IOException ex) {
             logger.error(ex);
         }

@@ -1,11 +1,11 @@
 package cz.larpovadatabaze.common.services.wicket;
 
+import cz.larpovadatabaze.common.models.UploadedFile;
 import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService.IImageResizingStrategy;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.request.resource.AbstractResource;
 import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.util.file.Files;
@@ -92,15 +92,6 @@ public class LocalFiles implements FileService {
         }
     }
 
-    private String getFileType(String fileName) {
-        String[] fileParts = fileName.trim().split("\\.");
-        if (fileParts.length > 0) {
-            return fileParts[fileParts.length - 1];
-        } else {
-            return "";
-        }
-    }
-
     /**
      * It cleans space of the file given as parameter, if anything with the same name already existed.
      *
@@ -134,17 +125,16 @@ public class LocalFiles implements FileService {
     }
 
     @Override
-    public ResizeAndSaveReturn saveImageFileAndPreviewAndReturnPath(FileUpload upload, IImageResizingStrategy fullImageResizingStrategy, IImageResizingStrategy previewResizingStrategy) {
-
+    public ResizeAndSaveReturn saveImageFileAndPreviewAndReturnPath(UploadedFile upload, IImageResizingStrategy fullImageResizingStrategy, IImageResizingStrategy previewResizingStrategy) {
         // Determine file type
         String fileType;
-        String ct = upload.getContentType();
+        String ct = upload.candidateFileType();
         if (StringUtils.isNotBlank(ct)) {
             int si = ct.lastIndexOf('/');
             if (si > 0) fileType = ct.substring(si + 1);
             else fileType = ct;
         } else {
-            fileType = getFileType(upload.getClientFileName());
+            fileType = upload.fileType();
         }
 
         // Generate name
@@ -197,7 +187,21 @@ public class LocalFiles implements FileService {
     }
 
     @Override
-    public ResizeAndSaveReturn saveImageFileAndReturnPath(FileUpload upload, IImageResizingStrategy fullImageResizingStrategy) {
+    public String saveFileAndReturnPath(UploadedFile blueprintFile) {
+        String filePath = blueprintFile.filePath();
+
+        try {
+            blueprintFile.writeTo(new File(getPathInDataDir(filePath)));
+            return filePath;
+        } catch (Exception e) {
+            logger.error(e);
+        }
+
+        return null;
+    }
+
+    @Override
+    public ResizeAndSaveReturn saveImageFileAndReturnPath(UploadedFile upload, IImageResizingStrategy fullImageResizingStrategy) {
         return saveImageFileAndPreviewAndReturnPath(upload, fullImageResizingStrategy, null);
     }
 

@@ -5,6 +5,7 @@ import cz.larpovadatabaze.common.components.CsldFeedbackMessageLabel;
 import cz.larpovadatabaze.common.components.ValidatableForm;
 import cz.larpovadatabaze.common.entities.CsldGroup;
 import cz.larpovadatabaze.common.entities.Image;
+import cz.larpovadatabaze.common.models.UploadedFile;
 import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.games.services.Images;
@@ -110,7 +111,7 @@ public abstract class CreateOrUpdateGroupPanel extends AbstractCsldPanel<CsldGro
         final List<FileUpload> uploads = fileUploadField.getFileUploads();
         if (uploads != null) {
             for (FileUpload upload : uploads) {
-                String filePath = fileService.saveImageFileAndReturnPath(upload, imageResizingStrategyFactoryService.getCuttingSquareStrategy(GROUP_ICON_SIZE, 50)).path;
+                String filePath = fileService.saveImageFileAndReturnPath(new UploadedFile(upload), imageResizingStrategyFactoryService.getCuttingSquareStrategy(GROUP_ICON_SIZE, 50)).path;
                 try {
                     Image image = new Image();
                     image.setPath(filePath);

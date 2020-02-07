@@ -4,11 +4,13 @@ import cz.larpovadatabaze.administration.services.Statistics;
 import cz.larpovadatabaze.administration.services.masquerade.InMemoryStatistics;
 import cz.larpovadatabaze.calendar.service.Events;
 import cz.larpovadatabaze.calendar.services.masqueradeStubs.InMemoryEvents;
+import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.common.services.FilterService;
 import cz.larpovadatabaze.common.services.MailService;
 import cz.larpovadatabaze.common.services.builders.InMemoryMasqueradeBuilder;
 import cz.larpovadatabaze.common.services.smtp.SmtpMailService;
 import cz.larpovadatabaze.common.services.wicket.FilterServiceReflection;
+import cz.larpovadatabaze.common.services.wicket.LocalFiles;
 import cz.larpovadatabaze.games.services.*;
 import cz.larpovadatabaze.games.services.masquerade.*;
 import cz.larpovadatabaze.search.services.TokenSearch;
@@ -137,6 +139,11 @@ public class RootTestWicketContext {
     @Bean
     public Statistics sqlStatistics() {
         return new InMemoryStatistics();
+    }
+
+    @Bean
+    public FileService fileService() {
+        return new LocalFiles(env.getProperty("csld.data.dir"));
     }
 
     @Bean(initMethod = "build")

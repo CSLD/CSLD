@@ -64,7 +64,7 @@ public class GameDetailPanel extends AbstractCsldPanel<Game> {
         add(new ExternalLink("webGameLink", Model.of(game.getWeb()), Model.of(game.getWeb())).setVisible(StringUtils.isNotBlank(game.getWeb())));
         // Add new link to the blueprint.
         add(new ExternalLink("bluePrintLink", Model.of(game.getBlueprintPath()), Model.of(game.getBlueprintPath()))
-                .setVisible(StringUtils.isNotBlank(game.getWeb())));
+                .setVisible(StringUtils.isNotBlank(game.getBlueprintPath())));
 
         // Gallery
         String galleryURL = game.getGalleryURL();
