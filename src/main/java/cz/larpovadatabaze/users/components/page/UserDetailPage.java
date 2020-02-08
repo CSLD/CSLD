@@ -5,10 +5,12 @@ import cz.larpovadatabaze.common.components.page.HomePage;
 import cz.larpovadatabaze.common.entities.Comment;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.utils.HbUtils;
-import cz.larpovadatabaze.games.components.panel.CommentsListPanel;
+import cz.larpovadatabaze.games.components.panel.AbstractListCommentPanel;
 import cz.larpovadatabaze.games.components.panel.GameListPanel;
 import cz.larpovadatabaze.games.components.panel.ListGamesWithAnnotations;
+import cz.larpovadatabaze.games.providers.PaginatedCommentsOfUser;
 import cz.larpovadatabaze.games.services.AuthoredGames;
+import cz.larpovadatabaze.games.services.Comments;
 import cz.larpovadatabaze.games.services.GamesWithState;
 import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.users.components.panel.PersonDetailPanel;
@@ -17,6 +19,7 @@ import cz.larpovadatabaze.users.providers.SortableAnnotatedProvider;
 import cz.larpovadatabaze.users.services.AppUsers;
 import cz.larpovadatabaze.users.services.CsldUsers;
 import org.apache.wicket.RestartResponseException;
+import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -45,6 +48,8 @@ public class UserDetailPage extends CsldBasePage {
     GamesWithState games;
     @SpringBean
     AppUsers appUsers;
+    @SpringBean
+    Comments comments;
 
     private class UserCommentsModel extends LoadableDetachableModel<List<Comment>> {
 
@@ -116,9 +121,9 @@ public class UserDetailPage extends CsldBasePage {
     protected void onInitialize() {
         super.onInitialize();
 
-        CsldUser user = (CsldUser)getDefaultModelObject();
+        final CsldUser user = (CsldUser) getDefaultModelObject();
 
-        add(new PersonDetailPanel("personDetail", (IModel<CsldUser>)getDefaultModel()));
+        add(new PersonDetailPanel("personDetail", (IModel<CsldUser>) getDefaultModel()));
 
         // TODO: Refactor move visibility into the class.
         CsldUser logged = CsldAuthenticatedWebSession.get().getLoggedUser();
@@ -126,15 +131,21 @@ public class UserDetailPage extends CsldBasePage {
         updateUserLink.setVisibilityAllowed(logged != null && logged.getId().equals(user.getId()));
         add(updateUserLink);
 
-        add(new CommentsListPanel("comments", new UserCommentsModel(), true));
+        add(new AbstractListCommentPanel("comments", true) {
+            @Override
+            protected SortableDataProvider<Comment, String> getDataProvider() {
+                return new PaginatedCommentsOfUser(comments) {
+                    @Override
+                    public CsldUser getUser() {
+                        return user;
+                    }
+                };
+            }
+        });
 
         SortableAnnotatedProvider provider = new SortableAnnotatedProvider(authoredGames);
         provider.setAuthor(user);
         add(new ListGamesWithAnnotations("annotatedGamesOfAuthor", provider));
-
-        if (HbUtils.isProxy(user)) {
-            user = HbUtils.deproxy(user);
-        }
 
         // Add player games
         add(new RatingsListPanel("ratedGames", Model.ofList(

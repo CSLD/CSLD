@@ -3,6 +3,7 @@ package cz.larpovadatabaze.games.services;
 import cz.larpovadatabaze.common.entities.Comment;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
+import cz.larpovadatabaze.common.models.Page;
 import cz.larpovadatabaze.common.services.CRUDService;
 
 import java.util.Collection;
@@ -66,7 +67,14 @@ public interface Comments extends CRUDService<Comment, Integer> {
      *
      * @return comments associated with given game
      */
-    List<Comment> visibleForCurrentUserOrderedByUpvotes(Game game);
+    List<Comment> visibleForCurrentUserOrderedByUpvotes(Game game, Page page);
+    // Add the concept of Page
+
+    int amountOfCommentsVisibleForCurrentUserAndGame(Game game);
+
+    List<Comment> visibleForCurrentUserOrderedByRecent(CsldUser user, Page page);
+
+    int amountOfCommentsVisibleForCurrentUserAndUser(CsldUser user);
 
     /**
      * Remove all comments created by specific user.

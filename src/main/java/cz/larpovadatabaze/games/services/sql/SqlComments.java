@@ -5,6 +5,7 @@ import cz.larpovadatabaze.common.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.common.entities.Comment;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
+import cz.larpovadatabaze.common.models.Page;
 import cz.larpovadatabaze.common.services.sql.CRUD;
 import cz.larpovadatabaze.games.services.Comments;
 import cz.larpovadatabaze.games.services.Games;
@@ -109,13 +110,52 @@ public class SqlComments extends CRUD<Comment, Integer> implements Comments {
     }
 
     @Override
-    public List<Comment> visibleForCurrentUserOrderedByUpvotes(Game game) {
+    public List<Comment> visibleForCurrentUserOrderedByRecent(CsldUser user, Page page) {
+        Criterion restrictions = visibleForCurrentUserAndObject(user.getId(), USER_BY_ID);
+        Criteria comments = crudRepository.getExecutableCriteria()
+                .add(restrictions)
+                .setFirstResult(page.from)
+                .setMaxResults(page.size)
+                .addOrder(Order.desc("added"));
+
+        return comments.list();
+    }
+
+    @Override
+    public int amountOfCommentsVisibleForCurrentUserAndUser(CsldUser user) {
+        Criterion restrictions = visibleForCurrentUserAndObject(user.getId(), USER_BY_ID);
+        Criteria comments = crudRepository.getExecutableCriteria()
+                .add(restrictions)
+                .setProjection(Projections.rowCount());
+        return ((Long) comments.uniqueResult()).intValue();
+    }
+
+    @Override
+    public List<Comment> visibleForCurrentUserOrderedByUpvotes(Game game, Page page) {
+        Criterion restrictions = visibleForCurrentUserAndObject(game.getId(), GAME_BY_ID);
+        Criteria comments = crudRepository.getExecutableCriteria()
+                .add(restrictions)
+                .setFirstResult(page.from)
+                .setMaxResults(page.size)
+                .addOrder(Order.desc("amountOfUpvotes"));
+        return comments.list();
+    }
+
+    @Override
+    public int amountOfCommentsVisibleForCurrentUserAndGame(Game game) {
+        Criterion restrictions = visibleForCurrentUserAndObject(game.getId(), GAME_BY_ID);
+        Criteria unsorted = crudRepository.getExecutableCriteria()
+                .add(restrictions).setProjection(Projections.rowCount());
+        return ((Long) unsorted.uniqueResult()).intValue();
+    }
+
+    private Criterion visibleForCurrentUserAndObject(Integer id, String objectById) {
         Criterion restrictions;
         if (appUsers.isAtLeastEditor()) {
-            restrictions = Restrictions.eq(GAME_BY_ID, game.getId());
+            restrictions = Restrictions.eq(objectById, id);
         } else if (appUsers.isSignedIn()) {
             restrictions = Restrictions.and(
-                    Restrictions.eq(GAME_BY_ID, game.getId()),
+                    Restrictions.eq(objectById, id),
                     Restrictions.or(
                             Restrictions.eq("hidden", false),
                             Restrictions.eq(USER_BY_ID, appUsers.getLoggedUserId())
@@ -123,23 +163,12 @@ public class SqlComments extends CRUD<Comment, Integer> implements Comments {
             );
         } else {
             restrictions = Restrictions.and(
-                    Restrictions.eq(GAME_BY_ID, game.getId()),
+                    Restrictions.eq(objectById, id),
                     Restrictions.eq("hidden", false)
             );
         }
 
-        List<Comment> visibleComments = crudRepository.findByCriteria(restrictions);
-
-        // Sort primarily by the amount of upvotes. Secondarily by the most recent.
-        visibleComments.sort((o1, o2) -> {
-            if (o1.getPluses().size() != o2.getPluses().size()) {
-                return o2.getPluses().size() - o1.getPluses().size();
-            } else {
-                return -(o1.getAdded().compareTo(o2.getAdded()));
-            }
-        });
-
-        return visibleComments;
+        return restrictions;
     }
 
     @Override

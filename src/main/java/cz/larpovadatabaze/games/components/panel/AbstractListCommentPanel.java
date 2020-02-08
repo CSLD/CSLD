@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.games.components.panel;
 
+import cz.larpovadatabaze.common.components.AbstractCsldPanel;
 import cz.larpovadatabaze.common.components.CommentHiddenButton;
 import cz.larpovadatabaze.common.components.page.CsldBasePage;
 import cz.larpovadatabaze.common.entities.Comment;
@@ -15,14 +16,14 @@ import cz.larpovadatabaze.users.components.icons.UserIcon;
 import cz.larpovadatabaze.users.components.page.UserDetailPage;
 import cz.larpovadatabaze.users.services.AppUsers;
 import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -32,22 +33,22 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * This Panel shows List of comments. Everything about comment is shown and the
- * full text of the comment.
+ * It contains all games in a pageable list, there are four possible ways to order
+ * the list. Order alphabetically, Order by rating or order by amount of ratings, or
+ * by amount of comments.
  */
-public class CommentsListPanel extends Panel {
+public abstract class AbstractListCommentPanel<T> extends AbstractCsldPanel<T> {
     @SpringBean
-    private Comments sqlComments;
+    Comments comments;
     @SpringBean
-    private Upvotes upvotes;
+    Ratings ratings;
     @SpringBean
-    private AppUsers appUsers;
+    AppUsers appUsers;
     @SpringBean
-    private Ratings ratings;
+    Upvotes upvotes;
 
-    private final IModel<List<Comment>> comments;
-
-    private final boolean showGame;
+    private SortableDataProvider<Comment, String> sdp;
+    private boolean showGame;
 
     /**
      * Model to be used for handling the Upvotes.
@@ -75,7 +76,7 @@ public class CommentsListPanel extends Panel {
 
         private Comment getActualComment() {
             if (actualComment == null) {
-                actualComment = sqlComments.getById(commentId);
+                actualComment = comments.getById(commentId);
             }
 
             return actualComment;
@@ -98,49 +99,25 @@ public class CommentsListPanel extends Panel {
         }
     }
 
-    /**
-     * User in the list view, always gets comment from DB
-     */
-    private final class CommentModel extends LoadableDetachableModel<Comment> {
-        private final int gameId;
-        private final int userId;
-
-        private CommentModel(int gameId, int userId) {
-            this.gameId = gameId;
-            this.userId = userId;
-        }
-
-        @Override
-        protected Comment load() {
-            return sqlComments.getCommentOnGameFromUser(userId, gameId);
-        }
-    }
-
-    public CommentsListPanel(String id, IModel<List<Comment>> comments) {
-        this(id, comments, false);
-    }
-
-    public CommentsListPanel(String id, IModel<List<Comment>> comments, final boolean showGame) {
+    public AbstractListCommentPanel(String id, boolean showGame) {
         super(id);
 
-        this.comments = comments;
         this.showGame = showGame;
     }
+
+    /**
+     * @return Data provider
+     */
+    protected abstract SortableDataProvider<Comment, String> getDataProvider();
 
     @Override
     protected void onInitialize() {
         super.onInitialize();
 
-        ListView<Comment> commentList = new ListView<Comment>("commentList", comments) {
+        sdp = getDataProvider();
+        final DataView<Comment> propertyList = new DataView<>("listComments", sdp) {
             @Override
-            protected IModel<Comment> getListItemModel(IModel<? extends List<Comment>> listViewModel, int index) {
-                // We want to always keep items pointing to the same comment
-                Comment c = listViewModel.getObject().get(index);
-                return new CommentModel(c.getGame().getId(), c.getUser().getId());
-            }
-
-            @Override
-            protected void populateItem(final ListItem<Comment> item) {
+            protected void populateItem(Item<Comment> item) {
                 Comment actualComment = item.getModelObject();
                 SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy");
                 Date dateOfComment = new Date();
@@ -157,7 +134,7 @@ public class CommentsListPanel extends Panel {
                 PageParameters params = new PageParameters();
                 params.add("id", authorOfComment.getId());
                 final BookmarkablePageLink<CsldBasePage> authorLink =
-                        new BookmarkablePageLink<CsldBasePage>("authorLink", UserDetailPage.class, params);
+                        new BookmarkablePageLink<>("authorLink", UserDetailPage.class, params);
                 item.add(authorLink);
 
                 // Author image
@@ -183,9 +160,12 @@ public class CommentsListPanel extends Panel {
                 item.add(gameLabel);
             }
         };
-        add(commentList);
+        propertyList.setOutputMarkupId(true);
+        propertyList.setItemsPerPage(10L);
 
-
+        add(propertyList);
+        PagingNavigator paging = new PagingNavigator("navigator", propertyList);
+        add(paging);
     }
 
     private WebMarkupContainer createGameDetailLink(Game game) {

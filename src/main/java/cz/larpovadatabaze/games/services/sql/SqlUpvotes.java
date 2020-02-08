@@ -33,6 +33,7 @@ public class SqlUpvotes extends CRUD<Upvote, Integer> implements Upvotes {
         toAdd.setComment(comment);
         toAdd.setAdded(new Timestamp(new Date().getTime()));
         comment.getPluses().add(toAdd);
+        comment.setAmountOfUpvotes(comment.getAmountOfUpvotes() + 1);
 
         saveOrUpdate(toAdd);
     }
@@ -46,6 +47,7 @@ public class SqlUpvotes extends CRUD<Upvote, Integer> implements Upvotes {
                 ));
         for (Upvote upvote : upvotes) {
             comment.getPluses().remove(upvote);
+            comment.setAmountOfUpvotes(comment.getAmountOfUpvotes() - 1);
             crudRepository.delete(upvote);
         }
     }

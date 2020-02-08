@@ -15,14 +15,14 @@ import java.util.List;
 /**
  *
  */
-public class SortableGameProvider extends SortableDataProvider<Game, String> {
+public class SortedFilteredPaginatedGames extends SortableDataProvider<Game, String> {
 
     @SpringBean
     private FilteredGames games;
 
     private IModel<FilterGameDTO> filterModel;
 
-    public SortableGameProvider(IModel<FilterGameDTO> filterModel) {
+    public SortedFilteredPaginatedGames(IModel<FilterGameDTO> filterModel) {
         Injector.get().inject(this);
         this.filterModel = filterModel;
     }
