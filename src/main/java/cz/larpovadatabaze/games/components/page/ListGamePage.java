@@ -9,7 +9,7 @@ import cz.larpovadatabaze.games.components.panel.AbstractListGamePanel;
 import cz.larpovadatabaze.games.components.panel.FilterGameTabsPanel;
 import cz.larpovadatabaze.games.components.panel.FilterGamesSidePanel;
 import cz.larpovadatabaze.games.models.FilterGameDTO;
-import cz.larpovadatabaze.games.providers.SortableGameProvider;
+import cz.larpovadatabaze.games.providers.SortedFilteredPaginatedGames;
 import cz.larpovadatabaze.games.services.Labels;
 import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.users.services.CsldUsers;
@@ -155,7 +155,7 @@ public class ListGamePage extends CsldBasePage implements FilterablePage {
         listGamePanel = new AbstractListGamePanel<FilterGameDTO>("listGame", filterModel) {
             @Override
             protected SortableDataProvider<Game, String> getDataProvider() {
-                return new SortableGameProvider(getModel());
+                return new SortedFilteredPaginatedGames(getModel());
             }
         };
         listGamePanel.setOutputMarkupId(true);

@@ -17,7 +17,7 @@ public class SearchResultsPage extends CsldBasePage {
     public SearchResultsPage(PageParameters params) {
         String query = params.get(SearchBoxPanel.QUERY_PARAMETER_NAME).toString();
 
-        final Component gamesResultsPanel = new AbstractListGamePanel<String>("games", Model.of(query)) {
+        final Component gamesResultsPanel = new AbstractListGamePanel<>("games", Model.of(query)) {
             @Override
             protected SortableDataProvider<Game, String> getDataProvider() {
                 GameSearchProvider res = new GameSearchProvider();
@@ -28,7 +28,7 @@ public class SearchResultsPage extends CsldBasePage {
         gamesResultsPanel.setOutputMarkupId(true);
         add(gamesResultsPanel);
 
-        final Component usersResultsPanel = new AbstractListUserPanel<String>("users", Model.of(query)) {
+        final Component usersResultsPanel = new AbstractListUserPanel<>("users", Model.of(query)) {
             @Override
             protected SortableDataProvider<CsldUser, String> getDataProvider() {
                 UserSearchProvider res = new UserSearchProvider();
