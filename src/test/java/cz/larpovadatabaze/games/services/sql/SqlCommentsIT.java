@@ -92,7 +92,7 @@ public class SqlCommentsIT extends WithDatabase {
         when(mockAppUsers.isAtLeastEditor()).thenReturn(false);
 
         List<Comment> visibleOrderedComments =
-                underTest.visibleForCurrentUserOrderedByUpvotes(masqueradeEntities.secondMasquerade, new Page(4, 0));
+                underTest.visibleForCurrentUserOrderedByUpvotes(masqueradeEntities.secondMasquerade, new Page(0, 4));
 
         assertThat(visibleOrderedComments, hasSize(2));
         assertThat(visibleOrderedComments, contains(
@@ -106,7 +106,7 @@ public class SqlCommentsIT extends WithDatabase {
         when(mockAppUsers.getLoggedUserId()).thenReturn(-1);
 
         List<Comment> visibleOrderedComments =
-                underTest.visibleForCurrentUserOrderedByUpvotes(masqueradeEntities.secondMasquerade, new Page(4, 0));
+                underTest.visibleForCurrentUserOrderedByUpvotes(masqueradeEntities.secondMasquerade, new Page(0, 4));
 
         assertThat(visibleOrderedComments, hasSize(3));
         assertThat(visibleOrderedComments, contains(
