@@ -137,7 +137,8 @@ public class SqlComments extends CRUD<Comment, Integer> implements Comments {
                 .add(restrictions)
                 .setFirstResult(page.from)
                 .setMaxResults(page.size)
-                .addOrder(Order.desc("amountOfUpvotes"));
+                .addOrder(Order.desc("amountOfUpvotes"))
+                .addOrder(Order.desc("added"));
         return comments.list();
     }
 
