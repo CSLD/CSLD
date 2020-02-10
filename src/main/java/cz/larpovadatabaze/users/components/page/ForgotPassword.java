@@ -44,6 +44,9 @@ public class ForgotPassword extends CsldBasePage {
                 emailAuthentication.setAuthToken(key);
                 String url = RequestCycle.get().getUrlRenderer()
                         .renderFullUrl(RequestCycle.get().mapUrlFor(ResetPassword.class, params));
+                if (url.startsWith("http://")) {
+                    url = url.replace("http://", "https://");
+                }
 
                 csldUsers.sendForgottenPassword(user, emailAuthentication, url);
 

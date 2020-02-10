@@ -241,6 +241,7 @@ public abstract class CreateOrUpdateGamePanel extends AbstractCsldPanel<Game> {
             }
         });
         createOrUpdateGame.add(blueprint);
+        createOrUpdateGame.add(new CsldFeedbackMessageLabel("blueprintFeedback", bothRole, "form.game.blueprintHint"));
 
         WebMarkupContainer authorsWrapper = new WebMarkupContainer("authorsWrapper");
         createOrUpdateGame.add(authorsWrapper);

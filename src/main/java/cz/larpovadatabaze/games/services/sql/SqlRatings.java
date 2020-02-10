@@ -102,6 +102,11 @@ public class SqlRatings extends CRUD<Rating, Integer> implements Ratings {
 
     @Override
     public void remove(Rating toRemove) {
+        if (toRemove.getRating() != null) {
+            Game game = toRemove.getGame();
+            game.setAmountOfRatings(game.getAmountOfRatings() - 1);
+        }
+
         crudRepository.delete(toRemove);
 
         // Some fields in the game object are computed by triggers - flush corresponding game from hibernate cache so it is reloaded
@@ -121,6 +126,11 @@ public class SqlRatings extends CRUD<Rating, Integer> implements Ratings {
             CsldUser addedBy = actualRating.getUser();
             List<CsldUser> authors = actualRating.getGame().getAuthors();
             actualRating.setByAuthor(authors.indexOf(addedBy) != -1);
+        }
+
+        if (actualRating.getRating() != null) {
+            Game game = actualRating.getGame();
+            game.setAmountOfRatings(game.getAmountOfRatings() + 1);
         }
 
         crudRepository.saveOrUpdate(actualRating);
