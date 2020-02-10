@@ -184,10 +184,8 @@ Code - cz.larpovadatabaze.games.components.panel.CreateOrUpdateGamePanel.html
                     <section class="col col-12">
                         <label class="input">
                             <i class="icon-append fa fa-upload"></i>
-                            <input type="file" wicket:id="gameBlueprint"/>
-                            <b class="tooltip tooltip-bottom-right">
-                                <wicket:message key="form.game.blueprintHint"/>
-                            </b>
+                            <input type="file" wicket:id="gameBlueprint" wicket:message="placeholder:form.blueprint"/>
+                            <b class="tooltip tooltip-bottom-right" wicket:id="blueprintFeedback"></b>
                         </label>
                     </section>
                 </div>
