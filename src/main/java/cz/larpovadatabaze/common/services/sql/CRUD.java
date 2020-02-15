@@ -47,6 +47,7 @@ public class CRUD<T, I extends Serializable> implements CRUDService<T, I> {
     }
 
     @Override
+    @Transactional
     public boolean saveOrUpdate(T entity) {
         return crudRepository.saveOrUpdate(entity);
     }
