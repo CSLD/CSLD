@@ -83,6 +83,15 @@ public class SqlRatings extends CRUD<Rating, Integer> implements Ratings {
     }
 
     @Override
+    public String getColorForGame(Game game) {
+        if (game.getAmountOfRatings() < 4) {
+            return getColor(null);
+        } else {
+            return getColor(game.getAverageRating());
+        }
+    }
+
+    @Override
     public List<Rating> getRatingsOfGame(Game game) {
         Criteria criteria = crudRepository.getExecutableCriteria()
                 .add(Restrictions.eq("game", game))
@@ -102,11 +111,6 @@ public class SqlRatings extends CRUD<Rating, Integer> implements Ratings {
 
     @Override
     public void remove(Rating toRemove) {
-        if (toRemove.getRating() != null) {
-            Game game = toRemove.getGame();
-            game.setAmountOfRatings(game.getAmountOfRatings() - 1);
-        }
-
         crudRepository.delete(toRemove);
 
         // Some fields in the game object are computed by triggers - flush corresponding game from hibernate cache so it is reloaded
@@ -114,6 +118,7 @@ public class SqlRatings extends CRUD<Rating, Integer> implements Ratings {
     }
 
     @Override
+    @Transactional
     public boolean saveOrUpdate(Rating actualRating) {
         actualRating.setAdded(new Timestamp(new Date().getTime()));
         if (actualRating.getStateEnum() != Rating.GameState.WANT_TO_PLAY
@@ -126,11 +131,6 @@ public class SqlRatings extends CRUD<Rating, Integer> implements Ratings {
             CsldUser addedBy = actualRating.getUser();
             List<CsldUser> authors = actualRating.getGame().getAuthors();
             actualRating.setByAuthor(authors.indexOf(addedBy) != -1);
-        }
-
-        if (actualRating.getRating() != null) {
-            Game game = actualRating.getGame();
-            game.setAmountOfRatings(game.getAmountOfRatings() + 1);
         }
 
         crudRepository.saveOrUpdate(actualRating);

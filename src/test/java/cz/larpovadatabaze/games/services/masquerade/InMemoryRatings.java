@@ -34,6 +34,11 @@ public class InMemoryRatings extends InMemoryCrud<Rating, Integer> implements Ra
     }
 
     @Override
+    public String getColorForGame(Game game) {
+        return "average";
+    }
+
+    @Override
     public List<Rating> getRatingsOfGame(Game game) {
         return inMemory.stream()
                 .filter(rating -> rating.getGame().equals(game))
