@@ -97,6 +97,7 @@ public class SqlGames extends CRUD<Game, Integer> implements Games {
     }
 
     @Override
+    @Transactional
     public boolean saveOrUpdate(Game model) {
         model.setAdded(new Timestamp(new Date().getTime()));
 
