@@ -91,6 +91,11 @@
             <artifactId>wicketstuff-gmap3</artifactId>
             <version>${wicket.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.wicketstuff</groupId>
+            <artifactId>wicket-facebook</artifactId>
+            <version>${wicket.version}</version>
+        </dependency>
 
         <!-- SPRING DEPENDENCIES -->
         <dependency>

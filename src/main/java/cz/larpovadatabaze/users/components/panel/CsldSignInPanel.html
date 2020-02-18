@@ -29,13 +29,17 @@ It is external panel, and therefore it is not found on GitHub
                 </label>
             </section>
             <section>
-                <a wicket:id="forgotPassword" style="color: #00A0B0;" ><wicket:message key="user.forgottenPassword">Zapomenuté heslo</wicket:message></a>
+                <a wicket:id="forgotPassword" style="color: #00A0B0;">
+                    <wicket:message key="user.forgottenPassword">Zapomenuté heslo</wicket:message>
+                </a>
             </section>
             <section>
-                <input type="submit" name="submit" class="btn-u" wicket:id="submitButton" />
+                <input type="submit" name="submit" class="btn-u" wicket:id="submitButton"/>
             </section>
         </fieldset>
     </form>
+    <div>Event: <span wicket:id="response"></span></div>
+    <div wicket:id="loginButton"></div>
 </wicket:panel>
 </body>
 </html>

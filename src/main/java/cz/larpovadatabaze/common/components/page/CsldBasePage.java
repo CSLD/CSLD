@@ -33,6 +33,7 @@ import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.core.env.Environment;
+import org.wicketstuff.facebook.FacebookSdk;
 
 import java.util.Locale;
 
@@ -62,6 +63,7 @@ public abstract class CsldBasePage extends WebPage {
     @Override
     protected void onInitialize() {
         super.onInitialize();
+        add(new FacebookSdk("fbRoot", "589271441623477"));
 
         if(!CsldAuthenticatedWebSession.get().isSignedIn()){
             IAuthenticationStrategy strategy = getApplication().getSecuritySettings()

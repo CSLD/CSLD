@@ -46,6 +46,7 @@
           <element id="library" level="project" name="Maven: org.wicketstuff:wicketstuff-gmap3:8.6.0" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.9.9.3" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.9.0" />
+          <element id="library" level="project" name="Maven: org.wicketstuff:wicket-facebook:8.6.0" />
           <element id="library" level="project" name="Maven: org.springframework:spring-beans:5.2.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-context:5.2.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-aop:5.2.2.RELEASE" />
