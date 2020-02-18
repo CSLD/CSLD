@@ -88,4 +88,12 @@ public interface CsldUsers extends CRUDService<CsldUser, Integer>, IIconReferenc
      * @return True if the process was ok.
      */
     boolean saveOrUpdate(CsldUser model, List<FileUpload> uploads);
+
+    /**
+     * Return user with given fbId if such User exists or null if none user like this exists.
+     *
+     * @param fbId Id of the User provided by Facebook.
+     * @return Relevant user or null.
+     */
+    CsldUser byFbId(String fbId);
 }

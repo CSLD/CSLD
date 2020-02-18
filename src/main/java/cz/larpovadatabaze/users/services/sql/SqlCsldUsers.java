@@ -226,6 +226,13 @@ public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
     }
 
     @Override
+    public CsldUser byFbId(String fbId) {
+        return crudRepository.findSingleByCriteria(
+                Restrictions.eq("fbId", fbId)
+        );
+    }
+
+    @Override
     public void remove(CsldUser toRemoveDto) {
         if (!appUsers.isAtLeastEditor()) {
             logger.warn("Try to remove user: " + toRemoveDto.getId() + " By: " + appUsers.getLoggedUserId());

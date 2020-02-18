@@ -1,8 +1,11 @@
 package cz.larpovadatabaze.users.components.panel;
 
 import cz.larpovadatabaze.common.components.page.CsldBasePage;
+import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.users.components.page.ForgotPassword;
+import cz.larpovadatabaze.users.services.AppUsers;
+import cz.larpovadatabaze.users.services.CsldUsers;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authentication.IAuthenticationStrategy;
@@ -12,15 +15,21 @@ import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.facebook.FacebookPermission;
 import org.wicketstuff.facebook.FacebookSdk;
-import org.wicketstuff.facebook.behaviors.AuthLoginEventBehavior;
+import org.wicketstuff.facebook.behaviors.AuthStatusChangeEventBehavior;
 import org.wicketstuff.facebook.plugins.LoginButton;
 
 /**
  *
  */
 public class CsldSignInPanel extends SignInPanel {
+    @SpringBean
+    CsldUsers csldUsers;
+    @SpringBean
+    AppUsers appUsers;
+
     public CsldSignInPanel(String id) {
         super(id);
     }
@@ -41,18 +50,26 @@ public class CsldSignInPanel extends SignInPanel {
 
 
         // Once FB is loaded. Not earlier.
-        add(new AuthLoginEventBehavior() {
+        add(new AuthStatusChangeEventBehavior() {
             @Override
             protected void onSessionEvent(final AjaxRequestTarget target, final String status,
                                           final String userId, final String signedRequest, final String expiresIn,
                                           final String accessToken) {
-                final StringBuilder sb = new StringBuilder();
-                sb.append("status: ").append(status).append('\n');
-                sb.append("signedRequest: ").append(signedRequest).append('\n');
-                sb.append("expiresIn: ").append(expiresIn).append('\n');
-                sb.append("accessToken: ").append(accessToken).append('\n');
-
-                responseModel.setObject(sb.toString());
+                if (status.equals("connected")) {
+                    CsldUser connectedUser = csldUsers.byFbId(userId);
+                    // If a User is logged in, just add info to the logged user.
+                    if (connectedUser != null) {
+                        CsldAuthenticatedWebSession.get().setLoggedUser(connectedUser);
+                    } else {
+                        if (CsldAuthenticatedWebSession.get().isSignedIn()) {
+                            // Update current user by adding the FB Id
+                        } else {
+                            // Create new user available only via FB Id until the details are provided elsewhere.
+                        }
+                    }
+                } else {
+                    responseModel.setObject("Invalid Login");
+                }
 
                 target.add(responseLabel);
             }
