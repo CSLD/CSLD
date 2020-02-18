@@ -13,6 +13,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.wicketstuff.facebook.FacebookPermission;
+import org.wicketstuff.facebook.FacebookSdk;
 import org.wicketstuff.facebook.behaviors.AuthLoginEventBehavior;
 import org.wicketstuff.facebook.plugins.LoginButton;
 
@@ -22,16 +23,25 @@ import org.wicketstuff.facebook.plugins.LoginButton;
 public class CsldSignInPanel extends SignInPanel {
     public CsldSignInPanel(String id) {
         super(id);
+    }
 
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
+
+        add(new FacebookSdk("fbRoot", "589271441623477"));
         add(new LoginButton("loginButton", FacebookPermission.email));
-        final Model<String> responseModel = new Model<String>();
+        final Model<String> responseModel = new Model<>();
         final MultiLineLabel responseLabel = new MultiLineLabel("response", responseModel);
         responseLabel.setOutputMarkupId(true);
         add(responseLabel);
 
+        getForm().add(new BookmarkablePageLink<CsldBasePage>("forgotPassword", ForgotPassword.class));
+        getForm().add(new Button("submitButton", new ResourceModel("form.signIn", "Sign In")));
 
+
+        // Once FB is loaded. Not earlier.
         add(new AuthLoginEventBehavior() {
-
             @Override
             protected void onSessionEvent(final AjaxRequestTarget target, final String status,
                                           final String userId, final String signedRequest, final String expiresIn,
@@ -47,9 +57,6 @@ public class CsldSignInPanel extends SignInPanel {
                 target.add(responseLabel);
             }
         });
-
-        getForm().add(new BookmarkablePageLink<CsldBasePage>("forgotPassword", ForgotPassword.class));
-        getForm().add(new Button("submitButton", new ResourceModel("form.signIn", "Sign In")));
     }
 
     /**
