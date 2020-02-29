@@ -83,6 +83,15 @@ public class SqlRatings extends CRUD<Rating, Integer> implements Ratings {
     }
 
     @Override
+    public String getColorForGame(Game game) {
+        if (game.getAmountOfRatings() < 4) {
+            return getColor(null);
+        } else {
+            return getColor(game.getAverageRating());
+        }
+    }
+
+    @Override
     public List<Rating> getRatingsOfGame(Game game) {
         Criteria criteria = crudRepository.getExecutableCriteria()
                 .add(Restrictions.eq("game", game))
@@ -109,6 +118,7 @@ public class SqlRatings extends CRUD<Rating, Integer> implements Ratings {
     }
 
     @Override
+    @Transactional
     public boolean saveOrUpdate(Rating actualRating) {
         actualRating.setAdded(new Timestamp(new Date().getTime()));
         if (actualRating.getStateEnum() != Rating.GameState.WANT_TO_PLAY

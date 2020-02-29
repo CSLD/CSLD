@@ -1,6 +1,8 @@
 package cz.larpovadatabaze.games.providers;
 
 import cz.larpovadatabaze.common.entities.Comment;
+import cz.larpovadatabaze.common.entities.CsldUser;
+import cz.larpovadatabaze.common.models.Page;
 import cz.larpovadatabaze.games.services.Comments;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.IModel;
@@ -17,22 +19,24 @@ import java.util.Iterator;
  * Time: 22:55
  */
 @Component
-public class SortableCommentProvider extends SortableDataProvider<Comment, String> {
+public abstract class PaginatedCommentsOfUser extends SortableDataProvider<Comment, String> {
     private Comments comments;
 
     @Autowired
-    public SortableCommentProvider(Comments comments) {
+    public PaginatedCommentsOfUser(Comments comments) {
         this.comments = comments;
     }
 
+    abstract public CsldUser getUser();
+
     @Override
     public Iterator<? extends Comment> iterator(long first, long count) {
-        return comments.getLastComments((int) first, (int) count).iterator();
+        return comments.visibleForCurrentUserOrderedByRecent(getUser(), new Page((int) first, (int) count)).iterator();
     }
 
     @Override
     public long size() {
-        return comments.getAmountOfComments();
+        return comments.amountOfCommentsVisibleForCurrentUserAndUser(getUser());
     }
 
     @Override

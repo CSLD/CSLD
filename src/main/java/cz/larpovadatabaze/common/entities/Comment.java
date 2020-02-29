@@ -87,6 +87,18 @@ public class Comment implements Identifiable<Integer>, Serializable {
         isHidden = hidden;
     }
 
+    private Integer amountOfUpvotes = 0;
+
+    @Column(name = "amount_of_upvotes")
+    @Basic
+    public Integer getAmountOfUpvotes() {
+        return amountOfUpvotes;
+    }
+
+    public void setAmountOfUpvotes(Integer amountOfUpvotes) {
+        this.amountOfUpvotes = amountOfUpvotes;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

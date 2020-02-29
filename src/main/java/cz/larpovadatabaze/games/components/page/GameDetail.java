@@ -13,6 +13,7 @@ import cz.larpovadatabaze.common.entities.Video;
 import cz.larpovadatabaze.common.utils.HbUtils;
 import cz.larpovadatabaze.common.utils.Strings;
 import cz.larpovadatabaze.games.components.panel.*;
+import cz.larpovadatabaze.games.providers.PaginatedCommentsForGame;
 import cz.larpovadatabaze.games.services.*;
 import cz.larpovadatabaze.users.services.AppUsers;
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +23,7 @@ import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.EnclosureContainer;
 import org.apache.wicket.markup.html.form.Form;
@@ -149,18 +151,6 @@ public class GameDetail extends CsldBasePage {
     }
 
     /**
-     * Model for comments of actual game. (Might get GameModel as constructor parameter to be extra clean, but we use the one stored in the page.)
-     * The downside is it does not cache results so getObject() may be costly.
-     * The results are ordered by the Amount of upvotes. In case of draw it is ordered by the most recent ones.
-     */
-    private class CommentsModel extends LoadableDetachableModel<List<Comment>> {
-        @Override
-        public List<Comment> load() {
-            return comments.visibleForCurrentUserOrderedByUpvotes(getModel().getObject());
-        }
-    }
-
-    /**
      * Constructor - initialize just model
      */
     public GameDetail(PageParameters params){
@@ -216,8 +206,20 @@ public class GameDetail extends CsldBasePage {
                 // Create comments
                 fragment = new Fragment("tabContentPanel", "comments", this);
 
-                final CommentsListPanel listOfComments = new CommentsListPanel("commentsList", new CommentsModel());
+                final AbstractListCommentPanel listOfComments = new AbstractListCommentPanel("commentsList", false) {
+
+                    @Override
+                    protected SortableDataProvider<Comment, String> getDataProvider() {
+                        return new PaginatedCommentsForGame(comments) {
+                            @Override
+                            public Game getGame() {
+                                return GameDetail.this.getModel().getObject();
+                            }
+                        };
+                    }
+                };
                 listOfComments.setOutputMarkupId(true);
+
 
                 fragment.add(new CommentsPanel("addComment", getModel(), new Component[]{listOfComments}));
                 fragment.add(listOfComments);

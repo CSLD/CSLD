@@ -1,12 +1,6 @@
 <wicket:panel xmlns:wicket="http://wicket.apache.org">
-    <h2><wicket:message key="comments"/></h2>
-    <!--
-    This Panel shows List of comments. Everything about comment is shown and the
-    full text of the comment.
-    It is found in https://github.com/CSLD/CSLD/tree/master/src/main/java/cz/larpovadatabaze/components/panel/game/CommentsListPanel.html
-    Code - cz.larpovadatabaze.games.components.panel.CommentsListPanel.html
-    -->
-    <div wicket:id="commentList" class="list-group-item">
+    <!-- Beginning of repetitive content for every Comment -->
+    <div class="list-group-item" wicket:id="listComments">
         <h4 class="list-group-item-heading">
             <div style="float: right; margin-top: 25px;">
                 <span class="comment-plus-one" wicket:id="pluses">2</span>
@@ -15,7 +9,8 @@
             <div wicket:id="commentHiddenButton" style="float: right; margin-top: 50px;"></div>
             <a wicket:id="authorLink">
                 <span class="comment-user-picture"><img class="media-object" wicket:id="avatar" alt=""></span>
-                <span class="comment-user-nickname label label-info" wicket:id="nick">Imi</span><span class="comment-user-name" wicket:id="name">Stanislava Pajerová</span>
+                <span class="comment-user-nickname label label-info" wicket:id="nick">Imi</span><span
+                    class="comment-user-name" wicket:id="name">Stanislava Pajerová</span>
             </a>
             <span class="comment-date" wicket:id="commentDate">8. 4. 2014</span>
         </h4>
@@ -31,5 +26,11 @@
                 </a>
             </span>
         </div>
+
+    </div>
+    <!-- End of repetitive content for every Game -->
+
+    <div class="navigator">
+        <span wicket:id="navigator">[dataview navigator]</span>
     </div>
 </wicket:panel>

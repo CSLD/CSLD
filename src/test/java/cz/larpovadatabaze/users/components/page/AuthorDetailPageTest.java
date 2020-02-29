@@ -2,7 +2,7 @@ package cz.larpovadatabaze.users.components.page;
 
 import cz.larpovadatabaze.WithWicket;
 import cz.larpovadatabaze.common.entities.CsldUser;
-import cz.larpovadatabaze.games.components.panel.CommentsListPanel;
+import cz.larpovadatabaze.games.components.panel.AbstractListCommentPanel;
 import cz.larpovadatabaze.games.components.panel.GameListPanel;
 import cz.larpovadatabaze.games.components.panel.ListGamesWithAnnotations;
 import cz.larpovadatabaze.users.components.panel.PersonDetailPanel;
@@ -37,7 +37,7 @@ public class AuthorDetailPageTest extends WithWicket {
         tester.assertRenderedPage(UserDetailPage.class);
 
         tester.assertComponent("personDetail", PersonDetailPanel.class);
-        tester.assertComponent("comments", CommentsListPanel.class);
+        tester.assertComponent("comments", AbstractListCommentPanel.class);
         tester.assertComponent("annotatedGamesOfAuthor", ListGamesWithAnnotations.class);
         tester.assertComponent("wantedGamesPanel", GameListPanel.class);
 

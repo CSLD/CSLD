@@ -71,7 +71,7 @@ public abstract class CsldBasePage extends WebPage {
                 // TODO: Verify setting language on login.
                 CsldAuthenticatedWebSession.get().signIn(data[0], data[1]);
                 CsldUser user = appUsers.getLoggedUser();
-                if(user != null && user.getDefaultLang() != null) {
+                if (user != null && user.getDefaultLang() != null) {
                     CsldAuthenticatedWebSession.get().setLocale(Locale.forLanguageTag(user.getDefaultLang()));
                 }
             }
@@ -80,6 +80,9 @@ public abstract class CsldBasePage extends WebPage {
         add(new Label("pageTitle", getPageTitleModel()));
 
         String previewImageURL = getRequestCycle().getUrlRenderer().renderFullUrl(Url.parse(getPreviewImageUrlModel().getObject()));
+        if (previewImageURL.startsWith("http://")) {
+            previewImageURL = previewImageURL.replace("http://", "https://");
+        }
 
         WebMarkupContainer previewImageTag1 = new WebMarkupContainer("previewImageTag1");
         previewImageTag1.add(new AttributeModifier("href", previewImageURL));

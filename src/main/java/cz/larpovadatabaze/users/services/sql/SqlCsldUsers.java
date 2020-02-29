@@ -7,6 +7,7 @@ import cz.larpovadatabaze.common.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.EmailAuthentication;
 import cz.larpovadatabaze.common.entities.Image;
+import cz.larpovadatabaze.common.models.UploadedFile;
 import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.common.services.MailService;
@@ -209,7 +210,7 @@ public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
         }
         if (uploads != null && uploads.size() > 0) {
             for (FileUpload upload : uploads) {
-                String filePath = files.saveImageFileAndReturnPath(upload,
+                String filePath = files.saveImageFileAndReturnPath(new UploadedFile(upload),
                         imageResizingStrategyFactoryService.getCuttingSquareStrategy(
                                 CsldUsers.USER_IMAGE_SIZE, CsldUsers.USER_IMAGE_LEFTTOP_PERCENT)).path;
                 try {
