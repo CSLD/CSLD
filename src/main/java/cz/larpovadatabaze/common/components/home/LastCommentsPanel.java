@@ -111,8 +111,8 @@ public class LastCommentsPanel extends Panel {
             f.add(gameLink);
 
             // Game rating
-            String gameRatingColor = ratings.getColor(game.getTotalRating());
-            Label gameRating = new Label("gameRating","");
+            String gameRatingColor = ratings.getColorForGame(game);
+            Label gameRating = new Label("gameRating", "");
             gameRating.add(new AttributeAppender("class", Model.of(gameRatingColor), " "));
             gameLink.add(gameRating);
 
