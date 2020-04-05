@@ -1,5 +1,5 @@
 language: java
-jdk: oraclejdk12
+jdk: oraclejdk14
 
 sudo: required
 
