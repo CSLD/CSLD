@@ -867,8 +867,9 @@ div.recent-game-players{
 .row.comments{
 }
 .add-game-btn{
-    position: absolute;
-    padding: 12px;
+    padding: 2px;
+    padding-left: 10px;
+    padding-right: 10px;
     border-radius: 4px;
     font-size: 10px;
     color: #F0F0F0;

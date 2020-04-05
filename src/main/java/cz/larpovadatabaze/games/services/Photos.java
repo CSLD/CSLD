@@ -32,6 +32,13 @@ public interface Photos extends CRUDService<Photo, Integer> {
      * @param amount
      */
     List<Photo> getRandomPhotos(int amount);
+    
+    /**
+     * Return given amount of most recently added photos.
+     * 
+     * @param amount Amount of photos to return
+     */
+    List<Photo> getMostRecent(int amount);
 
     /**
      * Replace who added the photos added by specific user by nobody

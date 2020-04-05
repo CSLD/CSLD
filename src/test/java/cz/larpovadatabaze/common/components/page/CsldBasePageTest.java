@@ -29,20 +29,10 @@ public class CsldBasePageTest extends WithWicket {
 
         tester.assertLabel("pageTitle", "Česko-slovenská larpová databáze");
         tester.assertComponent("list-game", BookmarkablePageLink.class);
-        tester.assertComponent("about", BookmarkablePageLink.class);
 
         tester.assertComponent("user", LoginBoxPanel.class);
 
         tester.assertComponent("searchBox", SearchBoxPanel.class);
-        tester.assertComponent("advertisements", AdvertisementPanel.class);
-    }
-
-    @Test
-    public void aboutLeadsToAbout() {
-        tester.startPage(HomePage.class);
-
-        tester.clickLink("about");
-        tester.assertRenderedPage(AboutDatabasePage.class);
     }
 
     @Test

@@ -16,6 +16,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -98,6 +99,14 @@ public class SqlFilePhotos extends CRUD<Photo, Integer> implements Photos {
     public List<Photo> getRandomPhotos(int amount) {
         Criteria criteria = crudRepository.getExecutableCriteria();
         criteria.add(Restrictions.sqlRestriction("1=1 order by random()"));
+        criteria.setMaxResults(amount);
+        return criteria.list();
+    }
+    
+    @Override
+    public List<Photo> getMostRecent(int amount) {
+        Criteria criteria = crudRepository.getExecutableCriteria();
+        criteria.addOrder(Order.desc("id"));
         criteria.setMaxResults(amount);
         return criteria.list();
     }

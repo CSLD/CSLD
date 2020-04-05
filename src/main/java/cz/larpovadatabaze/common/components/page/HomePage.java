@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.common.components.page;
 
+import cz.larpovadatabaze.common.components.home.AdvertisementPanel;
 import cz.larpovadatabaze.common.components.home.CalendarPanel;
 import cz.larpovadatabaze.common.components.home.LastCommentsPanel;
 import cz.larpovadatabaze.common.components.home.RecentGamesPanel;

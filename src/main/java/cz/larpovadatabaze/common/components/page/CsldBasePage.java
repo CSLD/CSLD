@@ -14,6 +14,8 @@ import cz.larpovadatabaze.users.components.page.about.AboutDatabasePage;
 import cz.larpovadatabaze.users.components.panel.AdminPanel;
 import cz.larpovadatabaze.users.components.panel.LoggedBoxPanel;
 import cz.larpovadatabaze.users.components.panel.LoginBoxPanel;
+import cz.larpovadatabaze.calendar.component.page.CreateOrUpdateEventPage;
+import cz.larpovadatabaze.games.components.page.CreateOrUpdateGamePage;
 import cz.larpovadatabaze.users.services.AppUsers;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
@@ -102,8 +104,11 @@ public abstract class CsldBasePage extends WebPage {
                         CsldAuthenticatedWebSession.get().isAtLeastEditor());
             }
         });
-        add(new BookmarkablePageLink<CsldBasePage>("donations", DonationPage.class));
-        add(new BookmarkablePageLink<CsldBasePage>("about", AboutDatabasePage.class));
+        
+        // Add add link
+        add(new BookmarkablePageLink<CsldBasePage>("addGameLink", CreateOrUpdateGamePage.class));
+        add(new BookmarkablePageLink<CsldBasePage>("addEventLink", CreateOrUpdateEventPage.class));
+        
         add(new AdminPanel("adminPanel"));
 
         // Add user panel or login links
