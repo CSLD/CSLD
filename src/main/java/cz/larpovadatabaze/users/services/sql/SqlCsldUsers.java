@@ -108,13 +108,16 @@ public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
         CsldUser connectedUser = byFbId(userId);
         // If a User is logged in, just add info to the logged user.
         if (connectedUser != null) {
+            logger.info("The user exists in the database: " + connectedUser.toString());
             currentSession.setLoggedUser(connectedUser);
         } else {
             if (currentSession.isSignedIn()) {
+                logger.info("The user is signed in without Fb ID: " + connectedUser.toString());
                 connectedUser = currentSession.getLoggedUser();
                 connectedUser.setFbId(userId);
                 saveOrUpdate(connectedUser);
             } else {
+                logger.info("This is the first login of given user: " + connectedUser.toString());
                 RandomString randomize = new RandomString(10);
                 CsldUser user = CsldUser.getEmptyUser();
                 user.setFbId(userId);
@@ -127,6 +130,8 @@ public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
                 );
                 user.getPerson().setEmail(String.format("%s@%s.test", randomize.nextString(), randomize.nextString()));
                 saveOrUpdate(user);
+
+                currentSession.setLoggedUser(user);
             }
         }
     }
