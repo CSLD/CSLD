@@ -4,6 +4,7 @@ import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.EmailAuthentication;
 import cz.larpovadatabaze.common.services.CRUDService;
 import cz.larpovadatabaze.common.services.IIconReferenceProvider;
+import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 
 import java.util.List;
@@ -16,6 +17,15 @@ public interface CsldUsers extends CRUDService<CsldUser, Integer>, IIconReferenc
     int USER_IMAGE_LEFTTOP_PERCENT = 10;
 
     void sendForgottenPassword(CsldUser user, EmailAuthentication emailAuthentication, String url);
+
+    /**
+     * Based on the information in the Session and based on the Id of the user as perceived by Facebook either link
+     * the id to the currently logged user or create a new user.
+     * @param currentSession The current session. Used to decide whether there is a user and potentially logging the
+     *                       use in
+     * @param userId The if of the user as perceived by Facebook.
+     */
+    void joinOrLogInFbUser(CsldAuthenticatedWebSession currentSession, String userId);
 
     class ReCaptchaTechnicalException extends Exception {
         public ReCaptchaTechnicalException(Throwable throwable) {

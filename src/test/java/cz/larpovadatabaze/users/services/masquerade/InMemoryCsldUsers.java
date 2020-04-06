@@ -4,6 +4,7 @@ import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.EmailAuthentication;
 import cz.larpovadatabaze.common.services.masquerade.InMemoryCrud;
 import cz.larpovadatabaze.games.services.Images;
+import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.users.CsldRoles;
 import cz.larpovadatabaze.users.services.CsldUsers;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
@@ -28,6 +29,11 @@ public class InMemoryCsldUsers extends InMemoryCrud<CsldUser, Integer> implement
 
     @Override
     public void sendForgottenPassword(CsldUser user, EmailAuthentication emailAuthentication, String url) {
+
+    }
+
+    @Override
+    public void joinOrLogInFbUser(CsldAuthenticatedWebSession currentSession, String userId) {
 
     }
 
@@ -92,6 +98,11 @@ public class InMemoryCsldUsers extends InMemoryCrud<CsldUser, Integer> implement
     @Override
     public boolean saveOrUpdate(CsldUser model, List<FileUpload> uploads) {
         return saveOrUpdate(model);
+    }
+
+    @Override
+    public CsldUser byFbId(String fbId) {
+        return null;
     }
 
     @Override

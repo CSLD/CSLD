@@ -1,7 +1,6 @@
 package cz.larpovadatabaze.users.components.panel;
 
 import cz.larpovadatabaze.common.components.page.CsldBasePage;
-import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.users.components.page.ForgotPassword;
 import cz.larpovadatabaze.users.services.AppUsers;
@@ -56,17 +55,8 @@ public class CsldSignInPanel extends SignInPanel {
                                           final String userId, final String signedRequest, final String expiresIn,
                                           final String accessToken) {
                 if (status.equals("connected")) {
-                    CsldUser connectedUser = csldUsers.byFbId(userId);
-                    // If a User is logged in, just add info to the logged user.
-                    if (connectedUser != null) {
-                        CsldAuthenticatedWebSession.get().setLoggedUser(connectedUser);
-                    } else {
-                        if (CsldAuthenticatedWebSession.get().isSignedIn()) {
-                            // Update current user by adding the FB Id
-                        } else {
-                            // Create new user available only via FB Id until the details are provided elsewhere.
-                        }
-                    }
+                    CsldAuthenticatedWebSession currentSession = CsldAuthenticatedWebSession.get();
+                    csldUsers.joinOrLogInFbUser(currentSession, userId);
                 } else {
                     responseModel.setObject("Invalid Login");
                 }

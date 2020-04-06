@@ -13,6 +13,8 @@ import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.common.services.MailService;
 import cz.larpovadatabaze.common.services.sql.CRUD;
 import cz.larpovadatabaze.games.services.*;
+import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
+import cz.larpovadatabaze.users.CsldRoles;
 import cz.larpovadatabaze.users.Pwd;
 import cz.larpovadatabaze.users.RandomString;
 import cz.larpovadatabaze.users.services.AppUsers;
@@ -99,6 +101,34 @@ public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
         mails.sendForgottenPassword(user, subject, content);
 
         authentications.saveOrUpdate(emailAuthentication);
+    }
+
+    @Override
+    public void joinOrLogInFbUser(CsldAuthenticatedWebSession currentSession, String userId) {
+        CsldUser connectedUser = byFbId(userId);
+        // If a User is logged in, just add info to the logged user.
+        if (connectedUser != null) {
+            currentSession.setLoggedUser(connectedUser);
+        } else {
+            if (currentSession.isSignedIn()) {
+                connectedUser = currentSession.getLoggedUser();
+                connectedUser.setFbId(userId);
+                saveOrUpdate(connectedUser);
+            } else {
+                RandomString randomize = new RandomString(10);
+                CsldUser user = CsldUser.getEmptyUser();
+                user.setFbId(userId);
+                user.setRole(CsldRoles.USER.getRole());
+                user.setPassword(
+                        Pwd.generateStrongPasswordHash(
+                                Pwd.getMD5(randomize.nextString()),
+                                randomize.nextString()
+                        )
+                );
+                user.getPerson().setEmail(String.format("%s@%s.test", randomize.nextString(), randomize.nextString()));
+                saveOrUpdate(user);
+            }
+        }
     }
 
     @Override
