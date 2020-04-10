@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.users.components.panel;
 
 import cz.larpovadatabaze.common.components.page.CsldBasePage;
+import cz.larpovadatabaze.common.components.page.HomePage;
 import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.users.components.page.ForgotPassword;
 import cz.larpovadatabaze.users.services.AppUsers;
@@ -57,6 +58,8 @@ public class CsldSignInPanel extends SignInPanel {
                 if (status.equals("connected")) {
                     CsldAuthenticatedWebSession currentSession = CsldAuthenticatedWebSession.get();
                     csldUsers.joinOrLogInFbUser(currentSession, userId);
+
+                    throw new RestartResponseException(HomePage.class);
                 } else {
                     responseModel.setObject("Invalid Login");
                 }
