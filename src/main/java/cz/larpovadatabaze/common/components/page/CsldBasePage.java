@@ -1,21 +1,18 @@
 package cz.larpovadatabaze.common.components.page;
 
 import com.googlecode.wicket.jquery.ui.resource.JQueryUIResourceReference;
+import cz.larpovadatabaze.calendar.component.page.CreateOrUpdateEventPage;
 import cz.larpovadatabaze.calendar.component.page.ListEventsPage;
 import cz.larpovadatabaze.common.Toggles;
 import cz.larpovadatabaze.common.components.CsldCssResourceReference;
 import cz.larpovadatabaze.common.components.home.AdvertisementPanel;
 import cz.larpovadatabaze.common.entities.CsldUser;
-import cz.larpovadatabaze.donations.components.DonationPage;
+import cz.larpovadatabaze.games.components.page.CreateOrUpdateGamePage;
 import cz.larpovadatabaze.games.components.page.ListGamePage;
 import cz.larpovadatabaze.search.components.SearchBoxPanel;
 import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.users.components.page.about.AboutDatabasePage;
-import cz.larpovadatabaze.users.components.panel.AdminPanel;
 import cz.larpovadatabaze.users.components.panel.LoggedBoxPanel;
 import cz.larpovadatabaze.users.components.panel.LoginBoxPanel;
-import cz.larpovadatabaze.calendar.component.page.CreateOrUpdateEventPage;
-import cz.larpovadatabaze.games.components.page.CreateOrUpdateGamePage;
 import cz.larpovadatabaze.users.services.AppUsers;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
@@ -108,8 +105,6 @@ public abstract class CsldBasePage extends WebPage {
         // Add add link
         add(new BookmarkablePageLink<CsldBasePage>("addGameLink", CreateOrUpdateGamePage.class));
         add(new BookmarkablePageLink<CsldBasePage>("addEventLink", CreateOrUpdateEventPage.class));
-        
-        add(new AdminPanel("adminPanel"));
 
         // Add user panel or login links
         if (CsldAuthenticatedWebSession.get().isSignedIn()) {
