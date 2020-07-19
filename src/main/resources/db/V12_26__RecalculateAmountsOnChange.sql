@@ -1,7 +1,6 @@
 drop trigger if exists update_ratings_count on csld_rating;
 
-drop function if exists csld_calculate_amount_of_ratings;
-CREATE FUNCTION csld_calculate_amount_of_ratings() RETURNS trigger
+CREATE OR REPLACE FUNCTION csld_calculate_amount_of_ratings() RETURNS trigger
     LANGUAGE plpgsql
 AS
 $$
