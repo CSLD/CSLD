@@ -196,9 +196,9 @@ public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
 
     @Override
     public boolean saveOrUpdate(CsldUser model, List<FileUpload> uploads) {
-        logger.debug("User Id: " + model.getId());
+        logger.info("User Id: " + model.getId());
         CsldUser currentInSession = getById(model.getId());
-        logger.debug(currentInSession);
+        logger.info(currentInSession);
         String description = model.getPerson().getDescription();
         if (description != null) {
             currentInSession.getPerson().setDescription(

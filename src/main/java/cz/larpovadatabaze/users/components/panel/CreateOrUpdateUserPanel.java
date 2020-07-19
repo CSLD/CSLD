@@ -61,7 +61,7 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
             this.resourceBase = "user.edit";
             isEdit = true;
         }
-        logger.debug(user);
+        logger.info(user);
 
         setDefaultModel(new CompoundPropertyModel<>(user));
         oldPassword = getModelObject().getPassword();
@@ -137,7 +137,7 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
 
                 if(createOrUpdateUser.isValid()){
                     CsldUser user = createOrUpdateUser.getModelObject();
-                    logger.debug(user);
+                    logger.info(user);
                     if(saveOrUpdateUserAndImage(user)){
                         if (!appUsers.isSignedIn()) {
                             CsldAuthenticatedWebSession.get().signIn(user.getPerson().getEmail(), password.getConvertedInput());
@@ -170,7 +170,7 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
             user.setPassword(null);
         }
 
-        logger.debug(user);
+        logger.info(user);
         if (csldUsers.saveOrUpdate(user, fileUpload.getFileUploads())) {
             return true;
         } else {
