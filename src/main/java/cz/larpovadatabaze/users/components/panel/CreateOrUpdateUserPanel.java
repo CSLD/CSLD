@@ -9,6 +9,7 @@ import cz.larpovadatabaze.users.services.AppUsers;
 import cz.larpovadatabaze.users.services.CsldUsers;
 import cz.larpovadatabaze.users.validator.UniqueUserValidator;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
@@ -31,6 +32,7 @@ import java.util.List;
  * Panel used for registering new user or adding new Author into the database.
  */
 public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser> {
+    private static final Logger logger = Logger.getLogger(CreateOrUpdateUserPanel.class);
 
     @SpringBean
     CsldUsers csldUsers;
@@ -59,6 +61,8 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
             this.resourceBase = "user.edit";
             isEdit = true;
         }
+        logger.debug(user);
+
         setDefaultModel(new CompoundPropertyModel<>(user));
         oldPassword = getModelObject().getPassword();
     }
@@ -133,6 +137,7 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
 
                 if(createOrUpdateUser.isValid()){
                     CsldUser user = createOrUpdateUser.getModelObject();
+                    logger.debug(user);
                     if(saveOrUpdateUserAndImage(user)){
                         if (!appUsers.isSignedIn()) {
                             CsldAuthenticatedWebSession.get().signIn(user.getPerson().getEmail(), password.getConvertedInput());
@@ -165,6 +170,7 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
             user.setPassword(null);
         }
 
+        logger.debug(user);
         if (csldUsers.saveOrUpdate(user, fileUpload.getFileUploads())) {
             return true;
         } else {
