@@ -23,6 +23,7 @@ import cz.larpovadatabaze.games.converters.GameConverter;
 import cz.larpovadatabaze.games.converters.LabelConverter;
 import cz.larpovadatabaze.games.rest.GameProducer;
 import cz.larpovadatabaze.games.services.Games;
+import cz.larpovadatabaze.graphql.GraphQLResource;
 import cz.larpovadatabaze.search.components.SearchResultsPage;
 import cz.larpovadatabaze.search.services.TokenSearch;
 import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
@@ -78,6 +79,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     private final Events events;
     private final Statistics statistics;
     private final Games games;
+    private final GraphQLResource graphqlResource;
 
     private static final String DEFAULT_ENCODING = "UTF-8";
     private static ApplicationContext ctx;
@@ -85,13 +87,14 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     @Autowired
     public Csld(TokenSearch tokenSearch, CsldUsers csldUsers,
                 Environment env, Events events, Statistics statistics,
-                Games games) {
+                Games games, GraphQLResource graphqlResource) {
         this.tokenSearch = tokenSearch;
         this.csldUsers = csldUsers;
         this.env = env;
         this.events = events;
         this.statistics = statistics;
         this.games = games;
+        this.graphqlResource = graphqlResource;
     }
 
     public class MountedMapperWithoutPageComponentInfo extends MountedMapper {
@@ -285,9 +288,18 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
                 return resource;
             }
         };
+
+        ResourceReference graphqlReference = new ResourceReference("graphqlReference") {
+            @Override
+            public IResource getResource() {
+                return Csld.this.graphqlResource;
+            }
+        };
+
         mountResource(context + "/ical", icalReference);
         mountResource(context + "/rest/stats", statsReference);
         mountResource(context + "/rest/game", gameReference);
+        mountResource(context + "/graphql", graphqlReference);
     }
 
     private void mountResources(String context) {

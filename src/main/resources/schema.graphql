@@ -1,0 +1,139 @@
+type Query {
+    homepage: Homepage!
+    gameById(id: Int!): Game
+    gamesBySearchTerm(searchTerm: String!, offset: Int, limit: Int): [Game!]!
+}
+
+type Homepage {
+    lastAddedGames: [Game!]!
+    mostPopularGames: [Game!]!
+    lastComments(offset: Int, limit: Int): [Comment!]!
+    nextEvents: [Event!]!
+}
+
+type Game {
+    id: ID!
+    name: String
+    description: String
+    year: Int
+    web: String
+    hours: Int
+    days: Int
+    players: Int
+    menRole: Int
+    womenRole: Int
+    bothRole: Int
+    totalRating: Float!
+    averageRating: Float!
+    added: String!
+    amountOfComments: Int!
+    amountOfPlayed: Int!
+    amountOfRatings: Int!
+    galleryURL: String
+    photoAuthor: String
+    deleted: Boolean
+    ratingsDisabled: Boolean
+    commentsDisabled: Boolean
+    labels: [Label!]!
+    comments: [Comment!]!
+    commentsPaged(offset: Int!, limit: Int!): CommentsPaged!
+    authors: [User!]!
+    groupAuthor: [Group!]!
+    ratings: [Rating!]!
+    ratingStats: [RatingCount!]!
+    wantsToPlay: [User!]!
+    similarGames: [Game!]!
+    gamesOfAuthors: [Game!]!
+
+    "Are these needed?"
+    blueprintPath: String
+}
+
+type CommentsPaged {
+    comments: [Comment!]!
+    totalAmount: Int!
+}
+
+type Event {
+    id: ID!
+    name: String
+    description: String
+    loc: String
+    web: String
+    deleted: Boolean
+    amountOfPlayers: String
+    from: String
+    to: String
+    location: EventLocation
+    labels: [Label!]
+    games: [Game!]
+}
+
+type EventLocation {
+    lattitude: Float!
+    longtitude: Float!
+}
+
+type Label {
+    id: ID!
+    name: String
+    description: String
+    isRequired: Boolean
+    isAuthorized: Boolean
+}
+
+type Person {
+    name: String!
+    description: String
+    email: String!
+    nickname: String
+    birthDate: String
+    city: String
+}
+
+type Image {
+    id: ID!
+    path: String
+    contentType: String
+}
+
+type User {
+    id: ID!
+    lastRating: Int
+    role: Int
+    person: Person!
+    amountOfComments: Int!
+    amountOfPlayed: Int!
+    amountOfCreated:Int!
+    image: Image
+    commented: [Comment!]!
+}
+
+type Comment {
+    id: ID!
+    comment: String
+    added: String
+    isHidden: Boolean
+    amountOfUpvotes: Int!
+    game: Game!
+    user: User!
+}
+
+type Group {
+    id: ID!
+    name: String
+    authorsOf: [Game!]!
+}
+
+type Rating {
+    id: ID!
+    rating: Int
+    state: Int
+    game: Game!
+    user: User!
+}
+
+type RatingCount {
+    rating: Int!
+    count: Int!
+}

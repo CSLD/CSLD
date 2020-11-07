@@ -154,7 +154,7 @@ public class RootTestWicketContext {
 
     @Bean
     public Csld csld() {
-        return new Csld(tokenSearch(), csldUsers(), env, sqlEvents(), sqlStatistics(), games());
+        return new Csld(tokenSearch(), csldUsers(), env, sqlEvents(), sqlStatistics(), games(), null);
     }
 
     // Start of email settings
