@@ -61,7 +61,7 @@ type Event {
     loc: String
     web: String
     deleted: Boolean
-    amountOfPlayers: String
+    amountOfPlayers: Int!
     from: String
     to: String
     location: EventLocation
@@ -112,6 +112,7 @@ type User {
 type Comment {
     id: ID!
     comment: String
+    commentAsText: String
     added: String
     isHidden: Boolean
     amountOfUpvotes: Int!

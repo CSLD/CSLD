@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.graphql;
 
 import cz.larpovadatabaze.graphql.fetchers.CalendarFetcher;
+import cz.larpovadatabaze.graphql.fetchers.CommentAsTextFetcher;
 import cz.larpovadatabaze.graphql.fetchers.CommentFetcherFactory;
 import cz.larpovadatabaze.graphql.fetchers.EventFetcherFactory;
 import cz.larpovadatabaze.graphql.fetchers.GameFetcherFactory;
@@ -61,6 +62,7 @@ public class GraphQLTypeConfigurator {
                         .dataFetcher("similarGames", gameFetcherFactory.createGameSimilarGamesFetcher())
                         .dataFetcher("gamesOfAuthors", gameFetcherFactory.createGameGamesOfAuthorsFetcher())
                 )
+                .type("Comment", builder -> builder.dataFetcher("commentAsText", new CommentAsTextFetcher()))
                 // Finish
                 .build();
 
