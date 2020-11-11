@@ -16,6 +16,7 @@ import org.apache.wicket.request.resource.AbstractResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -38,24 +39,12 @@ public class GraphQLResource extends AbstractResource {
         private String query;
         private Map<String, Object> variables;
 
-        public String getOperationName() {
-            return operationName;
-        }
-
         public void setOperationName(String operationName) {
             this.operationName = operationName;
         }
 
-        public String getQuery() {
-            return query;
-        }
-
         public void setQuery(String query) {
             this.query = query;
-        }
-
-        public Map<String, Object> getVariables() {
-            return variables;
         }
 
         public void setVariables(Map<String, Object> variables) {
@@ -83,19 +72,31 @@ public class GraphQLResource extends AbstractResource {
         this.graphQL = GraphQL.newGraphQL(graphQLSchema).build();
     }
 
-    @Override
-    protected ResourceResponse newResourceResponse(Attributes attributes) {
+    /**
+     * Handle POST (graphql) request
+     *
+     * @param request HTTP request
+     *
+     * @return Response
+     */
+    private ResourceResponse handlePostRequest(HttpServletRequest request) {
         ResourceResponse resourceResponse = new ResourceResponse();
-
         ExecutionResult executionResult;
         try {
             // Parse and execute graphql request
-            GraphQLRequest graphQLRequest = new Gson().fromJson(new InputStreamReader(((ServletWebRequest)attributes.getRequest()).getContainerRequest().getInputStream(), "UTF-8"), GraphQLRequest.class);
+            GraphQLRequest graphQLRequest = new Gson().fromJson(new InputStreamReader(request.getInputStream(), "UTF-8"), GraphQLRequest.class);
+
+            if ((graphQLRequest.operationName == null) || (graphQLRequest.query == null)) {
+                // Invalid request
+                resourceResponse.setStatusCode(400);
+                return resourceResponse;
+            }
+
             ExecutionInput.Builder builder = ExecutionInput.newExecutionInput(graphQLRequest.query).operationName(graphQLRequest.operationName).variables(graphQLRequest.variables);
             executionResult = graphQL.execute(builder.build());
         }
         catch(Exception e) {
-            logger.error("Error handling GraphQL resquest", e);
+            logger.error("Error handling GraphQL request", e);
             resourceResponse.setStatusCode(500);
             return resourceResponse;
         }
@@ -110,6 +111,19 @@ public class GraphQLResource extends AbstractResource {
             }
         });
 
+        return resourceResponse;
+    }
+
+    @Override
+    protected ResourceResponse newResourceResponse(Attributes attributes) {
+        HttpServletRequest request = ((ServletWebRequest)attributes.getRequest()).getContainerRequest();
+        if (request.getMethod().equals("POST")) {
+            return this.handlePostRequest(request);
+        }
+
+        // Method not allowed
+        ResourceResponse resourceResponse = new ResourceResponse();
+        resourceResponse.setStatusCode(405);
         return resourceResponse;
     }
 }
