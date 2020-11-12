@@ -4,6 +4,7 @@ import cz.larpovadatabaze.graphql.fetchers.CalendarFetcher;
 import cz.larpovadatabaze.graphql.fetchers.CommentAsTextFetcher;
 import cz.larpovadatabaze.graphql.fetchers.CommentFetcherFactory;
 import cz.larpovadatabaze.graphql.fetchers.EventFetcherFactory;
+import cz.larpovadatabaze.graphql.fetchers.GameCommentsPagedFetcherFactory;
 import cz.larpovadatabaze.graphql.fetchers.GameFetcherFactory;
 import cz.larpovadatabaze.graphql.fetchers.GameRatingStatsFetcher;
 import cz.larpovadatabaze.graphql.fetchers.GameSearchFetcher;
@@ -27,14 +28,16 @@ public class GraphQLTypeConfigurator {
     private CommentFetcherFactory commentFetcherFactory;
     private EventFetcherFactory eventFetcherFactory;
     private CalendarFetcher calendarFetcher;
+    private GameCommentsPagedFetcherFactory gameCommentsPagedFetcherFactory;
 
     @Autowired
-    public GraphQLTypeConfigurator(GameFetcherFactory gameFetcherFactory, CommentFetcherFactory commentFetcherFactory, EventFetcherFactory eventFetcherFactory, CalendarFetcher calendarFetcher, GameSearchFetcher gameSearchFetcher) {
+    public GraphQLTypeConfigurator(GameFetcherFactory gameFetcherFactory, CommentFetcherFactory commentFetcherFactory, EventFetcherFactory eventFetcherFactory, CalendarFetcher calendarFetcher, GameSearchFetcher gameSearchFetcher, GameCommentsPagedFetcherFactory gameCommentsPagedFetcherFactory) {
         this.gameFetcherFactory = gameFetcherFactory;
         this.commentFetcherFactory = commentFetcherFactory;
         this.eventFetcherFactory = eventFetcherFactory;
         this.calendarFetcher = calendarFetcher;
         this.gameSearchFetcher = gameSearchFetcher;
+        this.gameCommentsPagedFetcherFactory = gameCommentsPagedFetcherFactory;
     }
 
     public RuntimeWiring configureTypes() {
@@ -61,6 +64,7 @@ public class GraphQLTypeConfigurator {
                         .dataFetcher("wantsToPlay", new GameWantsToPlayFetcher())
                         .dataFetcher("similarGames", gameFetcherFactory.createGameSimilarGamesFetcher())
                         .dataFetcher("gamesOfAuthors", gameFetcherFactory.createGameGamesOfAuthorsFetcher())
+                        .dataFetcher("commentsPaged", gameCommentsPagedFetcherFactory.createCommentsPagedFetcher())
                 )
                 .type("Comment", builder -> builder.dataFetcher("commentAsText", new CommentAsTextFetcher()))
                 // Finish

@@ -86,7 +86,7 @@ public class GraphQLResource extends AbstractResource {
             // Parse and execute graphql request
             GraphQLRequest graphQLRequest = new Gson().fromJson(new InputStreamReader(request.getInputStream(), "UTF-8"), GraphQLRequest.class);
 
-            if ((graphQLRequest.operationName == null) || (graphQLRequest.query == null)) {
+            if (graphQLRequest.query == null) {
                 // Invalid request
                 resourceResponse.setStatusCode(400);
                 return resourceResponse;
