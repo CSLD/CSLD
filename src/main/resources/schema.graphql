@@ -45,6 +45,9 @@ type Game {
     similarGames: [Game!]!
     gamesOfAuthors: [Game!]!
     events: [Event!]!
+    video: Video
+    coverImage: Image
+    photos: [Photo!]!
 
     "Are these needed?"
     blueprintPath: String
@@ -138,4 +141,20 @@ type Rating {
 type RatingCount {
     rating: Int!
     count: Int!
+}
+
+type Video {
+    id: ID!
+    path: String!
+}
+
+type Photo {
+    id: ID!
+    orderSeq: Int
+    description: String
+    fullWidth: Int!
+    fullHeight: Int!
+    featured: Boolean!
+    game: Game!
+    image: Image!
 }
