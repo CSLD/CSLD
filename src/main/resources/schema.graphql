@@ -145,7 +145,7 @@ type RatingCount {
 
 type Video {
     id: ID!
-    path: String!
+    path: String
 }
 
 type Photo {
