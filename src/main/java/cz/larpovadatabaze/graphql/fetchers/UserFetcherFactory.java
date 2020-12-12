@@ -3,6 +3,7 @@ package cz.larpovadatabaze.graphql.fetchers;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.EmailAuthentication;
 import cz.larpovadatabaze.common.entities.Person;
+import cz.larpovadatabaze.graphql.GraphQLUploadedFile;
 import cz.larpovadatabaze.users.Pwd;
 import cz.larpovadatabaze.users.RandomString;
 import cz.larpovadatabaze.users.services.AppUsers;
@@ -81,9 +82,15 @@ public class UserFetcherFactory {
             // TODO - check recaptcha - TODO
             csldUser.setPassword(Pwd.generateStrongPasswordHash((String) input.get("password"), csldUser.getPerson().getEmail()));
 
+            // Image
+            GraphQLUploadedFile profilePicture = null;
+            Map<String, String> profilePictureMap = (Map<String, String>)input.get("profilePicture");
+            if (profilePictureMap != null) {
+                profilePicture = new GraphQLUploadedFile(profilePictureMap.get("fileName"), profilePictureMap.get("contents"));
+            }
 
             // Create user
-            csldUsers.saveOrUpdate(csldUser);
+            csldUsers.saveOrUpdate(csldUser, null, profilePicture);
 
             // Log in as new user
             if (!appUsers.signIn((String) input.get("email"), (String) input.get("password"))) {
@@ -104,13 +111,19 @@ public class UserFetcherFactory {
 
             CsldUser csldUser = appUsers.getLoggedUser();
             csldUser.getPerson().setEmail((String) input.get("email"));
-            // TODO - profile picture - TODO
             csldUser.getPerson().setName((String) input.get("name"));
             csldUser.getPerson().setNickname((String) input.get("nickname"));
             csldUser.getPerson().setBirthDate(FetcherUtils.parseDate((String) input.get("birthDate"), "input.birthDate"));
             csldUser.getPerson().setCity((String) input.get("city"));
 
-            csldUsers.saveOrUpdate(csldUser);
+            // Image
+            GraphQLUploadedFile profilePicture = null;
+            Map<String, String> profilePictureMap = (Map<String, String>)input.get("profilePicture");
+            if (profilePictureMap != null) {
+                profilePicture = new GraphQLUploadedFile(profilePictureMap.get("fileName"), profilePictureMap.get("contents"));
+            }
+
+            csldUsers.saveOrUpdate(csldUser, null, profilePicture);
 
             return csldUser;
         };

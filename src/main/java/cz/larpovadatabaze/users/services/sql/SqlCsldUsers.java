@@ -7,6 +7,7 @@ import cz.larpovadatabaze.common.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.EmailAuthentication;
 import cz.larpovadatabaze.common.entities.Image;
+import cz.larpovadatabaze.common.models.AbstractUploadedFile;
 import cz.larpovadatabaze.common.models.UploadedFile;
 import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService;
@@ -195,7 +196,7 @@ public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
     }
 
     @Override
-    public boolean saveOrUpdate(CsldUser model, List<FileUpload> uploads) {
+    public boolean saveOrUpdate(CsldUser model, List<FileUpload> uploads, AbstractUploadedFile imageFile) {
         logger.info("User Id: " + model.getId());
         CsldUser currentInSession = getById(model.getId());
         if(currentInSession == null) {
@@ -215,19 +216,26 @@ public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
         }
         if (uploads != null && uploads.size() > 0) {
             for (FileUpload upload : uploads) {
-                String filePath = files.saveImageFileAndReturnPath(new UploadedFile(upload),
-                        imageResizingStrategyFactoryService.getCuttingSquareStrategy(
-                                CsldUsers.USER_IMAGE_SIZE, CsldUsers.USER_IMAGE_LEFTTOP_PERCENT)).path;
-                try {
-                    Image image = new Image();
-                    image.setPath(filePath);
-                    currentInSession.setImage(image);
-                } catch (Exception e) {
-                    throw new IllegalStateException("Unable to write file", e);
-                }
+                saveImage(currentInSession, new UploadedFile(upload));
             }
         }
+        if (imageFile != null) {
+            saveImage(currentInSession, imageFile);
+        }
         return crudRepository.saveOrUpdate(currentInSession);
+    }
+
+    private void saveImage(CsldUser currentInSession, AbstractUploadedFile uploadedFile) {
+        String filePath = files.saveImageFileAndReturnPath(uploadedFile,
+                imageResizingStrategyFactoryService.getCuttingSquareStrategy(
+                        CsldUsers.USER_IMAGE_SIZE, CsldUsers.USER_IMAGE_LEFTTOP_PERCENT)).path;
+        try {
+            Image image = new Image();
+            image.setPath(filePath);
+            currentInSession.setImage(image);
+        } catch (Exception e) {
+            throw new IllegalStateException("Unable to write file", e);
+        }
     }
 
     @Override

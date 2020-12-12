@@ -2,6 +2,7 @@ package cz.larpovadatabaze.users.services.masquerade;
 
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.EmailAuthentication;
+import cz.larpovadatabaze.common.models.AbstractUploadedFile;
 import cz.larpovadatabaze.common.services.masquerade.InMemoryCrud;
 import cz.larpovadatabaze.games.services.Images;
 import cz.larpovadatabaze.users.CsldRoles;
@@ -90,7 +91,7 @@ public class InMemoryCsldUsers extends InMemoryCrud<CsldUser, Integer> implement
     }
 
     @Override
-    public boolean saveOrUpdate(CsldUser model, List<FileUpload> uploads) {
+    public boolean saveOrUpdate(CsldUser model, List<FileUpload> uploads, AbstractUploadedFile imageFile) {
         return saveOrUpdate(model);
     }
 

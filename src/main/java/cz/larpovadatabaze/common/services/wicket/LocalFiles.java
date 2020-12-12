@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.common.services.wicket;
 
+import cz.larpovadatabaze.common.models.AbstractUploadedFile;
 import cz.larpovadatabaze.common.models.UploadedFile;
 import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService.IImageResizingStrategy;
@@ -125,7 +126,7 @@ public class LocalFiles implements FileService {
     }
 
     @Override
-    public ResizeAndSaveReturn saveImageFileAndPreviewAndReturnPath(UploadedFile upload, IImageResizingStrategy fullImageResizingStrategy, IImageResizingStrategy previewResizingStrategy) {
+    public ResizeAndSaveReturn saveImageFileAndPreviewAndReturnPath(AbstractUploadedFile upload, IImageResizingStrategy fullImageResizingStrategy, IImageResizingStrategy previewResizingStrategy) {
         // Determine file type
         String fileType;
         String ct = upload.candidateFileType();
@@ -201,7 +202,7 @@ public class LocalFiles implements FileService {
     }
 
     @Override
-    public ResizeAndSaveReturn saveImageFileAndReturnPath(UploadedFile upload, IImageResizingStrategy fullImageResizingStrategy) {
+    public ResizeAndSaveReturn saveImageFileAndReturnPath(AbstractUploadedFile upload, IImageResizingStrategy fullImageResizingStrategy) {
         return saveImageFileAndPreviewAndReturnPath(upload, fullImageResizingStrategy, null);
     }
 

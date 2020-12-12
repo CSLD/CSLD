@@ -6,12 +6,16 @@ type Query {
     userById(id: ID!): User
     userByEmail(email: String!): User
     games: GamesQuery!
+    authorizedRequiredLabels: [Label!]!
+    authorizedOptionalLabels: [Label!]!
+    admin: AdminQuery!
 }
 
 type Mutation {
     user: UserMutation!
     game: GameMutation!
     event: EventMutation!
+    admin: AdminMutation!
 }
 
 type HomepageQuery {
@@ -128,7 +132,7 @@ type Image {
 type User {
     id: ID!
     lastRating: Int
-    role: Int
+    role: UserRole
     person: Person!
     amountOfComments: Int!
     amountOfPlayed: Int!
@@ -196,7 +200,7 @@ type UserMutation {
 input CreateUserInput {
     email: String!
     password: String!
-    profilePicture: String
+    profilePicture: UploadedFileInput
     name: String!
     nickname: String
     birthDate: String
@@ -206,7 +210,7 @@ input CreateUserInput {
 
 input UpdateLoggedInUserInput {
     email: String!
-    profilePicture: String
+    profilePicture: UploadedFileInput
     name: String!
     nickname: String
     birthDate: String
@@ -242,7 +246,7 @@ input CreateGameInput {
     bothRole: Int
     hours: Int
     days: Int
-    coverPhoto: String
+    coverPhoto: UploadedFileInput
     web: String
     photoAuthor: String
     galleryURL: String
@@ -268,13 +272,18 @@ input UpdateGameInput {
     bothRole: Int
     hours: Int
     days: Int
-    coverPhoto: String
+    coverPhoto: UploadedFileInput
     web: String
     photoAuthor: String
     galleryURL: String
     video: String
     ratingsDisabled: Boolean
     commentsDisabled: Boolean
+}
+
+input UploadedFileInput {
+    fileName: String!
+    contents: String!
 }
 
 input NewAuthorInput {
@@ -328,4 +337,59 @@ input UpdateEventInput {
     newLabels: [NewLabelInput!]!
     latitude: Float
     longitude: Float
+}
+
+type AdminQuery {
+    allLabels: [Label!]!
+    allUsers: [User!]!
+    ratingStats: [RatingStats!]!
+    commentStats: [CommentStats!]!
+    selfRated: [SelfRated!]!
+}
+
+type RatingStats {
+    year: Int!
+    month: Int!
+    numRatings: Int!
+    averageRating: Float!
+}
+
+type CommentStats {
+    year: Int!
+    month: Int!
+    amount: Int!
+}
+
+type SelfRated {
+    user: User!
+    game: Game!
+}
+
+type AdminMutation {
+    updateLabel(input: UpdateLabelInput!): Label!
+    setLabelRequired(labelId: ID!, required: Boolean!): Label!
+    setLabelAuthorized(labelId: ID!, authorized: Boolean!): Label!
+    deleteLabel(labelId: ID!): Label
+    setUserRole(userId: ID!, role: UserRoleIn!): User!
+    deleteUser(userId: ID!): User
+}
+
+enum UserRole {
+    USER,
+    EDITOR,
+    ADMIN,
+    AUTHOR,
+    ANONYMOUS
+}
+
+enum UserRoleIn {
+    USER,
+    EDITOR,
+    ADMIN
+}
+
+input UpdateLabelInput {
+    id: ID!
+    name: String!
+    description: String
 }
