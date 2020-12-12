@@ -75,4 +75,14 @@ public class WicketUsers implements AppUsers {
 
         return isVisible;
     }
+
+    @Override
+    public boolean signIn(String email, String password) {
+        return CsldAuthenticatedWebSession.get().signIn(email, password);
+    }
+
+    @Override
+    public void signOut() {
+        CsldAuthenticatedWebSession.get().signOut();
+    }
 }

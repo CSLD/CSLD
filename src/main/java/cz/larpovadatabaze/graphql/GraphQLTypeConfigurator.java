@@ -6,9 +6,12 @@ import cz.larpovadatabaze.graphql.fetchers.CommentFetcherFactory;
 import cz.larpovadatabaze.graphql.fetchers.EventFetcherFactory;
 import cz.larpovadatabaze.graphql.fetchers.GameCommentsPagedFetcherFactory;
 import cz.larpovadatabaze.graphql.fetchers.GameFetcherFactory;
+import cz.larpovadatabaze.graphql.fetchers.GameMutationFetcherFactory;
 import cz.larpovadatabaze.graphql.fetchers.GameRatingStatsFetcher;
-import cz.larpovadatabaze.graphql.fetchers.GameSearchFetcher;
+import cz.larpovadatabaze.graphql.fetchers.GameSearchFetcherFactory;
 import cz.larpovadatabaze.graphql.fetchers.GameWantsToPlayFetcher;
+import cz.larpovadatabaze.graphql.fetchers.RatingUserProtectedFetcherFactory;
+import cz.larpovadatabaze.graphql.fetchers.UserFetcherFactory;
 import graphql.schema.StaticDataFetcher;
 import graphql.schema.idl.RuntimeWiring;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,40 +27,58 @@ import static graphql.schema.idl.RuntimeWiring.newRuntimeWiring;
 @Component
 public class GraphQLTypeConfigurator {
     private GameFetcherFactory gameFetcherFactory;
-    private GameSearchFetcher gameSearchFetcher;
+    private GameSearchFetcherFactory gameSearchFetcherFactory;
     private CommentFetcherFactory commentFetcherFactory;
     private EventFetcherFactory eventFetcherFactory;
     private CalendarFetcher calendarFetcher;
     private GameCommentsPagedFetcherFactory gameCommentsPagedFetcherFactory;
+    private UserFetcherFactory userFetcherFactory;
+    private GameMutationFetcherFactory gameMutationFetcherFactory;
+    private RatingUserProtectedFetcherFactory ratingUserProtectedFetcherFactory;
 
     @Autowired
-    public GraphQLTypeConfigurator(GameFetcherFactory gameFetcherFactory, CommentFetcherFactory commentFetcherFactory, EventFetcherFactory eventFetcherFactory, CalendarFetcher calendarFetcher, GameSearchFetcher gameSearchFetcher, GameCommentsPagedFetcherFactory gameCommentsPagedFetcherFactory) {
+    public GraphQLTypeConfigurator(GameFetcherFactory gameFetcherFactory, CommentFetcherFactory commentFetcherFactory, EventFetcherFactory eventFetcherFactory, CalendarFetcher calendarFetcher, GameSearchFetcherFactory gameSearchFetcherFactory, GameCommentsPagedFetcherFactory gameCommentsPagedFetcherFactory, UserFetcherFactory userFetcherFactory, GameMutationFetcherFactory gameMutationFetcherFactory, RatingUserProtectedFetcherFactory ratingUserProtectedFetcherFactory) {
         this.gameFetcherFactory = gameFetcherFactory;
         this.commentFetcherFactory = commentFetcherFactory;
         this.eventFetcherFactory = eventFetcherFactory;
         this.calendarFetcher = calendarFetcher;
-        this.gameSearchFetcher = gameSearchFetcher;
+        this.gameSearchFetcherFactory = gameSearchFetcherFactory;
         this.gameCommentsPagedFetcherFactory = gameCommentsPagedFetcherFactory;
+        this.userFetcherFactory = userFetcherFactory;
+        this.gameMutationFetcherFactory = gameMutationFetcherFactory;
+        this.ratingUserProtectedFetcherFactory = ratingUserProtectedFetcherFactory;
     }
 
     public RuntimeWiring configureTypes() {
         return newRuntimeWiring()
                 // Query
                 .type("Query", builder -> builder
-                        .dataFetcher("homepage", new StaticDataFetcher(Collections.emptyMap()))
-                        .dataFetcher("gameById", gameFetcherFactory.createGameByIdFetcher())
-                        .dataFetcher("gamesBySearchTerm", gameSearchFetcher)
+                                .dataFetcher("homepage", new StaticDataFetcher(Collections.emptyMap()))
+                                .dataFetcher("loggedInUser", userFetcherFactory.createLoggedInUserFetcher())
+                                .dataFetcher("gameById", gameFetcherFactory.createGameByIdFetcher())
+                                .dataFetcher("userById", userFetcherFactory.createUserByIdFetcher())
+                                .dataFetcher("userByEmail", userFetcherFactory.createUserByEmailFetcher())
+//                                .dataFetcher("eventById", userFetcherFactory.createUserByIdFetcher()) TODO
+                                .dataFetcher("games", new StaticDataFetcher(Collections.emptyMap()))
                 )
                 // Homepage
-                .type("Homepage", builder -> builder
+                .type("HomepageQuery", builder -> builder
                         .dataFetcher("lastAddedGames", gameFetcherFactory.createLastAddedGamesFetcher())
                         .dataFetcher("mostPopularGames", gameFetcherFactory.createMostPopularGamesFetcher())
                         .dataFetcher("lastComments", commentFetcherFactory.createLastAddedCommentsFetcher())
                         .dataFetcher("nextEvents", eventFetcherFactory.createNextEventsFetcher())
                 )
+                .type("GamesQuery", builder -> builder
+                        .dataFetcher("bySearchTerm", gameSearchFetcherFactory.createBySearchTermFetcher())
+                        .dataFetcher("recentAndMostPlayed", gameSearchFetcherFactory.createRecentAndMostPlayedFetcher())
+                        .dataFetcher("mostPlayed", gameSearchFetcherFactory.createMostPlayedFetcher())
+                        .dataFetcher("recent", gameSearchFetcherFactory.createRecentFetcher())
+                        .dataFetcher("best", gameSearchFetcherFactory.createBestFetcher())
+                        .dataFetcher("mostCommented", gameSearchFetcherFactory.createMostCommentedFetcher())
+                )
                 .type("Event", builder -> builder
-                        .dataFetcher("from", this.calendarFetcher)
-                        .dataFetcher("to", this.calendarFetcher)
+                        .dataFetcher("from", calendarFetcher)
+                        .dataFetcher("to", calendarFetcher)
                 )
                 .type("Game", builder -> builder
                         .dataFetcher("ratingStats", new GameRatingStatsFetcher())
@@ -67,6 +88,42 @@ public class GraphQLTypeConfigurator {
                         .dataFetcher("commentsPaged", gameCommentsPagedFetcherFactory.createCommentsPagedFetcher())
                 )
                 .type("Comment", builder -> builder.dataFetcher("commentAsText", new CommentAsTextFetcher()))
+                // Allow fetching of rating user by editors/admins only
+                .type("Rating", builder -> builder.dataFetcher("user", ratingUserProtectedFetcherFactory.createRatingUserProtectedChecker()))
+
+                /**
+                 * Mutation
+                 */
+                .type("Mutation", builder -> builder
+                        .dataFetcher("user", new StaticDataFetcher(Collections.emptyMap()))
+                        .dataFetcher("game", new StaticDataFetcher(Collections.emptyMap()))
+                        .dataFetcher("event", new StaticDataFetcher(Collections.emptyMap()))
+                )
+                .type("UserMutation", builder -> builder
+                        .dataFetcher("logIn", userFetcherFactory.createLogInMutationFetcher())
+                        .dataFetcher("logOut", userFetcherFactory.createLogOutMutationFetcher())
+                        .dataFetcher("createUser", userFetcherFactory.createCreateUserMutationFetcher())
+                        .dataFetcher("updateLoggedInUser", userFetcherFactory.createUpdateLoggedInUserMutationFetcher())
+                        .dataFetcher("updateLoggedInUserPassword", userFetcherFactory.createUpdateLoggedInUserPasswordMutationFetcher())
+                        .dataFetcher("startRecoverPassword", userFetcherFactory.createStartRecoverPasswordMutationFetcher())
+                        .dataFetcher("finishRecoverPassword", userFetcherFactory.createFinishRecoverPasswordMutationFetcher())
+                )
+                .type("GameMutation", builder -> builder
+                        .dataFetcher("createGame", gameMutationFetcherFactory.createCreateGameFetcher())
+                        .dataFetcher("updateGame", gameMutationFetcherFactory.createUpdateGameFetcher())
+                        .dataFetcher("deleteGame", gameMutationFetcherFactory.createDeleteGameFetcher())
+                        .dataFetcher("rateGame", gameMutationFetcherFactory.createRateGameFetcher())
+                        .dataFetcher("deleteGameRating", gameMutationFetcherFactory.createDeleteGameRatingFetcher())
+                        .dataFetcher("setGamePlayedState", gameMutationFetcherFactory.createSetGamePlayedStateFetcher())
+                        .dataFetcher("createOrUpdateComment", gameMutationFetcherFactory.createCreateOrUpdateComment())
+                        .dataFetcher("setCommentVisible", gameMutationFetcherFactory.createSetCommentVisibleFetcher())
+                        .dataFetcher("setCommentLiked", gameMutationFetcherFactory.createSetCommentLikedFetcher())
+                )
+                .type("EventMutation", builder -> builder
+                        .dataFetcher("createEvent", eventFetcherFactory.createCreateEventFetcher())
+                        .dataFetcher("updateEvent", eventFetcherFactory.createUpdateEventFetcher())
+                        .dataFetcher("updateEvent", eventFetcherFactory.createDeleteEventFetcher())
+                )
                 // Finish
                 .build();
 

@@ -1,14 +1,33 @@
 type Query {
-    homepage: Homepage!
-    gameById(id: Int!): Game
-    gamesBySearchTerm(searchTerm: String!, offset: Int, limit: Int): [Game!]!
+    homepage: HomepageQuery!
+    loggedInUser: User
+    gameById(id: ID!): Game
+    eventById(id: ID!): Event
+    userById(id: ID!): User
+    userByEmail(email: String!): User
+    games: GamesQuery!
 }
 
-type Homepage {
+type Mutation {
+    user: UserMutation!
+    game: GameMutation!
+    event: EventMutation!
+}
+
+type HomepageQuery {
     lastAddedGames: [Game!]!
     mostPopularGames: [Game!]!
     lastComments(offset: Int, limit: Int): [Comment!]!
     nextEvents: [Event!]!
+}
+
+type GamesQuery {
+    bySearchTerm(searchTerm: String!, offset: Int, limit: Int): [Game!]!
+    recentAndMostPlayed(offset: Int, limit: Int, requiredLabels: [ID!], otherLabels: [ID!]): GamesPaged!
+    mostPlayed(offset: Int, limit: Int, requiredLabels: [ID!], otherLabels: [ID!]): GamesPaged!
+    recent(offset: Int, limit: Int, requiredLabels: [ID!], otherLabels: [ID!]): GamesPaged!
+    best(offset: Int, limit: Int, requiredLabels: [ID!], otherLabels: [ID!]): GamesPaged!
+    mostCommented(offset: Int, limit: Int, requiredLabels: [ID!], otherLabels: [ID!]): GamesPaged!
 }
 
 type Game {
@@ -55,6 +74,11 @@ type Game {
 
 type CommentsPaged {
     comments: [Comment!]!
+    totalAmount: Int!
+}
+
+type GamesPaged {
+    games: [Game!]!
     totalAmount: Int!
 }
 
@@ -157,4 +181,151 @@ type Photo {
     featured: Boolean!
     game: Game!
     image: Image!
+}
+
+type UserMutation {
+    logIn(userName: String!, password: String!): User
+    logOut: User
+    createUser(input: CreateUserInput!): User!
+    updateLoggedInUser(input: UpdateLoggedInUserInput!): User!
+    updateLoggedInUserPassword(oldPassword: String!, newPassword: String!): User!
+    startRecoverPassword(email: String!, recoverUrl: String!): Boolean
+    finishRecoverPassword(token: String!, newPassword: String!): User
+}
+
+input CreateUserInput {
+    email: String!
+    password: String!
+    profilePicture: String
+    name: String!
+    nickname: String
+    birthDate: String
+    city: String
+    recaptcha: String!
+}
+
+input UpdateLoggedInUserInput {
+    email: String!
+    profilePicture: String
+    name: String!
+    nickname: String
+    birthDate: String
+    city: String
+}
+
+type GameMutation {
+    createGame(input: CreateGameInput): Game!
+    updateGame(input: UpdateGameInput): Game!
+    deleteGame(gameId: ID!): Game!
+    rateGame(gameId: ID!, rating: Int): Game!
+    deleteGameRating(gameId: ID!, userId: ID): Game!
+    setGamePlayedState(gameId: ID!, state: Int!): Game!
+    createOrUpdateComment(gameId: ID!, comment: String!): Game!
+    setCommentVisible(commentId: ID!, visible: Boolean!): Game!
+    setCommentLiked(commentId: ID!, liked: Boolean!): Game!
+}
+
+input CreateGameInput {
+    recaptcha: String!
+    name: String!
+    description: String!
+    authors: [ID!]!
+    newAuthors: [NewAuthorInput!]!
+    groupAuthors: [ID!]!
+    newGroupAuthors: [NewGroupAuthorInput!]!
+    labels: [ID!]!
+    newLabels: [NewLabelInput!]!
+    year: Int
+    players: Int
+    menRole: Int
+    womenRole: Int
+    bothRole: Int
+    hours: Int
+    days: Int
+    coverPhoto: String
+    web: String
+    photoAuthor: String
+    galleryURL: String
+    video: String
+    ratingsDisabled: Boolean
+    commentsDisabled: Boolean
+}
+
+input UpdateGameInput {
+    id: ID!
+    name: String!
+    description: String!
+    authors: [ID!]!
+    newAuthors: [NewAuthorInput!]!
+    groupAuthors: [ID!]!
+    newGroupAuthors: [NewGroupAuthorInput!]!
+    labels: [ID!]!
+    newLabels: [NewLabelInput!]!
+    year: Int
+    players: Int
+    menRole: Int
+    womenRole: Int
+    bothRole: Int
+    hours: Int
+    days: Int
+    coverPhoto: String
+    web: String
+    photoAuthor: String
+    galleryURL: String
+    video: String
+    ratingsDisabled: Boolean
+    commentsDisabled: Boolean
+}
+
+input NewAuthorInput {
+    email: String
+    name: String!
+    nickname: String
+}
+
+input NewGroupAuthorInput {
+    name: String!
+}
+
+input NewLabelInput {
+    name: String!
+    description: String
+}
+
+type EventMutation {
+    createEvent(input: CreateEventInput!): Event!
+    updateEvent(input: UpdateEventInput!): Event!
+    deleteEvent(id: ID!): Event!
+}
+
+input CreateEventInput {
+    recaptcha: String!
+    name: String!
+    fromDate: String!
+    toDate: String!
+    amountOfPlayers: Int!
+    web: String
+    loc: String!
+    description: String
+    games: [ID!]!
+    labels: [ID!]!
+    newLabels: [NewLabelInput!]!
+    latitude: Float
+    longitude: Float
+}
+
+input UpdateEventInput {
+    id: ID!
+    name: String!
+    fromDate: String!
+    toDate: String!
+    amountOfPlayers: Int!
+    web: String
+    loc: String!
+    description: String
+    games: [ID!]!
+    labels: [ID!]!
+    newLabels: [NewLabelInput!]!
+    latitude: Float
+    longitude: Float
 }

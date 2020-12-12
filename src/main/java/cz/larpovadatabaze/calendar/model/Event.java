@@ -143,6 +143,26 @@ public class Event implements Identifiable<Integer>, Serializable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setLoc(String loc) {
+        this.loc = loc;
+    }
+
+    public void setWeb(String web) {
+        this.web = web;
+    }
+
+    public void setAmountOfPlayers(Integer amountOfPlayers) {
+        this.amountOfPlayers = amountOfPlayers;
+    }
+
     public Calendar getFrom() {
         if (from != null) {
             Calendar cal = Calendar.getInstance();
