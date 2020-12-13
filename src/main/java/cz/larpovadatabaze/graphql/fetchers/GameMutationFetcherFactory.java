@@ -14,6 +14,7 @@ import cz.larpovadatabaze.games.services.Labels;
 import cz.larpovadatabaze.games.services.Ratings;
 import cz.larpovadatabaze.games.services.Upvotes;
 import cz.larpovadatabaze.games.services.Videos;
+import cz.larpovadatabaze.graphql.GraphQLUploadedFile;
 import cz.larpovadatabaze.users.services.AppUsers;
 import cz.larpovadatabaze.users.services.CsldGroups;
 import cz.larpovadatabaze.users.services.CsldUsers;
@@ -304,7 +305,14 @@ public class GameMutationFetcherFactory {
                 game.setAddedBy(appUsers.getLoggedUser());
             }
 
-            games.saveOrUpdate(game);
+            // Image
+            GraphQLUploadedFile coverPhoto = null;
+            Map<String, String> profilePictureMap = (Map<String, String>)input.get("coverPhoto");
+            if (profilePictureMap != null) {
+                coverPhoto = new GraphQLUploadedFile(profilePictureMap.get("fileName"), profilePictureMap.get("contents"));
+            }
+
+            games.saveOrUpdate(game, coverPhoto);
 
             return game;
         };
@@ -321,7 +329,15 @@ public class GameMutationFetcherFactory {
 
             // Apply values and modify
             game = applyInputValues(game, input);
-            games.saveOrUpdate(game);
+
+            // Image
+            GraphQLUploadedFile coverPhoto = null;
+            Map<String, String> profilePictureMap = (Map<String, String>)input.get("coverPhoto");
+            if (profilePictureMap != null) {
+                coverPhoto = new GraphQLUploadedFile(profilePictureMap.get("fileName"), profilePictureMap.get("contents"));
+            }
+
+            games.saveOrUpdate(game, coverPhoto);
 
             return game;
         };

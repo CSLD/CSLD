@@ -171,7 +171,7 @@ public abstract class CreateOrUpdateUserPanel extends AbstractCsldPanel<CsldUser
         }
 
         logger.info(user);
-        if (csldUsers.saveOrUpdate(user, fileUpload.getFileUploads())) {
+        if (csldUsers.saveOrUpdate(user, fileUpload.getFileUploads(), null)) {
             return true;
         } else {
             error(getLocalizer().getString("user.cantAdd", this));

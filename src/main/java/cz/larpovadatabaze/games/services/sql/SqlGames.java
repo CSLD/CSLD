@@ -9,6 +9,7 @@ import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.common.services.sql.CRUD;
 import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.games.services.Images;
+import cz.larpovadatabaze.graphql.GraphQLUploadedFile;
 import cz.larpovadatabaze.users.CsldRoles;
 import cz.larpovadatabaze.users.services.AppUsers;
 import org.apache.commons.lang3.StringUtils;
@@ -99,6 +100,12 @@ public class SqlGames extends CRUD<Game, Integer> implements Games {
     @Override
     @Transactional
     public boolean saveOrUpdate(Game model) {
+        return saveOrUpdate(model, null);
+    }
+
+    @Override
+    @Transactional
+    public boolean saveOrUpdate(Game model, GraphQLUploadedFile coverImageUpload) {
         model.setAdded(new Timestamp(new Date().getTime()));
 
         CsldUser logged = appUsers.getLoggedUser();
@@ -126,6 +133,12 @@ public class SqlGames extends CRUD<Game, Integer> implements Games {
             FileUpload upload = uploads.get(0);
             String filePath = fileService.saveImageFileAndReturnPath(
                     new UploadedFile(upload), imageResizingStrategyFactoryService.getCoverImageStrategy()).path;
+            model.setCoverImage(new Image(filePath));
+        }
+
+        if (coverImageUpload != null) {
+            String filePath = fileService.saveImageFileAndReturnPath(
+                    coverImageUpload, imageResizingStrategyFactoryService.getCoverImageStrategy()).path;
             model.setCoverImage(new Image(filePath));
         }
 

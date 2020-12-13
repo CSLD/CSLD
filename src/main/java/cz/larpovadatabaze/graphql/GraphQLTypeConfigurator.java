@@ -6,6 +6,7 @@ import cz.larpovadatabaze.graphql.fetchers.AdminSectionCheckedFetcher;
 import cz.larpovadatabaze.graphql.fetchers.CalendarFetcher;
 import cz.larpovadatabaze.graphql.fetchers.CommentAsTextFetcher;
 import cz.larpovadatabaze.graphql.fetchers.CommentFetcherFactory;
+import cz.larpovadatabaze.graphql.fetchers.DonationsFetcher;
 import cz.larpovadatabaze.graphql.fetchers.EventFetcherFactory;
 import cz.larpovadatabaze.graphql.fetchers.GameCommentsPagedFetcherFactory;
 import cz.larpovadatabaze.graphql.fetchers.GameFetcherFactory;
@@ -44,9 +45,10 @@ public class GraphQLTypeConfigurator {
     private LabelFetcherFactory labelFetcherFactory;
     private AdminQueryFetcherFactory adminQueryFetcherFactory;
     private AdminMutationFetcherFactory adminMutationFetcherFactory;
+    private DonationsFetcher donationsFetcher;
 
     @Autowired
-    public GraphQLTypeConfigurator(GameFetcherFactory gameFetcherFactory, CommentFetcherFactory commentFetcherFactory, EventFetcherFactory eventFetcherFactory, CalendarFetcher calendarFetcher, GameSearchFetcherFactory gameSearchFetcherFactory, GameCommentsPagedFetcherFactory gameCommentsPagedFetcherFactory, UserFetcherFactory userFetcherFactory, GameMutationFetcherFactory gameMutationFetcherFactory, RatingUserProtectedFetcherFactory ratingUserProtectedFetcherFactory, AdminSectionCheckedFetcher adminSectionCheckedFetcher, LabelFetcherFactory labelFetcherFactory, AdminQueryFetcherFactory adminQueryFetcherFactory, AdminMutationFetcherFactory adminMutationFetcherFactory) {
+    public GraphQLTypeConfigurator(GameFetcherFactory gameFetcherFactory, CommentFetcherFactory commentFetcherFactory, EventFetcherFactory eventFetcherFactory, CalendarFetcher calendarFetcher, GameSearchFetcherFactory gameSearchFetcherFactory, GameCommentsPagedFetcherFactory gameCommentsPagedFetcherFactory, UserFetcherFactory userFetcherFactory, GameMutationFetcherFactory gameMutationFetcherFactory, RatingUserProtectedFetcherFactory ratingUserProtectedFetcherFactory, AdminSectionCheckedFetcher adminSectionCheckedFetcher, LabelFetcherFactory labelFetcherFactory, AdminQueryFetcherFactory adminQueryFetcherFactory, AdminMutationFetcherFactory adminMutationFetcherFactory, DonationsFetcher donationsFetcher) {
         this.gameFetcherFactory = gameFetcherFactory;
         this.commentFetcherFactory = commentFetcherFactory;
         this.eventFetcherFactory = eventFetcherFactory;
@@ -60,6 +62,7 @@ public class GraphQLTypeConfigurator {
         this.labelFetcherFactory = labelFetcherFactory;
         this.adminQueryFetcherFactory = adminQueryFetcherFactory;
         this.adminMutationFetcherFactory = adminMutationFetcherFactory;
+        this.donationsFetcher = donationsFetcher;
     }
 
     public RuntimeWiring configureTypes() {
@@ -76,6 +79,7 @@ public class GraphQLTypeConfigurator {
                         .dataFetcher("admin", adminSectionCheckedFetcher)
                         .dataFetcher("authorizedRequiredLabels", labelFetcherFactory.createAuthorizedRequiredLabelsFetcher())
                         .dataFetcher("authorizedOptionalLabels", labelFetcherFactory.createAuthorizedOptionalLabelsFetcher())
+                        .dataFetcher("donations", donationsFetcher)
                 )
                 // Homepage
                 .type("HomepageQuery", builder -> builder
@@ -113,8 +117,11 @@ public class GraphQLTypeConfigurator {
                         .dataFetcher("commentStats", adminQueryFetcherFactory.createCommentStatsFetcher())
                         .dataFetcher("selfRated", adminQueryFetcherFactory.createSelfRatedFetcher())
                 )
+                .type("Event", builder -> builder
+                        .dataFetcher("date", calendarFetcher)
+                )
 
-                /**
+                        /**
                  * Mutation
                  */
                 .type("Mutation", builder -> builder

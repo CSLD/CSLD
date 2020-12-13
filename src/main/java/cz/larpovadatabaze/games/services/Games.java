@@ -3,6 +3,7 @@ package cz.larpovadatabaze.games.services;
 import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.services.CRUDService;
 import cz.larpovadatabaze.common.services.IIconReferenceProvider;
+import cz.larpovadatabaze.graphql.GraphQLUploadedFile;
 
 import java.util.Collection;
 import java.util.List;
@@ -73,4 +74,6 @@ public interface Games extends CRUDService<Game, Integer>, IIconReferenceProvide
      * @param gameId Id which state will be shown.
      */
     void toggleGameState(int gameId);
+
+    boolean saveOrUpdate(Game model, GraphQLUploadedFile coverImageUpload);
 }

@@ -289,21 +289,22 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
             }
         };
 
+        mountResource(context + "/ical", icalReference);
+        mountResource(context + "/rest/stats", statsReference);
+        mountResource(context + "/rest/game", gameReference);
+    }
+
+    private void mountResources(String context) {
+        mountResource(context + "/user-icon", csldUsers.getIconReference());
+        mountResource(context + "/game-image", games.getIconReference());
+
         ResourceReference graphqlReference = new ResourceReference("graphqlReference") {
             @Override
             public IResource getResource() {
                 return Csld.this.graphqlResource;
             }
         };
-
-        mountResource(context + "/ical", icalReference);
-        mountResource(context + "/rest/stats", statsReference);
-        mountResource(context + "/rest/game", gameReference);
         mountResource(context + "/graphql", graphqlReference);
-    }
-
-    private void mountResources(String context) {
-        mountResource(context + "/user-icon", csldUsers.getIconReference());
     }
 
     @Override

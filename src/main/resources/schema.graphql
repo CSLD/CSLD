@@ -9,6 +9,7 @@ type Query {
     authorizedRequiredLabels: [Label!]!
     authorizedOptionalLabels: [Label!]!
     admin: AdminQuery!
+    donations: [Donation!]!
 }
 
 type Mutation {
@@ -391,5 +392,11 @@ enum UserRoleIn {
 input UpdateLabelInput {
     id: ID!
     name: String!
+    description: String
+}
+
+type Donation {
+    amount: Float!
+    donor: String
     description: String
 }
