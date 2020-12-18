@@ -178,7 +178,9 @@ public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
         PostMethod post = new PostMethod(RE_CAPTCHA_VERIFY_URL);
         post.addParameter("secret", RE_CAPTCHA_SECRET_KEY);
         post.addParameter("response", response);
-        post.addParameter("remoteip", remoteIp);
+        if (remoteIp != null) {
+            post.addParameter("remoteip", remoteIp);
+        }
 
         try {
             int code = client.executeMethod(post);

@@ -1,15 +1,16 @@
 type Query {
     homepage: HomepageQuery!
     loggedInUser: User
-    gameById(id: ID!): Game
-    eventById(id: ID!): Event
-    userById(id: ID!): User
+    gameById(gameId: ID!): Game
+    eventById(eventId: ID!): Event
+    userById(userId: ID!): User
     userByEmail(email: String!): User
     games: GamesQuery!
     authorizedRequiredLabels: [Label!]!
     authorizedOptionalLabels: [Label!]!
     admin: AdminQuery!
     donations: [Donation!]!
+    config: Config!
 }
 
 type Mutation {
@@ -191,7 +192,7 @@ type Photo {
 type UserMutation {
     logIn(userName: String!, password: String!): User
     logOut: User
-    createUser(input: CreateUserInput!): User!
+    createUser(input: CreateUserInput!): User
     updateLoggedInUser(input: UpdateLoggedInUserInput!): User!
     updateLoggedInUserPassword(oldPassword: String!, newPassword: String!): User!
     startRecoverPassword(email: String!, recoverUrl: String!): Boolean
@@ -231,7 +232,6 @@ type GameMutation {
 }
 
 input CreateGameInput {
-    recaptcha: String!
     name: String!
     description: String!
     authors: [ID!]!
@@ -309,7 +309,6 @@ type EventMutation {
 }
 
 input CreateEventInput {
-    recaptcha: String!
     name: String!
     fromDate: String!
     toDate: String!
@@ -399,4 +398,8 @@ type Donation {
     amount: Float!
     donor: String
     description: String
+}
+
+type Config {
+    reCaptchaKey: String!
 }

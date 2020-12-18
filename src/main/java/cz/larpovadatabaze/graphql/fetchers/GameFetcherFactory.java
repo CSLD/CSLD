@@ -41,7 +41,7 @@ public class GameFetcherFactory {
     }
 
     public DataFetcher<Game> createGameByIdFetcher() {
-        return dataFetchingEnvironment -> games.getById(Integer.parseInt(dataFetchingEnvironment.getArgument("id")));
+        return dataFetchingEnvironment -> games.getById(Integer.parseInt(dataFetchingEnvironment.getArgument("gameId")));
     }
 
     public DataFetcher<List<Game>> createGameSimilarGamesFetcher() {

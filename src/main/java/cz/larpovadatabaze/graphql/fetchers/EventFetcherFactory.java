@@ -82,6 +82,10 @@ public class EventFetcherFactory {
         };
     }
 
+    public DataFetcher<Event> createEventByIdFetcher() {
+        return dataFetchingEnvironment -> events.getById(Integer.parseInt(dataFetchingEnvironment.getArgument("eventId")));
+    }
+
     public DataFetcher<Event> createCreateEventFetcher() {
         return dataFetchingEnvironment -> {
             Map<String, Object> input = dataFetchingEnvironment.getArgument("input");

@@ -33,11 +33,11 @@ public class UserFetcherFactory {
     }
 
     public DataFetcher<CsldUser> createUserByIdFetcher() {
-        return dataFetchingEnvironment -> csldUsers.getById(Integer.parseInt(dataFetchingEnvironment.getArgument("id")));
+        return dataFetchingEnvironment -> csldUsers.getById(Integer.parseInt(dataFetchingEnvironment.getArgument("userId")));
     }
 
     public DataFetcher<CsldUser> createUserByEmailFetcher() {
-        return dataFetchingEnvironment -> csldUsers.getById(Integer.parseInt(dataFetchingEnvironment.getArgument("email")));
+        return dataFetchingEnvironment -> csldUsers.getByEmail(dataFetchingEnvironment.getArgument("email"));
     }
 
     public DataFetcher<CsldUser> createLogInMutationFetcher() {
@@ -64,23 +64,28 @@ public class UserFetcherFactory {
             Map<String, Object> input = dataFetchingEnvironment.getArgument("input");
 
             String email = (String) input.get("email");
+            String password = (String) input.get("password");
 
             // Is user with this e-mail already present?
             if (csldUsers.getByEmail(email) != null) {
                 throw new GraphQLException(GraphQLException.ErrorCode.DUPLICATE_VALUE, "User with this email already exists", "input.email");
             }
 
+            // Check recaptcha (remote IP we see is from the CORS proxy, so we cannot use it)
+            if (!csldUsers.checkReCaptcha((String)input.get("recaptcha"), null)) {
+                throw new GraphQLException(GraphQLException.ErrorCode.INVALID_VALUE, "Recaptcha token invalid", "input.recaptcha");
+            }
+
             CsldUser csldUser = new CsldUser();
             Person person = new Person();
             person.setEmail(email);
-            // TODO - profile picture - TODO
             person.setName((String) input.get("name"));
             person.setNickname((String) input.get("nickname"));
             person.setBirthDate(FetcherUtils.parseDate((String) input.get("birthDate"), "input.birthDate"));
             person.setCity((String) input.get("city"));
             csldUser.setPerson(person);
-            // TODO - check recaptcha - TODO
-            csldUser.setPassword(Pwd.generateStrongPasswordHash((String) input.get("password"), csldUser.getPerson().getEmail()));
+            // Password will be encoded during saveOrUpdate()
+            csldUser.setPassword(password);
 
             // Image
             GraphQLUploadedFile profilePicture = null;
@@ -93,7 +98,7 @@ public class UserFetcherFactory {
             csldUsers.saveOrUpdate(csldUser, null, profilePicture);
 
             // Log in as new user
-            if (!appUsers.signIn((String) input.get("email"), (String) input.get("password"))) {
+            if (!appUsers.signIn(email, password)) {
                 // Login failed (should never happen here)
                 return null;
             }
@@ -109,12 +114,17 @@ public class UserFetcherFactory {
                 throw new GraphQLException(GraphQLException.ErrorCode.INVALID_STATE, "Not logged in");
             }
 
-            CsldUser csldUser = appUsers.getLoggedUser();
-            csldUser.getPerson().setEmail((String) input.get("email"));
-            csldUser.getPerson().setName((String) input.get("name"));
-            csldUser.getPerson().setNickname((String) input.get("nickname"));
-            csldUser.getPerson().setBirthDate(FetcherUtils.parseDate((String) input.get("birthDate"), "input.birthDate"));
-            csldUser.getPerson().setCity((String) input.get("city"));
+            CsldUser currentUser = appUsers.getLoggedUser();
+
+            CsldUser newUser = new CsldUser();
+            newUser.setId(currentUser.getId());
+            Person person = new Person();
+            person.setEmail((String) input.get("email"));
+            person.setName((String) input.get("name"));
+            person.setNickname((String) input.get("nickname"));
+            person.setBirthDate(FetcherUtils.parseDate((String) input.get("birthDate"), "input.birthDate"));
+            person.setCity((String) input.get("city"));
+            newUser.setPerson(person);
 
             // Image
             GraphQLUploadedFile profilePicture = null;
@@ -123,9 +133,9 @@ public class UserFetcherFactory {
                 profilePicture = new GraphQLUploadedFile(profilePictureMap.get("fileName"), profilePictureMap.get("contents"));
             }
 
-            csldUsers.saveOrUpdate(csldUser, null, profilePicture);
+            csldUsers.saveOrUpdate(newUser, null, profilePicture);
 
-            return csldUser;
+            return newUser;
         };
     }
 
