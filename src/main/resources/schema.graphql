@@ -60,6 +60,7 @@ type Game {
     ratingsDisabled: Boolean
     commentsDisabled: Boolean
     labels: [Label!]!
+    currentUsersComment: Comment
     comments: [Comment!]!
     commentsPaged(offset: Int!, limit: Int!): CommentsPaged!
     authors: [User!]!
@@ -136,11 +137,20 @@ type User {
     lastRating: Int
     role: UserRole
     person: Person!
-    amountOfComments: Int!
-    amountOfPlayed: Int!
-    amountOfCreated:Int!
+    amountOfComments: Int
+    amountOfPlayed: Int
+    amountOfCreated: Int
     image: Image
-    commented: [Comment!]!
+    commentsPaged(offset: Int!, limit: Int!): CommentsPaged!
+    ratings: [Rating!]!
+    playedGames: [GameWithRating!]!
+    wantedGames: [Game!]!
+    authoredGames: [Game!]!
+}
+
+type GameWithRating {
+    game: Game!
+    rating: Int
 }
 
 type Comment {

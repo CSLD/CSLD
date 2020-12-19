@@ -1,8 +1,12 @@
 package cz.larpovadatabaze.graphql.fetchers;
 
+import cz.larpovadatabaze.common.entities.CsldGroup;
+import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
+import cz.larpovadatabaze.common.entities.IGameWithRating;
 import cz.larpovadatabaze.games.services.AuthoredGames;
 import cz.larpovadatabaze.games.services.Games;
+import cz.larpovadatabaze.games.services.GamesWithState;
 import cz.larpovadatabaze.games.services.SimilarGames;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
@@ -11,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -24,12 +29,14 @@ public class GameFetcherFactory {
     private final Games games;
     private final SimilarGames similarGames;
     private final AuthoredGames authoredGames;
+    private final GamesWithState gamesWithState;
 
     @Autowired
-    GameFetcherFactory(Games games, SimilarGames similarGames, AuthoredGames authoredGames) {
+    GameFetcherFactory(Games games, SimilarGames similarGames, AuthoredGames authoredGames, GamesWithState gamesWithState) {
         this.games = games;
         this.similarGames = similarGames;
         this.authoredGames = authoredGames;
+        this.gamesWithState = gamesWithState;
     }
 
     public DataFetcher<List<Game>> createLastAddedGamesFetcher() {
@@ -55,6 +62,34 @@ public class GameFetcherFactory {
         return dataFetchingEnvironment -> {
             Game game = dataFetchingEnvironment.getSource();
             return authoredGames.gamesOfAuthors(game);
+        };
+    }
+
+    public DataFetcher<Collection<Game>> createUserAuthoredGamesFetcher() {
+        return dataFetchingEnvironment -> {
+            CsldUser user = dataFetchingEnvironment.getSource();
+            return authoredGames.getGamesOfAuthor(user, 0, 10000);
+        };
+    }
+
+    public DataFetcher<Collection<Game>> createGroupAuthoredGamesFetcher() {
+        return dataFetchingEnvironment -> {
+            CsldGroup group = dataFetchingEnvironment.getSource();
+            return authoredGames.getGamesOfGroup(group, 0, 10000);
+        };
+    }
+
+    public DataFetcher<Collection<IGameWithRating>> createUserPlayedGamesFetcher() {
+        return dataFetchingEnvironment -> {
+            CsldUser user = dataFetchingEnvironment.getSource();
+            return gamesWithState.getPlayedByUser(user);
+        };
+    }
+
+    public DataFetcher<Collection<Game>> createUserWantedGamesFetcher() {
+        return dataFetchingEnvironment -> {
+            CsldUser user = dataFetchingEnvironment.getSource();
+            return gamesWithState.getWantedByUser(user);
         };
     }
 }
