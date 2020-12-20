@@ -4,15 +4,16 @@ import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.entities.Rating;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
  * Fetches rating stats for the game
  */
+@Component
 public class GameRatingStatsFetcher implements DataFetcher<List<GameRatingStatsFetcher.RatingCount>> {
     public static class RatingCount {
         private final int rating;

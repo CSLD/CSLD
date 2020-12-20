@@ -61,6 +61,7 @@ type Game {
     commentsDisabled: Boolean
     labels: [Label!]!
     currentUsersComment: Comment
+    currentUsersRating: Rating
     comments: [Comment!]!
     commentsPaged(offset: Int!, limit: Int!): CommentsPaged!
     authors: [User!]!

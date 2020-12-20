@@ -50,9 +50,10 @@ public class GraphQLTypeConfigurator {
     private final DonationsFetcher donationsFetcher;
     private final ConfigFetcher configFetcher;
     private final RatingFetcherFactory ratingFetcherFactory;
+    private final GameRatingStatsFetcher ratingStatsFetcher;
 
     @Autowired
-    public GraphQLTypeConfigurator(GameFetcherFactory gameFetcherFactory, CommentFetcherFactory commentFetcherFactory, EventFetcherFactory eventFetcherFactory, CalendarFetcher calendarFetcher, GameSearchFetcherFactory gameSearchFetcherFactory, GameCommentsPagedFetcherFactory gameCommentsPagedFetcherFactory, UserFetcherFactory userFetcherFactory, GameMutationFetcherFactory gameMutationFetcherFactory, UserProtectedFetcherFactory userProtectedFetcherFactory, AdminSectionCheckedFetcher adminSectionCheckedFetcher, LabelFetcherFactory labelFetcherFactory, AdminQueryFetcherFactory adminQueryFetcherFactory, AdminMutationFetcherFactory adminMutationFetcherFactory, DonationsFetcher donationsFetcher, ConfigFetcher configFetcher, RatingFetcherFactory ratingFetcherFactory) {
+    public GraphQLTypeConfigurator(GameFetcherFactory gameFetcherFactory, CommentFetcherFactory commentFetcherFactory, EventFetcherFactory eventFetcherFactory, CalendarFetcher calendarFetcher, GameSearchFetcherFactory gameSearchFetcherFactory, GameCommentsPagedFetcherFactory gameCommentsPagedFetcherFactory, UserFetcherFactory userFetcherFactory, GameMutationFetcherFactory gameMutationFetcherFactory, UserProtectedFetcherFactory userProtectedFetcherFactory, AdminSectionCheckedFetcher adminSectionCheckedFetcher, LabelFetcherFactory labelFetcherFactory, AdminQueryFetcherFactory adminQueryFetcherFactory, AdminMutationFetcherFactory adminMutationFetcherFactory, DonationsFetcher donationsFetcher, ConfigFetcher configFetcher, RatingFetcherFactory ratingFetcherFactory, GameRatingStatsFetcher ratingStatsFetcher) {
         this.gameFetcherFactory = gameFetcherFactory;
         this.commentFetcherFactory = commentFetcherFactory;
         this.eventFetcherFactory = eventFetcherFactory;
@@ -69,6 +70,7 @@ public class GraphQLTypeConfigurator {
         this.donationsFetcher = donationsFetcher;
         this.configFetcher = configFetcher;
         this.ratingFetcherFactory = ratingFetcherFactory;
+        this.ratingStatsFetcher = ratingStatsFetcher;
     }
 
     public RuntimeWiring configureTypes() {
@@ -86,7 +88,7 @@ public class GraphQLTypeConfigurator {
                         .dataFetcher("authorizedRequiredLabels", labelFetcherFactory.createAuthorizedRequiredLabelsFetcher())
                         .dataFetcher("authorizedOptionalLabels", labelFetcherFactory.createAuthorizedOptionalLabelsFetcher())
                         .dataFetcher("donations", donationsFetcher)
-                                .dataFetcher("config", configFetcher)
+                        .dataFetcher("config", configFetcher)
                 )
                 // Homepage
                 .type("HomepageQuery", builder -> builder
@@ -108,12 +110,13 @@ public class GraphQLTypeConfigurator {
                         .dataFetcher("to", calendarFetcher)
                 )
                 .type("Game", builder -> builder
-                        .dataFetcher("ratingStats", new GameRatingStatsFetcher())
+                        .dataFetcher("ratingStats", ratingStatsFetcher)
                         .dataFetcher("wantsToPlay", new GameWantsToPlayFetcher())
                         .dataFetcher("similarGames", gameFetcherFactory.createGameSimilarGamesFetcher())
                         .dataFetcher("gamesOfAuthors", gameFetcherFactory.createGameGamesOfAuthorsFetcher())
                         .dataFetcher("commentsPaged", gameCommentsPagedFetcherFactory.createCommentsPagedFetcher())
                         .dataFetcher("currentUsersComment", commentFetcherFactory.getCurrentUsersGameComment())
+                        .dataFetcher("currentUsersRating", ratingFetcherFactory.createUsersGameRatingFetcher())
                 )
                 .type("Comment", builder -> builder.dataFetcher("commentAsText", new CommentAsTextFetcher()))
                 .type("Rating", builder -> builder.dataFetcher("user", userProtectedFetcherFactory.createRatingUserProtectedChecker()))

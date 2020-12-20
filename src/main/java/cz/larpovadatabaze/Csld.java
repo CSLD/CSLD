@@ -298,6 +298,8 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         mountResource(context + "/user-icon", csldUsers.getIconReference());
         mountResource(context + "/game-image", games.getIconReference());
 
+        // GraphQL needs web application, it must be set later to overcome circular dependency
+        graphqlResource.setWebApplication(this);
         ResourceReference graphqlReference = new ResourceReference("graphqlReference") {
             @Override
             public IResource getResource() {

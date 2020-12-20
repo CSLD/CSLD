@@ -36,7 +36,8 @@ public class WicketUsers implements AppUsers {
 
     @Override
     public Integer getLoggedUserId() {
-        return getLoggedUser().getId();
+        CsldUser csldUser = getLoggedUser();
+        return (csldUser != null) ? getLoggedUser().getId() : null;
     }
 
     @Override

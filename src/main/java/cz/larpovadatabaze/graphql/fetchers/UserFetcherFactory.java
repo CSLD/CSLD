@@ -10,6 +10,9 @@ import cz.larpovadatabaze.users.services.AppUsers;
 import cz.larpovadatabaze.users.services.CsldUsers;
 import cz.larpovadatabaze.users.services.EmailAuthentications;
 import graphql.schema.DataFetcher;
+import org.apache.wicket.authentication.IAuthenticationStrategy;
+import org.apache.wicket.authentication.strategy.NoOpAuthenticationStrategy;
+import org.apache.wicket.protocol.http.WebApplication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,11 +24,27 @@ public class UserFetcherFactory {
     private final EmailAuthentications emailAuthentications;
     private final AppUsers appUsers;
 
+    // Initialized later manually to overcome circular reference during bean creation
+    private WebApplication webApplication;
+
     @Autowired
     public UserFetcherFactory(CsldUsers csldUsers, EmailAuthentications emailAuthentications, AppUsers appUsers) {
         this.csldUsers = csldUsers;
         this.emailAuthentications = emailAuthentications;
         this.appUsers = appUsers;
+    }
+
+    public void setWebApplication(WebApplication webApplication) {
+        this.webApplication = webApplication;
+    }
+
+    private IAuthenticationStrategy getAuthenticationStrategy() {
+        if (webApplication == null) {
+            // Used in tests
+            return new NoOpAuthenticationStrategy();
+        }
+
+        return webApplication.getSecuritySettings().getAuthenticationStrategy();
     }
 
     public DataFetcher<CsldUser> createLoggedInUserFetcher() {
@@ -42,10 +61,15 @@ public class UserFetcherFactory {
 
     public DataFetcher<CsldUser> createLogInMutationFetcher() {
         return dataFetchingEnvironment -> {
-            if (!appUsers.signIn(dataFetchingEnvironment.getArgument("userName"), dataFetchingEnvironment.getArgument("password"))) {
+            String userName = dataFetchingEnvironment.getArgument("userName");
+            String password = dataFetchingEnvironment.getArgument("password");
+            if (!appUsers.signIn(userName, password)) {
                 // Login failed
                 return null;
             }
+
+            // Remember login
+            getAuthenticationStrategy().save(userName, password);
 
             return appUsers.getLoggedUser();
         };
@@ -54,6 +78,8 @@ public class UserFetcherFactory {
     public DataFetcher<CsldUser> createLogOutMutationFetcher() {
         return dataFetchingEnvironment -> {
             appUsers.signOut();
+
+            getAuthenticationStrategy().remove();
 
             return appUsers.getLoggedUser();
         };
@@ -102,6 +128,10 @@ public class UserFetcherFactory {
                 // Login failed (should never happen here)
                 return null;
             }
+
+            // Remember login
+            getAuthenticationStrategy().save(email, password);
+
             return csldUser;
         };
     }
@@ -212,6 +242,9 @@ public class UserFetcherFactory {
                 // Login failed (should never happen here)
                 return null;
             }
+
+            // Remember login
+            getAuthenticationStrategy().save(email, newPassword);
 
             return appUsers.getLoggedUser();
         };
