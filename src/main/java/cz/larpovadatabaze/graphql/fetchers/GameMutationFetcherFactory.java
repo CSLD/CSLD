@@ -4,7 +4,6 @@ import cz.larpovadatabaze.common.entities.Comment;
 import cz.larpovadatabaze.common.entities.CsldGroup;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
-import cz.larpovadatabaze.common.entities.Label;
 import cz.larpovadatabaze.common.entities.Person;
 import cz.larpovadatabaze.common.entities.Rating;
 import cz.larpovadatabaze.common.entities.Video;
@@ -22,6 +21,8 @@ import graphql.schema.DataFetcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -419,12 +420,20 @@ public class GameMutationFetcherFactory {
             }
 
             Rating rating = getUserGameRating(game);
-            rating.setState(newState);
-            if (newState != STATE_CODE_PLAYED) {
-                // Clear rating when state is other than played
-                rating.setRating(null);
+            if (newState == STATE_CODE_NONE) {
+                // Remove rating altogether
+                if (rating.getId() != null) {
+                    ratings.remove(rating);
+                }
             }
-            ratings.saveOrUpdate(rating);
+            else {
+                rating.setState(newState);
+                if (newState != STATE_CODE_PLAYED) {
+                    // Clear rating when state is other than played
+                    rating.setRating(null);
+                }
+                ratings.saveOrUpdate(rating);
+            }
 
             return game;
         };
@@ -443,6 +452,7 @@ public class GameMutationFetcherFactory {
                 comment = new Comment();
                 comment.setGame(game);
                 comment.setUser(appUsers.getLoggedUser());
+                comment.setAdded(new Timestamp(new Date().getTime()));
             }
 
             comment.setComment(commentText);
