@@ -13,7 +13,7 @@ import java.util.GregorianCalendar;
  */
 @Component
 public class CalendarFetcher implements DataFetcher<String> {
-    private static SimpleDateFormat isoFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static SimpleDateFormat isoFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Override
     public String get(DataFetchingEnvironment dataFetchingEnvironment) throws Exception {

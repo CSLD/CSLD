@@ -299,8 +299,6 @@ public class GameMutationFetcherFactory {
         return dataFetchingEnvironment -> {
             Map<String, Object> input = dataFetchingEnvironment.getArgument("input");
 
-            // TODO - check recaptcha - TODO
-
             Game game = applyInputValues(new Game(), input);
             if (appUsers.isSignedIn()) {
                 game.setAddedBy(appUsers.getLoggedUser());
@@ -399,7 +397,7 @@ public class GameMutationFetcherFactory {
 
             Integer userId = Integer.parseInt(dataFetchingEnvironment.getArgument("userId"));
 
-            Rating rating = ratings.getUserRatingOfGame(game.getId(), userId);
+            Rating rating = ratings.getUserRatingOfGame(userId, game.getId());
             if (rating != null) {
                 ratings.remove(rating);
             }

@@ -7,7 +7,6 @@ import cz.larpovadatabaze.users.Pwd;
 import cz.larpovadatabaze.users.services.AppUsers;
 import cz.larpovadatabaze.users.services.masquerade.InMemoryCsldUsers;
 import cz.larpovadatabaze.users.services.masquerade.InMemoryEmailAuthenticationTokens;
-import cz.larpovadatabaze.users.services.wicket.WicketUsers;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 import org.junit.Test;
@@ -26,7 +25,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.times;
 
-public class UserFetcherFactoryIT {
+public class UserMutationFetcherFactoryIT {
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
     @Test
@@ -36,7 +35,7 @@ public class UserFetcherFactoryIT {
         InMemoryCsldUsers users = new InMemoryCsldUsers();
         users.removeAll();
 
-        UserFetcherFactory factory = new UserFetcherFactory(users, new InMemoryEmailAuthenticationTokens(), sessionMock);
+        UserMutationFetcherFactory factory = new UserMutationFetcherFactory(users, new InMemoryEmailAuthenticationTokens(), sessionMock);
 
         DataFetcher<CsldUser> fetcher = factory.createCreateUserMutationFetcher();
         Map<String, Object> input = new HashMap<>();
@@ -71,7 +70,7 @@ public class UserFetcherFactoryIT {
     @Test
     public void createUserInvalidDate() {
         AppUsers sessionMock = mock(AppUsers.class);
-        UserFetcherFactory factory = new UserFetcherFactory(new InMemoryCsldUsers(), new InMemoryEmailAuthenticationTokens(), sessionMock);
+        UserMutationFetcherFactory factory = new UserMutationFetcherFactory(new InMemoryCsldUsers(), new InMemoryEmailAuthenticationTokens(), sessionMock);
 
         DataFetcher<CsldUser> fetcher = factory.createCreateUserMutationFetcher();
         Map<String, Object> input = new HashMap<>();
@@ -120,7 +119,7 @@ public class UserFetcherFactoryIT {
 
         InMemoryCsldUsers users = new InMemoryCsldUsers();
         users.removeAll();
-        UserFetcherFactory factory = new UserFetcherFactory(users, new InMemoryEmailAuthenticationTokens(), sessionMock);
+        UserMutationFetcherFactory factory = new UserMutationFetcherFactory(users, new InMemoryEmailAuthenticationTokens(), sessionMock);
         DataFetcher<CsldUser> fetcher = factory.createUpdateLoggedInUserMutationFetcher();
         DataFetchingEnvironment dataFetchingEnvironment = new MockDataFetchingEnvironment(arguments, null);
 
@@ -139,7 +138,7 @@ public class UserFetcherFactoryIT {
     @Test
     public void updateUserNotLoggedIn() {
         AppUsers sessionMock = mock(AppUsers.class);
-        UserFetcherFactory factory = new UserFetcherFactory(new InMemoryCsldUsers(), new InMemoryEmailAuthenticationTokens(), sessionMock);
+        UserMutationFetcherFactory factory = new UserMutationFetcherFactory(new InMemoryCsldUsers(), new InMemoryEmailAuthenticationTokens(), sessionMock);
         DataFetcher<CsldUser> fetcher = factory.createUpdateLoggedInUserMutationFetcher();
         Map<String, Object> arguments = new HashMap<>();
         DataFetchingEnvironment dataFetchingEnvironment = new MockDataFetchingEnvironment(arguments, null);
@@ -159,7 +158,7 @@ public class UserFetcherFactoryIT {
     @Test
     public void updatePasswordUserNotLoggedIn() {
         AppUsers sessionMock = mock(AppUsers.class);
-        UserFetcherFactory factory = new UserFetcherFactory(new InMemoryCsldUsers(), new InMemoryEmailAuthenticationTokens(), sessionMock);
+        UserMutationFetcherFactory factory = new UserMutationFetcherFactory(new InMemoryCsldUsers(), new InMemoryEmailAuthenticationTokens(), sessionMock);
         DataFetcher<CsldUser> fetcher = factory.createUpdateLoggedInUserPasswordMutationFetcher();
         Map<String, Object> arguments = new HashMap<>();
         DataFetchingEnvironment dataFetchingEnvironment = new MockDataFetchingEnvironment(arguments, null);
@@ -194,7 +193,7 @@ public class UserFetcherFactoryIT {
 
         InMemoryCsldUsers users = new InMemoryCsldUsers();
         users.removeAll();
-        UserFetcherFactory factory = new UserFetcherFactory(users, new InMemoryEmailAuthenticationTokens(), sessionMock);
+        UserMutationFetcherFactory factory = new UserMutationFetcherFactory(users, new InMemoryEmailAuthenticationTokens(), sessionMock);
         DataFetcher<CsldUser> fetcher = factory.createUpdateLoggedInUserPasswordMutationFetcher();
         DataFetchingEnvironment dataFetchingEnvironment = new MockDataFetchingEnvironment(arguments, null);
 
@@ -228,7 +227,7 @@ public class UserFetcherFactoryIT {
 
         InMemoryCsldUsers users = new InMemoryCsldUsers();
         users.removeAll();
-        UserFetcherFactory factory = new UserFetcherFactory(users, new InMemoryEmailAuthenticationTokens(), sessionMock);
+        UserMutationFetcherFactory factory = new UserMutationFetcherFactory(users, new InMemoryEmailAuthenticationTokens(), sessionMock);
         DataFetcher<CsldUser> fetcher = factory.createUpdateLoggedInUserPasswordMutationFetcher();
         DataFetchingEnvironment dataFetchingEnvironment = new MockDataFetchingEnvironment(arguments, null);
 
@@ -245,7 +244,7 @@ public class UserFetcherFactoryIT {
         arguments1.put("recoverUrl", "https://www.centrum.cz");
 
         InMemoryEmailAuthenticationTokens tokens = new InMemoryEmailAuthenticationTokens();
-        UserFetcherFactory factory = new UserFetcherFactory(new InMemoryCsldUsers(), tokens, sessionMock);
+        UserMutationFetcherFactory factory = new UserMutationFetcherFactory(new InMemoryCsldUsers(), tokens, sessionMock);
 
         // Create token
         DataFetcher<Boolean> fetcher1 = factory.createStartRecoverPasswordMutationFetcher();
@@ -278,7 +277,7 @@ public class UserFetcherFactoryIT {
 
         InMemoryEmailAuthenticationTokens tokens = new InMemoryEmailAuthenticationTokens();
         AppUsers sessionMock = mock(AppUsers.class);
-        UserFetcherFactory factory = new UserFetcherFactory(new InMemoryCsldUsers(), tokens, sessionMock);
+        UserMutationFetcherFactory factory = new UserMutationFetcherFactory(new InMemoryCsldUsers(), tokens, sessionMock);
 
         // Create token
         DataFetcher<Boolean> fetcher = factory.createStartRecoverPasswordMutationFetcher();
@@ -296,7 +295,7 @@ public class UserFetcherFactoryIT {
         arguments.put("newPassword", "new");
 
         AppUsers sessionMock = mock(AppUsers.class);
-        UserFetcherFactory factory = new UserFetcherFactory(new InMemoryCsldUsers(), new InMemoryEmailAuthenticationTokens(), sessionMock);
+        UserMutationFetcherFactory factory = new UserMutationFetcherFactory(new InMemoryCsldUsers(), new InMemoryEmailAuthenticationTokens(), sessionMock);
 
         // Create token
         DataFetcher<CsldUser> fetcher = factory.createFinishRecoverPasswordMutationFetcher();

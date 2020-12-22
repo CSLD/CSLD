@@ -13,12 +13,14 @@ import cz.larpovadatabaze.graphql.fetchers.GameCommentsPagedFetcherFactory;
 import cz.larpovadatabaze.graphql.fetchers.GameFetcherFactory;
 import cz.larpovadatabaze.graphql.fetchers.GameMutationFetcherFactory;
 import cz.larpovadatabaze.graphql.fetchers.GameRatingStatsFetcher;
+import cz.larpovadatabaze.graphql.fetchers.GameRatingsProtectedFetcher;
 import cz.larpovadatabaze.graphql.fetchers.GameSearchFetcherFactory;
 import cz.larpovadatabaze.graphql.fetchers.GameWantsToPlayFetcher;
+import cz.larpovadatabaze.graphql.fetchers.GroupFetcherFactory;
 import cz.larpovadatabaze.graphql.fetchers.LabelFetcherFactory;
 import cz.larpovadatabaze.graphql.fetchers.RatingFetcherFactory;
-import cz.larpovadatabaze.graphql.fetchers.UserProtectedFetcherFactory;
 import cz.larpovadatabaze.graphql.fetchers.UserFetcherFactory;
+import cz.larpovadatabaze.graphql.fetchers.UserMutationFetcherFactory;
 import cz.larpovadatabaze.graphql.fetchers.UserRoleFetcher;
 import graphql.schema.StaticDataFetcher;
 import graphql.schema.idl.RuntimeWiring;
@@ -40,9 +42,9 @@ public class GraphQLTypeConfigurator {
     private final EventFetcherFactory eventFetcherFactory;
     private final CalendarFetcher calendarFetcher;
     private final GameCommentsPagedFetcherFactory gameCommentsPagedFetcherFactory;
-    private final UserFetcherFactory userFetcherFactory;
+    private final UserMutationFetcherFactory userMutationFetcherFactory;
     private final GameMutationFetcherFactory gameMutationFetcherFactory;
-    private final UserProtectedFetcherFactory userProtectedFetcherFactory;
+    private final UserFetcherFactory userFetcherFactory;
     private final AdminSectionCheckedFetcher adminSectionCheckedFetcher;
     private final LabelFetcherFactory labelFetcherFactory;
     private final AdminQueryFetcherFactory adminQueryFetcherFactory;
@@ -51,18 +53,19 @@ public class GraphQLTypeConfigurator {
     private final ConfigFetcher configFetcher;
     private final RatingFetcherFactory ratingFetcherFactory;
     private final GameRatingStatsFetcher ratingStatsFetcher;
+    private final GroupFetcherFactory groupFetcherFactory;
 
     @Autowired
-    public GraphQLTypeConfigurator(GameFetcherFactory gameFetcherFactory, CommentFetcherFactory commentFetcherFactory, EventFetcherFactory eventFetcherFactory, CalendarFetcher calendarFetcher, GameSearchFetcherFactory gameSearchFetcherFactory, GameCommentsPagedFetcherFactory gameCommentsPagedFetcherFactory, UserFetcherFactory userFetcherFactory, GameMutationFetcherFactory gameMutationFetcherFactory, UserProtectedFetcherFactory userProtectedFetcherFactory, AdminSectionCheckedFetcher adminSectionCheckedFetcher, LabelFetcherFactory labelFetcherFactory, AdminQueryFetcherFactory adminQueryFetcherFactory, AdminMutationFetcherFactory adminMutationFetcherFactory, DonationsFetcher donationsFetcher, ConfigFetcher configFetcher, RatingFetcherFactory ratingFetcherFactory, GameRatingStatsFetcher ratingStatsFetcher) {
+    public GraphQLTypeConfigurator(GameFetcherFactory gameFetcherFactory, CommentFetcherFactory commentFetcherFactory, EventFetcherFactory eventFetcherFactory, CalendarFetcher calendarFetcher, GameSearchFetcherFactory gameSearchFetcherFactory, GameCommentsPagedFetcherFactory gameCommentsPagedFetcherFactory, UserMutationFetcherFactory userMutationFetcherFactory, GameMutationFetcherFactory gameMutationFetcherFactory, UserFetcherFactory userFetcherFactory, AdminSectionCheckedFetcher adminSectionCheckedFetcher, LabelFetcherFactory labelFetcherFactory, AdminQueryFetcherFactory adminQueryFetcherFactory, AdminMutationFetcherFactory adminMutationFetcherFactory, DonationsFetcher donationsFetcher, ConfigFetcher configFetcher, RatingFetcherFactory ratingFetcherFactory, GameRatingStatsFetcher ratingStatsFetcher, GroupFetcherFactory groupFetcherFactory) {
         this.gameFetcherFactory = gameFetcherFactory;
         this.commentFetcherFactory = commentFetcherFactory;
         this.eventFetcherFactory = eventFetcherFactory;
         this.calendarFetcher = calendarFetcher;
         this.gameSearchFetcherFactory = gameSearchFetcherFactory;
         this.gameCommentsPagedFetcherFactory = gameCommentsPagedFetcherFactory;
-        this.userFetcherFactory = userFetcherFactory;
+        this.userMutationFetcherFactory = userMutationFetcherFactory;
         this.gameMutationFetcherFactory = gameMutationFetcherFactory;
-        this.userProtectedFetcherFactory = userProtectedFetcherFactory;
+        this.userFetcherFactory = userFetcherFactory;
         this.adminSectionCheckedFetcher = adminSectionCheckedFetcher;
         this.labelFetcherFactory = labelFetcherFactory;
         this.adminQueryFetcherFactory = adminQueryFetcherFactory;
@@ -71,6 +74,7 @@ public class GraphQLTypeConfigurator {
         this.configFetcher = configFetcher;
         this.ratingFetcherFactory = ratingFetcherFactory;
         this.ratingStatsFetcher = ratingStatsFetcher;
+        this.groupFetcherFactory = groupFetcherFactory;
     }
 
     public RuntimeWiring configureTypes() {
@@ -80,6 +84,7 @@ public class GraphQLTypeConfigurator {
                         .dataFetcher("homepage", new StaticDataFetcher(Collections.emptyMap()))
                         .dataFetcher("loggedInUser", userFetcherFactory.createLoggedInUserFetcher())
                         .dataFetcher("gameById", gameFetcherFactory.createGameByIdFetcher())
+                        .dataFetcher("groupById", groupFetcherFactory.createGroupByIdFetcher())
                         .dataFetcher("userById", userFetcherFactory.createUserByIdFetcher())
                         .dataFetcher("userByEmail", userFetcherFactory.createUserByEmailFetcher())
                         .dataFetcher("eventById", eventFetcherFactory.createEventByIdFetcher())
@@ -117,9 +122,10 @@ public class GraphQLTypeConfigurator {
                         .dataFetcher("commentsPaged", gameCommentsPagedFetcherFactory.createCommentsPagedFetcher())
                         .dataFetcher("currentUsersComment", commentFetcherFactory.getCurrentUsersGameComment())
                         .dataFetcher("currentUsersRating", ratingFetcherFactory.createUsersGameRatingFetcher())
+                        .dataFetcher("ratings", new GameRatingsProtectedFetcher())
                 )
                 .type("Comment", builder -> builder.dataFetcher("commentAsText", new CommentAsTextFetcher()))
-                .type("Rating", builder -> builder.dataFetcher("user", userProtectedFetcherFactory.createRatingUserProtectedChecker()))
+                .type("Rating", builder -> builder.dataFetcher("user", userFetcherFactory.createRatingUserProtectedChecker()))
                 .type("User", builder -> builder
                         .dataFetcher("role", new UserRoleFetcher())
                         .dataFetcher("commentsPaged", commentFetcherFactory.createUserCommentsPagedFetcher())
@@ -127,6 +133,12 @@ public class GraphQLTypeConfigurator {
                         .dataFetcher("playedGames", gameFetcherFactory.createUserPlayedGamesFetcher())
                         .dataFetcher("wantedGames", gameFetcherFactory.createUserWantedGamesFetcher())
                         .dataFetcher("authoredGames", gameFetcherFactory.createUserAuthoredGamesFetcher())
+                        .dataFetcher("name", userFetcherFactory.createNameFetcher())
+                        .dataFetcher("email", userFetcherFactory.createUserEmailProtectedChecker())
+                        .dataFetcher("description", userFetcherFactory.createDescriptionFetcher())
+                        .dataFetcher("nickname", userFetcherFactory.createNicknameFetcher())
+                        .dataFetcher("birthDate", userFetcherFactory.createBirthDateFetcher())
+                        .dataFetcher("city", userFetcherFactory.createCityFetcher())
                 )
                 .type("AdminQuery", builder -> builder
                         .dataFetcher("allLabels", labelFetcherFactory.createAllLabelsFetcher())
@@ -135,12 +147,6 @@ public class GraphQLTypeConfigurator {
                         .dataFetcher("commentStats", adminQueryFetcherFactory.createCommentStatsFetcher())
                         .dataFetcher("selfRated", adminQueryFetcherFactory.createSelfRatedFetcher())
                 )
-                .type("Event", builder -> builder
-                        .dataFetcher("date", calendarFetcher)
-                )
-                .type("Person", builder -> builder
-                        .dataFetcher("email", userProtectedFetcherFactory.createUserEmailProtectedChecker())
-                )
 
                 /**
                  * Mutation
@@ -148,17 +154,18 @@ public class GraphQLTypeConfigurator {
                 .type("Mutation", builder -> builder
                         .dataFetcher("user", new StaticDataFetcher(Collections.emptyMap()))
                         .dataFetcher("game", new StaticDataFetcher(Collections.emptyMap()))
+                        .dataFetcher("group", new StaticDataFetcher(Collections.emptyMap()))
                         .dataFetcher("event", new StaticDataFetcher(Collections.emptyMap()))
                         .dataFetcher("admin", adminSectionCheckedFetcher)
                 )
                 .type("UserMutation", builder -> builder
-                        .dataFetcher("logIn", userFetcherFactory.createLogInMutationFetcher())
-                        .dataFetcher("logOut", userFetcherFactory.createLogOutMutationFetcher())
-                        .dataFetcher("createUser", userFetcherFactory.createCreateUserMutationFetcher())
-                        .dataFetcher("updateLoggedInUser", userFetcherFactory.createUpdateLoggedInUserMutationFetcher())
-                        .dataFetcher("updateLoggedInUserPassword", userFetcherFactory.createUpdateLoggedInUserPasswordMutationFetcher())
-                        .dataFetcher("startRecoverPassword", userFetcherFactory.createStartRecoverPasswordMutationFetcher())
-                        .dataFetcher("finishRecoverPassword", userFetcherFactory.createFinishRecoverPasswordMutationFetcher())
+                        .dataFetcher("logIn", userMutationFetcherFactory.createLogInMutationFetcher())
+                        .dataFetcher("logOut", userMutationFetcherFactory.createLogOutMutationFetcher())
+                        .dataFetcher("createUser", userMutationFetcherFactory.createCreateUserMutationFetcher())
+                        .dataFetcher("updateLoggedInUser", userMutationFetcherFactory.createUpdateLoggedInUserMutationFetcher())
+                        .dataFetcher("updateLoggedInUserPassword", userMutationFetcherFactory.createUpdateLoggedInUserPasswordMutationFetcher())
+                        .dataFetcher("startRecoverPassword", userMutationFetcherFactory.createStartRecoverPasswordMutationFetcher())
+                        .dataFetcher("finishRecoverPassword", userMutationFetcherFactory.createFinishRecoverPasswordMutationFetcher())
                 )
                 .type("GameMutation", builder -> builder
                         .dataFetcher("createGame", gameMutationFetcherFactory.createCreateGameFetcher())
@@ -183,6 +190,10 @@ public class GraphQLTypeConfigurator {
                         .dataFetcher("deleteLabel", adminMutationFetcherFactory.createDeleteLabelFetcher())
                         .dataFetcher("setUserRole", adminMutationFetcherFactory.createSetUserRoleFetcher())
                         .dataFetcher("deleteUser", adminMutationFetcherFactory.createDeleteUserFetcher())
+                )
+                .type("GroupMutation", builder -> builder
+                        .dataFetcher("createGroup", groupFetcherFactory.createCreateGroupFetcher())
+                        .dataFetcher("updateGroup", groupFetcherFactory.createUpdateGroupFetcher())
                 )
 
                 // Finish

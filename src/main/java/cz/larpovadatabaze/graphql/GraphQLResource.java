@@ -2,7 +2,7 @@ package cz.larpovadatabaze.graphql;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import cz.larpovadatabaze.graphql.fetchers.UserFetcherFactory;
+import cz.larpovadatabaze.graphql.fetchers.UserMutationFetcherFactory;
 import graphql.ExecutionInput;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
@@ -22,7 +22,6 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -44,7 +43,7 @@ public class GraphQLResource extends AbstractResource {
     // Initialized later manually to overcome circular reference during bean creation
     private WebApplication webApplication;
 
-    private final UserFetcherFactory userFetcherFactory;
+    private final UserMutationFetcherFactory userFetcherFactory;
 
     private class GraphQLRequest {
         private String operationName;
@@ -65,7 +64,7 @@ public class GraphQLResource extends AbstractResource {
     }
 
     @Autowired
-    GraphQLResource(GraphQLTypeConfigurator typeConfigurator, UserFetcherFactory userFetcherFactory) {
+    GraphQLResource(GraphQLTypeConfigurator typeConfigurator, UserMutationFetcherFactory userFetcherFactory) {
         // Read schema definition from resource file
         ClassLoader classLoader = getClass().getClassLoader();
         BufferedReader schemaReader = new BufferedReader(new InputStreamReader(classLoader.getResourceAsStream("schema.graphql")));

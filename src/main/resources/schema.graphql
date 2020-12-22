@@ -2,6 +2,7 @@ type Query {
     homepage: HomepageQuery!
     loggedInUser: User
     gameById(gameId: ID!): Game
+    groupById(groupId: ID!): Group
     eventById(eventId: ID!): Event
     userById(userId: ID!): User
     userByEmail(email: String!): User
@@ -16,6 +17,7 @@ type Query {
 type Mutation {
     user: UserMutation!
     game: GameMutation!
+    group: GroupMutation!
     event: EventMutation!
     admin: AdminMutation!
 }
@@ -118,15 +120,6 @@ type Label {
     isAuthorized: Boolean
 }
 
-type Person {
-    name: String!
-    description: String
-    email: String!
-    nickname: String
-    birthDate: String
-    city: String
-}
-
 type Image {
     id: ID!
     path: String
@@ -137,7 +130,6 @@ type User {
     id: ID!
     lastRating: Int
     role: UserRole
-    person: Person!
     amountOfComments: Int
     amountOfPlayed: Int
     amountOfCreated: Int
@@ -147,6 +139,12 @@ type User {
     playedGames: [GameWithRating!]!
     wantedGames: [Game!]!
     authoredGames: [Game!]!
+    name: String!
+    description: String
+    email: String!
+    nickname: String
+    birthDate: String
+    city: String
 }
 
 type GameWithRating {
@@ -240,6 +238,11 @@ type GameMutation {
     createOrUpdateComment(gameId: ID!, comment: String!): Game!
     setCommentVisible(commentId: ID!, visible: Boolean!): Game!
     setCommentLiked(commentId: ID!, liked: Boolean!): Game!
+}
+
+type GroupMutation {
+    createGroup(input: CreateGroupInput): Group!
+    updateGroup(input: UpdateGroupInput): Group!
 }
 
 input CreateGameInput {
@@ -413,4 +416,13 @@ type Donation {
 
 type Config {
     reCaptchaKey: String!
+}
+
+input CreateGroupInput {
+    name: String!
+}
+
+input UpdateGroupInput {
+    id: ID!
+    name: String!
 }
