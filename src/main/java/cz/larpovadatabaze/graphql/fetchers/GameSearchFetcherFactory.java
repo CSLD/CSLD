@@ -6,6 +6,7 @@ import cz.larpovadatabaze.games.models.FilterGameDTO;
 import cz.larpovadatabaze.games.services.FilteredGames;
 import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.games.services.Labels;
+import cz.larpovadatabaze.graphql.EntitySearchableCache;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -23,26 +25,15 @@ public class GameSearchFetcherFactory {
     private final Games games;
     private final Labels labels;
     private final FilteredGames filteredGames;
+    private final GameSearchableCache gameSearchableCache = new GameSearchableCache();
 
-    private final static long CACHE_TTL = 60000; // 1 hour
-    private long cacheExpiration = 0;
-    private List<GameWithName> cachedGames;
-
-    private static class GameWithName {
-        private final String name;
-        private final Game game;
-
-        private GameWithName(String name, Game game) {
-            this.name = name;
-            this.game = game;
+    private class GameSearchableCache extends EntitySearchableCache<Game> {
+        @Override
+        public Collection<Game> getAll() {
+            return games.getAll();
         }
     }
 
-    private static String normalize(String s) {
-        s = Normalizer.normalize(s, Normalizer.Form.NFD);
-        s = s.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
-        return s.toLowerCase();
-    }
 
     private static class GamesPaged {
         private final List<Game> games;
@@ -61,20 +52,6 @@ public class GameSearchFetcherFactory {
         this.filteredGames = filteredGames;
     }
 
-    private List<Label> getLabels(List<Object> ids) {
-        if ((ids == null) || (ids.size() == 0)) {
-            return null;
-        }
-
-        return ids.stream().map(id -> {
-            Label label = labels.getById(Integer.parseInt((String)id));
-            if (label == null) {
-                throw new GraphQLException(GraphQLException.ErrorCode.NOT_FOUND, "Label not found");
-            }
-            return label;
-        }).collect(Collectors.toList());
-    }
-
     private GamesPaged getGames(DataFetchingEnvironment dataFetchingEnvironment, FilterGameDTO.OrderBy orderBy, boolean onlyNew) {
         FilterGameDTO filter = new FilterGameDTO(orderBy);
         filter.setShowOnlyNew(onlyNew);
@@ -90,37 +67,13 @@ public class GameSearchFetcherFactory {
         return new GamesPaged(gameList, totalAmount);
     }
 
-    public DataFetcher<List<Game>> createBySearchTermFetcher() {
-        return new DataFetcher<List<Game>>() {
-            @Override
-            public List<Game> get(DataFetchingEnvironment dataFetchingEnvironment) throws Exception {
-                if (cacheExpiration < new Date().getTime()) {
-                    // Re-fetch games
-                    cachedGames = games.getAll().stream().map(game -> new GameWithName(normalize(game.getName()), game)).collect(Collectors.toList());
-                    cacheExpiration = new Date().getTime() + CACHE_TTL;
-                }
+    public DataFetcher<List<Game>> createByQueryFetcher() {
+        return dataFetchingEnvironment -> {
+            int offset = dataFetchingEnvironment.getArgumentOrDefault("offset", 0);
+            int limit = dataFetchingEnvironment.getArgumentOrDefault("limit", 6);
+            String query = dataFetchingEnvironment.getArgument("query");
 
-                String searchTerm = normalize(dataFetchingEnvironment.getArgument("searchTerm"));
-                int offset = dataFetchingEnvironment.getArgumentOrDefault("offset", 0);
-                int limit = dataFetchingEnvironment.getArgumentOrDefault("limit", 6);
-                int needLen = offset + limit;
-
-                List<Game> res = new ArrayList<>();
-                for (GameWithName game : cachedGames) {
-                    if (game.name.contains(searchTerm)) {
-                        res.add(game.game);
-                        if (res.size() >= needLen) {
-                            break;
-                        }
-                    }
-                }
-
-                if (res.size() < offset) {
-                    return Collections.emptyList();
-                }
-
-                return res.subList(offset, res.size());
-            }
+            return gameSearchableCache.search(query, offset, limit);
         };
     }
 

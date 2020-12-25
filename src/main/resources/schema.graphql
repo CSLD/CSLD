@@ -3,9 +3,11 @@ type Query {
     loggedInUser: User
     gameById(gameId: ID!): Game
     groupById(groupId: ID!): Group
+    groupsByQuery(query: String!, offset: Int, limit: Int): [Group!]!
     eventById(eventId: ID!): Event
     userById(userId: ID!): User
     userByEmail(email: String!): User
+    usersByQuery(query: String!, offset: Int, limit: Int): [User!]!
     games: GamesQuery!
     authorizedRequiredLabels: [Label!]!
     authorizedOptionalLabels: [Label!]!
@@ -30,7 +32,7 @@ type HomepageQuery {
 }
 
 type GamesQuery {
-    bySearchTerm(searchTerm: String!, offset: Int, limit: Int): [Game!]!
+    byQuery(query: String!, offset: Int, limit: Int): [Game!]!
     recentAndMostPlayed(offset: Int, limit: Int, requiredLabels: [ID!], otherLabels: [ID!]): GamesPaged!
     mostPlayed(offset: Int, limit: Int, requiredLabels: [ID!], otherLabels: [ID!]): GamesPaged!
     recent(offset: Int, limit: Int, requiredLabels: [ID!], otherLabels: [ID!]): GamesPaged!

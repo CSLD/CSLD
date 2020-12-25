@@ -1,18 +1,30 @@
 package cz.larpovadatabaze.graphql.fetchers;
 
 import cz.larpovadatabaze.common.entities.CsldGroup;
+import cz.larpovadatabaze.common.entities.Game;
+import cz.larpovadatabaze.graphql.EntitySearchableCache;
 import cz.larpovadatabaze.users.services.AppUsers;
 import cz.larpovadatabaze.users.services.CsldGroups;
 import graphql.schema.DataFetcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 @Component
 public class GroupFetcherFactory {
     private final CsldGroups csldGroups;
     private final AppUsers appUsers;
+    private final GroupSearchableCache groupSearchableCache = new GroupSearchableCache();
+
+    private class GroupSearchableCache extends EntitySearchableCache<CsldGroup> {
+        @Override
+        public Collection<CsldGroup> getAll() {
+            return csldGroups.getAll();
+        }
+    }
 
     @Autowired
     public GroupFetcherFactory(CsldGroups csldGroups, AppUsers appUsers) {
@@ -26,6 +38,17 @@ public class GroupFetcherFactory {
             return csldGroups.getById(id);
         };
     }
+
+    public DataFetcher<List<CsldGroup>> createGroupsByQueryFetcher() {
+        return dataFetchingEnvironment -> {
+            int offset = dataFetchingEnvironment.getArgumentOrDefault("offset", 0);
+            int limit = dataFetchingEnvironment.getArgumentOrDefault("limit", 6);
+            String query = dataFetchingEnvironment.getArgument("query");
+
+            return groupSearchableCache.search(query, offset, limit);
+        };
+    }
+
 
     public DataFetcher<CsldGroup> createCreateGroupFetcher() {
         return dataFetchingEnvironment -> {

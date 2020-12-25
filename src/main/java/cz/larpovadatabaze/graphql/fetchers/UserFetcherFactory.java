@@ -3,17 +3,28 @@ package cz.larpovadatabaze.graphql.fetchers;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Person;
 import cz.larpovadatabaze.common.entities.Rating;
+import cz.larpovadatabaze.graphql.EntitySearchableCache;
 import cz.larpovadatabaze.users.services.AppUsers;
 import cz.larpovadatabaze.users.services.CsldUsers;
 import graphql.schema.DataFetcher;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
+import java.util.Collection;
+import java.util.List;
 
 @Component
 public class UserFetcherFactory {
     private final AppUsers appUsers;
     private final CsldUsers csldUsers;
+    private final UserSearchableCache userSearchableCache = new UserSearchableCache();
+
+    private class UserSearchableCache extends EntitySearchableCache<CsldUser> {
+        @Override
+        public Collection<CsldUser> getAll() {
+            return csldUsers.getAll();
+        }
+    }
 
     public UserFetcherFactory(AppUsers appUsers, CsldUsers csldUsers) {
         this.appUsers = appUsers;
@@ -26,6 +37,16 @@ public class UserFetcherFactory {
 
     public DataFetcher<CsldUser> createUserByEmailFetcher() {
         return dataFetchingEnvironment -> csldUsers.getByEmail(dataFetchingEnvironment.getArgument("email"));
+    }
+
+    public DataFetcher<List<CsldUser>> createUsersByQueryFetcher() {
+        return dataFetchingEnvironment -> {
+            int offset = dataFetchingEnvironment.getArgumentOrDefault("offset", 0);
+            int limit = dataFetchingEnvironment.getArgumentOrDefault("limit", 6);
+            String query = dataFetchingEnvironment.getArgument("query");
+
+            return userSearchableCache.search(query, offset, limit);
+        };
     }
 
     public DataFetcher<CsldUser> createLoggedInUserFetcher() {
