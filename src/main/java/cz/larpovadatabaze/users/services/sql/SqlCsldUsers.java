@@ -125,6 +125,9 @@ public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
 
     @Override
     public CsldUser getByEmail(String mail) {
+        if (mail == null) {
+            return null;
+        }
         return crudRepository.findSingleByCriteria(
                 Restrictions.eq("person.email", mail).ignoreCase()
         );

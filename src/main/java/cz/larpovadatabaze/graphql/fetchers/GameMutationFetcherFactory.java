@@ -14,6 +14,7 @@ import cz.larpovadatabaze.games.services.Ratings;
 import cz.larpovadatabaze.games.services.Upvotes;
 import cz.larpovadatabaze.games.services.Videos;
 import cz.larpovadatabaze.graphql.GraphQLUploadedFile;
+import cz.larpovadatabaze.users.CsldRoles;
 import cz.larpovadatabaze.users.services.AppUsers;
 import cz.larpovadatabaze.users.services.CsldGroups;
 import cz.larpovadatabaze.users.services.CsldUsers;
@@ -128,6 +129,7 @@ public class GameMutationFetcherFactory {
                     person.setName(name);
                     person.setNickname(nickname);
                     author.setPerson(person);
+                    author.setRole(CsldRoles.USER.getRole());
 
                     users.saveOrUpdateNewAuthor(author);
                     createdUsers.add(author);
@@ -265,7 +267,6 @@ public class GameMutationFetcherFactory {
         game.setBothRole((Integer) input.get("bothRole"));
         game.setHours((Integer) input.get("hours"));
         game.setDays((Integer) input.get("days"));
-        // TODO - cover photo - TODO
         game.setWeb((String) input.get("web"));
         game.setPhotoAuthor((String) input.get("photoAuthor"));
         game.setGalleryURL((String) input.get("galleryURL"));
@@ -284,7 +285,7 @@ public class GameMutationFetcherFactory {
         game.setRatingsDisabled(Boolean.TRUE.equals(input.get("ratingsDisabled")));
         game.setCommentsDisabled(Boolean.TRUE.equals(input.get("commentsDisabled")));
 
-        game.setLabels(FetcherUtils.getLabels(labels, (List<String>) input.get("labels"), (List<Map<String, Object>>) input.get("newLabels")));
+        game.setLabels(FetcherUtils.getLabels(labels, (List<String>) input.get("labels"), (List<Map<String, Object>>) input.get("newLabels"), appUsers.getLoggedUser()));
         game.setAuthors(getAuthors((List<String>) input.get("authors"), (List<Map<String, Object>>) input.get("newAuthors")));
         game.setGroupAuthor(getGroups((List<String>) input.get("groupAuthors"), (List<Map<String, Object>>) input.get("newGroupAuthors")));
 
@@ -297,21 +298,23 @@ public class GameMutationFetcherFactory {
 
     public DataFetcher<Game> createCreateGameFetcher() {
         return dataFetchingEnvironment -> {
+            if (!appUsers.isSignedIn()) {
+                throw new GraphQLException(GraphQLException.ErrorCode.ACCESS_DENIED, "Must be logged in");
+            }
+
             Map<String, Object> input = dataFetchingEnvironment.getArgument("input");
 
             Game game = applyInputValues(new Game(), input);
-            if (appUsers.isSignedIn()) {
-                game.setAddedBy(appUsers.getLoggedUser());
-            }
+            game.setAddedBy(appUsers.getLoggedUser());
 
             // Image
-            GraphQLUploadedFile coverPhoto = null;
-            Map<String, String> profilePictureMap = (Map<String, String>)input.get("coverPhoto");
-            if (profilePictureMap != null) {
-                coverPhoto = new GraphQLUploadedFile(profilePictureMap.get("fileName"), profilePictureMap.get("contents"));
+            GraphQLUploadedFile coverImage = null;
+            Map<String, String> coverImageMap = (Map<String, String>)input.get("coverImage");
+            if (coverImageMap != null) {
+                coverImage = new GraphQLUploadedFile(coverImageMap.get("fileName"), coverImageMap.get("contents"));
             }
 
-            games.saveOrUpdate(game, coverPhoto);
+            games.saveOrUpdate(game, coverImage);
 
             return game;
         };
@@ -330,13 +333,13 @@ public class GameMutationFetcherFactory {
             game = applyInputValues(game, input);
 
             // Image
-            GraphQLUploadedFile coverPhoto = null;
-            Map<String, String> profilePictureMap = (Map<String, String>)input.get("coverPhoto");
-            if (profilePictureMap != null) {
-                coverPhoto = new GraphQLUploadedFile(profilePictureMap.get("fileName"), profilePictureMap.get("contents"));
+            GraphQLUploadedFile coverImage = null;
+            Map<String, String> coverImageMap = (Map<String, String>)input.get("coverImage");
+            if (coverImageMap != null) {
+                coverImage = new GraphQLUploadedFile(coverImageMap.get("fileName"), coverImageMap.get("contents"));
             }
 
-            games.saveOrUpdate(game, coverPhoto);
+            games.saveOrUpdate(game, coverImage);
 
             return game;
         };
@@ -344,14 +347,15 @@ public class GameMutationFetcherFactory {
 
     public DataFetcher<Game> createDeleteGameFetcher() {
         return dataFetchingEnvironment -> {
-            Game game = games.getById(Integer.parseInt(dataFetchingEnvironment.getArgument("id")));
+            Game game = games.getById(Integer.parseInt(dataFetchingEnvironment.getArgument("gameId")));
 
             // Check rights
             checkGameEditAccess(game);
 
-            // Apply values and modify
-            game.setDeleted(true);
-            games.saveOrUpdate(game);
+            if (!game.isDeleted()) {
+                // Apply values and modify
+                games.toggleGameState(game.getId());
+            }
 
             return game;
         };

@@ -231,8 +231,8 @@ input UpdateLoggedInUserInput {
 }
 
 type GameMutation {
-    createGame(input: CreateGameInput): Game!
-    updateGame(input: UpdateGameInput): Game!
+    createGame(input: CreateGameInput!): Game!
+    updateGame(input: UpdateGameInput!): Game!
     deleteGame(gameId: ID!): Game!
     rateGame(gameId: ID!, rating: Int): Game!
     deleteGameRating(gameId: ID!, userId: ID): Game!
@@ -263,7 +263,7 @@ input CreateGameInput {
     bothRole: Int
     hours: Int
     days: Int
-    coverPhoto: UploadedFileInput
+    coverImage: UploadedFileInput
     web: String
     photoAuthor: String
     galleryURL: String
@@ -289,7 +289,7 @@ input UpdateGameInput {
     bothRole: Int
     hours: Int
     days: Int
-    coverPhoto: UploadedFileInput
+    coverImage: UploadedFileInput
     web: String
     photoAuthor: String
     galleryURL: String

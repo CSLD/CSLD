@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.graphql.fetchers;
 
+import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Label;
 import cz.larpovadatabaze.games.services.Labels;
 
@@ -69,9 +70,11 @@ public class FetcherUtils {
      * @param labels Labels CRUD
      * @param labelIds  List of label ids
      * @param newLabels List of label specifications. Tries to find label by name and when it does not exist, creates it.
+     * @parqm loggedInUser Currently logged in (to know who is adding the labels)
+     *
      * @return Label objects
      */
-    public static List<Label> getLabels(Labels labels, List<String> labelIds, List<Map<String, Object>> newLabels) {
+    public static List<Label> getLabels(Labels labels, List<String> labelIds, List<Map<String, Object>> newLabels, CsldUser loggedInUser) {
         List<Label> res = new ArrayList<>();
 
         // Fetch existing labels
@@ -99,6 +102,7 @@ public class FetcherUtils {
                     label = new Label();
                     label.setName(name);
                     label.setDescription(description);
+                    label.setAddedBy(loggedInUser);
 
                     labels.saveOrUpdate(label);
 

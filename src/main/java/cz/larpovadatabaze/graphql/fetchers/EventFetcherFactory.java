@@ -56,7 +56,7 @@ public class EventFetcherFactory {
         event.setDescription((String)input.get("description"));
 
         event.setGames(getGames((List<String>)input.get("games")));
-        event.setLabels(FetcherUtils.getLabels(labels, (List<String>) input.get("labels"), (List<Map<String, Object>>) input.get("newLabels")));
+        event.setLabels(FetcherUtils.getLabels(labels, (List<String>) input.get("labels"), (List<Map<String, Object>>) input.get("newLabels"), appUsers.getLoggedUser()));
 
         Double latitude = (Double)input.get("latitude");
         Double longitude = (Double)input.get("longitude");
