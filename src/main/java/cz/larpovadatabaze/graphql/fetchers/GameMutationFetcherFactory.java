@@ -159,7 +159,7 @@ public class GameMutationFetcherFactory {
             res.add(group);
         }
 
-        // Create new labels (if necessary)
+        // Create new groups (if necessary)
         List<CsldGroup> allGroups = groups.getAll();
         List<CsldGroup> createdGroups = new ArrayList<>();
         for (Map<String, Object> newGroup : newGroups) {
@@ -381,7 +381,8 @@ public class GameMutationFetcherFactory {
 
             ratings.saveOrUpdate(rating);
 
-            return game;
+            // Refetch stale game
+            return games.getById(game.getId());
         };
     }
 
@@ -402,7 +403,8 @@ public class GameMutationFetcherFactory {
                 ratings.remove(rating);
             }
 
-            return game;
+            // Refetch stale game
+            return games.getById(game.getId());
         };
     }
 
@@ -433,7 +435,8 @@ public class GameMutationFetcherFactory {
                 ratings.saveOrUpdate(rating);
             }
 
-            return game;
+            // Refetch stale game
+            return games.getById(game.getId());
         };
     }
 
