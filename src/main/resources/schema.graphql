@@ -79,9 +79,7 @@ type Game {
     video: Video
     coverImage: Image
     photos: [Photo!]!
-
-    "Are these needed?"
-    blueprintPath: String
+    allowedActions: [AllowedAction!]
 }
 
 type CommentsPaged {
@@ -107,6 +105,7 @@ type Event {
     location: EventLocation
     labels: [Label!]
     games: [Game!]
+    allowedActions: [AllowedAction!]
 }
 
 type EventLocation {
@@ -321,7 +320,7 @@ input NewLabelInput {
 type EventMutation {
     createEvent(input: CreateEventInput!): Event!
     updateEvent(input: UpdateEventInput!): Event!
-    deleteEvent(id: ID!): Event!
+    deleteEvent(eventId: ID!): Event!
 }
 
 input CreateEventInput {
@@ -427,4 +426,9 @@ input CreateGroupInput {
 input UpdateGroupInput {
     id: ID!
     name: String!
+}
+
+enum AllowedAction {
+    EDIT,
+    DELETE
 }

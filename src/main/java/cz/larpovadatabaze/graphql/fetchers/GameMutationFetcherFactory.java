@@ -204,6 +204,20 @@ public class GameMutationFetcherFactory {
     }
 
     /**
+     * @param game Game to check
+     *
+     * @return Whether user has game edit access
+     */
+    public boolean hasGameEditAccess(Game game) {
+        try {
+            checkGameEditAccess(game);
+            return true;
+        } catch(Exception e) {
+            return false;
+        }
+    }
+
+    /**
      * Check that current user can modify game
      *
      * @param game Game to check

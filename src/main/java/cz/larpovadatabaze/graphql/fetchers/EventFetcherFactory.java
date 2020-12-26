@@ -26,6 +26,8 @@ public class EventFetcherFactory {
     private final Labels labels;
     private final AppUsers appUsers;
 
+    private static final String[] ACCESS_EDIT_DELETE = new String[]{"EDIT", "DELETE"};
+
     @Autowired
     public EventFetcherFactory(Events events, Games games, Labels labels, AppUsers appUsers) {
         this.events = events;
@@ -90,8 +92,6 @@ public class EventFetcherFactory {
         return dataFetchingEnvironment -> {
             Map<String, Object> input = dataFetchingEnvironment.getArgument("input");
 
-            // TODO - check recaptcha - TODO
-
             Event event = new Event();
             event.setAddedBy(appUsers.getLoggedUser());
             event = applyInputValues(event, input);
@@ -102,21 +102,26 @@ public class EventFetcherFactory {
         };
     }
 
+    private void checkEventAccess(Event event) {
+        if (event == null) {
+            throw new GraphQLException(GraphQLException.ErrorCode.NOT_FOUND, "Event does not exist");
+        }
+
+        if (!appUsers.isAtLeastEditor()) {
+            CsldUser addedBy = event.getAddedBy();
+            if (addedBy == null || !addedBy.getId().equals(appUsers.getLoggedUserId())) {
+                throw new GraphQLException(GraphQLException.ErrorCode.ACCESS_DENIED, "Must be editor or creator");
+            }
+        }
+    }
+
     public DataFetcher<Event> createUpdateEventFetcher() {
         return dataFetchingEnvironment -> {
             Map<String, Object> input = dataFetchingEnvironment.getArgument("input");
 
             Event event = events.getById(Integer.parseInt((String)input.get("id")));
-            if (event == null) {
-                throw new GraphQLException(GraphQLException.ErrorCode.NOT_FOUND, "Event does not exist");
-            }
 
-            if (!appUsers.isAtLeastEditor()) {
-                CsldUser addedBy = event.getAddedBy();
-                if (addedBy == null || !addedBy.getId().equals(appUsers.getLoggedUserId())) {
-                    throw new GraphQLException(GraphQLException.ErrorCode.ACCESS_DENIED, "Must be editor or creator");
-                }
-            }
+            checkEventAccess(event);
 
             event = applyInputValues(event, input);
 
@@ -128,16 +133,31 @@ public class EventFetcherFactory {
 
     public DataFetcher<Event> createDeleteEventFetcher() {
         return dataFetchingEnvironment -> {
-            String id = dataFetchingEnvironment.getArgument("id");
+            String id = dataFetchingEnvironment.getArgument("eventId");
             Event event = events.getById(Integer.parseInt(id));
-            if (event == null) {
-                throw new GraphQLException(GraphQLException.ErrorCode.NOT_FOUND, "Event does not exist");
-            }
+
+            checkEventAccess(event);
 
             event.setDeleted(true);
             events.saveOrUpdate(event);
 
             return event;
+        };
+    }
+
+    public DataFetcher<String[]> createEventAllowedActionsFetcher() {
+        return dataFetchingEnvironment -> {
+            Event event = dataFetchingEnvironment.getSource();
+
+            try {
+                checkEventAccess(event);
+
+                return ACCESS_EDIT_DELETE;
+            }
+            catch(Exception e) {
+                // Access denied
+                return null;
+            }
         };
     }
 }

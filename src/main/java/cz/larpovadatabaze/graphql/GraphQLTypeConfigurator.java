@@ -115,6 +115,7 @@ public class GraphQLTypeConfigurator {
                 .type("Event", builder -> builder
                         .dataFetcher("from", calendarFetcher)
                         .dataFetcher("to", calendarFetcher)
+                        .dataFetcher("allowedActions", eventFetcherFactory.createEventAllowedActionsFetcher())
                 )
                 .type("Game", builder -> builder
                         .dataFetcher("ratingStats", ratingStatsFetcher)
@@ -125,6 +126,7 @@ public class GraphQLTypeConfigurator {
                         .dataFetcher("currentUsersComment", commentFetcherFactory.getCurrentUsersGameComment())
                         .dataFetcher("currentUsersRating", ratingFetcherFactory.createUsersGameRatingFetcher())
                         .dataFetcher("ratings", new GameRatingsProtectedFetcher())
+                        .dataFetcher("allowedActions", gameFetcherFactory.createGameAllowedActionsFetcher())
                 )
                 .type("Comment", builder -> builder.dataFetcher("commentAsText", new CommentAsTextFetcher()))
                 .type("Rating", builder -> builder.dataFetcher("user", userFetcherFactory.createRatingUserProtectedChecker()))
@@ -183,7 +185,7 @@ public class GraphQLTypeConfigurator {
                 .type("EventMutation", builder -> builder
                         .dataFetcher("createEvent", eventFetcherFactory.createCreateEventFetcher())
                         .dataFetcher("updateEvent", eventFetcherFactory.createUpdateEventFetcher())
-                        .dataFetcher("updateEvent", eventFetcherFactory.createDeleteEventFetcher())
+                        .dataFetcher("deleteEvent", eventFetcherFactory.createDeleteEventFetcher())
                 )
                 .type("AdminMutation", builder -> builder
                         .dataFetcher("updateLabel", adminMutationFetcherFactory.createUpdateLabelFetcher())

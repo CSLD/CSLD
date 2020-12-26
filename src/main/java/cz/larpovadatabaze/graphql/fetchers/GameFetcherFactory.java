@@ -30,13 +30,17 @@ public class GameFetcherFactory {
     private final SimilarGames similarGames;
     private final AuthoredGames authoredGames;
     private final GamesWithState gamesWithState;
+    private final GameMutationFetcherFactory gameMutationFetcherFactory;
+
+    private static final String[] ACCESS_EDIT_DELETE = new String[]{"EDIT", "DELETE"};
 
     @Autowired
-    GameFetcherFactory(Games games, SimilarGames similarGames, AuthoredGames authoredGames, GamesWithState gamesWithState) {
+    GameFetcherFactory(Games games, SimilarGames similarGames, AuthoredGames authoredGames, GamesWithState gamesWithState, GameMutationFetcherFactory gameMutationFetcherFactory) {
         this.games = games;
         this.similarGames = similarGames;
         this.authoredGames = authoredGames;
         this.gamesWithState = gamesWithState;
+        this.gameMutationFetcherFactory = gameMutationFetcherFactory;
     }
 
     public DataFetcher<List<Game>> createLastAddedGamesFetcher() {
@@ -90,6 +94,14 @@ public class GameFetcherFactory {
         return dataFetchingEnvironment -> {
             CsldUser user = dataFetchingEnvironment.getSource();
             return gamesWithState.getWantedByUser(user);
+        };
+    }
+
+    public DataFetcher<String[]> createGameAllowedActionsFetcher() {
+        return dataFetchingEnvironment -> {
+            Game game = dataFetchingEnvironment.getSource();
+
+            return gameMutationFetcherFactory.hasGameEditAccess(game) ? ACCESS_EDIT_DELETE : null;
         };
     }
 }
