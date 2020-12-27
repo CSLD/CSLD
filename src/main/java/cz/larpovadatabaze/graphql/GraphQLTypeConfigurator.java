@@ -96,6 +96,7 @@ public class GraphQLTypeConfigurator {
                         .dataFetcher("authorizedOptionalLabels", labelFetcherFactory.createAuthorizedOptionalLabelsFetcher())
                         .dataFetcher("donations", donationsFetcher)
                         .dataFetcher("config", configFetcher)
+                        .dataFetcher("eventCalendar", eventFetcherFactory.createEventsCalendarFetcher())
                 )
                 // Homepage
                 .type("HomepageQuery", builder -> builder

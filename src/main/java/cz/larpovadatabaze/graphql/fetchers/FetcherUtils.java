@@ -8,8 +8,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class FetcherUtils {
     private static SimpleDateFormat isoDateFormatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -115,5 +117,12 @@ public class FetcherUtils {
         return res;
     }
 
+    public static List<Label> getLabels(Labels labels, List<String> ids) {
+        if (ids == null) {
+            return Collections.emptyList();
+        }
+
+        return ids.stream().map(id -> labels.getById(Integer.parseInt(id))).collect(Collectors.toList());
+    }
 }
 

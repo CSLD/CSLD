@@ -90,14 +90,6 @@ public class GameSearchFetcherFactory {
         throw new GraphQLException(GraphQLException.ErrorCode.INVALID_VALUE, "Invalid ladder name '" + ladderName + "'", "ladder");
     }
 
-    private List<Label> getLabels(List<String> ids) {
-        if (ids == null) {
-            return Collections.emptyList();
-        }
-
-        return ids.stream().map(id -> labels.getById(Integer.parseInt(id))).collect(Collectors.toList());
-    }
-
     public DataFetcher<GamesPaged> createLadderFetcher() {
         return new DataFetcher<GamesPaged>() {
             @Override
@@ -106,8 +98,8 @@ public class GameSearchFetcherFactory {
 
                 FilterGameDTO filter = new FilterGameDTO(ladderConfig.orderBy);
                 filter.setShowOnlyNew(ladderConfig.onlyNew);
-                filter.setRequiredLabels(getLabels(dataFetchingEnvironment.getArgument("requiredLabels")));
-                filter.setOtherLabels(getLabels(dataFetchingEnvironment.getArgument("otherLabels")));
+                filter.setRequiredLabels(FetcherUtils.getLabels(labels, dataFetchingEnvironment.getArgument("requiredLabels")));
+                filter.setOtherLabels(FetcherUtils.getLabels(labels, dataFetchingEnvironment.getArgument("otherLabels")));
 
                 int offset = dataFetchingEnvironment.getArgumentOrDefault("offset", 0);
                 int limit = dataFetchingEnvironment.getArgumentOrDefault("limit", 10);

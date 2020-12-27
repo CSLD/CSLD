@@ -5,6 +5,7 @@ type Query {
     groupById(groupId: ID!): Group
     groupsByQuery(query: String!, offset: Int, limit: Int): [Group!]!
     eventById(eventId: ID!): Event
+    eventCalendar(offset: Int, limit: Int, from: String, to: String, requiredLabels: [ID!], otherLabels: [ID!]): EventsPaged!
     userById(userId: ID!): User
     userByEmail(email: String!): User
     usersByQuery(query: String!, offset: Int, limit: Int): [User!]!
@@ -435,4 +436,9 @@ input UpdateGroupInput {
 enum AllowedAction {
     Edit,
     Delete
+}
+
+type EventsPaged {
+    events: [Event!]!
+    totalAmount: Int!
 }

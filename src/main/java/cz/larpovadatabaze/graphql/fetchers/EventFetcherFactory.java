@@ -28,6 +28,16 @@ public class EventFetcherFactory {
 
     private static final String[] ACCESS_EDIT_DELETE = new String[]{"Edit", "Delete"};
 
+    private static class EventsPaged {
+        private final List<Event> events;
+        private final int totalAmount;
+
+        private EventsPaged(List<Event> events, int totalAmount) {
+            this.events = events;
+            this.totalAmount = totalAmount;
+        }
+    }
+
     @Autowired
     public EventFetcherFactory(Events events, Games games, Labels labels, AppUsers appUsers) {
         this.events = events;
@@ -158,6 +168,32 @@ public class EventFetcherFactory {
                 // Access denied
                 return null;
             }
+        };
+    }
+
+    public DataFetcher<EventsPaged> createEventsCalendarFetcher() {
+        return dataFetchingEnvironment -> {
+            FilterEvent filter = new FilterEvent();
+
+            String fromArgument = dataFetchingEnvironment.getArgument("from");
+            if (fromArgument != null) {
+                filter.setFrom(FetcherUtils.parseDate(fromArgument, "from"));
+            }
+
+            String toArgument = dataFetchingEnvironment.getArgument("to");
+            if (toArgument != null) {
+                filter.setFrom(FetcherUtils.parseDate(toArgument, "to"));
+            }
+
+            filter.setRequiredLabels(FetcherUtils.getLabels(labels, dataFetchingEnvironment.getArgument("requiredLabels")));
+            filter.setOtherLabels(FetcherUtils.getLabels(labels, dataFetchingEnvironment.getArgument("otherLabels")));
+
+            List<Event> filteredEvents = events.filtered(() -> filter);
+
+            int offset = dataFetchingEnvironment.getArgumentOrDefault("offset", 0);
+            int limit = dataFetchingEnvironment.getArgumentOrDefault("limit", 10);
+
+            return new EventsPaged(filteredEvents.subList(offset, Math.min(filteredEvents.size(), offset+limit)), filteredEvents.size());
         };
     }
 }
