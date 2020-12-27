@@ -159,7 +159,7 @@ public class Photo implements Identifiable<Integer>, Serializable, IEntityWithIm
     @Override
     @Transient
     public IPredefinedImage getDefaultImage() {
-        return PredefinedImage.DEFAULT_GAME_ICON;
+        return PredefinedImage.DEFAULT_AUTHOR_ICON;
     }
 
     public void setImage(Image image) {
