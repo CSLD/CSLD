@@ -32,7 +32,7 @@ public class GameFetcherFactory {
     private final GamesWithState gamesWithState;
     private final GameMutationFetcherFactory gameMutationFetcherFactory;
 
-    private static final String[] ACCESS_EDIT_DELETE = new String[]{"EDIT", "DELETE"};
+    private static final String[] ACCESS_EDIT_DELETE = new String[]{"Edit", "Delete"};
 
     @Autowired
     GameFetcherFactory(Games games, SimilarGames similarGames, AuthoredGames authoredGames, GamesWithState gamesWithState, GameMutationFetcherFactory gameMutationFetcherFactory) {

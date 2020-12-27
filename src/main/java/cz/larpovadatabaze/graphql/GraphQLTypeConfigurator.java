@@ -106,11 +106,7 @@ public class GraphQLTypeConfigurator {
                 )
                 .type("GamesQuery", builder -> builder
                         .dataFetcher("byQuery", gameSearchFetcherFactory.createByQueryFetcher())
-                        .dataFetcher("recentAndMostPlayed", gameSearchFetcherFactory.createRecentAndMostPlayedFetcher())
-                        .dataFetcher("mostPlayed", gameSearchFetcherFactory.createMostPlayedFetcher())
-                        .dataFetcher("recent", gameSearchFetcherFactory.createRecentFetcher())
-                        .dataFetcher("best", gameSearchFetcherFactory.createBestFetcher())
-                        .dataFetcher("mostCommented", gameSearchFetcherFactory.createMostCommentedFetcher())
+                        .dataFetcher("ladder", gameSearchFetcherFactory.createLadderFetcher())
                 )
                 .type("Event", builder -> builder
                         .dataFetcher("from", calendarFetcher)

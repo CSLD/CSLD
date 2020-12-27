@@ -26,7 +26,7 @@ public class EventFetcherFactory {
     private final Labels labels;
     private final AppUsers appUsers;
 
-    private static final String[] ACCESS_EDIT_DELETE = new String[]{"EDIT", "DELETE"};
+    private static final String[] ACCESS_EDIT_DELETE = new String[]{"Edit", "Delete"};
 
     @Autowired
     public EventFetcherFactory(Events events, Games games, Labels labels, AppUsers appUsers) {

@@ -79,7 +79,8 @@ public class SqlFilteredGames implements FilteredGames {
         DetachedCriteria dc = games.getBuilder().build();
         applyGameFilter(dc, filter);
 
-        Criteria criteria = games.getExecutableCriteria();
+        Criteria criteria = dc.getExecutableCriteria(games.getCurrentSession());
+
         criteria.setProjection(Projections.countDistinct("id"));
 
         return (Long) criteria.uniqueResult();

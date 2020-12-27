@@ -34,6 +34,15 @@ public class GameSearchFetcherFactory {
         }
     }
 
+    private static class LadderConfig {
+        private final FilterGameDTO.OrderBy orderBy;
+        private final boolean onlyNew;
+
+        private LadderConfig(FilterGameDTO.OrderBy orderBy, boolean onlyNew) {
+            this.orderBy = orderBy;
+            this.onlyNew = onlyNew;
+        }
+    }
 
     private static class GamesPaged {
         private final List<Game> games;
@@ -52,21 +61,6 @@ public class GameSearchFetcherFactory {
         this.filteredGames = filteredGames;
     }
 
-    private GamesPaged getGames(DataFetchingEnvironment dataFetchingEnvironment, FilterGameDTO.OrderBy orderBy, boolean onlyNew) {
-        FilterGameDTO filter = new FilterGameDTO(orderBy);
-        filter.setShowOnlyNew(onlyNew);
-        filter.setRequiredLabels(dataFetchingEnvironment.getArgumentOrDefault("requiredLabels", Collections.emptyList()));
-        filter.setOtherLabels(dataFetchingEnvironment.getArgumentOrDefault("otherLabels", Collections.emptyList()));
-
-        int offset = dataFetchingEnvironment.getArgumentOrDefault("offset", 0);
-        int limit = dataFetchingEnvironment.getArgumentOrDefault("limit", 10);
-
-        long totalAmount = filteredGames.totalAmount(filter);
-        List<Game> gameList = filteredGames.paginated(filter, offset, limit);
-
-        return new GamesPaged(gameList, totalAmount);
-    }
-
     public DataFetcher<List<Game>> createByQueryFetcher() {
         return dataFetchingEnvironment -> {
             int offset = dataFetchingEnvironment.getArgumentOrDefault("offset", 0);
@@ -77,47 +71,51 @@ public class GameSearchFetcherFactory {
         };
     }
 
-    public DataFetcher<GamesPaged> createRecentAndMostPlayedFetcher() {
-        return new DataFetcher<GamesPaged>() {
-            @Override
-            public GamesPaged get(DataFetchingEnvironment dataFetchingEnvironment) throws Exception {
-                return getGames(dataFetchingEnvironment, FilterGameDTO.OrderBy.NUM_RATINGS_DESC, true);
+    private LadderConfig getLadderConfig(String ladderName) {
+        if (ladderName != null) {
+            switch (ladderName) {
+                case "RecentAndMostPlayed":
+                    return new LadderConfig(FilterGameDTO.OrderBy.NUM_RATINGS_DESC, true);
+                case "MostPlayed":
+                    return new LadderConfig(FilterGameDTO.OrderBy.NUM_RATINGS_DESC, false);
+                case "Recent":
+                    return new LadderConfig(FilterGameDTO.OrderBy.ADDED_DESC, true);
+                case "Best":
+                    return new LadderConfig(FilterGameDTO.OrderBy.RATING_DESC, false);
+                case "MostCommented":
+                    return new LadderConfig(FilterGameDTO.OrderBy.NUM_COMMENTS_DESC, false);
             }
-        };
+        }
+
+        throw new GraphQLException(GraphQLException.ErrorCode.INVALID_VALUE, "Invalid ladder name '" + ladderName + "'", "ladder");
     }
 
-    public DataFetcher<GamesPaged> createMostPlayedFetcher() {
-        return new DataFetcher<GamesPaged>() {
-            @Override
-            public GamesPaged get(DataFetchingEnvironment dataFetchingEnvironment) throws Exception {
-                return getGames(dataFetchingEnvironment, FilterGameDTO.OrderBy.ADDED_DESC, true);
-            }
-        };
+    private List<Label> getLabels(List<String> ids) {
+        if (ids == null) {
+            return Collections.emptyList();
+        }
+
+        return ids.stream().map(id -> labels.getById(Integer.parseInt(id))).collect(Collectors.toList());
     }
 
-    public DataFetcher<GamesPaged> createRecentFetcher() {
+    public DataFetcher<GamesPaged> createLadderFetcher() {
         return new DataFetcher<GamesPaged>() {
             @Override
             public GamesPaged get(DataFetchingEnvironment dataFetchingEnvironment) throws Exception {
-                return getGames(dataFetchingEnvironment, FilterGameDTO.OrderBy.RATING_DESC, false);
-            }
-        };
-    }
+                LadderConfig ladderConfig = getLadderConfig(dataFetchingEnvironment.getArgument("ladderType"));
 
-    public DataFetcher<GamesPaged> createBestFetcher() {
-        return new DataFetcher<GamesPaged>() {
-            @Override
-            public GamesPaged get(DataFetchingEnvironment dataFetchingEnvironment) throws Exception {
-                return getGames(dataFetchingEnvironment, FilterGameDTO.OrderBy.NUM_RATINGS_DESC, false);
-            }
-        };
-    }
+                FilterGameDTO filter = new FilterGameDTO(ladderConfig.orderBy);
+                filter.setShowOnlyNew(ladderConfig.onlyNew);
+                filter.setRequiredLabels(getLabels(dataFetchingEnvironment.getArgument("requiredLabels")));
+                filter.setOtherLabels(getLabels(dataFetchingEnvironment.getArgument("otherLabels")));
 
-    public DataFetcher<GamesPaged> createMostCommentedFetcher() {
-        return new DataFetcher<GamesPaged>() {
-            @Override
-            public GamesPaged get(DataFetchingEnvironment dataFetchingEnvironment) throws Exception {
-                return getGames(dataFetchingEnvironment, FilterGameDTO.OrderBy.NUM_COMMENTS_DESC, false);
+                int offset = dataFetchingEnvironment.getArgumentOrDefault("offset", 0);
+                int limit = dataFetchingEnvironment.getArgumentOrDefault("limit", 10);
+
+                long totalAmount = filteredGames.totalAmount(filter);
+                List<Game> gameList = filteredGames.paginated(filter, offset, limit);
+
+                return new GamesPaged(gameList, totalAmount);
             }
         };
     }

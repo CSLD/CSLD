@@ -33,11 +33,15 @@ type HomepageQuery {
 
 type GamesQuery {
     byQuery(query: String!, offset: Int, limit: Int): [Game!]!
-    recentAndMostPlayed(offset: Int, limit: Int, requiredLabels: [ID!], otherLabels: [ID!]): GamesPaged!
-    mostPlayed(offset: Int, limit: Int, requiredLabels: [ID!], otherLabels: [ID!]): GamesPaged!
-    recent(offset: Int, limit: Int, requiredLabels: [ID!], otherLabels: [ID!]): GamesPaged!
-    best(offset: Int, limit: Int, requiredLabels: [ID!], otherLabels: [ID!]): GamesPaged!
-    mostCommented(offset: Int, limit: Int, requiredLabels: [ID!], otherLabels: [ID!]): GamesPaged!
+    ladder(ladderType: LadderType!, offset: Int, limit: Int, requiredLabels: [ID!], otherLabels: [ID!]): GamesPaged!
+}
+
+enum LadderType {
+    RecentAndMostPlayed,
+    MostPlayed,
+    Recent,
+    Best,
+    MostCommented,
 }
 
 type Game {
@@ -429,6 +433,6 @@ input UpdateGroupInput {
 }
 
 enum AllowedAction {
-    EDIT,
-    DELETE
+    Edit,
+    Delete
 }
