@@ -4,21 +4,28 @@ import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Label;
 import cz.larpovadatabaze.games.services.Labels;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
 import java.sql.Date;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalField;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class FetcherUtils {
-    private static SimpleDateFormat isoDateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-    private static SimpleDateFormat isoDateTimeFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//    private static SimpleDateFormat isoDateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+//    private static SimpleDateFormat isoDateTimeFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    private final static ZoneId apiTimeZone = ZoneId.of("Europe/Prague");
 
     /**
-     * Parse date from a string
+     * Parse date from a string expecting it to be in Europe/Prague TZ
      *
      * @param date String date
      * @param path Value path to be used in case of parse error
@@ -27,14 +34,14 @@ public class FetcherUtils {
      */
     public static Date parseDate(String date, String path) {
         try {
-            return new Date(isoDateFormatter.parse(date).getTime());
-        } catch (ParseException e) {
+            return new Date(ZonedDateTime.parse(date + "T00:00:00Z").withZoneSameLocal(apiTimeZone).toInstant().toEpochMilli());
+        } catch (DateTimeException e) {
             throw new GraphQLException(GraphQLException.ErrorCode.INVALID_VALUE, "Date not parsable", path);
         }
     }
 
     /**
-     * Parse date from a string
+     * Parse date and time from a string expecting it to be in Europe/Prague TZ
      *
      * @param dateTime String datetime
      * @param path Value path to be used in case of parse error
@@ -43,10 +50,28 @@ public class FetcherUtils {
      */
     public static Date parseDateTime(String dateTime, String path) {
         try {
-            return new Date(isoDateTimeFormatter.parse(dateTime).getTime());
-        } catch (ParseException e) {
+            return new Date(ZonedDateTime.parse(dateTime + "Z").withZoneSameLocal(apiTimeZone).toInstant().toEpochMilli());
+        } catch (DateTimeException e) {
             throw new GraphQLException(GraphQLException.ErrorCode.INVALID_VALUE, "Date not parsable", path);
         }
+    }
+
+    /**
+     * @param calendar Calendar to format
+     *
+     * @return ISO datetime in Europe/Prague zone
+     */
+    public static String formatDateTime(GregorianCalendar calendar) {
+        return calendar.toZonedDateTime().withZoneSameInstant(apiTimeZone).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+    }
+
+    /**
+     * @param calendar Calendar to format
+     *
+     * @return ISO date in Europe/Prague zone
+     */
+    public static String formatDate(GregorianCalendar calendar) {
+        return calendar.toZonedDateTime().withZoneSameInstant(apiTimeZone).format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
 
     /**

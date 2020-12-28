@@ -5,7 +5,11 @@ import graphql.schema.DataFetchingEnvironment;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.chrono.IsoChronology;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.ResolverStyle;
 import java.util.GregorianCalendar;
 
 /**
@@ -13,8 +17,6 @@ import java.util.GregorianCalendar;
  */
 @Component
 public class CalendarFetcher implements DataFetcher<String> {
-    public static SimpleDateFormat isoFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
     @Override
     public String get(DataFetchingEnvironment dataFetchingEnvironment) throws Exception {
         String fieldName = dataFetchingEnvironment.getField().getName();
@@ -26,6 +28,6 @@ public class CalendarFetcher implements DataFetcher<String> {
             return null;
         }
 
-        return isoFormatter.format(((GregorianCalendar)value).getTime());
+        return FetcherUtils.formatDateTime((GregorianCalendar)value);
     }
 }
