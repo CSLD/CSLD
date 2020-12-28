@@ -381,6 +381,10 @@ public class GameMutationFetcherFactory {
 
             checkGameUserAccess(game);
 
+            if (game.isRatingsDisabled()) {
+                throw new GraphQLException(GraphQLException.ErrorCode.ACCESS_DENIED, "Rating is disabled for this game");
+            }
+
             Integer newRating = dataFetchingEnvironment.getArgument("rating");
             if (newRating != null) {
                 // Check rating
@@ -468,6 +472,10 @@ public class GameMutationFetcherFactory {
 
             Comment comment = comments.getCommentOnGameFromUser(appUsers.getLoggedUserId(), game.getId());
             if (comment == null) {
+                if (game.isCommentsDisabled()) {
+                    throw new GraphQLException(GraphQLException.ErrorCode.ACCESS_DENIED, "Adding comments is disabled for this game");
+                }
+
                 comment = new Comment();
                 comment.setGame(game);
                 comment.setUser(appUsers.getLoggedUser());
