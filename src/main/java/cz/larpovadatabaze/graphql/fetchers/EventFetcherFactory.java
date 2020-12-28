@@ -98,9 +98,24 @@ public class EventFetcherFactory {
         return dataFetchingEnvironment -> events.getById(Integer.parseInt(dataFetchingEnvironment.getArgument("eventId")));
     }
 
+    private void checkEventAccess(Event event) {
+        if (!appUsers.isAtLeastEditor()) {
+            if (event == null) {
+                throw new GraphQLException(GraphQLException.ErrorCode.ACCESS_DENIED, "Must be editor");
+            }
+
+            CsldUser addedBy = event.getAddedBy();
+            if (addedBy == null || !addedBy.getId().equals(appUsers.getLoggedUserId())) {
+                throw new GraphQLException(GraphQLException.ErrorCode.ACCESS_DENIED, "Must be editor or creator");
+            }
+        }
+    }
+
     public DataFetcher<Event> createCreateEventFetcher() {
         return dataFetchingEnvironment -> {
             Map<String, Object> input = dataFetchingEnvironment.getArgument("input");
+
+            checkEventAccess(null);
 
             Event event = new Event();
             event.setAddedBy(appUsers.getLoggedUser());
@@ -110,19 +125,6 @@ public class EventFetcherFactory {
 
             return event;
         };
-    }
-
-    private void checkEventAccess(Event event) {
-        if (event == null) {
-            throw new GraphQLException(GraphQLException.ErrorCode.NOT_FOUND, "Event does not exist");
-        }
-
-        if (!appUsers.isAtLeastEditor()) {
-            CsldUser addedBy = event.getAddedBy();
-            if (addedBy == null || !addedBy.getId().equals(appUsers.getLoggedUserId())) {
-                throw new GraphQLException(GraphQLException.ErrorCode.ACCESS_DENIED, "Must be editor or creator");
-            }
-        }
     }
 
     public DataFetcher<Event> createUpdateEventFetcher() {
