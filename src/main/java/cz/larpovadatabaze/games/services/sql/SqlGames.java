@@ -10,6 +10,7 @@ import cz.larpovadatabaze.common.services.sql.CRUD;
 import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.games.services.Images;
 import cz.larpovadatabaze.graphql.GraphQLUploadedFile;
+import cz.larpovadatabaze.HtmlProcessor;
 import cz.larpovadatabaze.users.CsldRoles;
 import cz.larpovadatabaze.users.services.AppUsers;
 import org.apache.commons.lang3.StringUtils;
@@ -19,8 +20,6 @@ import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.*;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -114,7 +113,7 @@ public class SqlGames extends CRUD<Game, Integer> implements Games {
         String newDescription = model.getDescription();
         if (newDescription != null) {
             model.setDescription(
-                    Jsoup.clean(newDescription, Whitelist.basic()));
+                    HtmlProcessor.sanitizeHtml(newDescription));
         }
 
         // Save video.

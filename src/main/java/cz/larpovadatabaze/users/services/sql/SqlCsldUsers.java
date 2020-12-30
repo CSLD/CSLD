@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.users.services.sql;
 
 import com.github.openjson.JSONObject;
+import cz.larpovadatabaze.HtmlProcessor;
 import cz.larpovadatabaze.calendar.service.Events;
 import cz.larpovadatabaze.common.dao.GenericHibernateDAO;
 import cz.larpovadatabaze.common.dao.builder.GenericBuilder;
@@ -29,8 +30,6 @@ import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -153,7 +152,7 @@ public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
         }
 
         if(author.getPerson().getDescription() != null) {
-            author.getPerson().setDescription(Jsoup.clean(author.getPerson().getDescription(), Whitelist.basic()));
+            author.getPerson().setDescription(HtmlProcessor.sanitizeHtml(author.getPerson().getDescription()));
         }
         author.setPassword(Pwd.generateStrongPasswordHash(new RandomString(12).nextString(), author.getPerson().getEmail()));
         return saveOrUpdate(author);
@@ -211,7 +210,7 @@ public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
         String description = model.getPerson().getDescription();
         if (description != null) {
             currentInSession.getPerson().setDescription(
-                    Jsoup.clean(description, Whitelist.basic()));
+                    HtmlProcessor.sanitizeHtml(description));
         }
         currentInSession.setPerson(model.getPerson());
         if (model.getPassword() != null) {

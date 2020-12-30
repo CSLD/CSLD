@@ -14,6 +14,7 @@ import cz.larpovadatabaze.games.services.Ratings;
 import cz.larpovadatabaze.games.services.Upvotes;
 import cz.larpovadatabaze.games.services.Videos;
 import cz.larpovadatabaze.graphql.GraphQLUploadedFile;
+import cz.larpovadatabaze.HtmlProcessor;
 import cz.larpovadatabaze.users.CsldRoles;
 import cz.larpovadatabaze.users.services.AppUsers;
 import cz.larpovadatabaze.users.services.CsldGroups;
@@ -273,7 +274,7 @@ public class GameMutationFetcherFactory {
      */
     private Game applyInputValues(Game game, Map<String, Object> input) {
         game.setName((String) input.get("name"));
-        game.setDescription((String) input.get("description"));
+        game.setDescription(HtmlProcessor.createLinksFromUrls((String) input.get("description")));
         game.setYear((Integer) input.get("year"));
         game.setPlayers((Integer) input.get("players"));
         game.setMenRole((Integer) input.get("menRole"));
@@ -469,6 +470,7 @@ public class GameMutationFetcherFactory {
             checkGameUserAccess(game);
 
             String commentText = dataFetchingEnvironment.getArgument("comment");
+            String processedCommentText = HtmlProcessor.createLinksFromUrls(commentText);
 
             Comment comment = comments.getCommentOnGameFromUser(appUsers.getLoggedUserId(), game.getId());
             if (comment == null) {
@@ -482,7 +484,7 @@ public class GameMutationFetcherFactory {
                 comment.setAdded(new Timestamp(new Date().getTime()));
             }
 
-            comment.setComment(commentText);
+            comment.setComment(processedCommentText);
 
             comments.saveOrUpdate(comment);
 

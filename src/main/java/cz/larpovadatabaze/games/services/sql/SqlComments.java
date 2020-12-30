@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.games.services.sql;
 
+import cz.larpovadatabaze.HtmlProcessor;
 import cz.larpovadatabaze.common.dao.GenericHibernateDAO;
 import cz.larpovadatabaze.common.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.common.entities.Comment;
@@ -65,6 +66,7 @@ public class SqlComments extends CRUD<Comment, Integer> implements Comments {
 
     @Override
     public boolean saveOrUpdate(Comment actualComment) {
+        actualComment.setComment(HtmlProcessor.sanitizeHtml(actualComment.getComment()));
         boolean result = crudRepository.saveOrUpdate(actualComment);
 
         games.evictGame(actualComment.getGame().getId());

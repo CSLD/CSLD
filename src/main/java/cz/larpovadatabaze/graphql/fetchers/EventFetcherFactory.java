@@ -8,6 +8,7 @@ import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.games.services.Labels;
+import cz.larpovadatabaze.HtmlProcessor;
 import cz.larpovadatabaze.users.services.AppUsers;
 import graphql.schema.DataFetcher;
 import org.apache.wicket.model.Model;
@@ -65,7 +66,7 @@ public class EventFetcherFactory {
         event.setAmountOfPlayers((Integer) input.get("amountOfPlayers"));
         event.setWeb((String)input.get("web"));
         event.setLoc((String)input.get("loc"));
-        event.setDescription((String)input.get("description"));
+        event.setDescription(HtmlProcessor.createLinksFromUrls((String)input.get("description")));
 
         event.setGames(getGames((List<String>)input.get("games")));
         event.setLabels(FetcherUtils.getLabels(labels, (List<String>) input.get("labels"), (List<Map<String, Object>>) input.get("newLabels"), appUsers.getLoggedUser()));
