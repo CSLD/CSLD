@@ -17,7 +17,9 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,6 +73,8 @@ public class AdminQueryFetcherFactory {
 
     private static class StatMap {
         private Map<Integer, StatFact> map = new HashMap<>();
+        
+        private int minKey = 999999;
 
         /**
          * Get fact for given year and month from the map, create it when it does not exist.
@@ -80,7 +84,7 @@ public class AdminQueryFetcherFactory {
          *
          * @return Fact object
          */
-        private StatFact getFact(Object year, Object month) {
+        public StatFact getFact(Object year, Object month) {
             int iYear = 0;
             int iMonth = 0;
             if ((year instanceof Double) && (month instanceof Double)) {
@@ -91,6 +95,9 @@ public class AdminQueryFetcherFactory {
             }
 
             Integer key = iYear*100 + iMonth;
+            if (key < minKey) {
+                minKey = key;
+            }
             StatFact fact = map.get(key);
             if (fact == null) {
                 fact = new StatFact(iYear, iMonth);
@@ -100,9 +107,34 @@ public class AdminQueryFetcherFactory {
         }
 
         /**
+         * Add to map records for months between earliest month and current month
+         */
+        public void fillInEmptyFacts() {
+            GregorianCalendar current = new GregorianCalendar();
+
+            int thisYear = current.get(Calendar.YEAR);
+            int thisMonth = current.get(Calendar.MONTH);
+
+            int year = minKey / 100;
+            int month = minKey % 100;
+
+            while((year <= thisYear) || ((year == thisYear) && (month <= thisMonth))) {
+                Integer key = year*100 + month;
+                if (!map.containsKey(key)) {
+                    map.put(key, new StatFact(year, month));
+                }
+                month++;
+                if (month == 13) {
+                    month = 1;
+                    year++;
+                }
+            }
+        }
+
+        /**
          * Get facts as a collection
          */
-        private Collection<StatFact> asFacts() {
+        public Collection<StatFact> asFacts() {
             return map.values();
         }
     }
@@ -132,6 +164,7 @@ public class AdminQueryFetcherFactory {
                     fact.setNumComments(((BigInteger)cs.amount).intValue());
                 }
 
+                map.fillInEmptyFacts();
                 return map.asFacts();
             }
         };
