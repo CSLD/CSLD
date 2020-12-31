@@ -144,8 +144,7 @@ public class GraphQLTypeConfigurator {
                 .type("AdminQuery", builder -> builder
                         .dataFetcher("allLabels", labelFetcherFactory.createAllLabelsFetcher())
                         .dataFetcher("allUsers", adminQueryFetcherFactory.createAllUsersFetcher())
-                        .dataFetcher("ratingStats", adminQueryFetcherFactory.createRatingStatsFetcher())
-                        .dataFetcher("commentStats", adminQueryFetcherFactory.createCommentStatsFetcher())
+                        .dataFetcher("stats", adminQueryFetcherFactory.createStatsFetcher())
                         .dataFetcher("selfRated", adminQueryFetcherFactory.createSelfRatedFetcher())
                 )
 

@@ -15,7 +15,12 @@ import graphql.schema.DataFetchingEnvironment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
@@ -25,13 +30,80 @@ public class AdminQueryFetcherFactory {
     private final Games games;
     private final CsldUsers users;
 
-    private static final class SelfRated {
+    private static class SelfRated {
+        private final String id;
         private final Game game;
         private final CsldUser user;
 
         private SelfRated(Game game, CsldUser user) {
+            this.id = user.getId().toString() + ":" + game.getId().toString();
             this.game = game;
             this.user = user;
+        }
+    }
+
+    private static class StatFact {
+        private final String id;
+        private final int year;
+        private final int month;
+        private Integer numRatings;
+        private Float averageRating;
+        private Integer numComments;
+
+        private StatFact(int year, int month) {
+            this.year = year;
+            this.month = month;
+            this.id = String.format("%04d%02d", year, month);
+        }
+
+        public void setNumRatings(Integer numRatings) {
+            this.numRatings = numRatings;
+        }
+
+        public void setAverageRating(Float averageRating) {
+            this.averageRating = averageRating;
+        }
+
+        public void setNumComments(Integer numComments) {
+            this.numComments = numComments;
+        }
+    }
+
+    private static class StatMap {
+        private Map<Integer, StatFact> map = new HashMap<>();
+
+        /**
+         * Get fact for given year and month from the map, create it when it does not exist.
+         *
+         * @param year Fact year
+         * @param month Fact month
+         *
+         * @return Fact object
+         */
+        private StatFact getFact(Object year, Object month) {
+            int iYear = 0;
+            int iMonth = 0;
+            if ((year instanceof Double) && (month instanceof Double)) {
+                iYear = ((Double)year).intValue();
+                iMonth = ((Double)month).intValue();
+           } else {
+                throw new IllegalArgumentException("Bad argument types");
+            }
+
+            Integer key = iYear*100 + iMonth;
+            StatFact fact = map.get(key);
+            if (fact == null) {
+                fact = new StatFact(iYear, iMonth);
+                map.put(key, fact);
+            }
+            return fact;
+        }
+
+        /**
+         * Get facts as a collection
+         */
+        private Collection<StatFact> asFacts() {
+            return map.values();
         }
     }
 
@@ -43,20 +115,24 @@ public class AdminQueryFetcherFactory {
         this.users = users;
     }
 
-    public DataFetcher<List<RatingStatisticsDto>> createRatingStatsFetcher() {
-        return new DataFetcher<List<RatingStatisticsDto>>() {
+    public DataFetcher<Collection<StatFact>> createStatsFetcher() {
+        return new DataFetcher<Collection<StatFact>>() {
             @Override
-            public List<RatingStatisticsDto> get(DataFetchingEnvironment dataFetchingEnvironment) throws Exception {
-                return statistics.amountAndRatingsPerMonth();
-            }
-        };
-    }
+            public Collection<StatFact> get(DataFetchingEnvironment dataFetchingEnvironment) throws Exception {
+                StatMap map = new StatMap();
 
-    public DataFetcher<List<MonthlyAmountsStatisticsDto>> createCommentStatsFetcher() {
-        return new DataFetcher<List<MonthlyAmountsStatisticsDto>>() {
-            @Override
-            public List<MonthlyAmountsStatisticsDto> get(DataFetchingEnvironment dataFetchingEnvironment) throws Exception {
-                return statistics.amountOfCommentsPerMonth();
+                for(RatingStatisticsDto rs : statistics.amountAndRatingsPerMonth()) {
+                    StatFact fact = map.getFact(rs.getYear(), rs.getMonth());
+                    fact.setAverageRating(((BigDecimal)rs.getAverageRating()).floatValue());
+                    fact.setNumRatings(((BigInteger)rs.getNumRatings()).intValue());
+                }
+
+                for(MonthlyAmountsStatisticsDto cs : statistics.amountOfCommentsPerMonth()) {
+                    StatFact fact = map.getFact(cs.year, cs.month);
+                    fact.setNumComments(((BigInteger)cs.amount).intValue());
+                }
+
+                return map.asFacts();
             }
         };
     }

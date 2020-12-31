@@ -362,25 +362,21 @@ input UpdateEventInput {
 type AdminQuery {
     allLabels: [Label!]!
     allUsers: [User!]!
-    ratingStats: [RatingStats!]!
-    commentStats: [CommentStats!]!
+    stats: [StatFact!]!
     selfRated: [SelfRated!]!
 }
 
-type RatingStats {
+type StatFact {
+    id: ID!
     year: Int!
     month: Int!
-    numRatings: Int!
-    averageRating: Float!
-}
-
-type CommentStats {
-    year: Int!
-    month: Int!
-    amount: Int!
+    numRatings: Int
+    averageRating: Float
+    numComments: Int
 }
 
 type SelfRated {
+    id: ID!
     user: User!
     game: Game!
 }
