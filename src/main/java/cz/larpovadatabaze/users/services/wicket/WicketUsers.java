@@ -53,7 +53,7 @@ public class WicketUsers implements AppUsers {
         CsldUser user = CsldAuthenticatedWebSession.get().getLoggedUser();
         if (user == null) return false;
 
-        return user.getRole().equals(CsldRoles.EDITOR.getRole());
+        return user.getRole().equals(CsldRoles.ADMIN.getRole());
     }
 
     @Override
