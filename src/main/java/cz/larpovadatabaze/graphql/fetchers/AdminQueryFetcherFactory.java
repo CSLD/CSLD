@@ -113,12 +113,12 @@ public class AdminQueryFetcherFactory {
             GregorianCalendar current = new GregorianCalendar();
 
             int thisYear = current.get(Calendar.YEAR);
-            int thisMonth = current.get(Calendar.MONTH);
+            int thisMonth = current.get(Calendar.MONTH)+1;
 
             int year = minKey / 100;
             int month = minKey % 100;
 
-            while((year <= thisYear) || ((year == thisYear) && (month <= thisMonth))) {
+            while((year < thisYear) || ((year == thisYear) && (month <= thisMonth))) {
                 Integer key = year*100 + month;
                 if (!map.containsKey(key)) {
                     map.put(key, new StatFact(year, month));
