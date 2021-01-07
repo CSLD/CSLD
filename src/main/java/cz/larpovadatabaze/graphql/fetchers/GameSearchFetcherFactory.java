@@ -13,11 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -54,6 +50,17 @@ public class GameSearchFetcherFactory {
         }
     }
 
+    /**
+     * Refetch games from DB so that we can access lazy methods
+     *
+     * @param inGames List of games to refetch
+     *
+     * @return Refetched games
+     */
+    public List<Game> refetchGames(List<Game> inGames) {
+        return inGames.stream().map(game -> games.getById(game.getId())).collect(Collectors.toList());
+    }
+
     @Autowired
     public GameSearchFetcherFactory(Games games, Labels labels, FilteredGames filteredGames) {
         this.games = games;
@@ -68,6 +75,21 @@ public class GameSearchFetcherFactory {
             String query = dataFetchingEnvironment.getArgument("query");
 
             return gameSearchableCache.search(query, offset, limit);
+        };
+    }
+
+    public DataFetcher<Map<String, Object>> createByQueryWithTotalFetcher() {
+        return dataFetchingEnvironment -> {
+            int offset = dataFetchingEnvironment.getArgumentOrDefault("offset", 0);
+            int limit = dataFetchingEnvironment.getArgumentOrDefault("limit", 6);
+            String query = dataFetchingEnvironment.getArgument("query");
+
+            EntitySearchableCache.ResultsWithTotal<Game> res = gameSearchableCache.searchWithTotal(query, offset, limit);
+
+            Map<String, Object> result = new HashMap<>();
+            result.put("games", refetchGames(res.getResults()));
+            result.put("totalAmount", res.getTotal());
+            return result;
         };
     }
 

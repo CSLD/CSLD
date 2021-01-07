@@ -20,6 +20,24 @@ public abstract class EntitySearchableCache<T extends IAutoCompletable> {
     private long cacheExpiration = 0;
     private List<ObjectWithName<T>> cachedObjects;
 
+    public static class ResultsWithTotal<T> {
+        private final List<T> results;
+        private final Integer total;
+
+        public List<T> getResults() {
+            return results;
+        }
+
+        public int getTotal() {
+            return total;
+        }
+
+        public ResultsWithTotal(List<T> results, Integer total) {
+            this.results = results;
+            this.total = total;
+        }
+    }
+
     /**
      * Storage object
      */
@@ -57,7 +75,7 @@ public abstract class EntitySearchableCache<T extends IAutoCompletable> {
         }
     }
 
-    public List<T> search(String query, int offset, int limit) {
+    private ResultsWithTotal<T> searchInternal(String query, int offset, int limit, boolean computeTotal) {
         if (cacheExpiration < new Date().getTime()) {
             // Re-fetch objects
             cachedObjects = getAll().stream().map(object -> new ObjectWithName<T>(object.getAutoCompleteData(), object)).collect(Collectors.toList());
@@ -65,7 +83,8 @@ public abstract class EntitySearchableCache<T extends IAutoCompletable> {
         }
 
         String[] terms = buildTerms(query);
-        int needLen = offset + limit;
+        // We need all entries when we have to compute total
+        int needLen = computeTotal ? Integer.MAX_VALUE : offset + limit;
         List<T> res = new ArrayList<>();
         // We want to have early exit when number of found objects reaches limit for performance reasons,
         // so that's why we can't use stream API here.
@@ -79,10 +98,18 @@ public abstract class EntitySearchableCache<T extends IAutoCompletable> {
         }
 
         if (res.size() < offset) {
-            return Collections.emptyList();
+            return new ResultsWithTotal<>(Collections.emptyList(), computeTotal ? res.size() : null);
         }
 
-        return res.subList(offset, res.size());
+        return new ResultsWithTotal<>(res.subList(offset, Math.min(offset + limit, res.size())), computeTotal ? res.size() : null);
+    }
+
+    public ResultsWithTotal<T> searchWithTotal(String query, int offset, int limit) {
+        return searchInternal(query, offset, limit, true);
+    }
+
+    public List<T> search(String query, int offset, int limit) {
+        return searchInternal(query, offset, limit, false).results;
     }
 
     /**

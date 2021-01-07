@@ -80,6 +80,37 @@
     <orderEntry type="library" name="Maven: com.github.openjson:openjson:1.0.11" level="project" />
     <orderEntry type="library" name="Maven: org.apache.wicket:wicket-request:8.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.wicket:wicket-util:8.7.0" level="project" />
+    <orderEntry type="library" name="Maven: org.danekja:jdk-serializable-functional:1.8.6" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.wicket:wicket-spring:8.7.0" level="project" />
+    <orderEntry type="library" name="Maven: org.ow2.asm:asm-util:8.0" level="project" />
+    <orderEntry type="library" name="Maven: org.ow2.asm:asm:8.0" level="project" />
+    <orderEntry type="library" name="Maven: org.ow2.asm:asm-tree:8.0" level="project" />
+    <orderEntry type="library" name="Maven: org.ow2.asm:asm-analysis:8.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.wicket:wicket-ioc:8.7.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.wicket:wicket-auth-roles:8.7.0" level="project" />
+    <orderEntry type="library" name="Maven: org.wicketstuff:wicketstuff-gmap3:8.7.0" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.10.1" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.10.1" level="project" />
+    <orderEntry type="library" name="Maven: org.geotools:gt-main:23.0" level="project" />
+    <orderEntry type="library" name="Maven: org.geotools:gt-referencing:23.0" level="project" />
+    <orderEntry type="library" name="Maven: org.geotools:gt-metadata:23.0" level="project" />
+    <orderEntry type="library" name="Maven: org.geotools:gt-opengis:23.0" level="project" />
+    <orderEntry type="library" name="Maven: org.geotools.ogc:net.opengis.ows:23.0" level="project" />
+    <orderEntry type="library" name="Maven: org.geotools.ogc:org.w3.xlink:23.0" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.emf:org.eclipse.emf.common:2.15.0" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.emf:org.eclipse.emf.ecore:2.15.0" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.emf:org.eclipse.emf.ecore.xmi:2.15.0" level="project" />
+    <orderEntry type="library" name="Maven: org.geotools:gt-shapefile:23.0" level="project" />
+    <orderEntry type="library" name="Maven: org.geotools:gt-jts-wrapper:23.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.13" level="project" />
+    <orderEntry type="library" name="Spring-5.2.3.RELEASE" level="project" />
+    <orderEntry type="library" name="wicket-auth-roles-8.7.0" level="project" />
+    <orderEntry type="library" name="Wicket" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.wicket:wicket-extensions:8.7.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.wicket:wicket-core:8.7.0" level="project" />
+    <orderEntry type="library" name="Maven: com.github.openjson:openjson:1.0.11" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.wicket:wicket-request:8.7.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.wicket:wicket-util:8.7.0" level="project" />
     <orderEntry type="library" name="Maven: commons-fileupload:commons-fileupload:1.4" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.6" level="project" />
     <orderEntry type="library" name="Maven: org.danekja:jdk-serializable-functional:1.8.6" level="project" />

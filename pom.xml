@@ -10,16 +10,20 @@
 
     <repositories>
         <repository>
+            <id>maven</id>
+            <url>https://repo1.maven.org/maven2</url>
+        </repository>
+        <repository>
             <id>jboss-repo</id>
-            <url>http://repository.jboss.org/maven2</url>
+            <url>https://repository.jboss.org/maven2</url>
         </repository>
         <repository>
             <id>spring-repo</id>
-            <url>http://maven.springframework.org</url>
+            <url>https://maven.springframework.org</url>
         </repository>
         <repository>
             <id>wicketstuff-core-snapshots</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <url>httpss://oss.sonatype.org/content/repositories/snapshots</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>

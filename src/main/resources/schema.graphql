@@ -34,6 +34,7 @@ type HomepageQuery {
 
 type GamesQuery {
     byQuery(query: String!, offset: Int, limit: Int): [Game!]!
+    byQueryWithTotal(query: String!, offset: Int, limit: Int): GamesPaged!
     ladder(ladderType: LadderType!, offset: Int, limit: Int, requiredLabels: [ID!], otherLabels: [ID!]): GamesPaged!
 }
 

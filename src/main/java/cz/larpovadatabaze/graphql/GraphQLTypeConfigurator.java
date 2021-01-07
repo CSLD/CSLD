@@ -107,6 +107,7 @@ public class GraphQLTypeConfigurator {
                 )
                 .type("GamesQuery", builder -> builder
                         .dataFetcher("byQuery", gameSearchFetcherFactory.createByQueryFetcher())
+                        .dataFetcher("byQueryWithTotal", gameSearchFetcherFactory.createByQueryWithTotalFetcher())
                         .dataFetcher("ladder", gameSearchFetcherFactory.createLadderFetcher())
                 )
                 .type("Event", builder -> builder
