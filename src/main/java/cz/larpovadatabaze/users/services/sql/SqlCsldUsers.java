@@ -186,15 +186,18 @@ public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
 
         try {
             int code = client.executeMethod(post);
+            logger.info("ReCaptcha verification returned code " + code);
             if (code != HttpStatus.SC_OK) {
                 throw new Exception("Could not send request: "+post.getStatusLine());
             }
 
             String responseFromGoogle = post.getResponseBodyAsString();
+            logger.info("ReCaptcha verification response: " + responseFromGoogle);
             JSONObject responseObject = new JSONObject(responseFromGoogle);
             return responseObject.getBoolean("success");
 
         } catch (Exception e) {
+            logger.warn("ReCaptcha verification exception ", e);
             throw new ReCaptchaTechnicalException(e);
         }
     }

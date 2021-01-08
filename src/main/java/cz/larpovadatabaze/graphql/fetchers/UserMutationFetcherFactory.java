@@ -90,12 +90,16 @@ public class UserMutationFetcherFactory {
                 throw new GraphQLException(GraphQLException.ErrorCode.INVALID_VALUE, "Recaptcha token invalid", "input.recaptcha");
             }
 
+            String birthDate = (String) input.get("birthDate");
+
             CsldUser csldUser = new CsldUser();
             Person person = new Person();
             person.setEmail(email);
             person.setName((String) input.get("name"));
             person.setNickname((String) input.get("nickname"));
-            person.setBirthDate(FetcherUtils.parseDate((String) input.get("birthDate"), "input.birthDate"));
+            if (birthDate != null) {
+                person.setBirthDate(FetcherUtils.parseDate(birthDate, "input.birthDate"));
+            }
             person.setCity((String) input.get("city"));
             csldUser.setPerson(person);
             // Password will be encoded during saveOrUpdate()
@@ -120,7 +124,9 @@ public class UserMutationFetcherFactory {
             // Remember login
             getAuthenticationStrategy().save(email, password);
 
-            return csldUser;
+            // csldUsers::saveOrUpdate() actually copies values to different model and saves it, so we have
+            // to get object from DB to acquire proper created used.
+            return csldUsers.getByEmail(email);
         };
     }
 
