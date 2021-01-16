@@ -185,7 +185,7 @@ public class EventFetcherFactory {
 
             String toArgument = dataFetchingEnvironment.getArgument("to");
             if (toArgument != null) {
-                filter.setFrom(FetcherUtils.parseDate(toArgument, "to"));
+                filter.setTo(FetcherUtils.parseDate(toArgument, "to"));
             }
 
             filter.setRequiredLabels(FetcherUtils.getLabels(labels, dataFetchingEnvironment.getArgument("requiredLabels")));
