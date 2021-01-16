@@ -50,4 +50,28 @@ public class HtmlProcessorIT {
 
         assertThat(res, equalTo(makeLink(url)));
     }
+
+    @Test
+    public void testSanitizePass() {
+        String input = "<h1>Heading 1</h1>\n<h2>Heading 2</h2>\n<h3>Heading 3</h3>\n<p>Paragraph</p>";
+        String expected = "<h1>Heading 1</h1> \n<h2>Heading 2</h2> \n<h3>Heading 3</h3> \n<p>Paragraph</p>";
+        String output = HtmlProcessor.sanitizeHtml(input);
+        assertThat(output, equalTo(expected));
+    }
+
+    @Test
+    public void testRemoveJSSchema() {
+        String input = "<a href=\"javascript:alert('aaa')\" onClick=\"alert('bbb')\">xxx</a>";
+        String expected = "<a rel=\"nofollow noreferrer noopener\" target=\"_blank\">xxx</a>";
+        String output = HtmlProcessor.sanitizeHtml(input);
+        assertThat(output, equalTo(expected));
+    }
+
+    @Test
+    public void testConvertLink() {
+        String input = "<a href=\"https://www.centrum.cz\">xxx</a>";
+        String expected = "<a href=\"https://www.centrum.cz\" rel=\"nofollow noreferrer noopener\" target=\"_blank\">xxx</a>";
+        String output = HtmlProcessor.sanitizeHtml(input);
+        assertThat(output, equalTo(expected));
+    }
 }

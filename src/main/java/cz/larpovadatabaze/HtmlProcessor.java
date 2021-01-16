@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 public class HtmlProcessor {
     private static final Whitelist whitelist = Whitelist
             .basic()
+            .addTags("h1", "h2", "h3", "h4", "h5")
             .addEnforcedAttribute("a", "rel", "nofollow noreferrer noopener")
             .addEnforcedAttribute("a", "target", "_blank");
 
