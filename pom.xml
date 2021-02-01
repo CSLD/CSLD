@@ -23,7 +23,7 @@
         </repository>
         <repository>
             <id>wicketstuff-core-snapshots</id>
-            <url>httpss://oss.sonatype.org/content/repositories/snapshots</url>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
