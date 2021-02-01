@@ -26,8 +26,6 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.times;
 
 public class UserMutationFetcherFactoryIT {
-    private final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-
     @Test
     public void createUserHappyDay() throws Exception {
         AppUsers sessionMock = mock(AppUsers.class);
@@ -63,7 +61,7 @@ public class UserMutationFetcherFactoryIT {
         assertThat(createdUser.getPerson().getName(), equalTo("Petr Peta"));
         assertThat(createdUser.getPerson().getEmail(), equalTo("aaa@bbb.cz"));
         assertThat(createdUser.getPerson().getNickname(), equalTo("Petrous"));
-        assertThat(sdf.format(createdUser.getPerson().getBirthDate()), equalTo("01.06.1980"));
+        assertThat(FetcherUtils.formatDate(createdUser.getPerson().getBirthDate()), equalTo("1980-06-01"));
         assertThat(createdUser.getPerson().getCity(), equalTo("Praha"));
     }
 
@@ -131,7 +129,7 @@ public class UserMutationFetcherFactoryIT {
         assertThat(updatedUser.getPerson().getName(), equalTo("Petr Peta"));
         assertThat(updatedUser.getPerson().getEmail(), equalTo("aaa@bbb.cz"));
         assertThat(updatedUser.getPerson().getNickname(), equalTo("Petrous"));
-        assertThat(sdf.format(updatedUser.getPerson().getBirthDate()), equalTo("01.09.1980"));
+        assertThat(FetcherUtils.formatDate(updatedUser.getPerson().getBirthDate()), equalTo("1980-09-01"));
         assertThat(updatedUser.getPerson().getCity(), equalTo("Praha"));
     }
 

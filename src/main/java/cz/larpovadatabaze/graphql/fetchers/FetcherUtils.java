@@ -66,12 +66,34 @@ public class FetcherUtils {
     }
 
     /**
+     * @param date Date to format
+     *
+     * @return ISO datetime in Europe/Prague zone
+     */
+    public static String formatDateTime(Date date) {
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setTime(date);
+        return formatDateTime(gc);
+    }
+
+    /**
      * @param calendar Calendar to format
      *
      * @return ISO date in Europe/Prague zone
      */
     public static String formatDate(GregorianCalendar calendar) {
         return calendar.toZonedDateTime().withZoneSameInstant(apiTimeZone).format(DateTimeFormatter.ISO_LOCAL_DATE);
+    }
+
+    /**
+     * @param date Date to format
+     *
+     * @return ISO date in Europe/Prague zone
+     */
+    public static String formatDate(Date date) {
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        return formatDate(calendar);
     }
 
     /**

@@ -16,12 +16,7 @@ import graphql.schema.DataFetchingEnvironment;
 import org.junit.Test;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -30,8 +25,6 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
 public class EventFetcherFactoryIT {
-    private final static SimpleDateFormat sdf = new SimpleDateFormat("dd. MM. yyyy HH:mm:ss");
-
     private Event createEvent() {
         return new Event(1, "Test", new GregorianCalendar(), new GregorianCalendar(), 5, "Praha", "Test event", "https://www.centrum.cz", "test");
     }
@@ -41,8 +34,8 @@ public class EventFetcherFactoryIT {
 
         input.put("id", "1");
         input.put("name", "newName");
-        input.put("fromDate", "2010-08-17 14:45:00");
-        input.put("toDate", "2010-09-01 00:00:00");
+        input.put("fromDate", "2010-08-17T14:45:00");
+        input.put("toDate", "2010-09-01T00:00:00");
         input.put("amountOfPlayers", 123);
         input.put("web", "https://larpovadatabaze.cz");
         input.put("loc", "Sever");
@@ -88,8 +81,8 @@ public class EventFetcherFactoryIT {
         assertThat(updatedEvent, notNullValue());
 
         assertThat(updatedEvent.getName(), equalTo("newName"));
-        assertThat(sdf.format(updatedEvent.getFrom().getTime()), equalTo("17. 08. 2010 14:45:00"));
-        assertThat(sdf.format(updatedEvent.getTo().getTime()), equalTo("01. 09. 2010 00:00:00"));
+        assertThat(FetcherUtils.formatDateTime((GregorianCalendar)updatedEvent.getFrom()), equalTo("2010-08-17T14:45:00"));
+        assertThat(FetcherUtils.formatDateTime((GregorianCalendar)updatedEvent.getTo()), equalTo("2010-09-01T00:00:00"));
         assertThat(updatedEvent.getAmountOfPlayers(), equalTo(123));
         assertThat(updatedEvent.getWeb(), equalTo("https://larpovadatabaze.cz"));
         assertThat(updatedEvent.getLoc(), equalTo("Sever"));

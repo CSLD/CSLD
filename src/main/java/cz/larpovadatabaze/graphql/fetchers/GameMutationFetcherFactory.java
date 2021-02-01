@@ -304,7 +304,7 @@ public class GameMutationFetcherFactory {
         game.setAuthors(getAuthors((List<String>) input.get("authors"), (List<Map<String, Object>>) input.get("newAuthors")));
         game.setGroupAuthor(getGroups((List<String>) input.get("groupAuthors"), (List<Map<String, Object>>) input.get("newGroupAuthors")));
 
-        if (game.getLabels().stream().noneMatch(label -> label.getRequired())) {
+        if (game.getLabels().stream().noneMatch(label -> (label.getRequired() == Boolean.TRUE))) {
             throw new GraphQLException(GraphQLException.ErrorCode.INVALID_VALUE, "Must provide at least one required label");
         }
 

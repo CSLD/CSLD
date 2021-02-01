@@ -22,6 +22,7 @@ import cz.larpovadatabaze.users.services.masquerade.InMemoryGroups;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -111,6 +112,7 @@ public class GameMutationFetcherFactoryIT {
         Label label1 = new Label();
         label1.setId(1);
         label1.setName("OldLabel");
+        label1.setRequired(true);
         labels.saveOrUpdate(label1);
 
         Label label2 = new Label();
@@ -146,6 +148,7 @@ public class GameMutationFetcherFactoryIT {
         users.saveOrUpdate(user2);
 
         AppUsers mockAppUsers = mock(AppUsers.class);
+        when(mockAppUsers.isSignedIn()).thenReturn(true);
         GameMutationFetcherFactory factory = new GameMutationFetcherFactory(games, videos, labels, users, groups, mockAppUsers, new InMemoryRatings(), new InMemoryComments(), new InMemoryUpvotes());
 
         DataFetchingEnvironment dataFetchingEnvironment = new MockDataFetchingEnvironment(arguments, null);
@@ -201,7 +204,7 @@ public class GameMutationFetcherFactoryIT {
         GameMutationFetcherFactory factory = new GameMutationFetcherFactory(games, new InMemoryVideos(), new InMemoryLabels(), new InMemoryCsldUsers(), new InMemoryGroups(), mockAppUsers, new InMemoryRatings(), new InMemoryComments(), new InMemoryUpvotes());
 
         Map<String, Object> arguments = new HashMap<>();
-        arguments.put("id", "1");
+        arguments.put("gameId", "1");
 
         DataFetchingEnvironment dataFetchingEnvironment = new MockDataFetchingEnvironment(arguments, null);
         DataFetcher<Game> fetcher = factory.createDeleteGameFetcher();
@@ -235,7 +238,7 @@ public class GameMutationFetcherFactoryIT {
         GameMutationFetcherFactory factory = new GameMutationFetcherFactory(games, new InMemoryVideos(), new InMemoryLabels(), new InMemoryCsldUsers(), new InMemoryGroups(), mockAppUsers, new InMemoryRatings(), new InMemoryComments(), new InMemoryUpvotes());
 
         Map<String, Object> arguments = new HashMap<>();
-        arguments.put("id", "1");
+        arguments.put("gameId", "1");
 
         DataFetchingEnvironment dataFetchingEnvironment = new MockDataFetchingEnvironment(arguments, null);
         DataFetcher<Game> fetcher = factory.createDeleteGameFetcher();
@@ -265,7 +268,7 @@ public class GameMutationFetcherFactoryIT {
         GameMutationFetcherFactory factory = new GameMutationFetcherFactory(games, new InMemoryVideos(), new InMemoryLabels(), new InMemoryCsldUsers(), new InMemoryGroups(), mockAppUsers, new InMemoryRatings(), new InMemoryComments(), new InMemoryUpvotes());
 
         Map<String, Object> arguments = new HashMap<>();
-        arguments.put("id", "1");
+        arguments.put("gameId", "1");
 
         DataFetchingEnvironment dataFetchingEnvironment = new MockDataFetchingEnvironment(arguments, null);
         DataFetcher<Game> fetcher = factory.createDeleteGameFetcher();
@@ -303,7 +306,7 @@ public class GameMutationFetcherFactoryIT {
         GameMutationFetcherFactory factory = new GameMutationFetcherFactory(games, new InMemoryVideos(), new InMemoryLabels(), new InMemoryCsldUsers(), new InMemoryGroups(), mockAppUsers, new InMemoryRatings(), new InMemoryComments(), new InMemoryUpvotes());
 
         Map<String, Object> arguments = new HashMap<>();
-        arguments.put("id", "1");
+        arguments.put("gameId", "1");
 
         DataFetchingEnvironment dataFetchingEnvironment = new MockDataFetchingEnvironment(arguments, null);
         DataFetcher<Game> fetcher = factory.createDeleteGameFetcher();
@@ -346,7 +349,7 @@ public class GameMutationFetcherFactoryIT {
         GameMutationFetcherFactory factory = new GameMutationFetcherFactory(games, new InMemoryVideos(), new InMemoryLabels(), new InMemoryCsldUsers(), new InMemoryGroups(), mockAppUsers, new InMemoryRatings(), new InMemoryComments(), new InMemoryUpvotes());
 
         Map<String, Object> arguments = new HashMap<>();
-        arguments.put("id", "1");
+        arguments.put("gameId", "1");
 
         DataFetchingEnvironment dataFetchingEnvironment = new MockDataFetchingEnvironment(arguments, null);
         DataFetcher<Game> fetcher = factory.createDeleteGameFetcher();

@@ -64,7 +64,7 @@ public class GraphQLRequestExecutor {
     }
 
     @Autowired
-    GraphQLRequestExecutor(GraphQLTypeConfigurator typeConfigurator, UserMutationFetcherFactory userFetcherFactory, SessionFactory sessionFactory) {
+    public GraphQLRequestExecutor(GraphQLTypeConfigurator typeConfigurator, UserMutationFetcherFactory userFetcherFactory, SessionFactory sessionFactory) {
         // Read schema definition from resource file
         ClassLoader classLoader = getClass().getClassLoader();
         BufferedReader schemaReader = new BufferedReader(new InputStreamReader(classLoader.getResourceAsStream("schema.graphql")));
