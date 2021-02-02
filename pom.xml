@@ -206,6 +206,11 @@
             </exclusions>
         </dependency>
         <dependency>
+            <!-- It seems Tomcat on Heroku has its version of reactive-streams loaded, so when we try to load -->
+            <!-- the library as our dependency (s3 and graphql-java depend on it), it crashes the app start. -->
+            <!-- So we exclude it and include it just for tests. This means S3 won't work locally unless  -->
+            <!-- you remove that <scope>test</scope> (but don't try to deploy that!) or load library -->
+            <!-- manually into Tomcat. -->
             <groupId>org.reactivestreams</groupId>
             <artifactId>reactive-streams</artifactId>
             <version>1.0.3</version>
