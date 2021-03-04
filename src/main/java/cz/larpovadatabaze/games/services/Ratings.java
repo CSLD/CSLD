@@ -32,12 +32,20 @@ public interface Ratings extends CRUDService<Rating, Integer> {
     List<Rating> getRatingsOfUser(CsldUser logged, CsldUser actual);
 
     /**
-     * Return the color associated with rating of this game.
+     * Return the color associated with rating value.
      *
-     * @param rating The value of the rating between 0 and 100. Null is accepted and represented as 0
+     * @param rating The value of the rating between 0 and 100. Null is accepted and taken as no rating.
      * @return String representing the valid name for the rating of the game
      */
     String getColor(Double rating);
+
+    /**
+     * Return the color associated ith the rating of the game.
+     *
+     * @param game Game with the information about the rating.
+     * @return String representing the valid name for the rating of the game
+     */
+    String getColorForGame(Game game);
 
     /**
      * Return ratings associated with game that have rating other than null ordered

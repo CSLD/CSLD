@@ -1,7 +1,5 @@
 Priprava
 --------
-
-V prvni rade je potreba mit pridelena prava pro pristup do repozitare na docker hubu. Aktualne neni zadny gisat ucet, takze to jde pres ucet "mbabic84". Musite mit samozrejme vlastni ucet na docker hubu.
     
 Prihlasime se do docker hubu:
     
@@ -11,7 +9,7 @@ Stahneme si kontejner z repozitare:
     
     docker pull jbalhar/csld:latest
 
-Nastartovani kontejneru s pantherem
+Nastartovani kontejneru s csld
 -----------------------------------
 
 Jako prvni doporucuji nastarovat pouze kontejner, tak aby zustal bezici na pozadi:

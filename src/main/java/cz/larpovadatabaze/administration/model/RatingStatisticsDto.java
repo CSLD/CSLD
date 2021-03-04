@@ -39,4 +39,8 @@ public class RatingStatisticsDto implements Serializable {
     public void setAverage_rating(Object average_rating) {
         this.average_rating = average_rating;
     }
+
+    public Object getNumRatings() { return amount; }
+
+    public Object getAverageRating() { return average_rating; }
 }

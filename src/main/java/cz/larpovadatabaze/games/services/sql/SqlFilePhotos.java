@@ -6,6 +6,7 @@ import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.entities.Image;
 import cz.larpovadatabaze.common.entities.Photo;
+import cz.larpovadatabaze.common.models.UploadedFile;
 import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService;
 import cz.larpovadatabaze.common.services.sql.CRUD;
@@ -15,6 +16,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -71,7 +73,7 @@ public class SqlFilePhotos extends CRUD<Photo, Integer> implements Photos {
 
     @Override
     public boolean createNewPhotoForGame(Game game, FileItem fileItem) {
-        FileService.ResizeAndSaveReturn ret = fileService.saveImageFileAndPreviewAndReturnPath(new FileUpload(fileItem), imageResizingStrategyFactoryService.getMaxWidthHeightStrategy(MAX_PHOTO_WIDTH, MAX_PHOTO_HEIGHT), imageResizingStrategyFactoryService.getCuttingSquareStrategy(PREVIEW_SIZE, 50));
+        FileService.ResizeAndSaveReturn ret = fileService.saveImageFileAndPreviewAndReturnPath(new UploadedFile(new FileUpload(fileItem)), imageResizingStrategyFactoryService.getMaxWidthHeightStrategy(MAX_PHOTO_WIDTH, MAX_PHOTO_HEIGHT), imageResizingStrategyFactoryService.getCuttingSquareStrategy(PREVIEW_SIZE, 50));
         Image image = new Image();
         image.setPath(ret.path);
         image.setContentType(fileItem.getContentType());
@@ -97,6 +99,14 @@ public class SqlFilePhotos extends CRUD<Photo, Integer> implements Photos {
     public List<Photo> getRandomPhotos(int amount) {
         Criteria criteria = crudRepository.getExecutableCriteria();
         criteria.add(Restrictions.sqlRestriction("1=1 order by random()"));
+        criteria.setMaxResults(amount);
+        return criteria.list();
+    }
+    
+    @Override
+    public List<Photo> getMostRecent(int amount) {
+        Criteria criteria = crudRepository.getExecutableCriteria();
+        criteria.addOrder(Order.desc("id"));
         criteria.setMaxResults(amount);
         return criteria.list();
     }

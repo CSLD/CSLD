@@ -67,4 +67,17 @@ public class FilterGameDTO implements Serializable {
     public OrderBy getOrderBy() {
         return orderBy;
     }
+
+    public void setRequiredLabels(List<Label> requiredLabels) {
+        this.requiredLabels = requiredLabels;
+    }
+
+    public void setOtherLabels(List<Label> otherLabels) {
+        this.otherLabels = otherLabels;
+    }
+
+    public void setShowOnlyNew(boolean showOnlyNew) {
+        this.showOnlyNew = showOnlyNew;
+    }
+
 }

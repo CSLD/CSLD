@@ -3,6 +3,7 @@ package cz.larpovadatabaze.games.services.masquerade;
 import cz.larpovadatabaze.common.entities.Comment;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
+import cz.larpovadatabaze.common.models.Page;
 import cz.larpovadatabaze.common.services.masquerade.InMemoryCrud;
 import cz.larpovadatabaze.games.services.Comments;
 
@@ -66,8 +67,23 @@ public class InMemoryComments extends InMemoryCrud<Comment, Integer> implements 
     }
 
     @Override
-    public List<Comment> visibleForCurrentUserOrderedByUpvotes(Game game) {
+    public List<Comment> visibleForCurrentUserOrderedByUpvotes(Game game, Page page) {
         return new ArrayList<>();
+    }
+
+    @Override
+    public int amountOfCommentsVisibleForCurrentUserAndGame(Game game) {
+        return 0;
+    }
+
+    @Override
+    public List<Comment> visibleForCurrentUserOrderedByRecent(CsldUser user, Page page) {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public int amountOfCommentsVisibleForCurrentUserAndUser(CsldUser user) {
+        return 0;
     }
 
     @Override

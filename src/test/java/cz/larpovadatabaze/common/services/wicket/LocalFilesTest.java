@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.common.services.wicket;
 
+import cz.larpovadatabaze.common.models.UploadedFile;
 import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService;
 import org.apache.commons.fileupload.FileItem;
@@ -69,7 +70,7 @@ public class LocalFilesTest {
     public void saveImageFileAndPreview() throws IOException {
         FileUpload fileUpload = prepareDummyFileUpload();
         FileService.ResizeAndSaveReturn savedImage = files.saveImageFileAndPreviewAndReturnPath(
-                fileUpload,
+                new UploadedFile(fileUpload),
                 strategiesToResizeImage.getMaxWidthHeightStrategy(128, 128),
                 strategiesToResizeImage.getMaxWidthHeightStrategy(32, 32));
 
@@ -90,7 +91,7 @@ public class LocalFilesTest {
     public void saveOnlyImageWithoutPreview() throws IOException {
         FileUpload fileUpload = prepareDummyFileUpload();
         FileService.ResizeAndSaveReturn savedImage = files.saveImageFileAndReturnPath(
-                fileUpload,
+                new UploadedFile(fileUpload),
                 strategiesToResizeImage.getMaxWidthHeightStrategy(128, 128));
 
         File savedImageFull = new File(files.getPathInDataDir(savedImage.path));

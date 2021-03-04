@@ -1,6 +1,6 @@
 package cz.larpovadatabaze.common.entities;
 
-import cz.larpovadatabaze.common.components.multiac.IAutoCompletable;
+import cz.larpovadatabaze.common.IAutoCompletable;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;

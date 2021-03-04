@@ -36,7 +36,8 @@ public class WicketUsers implements AppUsers {
 
     @Override
     public Integer getLoggedUserId() {
-        return getLoggedUser().getId();
+        CsldUser csldUser = getLoggedUser();
+        return (csldUser != null) ? getLoggedUser().getId() : null;
     }
 
     @Override
@@ -52,7 +53,7 @@ public class WicketUsers implements AppUsers {
         CsldUser user = CsldAuthenticatedWebSession.get().getLoggedUser();
         if (user == null) return false;
 
-        return user.getRole().equals(CsldRoles.EDITOR.getRole());
+        return user.getRole().equals(CsldRoles.ADMIN.getRole());
     }
 
     @Override
@@ -74,5 +75,15 @@ public class WicketUsers implements AppUsers {
         }
 
         return isVisible;
+    }
+
+    @Override
+    public boolean signIn(String email, String password) {
+        return CsldAuthenticatedWebSession.get().signIn(email, password);
+    }
+
+    @Override
+    public void signOut() {
+        CsldAuthenticatedWebSession.get().signOut();
     }
 }

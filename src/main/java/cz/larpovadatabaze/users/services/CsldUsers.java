@@ -2,6 +2,7 @@ package cz.larpovadatabaze.users.services;
 
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.EmailAuthentication;
+import cz.larpovadatabaze.common.models.AbstractUploadedFile;
 import cz.larpovadatabaze.common.services.CRUDService;
 import cz.larpovadatabaze.common.services.IIconReferenceProvider;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
@@ -87,5 +88,5 @@ public interface CsldUsers extends CRUDService<CsldUser, Integer>, IIconReferenc
      * @param uploads List of items to upload and store
      * @return True if the process was ok.
      */
-    boolean saveOrUpdate(CsldUser model, List<FileUpload> uploads);
+    boolean saveOrUpdate(CsldUser model, List<FileUpload> uploads, AbstractUploadedFile imageFile);
 }

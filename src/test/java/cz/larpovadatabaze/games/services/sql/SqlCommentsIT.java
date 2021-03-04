@@ -2,6 +2,7 @@ package cz.larpovadatabaze.games.services.sql;
 
 import cz.larpovadatabaze.WithDatabase;
 import cz.larpovadatabaze.common.entities.Comment;
+import cz.larpovadatabaze.common.models.Page;
 import cz.larpovadatabaze.games.services.Comments;
 import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.users.services.AppUsers;
@@ -91,7 +92,7 @@ public class SqlCommentsIT extends WithDatabase {
         when(mockAppUsers.isAtLeastEditor()).thenReturn(false);
 
         List<Comment> visibleOrderedComments =
-                underTest.visibleForCurrentUserOrderedByUpvotes(masqueradeEntities.secondMasquerade);
+                underTest.visibleForCurrentUserOrderedByUpvotes(masqueradeEntities.secondMasquerade, new Page(0, 4));
 
         assertThat(visibleOrderedComments, hasSize(2));
         assertThat(visibleOrderedComments, contains(
@@ -105,7 +106,7 @@ public class SqlCommentsIT extends WithDatabase {
         when(mockAppUsers.getLoggedUserId()).thenReturn(-1);
 
         List<Comment> visibleOrderedComments =
-                underTest.visibleForCurrentUserOrderedByUpvotes(masqueradeEntities.secondMasquerade);
+                underTest.visibleForCurrentUserOrderedByUpvotes(masqueradeEntities.secondMasquerade, new Page(0, 4));
 
         assertThat(visibleOrderedComments, hasSize(3));
         assertThat(visibleOrderedComments, contains(

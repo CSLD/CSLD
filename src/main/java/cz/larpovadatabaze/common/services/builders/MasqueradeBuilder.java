@@ -115,10 +115,12 @@ MasqueradeBuilder implements Builder {
         upvotes.saveOrUpdate(editorUserComment);
         Upvote administratorUserComment = new Upvote(administrator, userComment);
         userComment.getPluses().add(administratorUserComment);
+        userComment.setAmountOfUpvotes(2);
         upvotes.saveOrUpdate(administratorUserComment);
 
         Upvote editorEditorComment = new Upvote(editor, editorComment);
         editorComment.getPluses().add(editorEditorComment);
+        editorComment.setAmountOfUpvotes(1);
         upvotes.saveOrUpdate(editorEditorComment);
 
         Rating userRatedBest = new Rating(user, bestMasquerade, 9, WANT_TO_PLAY);

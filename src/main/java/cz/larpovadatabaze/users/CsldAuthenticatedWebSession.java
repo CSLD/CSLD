@@ -63,7 +63,7 @@ public class CsldAuthenticatedWebSession extends AuthenticatedWebSession {
             }
         }
 
-        if(authenticated != null){
+        if (authenticated != null) {
             transformToRoles(authenticated.getRole());
 
             loggedUserId = authenticated.getId();
@@ -74,12 +74,19 @@ public class CsldAuthenticatedWebSession extends AuthenticatedWebSession {
         }
     }
 
+    public void setLoggedUser(CsldUser loggedUser) {
+        signIn(true);
+
+        csldUser = loggedUser;
+        loggedUserId = loggedUser.getId();
+    }
+
     public void transformToRoles(int role) {
-        if(role == 1) {
+        if (role == 1) {
             actualRoles = new Roles(new String[]{
                     CsldRoles.USER.getRoleName()
             });
-        } else if(role == 2) {
+        } else if (role == 2) {
             actualRoles = new Roles(new String[]{
                     CsldRoles.USER.getRoleName(),
                     CsldRoles.EDITOR.getRoleName()

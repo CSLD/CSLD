@@ -30,9 +30,9 @@ public enum CsldRoles {
     }
 
     public static Short getRoleByName(String name) {
-        if (name.equals("Administrátor")) {
+        if (name.equals("Administrátor") || name.equalsIgnoreCase("Administrator")) {
             return (short) 3;
-        } else if (name.equals("Editor")) {
+        } else if (name.equals("Editor") || name.equalsIgnoreCase("Editor")) {
             return (short) 2;
         } else {
             return (short) 1;

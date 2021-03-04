@@ -4,11 +4,13 @@ import cz.larpovadatabaze.administration.services.Statistics;
 import cz.larpovadatabaze.administration.services.masquerade.InMemoryStatistics;
 import cz.larpovadatabaze.calendar.service.Events;
 import cz.larpovadatabaze.calendar.services.masqueradeStubs.InMemoryEvents;
+import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.common.services.FilterService;
 import cz.larpovadatabaze.common.services.MailService;
 import cz.larpovadatabaze.common.services.builders.InMemoryMasqueradeBuilder;
 import cz.larpovadatabaze.common.services.smtp.SmtpMailService;
 import cz.larpovadatabaze.common.services.wicket.FilterServiceReflection;
+import cz.larpovadatabaze.common.services.wicket.LocalFiles;
 import cz.larpovadatabaze.games.services.*;
 import cz.larpovadatabaze.games.services.masquerade.*;
 import cz.larpovadatabaze.search.services.TokenSearch;
@@ -139,6 +141,11 @@ public class RootTestWicketContext {
         return new InMemoryStatistics();
     }
 
+    @Bean
+    public FileService fileService() {
+        return new LocalFiles(env.getProperty("csld.data.dir"));
+    }
+
     @Bean(initMethod = "build")
     public InMemoryMasqueradeBuilder builder() {
         return new InMemoryMasqueradeBuilder(comments(), csldUsers(), games(), similarGames(),
@@ -147,7 +154,7 @@ public class RootTestWicketContext {
 
     @Bean
     public Csld csld() {
-        return new Csld(tokenSearch(), csldUsers(), env, sqlEvents(), sqlStatistics(), games());
+        return new Csld(tokenSearch(), csldUsers(), env, sqlEvents(), sqlStatistics(), games(), null);
     }
 
     // Start of email settings

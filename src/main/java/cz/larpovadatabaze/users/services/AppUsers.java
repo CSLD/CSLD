@@ -43,4 +43,19 @@ public interface AppUsers {
      * @return True if the user is admin of the group.
      */
     boolean isAdminOfGroup();
+
+    /**
+     * Log in
+     *
+     * @param email Email to log in with
+     * @param password Password to log in with
+     *
+     * @return Whether login was successful
+     */
+    boolean signIn(String email, String password);
+
+    /**
+     * Log out
+     */
+    void signOut();
 }
