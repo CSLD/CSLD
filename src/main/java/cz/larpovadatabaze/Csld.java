@@ -8,6 +8,7 @@ import cz.larpovadatabaze.search.services.TokenSearch;
 import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.users.services.CsldUsers;
 import org.apache.log4j.Logger;
+import org.apache.wicket.Page;
 import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.Session;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
@@ -31,6 +32,7 @@ import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.settings.RequestLoggerSettings;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
+import org.apache.wicket.util.tester.DummyHomePage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -68,35 +70,12 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         this.graphqlResource = graphqlResource;
     }
 
-    public class MountedMapperWithoutPageComponentInfo extends MountedMapper {
-
-        public MountedMapperWithoutPageComponentInfo(String mountPath, Class<? extends IRequestablePage> pageClass) {
-            super(mountPath, pageClass, new PageParametersEncoder());
-        }
-
-        @Override
-        protected void encodePageComponentInfo(Url url, PageComponentInfo info) {
-            // do nothing so that component info does not get rendered in url
-        }
-
-        @Override
-        public Url mapHandler(IRequestHandler requestHandler)
-        {
-            if (requestHandler instanceof ListenerRequestHandler ||
-                    requestHandler instanceof BookmarkableListenerRequestHandler) {
-                return null;
-            } else {
-                return super.mapHandler(requestHandler);
-            }
-        }
-    }
-	
-	/**
+    /**
 	 * @see org.apache.wicket.Application#getHomePage()
 	 */
-	public Class getHomePage()
+	public Class<DummyHomePage> getHomePage()
 	{
-		return null;
+		return DummyHomePage.class;
 	}
 
     @Override
