@@ -2,11 +2,11 @@ package cz.larpovadatabaze.graphql.fetchers;
 
 import cz.larpovadatabaze.common.entities.Comment;
 import cz.larpovadatabaze.common.entities.Game;
+import cz.larpovadatabaze.common.models.Page;
 import cz.larpovadatabaze.games.services.Comments;
 import cz.larpovadatabaze.graphql.model.CommentsPaged;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
-import cz.larpovadatabaze.common.models.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

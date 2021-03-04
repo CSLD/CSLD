@@ -1,20 +1,9 @@
 package cz.larpovadatabaze.graphql.fetchers;
 
-import cz.larpovadatabaze.common.entities.Comment;
-import cz.larpovadatabaze.common.entities.CsldGroup;
-import cz.larpovadatabaze.common.entities.CsldUser;
-import cz.larpovadatabaze.common.entities.Game;
-import cz.larpovadatabaze.common.entities.Person;
-import cz.larpovadatabaze.common.entities.Rating;
-import cz.larpovadatabaze.common.entities.Video;
-import cz.larpovadatabaze.games.services.Comments;
-import cz.larpovadatabaze.games.services.Games;
-import cz.larpovadatabaze.games.services.Labels;
-import cz.larpovadatabaze.games.services.Ratings;
-import cz.larpovadatabaze.games.services.Upvotes;
-import cz.larpovadatabaze.games.services.Videos;
-import cz.larpovadatabaze.graphql.GraphQLUploadedFile;
 import cz.larpovadatabaze.HtmlProcessor;
+import cz.larpovadatabaze.common.entities.*;
+import cz.larpovadatabaze.games.services.*;
+import cz.larpovadatabaze.graphql.GraphQLUploadedFile;
 import cz.larpovadatabaze.users.CsldRoles;
 import cz.larpovadatabaze.users.services.AppUsers;
 import cz.larpovadatabaze.users.services.CsldGroups;
@@ -23,15 +12,13 @@ import graphql.schema.DataFetcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static cz.larpovadatabaze.common.entities.Rating.STATE_CODE_NONE;
-import static cz.larpovadatabaze.common.entities.Rating.STATE_CODE_PLAYED;
-import static cz.larpovadatabaze.common.entities.Rating.STATE_CODE_WANT_TO_PLAY;
+import static cz.larpovadatabaze.common.entities.Rating.*;
 
 @Component
 public class GameMutationFetcherFactory {

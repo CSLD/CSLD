@@ -1,13 +1,9 @@
 package cz.larpovadatabaze.graphql;
 
-import cz.larpovadatabaze.common.components.multiac.IAutoCompletable;
+import cz.larpovadatabaze.common.IAutoCompletable;
 
 import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**

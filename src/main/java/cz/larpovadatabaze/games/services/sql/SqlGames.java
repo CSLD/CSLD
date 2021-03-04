@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.games.services.sql;
 
+import cz.larpovadatabaze.HtmlProcessor;
 import cz.larpovadatabaze.common.dao.GenericHibernateDAO;
 import cz.larpovadatabaze.common.dao.builder.GameBuilder;
 import cz.larpovadatabaze.common.entities.*;
@@ -10,7 +11,6 @@ import cz.larpovadatabaze.common.services.sql.CRUD;
 import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.games.services.Images;
 import cz.larpovadatabaze.graphql.GraphQLUploadedFile;
-import cz.larpovadatabaze.HtmlProcessor;
 import cz.larpovadatabaze.users.CsldRoles;
 import cz.larpovadatabaze.users.services.AppUsers;
 import org.apache.commons.lang3.StringUtils;

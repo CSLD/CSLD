@@ -1,7 +1,6 @@
 package cz.larpovadatabaze.graphql.fetchers;
 
 import cz.larpovadatabaze.common.entities.CsldGroup;
-import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.graphql.EntitySearchableCache;
 import cz.larpovadatabaze.users.services.AppUsers;
 import cz.larpovadatabaze.users.services.CsldGroups;

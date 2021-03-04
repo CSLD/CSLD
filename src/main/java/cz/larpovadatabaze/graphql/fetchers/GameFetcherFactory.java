@@ -9,17 +9,11 @@ import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.games.services.GamesWithState;
 import cz.larpovadatabaze.games.services.SimilarGames;
 import graphql.schema.DataFetcher;
-import graphql.schema.DataFetchingEnvironment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.text.Normalizer;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Factory for Game(s) fetchers

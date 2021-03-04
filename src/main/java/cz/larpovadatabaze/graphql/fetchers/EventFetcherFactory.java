@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.graphql.fetchers;
 
+import cz.larpovadatabaze.HtmlProcessor;
 import cz.larpovadatabaze.calendar.Location;
 import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.calendar.model.FilterEvent;
@@ -8,7 +9,6 @@ import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.games.services.Labels;
-import cz.larpovadatabaze.HtmlProcessor;
 import cz.larpovadatabaze.users.services.AppUsers;
 import graphql.schema.DataFetcher;
 import org.apache.wicket.model.Model;

@@ -2,11 +2,7 @@ package cz.larpovadatabaze.graphql;
 
 import cz.larpovadatabaze.common.models.AbstractUploadedFile;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 public class GraphQLUploadedFile extends AbstractUploadedFile {
     private final String fileName;

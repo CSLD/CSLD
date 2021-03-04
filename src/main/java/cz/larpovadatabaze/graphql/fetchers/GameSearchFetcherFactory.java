@@ -1,7 +1,6 @@
 package cz.larpovadatabaze.graphql.fetchers;
 
 import cz.larpovadatabaze.common.entities.Game;
-import cz.larpovadatabaze.common.entities.Label;
 import cz.larpovadatabaze.games.models.FilterGameDTO;
 import cz.larpovadatabaze.games.services.FilteredGames;
 import cz.larpovadatabaze.games.services.Games;
@@ -12,8 +11,10 @@ import graphql.schema.DataFetchingEnvironment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.text.Normalizer;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component

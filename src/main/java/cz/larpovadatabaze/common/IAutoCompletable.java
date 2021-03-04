@@ -1,4 +1,4 @@
-package cz.larpovadatabaze.common.components.multiac;
+package cz.larpovadatabaze.common;
 
 /**
  * Created by IntelliJ IDEA.

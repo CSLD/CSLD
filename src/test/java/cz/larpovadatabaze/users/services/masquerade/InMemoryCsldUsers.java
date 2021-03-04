@@ -34,11 +34,6 @@ public class InMemoryCsldUsers extends InMemoryCrud<CsldUser, Integer> implement
     }
 
     @Override
-    public void joinOrLogInFbUser(CsldAuthenticatedWebSession currentSession, String userId) {
-
-    }
-
-    @Override
     public List<CsldUser> getEditors() {
         return inMemory
                 .stream()
@@ -99,11 +94,6 @@ public class InMemoryCsldUsers extends InMemoryCrud<CsldUser, Integer> implement
     @Override
     public boolean saveOrUpdate(CsldUser model, List<FileUpload> uploads, AbstractUploadedFile imageFile) {
         return saveOrUpdate(model);
-    }
-
-    @Override
-    public CsldUser byFbId(String fbId) {
-        return null;
     }
 
     @Override

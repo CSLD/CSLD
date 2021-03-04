@@ -2,13 +2,11 @@ package cz.larpovadatabaze.graphql.fetchers;
 
 import cz.larpovadatabaze.administration.model.MonthlyAmountsStatisticsDto;
 import cz.larpovadatabaze.administration.model.RatingStatisticsDto;
-import cz.larpovadatabaze.administration.model.UserRatesOwnGameDto;
 import cz.larpovadatabaze.administration.services.AdministeredUsers;
 import cz.larpovadatabaze.administration.services.Statistics;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.games.services.Games;
-import cz.larpovadatabaze.games.services.Labels;
 import cz.larpovadatabaze.users.services.CsldUsers;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
@@ -17,12 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
