@@ -110,17 +110,6 @@ public class CsldUser implements Serializable, Identifiable<Integer>, IAutoCompl
         this.isAuthor = isAuthor;
     }
 
-    private String fbId;
-
-    @Column(name = "fb_id")
-    public String getFbId() {
-        return fbId;
-    }
-
-    public void setFbId(String fbId) {
-        this.fbId = fbId;
-    }
-
     private Person person;
 
     @Embedded
