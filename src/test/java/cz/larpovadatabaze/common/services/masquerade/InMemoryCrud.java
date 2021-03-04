@@ -56,6 +56,10 @@ public class InMemoryCrud<T extends Identifiable, I> implements CRUDService<T, I
         }
     }
 
+    public void removeAll() {
+        inMemory.clear();
+    }
+
     @Override
     public List<T> getFirstChoices(String startsWith, int maxChoices) {
         return null;

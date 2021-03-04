@@ -170,7 +170,7 @@ public abstract class AbstractListCommentPanel<T> extends AbstractCsldPanel<T> {
 
     private WebMarkupContainer createGameDetailLink(Game game) {
         WebMarkupContainer toShow = new WebMarkupContainer("showGame");
-        String gameRatingColor = ratings.getColor(game.getAverageRating());
+        String gameRatingColor = ratings.getColorForGame(game);
         Label gameRating = new Label("gameRating", "");
         gameRating.add(new AttributeAppender("class", Model.of(gameRatingColor), " "));
         toShow.add(gameRating);

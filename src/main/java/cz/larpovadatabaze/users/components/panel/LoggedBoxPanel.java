@@ -63,6 +63,7 @@ public class LoggedBoxPanel extends AbstractCsldPanel<CsldUser> {
 
         // Add user buttons
         add(new BookmarkablePageLink<CsldBasePage>("settings", UpdateUserPage.class, params));
+        add(new AdminPanel("adminPanel"));
         add(new BookmarkablePageLink<CsldBasePage>("logout", SignOutPage.class));
     }
 

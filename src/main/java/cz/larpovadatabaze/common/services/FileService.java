@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.common.services;
 
+import cz.larpovadatabaze.common.models.AbstractUploadedFile;
 import cz.larpovadatabaze.common.models.UploadedFile;
 import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService.IImageResizingStrategy;
 import org.apache.wicket.request.resource.AbstractResource;
@@ -70,7 +71,7 @@ public interface FileService {
      * @param resizingStrategy Strategy to use to resize the image
      * @return Result class
      */
-    ResizeAndSaveReturn saveImageFileAndReturnPath(UploadedFile upload, IImageResizingStrategy resizingStrategy);
+    ResizeAndSaveReturn saveImageFileAndReturnPath(AbstractUploadedFile upload, IImageResizingStrategy resizingStrategy);
 
     /**
      * Resize and save uploaded image plus save image preview
@@ -80,7 +81,7 @@ public interface FileService {
      * @param previewResizingStrategy   Strategy used to resize image preview
      * @return Result class
      */
-    ResizeAndSaveReturn saveImageFileAndPreviewAndReturnPath(UploadedFile upload, IImageResizingStrategy fullImageResizingStrategy, IImageResizingStrategy previewResizingStrategy);
+    ResizeAndSaveReturn saveImageFileAndPreviewAndReturnPath(AbstractUploadedFile upload, IImageResizingStrategy fullImageResizingStrategy, IImageResizingStrategy previewResizingStrategy);
 
     /**
      * Save any file to the storage.

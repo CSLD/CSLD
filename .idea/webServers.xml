@@ -3,7 +3,7 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="028d979a-05e6-4e6d-968c-5088036d806e" name="CSLD" url="http://larpovadatabaze.cz">
-        <fileTransfer host="larpovadatabaze.cz" port="22" accessType="SFTP">
+        <fileTransfer accessType="SFTP" sshConfigId="299512bb-fa64-4ca9-ac9f-3ac26d0e2039" sshConfig="CSLD">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>

@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.calendar.model;
 
+import cz.larpovadatabaze.HtmlProcessor;
 import cz.larpovadatabaze.calendar.Location;
 import cz.larpovadatabaze.common.Identifiable;
 import cz.larpovadatabaze.common.entities.CsldUser;
@@ -12,8 +13,6 @@ import org.apache.wicket.model.Model;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -143,6 +142,26 @@ public class Event implements Identifiable<Integer>, Serializable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setLoc(String loc) {
+        this.loc = loc;
+    }
+
+    public void setWeb(String web) {
+        this.web = web;
+    }
+
+    public void setAmountOfPlayers(Integer amountOfPlayers) {
+        this.amountOfPlayers = amountOfPlayers;
+    }
+
     public Calendar getFrom() {
         if (from != null) {
             Calendar cal = Calendar.getInstance();
@@ -209,7 +228,7 @@ public class Event implements Identifiable<Integer>, Serializable {
     }
 
     public void sanitize() {
-        this.description = Jsoup.clean(getDescription(), Whitelist.basic());
+        this.description = HtmlProcessor.sanitizeHtml(getDescription());
     }
 
     @Override

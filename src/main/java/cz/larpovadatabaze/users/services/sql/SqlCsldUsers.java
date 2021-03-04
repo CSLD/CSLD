@@ -1,12 +1,14 @@
 package cz.larpovadatabaze.users.services.sql;
 
 import com.github.openjson.JSONObject;
+import cz.larpovadatabaze.HtmlProcessor;
 import cz.larpovadatabaze.calendar.service.Events;
 import cz.larpovadatabaze.common.dao.GenericHibernateDAO;
 import cz.larpovadatabaze.common.dao.builder.GenericBuilder;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.EmailAuthentication;
 import cz.larpovadatabaze.common.entities.Image;
+import cz.larpovadatabaze.common.models.AbstractUploadedFile;
 import cz.larpovadatabaze.common.models.UploadedFile;
 import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService;
@@ -30,8 +32,6 @@ import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -159,6 +159,9 @@ public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
 
     @Override
     public CsldUser getByEmail(String mail) {
+        if (mail == null) {
+            return null;
+        }
         return crudRepository.findSingleByCriteria(
                 Restrictions.eq("person.email", mail).ignoreCase()
         );
@@ -184,7 +187,7 @@ public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
         }
 
         if(author.getPerson().getDescription() != null) {
-            author.getPerson().setDescription(Jsoup.clean(author.getPerson().getDescription(), Whitelist.basic()));
+            author.getPerson().setDescription(HtmlProcessor.sanitizeHtml(author.getPerson().getDescription()));
         }
         author.setPassword(Pwd.generateStrongPasswordHash(new RandomString(12).nextString(), author.getPerson().getEmail()));
         return saveOrUpdate(author);
@@ -212,30 +215,40 @@ public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
         PostMethod post = new PostMethod(RE_CAPTCHA_VERIFY_URL);
         post.addParameter("secret", RE_CAPTCHA_SECRET_KEY);
         post.addParameter("response", response);
-        post.addParameter("remoteip", remoteIp);
+        if (remoteIp != null) {
+            post.addParameter("remoteip", remoteIp);
+        }
 
         try {
             int code = client.executeMethod(post);
+            logger.info("ReCaptcha verification returned code " + code);
             if (code != HttpStatus.SC_OK) {
                 throw new Exception("Could not send request: "+post.getStatusLine());
             }
 
             String responseFromGoogle = post.getResponseBodyAsString();
+            logger.info("ReCaptcha verification response: " + responseFromGoogle);
             JSONObject responseObject = new JSONObject(responseFromGoogle);
             return responseObject.getBoolean("success");
 
         } catch (Exception e) {
+            logger.warn("ReCaptcha verification exception ", e);
             throw new ReCaptchaTechnicalException(e);
         }
     }
 
     @Override
-    public boolean saveOrUpdate(CsldUser model, List<FileUpload> uploads) {
+    public boolean saveOrUpdate(CsldUser model, List<FileUpload> uploads, AbstractUploadedFile imageFile) {
+        logger.info("User Id: " + model.getId());
         CsldUser currentInSession = getById(model.getId());
+        if(currentInSession == null) {
+            currentInSession = CsldUser.getEmptyUser();
+        }
+        logger.info(currentInSession);
         String description = model.getPerson().getDescription();
         if (description != null) {
             currentInSession.getPerson().setDescription(
-                    Jsoup.clean(description, Whitelist.basic()));
+                    HtmlProcessor.sanitizeHtml(description));
         }
         currentInSession.setPerson(model.getPerson());
         if (model.getPassword() != null) {
@@ -245,19 +258,26 @@ public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
         }
         if (uploads != null && uploads.size() > 0) {
             for (FileUpload upload : uploads) {
-                String filePath = files.saveImageFileAndReturnPath(new UploadedFile(upload),
-                        imageResizingStrategyFactoryService.getCuttingSquareStrategy(
-                                CsldUsers.USER_IMAGE_SIZE, CsldUsers.USER_IMAGE_LEFTTOP_PERCENT)).path;
-                try {
-                    Image image = new Image();
-                    image.setPath(filePath);
-                    currentInSession.setImage(image);
-                } catch (Exception e) {
-                    throw new IllegalStateException("Unable to write file", e);
-                }
+                saveImage(currentInSession, new UploadedFile(upload));
             }
         }
+        if (imageFile != null) {
+            saveImage(currentInSession, imageFile);
+        }
         return crudRepository.saveOrUpdate(currentInSession);
+    }
+
+    private void saveImage(CsldUser currentInSession, AbstractUploadedFile uploadedFile) {
+        String filePath = files.saveImageFileAndReturnPath(uploadedFile,
+                imageResizingStrategyFactoryService.getCuttingSquareStrategy(
+                        CsldUsers.USER_IMAGE_SIZE, CsldUsers.USER_IMAGE_LEFTTOP_PERCENT)).path;
+        try {
+            Image image = new Image();
+            image.setPath(filePath);
+            currentInSession.setImage(image);
+        } catch (Exception e) {
+            throw new IllegalStateException("Unable to write file", e);
+        }
     }
 
     @Override

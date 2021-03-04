@@ -20,6 +20,7 @@ public class RegularTasks {
     private final static Logger logger = Logger.getLogger(RegularTasks.class);
 
     private Environment env;
+    private SessionFactory sessionFactory;
 
     private SimilarGames similarGames;
     private LarpCzImport larpImport;
@@ -30,6 +31,7 @@ public class RegularTasks {
                         Events events, TokenSearch tokenSearch, SimilarGames similarGames) {
         this.env = env;
         this.similarGames = similarGames;
+        this.sessionFactory = sessionFactory;
 
         bankAccount = new BankAccount(sessionFactory);
         larpImport = new LarpCzImport(events, new LarpCzEvents(), sessionFactory, tokenSearch);
@@ -59,6 +61,24 @@ public class RegularTasks {
             similarGames.recalculateForAll();
         } catch (Exception ex) {
             logger.error("It wasn't possible to recalculate similar games", ex);
+        }
+
+        try {
+            sessionFactory.getCurrentSession()
+                    .createSQLQuery("update csld_game " +
+                            "set amount_of_ratings = subquery.ratings " +
+                            "FROM ( " +
+                            "         select sum(amounts.amount_of_ratings) as ratings, amounts.game_id " +
+                            "         from ( " +
+                            "                  select count(*) as amount_of_ratings, game_id " +
+                            "                  from csld_rating " +
+                            "                  group by game_id, rating " +
+                            "                  having rating is not null) AS amounts " +
+                            "         group by amounts.game_id) as subquery " +
+                            "where csld_game.id = subquery.game_id;")
+                    .executeUpdate();
+        } catch (Exception ex) {
+            logger.error("It wasn't possible to recalculate amount of ratings", ex);
         }
     }
 }

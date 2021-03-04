@@ -32,7 +32,6 @@ if [ "${1}" == "init" ] ; then
     cd CSLD
     mvn clean
     mvn package -DskipTests
-    mvn -Dflyway.locations=filesystem:sql/migration -Dflyway.url=jdbc:postgresql://localhost:5432/csld -Dflyway.user=csld -Dflyway.password=csld flyway:migrate
     cp -R target/CSLD-1.0/* ../www/ROOT
     service postgresql stop
     cd /opt/csld/www-node
@@ -56,7 +55,6 @@ if [ "${1}" == "update" ] ; then
     cd CSLD
     mvn clean
     mvn package -DskipTests
-    mvn -Dflyway.locations=filesystem:sql/migration -Dflyway.url=jdbc:postgresql://localhost:5432/csld -Dflyway.user=csld -Dflyway.password=csld flyway:migrate
     cp -R target/CSLD-1.0/* ../www/ROOT
     cd /opt/csld/www-node
     npm install

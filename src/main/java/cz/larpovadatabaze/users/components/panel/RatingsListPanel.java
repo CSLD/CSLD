@@ -43,7 +43,7 @@ public class RatingsListPanel extends Panel {
                 Game game = rating.getGame();
 
                 WebMarkupContainer gameRating = new WebMarkupContainer("gameRating");
-                gameRating.add(new AttributeAppender("class", Model.of(ratings.getColor(game.getAverageRating())), " "));
+                gameRating.add(new AttributeAppender("class", Model.of(ratings.getColorForGame(game)), " "));
                 item.add(gameRating);
 
                 final BookmarkablePageLink<CsldBasePage> gameDetail =

@@ -2,9 +2,9 @@ package cz.larpovadatabaze.users.services;
 
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.EmailAuthentication;
+import cz.larpovadatabaze.common.models.AbstractUploadedFile;
 import cz.larpovadatabaze.common.services.CRUDService;
 import cz.larpovadatabaze.common.services.IIconReferenceProvider;
-import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 
 import java.util.List;
@@ -17,15 +17,6 @@ public interface CsldUsers extends CRUDService<CsldUser, Integer>, IIconReferenc
     int USER_IMAGE_LEFTTOP_PERCENT = 10;
 
     void sendForgottenPassword(CsldUser user, EmailAuthentication emailAuthentication, String url);
-
-    /**
-     * Based on the information in the Session and based on the Id of the user as perceived by Facebook either link
-     * the id to the currently logged user or create a new user.
-     * @param currentSession The current session. Used to decide whether there is a user and potentially logging the
-     *                       use in
-     * @param userId The if of the user as perceived by Facebook.
-     */
-    void joinOrLogInFbUser(CsldAuthenticatedWebSession currentSession, String userId);
 
     class ReCaptchaTechnicalException extends Exception {
         public ReCaptchaTechnicalException(Throwable throwable) {
@@ -97,13 +88,5 @@ public interface CsldUsers extends CRUDService<CsldUser, Integer>, IIconReferenc
      * @param uploads List of items to upload and store
      * @return True if the process was ok.
      */
-    boolean saveOrUpdate(CsldUser model, List<FileUpload> uploads);
-
-    /**
-     * Return user with given fbId if such User exists or null if none user like this exists.
-     *
-     * @param fbId Id of the User provided by Facebook.
-     * @return Relevant user or null.
-     */
-    CsldUser byFbId(String fbId);
+    boolean saveOrUpdate(CsldUser model, List<FileUpload> uploads, AbstractUploadedFile imageFile);
 }

@@ -84,7 +84,7 @@ public class SqlRatings extends CRUD<Rating, Integer> implements Ratings {
 
     @Override
     public String getColorForGame(Game game) {
-        if (game.getAmountOfRatings() < 4) {
+        if (game.getAmountOfRatings() < 5) {
             return getColor(null);
         } else {
             return getColor(game.getAverageRating());

@@ -1,5 +1,5 @@
 language: java
-jdk: oraclejdk12
+jdk: oraclejdk14
 
 sudo: required
 
@@ -17,7 +17,7 @@ before_install:
   - aws s3 cp ${AWS_DIRECTORY}Procfile ${TRAVIS_BUILD_DIR}/Procfile --region eu-central-1
 
 script:
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=CSLD_CSLD heroku:deploy-war -B -P integration
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install heroku:deploy-war -B -P integration
 
 branches:
   only:

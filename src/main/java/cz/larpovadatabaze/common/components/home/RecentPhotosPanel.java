@@ -53,7 +53,7 @@ public class RecentPhotosPanel extends Panel {
         carousel.setOutputMarkupId(true);
         add(carousel);
 
-        carousel.add(new ListView<Photo>("photos", photos.getRandomPhotos(SHOW_PHOTOS)) {
+        carousel.add(new ListView<Photo>("photos", photos.getMostRecent(SHOW_PHOTOS)) {
             @Override
             protected void populateItem(ListItem<Photo> item) {
                 Photo photo = item.getModelObject();

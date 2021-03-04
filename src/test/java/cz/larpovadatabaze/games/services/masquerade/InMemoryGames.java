@@ -4,6 +4,7 @@ import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.services.masquerade.InMemoryCrud;
 import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.games.services.Images;
+import cz.larpovadatabaze.graphql.GraphQLUploadedFile;
 import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.request.resource.ResourceReference;
 
@@ -59,5 +60,10 @@ public class InMemoryGames extends InMemoryCrud<Game, Integer> implements Games 
                 };
             }
         };
+    }
+
+    @Override
+    public boolean saveOrUpdate(Game model, GraphQLUploadedFile coverImageUpload) {
+        return saveOrUpdate(model);
     }
 }

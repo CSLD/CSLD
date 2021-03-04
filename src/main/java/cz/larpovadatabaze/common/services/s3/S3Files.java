@@ -1,5 +1,6 @@
 package cz.larpovadatabaze.common.services.s3;
 
+import cz.larpovadatabaze.common.models.AbstractUploadedFile;
 import cz.larpovadatabaze.common.models.UploadedFile;
 import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService;
@@ -118,7 +119,7 @@ public class S3Files implements FileService {
     }
 
     @Override
-    public ResizeAndSaveReturn saveImageFileAndReturnPath(UploadedFile upload, ImageResizingStrategyFactoryService.IImageResizingStrategy resizingStrategy) {
+    public ResizeAndSaveReturn saveImageFileAndReturnPath(AbstractUploadedFile upload, ImageResizingStrategyFactoryService.IImageResizingStrategy resizingStrategy) {
         return saveImageFileAndPreviewAndReturnPath(upload, resizingStrategy, null);
     }
 
@@ -144,7 +145,7 @@ public class S3Files implements FileService {
     }
 
     @Override
-    public ResizeAndSaveReturn saveImageFileAndPreviewAndReturnPath(UploadedFile upload, ImageResizingStrategyFactoryService.IImageResizingStrategy fullImageResizingStrategy, ImageResizingStrategyFactoryService.IImageResizingStrategy previewResizingStrategy) {
+    public ResizeAndSaveReturn saveImageFileAndPreviewAndReturnPath(AbstractUploadedFile upload, ImageResizingStrategyFactoryService.IImageResizingStrategy fullImageResizingStrategy, ImageResizingStrategyFactoryService.IImageResizingStrategy previewResizingStrategy) {
         // Determine file type
         String fileType = upload.candidateFileType();
         String fileName = upload.filePath();

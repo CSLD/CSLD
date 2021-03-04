@@ -55,9 +55,9 @@ public abstract class CreateEventPanel extends AbstractCsldPanel<Event> {
     @SpringBean
     private Events events;
     @SpringBean
-    private transient Games games;
+    private Games games;
     @SpringBean
-    private transient GamesWithState gamesWithState;
+    private GamesWithState gamesWithState;
 
     private GLatLng lastSelectedLocation;
     private TextField<String> name;

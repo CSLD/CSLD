@@ -19,6 +19,11 @@ public class InMemoryFilePhotos extends InMemoryCrud<Photo, Integer> implements 
     public List<Photo> getRandomPhotos(int amount) {
         return null;
     }
+    
+    @Override
+    public List<Photo> getMostRecent(int amount) {
+        return null;
+    }
 
     @Override
     public void removeAddedBy(CsldUser toRemove) {

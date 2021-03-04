@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig authType="PASSWORD" host="larpovadatabaze.cz" id="0f96d560-4ed9-4465-a97d-4f7d94056b50" port="22" customName="CSLD" nameFormat="CUSTOM">
+        <option name="customName" value="CSLD" />
+      </sshConfig>
+    </configs>
+  </component>
+</project>

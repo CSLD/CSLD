@@ -2,10 +2,8 @@ package cz.larpovadatabaze.common.components.page;
 
 import cz.larpovadatabaze.TestUtils;
 import cz.larpovadatabaze.WithWicket;
-import cz.larpovadatabaze.common.components.home.AdvertisementPanel;
 import cz.larpovadatabaze.games.components.page.ListGamePage;
 import cz.larpovadatabaze.search.components.SearchBoxPanel;
-import cz.larpovadatabaze.users.components.page.about.AboutDatabasePage;
 import cz.larpovadatabaze.users.components.panel.AdminPanel;
 import cz.larpovadatabaze.users.components.panel.LoggedBoxPanel;
 import cz.larpovadatabaze.users.components.panel.LoginBoxPanel;
@@ -29,20 +27,10 @@ public class CsldBasePageTest extends WithWicket {
 
         tester.assertLabel("pageTitle", "Česko-slovenská larpová databáze");
         tester.assertComponent("list-game", BookmarkablePageLink.class);
-        tester.assertComponent("about", BookmarkablePageLink.class);
 
         tester.assertComponent("user", LoginBoxPanel.class);
 
         tester.assertComponent("searchBox", SearchBoxPanel.class);
-        tester.assertComponent("advertisements", AdvertisementPanel.class);
-    }
-
-    @Test
-    public void aboutLeadsToAbout() {
-        tester.startPage(HomePage.class);
-
-        tester.clickLink("about");
-        tester.assertRenderedPage(AboutDatabasePage.class);
     }
 
     @Test
@@ -61,7 +49,7 @@ public class CsldBasePageTest extends WithWicket {
         tester.assertRenderedPage(HomePage.class);
 
         tester.assertComponent("user", LoggedBoxPanel.class);
-        tester.assertInvisible("adminPanel");
+        tester.assertInvisible("user:adminPanel");
     }
 
     @Test
@@ -71,7 +59,7 @@ public class CsldBasePageTest extends WithWicket {
         tester.startPage(HomePage.class);
         tester.assertRenderedPage(HomePage.class);
 
-        tester.assertComponent("adminPanel", AdminPanel.class);
-        tester.assertVisible("adminPanel");
+        tester.assertComponent("user:adminPanel", AdminPanel.class);
+        tester.assertVisible("user:adminPanel");
     }
 }
