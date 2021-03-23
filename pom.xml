@@ -51,7 +51,7 @@
         <spring.version>5.2.2.RELEASE</spring.version>
         <tomcatContextFile>${basedir}/src/test/config/tomcat.xml</tomcatContextFile>
         <javax.mail.version>1.4.7</javax.mail.version>
-        <postgresql.version>42.2.9</postgresql.version>
+        <postgresql.version>42.2.19.jre7</postgresql.version>
         <http.client.version>3.1</http.client.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <geotools.version>23.0</geotools.version>
