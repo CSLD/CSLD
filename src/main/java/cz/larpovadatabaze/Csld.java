@@ -1,12 +1,14 @@
 package cz.larpovadatabaze;
 
 import cz.larpovadatabaze.administration.components.page.*;
+import cz.larpovadatabaze.administration.rest.GCalSyncProducer;
 import cz.larpovadatabaze.administration.rest.StatisticsProducer;
 import cz.larpovadatabaze.administration.services.Statistics;
 import cz.larpovadatabaze.calendar.component.page.CreateOrUpdateEventPage;
 import cz.larpovadatabaze.calendar.component.page.DetailOfEventPage;
 import cz.larpovadatabaze.calendar.component.page.ListEventsPage;
 import cz.larpovadatabaze.calendar.service.Events;
+import cz.larpovadatabaze.calendar.service.GoogleCalendarEvents;
 import cz.larpovadatabaze.calendar.service.ICalProducerResource;
 import cz.larpovadatabaze.common.components.page.HomePage;
 import cz.larpovadatabaze.common.components.page.TestDatabase;
@@ -54,6 +56,7 @@ import org.apache.wicket.request.cycle.IRequestCycleListener;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.info.PageComponentInfo;
 import org.apache.wicket.request.mapper.parameter.PageParametersEncoder;
+import org.apache.wicket.request.resource.AbstractResource;
 import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.settings.RequestLoggerSettings;
@@ -80,6 +83,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     private final Statistics statistics;
     private final Games games;
     private final GraphQLResource graphqlResource;
+    private final GoogleCalendarEvents googleCalendarEvents;
 
     private static final String DEFAULT_ENCODING = "UTF-8";
     private static ApplicationContext ctx;
@@ -87,7 +91,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     @Autowired
     public Csld(TokenSearch tokenSearch, CsldUsers csldUsers,
                 Environment env, Events events, Statistics statistics,
-                Games games, GraphQLResource graphqlResource) {
+                Games games, GraphQLResource graphqlResource, GoogleCalendarEvents googleCalendarEvents) {
         this.tokenSearch = tokenSearch;
         this.csldUsers = csldUsers;
         this.env = env;
@@ -95,6 +99,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         this.statistics = statistics;
         this.games = games;
         this.graphqlResource = graphqlResource;
+        this.googleCalendarEvents = googleCalendarEvents;
     }
 
     public class MountedMapperWithoutPageComponentInfo extends MountedMapper {
@@ -119,7 +124,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
             }
         }
     }
-	
+
 	/**
 	 * @see org.apache.wicket.Application#getHomePage()
 	 */
@@ -289,9 +294,19 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
             }
         };
 
+        ResourceReference gCalSyncReference = new ResourceReference("gCalSync") {
+            GCalSyncProducer resource = new GCalSyncProducer(googleCalendarEvents);
+
+            @Override
+            public IResource getResource() {
+                return resource;
+            }
+        };
+
         mountResource(context + "/ical", icalReference);
         mountResource(context + "/rest/stats", statsReference);
         mountResource(context + "/rest/game", gameReference);
+        mountResource(context + "/cal-sync", gCalSyncReference);
     }
 
     private void mountResources(String context) {

@@ -4,6 +4,7 @@ import cz.larpovadatabaze.calendar.Location;
 import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.calendar.model.FilterEvent;
 import cz.larpovadatabaze.calendar.service.Events;
+import cz.larpovadatabaze.calendar.service.GoogleCalendarEvents;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.games.services.Games;
@@ -26,6 +27,7 @@ public class EventFetcherFactory {
     private final Games games;
     private final Labels labels;
     private final AppUsers appUsers;
+    private final GoogleCalendarEvents googleCalendarEvents;
 
     private static final String[] ACCESS_EDIT_DELETE = new String[]{"Edit", "Delete"};
 
@@ -40,11 +42,12 @@ public class EventFetcherFactory {
     }
 
     @Autowired
-    public EventFetcherFactory(Events events, Games games, Labels labels, AppUsers appUsers) {
+    public EventFetcherFactory(Events events, Games games, Labels labels, AppUsers appUsers, GoogleCalendarEvents googleCalendarEvents) {
         this.events = events;
         this.games = games;
         this.labels = labels;
         this.appUsers = appUsers;
+        this.googleCalendarEvents = googleCalendarEvents;
     }
 
     private List<Game> getGames(List<String> gameIds) {
@@ -128,6 +131,9 @@ public class EventFetcherFactory {
             event.setAddedBy(appUsers.getLoggedUser());
             event = applyInputValues(event, input);
 
+            // Send to Google Calendar
+            googleCalendarEvents.addEvent(event);
+
             events.saveOrUpdate(event);
 
             return event;
@@ -143,6 +149,9 @@ public class EventFetcherFactory {
             checkEventAccess(event);
 
             event = applyInputValues(event, input);
+
+            // Send to Google Calendar
+            googleCalendarEvents.updateEvent(event);
 
             events.saveOrUpdate(event);
 

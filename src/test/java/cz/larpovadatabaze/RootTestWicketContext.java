@@ -3,6 +3,7 @@ package cz.larpovadatabaze;
 import cz.larpovadatabaze.administration.services.Statistics;
 import cz.larpovadatabaze.administration.services.masquerade.InMemoryStatistics;
 import cz.larpovadatabaze.calendar.service.Events;
+import cz.larpovadatabaze.calendar.service.GoogleCalendarEvents;
 import cz.larpovadatabaze.calendar.services.masqueradeStubs.InMemoryEvents;
 import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.common.services.FilterService;
@@ -153,8 +154,13 @@ public class RootTestWicketContext {
     }
 
     @Bean
+    public GoogleCalendarEvents calSync() {
+        return new GoogleCalendarEvents(sqlEvents());
+    }
+
+    @Bean
     public Csld csld() {
-        return new Csld(tokenSearch(), csldUsers(), env, sqlEvents(), sqlStatistics(), games(), null);
+        return new Csld(tokenSearch(), csldUsers(), env, sqlEvents(), sqlStatistics(), games(), null, calSync());
     }
 
     // Start of email settings

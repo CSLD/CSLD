@@ -48,6 +48,13 @@ public class Event implements Identifiable<Integer>, Serializable {
     private Date from;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date to;
+
+    @Column(name = "gcaleventid")
+    private String gCalEventId;
+
+    @Column(name = "gcaleventlastupdated")
+    private Long gCalEventLastUpdated;
+
     // Specify the mapping for the Location.
     @Embedded
     private Location location;
@@ -340,5 +347,21 @@ public class Event implements Identifiable<Integer>, Serializable {
 
     public void setTo(Date to) {
         this.to = to;
+    }
+
+    public String getGCalEventId() {
+        return gCalEventId;
+    }
+
+    public void setGCalEventId(String gCalEventId) {
+        this.gCalEventId = gCalEventId;
+    }
+
+    public Long getGCalEventLastUpdated() {
+        return gCalEventLastUpdated;
+    }
+
+    public void setGCalEventLastUpdated(Long gCalEventLastUpdated) {
+        this.gCalEventLastUpdated = gCalEventLastUpdated;
     }
 }

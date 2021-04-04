@@ -91,7 +91,7 @@
             <groupId>org.apache.wicket</groupId>
             <artifactId>wicket-ioc</artifactId>
             <version>${wicket.version}</version>
-            
+
             <exclusions>
                 <exclusion>
                     <groupId>org.ow2.asm</groupId>
@@ -214,6 +214,8 @@
             <groupId>org.reactivestreams</groupId>
             <artifactId>reactive-streams</artifactId>
             <version>1.0.3</version>
+            <!-- When running mvn install on local dev, temporarily comment out this line -->
+            <!-- It must remain here for Heroku build & deployment -->
             <scope>test</scope>
         </dependency>
 
@@ -261,6 +263,32 @@
             <version>3.0.11</version>
         </dependency>
 
+        <!-- Google Calendar integration -->
+        <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client</artifactId>
+            <version>1.31.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.oauth-client</groupId>
+            <artifactId>google-oauth-client</artifactId>
+            <version>1.31.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-calendar</artifactId>
+            <version>v3-rev411-1.25.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.http-client</groupId>
+            <artifactId>google-http-client-jackson</artifactId>
+            <version>1.15.0-rc</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.auth</groupId>
+            <artifactId>google-auth-library-oauth2-http</artifactId>
+            <version>0.25.2</version>
+        </dependency>
 
         <!-- Geotools -->
         <dependency>

@@ -2,6 +2,7 @@ package cz.larpovadatabaze.graphql.fetchers;
 
 import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.calendar.service.Events;
+import cz.larpovadatabaze.calendar.service.GoogleCalendarEvents;
 import cz.larpovadatabaze.calendar.services.masqueradeStubs.InMemoryEvents;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.common.entities.Game;
@@ -13,9 +14,9 @@ import cz.larpovadatabaze.games.services.masquerade.InMemoryLabels;
 import cz.larpovadatabaze.users.services.AppUsers;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.mockito.Mockito.mock;
@@ -25,6 +26,13 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
 public class EventFetcherFactoryIT {
+    private static GoogleCalendarEvents mockGoogleCalendarEvents;
+
+    @BeforeClass
+    public static void beforeClass() throws Exception {
+        mockGoogleCalendarEvents = mock(GoogleCalendarEvents.class);
+    }
+
     private Event createEvent() {
         return new Event(1, "Test", new GregorianCalendar(), new GregorianCalendar(), 5, "Praha", "Test event", "https://www.centrum.cz", "test");
     }
@@ -73,7 +81,7 @@ public class EventFetcherFactoryIT {
         Map<String, Object> arguments = new HashMap<>();
         arguments.put("input", createInput());
 
-        EventFetcherFactory factory = new EventFetcherFactory(events, games, labels, mockAppUsers);
+        EventFetcherFactory factory = new EventFetcherFactory(events, games, labels, mockAppUsers, mockGoogleCalendarEvents);
         DataFetcher<Event> dataFetcher = factory.createUpdateEventFetcher();
         DataFetchingEnvironment dataFetchingEnvironment = new MockDataFetchingEnvironment(arguments, null);
 
@@ -123,7 +131,7 @@ public class EventFetcherFactoryIT {
         input.put("labels", Collections.emptyList());
         arguments.put("input", input);
 
-        EventFetcherFactory factory = new EventFetcherFactory(events, games, labels, mockAppUsers);
+        EventFetcherFactory factory = new EventFetcherFactory(events, games, labels, mockAppUsers, mockGoogleCalendarEvents);
         DataFetcher<Event> dataFetcher = factory.createUpdateEventFetcher();
         DataFetchingEnvironment dataFetchingEnvironment = new MockDataFetchingEnvironment(arguments, null);
 
@@ -157,7 +165,7 @@ public class EventFetcherFactoryIT {
         input.put("labels", Collections.emptyList());
         arguments.put("input", input);
 
-        EventFetcherFactory factory = new EventFetcherFactory(events, games, labels, mockAppUsers);
+        EventFetcherFactory factory = new EventFetcherFactory(events, games, labels, mockAppUsers, mockGoogleCalendarEvents);
         DataFetcher<Event> dataFetcher = factory.createUpdateEventFetcher();
         DataFetchingEnvironment dataFetchingEnvironment = new MockDataFetchingEnvironment(arguments, null);
 
