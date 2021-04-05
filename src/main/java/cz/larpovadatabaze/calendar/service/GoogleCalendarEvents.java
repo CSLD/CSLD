@@ -15,10 +15,12 @@ import com.google.auth.oauth2.ServiceAccountCredentials;
 import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.calendar.model.FilterEvent;
 import cz.larpovadatabaze.common.entities.Label;
+import cz.larpovadatabaze.common.services.FileService;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
 import org.apache.wicket.model.IModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -39,10 +41,12 @@ public class GoogleCalendarEvents {
 
     private static final JsonFactory JSON_FACTORY = new JacksonFactory();
     private static final String APPLICATION_NAME = "LARP Database";
-    private static final String CALENDAR_ID = "i72qpc43a8pmoqsl42oqo9og4s@group.calendar.google.com";
+//    private static final String CALENDAR_ID = "i72qpc43a8pmoqsl42oqo9og4s@group.calendar.google.com";
     /*"3a28s0se1pq6qs76fpmftldsr8@group.calendar.google.com"*/
 
     private final Events events;
+    private final FileService fileService;
+    private final Environment env;
 
     /**
      * Statistics of a sync
@@ -52,6 +56,7 @@ public class GoogleCalendarEvents {
         private final int ldEvents;
         private int eventsCreated;
         private int eventsUpdated;
+        private int eventsDeleted;
 
         private SyncStats(int gCalEvents, int ldEvents) {
             this.gCalEvents = gCalEvents;
@@ -64,6 +69,10 @@ public class GoogleCalendarEvents {
 
         public void incUpdated() {
             this.eventsUpdated++;
+        }
+
+        public void incDeleted() {
+            this.eventsDeleted++;
         }
 
         public int getGCalEvents() {
@@ -82,15 +91,26 @@ public class GoogleCalendarEvents {
             return eventsUpdated;
         }
 
+        public int getEventsDeleted() {
+            return eventsDeleted;
+        }
+
         @Override
         public String toString() {
-            return "Google Calendar sync stats: created: " + eventsCreated + ", updated: " + eventsUpdated + ", gCalEvents: " + gCalEvents + ", ldEvents: " + ldEvents;
+            return "Google Calendar sync stats: created: " + eventsCreated + ", updated: " + eventsUpdated + ", " +
+                    eventsDeleted + ", gCalEvents: " + gCalEvents + ", ldEvents: " + ldEvents;
         }
     }
 
     @Autowired
-    public GoogleCalendarEvents(Events events) {
+    public GoogleCalendarEvents(Events events, FileService fileService, Environment env) {
         this.events = events;
+        this.fileService = fileService;
+        this.env = env;
+    }
+
+    private String getCalendarId() {
+        return env.getProperty("calendar.google");
     }
 
     /**
@@ -98,7 +118,6 @@ public class GoogleCalendarEvents {
      *
      * @param eventDate Google Calendar event date
      * @param isEndDate Whether this is end date
-     *
      * @return Date for Larp Database
      */
     private Date eventDateTimeToDate(EventDateTime eventDate, boolean isEndDate) {
@@ -136,7 +155,6 @@ public class GoogleCalendarEvents {
 
     /**
      * @param cal Input calendar
-     *
      * @return Whether calendar is at midnight
      */
     private boolean isMidnight(java.util.Calendar cal) {
@@ -147,8 +165,7 @@ public class GoogleCalendarEvents {
      * Convert start / end dates to format needed for Google Calendar
      *
      * @param startCal Calendar for start of the event
-     * @param endCal Calendar for end of the event
-     *
+     * @param endCal   Calendar for end of the event
      * @return Pair of start / end event time
      */
     private Pair<EventDateTime, EventDateTime> dateToEventDateTime(java.util.Calendar startCal, java.util.Calendar endCal) {
@@ -158,11 +175,11 @@ public class GoogleCalendarEvents {
         boolean wholeDay = isMidnight(startCal) && isMidnight(endCal);
         if (wholeDay) {
             // Event is whole day
-            ZonedDateTime zdtStart = ZonedDateTime.of(startCal.get(GregorianCalendar.YEAR), startCal.get(GregorianCalendar.MONTH)+1, startCal.get(GregorianCalendar.DATE), 0, 0, 0, 0, ZoneId.of("GMT"));
+            ZonedDateTime zdtStart = ZonedDateTime.of(startCal.get(GregorianCalendar.YEAR), startCal.get(GregorianCalendar.MONTH) + 1, startCal.get(GregorianCalendar.DATE), 0, 0, 0, 0, ZoneId.of("GMT"));
             gCalStart.setDate(new DateTime(true, zdtStart.toInstant().toEpochMilli(), null));
 
             // For whole day events we need to move end one day for Google Calendar
-            ZonedDateTime zdtEnd = ZonedDateTime.of(endCal.get(GregorianCalendar.YEAR), endCal.get(GregorianCalendar.MONTH)+1, endCal.get(GregorianCalendar.DATE), 0, 0, 0, 0, ZoneId.of("GMT"));
+            ZonedDateTime zdtEnd = ZonedDateTime.of(endCal.get(GregorianCalendar.YEAR), endCal.get(GregorianCalendar.MONTH) + 1, endCal.get(GregorianCalendar.DATE), 0, 0, 0, 0, ZoneId.of("GMT"));
             zdtEnd = zdtEnd.plus(1, ChronoField.DAY_OF_YEAR.getBaseUnit());
             gCalEnd.setDate(new DateTime(true, zdtEnd.toInstant().toEpochMilli(), null));
         } else {
@@ -186,11 +203,12 @@ public class GoogleCalendarEvents {
         ldEvent.setName(gcEvent.getSummary());
         ldEvent.setFrom(eventDateTimeToDate(gcEvent.getStart(), false));
         ldEvent.setTo(eventDateTimeToDate(gcEvent.getEnd(), true));
+        ldEvent.setLoc(gcEvent.getLocation());
 
         // Strip of description at may "="s - in case we created that event
         String description = gcEvent.getDescription();
-        int idx = description.indexOf("\n==========");
-        if (idx > 0) {
+        int idx = description == null ? -1 : description.indexOf("\n==========");
+        if (idx >= 0) {
             description = description.substring(0, idx);
         }
         ldEvent.setDescription(description);
@@ -209,11 +227,10 @@ public class GoogleCalendarEvents {
         gcEvent.setStart(eventDates.getLeft());
         gcEvent.setEnd(eventDates.getRight());
 
+        gcEvent.setLocation(ldEvent.getLoc());
+
         StringBuilder additionalDescription = new StringBuilder();
 
-        if (ldEvent.getLoc() != null && ldEvent.getLoc().length() > 0) {
-            additionalDescription.append("Místo události: ").append(ldEvent.getLoc()).append('\n');
-        }
         if (ldEvent.getWeb() != null && ldEvent.getWeb().length() > 0) {
             additionalDescription.append("Webová stránka: ").append(ldEvent.getWeb()).append('\n');
         }
@@ -223,7 +240,7 @@ public class GoogleCalendarEvents {
         if (ldEvent.getLabels() != null && ldEvent.getLabels().size() > 0) {
             additionalDescription.append("Štítky: ");
             boolean first = true;
-            for(Label label : ldEvent.getLabels()) {
+            for (Label label : ldEvent.getLabels()) {
                 if (!first) {
                     additionalDescription.append(", ");
                 } else {
@@ -237,8 +254,7 @@ public class GoogleCalendarEvents {
         if (additionalDescription.length() > 0) {
             // Enhanced description
             gcEvent.setDescription(ldEvent.getDescription() + "\n==========\n" + additionalDescription.toString());
-        }
-        else {
+        } else {
             // Just the basic description
             gcEvent.setDescription(ldEvent.getDescription());
         }
@@ -247,9 +263,8 @@ public class GoogleCalendarEvents {
     /**
      * Create calendar service for communication with Google Calendar
      */
-    public Calendar createService() throws IOException, GeneralSecurityException {
-        ClassLoader classLoader = getClass().getClassLoader();
-        GoogleCredentials credentials = ServiceAccountCredentials.fromStream(classLoader.getResourceAsStream("larp-calendar-309507-74f1e64af14a.json"))
+    private Calendar createService() throws IOException, GeneralSecurityException {
+        GoogleCredentials credentials = ServiceAccountCredentials.fromStream(fileService.getFileAsStream("larp-calendar-config.json"))
                 .createScoped(Collections.singleton(CalendarScopes.CALENDAR_EVENTS));
         HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(credentials);
 
@@ -264,16 +279,17 @@ public class GoogleCalendarEvents {
     /**
      * Sync events from Google Calendar to Larp Database
      */
-    public SyncStats syncEventsFromGoogleCalendar() {
+    public synchronized SyncStats syncEventsFromGoogleCalendar() {
         try {
             Calendar service = createService();
             long nowMillis = System.currentTimeMillis();
+            long limitMillis = nowMillis - 7 * 24 * 60 * 60 * 1000;
 
             /**
              * Get events in Google calendar
              */
-            DateTime now = new DateTime(nowMillis);
-            com.google.api.services.calendar.model.Events eventsResponse = service.events().list(CALENDAR_ID)
+            DateTime now = new DateTime(limitMillis);
+            com.google.api.services.calendar.model.Events eventsResponse = service.events().list(getCalendarId())
                     .setTimeMin(now)
                     .setOrderBy("startTime")
                     .setSingleEvents(true)
@@ -284,7 +300,7 @@ public class GoogleCalendarEvents {
              * Get events in LD calendar (better a week back to cover everything)
              */
             FilterEvent filter = new FilterEvent();
-            filter.setFrom(new Date(nowMillis - 7 * 24 * 60 * 60 * 1000));
+            filter.setFrom(new Date(limitMillis));
             List<Event> ldItems = events.filtered(new IModel<FilterEvent>() {
                 @Override
                 public FilterEvent getObject() {
@@ -311,6 +327,10 @@ public class GoogleCalendarEvents {
                     /**
                      * Event found in LD
                      */
+
+                    // Remove from map - serves as mark we have seen that event
+                    ldItemsMap.remove(gcEvent.getId());
+
                     if (ldEvent.getGCalEventLastUpdated() != gcEvent.getUpdated().getValue()) {
                         /**
                          * Event changed - update in LD
@@ -330,6 +350,19 @@ public class GoogleCalendarEvents {
                 }
             }
 
+            /**
+             * Check events we have not got from server
+             */
+            for(Event ldEvent : ldItemsMap.values()) {
+                if (ldEvent.getTo().getTimeInMillis() > nowMillis) {
+                    // Event is still in progress => we should have it produced in Google Calendar query but
+                    // it was not here => it was deleted => mark it deleted in Larp Database
+                    ldEvent.setDeleted(true);
+                    events.saveOrUpdate(ldEvent);
+                    stats.incDeleted();
+                }
+            }
+
             logger.info(stats.toString());
 
             return stats;
@@ -344,7 +377,7 @@ public class GoogleCalendarEvents {
      *
      * @param event Larp Database event
      */
-    public void createEvent(Event event) {
+    public synchronized void createEvent(Event event) {
         try {
             Calendar service = createService();
 
@@ -352,13 +385,12 @@ public class GoogleCalendarEvents {
 
             updateEventWithLDData(gcEvent, event);
 
-            com.google.api.services.calendar.model.Event insertedEvent = service.events().insert(CALENDAR_ID, gcEvent).execute();
+            com.google.api.services.calendar.model.Event insertedEvent = service.events().insert(getCalendarId(), gcEvent).execute();
 
             event.setGCalEventId(insertedEvent.getId());
             event.setGCalEventLastUpdated(insertedEvent.getUpdated().getValue());
-        }
-        catch (Exception e) {
-            logger.error("Error when creating event '"+event.getName()+"': " + e.toString(), e);
+        } catch (Exception e) {
+            logger.error("Error when creating event '" + event.getName() + "': " + e.toString(), e);
 
             // Rethrow
             throw new RuntimeException(e);
@@ -371,7 +403,7 @@ public class GoogleCalendarEvents {
      * @param event Larp Database event. When it does not have associated Google Calendar event,
      *              event in Google Calendar is created instead.
      */
-    public void updateEvent(Event event) {
+    public synchronized void updateEvent(Event event) {
         if (event.getGCalEventId() == null) {
             // Event not yet in Google Calendar - add it instead
             createEvent(event);
@@ -381,16 +413,38 @@ public class GoogleCalendarEvents {
         try {
             Calendar service = createService();
 
-            com.google.api.services.calendar.model.Event gcEvent = service.events().get(CALENDAR_ID, event.getGCalEventId()).execute();
+            com.google.api.services.calendar.model.Event gcEvent = service.events().get(getCalendarId(), event.getGCalEventId()).execute();
 
             updateEventWithLDData(gcEvent, event);
 
-            com.google.api.services.calendar.model.Event updatedEvent = service.events().update(CALENDAR_ID, event.getGCalEventId(), gcEvent).execute();
+            com.google.api.services.calendar.model.Event updatedEvent = service.events().update(getCalendarId(), event.getGCalEventId(), gcEvent).execute();
 
             event.setGCalEventLastUpdated(updatedEvent.getUpdated().getValue());
+        } catch (Exception e) {
+            logger.error("Error when updating event '" + event.getName() + "': " + e.toString(), e);
+
+            // Rethrow
+            throw new RuntimeException(e);
         }
-        catch (Exception e) {
-            logger.error("Error when updating event '"+event.getName()+"': " + e.toString(), e);
+    }
+
+    /**
+     * Deleted corresponding event in Google Calendar
+     *
+     * @param event Larp Database event
+     */
+    public synchronized void deleteEvent(Event event) {
+        if (event.getGCalEventId() == null) {
+            // No associated Google Calendar event
+            return;
+        }
+
+        try {
+            Calendar service = createService();
+
+            service.events().delete(getCalendarId(), event.getGCalEventId()).execute();
+        } catch (Exception e) {
+            logger.error("Error when deleting event '" + event.getName() + "': " + e.toString(), e);
 
             // Rethrow
             throw new RuntimeException(e);

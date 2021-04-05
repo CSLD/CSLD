@@ -166,6 +166,9 @@ public class EventFetcherFactory {
 
             checkEventAccess(event);
 
+            // Delete in Google Calendar
+            googleCalendarEvents.deleteEvent(event);
+
             event.setDeleted(true);
             events.saveOrUpdate(event);
 

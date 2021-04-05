@@ -113,6 +113,13 @@ public class S3Files implements FileService {
     }
 
     @Override
+    public InputStream getFileAsStream(String relativeName) {
+        String key = getPathInDataDir(relativeName);
+
+        return bucket.download(key);
+    }
+
+    @Override
     public AbstractResource.ResourceResponse respondWithFile(String pathToFile, String contentType) {
         logger.debug("respondWithFile#RelName " + pathToFile + " CT: " + contentType);
         return respondWithFileFromS3(bucket, pathToFile, contentType);

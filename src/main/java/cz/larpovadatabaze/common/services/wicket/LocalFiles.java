@@ -207,6 +207,11 @@ public class LocalFiles implements FileService {
     }
 
     @Override
+    public InputStream getFileAsStream(String relativeName) throws FileNotFoundException {
+        return new FileInputStream(getPathInDataDir(relativeName));
+    }
+
+    @Override
     public AbstractResource getFileResource(final String relativeName, final String contentType) throws FileNotFoundException {
         return new FileResource(new File(getPathInDataDir(relativeName)), contentType);
     }

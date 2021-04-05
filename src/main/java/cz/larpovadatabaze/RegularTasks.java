@@ -1,6 +1,7 @@
 package cz.larpovadatabaze;
 
 import cz.larpovadatabaze.calendar.service.Events;
+import cz.larpovadatabaze.calendar.service.GoogleCalendarEvents;
 import cz.larpovadatabaze.calendar.service.LarpCzEvents;
 import cz.larpovadatabaze.calendar.service.LarpCzImport;
 import cz.larpovadatabaze.donations.service.BankAccount;
@@ -25,16 +26,24 @@ public class RegularTasks {
     private SimilarGames similarGames;
     private LarpCzImport larpImport;
     private BankAccount bankAccount;
+    private final GoogleCalendarEvents googleCalendarEvents;
 
     @Autowired
     public RegularTasks(Environment env, SessionFactory sessionFactory,
-                        Events events, TokenSearch tokenSearch, SimilarGames similarGames) {
+                        Events events, TokenSearch tokenSearch, SimilarGames similarGames, GoogleCalendarEvents googleCalendarEvents) {
         this.env = env;
         this.similarGames = similarGames;
         this.sessionFactory = sessionFactory;
 
         bankAccount = new BankAccount(sessionFactory);
+        this.googleCalendarEvents = googleCalendarEvents;
         larpImport = new LarpCzImport(events, new LarpCzEvents(), sessionFactory, tokenSearch);
+    }
+
+    // First sync one minute after app starts, then re-run every hour
+    @Scheduled(initialDelay = 60*1000, fixedDelay = 60*60*1000)
+    public void hourlySync() {
+        googleCalendarEvents.syncEventsFromGoogleCalendar();
     }
 
     @Scheduled(cron = "0 0 2 * * *")

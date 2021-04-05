@@ -6,6 +6,7 @@ import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService.II
 import org.apache.wicket.request.resource.AbstractResource;
 
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 /**
  * Service for working with uploaded files
@@ -53,6 +54,13 @@ public interface FileService {
      * @return Resource reference for the file
      */
     AbstractResource getFileResource(String relativeName, String contentType) throws FileNotFoundException;
+
+    /**
+     * @param name
+     *
+     * @return Stream with file contents
+     */
+    InputStream getFileAsStream(String name) throws FileNotFoundException;
 
     /**
      * Respond to resource request with the given file

@@ -155,7 +155,7 @@ public class RootTestWicketContext {
 
     @Bean
     public GoogleCalendarEvents calSync() {
-        return new GoogleCalendarEvents(sqlEvents());
+        return new GoogleCalendarEvents(sqlEvents(), fileService(), env);
     }
 
     @Bean
