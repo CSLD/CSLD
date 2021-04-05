@@ -23,7 +23,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -31,6 +30,9 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoField;
 import java.util.*;
 
+/**
+ * Synchronizes events with Google Calendar
+ */
 @Component
 public class GoogleCalendarEvents {
     private final static Logger logger = Logger.getLogger(GoogleCalendarEvents.class);
@@ -40,11 +42,11 @@ public class GoogleCalendarEvents {
     private static final String CALENDAR_ID = "i72qpc43a8pmoqsl42oqo9og4s@group.calendar.google.com";
     /*"3a28s0se1pq6qs76fpmftldsr8@group.calendar.google.com"*/
 
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private static final SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSX");
-
     private final Events events;
 
+    /**
+     * Statistics of a sync
+     */
     public static class SyncStats {
         private final int gCalEvents;
         private final int ldEvents;
@@ -91,6 +93,14 @@ public class GoogleCalendarEvents {
         this.events = events;
     }
 
+    /**
+     * Convert Google Calendar event date/time to Larp Database date
+     *
+     * @param eventDate Google Calendar event date
+     * @param isEndDate Whether this is end date
+     *
+     * @return Date for Larp Database
+     */
     private Date eventDateTimeToDate(EventDateTime eventDate, boolean isEndDate) {
         String date;
         boolean subtractDay = false;
@@ -124,25 +134,39 @@ public class GoogleCalendarEvents {
         return Date.from(instant);
     }
 
+    /**
+     * @param cal Input calendar
+     *
+     * @return Whether calendar is at midnight
+     */
     private boolean isMidnight(java.util.Calendar cal) {
         return cal.get(GregorianCalendar.HOUR) == 0 && cal.get(GregorianCalendar.MINUTE) == 0 && cal.get(GregorianCalendar.SECOND) == 0 && cal.get(GregorianCalendar.MILLISECOND) == 0;
     }
 
+    /**
+     * Convert start / end dates to format needed for Google Calendar
+     *
+     * @param startCal Calendar for start of the event
+     * @param endCal Calendar for end of the event
+     *
+     * @return Pair of start / end event time
+     */
     private Pair<EventDateTime, EventDateTime> dateToEventDateTime(java.util.Calendar startCal, java.util.Calendar endCal) {
         EventDateTime gCalStart = new EventDateTime();
         EventDateTime gCalEnd = new EventDateTime();
 
-        gCalStart.setTimeZone("Europe/Prague");
-        gCalEnd.setTimeZone("Europe/Prague");
-
         boolean wholeDay = isMidnight(startCal) && isMidnight(endCal);
         if (wholeDay) {
-            gCalStart.setDate(new DateTime(startCal.getTime(), TimeZone.getTimeZone("Europe/Prague")));
+            // Event is whole day
+            ZonedDateTime zdtStart = ZonedDateTime.of(startCal.get(GregorianCalendar.YEAR), startCal.get(GregorianCalendar.MONTH)+1, startCal.get(GregorianCalendar.DATE), 0, 0, 0, 0, ZoneId.of("GMT"));
+            gCalStart.setDate(new DateTime(true, zdtStart.toInstant().toEpochMilli(), null));
 
-            ZonedDateTime zdt = ZonedDateTime.of(endCal.get(GregorianCalendar.YEAR), endCal.get(GregorianCalendar.MONTH), endCal.get(GregorianCalendar.DATE), 0, 0, 0, 0, ZoneId.of("Europe/Prague"));
-            zdt = zdt.plus(1, ChronoField.DAY_OF_YEAR.getBaseUnit());
-            gCalEnd.setDate(new DateTime(new Date(zdt.toInstant().toEpochMilli()), TimeZone.getTimeZone("Europe/Prague")));
+            // For whole day events we need to move end one day for Google Calendar
+            ZonedDateTime zdtEnd = ZonedDateTime.of(endCal.get(GregorianCalendar.YEAR), endCal.get(GregorianCalendar.MONTH)+1, endCal.get(GregorianCalendar.DATE), 0, 0, 0, 0, ZoneId.of("GMT"));
+            zdtEnd = zdtEnd.plus(1, ChronoField.DAY_OF_YEAR.getBaseUnit());
+            gCalEnd.setDate(new DateTime(true, zdtEnd.toInstant().toEpochMilli(), null));
         } else {
+            // Event has set time of start / end
             gCalStart.setDateTime(new DateTime(startCal.getTime(), TimeZone.getTimeZone("Europe/Prague")));
             gCalEnd.setDateTime(new DateTime(endCal.getTime(), TimeZone.getTimeZone("Europe/Prague")));
         }
@@ -150,6 +174,12 @@ public class GoogleCalendarEvents {
         return Pair.of(gCalStart, gCalEnd);
     }
 
+    /**
+     * Update Larp Database event with Google Calendar event data
+     *
+     * @param ldEvent Larp Database event - destination
+     * @param gcEvent Google calendar event - source
+     */
     private void updateEventWithGCalData(Event ldEvent, com.google.api.services.calendar.model.Event gcEvent) {
         ldEvent.setGCalEventId(gcEvent.getId());
         ldEvent.setGCalEventLastUpdated(gcEvent.getUpdated().getValue());
@@ -166,6 +196,12 @@ public class GoogleCalendarEvents {
         ldEvent.setDescription(description);
     }
 
+    /**
+     * Update Google Calendar event with data from Larp Database
+     *
+     * @param gcEvent Google Calendar event - destination
+     * @param ldEvent Larp Database event - source
+     */
     private void updateEventWithLDData(com.google.api.services.calendar.model.Event gcEvent, Event ldEvent) {
         gcEvent.setSummary(ldEvent.getName());
 
@@ -175,10 +211,10 @@ public class GoogleCalendarEvents {
 
         StringBuilder additionalDescription = new StringBuilder();
 
-        if (ldEvent.getLoc() != null) {
+        if (ldEvent.getLoc() != null && ldEvent.getLoc().length() > 0) {
             additionalDescription.append("Místo události: ").append(ldEvent.getLoc()).append('\n');
         }
-        if (ldEvent.getWeb() != null) {
+        if (ldEvent.getWeb() != null && ldEvent.getWeb().length() > 0) {
             additionalDescription.append("Webová stránka: ").append(ldEvent.getWeb()).append('\n');
         }
         if (ldEvent.getAmountOfPlayers() != null) {
@@ -208,10 +244,13 @@ public class GoogleCalendarEvents {
         }
     }
 
+    /**
+     * Create calendar service for communication with Google Calendar
+     */
     public Calendar createService() throws IOException, GeneralSecurityException {
         ClassLoader classLoader = getClass().getClassLoader();
-        GoogleCredentials credentials = ServiceAccountCredentials.fromStream(classLoader.getResourceAsStream("larp-calendar-309507-3d5a5f3f4231.json"))
-                .createScoped(Collections.singleton(CalendarScopes.CALENDAR_READONLY));
+        GoogleCredentials credentials = ServiceAccountCredentials.fromStream(classLoader.getResourceAsStream("larp-calendar-309507-74f1e64af14a.json"))
+                .createScoped(Collections.singleton(CalendarScopes.CALENDAR_EVENTS));
         HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(credentials);
 
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
@@ -222,6 +261,9 @@ public class GoogleCalendarEvents {
         return service;
     }
 
+    /**
+     * Sync events from Google Calendar to Larp Database
+     */
     public SyncStats syncEventsFromGoogleCalendar() {
         try {
             Calendar service = createService();
@@ -297,7 +339,12 @@ public class GoogleCalendarEvents {
         return null;
     }
 
-    public void addEvent(Event event) {
+    /**
+     * Create event in Google Calendar based on LD event
+     *
+     * @param event Larp Database event
+     */
+    public void createEvent(Event event) {
         try {
             Calendar service = createService();
 
@@ -311,17 +358,23 @@ public class GoogleCalendarEvents {
             event.setGCalEventLastUpdated(insertedEvent.getUpdated().getValue());
         }
         catch (Exception e) {
-            logger.error("Error when creating event: " + e.toString(), e);
+            logger.error("Error when creating event '"+event.getName()+"': " + e.toString(), e);
 
             // Rethrow
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * Update event in Google Calendar based on LD event.
+     *
+     * @param event Larp Database event. When it does not have associated Google Calendar event,
+     *              event in Google Calendar is created instead.
+     */
     public void updateEvent(Event event) {
         if (event.getGCalEventId() == null) {
             // Event not yet in Google Calendar - add it instead
-            addEvent(event);
+            createEvent(event);
             return;
         }
 
@@ -337,7 +390,7 @@ public class GoogleCalendarEvents {
             event.setGCalEventLastUpdated(updatedEvent.getUpdated().getValue());
         }
         catch (Exception e) {
-            logger.error("Error when updating event: " + e.toString(), e);
+            logger.error("Error when updating event '"+event.getName()+"': " + e.toString(), e);
 
             // Rethrow
             throw new RuntimeException(e);

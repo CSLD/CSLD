@@ -132,7 +132,7 @@ public class EventFetcherFactory {
             event = applyInputValues(event, input);
 
             // Send to Google Calendar
-            googleCalendarEvents.addEvent(event);
+            googleCalendarEvents.createEvent(event);
 
             events.saveOrUpdate(event);
 
