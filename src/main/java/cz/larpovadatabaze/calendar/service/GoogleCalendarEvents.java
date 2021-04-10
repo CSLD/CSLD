@@ -8,6 +8,7 @@ import com.google.api.client.json.jackson.JacksonFactory;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.CalendarScopes;
+import com.google.api.services.calendar.model.Channel;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.GoogleCredentials;
@@ -16,6 +17,7 @@ import cz.larpovadatabaze.calendar.model.Event;
 import cz.larpovadatabaze.calendar.model.FilterEvent;
 import cz.larpovadatabaze.common.entities.Label;
 import cz.larpovadatabaze.common.services.FileService;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
 import org.apache.wicket.model.IModel;
@@ -41,12 +43,27 @@ public class GoogleCalendarEvents {
 
     private static final JsonFactory JSON_FACTORY = new JacksonFactory();
     private static final String APPLICATION_NAME = "LARP Database";
-//    private static final String CALENDAR_ID = "i72qpc43a8pmoqsl42oqo9og4s@group.calendar.google.com";
-    /*"3a28s0se1pq6qs76fpmftldsr8@group.calendar.google.com"*/
+
+    /**
+     * We renew expiration when we are less that this ms from
+     * the expiration.
+     */
+    private static final long EXPIRATION_SAFE_MARGIN_MS = 120000;
+
+    /**
+     * When we were this close to expiration, better run sync - we
+     * might have missed something.
+     */
+    private static final long EXPIRATION_SYNC_MARGIN_MS = 5000;
 
     private final Events events;
     private final FileService fileService;
     private final Environment env;
+
+    /**
+     * Unix time in ms of next expiration of calendar subscription. 0 when not subscribed.
+     */
+    private long calendarSubscriptionExpirationMs;
 
     /**
      * Statistics of a sync
@@ -111,6 +128,14 @@ public class GoogleCalendarEvents {
 
     private String getCalendarId() {
         return env.getProperty("calendar.google");
+    }
+
+    private String getSubscriptionExpiration() {
+        return env.getProperty("calendar.subscription_expiration");
+    }
+
+    private String getCalendarSyncUrl() {
+        return env.getProperty("calendar.sync_url");
     }
 
     /**
@@ -274,6 +299,40 @@ public class GoogleCalendarEvents {
                 .build();
 
         return service;
+    }
+
+    /**
+     * Check whether Google Calendar subscription is about to expire. If so, renew it. When
+     * it already expired, run sync.
+     */
+    public synchronized void checkCalendarSubscription() {
+        long oldExpiration = calendarSubscriptionExpirationMs;
+
+        long now = new Date().getTime();
+        if (now + EXPIRATION_SAFE_MARGIN_MS > oldExpiration) {
+            // Renew subscription
+            try {
+                Channel channel = new Channel();
+                channel.setId(RandomStringUtils.randomAlphanumeric(32));
+                channel.setType("web_hook");
+                channel.setAddress(getCalendarSyncUrl());
+                channel.setParams(Map.of("ttl", getSubscriptionExpiration()));
+                var res = createService().events().watch(getCalendarId(), channel).execute();
+
+                calendarSubscriptionExpirationMs = res.getExpiration();
+
+                logger.info("Subscription to Google Calendar successful, expires at " + calendarSubscriptionExpirationMs);
+            } catch(Exception e) {
+                logger.error("Subscription to Google Calendar failed: " + e.toString(), e);
+            }
+        }
+
+        // Google calendar pings sync every time after subscription is started, so this
+        // is not necessary.
+//        if (now >= oldExpiration - EXPIRATION_SYNC_MARGIN_MS) {
+//            // We were too close to the margin better sync to be safe
+//            syncEventsFromGoogleCalendar();
+//        }
     }
 
     /**

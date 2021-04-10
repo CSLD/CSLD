@@ -40,10 +40,10 @@ public class RegularTasks {
         larpImport = new LarpCzImport(events, new LarpCzEvents(), sessionFactory, tokenSearch);
     }
 
-    // First sync one minute after app starts, then re-run every hour
-    @Scheduled(initialDelay = 60*1000, fixedDelay = 60*60*1000)
-    public void hourlySync() {
-        googleCalendarEvents.syncEventsFromGoogleCalendar();
+    // Create / check calendar subscripton repeatedly
+    @Scheduled(initialDelay = 10*1000, fixedDelay = 60*1000)
+    public void calendarSync() {
+        googleCalendarEvents.checkCalendarSubscription();
     }
 
     @Scheduled(cron = "0 0 2 * * *")
