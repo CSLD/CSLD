@@ -23,6 +23,10 @@ public class HtmlProcessor {
      * @return
      */
     public static String createLinksFromUrls(String input) {
+        if (input == null) {
+            return "";
+        }
+
         if (input.toLowerCase().indexOf("</a>") >= 0) {
             // Already has A tags - do not create links
             return input;
