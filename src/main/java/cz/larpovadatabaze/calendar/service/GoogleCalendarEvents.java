@@ -326,13 +326,6 @@ public class GoogleCalendarEvents {
                 logger.error("Subscription to Google Calendar failed: " + e.toString(), e);
             }
         }
-
-        // Google calendar pings sync every time after subscription is started, so this
-        // is not necessary.
-//        if (now >= oldExpiration - EXPIRATION_SYNC_MARGIN_MS) {
-//            // We were too close to the margin better sync to be safe
-//            syncEventsFromGoogleCalendar();
-//        }
     }
 
     /**
@@ -354,6 +347,10 @@ public class GoogleCalendarEvents {
                     .setSingleEvents(true)
                     .execute();
             List<com.google.api.services.calendar.model.Event> gcItems = eventsResponse.getItems();
+
+//            for(com.google.api.services.calendar.model.Event event: gcItems) {
+//                System.out.println("ID:" + event.getId() + ", name: " + event.getSummary());
+//            }
 
             /**
              * Get events in LD calendar (better a week back to cover everything)
