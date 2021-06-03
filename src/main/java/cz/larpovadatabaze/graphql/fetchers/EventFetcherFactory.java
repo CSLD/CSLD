@@ -112,12 +112,13 @@ public class EventFetcherFactory {
             return;
         }
 
-        if (!appUsers.isAtLeastEditor()) {
-            // Updating event and not editor - check user is creator
-            CsldUser addedBy = event.getAddedBy();
-            if (addedBy == null || !addedBy.getId().equals(appUsers.getLoggedUserId())) {
-                throw new GraphQLException(GraphQLException.ErrorCode.ACCESS_DENIED, "Must be editor or creator");
-            }
+//         commened by Manik 2021-06-03: We want to test if this will cause any issue in calendar usability        
+//         if (!appUsers.isAtLeastEditor()) {
+//             // Updating event and not editor - check user is creator
+//             CsldUser addedBy = event.getAddedBy();
+//             if (addedBy == null || !addedBy.getId().equals(appUsers.getLoggedUserId())) {
+//                 throw new GraphQLException(GraphQLException.ErrorCode.ACCESS_DENIED, "Must be editor or creator");
+//             }
         }
     }
 
