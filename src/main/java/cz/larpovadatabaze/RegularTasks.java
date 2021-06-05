@@ -37,7 +37,7 @@ public class RegularTasks {
 
         bankAccount = new BankAccount(sessionFactory);
         this.googleCalendarEvents = googleCalendarEvents;
-        larpImport = new LarpCzImport(events, new LarpCzEvents(), sessionFactory, tokenSearch);
+        larpImport = new LarpCzImport(events, new LarpCzEvents(), sessionFactory, tokenSearch, googleCalendarEvents);
     }
 
     // Create / check calendar subscripton repeatedly

@@ -20,12 +20,14 @@ public class LarpCzImport {
     private TokenSearch tokenSearch;
     private LarpCzEvents events;
     private SessionFactory sessionFactory;
+    private GoogleCalendarEvents googleCalendarEvents;
 
-    public LarpCzImport(Events dbEvents, LarpCzEvents larpEvents, SessionFactory sessionFactory, TokenSearch tokenSearch) {
+    public LarpCzImport(Events dbEvents, LarpCzEvents larpEvents, SessionFactory sessionFactory, TokenSearch tokenSearch, GoogleCalendarEvents googleCalendarEvents) {
         this.dbEvents = dbEvents;
         this.events = larpEvents;
         this.sessionFactory = sessionFactory;
         this.tokenSearch = tokenSearch;
+        this.googleCalendarEvents = googleCalendarEvents;
     }
 
     /**
@@ -44,6 +46,7 @@ public class LarpCzImport {
                 if (dbEvents.byName(larpCzEvent.getName()).size() == 0) {
                     larpCzEvent.setLabels(larpCz);
                     dbEvents.saveOrUpdate(larpCzEvent);
+                    googleCalendarEvents.createEvent(larpCzEvent);
                 }
             }
 

@@ -1,67 +1,36 @@
 package cz.larpovadatabaze;
 
-import cz.larpovadatabaze.administration.components.page.*;
 import cz.larpovadatabaze.administration.rest.GCalSyncProducer;
 import cz.larpovadatabaze.administration.rest.StatisticsProducer;
 import cz.larpovadatabaze.administration.services.Statistics;
-import cz.larpovadatabaze.calendar.component.page.CreateOrUpdateEventPage;
-import cz.larpovadatabaze.calendar.component.page.DetailOfEventPage;
-import cz.larpovadatabaze.calendar.component.page.ListEventsPage;
 import cz.larpovadatabaze.calendar.service.Events;
 import cz.larpovadatabaze.calendar.service.GoogleCalendarEvents;
 import cz.larpovadatabaze.calendar.service.ICalProducerResource;
 import cz.larpovadatabaze.common.components.page.HomePage;
-import cz.larpovadatabaze.common.components.page.TestDatabase;
-import cz.larpovadatabaze.common.components.page.error.Error404Page;
 import cz.larpovadatabaze.common.components.page.error.Error500Page;
-import cz.larpovadatabaze.common.converters.EnglishDateConverter;
-import cz.larpovadatabaze.common.entities.CsldGroup;
-import cz.larpovadatabaze.common.entities.CsldUser;
-import cz.larpovadatabaze.common.entities.Game;
-import cz.larpovadatabaze.common.entities.Label;
-import cz.larpovadatabaze.donations.components.DonationPage;
-import cz.larpovadatabaze.games.components.page.*;
-import cz.larpovadatabaze.games.converters.GameConverter;
-import cz.larpovadatabaze.games.converters.LabelConverter;
 import cz.larpovadatabaze.games.rest.GameProducer;
 import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.graphql.GraphQLResource;
-import cz.larpovadatabaze.search.components.SearchResultsPage;
 import cz.larpovadatabaze.search.services.TokenSearch;
 import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
-import cz.larpovadatabaze.users.components.page.*;
-import cz.larpovadatabaze.users.components.page.about.AboutDatabasePage;
-import cz.larpovadatabaze.users.converters.CsldUserConverter;
-import cz.larpovadatabaze.users.converters.GroupConverter;
 import cz.larpovadatabaze.users.services.CsldUsers;
 import org.apache.log4j.Logger;
-import org.apache.wicket.ConverterLocator;
-import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.Session;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
-import org.apache.wicket.core.request.handler.BookmarkableListenerRequestHandler;
-import org.apache.wicket.core.request.handler.ListenerRequestHandler;
-import org.apache.wicket.core.request.mapper.MountedMapper;
 import org.apache.wicket.markup.html.IPackageResourceGuard;
 import org.apache.wicket.markup.html.SecurePackageResourceGuard;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
-import org.apache.wicket.request.Url;
-import org.apache.wicket.request.component.IRequestablePage;
 import org.apache.wicket.request.cycle.IRequestCycleListener;
 import org.apache.wicket.request.cycle.RequestCycle;
-import org.apache.wicket.request.mapper.info.PageComponentInfo;
-import org.apache.wicket.request.mapper.parameter.PageParametersEncoder;
-import org.apache.wicket.request.resource.AbstractResource;
 import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.settings.RequestLoggerSettings;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
-import org.apache.wicket.util.convert.converter.CalendarConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -100,29 +69,6 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         this.games = games;
         this.graphqlResource = graphqlResource;
         this.googleCalendarEvents = googleCalendarEvents;
-    }
-
-    public class MountedMapperWithoutPageComponentInfo extends MountedMapper {
-
-        public MountedMapperWithoutPageComponentInfo(String mountPath, Class<? extends IRequestablePage> pageClass) {
-            super(mountPath, pageClass, new PageParametersEncoder());
-        }
-
-        @Override
-        protected void encodePageComponentInfo(Url url, PageComponentInfo info) {
-            // do nothing so that component info does not get rendered in url
-        }
-
-        @Override
-        public Url mapHandler(IRequestHandler requestHandler)
-        {
-            if (requestHandler instanceof ListenerRequestHandler ||
-                    requestHandler instanceof BookmarkableListenerRequestHandler) {
-                return null;
-            } else {
-                return super.mapHandler(requestHandler);
-            }
-        }
     }
 
 	/**
@@ -203,21 +149,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
 
     @Override
     protected Class<? extends WebPage> getSignInPageClass() {
-        return CsldSignInPage.class;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    protected IConverterLocator newConverterLocator() {
-        ConverterLocator locator = (ConverterLocator) super.newConverterLocator();
-
-        locator.set(CsldUser.class, new CsldUserConverter(tokenSearch));
-        locator.set(Game.class, new GameConverter(tokenSearch));
-        locator.set(CsldGroup.class, new GroupConverter(tokenSearch));
-        locator.set(Label.class, new LabelConverter(tokenSearch));
-        locator.set(GregorianCalendar.class, new CalendarConverter(new EnglishDateConverter()));
-
-        return locator;
-
+        return null;
     }
 
     private void mountPages(String context) {
