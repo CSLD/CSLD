@@ -124,6 +124,7 @@ public class GraphQLTypeConfigurator {
                         .dataFetcher("currentUsersComment", commentFetcherFactory.getCurrentUsersGameComment())
                         .dataFetcher("currentUsersRating", ratingFetcherFactory.createUsersGameRatingFetcher())
                         .dataFetcher("ratings", new GameRatingsProtectedFetcher())
+                        .dataFetcher("events", eventFetcherFactory.createGameEventsFetcher())
                         .dataFetcher("allowedActions", gameFetcherFactory.createGameAllowedActionsFetcher())
                 )
                 .type("Comment", builder -> builder.dataFetcher("commentAsText", new CommentAsTextFetcher()))

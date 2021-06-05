@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -215,6 +216,13 @@ public class EventFetcherFactory {
             int limit = dataFetchingEnvironment.getArgumentOrDefault("limit", 10);
 
             return new EventsPaged(filteredEvents.subList(offset, Math.min(filteredEvents.size(), offset+limit)), filteredEvents.size());
+        };
+    }
+
+    public DataFetcher<List<Event>> createGameEventsFetcher() {
+        return dataFetchingEnvironment -> {
+            Game game = dataFetchingEnvironment.getSource();
+            return game.getEvents().stream().sorted((Comparator.comparing(Event::getFrom).thenComparingInt(Event::getId)).reversed()).collect(Collectors.toList());
         };
     }
 }

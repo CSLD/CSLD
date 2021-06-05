@@ -3,11 +3,7 @@ package cz.larpovadatabaze.graphql;
 import cz.larpovadatabaze.common.components.multiac.IAutoCompletable;
 
 import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -42,6 +38,7 @@ public abstract class EntitySearchableCache<T extends IAutoCompletable> {
      * Storage object
      */
     private static class ObjectWithName<T extends Object> {
+        private final String name;
         private final String[] names;
         private final T entity;
 
@@ -49,9 +46,9 @@ public abstract class EntitySearchableCache<T extends IAutoCompletable> {
             return entity;
         }
 
-
         private ObjectWithName(String name, T entity) {
-            this.names = buildTerms(name);
+            this.name = normalize(name);
+            this.names = splitWords(this.name);
             this.entity = entity;
         }
 
@@ -82,14 +79,21 @@ public abstract class EntitySearchableCache<T extends IAutoCompletable> {
             cacheExpiration = new Date().getTime() + CACHE_TTL;
         }
 
-        String[] terms = buildTerms(query);
+        var normalizedQuery = normalize(query);
+        String[] terms = splitWords(normalizedQuery);
         // We need all entries when we have to compute total
         int needLen = computeTotal ? Integer.MAX_VALUE : offset + limit;
-        List<T> res = new ArrayList<>();
+
+        // Add full-matching items first
+        List<T> res = cachedObjects.stream().filter(
+                game -> game.name.equals(normalizedQuery)
+        ).map(game -> game.getEntity()).collect(Collectors.toList());
+
         // We want to have early exit when number of found objects reaches limit for performance reasons,
         // so that's why we can't use stream API here.
         for(ObjectWithName<T> candidate: cachedObjects) {
-            if (candidate.matches(terms)) {
+            // Add candidate when it matches but is not  exactly equal (because we added those in previous step)
+            if (candidate.matches(terms) && !candidate.name.equals(normalizedQuery)) {
                 res.add(candidate.getEntity());
                 if (res.size() >= needLen) {
                     break;
@@ -112,6 +116,11 @@ public abstract class EntitySearchableCache<T extends IAutoCompletable> {
         return searchInternal(query, offset, limit, false).results;
     }
 
+    private static String normalize(String s) {
+        s = Normalizer.normalize(s, Normalizer.Form.NFD);
+        return s.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "").toLowerCase();
+    }
+
     /**
      * Take string and build list of terms from it
      *
@@ -119,10 +128,8 @@ public abstract class EntitySearchableCache<T extends IAutoCompletable> {
      *
      * @return List of normalized terms
      */
-    private static String[] buildTerms(String s) {
-        s = Normalizer.normalize(s, Normalizer.Form.NFD);
-        s = s.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
-        return s.toLowerCase().split(" +");
+    private static String[] splitWords(String s) {
+        return s.split(" +");
     }
 
     /**
