@@ -308,6 +308,11 @@ public class GoogleCalendarEvents {
     public synchronized void checkCalendarSubscription() {
         long oldExpiration = calendarSubscriptionExpirationMs;
 
+        System.out.println("Environment=" + env.toString());
+        System.out.println("calendar_id=" + getCalendarId());
+        System.out.println("sync_url=" + getCalendarSyncUrl());
+        System.out.println("expiration=" + getSubscriptionExpiration());
+
         long now = new Date().getTime();
         if (now + EXPIRATION_SAFE_MARGIN_MS > oldExpiration) {
             // Renew subscription

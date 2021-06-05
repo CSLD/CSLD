@@ -221,52 +221,6 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     }
 
     private void mountPages(String context) {
-	    mountPage(context + "/sign-out", SignOutPage.class);
-        mountPage(context + "/sign-in", CsldSignInPage.class);
-        mountPage(context + "/register", CreateUserPage.class);
-        mountPage(context + "/edit-user", UpdateUserPage.class);
-
-        mountPage(context + "/add-group", CreateOrUpdateGroupPage.class);
-        mountPage(context + "/add-game", CreateOrUpdateGamePage.class);
-        mountPage(context + "/add-author", CreateOrUpdateAuthorPage.class);
-
-        mountPage(context + "/zebricky", ListGamePage.class);
-
-        mountPage(context + "/detail-game", GameDetailOld.class);
-        mount(new MountedMapperWithoutPageComponentInfo(context + "/larp/${name}/${id}", GameDetail.class));
-        mount(new MountedMapperWithoutPageComponentInfo(context + "/larp/${name}/cs/${id}", GameDetail.class));
-        mountPage(context + "/detail-author", UserDetailPage.class);
-        mountPage(context + "/detail-user", UserDetailPage.class);
-        mountPage(context + "/detail-group", GroupDetail.class);
-
-        mountPage(context + "/calendar", ListEventsPage.class);
-        mountPage(context + "/add-event", CreateOrUpdateEventPage.class);
-        mount(new MountedMapperWithoutPageComponentInfo(context + "/event/${name}/${id}", DetailOfEventPage.class));
-
-        mountPage(context + "/search", SearchResultsPage.class);
-
-        mountPage(context + "/donations", DonationPage.class);
-
-        mountPage(context + "/oDatabazi", AboutDatabasePage.class);
-        mountPage(context + "/reset", ResetPassword.class);
-        mountPage(context + "/forgot-password", ForgotPassword.class);
-
-        mountPage(context + "/admin", AdministrationPage.class);
-        mountPage(context + "/admin/manage-labels", ManageLabelsPage.class);
-        mountPage(context + "/admin/manage-users", ManageUserRightsPage.class);
-        mountPage(context + "/admin/rating-stats", RatingStatistics.class);
-        mountPage(context + "/admin/comment-stats", CommentStatistics.class);
-
-        mountPage(context + "/home", HomePage.class);
-        mountPage(context + "/game-was-deleted", GameWasDeleted.class);
-
-        mountPage(context + "/error404", Error404Page.class);
-        mountPage(context + "/error500", Error500Page.class);
-
-        if (isDevelopmentMode()) {
-            mountPage(context + "/testDatabase", TestDatabase.class);
-        }
-
         ResourceReference icalReference = new ResourceReference("icalReference") {
             ICalProducerResource resource = new ICalProducerResource(events, csldUsers);
 
