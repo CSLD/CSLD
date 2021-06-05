@@ -13,7 +13,10 @@ import org.apache.wicket.request.resource.ResourceReference;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  *
@@ -70,7 +73,16 @@ public class SqlFileImages extends CRUD<Image, Integer> implements Images {
 
                         // Load
                         IEntityWithImage entity = dao.findById(id);
-                        getImageResource(entity).respond(attributes);
+                        if (entity != null) {
+                            getImageResource(entity).respond(attributes);
+                        } else {
+                            try {
+                                ((HttpServletResponse) attributes.getResponse().getContainerResponse()).sendError(404);
+                            }
+                            catch(IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
                     }
                 };
             }
