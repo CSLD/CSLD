@@ -119,7 +119,7 @@ public class EventFetcherFactory {
 //             if (addedBy == null || !addedBy.getId().equals(appUsers.getLoggedUserId())) {
 //                 throw new GraphQLException(GraphQLException.ErrorCode.ACCESS_DENIED, "Must be editor or creator");
 //             }
-        }
+//        }
     }
 
     public DataFetcher<Event> createCreateEventFetcher() {
