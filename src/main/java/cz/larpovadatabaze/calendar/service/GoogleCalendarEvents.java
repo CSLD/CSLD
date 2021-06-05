@@ -131,7 +131,8 @@ public class GoogleCalendarEvents {
     }
 
     private String getSubscriptionExpiration() {
-        return env.getProperty("calendar.subscription_expiration");
+        var res = env.getProperty("calendar.subscription_expiration");
+        return res == null ? "21600" : res;
     }
 
     private String getCalendarSyncUrl() {
