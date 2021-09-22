@@ -1,4 +1,4 @@
-FROM ubuntu:focal-20200925
+FROM ubuntu:focal-20210827
 
 ENV GIT_USER="${GIT_USER:-360acc8bab3c872b517216a51c1e34cdb40731ce}"
 ENV JAVA_OPTS="${JAVA_OPTS:--server -Dfile.encoding=UTF-8 -Dprops.path=/opt/csld/www/ROOT/WEB-INF/classes/ -Xms1024m -Xmx4096m -XX:PermSize=128m -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:NewSize=1G -XX:+UseParNewGC}"
