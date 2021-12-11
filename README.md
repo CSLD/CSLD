@@ -43,3 +43,7 @@ _Co přesně skript dělá se můžete podívat na https://github.com/CSLD/CSLD/
 _Co je docker a proč ho používat: https://www.zdrojak.cz/clanky/proc-pouzivat-docker/_
 
 _Dokumentace dockeru: https://docs.docker.com/engine/reference/commandline/docker/_
+
+### Budoucnost
+
+Možná přepsat pod Micronaut pro snížení zátěže paměti: https://micronaut.io/
