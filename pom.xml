@@ -48,7 +48,7 @@
         <tomcat.version>9.0.27.1</tomcat.version>
         <webapp-runner.version>9.0.27.1</webapp-runner.version>
         <hibernate.version>5.4.8.Final</hibernate.version>
-        <spring.version>5.2.2.RELEASE</spring.version>
+        <spring.version>5.2.18.RELEASE</spring.version>
         <tomcatContextFile>${basedir}/src/test/config/tomcat.xml</tomcatContextFile>
         <javax.mail.version>1.4.7</javax.mail.version>
         <postgresql.version>42.2.9</postgresql.version>
