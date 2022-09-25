@@ -78,7 +78,7 @@
         <dependency>
             <groupId>com.googlecode.wicket-jquery-ui</groupId>
             <artifactId>wicket-jquery-ui-plugins</artifactId>
-            <version>8.6.0</version>
+            <version>9.11.0</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.ow2.asm/asm -->
         <dependency>
