@@ -89,16 +89,6 @@ public class SqlEvents extends CRUD<Event, Integer> implements Events {
         return isInGivenTimeFrame;
     }
 
-    private boolean isInRegion(Event event, FilterEvent filterEvent) {
-        if (filterEvent.getRegion() != null && filterEvent.getFilter() != null && event.getLocation() != null) {
-            if (!filterEvent.getFilter().isGeometryInArea(filterEvent.getRegion(), event.getLocation())) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     private void sortByTime(List<Event> filtered) {
         filtered.sort((o1, o2) -> {
             if (o1.getFrom() == null || o2.getFrom().before(o1.getFrom())) {
@@ -134,9 +124,8 @@ public class SqlEvents extends CRUD<Event, Integer> implements Events {
             boolean containsAllLabels = labels.containsAll(filterEvent.getRequiredLabels()) &&
                     labels.containsAll(filterEvent.getOtherLabels());
             boolean isInGivenTimeFrame = isInGivenTimeFrame(event, filterEvent);
-            boolean isInRegion = isInRegion(event, filterEvent);
 
-            if (containsAllLabels && isInGivenTimeFrame && isInRegion) {
+            if (containsAllLabels && isInGivenTimeFrame) {
                 filtered.add(event);
             }
         }

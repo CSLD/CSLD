@@ -1,7 +1,5 @@
 package cz.larpovadatabaze.calendar.model;
 
-import cz.larpovadatabaze.calendar.Area;
-import cz.larpovadatabaze.calendar.service.GeographicalFilter;
 import cz.larpovadatabaze.common.entities.Label;
 
 import java.io.Serializable;
@@ -17,29 +15,10 @@ public class FilterEvent implements Serializable {
     private List<Label> otherLabels = new ArrayList<Label>();
     private Date from;
     private Date to;
-    private Area region;
-    private GeographicalFilter filter;
     private Sort sorted;
-
-    public GeographicalFilter getFilter() {
-        return filter;
-    }
 
     public FilterEvent() {
 
-    }
-
-    public FilterEvent(GeographicalFilter geographicalFilter) {
-        filter = geographicalFilter;
-
-    }
-
-    public Area getRegion() {
-        return region;
-    }
-
-    public void setRegion(Area region) {
-        this.region = region;
     }
 
     public Integer getLimit() {
