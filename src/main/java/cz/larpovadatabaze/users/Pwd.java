@@ -1,6 +1,7 @@
 package cz.larpovadatabaze.users;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -17,7 +18,7 @@ import java.security.spec.InvalidKeySpecException;
  * Time: 13:49
  */
 public class Pwd {
-    private final static Logger logger = Logger.getLogger(Pwd.class);
+    private final static Logger logger = LogManager.getLogger();;
 
     public static String getMD5(String passwd)
     {

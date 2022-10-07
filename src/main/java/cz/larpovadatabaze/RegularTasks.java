@@ -7,7 +7,8 @@ import cz.larpovadatabaze.calendar.service.LarpCzImport;
 import cz.larpovadatabaze.donations.service.BankAccount;
 import cz.larpovadatabaze.games.services.SimilarGames;
 import cz.larpovadatabaze.search.services.TokenSearch;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +19,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 @Configuration
 @EnableScheduling
 public class RegularTasks {
-    private final static Logger logger = Logger.getLogger(RegularTasks.class);
+    private final static Logger logger = LogManager.getLogger();
 
     private Environment env;
     private SessionFactory sessionFactory;

@@ -44,6 +44,7 @@ public class RootTestWithDbConfig {
     Flyway flyway() {
         return Flyway.configure()
                 .baselineOnMigrate(true)
+                .cleanDisabled(false)
                 .dataSource(dataSource())
                 .locations("classpath:db/")
                 .load();

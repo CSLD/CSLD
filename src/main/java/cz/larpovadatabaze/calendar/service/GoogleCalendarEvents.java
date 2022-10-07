@@ -19,7 +19,8 @@ import cz.larpovadatabaze.common.entities.Label;
 import cz.larpovadatabaze.common.services.FileService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.wicket.model.IModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -39,7 +40,7 @@ import java.util.*;
  */
 @Component
 public class GoogleCalendarEvents {
-    private final static Logger logger = Logger.getLogger(GoogleCalendarEvents.class);
+    private final static Logger logger = LogManager.getLogger();
 
     private static final JsonFactory JSON_FACTORY = new JacksonFactory();
     private static final String APPLICATION_NAME = "LARP Database";

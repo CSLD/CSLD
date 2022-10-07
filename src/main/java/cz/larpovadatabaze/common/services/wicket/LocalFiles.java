@@ -6,16 +6,17 @@ import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService.IImageResizingStrategy;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.wicket.request.resource.AbstractResource;
 import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.util.file.Files;
-import org.apache.wicket.util.time.Time;
 import org.springframework.http.HttpStatus;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.time.Instant;
 
 /**
  * User: Michal Kara
@@ -23,7 +24,7 @@ import java.io.*;
  * Time: 20:44
  */
 public class LocalFiles implements FileService {
-    private final static Logger logger = Logger.getLogger(LocalFiles.class);
+    private final static Logger logger = LogManager.getLogger();;
 
     /**
      * Base data directory
@@ -224,7 +225,7 @@ public class LocalFiles implements FileService {
             return res;
         }
 
-        res.setLastModified(Time.millis(file.lastModified()));
+        res.setLastModified(Instant.ofEpochMilli(file.lastModified()));
         res.setContentType(contentType);
         res.setWriteCallback(new FileWriteCallback(file));
 

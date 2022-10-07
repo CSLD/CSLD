@@ -15,6 +15,7 @@ import graphql.schema.GraphQLFieldDefinition;
 import graphql.schema.GraphQLOutputType;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.GraphQLType;
+import graphql.GraphQLContext;
 import org.dataloader.DataLoader;
 import org.dataloader.DataLoaderRegistry;
 
@@ -63,6 +64,11 @@ public class MockDataFetchingEnvironment implements DataFetchingEnvironment {
 
     @Override
     public <T> T getLocalContext() {
+        return null;
+    }
+
+    @Override
+    public GraphQLContext getGraphQlContext() {
         return null;
     }
 

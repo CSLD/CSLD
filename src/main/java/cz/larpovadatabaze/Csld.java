@@ -14,7 +14,8 @@ import cz.larpovadatabaze.graphql.GraphQLResource;
 import cz.larpovadatabaze.search.services.TokenSearch;
 import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.users.services.CsldUsers;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.Session;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
@@ -85,7 +86,7 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
 
         // Exception reporting
         getRequestCycleListeners().add(new IRequestCycleListener() {
-            final Logger logger = Logger.getLogger(IRequestCycleListener.class);
+            final Logger logger = LogManager.getLogger(IRequestCycleListener.class);
 
             @Override
             public IRequestHandler onException(RequestCycle cycle, Exception ex) {

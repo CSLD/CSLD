@@ -6,7 +6,8 @@ import cz.larpovadatabaze.common.entities.Person;
 import cz.larpovadatabaze.common.services.MailService;
 import cz.larpovadatabaze.games.models.SelectedUser;
 import cz.larpovadatabaze.users.services.AppUsers;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -14,7 +15,7 @@ import org.springframework.mail.SimpleMailMessage;
 import java.util.List;
 
 public class SmtpMailService implements MailService {
-    private static Logger logger = Logger.getLogger(SmtpMailService.class);
+    private static Logger logger = LogManager.getLogger();;
 
     private MailSender mailSender;
     private AppUsers appUsers;

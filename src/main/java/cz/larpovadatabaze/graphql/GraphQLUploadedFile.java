@@ -8,13 +8,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.util.Base64;
+
 public class GraphQLUploadedFile extends AbstractUploadedFile {
     private final String fileName;
     private final byte[] contents;
 
     public GraphQLUploadedFile(String fileName, String contents) {
         this.fileName = fileName;
-        this.contents = org.apache.wicket.util.crypt.Base64.decodeBase64(contents);
+        this.contents = Base64.getDecoder().decode(contents);
     }
 
     @Override

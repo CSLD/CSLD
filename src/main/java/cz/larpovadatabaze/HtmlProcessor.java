@@ -1,13 +1,13 @@
 package cz.larpovadatabaze;
 
 import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
+import org.jsoup.safety.Safelist;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class HtmlProcessor {
-    private static final Whitelist whitelist = Whitelist
+    private static final Safelist safelist = Safelist
             .basic()
             .addTags("h1", "h2", "h3", "h4", "h5")
             .addEnforcedAttribute("a", "rel", "nofollow noreferrer noopener")
@@ -51,6 +51,6 @@ public class HtmlProcessor {
         if (input == null) {
             return null;
         }
-        return Jsoup.clean(input, whitelist);
+        return Jsoup.clean(input, safelist);
     }
 }

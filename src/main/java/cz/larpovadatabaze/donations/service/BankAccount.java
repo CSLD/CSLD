@@ -1,7 +1,8 @@
 package cz.larpovadatabaze.donations.service;
 
 import cz.larpovadatabaze.donations.model.Donation;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -20,7 +21,7 @@ import java.util.Date;
  * It needs to be run ever day at midnight. It will add all transactions from previous day
  */
 public class BankAccount {
-    private final static Logger logger = Logger.getLogger(BankAccount.class);
+    private final static Logger logger = LogManager.getLogger();
     private SessionFactory sessionFactory;
 
     public BankAccount(SessionFactory sessionFactory) {

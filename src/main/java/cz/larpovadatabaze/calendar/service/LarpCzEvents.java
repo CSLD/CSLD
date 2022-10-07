@@ -1,7 +1,8 @@
 package cz.larpovadatabaze.calendar.service;
 
 import cz.larpovadatabaze.calendar.model.Event;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -21,7 +22,7 @@ import java.util.regex.Pattern;
  * It represents the Events as they are in the Larp.cz page
  */
 public class LarpCzEvents {
-    private final static Logger logger = Logger.getLogger(LarpCzEvents.class);
+    private final static Logger logger = LogManager.getLogger();;
 
     public Collection<Event> all() {
         logger.info("Loading all events form larp.cz page");

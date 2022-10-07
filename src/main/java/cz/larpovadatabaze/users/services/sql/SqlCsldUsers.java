@@ -20,10 +20,8 @@ import cz.larpovadatabaze.users.RandomString;
 import cz.larpovadatabaze.users.services.AppUsers;
 import cz.larpovadatabaze.users.services.CsldUsers;
 import cz.larpovadatabaze.users.services.EmailAuthentications;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.hibernate.Criteria;
@@ -34,6 +32,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.entity.UrlEncodedFormEntity;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.NameValuePair;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.hc.core5.http.message.BasicNameValuePair;
+
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,7 +55,7 @@ import java.util.UUID;
 @Repository(value = "csldUsers")
 @Transactional
 public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
-    private final static Logger logger = Logger.getLogger(SqlCsldUsers.class);
+    private final static Logger logger = LogManager.getLogger();;
     /**
      * Re-Captcha config - maybe move keys somewhere else?
      */
@@ -176,26 +188,36 @@ public class SqlCsldUsers extends CRUD<CsldUser, Integer> implements CsldUsers {
 
     @Override
     public boolean checkReCaptcha(String response, String remoteIp) throws ReCaptchaTechnicalException {
-        HttpClient client = new HttpClient();
-        PostMethod post = new PostMethod(RE_CAPTCHA_VERIFY_URL);
-        post.addParameter("secret", RE_CAPTCHA_SECRET_KEY);
-        post.addParameter("response", response);
-        if (remoteIp != null) {
-            post.addParameter("remoteip", remoteIp);
-        }
+        try (final CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            HttpPost post = new HttpPost(RE_CAPTCHA_VERIFY_URL);
 
-        try {
-            int code = client.executeMethod(post);
-            logger.info("ReCaptcha verification returned code " + code);
-            if (code != HttpStatus.SC_OK) {
-                throw new Exception("Could not send request: "+post.getStatusLine());
+            final List<NameValuePair> nvps = new ArrayList<>();
+            nvps.add(new BasicNameValuePair("secret", RE_CAPTCHA_SECRET_KEY));
+            nvps.add(new BasicNameValuePair("response", response));
+            if (remoteIp != null) {
+                nvps.add(new BasicNameValuePair("remoteip", remoteIp));
             }
+            post.setEntity(new UrlEncodedFormEntity(nvps));
 
-            String responseFromGoogle = post.getResponseBodyAsString();
-            logger.info("ReCaptcha verification response: " + responseFromGoogle);
-            JSONObject responseObject = new JSONObject(responseFromGoogle);
-            return responseObject.getBoolean("success");
+            try (final CloseableHttpResponse responseGoogle = httpClient.execute(post)) {
+                int code = responseGoogle.getCode();
+                logger.info("ReCaptcha verification returned code " + code);
 
+                if (code != 200) {
+                    throw new Exception("Could not send request: " + code);
+                }
+            
+                HttpEntity entity = responseGoogle.getEntity();
+                InputStream result = entity.getContent();
+                String responseFromGoogle = new String(result.readAllBytes(), StandardCharsets.UTF_8);
+                logger.info("ReCaptcha verification response: " + responseFromGoogle);
+                
+                // and ensure it is fully consumed
+                EntityUtils.consume(entity);
+
+                JSONObject responseObject = new JSONObject(responseFromGoogle);
+                return responseObject.getBoolean("success");
+            }
         } catch (Exception e) {
             logger.warn("ReCaptcha verification exception ", e);
             throw new ReCaptchaTechnicalException(e);

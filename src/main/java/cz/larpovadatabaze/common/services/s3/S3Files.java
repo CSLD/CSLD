@@ -4,8 +4,9 @@ import cz.larpovadatabaze.common.models.AbstractUploadedFile;
 import cz.larpovadatabaze.common.models.UploadedFile;
 import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.common.services.ImageResizingStrategyFactoryService;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.wicket.request.resource.AbstractResource;
 import org.apache.wicket.request.resource.IResource;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 
 public class S3Files implements FileService {
-    private final static Logger logger = Logger.getLogger(S3Files.class);
+    private final static Logger logger = LogManager.getLogger();;
     private S3Bucket bucket;
 
     public S3Files(S3Bucket bucket) {

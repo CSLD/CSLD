@@ -10,6 +10,7 @@ import software.amazon.awssdk.services.s3.model.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -125,13 +126,13 @@ public class S3Bucket implements Serializable {
      * @param key Key of the object for which to load the item.
      * @return Time of update in miliseconds
      */
-    public Time getLastUpdatedForObject(String key) {
+    public Instant getLastUpdatedForObject(String key) {
         List<S3Object> foundObjectsForKey = objectsForKey(key);
         if (foundObjectsForKey.size() == 0) {
             throw new RuntimeException("File with given key doesn't exist");
         }
 
-        return Time.millis(foundObjectsForKey.get(0).lastModified().toEpochMilli());
+        return Instant.ofEpochMilli(foundObjectsForKey.get(0).lastModified().toEpochMilli());
     }
 
     /**

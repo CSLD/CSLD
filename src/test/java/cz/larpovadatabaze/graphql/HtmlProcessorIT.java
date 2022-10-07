@@ -54,7 +54,7 @@ public class HtmlProcessorIT {
     @Test
     public void testSanitizePass() {
         String input = "<h1>Heading 1</h1>\n<h2>Heading 2</h2>\n<h3>Heading 3</h3>\n<p>Paragraph</p>";
-        String expected = "<h1>Heading 1</h1> \n<h2>Heading 2</h2> \n<h3>Heading 3</h3> \n<p>Paragraph</p>";
+        String expected = "<h1>Heading 1</h1>\n<h2>Heading 2</h2>\n<h3>Heading 3</h3>\n<p>Paragraph</p>";
         String output = HtmlProcessor.sanitizeHtml(input);
         assertThat(output, equalTo(expected));
     }

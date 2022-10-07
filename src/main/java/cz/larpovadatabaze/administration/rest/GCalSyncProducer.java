@@ -2,14 +2,15 @@ package cz.larpovadatabaze.administration.rest;
 
 import com.google.gson.Gson;
 import cz.larpovadatabaze.calendar.service.GoogleCalendarEvents;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.wicket.request.resource.AbstractResource;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 public class GCalSyncProducer extends AbstractResource {
-    private final static Logger logger = Logger.getLogger(GCalSyncProducer.class);
+    private final static Logger logger = LogManager.getLogger();;
 
     private final GoogleCalendarEvents googleCalendarEvents;
 

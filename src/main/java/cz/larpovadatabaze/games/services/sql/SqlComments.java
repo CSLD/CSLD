@@ -11,7 +11,8 @@ import cz.larpovadatabaze.common.services.sql.CRUD;
 import cz.larpovadatabaze.games.services.Comments;
 import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.users.services.AppUsers;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
@@ -32,7 +33,7 @@ import java.util.List;
 @Repository
 @Transactional
 public class SqlComments extends CRUD<Comment, Integer> implements Comments {
-    private static final Logger logger = Logger.getLogger(SqlComments.class);
+    private static final Logger logger = LogManager.getLogger();;
     private final String GAME_BY_ID = "game.id";
     private final String USER_BY_ID = "user.id";
 

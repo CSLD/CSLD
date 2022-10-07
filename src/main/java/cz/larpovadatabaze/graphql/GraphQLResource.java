@@ -11,7 +11,7 @@ import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 import org.apache.wicket.authentication.IAuthenticationStrategy;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.protocol.http.WebApplication;
