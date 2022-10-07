@@ -11,7 +11,6 @@ import cz.larpovadatabaze.common.components.page.error.Error500Page;
 import cz.larpovadatabaze.games.rest.GameProducer;
 import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.graphql.GraphQLResource;
-import cz.larpovadatabaze.search.services.TokenSearch;
 import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.users.services.CsldUsers;
 import org.apache.logging.log4j.Logger;
@@ -38,7 +37,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-import java.util.GregorianCalendar;
 import java.util.Locale;
 
 /**
@@ -46,7 +44,6 @@ import java.util.Locale;
  */
 @Component(value = "wicketApplication")
 public class Csld extends AuthenticatedWebApplication implements ApplicationContextAware {
-    private final TokenSearch tokenSearch;
     private final CsldUsers csldUsers;
     private final Environment env;
     private final Events events;
@@ -59,10 +56,9 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
     private static ApplicationContext ctx;
 
     @Autowired
-    public Csld(TokenSearch tokenSearch, CsldUsers csldUsers,
+    public Csld(CsldUsers csldUsers,
                 Environment env, Events events, Statistics statistics,
                 Games games, GraphQLResource graphqlResource, GoogleCalendarEvents googleCalendarEvents) {
-        this.tokenSearch = tokenSearch;
         this.csldUsers = csldUsers;
         this.env = env;
         this.events = events;
