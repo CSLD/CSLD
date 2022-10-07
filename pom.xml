@@ -46,7 +46,7 @@
         <spring.version>5.2.2.RELEASE</spring.version>
         <tomcatContextFile>${basedir}/src/test/config/tomcat.xml</tomcatContextFile>
         <javax.mail.version>1.4.7</javax.mail.version>
-        <postgresql.version>42.2.9</postgresql.version>
+        <postgresql.version>42.3.7</postgresql.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>14</java.version>
     </properties>
