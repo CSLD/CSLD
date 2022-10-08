@@ -159,24 +159,6 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
             }
         };
 
-        ResourceReference statsReference = new ResourceReference("statsReference") {
-            StatisticsProducer resource = new StatisticsProducer(statistics);
-
-            @Override
-            public IResource getResource() {
-                return resource;
-            }
-        };
-
-        ResourceReference gameReference = new ResourceReference("gameReference") {
-            GameProducer resource = new GameProducer(games);
-
-            @Override
-            public IResource getResource() {
-                return resource;
-            }
-        };
-
         ResourceReference gCalSyncReference = new ResourceReference("gCalSync") {
             GCalSyncProducer resource = new GCalSyncProducer(googleCalendarEvents);
 
@@ -187,8 +169,6 @@ public class Csld extends AuthenticatedWebApplication implements ApplicationCont
         };
 
         mountResource(context + "/ical", icalReference);
-        mountResource(context + "/rest/stats", statsReference);
-        mountResource(context + "/rest/game", gameReference);
         mountResource(context + "/cal-sync", gCalSyncReference);
     }
 

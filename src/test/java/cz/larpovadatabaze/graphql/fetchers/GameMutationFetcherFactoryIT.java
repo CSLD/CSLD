@@ -22,7 +22,6 @@ import cz.larpovadatabaze.users.services.masquerade.InMemoryGroups;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.Arrays;
