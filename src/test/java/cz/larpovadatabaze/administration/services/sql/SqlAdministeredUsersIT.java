@@ -3,8 +3,8 @@ package cz.larpovadatabaze.administration.services.sql;
 import cz.larpovadatabaze.WithDatabase;
 import cz.larpovadatabaze.administration.model.UserRatesOwnGameDto;
 import cz.larpovadatabaze.administration.services.AdministeredUsers;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 public class SqlAdministeredUsersIT extends WithDatabase {
     private AdministeredUsers underTest;
 
-    @Before
+    @BeforeEach
     public void prepareAdministeredUsers() {
         underTest = new SqlAdministeredUsers(sessionFactory);
     }

@@ -14,8 +14,8 @@ import cz.larpovadatabaze.games.services.masquerade.InMemoryLabels;
 import cz.larpovadatabaze.users.services.AppUsers;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
@@ -28,7 +28,7 @@ import static org.hamcrest.Matchers.notNullValue;
 public class EventFetcherFactoryIT {
     private static GoogleCalendarEvents mockGoogleCalendarEvents;
 
-    @BeforeClass
+    @BeforeAll
     public static void beforeClass() throws Exception {
         mockGoogleCalendarEvents = mock(GoogleCalendarEvents.class);
     }

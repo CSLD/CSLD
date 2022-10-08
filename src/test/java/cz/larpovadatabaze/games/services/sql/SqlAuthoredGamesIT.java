@@ -4,8 +4,8 @@ import cz.larpovadatabaze.WithDatabase;
 import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.games.services.AuthoredGames;
 import cz.larpovadatabaze.users.services.AppUsers;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.Collection;
@@ -17,7 +17,7 @@ import static org.hamcrest.Matchers.*;
 public class SqlAuthoredGamesIT extends WithDatabase {
     AuthoredGames underTest;
 
-    @Before
+    @BeforeEach
     public void prepareAuthoredGames() {
         underTest = new SqlAuthoredGames(sessionFactory, Mockito.mock(AppUsers.class));
     }

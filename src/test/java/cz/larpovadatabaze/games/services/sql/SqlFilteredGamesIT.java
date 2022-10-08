@@ -6,8 +6,8 @@ import cz.larpovadatabaze.common.entities.Label;
 import cz.larpovadatabaze.games.models.FilterGameDTO;
 import cz.larpovadatabaze.games.services.FilteredGames;
 import cz.larpovadatabaze.users.services.AppUsers;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import static org.hamcrest.core.IsCollectionContaining.hasItems;
 public class SqlFilteredGamesIT extends WithDatabase {
     private FilteredGames underTest;
 
-    @Before
+    @BeforeEach
     public void prepareFilteredGames() {
         underTest = new SqlFilteredGames(
                 sessionFactory,

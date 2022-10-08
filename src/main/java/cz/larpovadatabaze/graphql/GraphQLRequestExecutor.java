@@ -16,14 +16,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.wicket.authentication.IAuthenticationStrategy;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.protocol.http.WebApplication;
-import org.apache.wicket.request.resource.AbstractResource;
-import org.apache.wicket.request.resource.IResource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,7 +33,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class GraphQLRequestExecutor {
-    private final static Logger logger = LogManager.getLogger();;
+    private final static Logger logger = LogManager.getLogger();
 
     static final Gson GSON = new GsonBuilder().serializeNulls().create();
 
@@ -102,8 +101,7 @@ public class GraphQLRequestExecutor {
      * @return Response
      */
     @Transactional
-    public AbstractResource.ResourceResponse handlePostRequest(HttpServletRequest request) {
-        AbstractResource.ResourceResponse resourceResponse = new AbstractResource.ResourceResponse();
+    public HttpServletResponse handlePostRequest(HttpServletRequest request, HttpServletResponse response) {
         ExecutionResult executionResult;
 
         restoreLoginWhenApplicable(request);
@@ -114,8 +112,8 @@ public class GraphQLRequestExecutor {
 
             if (graphQLRequest.query == null) {
                 // Invalid request
-                resourceResponse.setStatusCode(400);
-                return resourceResponse;
+                response.setStatus(400);
+                return response;
             }
 
             ExecutionInput.Builder builder = ExecutionInput.newExecutionInput(graphQLRequest.query).operationName(graphQLRequest.operationName).variables(graphQLRequest.variables);
@@ -123,21 +121,20 @@ public class GraphQLRequestExecutor {
         }
         catch(Exception e) {
             logger.error("Error handling GraphQL request", e);
-            resourceResponse.setStatusCode(500);
-            return resourceResponse;
+            response.setStatus(500);
+            return response;
         }
 
         // Create response
-        resourceResponse.setContentType("application/json");
-        resourceResponse.setTextEncoding("utf-8");
-        resourceResponse.setWriteCallback(new AbstractResource.WriteCallback() {
-            @Override
-            public void writeData(IResource.Attributes attributes) throws IOException {
-                attributes.getResponse().write(GSON.toJson(executionResult.toSpecification()));
-            }
-        });
+        response.setContentType("application/json");
+        try {
+            response.getOutputStream().print(GSON.toJson(executionResult.toSpecification()));
+        } catch (IOException e) {
+            logger.error("Error outputting GraphQL request", e);
+            response.setStatus(500);
+        }
 
-        return resourceResponse;
+        return response;
     }
 
     /**

@@ -7,8 +7,8 @@ import cz.larpovadatabaze.common.entities.IGameWithRating;
 import cz.larpovadatabaze.common.services.MailService;
 import cz.larpovadatabaze.games.services.GamesWithState;
 import cz.larpovadatabaze.users.services.AppUsers;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class SqlGamesWithStateIT extends WithDatabase {
     private GamesWithState underTest;
     private MailService mockMails;
 
-    @Before
+    @BeforeEach
     public void prepareGamesWithState() {
         mockMails = Mockito.mock(MailService.class);
         underTest = new SqlGamesWithState(

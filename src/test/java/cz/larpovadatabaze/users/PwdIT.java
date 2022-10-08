@@ -1,8 +1,9 @@
 package cz.larpovadatabaze.users;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 public class PwdIT {
     @Test
@@ -10,6 +11,6 @@ public class PwdIT {
         String hash = Pwd.generateStrongPasswordHash("aaa", "aaa@bbb.cz");
 
         boolean valid = Pwd.validatePassword("aaa", hash);
-        assertEquals(valid, true);
+        assertThat(valid, is(true));
     }
 }

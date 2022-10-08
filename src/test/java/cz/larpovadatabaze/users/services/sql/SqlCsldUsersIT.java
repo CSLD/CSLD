@@ -11,19 +11,19 @@ import cz.larpovadatabaze.users.Pwd;
 import cz.larpovadatabaze.users.services.AppUsers;
 import cz.larpovadatabaze.users.services.CsldUsers;
 import cz.larpovadatabaze.users.services.EmailAuthentications;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class SqlCsldUsersIT extends WithDatabase {
     private CsldUsers underTest;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         super.setUp();
 

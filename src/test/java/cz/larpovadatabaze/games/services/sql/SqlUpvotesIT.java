@@ -4,8 +4,8 @@ import cz.larpovadatabaze.WithDatabase;
 import cz.larpovadatabaze.common.entities.Upvote;
 import cz.larpovadatabaze.games.services.Upvotes;
 import org.hibernate.Transaction;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
 
@@ -16,7 +16,7 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 public class SqlUpvotesIT extends WithDatabase {
     private Upvotes underTest;
 
-    @Before
+    @BeforeEach
     public void prepateUpvotes() {
         underTest = new SqlUpvotes(sessionFactory);
     }

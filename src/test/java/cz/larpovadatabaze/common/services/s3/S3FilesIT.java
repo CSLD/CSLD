@@ -8,9 +8,9 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.request.resource.AbstractResource;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,7 +20,7 @@ import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class S3FilesIT {
     private S3Bucket bucket;
@@ -28,7 +28,7 @@ public class S3FilesIT {
     private ImageResizingStrategyFactoryService strategiesToResizeImage;
     private S3Files files;
 
-    @Before
+    @BeforeEach
     public void setUp() throws IOException {
         bucket = new S3Bucket(UUID.randomUUID().toString());
         files = new S3Files(bucket);
@@ -132,7 +132,7 @@ public class S3FilesIT {
         assertThat(bucket.existsObject(keyPreview), is(false));
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws IOException {
         bucket.delete();
     }

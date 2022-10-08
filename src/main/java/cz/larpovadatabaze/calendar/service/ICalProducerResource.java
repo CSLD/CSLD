@@ -8,16 +8,23 @@ import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.property.CalScale;
 import net.fortuna.ical4j.model.property.ProdId;
 import net.fortuna.ical4j.model.property.Version;
-import org.apache.wicket.request.resource.AbstractResource;
-import org.apache.wicket.util.string.StringValue;
+import net.fortuna.ical4j.validate.ValidationException;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.Collection;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * Returns all future events
  */
-public class ICalProducerResource extends AbstractResource {
+@RestController
+public class ICalProducerResource {
     private Events events;
     private CsldUsers userService;
 
@@ -26,13 +33,9 @@ public class ICalProducerResource extends AbstractResource {
         this.userService = userService;
     }
 
-    @Override
-    protected ResourceResponse newResourceResponse(Attributes attributes) {
-        StringValue id = attributes.getParameters().get("id");
-
-        ResourceResponse resourceResponse = new ResourceResponse();
-        resourceResponse.setContentType("text/calendar");
-        resourceResponse.setTextEncoding("utf-8");
+    @GetMapping(path="/ical")
+    protected void newResourceResponse(HttpServletRequest request, HttpServletResponse response, @RequestParam String id) {
+        response.setContentType("text/calendar");
 
         Calendar ical = new Calendar();
         ical.getProperties().add(new ProdId("-//CSLD//iCal4j 1.0//EN"));
@@ -54,17 +57,12 @@ public class ICalProducerResource extends AbstractResource {
             ical.getComponents().add(new VEvent(new net.fortuna.ical4j.model.Date(inPast), "Irelevant"));
         }
 
-        resourceResponse.setWriteCallback(new WriteCallback()
-        {
-            @Override
-            public void writeData(Attributes attributes) throws IOException
-            {
-                CalendarOutputter outputter = new CalendarOutputter();
-                outputter.output(ical, attributes.getResponse().getOutputStream());
-            }
-        });
-
-        return resourceResponse;
+        CalendarOutputter outputter = new CalendarOutputter();
+        try {
+            outputter.output(ical, response.getOutputStream());
+        } catch (ValidationException|IOException e) {
+            response.setStatus(500);
+        } 
     }
 
     private void addAllEvents(Calendar ical, java.util.Calendar to) {
@@ -74,9 +72,8 @@ public class ICalProducerResource extends AbstractResource {
         }
     }
 
-    private void addEventsForUser(StringValue id, Calendar ical, java.util.Calendar to) {
-// TODO: Sanitize for incorrect usage.
-        int userId = id.toInt();
+    private void addEventsForUser(String id, Calendar ical, java.util.Calendar to) {
+        int userId = Integer.parseInt(id);
         Collection<Event> eventsToExport = events.forWantedGames(userService.getById(userId),
                 events.inTheTimeFrame(java.util.Calendar.getInstance(), to));
         for (Event toExport : eventsToExport) {

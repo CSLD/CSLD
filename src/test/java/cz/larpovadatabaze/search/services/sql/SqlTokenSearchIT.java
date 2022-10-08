@@ -7,8 +7,8 @@ import cz.larpovadatabaze.common.entities.Game;
 import cz.larpovadatabaze.common.entities.Label;
 import cz.larpovadatabaze.search.services.TokenSearch;
 import cz.larpovadatabaze.users.services.AppUsers;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.List;
@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.hasSize;
 public class SqlTokenSearchIT extends WithDatabase {
     TokenSearch underTest;
 
-    @Before
+    @BeforeEach
     public void prepareTokenSearch() {
         underTest = new SqlTokenSearch(
                 sessionFactory,

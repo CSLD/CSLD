@@ -4,8 +4,8 @@ import cz.larpovadatabaze.WithDatabase;
 import cz.larpovadatabaze.common.entities.Rating;
 import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.games.services.Ratings;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.*;
 public class SqlRatingsIT extends WithDatabase {
     private Ratings underTest;
 
-    @Before
+    @BeforeEach
     public void createAndInitializeRatings() {
         underTest = new SqlRatings(sessionFactory,
                 Mockito.mock(Games.class));

@@ -4,12 +4,16 @@ import com.google.gson.Gson;
 import cz.larpovadatabaze.calendar.service.GoogleCalendarEvents;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
-import org.apache.wicket.request.resource.AbstractResource;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 
-public class GCalSyncProducer extends AbstractResource {
+@RestController
+public class GCalSyncProducer {
     private final static Logger logger = LogManager.getLogger();;
 
     private final GoogleCalendarEvents googleCalendarEvents;
@@ -18,9 +22,8 @@ public class GCalSyncProducer extends AbstractResource {
         this.googleCalendarEvents = googleCalendarEvents;
     }
 
-    @Override
-    protected ResourceResponse newResourceResponse(Attributes attributes) {
-        HttpServletRequest request = ((HttpServletRequest)attributes.getRequest().getContainerRequest());
+    @GetMapping("/cal-sync")
+    protected void newResourceResponse(HttpServletRequest request, HttpServletResponse response) {
         String channelId = request.getHeader("X-Goog-Channel-ID");
         String channelExpiration = request.getHeader("X-Goog-Channel-Expiration");
         String messageNumber = request.getHeader("X-Goog-Message-Number");
@@ -29,18 +32,13 @@ public class GCalSyncProducer extends AbstractResource {
 
         GoogleCalendarEvents.SyncStats stats = googleCalendarEvents.syncEventsFromGoogleCalendar();
 
-        ResourceResponse resourceResponse = new ResourceResponse();
-        resourceResponse.setContentType("application/json");
-        resourceResponse.setTextEncoding("utf-8");
+        response.setContentType("application/json");
 
         String statisticsInJson = new Gson().toJson(stats);
-        resourceResponse.setWriteCallback(new WriteCallback() {
-            @Override
-            public void writeData(Attributes attributes) throws IOException {
-                attributes.getResponse().write(statisticsInJson);
-            }
-        });
-
-        return resourceResponse;
+        try {
+            response.getOutputStream().print(statisticsInJson);
+        } catch (IOException e) {
+            response.setStatus(500);
+        }
     }
 }

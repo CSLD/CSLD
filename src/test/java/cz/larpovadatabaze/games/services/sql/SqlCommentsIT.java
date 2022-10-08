@@ -7,8 +7,8 @@ import cz.larpovadatabaze.games.services.Comments;
 import cz.larpovadatabaze.games.services.Games;
 import cz.larpovadatabaze.users.services.AppUsers;
 import org.hibernate.Transaction;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.Collection;
@@ -17,7 +17,7 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
 
 public class SqlCommentsIT extends WithDatabase {
@@ -25,7 +25,7 @@ public class SqlCommentsIT extends WithDatabase {
     private Games mockGames;
     private AppUsers mockAppUsers;
 
-    @Before()
+    @BeforeEach()
     public void prepareClassUnderTest() {
         mockGames = Mockito.mock(Games.class);
         mockAppUsers = Mockito.mock(AppUsers.class);

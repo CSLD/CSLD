@@ -3,8 +3,8 @@ package cz.larpovadatabaze.games.services.sql;
 import cz.larpovadatabaze.WithDatabase;
 import cz.larpovadatabaze.common.entities.Label;
 import cz.larpovadatabaze.games.services.Labels;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class SqlLabelsIT extends WithDatabase {
     private Labels underTest;
 
-    @Before
+    @BeforeEach
     public void createAndInitializeLabels() {
         underTest = new SqlLabels(sessionFactory);
     }

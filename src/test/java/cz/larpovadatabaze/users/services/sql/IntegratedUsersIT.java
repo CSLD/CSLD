@@ -12,8 +12,8 @@ import cz.larpovadatabaze.users.services.AppUsers;
 import cz.larpovadatabaze.users.services.CsldUsers;
 import cz.larpovadatabaze.users.services.EmailAuthentications;
 import org.hibernate.Transaction;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import static org.mockito.Mockito.when;
@@ -22,7 +22,7 @@ public class IntegratedUsersIT extends WithDatabase {
     private CsldUsers underTest;
     private AppUsers appUsers;
 
-    @Before
+    @BeforeEach
     public void prepareUsers() {
         appUsers = Mockito.mock(AppUsers.class);
         FileService files = Mockito.mock(FileService.class);

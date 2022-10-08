@@ -5,19 +5,18 @@ import cz.larpovadatabaze.common.services.builders.MasqueradeEntities;
 import org.flywaydb.core.Flyway;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.orm.hibernate5.SessionHolder;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 /**
  *
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest
 @ContextConfiguration(
         classes = RootTestWithDbConfig.class
 )
@@ -36,7 +35,7 @@ abstract public class WithDatabase {
 
 
     // Before Each Test
-    @Before
+    @BeforeEach
     public void setUp() {
         flyWay.migrate();
         session = sessionFactory.openSession();
@@ -46,7 +45,7 @@ abstract public class WithDatabase {
         masqueradeEntities = masqueradeBuilder.build();
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         flyWay.clean();
 

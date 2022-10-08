@@ -1,8 +1,8 @@
 package cz.larpovadatabaze.common.services.s3;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -16,7 +16,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class S3BucketIT {
     S3Client client;
@@ -24,7 +24,7 @@ public class S3BucketIT {
     private S3Bucket bucket;
     private String bucketName = UUID.randomUUID().toString();
 
-    @Before
+    @BeforeEach
     public void setUp() {
         client = S3Client.builder()
                 .region(Region.EU_CENTRAL_1)
@@ -107,7 +107,7 @@ public class S3BucketIT {
         toDelete.delete();
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         emptyBucket(bucketName);
         DeleteBucketResponse response = client.deleteBucket(DeleteBucketRequest.builder().bucket(bucketName).build());

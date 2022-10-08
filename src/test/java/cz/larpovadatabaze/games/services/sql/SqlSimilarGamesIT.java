@@ -7,8 +7,8 @@ import cz.larpovadatabaze.games.services.SimilarGames;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ import static org.hamcrest.core.IsCollectionContaining.hasItems;
 public class SqlSimilarGamesIT extends WithDatabase {
     private SimilarGames underTest;
 
-    @Before
+    @BeforeEach
     public void prepareService() {
         underTest = new SqlSimilarGames(
                 sessionFactory

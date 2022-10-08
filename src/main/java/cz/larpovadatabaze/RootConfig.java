@@ -1,16 +1,25 @@
 package cz.larpovadatabaze;
 
 import com.mchange.v2.c3p0.DriverManagerDataSource;
+
+import cz.larpovadatabaze.calendar.service.Events;
+import cz.larpovadatabaze.calendar.service.GoogleCalendarEvents;
 import cz.larpovadatabaze.common.services.FileService;
 import cz.larpovadatabaze.common.services.MailService;
 import cz.larpovadatabaze.common.services.s3.S3Bucket;
 import cz.larpovadatabaze.common.services.s3.S3Files;
 import cz.larpovadatabaze.common.services.smtp.SmtpMailService;
 import cz.larpovadatabaze.common.services.wicket.LocalFiles;
+import cz.larpovadatabaze.games.services.Games;
+import cz.larpovadatabaze.graphql.GraphQLResource;
 import cz.larpovadatabaze.users.services.AppUsers;
+import cz.larpovadatabaze.users.services.CsldUsers;
+
 import org.flywaydb.core.Flyway;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -29,6 +38,7 @@ import java.util.Properties;
 @ComponentScan(basePackages = "cz.larpovadatabaze")
 @EnableTransactionManagement
 @PropertySource(value = {"classpath:application.properties"})
+@EnableAutoConfiguration
 public class RootConfig {
     @Autowired
     private Environment env;
@@ -98,6 +108,12 @@ public class RootConfig {
     }
     // End of data store specification
 
+    @Bean
+    @Autowired
+    public Csld csld() {
+        return new Csld();
+    }
+
     // Start of email settings
     @Bean
     public JavaMailSender mailSender() {
@@ -151,5 +167,9 @@ public class RootConfig {
         } else {
             throw new RuntimeException("Ilegal type of service. Only s3 and files are supported.");
         }
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(RootConfig.class, args);
     }
 }
