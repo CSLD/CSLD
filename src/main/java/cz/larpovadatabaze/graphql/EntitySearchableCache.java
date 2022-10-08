@@ -1,10 +1,10 @@
 package cz.larpovadatabaze.graphql;
 
-import cz.larpovadatabaze.common.components.multiac.IAutoCompletable;
-
 import java.text.Normalizer;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import cz.larpovadatabaze.common.IAutoCompletable;
 
 /**
  * Caches objects and allows searching them.

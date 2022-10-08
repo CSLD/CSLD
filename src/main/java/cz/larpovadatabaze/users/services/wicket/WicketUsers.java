@@ -1,6 +1,5 @@
 package cz.larpovadatabaze.users.services.wicket;
 
-import cz.larpovadatabaze.Csld;
 import cz.larpovadatabaze.common.entities.CsldUser;
 import cz.larpovadatabaze.users.CsldAuthenticatedWebSession;
 import cz.larpovadatabaze.users.CsldRoles;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class WicketUsers implements AppUsers {
     public WicketUsers() {
+        // Get the CsldUsers
     }
 
     @Override

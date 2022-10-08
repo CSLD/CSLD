@@ -1,7 +1,8 @@
 package cz.larpovadatabaze.graphql;
 
-import cz.larpovadatabaze.common.components.multiac.IAutoCompletable;
 import org.junit.Test;
+
+import cz.larpovadatabaze.common.IAutoCompletable;
 
 import java.util.Arrays;
 import java.util.Collection;

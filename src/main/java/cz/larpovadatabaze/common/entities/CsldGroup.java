@@ -1,7 +1,8 @@
 package cz.larpovadatabaze.common.entities;
 
+import cz.larpovadatabaze.common.IAutoCompletable;
 import cz.larpovadatabaze.common.Identifiable;
-import cz.larpovadatabaze.common.components.multiac.IAutoCompletable;
+
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 

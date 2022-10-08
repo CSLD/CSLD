@@ -1,11 +1,12 @@
 package cz.larpovadatabaze.common.entities;
 
-import cz.larpovadatabaze.common.components.multiac.IAutoCompletable;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
+
+import cz.larpovadatabaze.common.IAutoCompletable;
+
 import java.io.Serializable;
 import java.sql.Date;
 import java.time.LocalDate;

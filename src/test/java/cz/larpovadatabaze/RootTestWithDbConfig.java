@@ -17,6 +17,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -26,6 +27,7 @@ import java.util.Properties;
  */
 @Configuration
 @ComponentScan(basePackages = {
+        "cz.larpovadatabaze.administration.controllers",
         "cz.larpovadatabaze.administration.services",
         "cz.larpovadatabaze.calendar.service",
         "cz.larpovadatabaze.common.services",
@@ -36,6 +38,7 @@ import java.util.Properties;
         "cz.larpovadatabaze.common.dao"})
 @EnableTransactionManagement
 @PropertySource(value = {"classpath:application.properties"})
+@EnableWebMvc
 public class RootTestWithDbConfig {
     @Autowired
     private Environment env;

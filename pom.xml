@@ -8,6 +8,12 @@
     <version>1.0.0</version>
     <name>ČSLD</name>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.4</version>
+    </parent>
+
     <repositories>
         <repository>
             <id>maven</id>
@@ -35,15 +41,16 @@
         <slf4j.version>2.0.3</slf4j.version>
         <log4j.version>2.19.0</log4j.version>
         
-        <tomcat.version>9.0.27.1</tomcat.version>
-        <webapp-runner.version>9.0.27.1</webapp-runner.version>
-        <tomcatContextFile>${basedir}/src/test/config/tomcat.xml</tomcatContextFile>
-
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>17</java.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
         <!-- WICKET DEPENDENCIES -->
         <dependency>
             <groupId>org.apache.wicket</groupId>
@@ -73,50 +80,6 @@
             <groupId>org.ow2.asm</groupId>
             <artifactId>asm-util</artifactId>
             <version>9.4</version>
-        </dependency>
-
-        <!-- SPRING DEPENDENCIES -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>${spring.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context-support</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <version>${spring.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-orm</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>${spring.version}</version>
         </dependency>
 
         <!-- Database DEPENDENCIES -->
@@ -471,29 +434,6 @@
                                     </limits>
                                 </rule>
                             </rules>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.1.1</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>com.github.jsimone</groupId>
-                                    <artifactId>webapp-runner</artifactId>
-                                    <version>${webapp-runner.version}</version>
-                                    <destFileName>webapp-runner.jar</destFileName>
-                                </artifactItem>
-                            </artifactItems>
                         </configuration>
                     </execution>
                 </executions>
